@@ -163,3 +163,5 @@ The `SupplementaryMaterials` directory contains:
 * `PropositionProof.pdf` - the proof of the proposition stated in the paper.
 * `RoundByRoundResults.pdf` - complete round-by-round results.
 * `AblationBaselineResults.pdf` - complete ablation and baseline results.
+* `PromptOutline.pdf` - the outline of all the prompts used for IntentTrace, refinement and the Direct-LLM baseline. The complete prompts are available at `IntentTrace/prompts`.
+
