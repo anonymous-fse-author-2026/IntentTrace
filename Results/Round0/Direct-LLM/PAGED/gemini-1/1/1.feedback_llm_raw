@@ -1,0 +1,13 @@
+- `action(n3, "terminate process")` and `end(e1)`: Hallucinated termination behavior; the source text does not specify terminating the process if the order is not received.
+- `guard(b1, n4, v1 = 'No')`: Incorrectly routes the flow to continue processing the order when the order has "No"t been received, contradicting the logical intent of the source.
+- `action(n9, "compute discount of 3 percent")`: Missing an outgoing precedence edge, causing a process deadlock.
+- `action(n11, "compute discount of 2 percent")`: Missing an outgoing precedence edge, causing a process deadlock.
+- `action(n16, "compute discount of 4 percent")`: Missing an outgoing precedence edge, causing a process deadlock.
+- `precedence(n5, c1)`, `precedence(n12, c1)`, and `precedence(n14, c1)`: Improperly route directly to bill creation, bypassing the subsequent sequential checks ("After checking the sum...", "Once again, check...") explicitly required by the source text.
+- `action(n12, "continue with the process")`: Hallucinated fallback action following the 500-999 sum check that is not described in the source.
+- `branch(b10, XOR)`: Has only a single outgoing precedence edge (to `n22`), which violates XOR gateway semantics and creates a deadlock if the condition is not met.
+- `guard(...)`: Missing guard conditions on the XOR outgoing edges to `n5`, `n7`, `n9`, `n11`, `n12`, `n14`, `n16`, `n18`, `n20`, and `n22`. 
+- `label(n1, n2, "No")` and `label(n7, n13, "No")`: Hallucinated and semantically invalid conditions placed on unconditional sequence edges.
+- `label(n23, n24, "You have completed this procedure")`: Hallucinated descriptive text not present in the source description.
+- `defines(v1, "has the order been received", {"Order not received end process", "No"})`: Contains hallucinated domain values instead of standard affirmation/negation values for the check.
+- `defines(v5, "is the sum of the order between 500 and 999", {})` and `defines(v10, "is the sum of the order between 500 and 999", {})`: Improperly define empty ranges `{}` for their decision variables.

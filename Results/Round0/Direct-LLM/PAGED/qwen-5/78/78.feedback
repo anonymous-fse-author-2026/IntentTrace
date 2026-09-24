@@ -1,0 +1,8 @@
+- `action(n1, ...)` & `action(n2, ...)`: Omits the documented initial step "begin by checking if the order has been received." (SMC1)
+- `action(n7, "end")`: Hallucinates a distinct process step; the source only states "the process will come to an end" as a concluding state immediately after billing, not as an intermediate action. (SMC1)
+- `action(n6, "continue process and create bill")`: Unfaithfully merges two separate chronological steps ("continue with the process" and "create the bill") into a single node. (SMC2)
+- `guard(b1, n6, v1 = '<500')` & `precedence(b1, n6)`: Routes the <500 condition directly to billing/termination, contradicting the source which repeatedly states "if it is less than 500, continue with the process" (implying it should remain in the checking cycle rather than exit). (SMC4)
+- `defines(v1, "check sum of order", {...})` & `guard(..., v1 = '>2000')`: Encodes numeric order thresholds as discrete string literals instead of quantitative intervals, misrepresenting the numerical comparison context of the source. (SMC6)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=4 and out=1. | DSL: action(n2,"check sum of order")

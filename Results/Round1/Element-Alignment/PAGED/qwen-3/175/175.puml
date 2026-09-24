@@ -1,0 +1,85 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:customer returns items to store;
+else ([v1 = false])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to original contract;
+:order is complete and all items were returned;
+:v2: order is complete and all items were returned ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:order is incomplete and items are missing;
+:v3: order is incomplete and items are missing ({true, false})
+v8: customer does not return missing items ({true, false}); <<objectSignal>>
+switch ()
+case ([v3 = false])
+:customer returns missing items;
+:v7: customer returns missing items ({true, false}); <<objectSignal>>
+if () then ([v7 = false])
+->;
+else ([v7 = true])
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+:v9: items packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v9 = false])
+->;
+else ([v9 = true])
+:end process;
+endif
+split again
+:items stored for future orders;
+:v10: items stored for future orders ({true, false}); <<objectSignal>>
+if () then ([v10 = false])
+->;
+else ([v10 = true])
+endif
+end split
+stop
+endif
+case ([v8 = true])
+:customer does not return missing items;
+:v8: customer does not return missing items ({true, false}); <<objectSignal>>
+if () then ([v8 = false])
+->;
+else ([v8 = true])
+endif
+case ([v3 = true])
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: items are repaired and added into inventory ({true, false}); <<objectSignal>>
+if () then ([v6 = true])
+:items can't be repaired and are discarded;
+stop
+else ([v6 = false])
+:email customer with replacement charges;
+:end process;
+endif
+endswitch
+stop
+else ([v2 = false])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: items packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+else ([v4 = false])
+->;
+endif
+split again
+:items stored for future orders;
+:v5: items stored for future orders ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+else ([v5 = false])
+->;
+endif
+end split
+endif
+@enduml

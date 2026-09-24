@@ -1,0 +1,9 @@
+- `action(n1, "Start P&E Court Process")` and `action(n6, "Are there any issues with the P&E Judge Availability?")`: Hallucinated steps. The source begins directly with *"start by Listing and then proceed"* and describes a linear flow without introducing an explicit initialization step or a decision-question node prior to resolving issues.
+- `branch(b1, XOR)`, `converge(c1)`, and `precedence(b1, c1)`: Incorrect control-flow logic. The source mandates a linear progression (*"Resolve any issues with the P&E Judge Availability and then continue with the process"*), whereas the model introduces an exclusive split that structurally allows bypassing the resolution step entirely.
+- `action(n5, "Consider all P&E Judges when checking Availability")` and `precedence(n4, n5)`: Chronology and scope violation. The source instructs to consider all judges *"When checking the P&E Judge Availability"*, indicating it is a procedural constraint/sub-step of the checking action, not a distinct sequential task executed afterward.
+- `defines(v1, "Are there any issues with the P&E Judge Availability?", {})`: Unfaithful variable declaration. The source does not introduce this decision variable, and the declared range `{}` is empty, failing to define a valid decision space.
+- `branch(b1, XOR)` and missing `guard` statements: Undefined routing semantics. The model introduces an XOR split to handle issue resolution but omits the required `guard(...)` statements to link the branch's outgoing edges to evaluation criteria, leaving the choice mechanism semantically incomplete.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

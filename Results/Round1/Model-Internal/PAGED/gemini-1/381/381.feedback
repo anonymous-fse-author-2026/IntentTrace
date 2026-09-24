@@ -1,0 +1,43 @@
+Omission
+- [N1] Node-level omission: i7:If a code is available within 24 hours (reason: This condition is not faithfully implemented; the model distorts it by inventing separate, path-specific checks for trains and flights.)
+- [N2] Node-level omission: i8:call a travel agency (reason: This step was mutated into duplicated, path-specific actions with invented qualifiers, meaning the general action as written is not faithfully covered.)
+- [N3] Node-level omission: i9:along with the hotel reservation (reason: The step involving the hotel reservation is entirely missing from the model.)
+- [N4] Node-level omission: i10:On the other hand, if a code is not available, you should cancel your journey. (reason: The condition and action to cancel the journey are entirely missing from the model.)
+- [N5] Omitted trace (input 2): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i5:If the answer is "no" -> i4:book a train -> i8:call a travel agency -> i10:On the other hand, if a code is not available, you should cancel your journey.
+- [N6] Omitted trace (input 5): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i6:book a flight -> i8:call a travel agency -> i10:On the other hand, if a code is not available, you should cancel your journey.
+- [N7] Within matched traces (0->0) omitted: i7:If a code is available within 24 hours
+- [N8] Within matched traces (1->1) omitted: i9:along with the hotel reservation
+- [N9] Within matched traces (3->2) omitted: i7:If a code is available within 24 hours
+- [N10] Within matched traces (4->3) omitted: i9:along with the hotel reservation
+
+Addition
+- [N11] Node-level addition: guard(b1,n5,"v1 == \"yes\"") (reason: The 'yes' condition for booking a flight is absent from the provided source input elements.)
+- [N12] Node-level addition: action(n6,"check if code is available within 24 hours (train)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N13] Node-level addition: action(n7,"code available within 24 hours (train)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N14] Node-level addition: action(n9,"end of process after calling travel agency (train)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N15] Node-level addition: action(n10,"check if code is available within 24 hours (flight)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N16] Node-level addition: action(n11,"code available within 24 hours (flight)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N17] Node-level addition: action(n13,"end of process after calling travel agency (flight)") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N18] Node-level addition: guard(b2,n7,"v2 == \"yes\"") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N19] Node-level addition: guard(b2,n8,"v2 == \"no\"") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N20] Node-level addition: guard(b3,n11,"v3 == \"yes\"") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N21] Node-level addition: guard(b3,n12,"v3 == \"no\"") (reason: The model invents duplicate checks, resulting actions, and guards explicitly for 'train' and 'flight' paths, none of which are described in the segmented source text.)
+- [N22] Within matched traces (0->0) added: action(n6,"check if code is available within 24 hours (train)")
+- [N23] Within matched traces (0->0) added: branch(b2,XOR)
+- [N24] Within matched traces (0->0) added: action(n7,"code available within 24 hours (train)")
+- [N25] Within matched traces (0->0) added: end(e1)
+- [N26] Within matched traces (1->1) added: action(n6,"check if code is available within 24 hours (train)")
+- [N27] Within matched traces (1->1) added: branch(b2,XOR)
+- [N28] Within matched traces (1->1) added: action(n9,"end of process after calling travel agency (train)")
+- [N29] Within matched traces (1->1) added: end(e2)
+- [N30] Within matched traces (3->2) added: action(n10,"check if code is available within 24 hours (flight)")
+- [N31] Within matched traces (3->2) added: branch(b3,XOR)
+- [N32] Within matched traces (3->2) added: action(n11,"code available within 24 hours (flight)")
+- [N33] Within matched traces (3->2) added: end(e3)
+- [N34] Within matched traces (4->3) added: action(n10,"check if code is available within 24 hours (flight)")
+- [N35] Within matched traces (4->3) added: branch(b3,XOR)
+- [N36] Within matched traces (4->3) added: action(n13,"end of process after calling travel agency (flight)")
+- [N37] Within matched traces (4->3) added: end(e4)
+
+Mutation
+- [N38] Node-level mutation: element=action(n8,"call travel agency (train)") -> action(n12,"call travel agency (flight)"); source=i8:call a travel agency; reason=The model duplicates this action for train and flight paths separately and adds unsupported qualifiers '(train)' and '(flight)' not present in the source.

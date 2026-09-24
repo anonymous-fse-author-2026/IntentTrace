@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Receive Order Request;
+:Register Order;
+:Evaluate Order;
+:v1: Evaluate Order ({NOK, ok}); <<objectSignal>>
+if () then ([v1 = 'NOK'])
+:End: Evaluation Failed;
+stop
+else ([v1 = 'ok'])
+:Install Order;
+:v2: Install Order ({unsuccessful, successful}); <<objectSignal>>
+if () then ([v2 = 'unsuccessful'])
+:End: Installation Failed;
+stop
+else ([v2 = 'successful'])
+:Installation Check;
+:Prepare Billing;
+:v3: Everything in order ({no, yes}); <<objectSignal>>
+if () then ([v3 = 'yes'])
+:Mark as Ok;
+stop
+else ([v3 = 'no'])
+stop
+endif
+endif
+endif
+@enduml

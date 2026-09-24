@@ -1,0 +1,8 @@
+- `branch(b3, AND)`: Models mutually exclusive conditions as a parallel split, whereas the source states "If it has been 5 days, invoice the customer. If a loss claim report is lodged, approve the loss claim...", implying alternative branching that requires an XOR gateway.
+- `guard(b1, n8, v1 = 'No (No Return Request)')`: Directs the absence of a request to rejection, contradicting the source which limits rejection to decided returns ("If the return is rejected, reject the merchandise return."); a missing request should not trigger this path.
+- `precedence(n9, e2)`: Ends the process directly after "Proceed with Returning Merchandise", omitting the explicit concluding action required by the source ("Return the merchandise and the process ends with the merchandise being returned.")
+- `defines(v1, ...)` & `guard(b1, ...)`: Uses a binary lodgement variable to determine acceptance/rejection, collapsing two distinct source phases ("If the request... is lodged" and "If the return is accepted/rejected"); the model incorrectly treats all lodged requests as automatically accepted.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"Deliver Freight")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"Deliver Freight")

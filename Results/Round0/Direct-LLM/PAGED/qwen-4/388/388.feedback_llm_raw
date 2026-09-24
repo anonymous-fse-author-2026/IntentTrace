@@ -1,0 +1,9 @@
+
+
+- action(n1, "start process"): Hallucinated step; source begins directly with "begin by selecting a filter" without an explicit initial action.
+- defines(v2, "Is there another filter to apply", {"no"}): Incomplete value range; source presents two alternatives ("If there is... If not..."), requiring a "yes" value.
+- defines(v3, "Is submit option true", {"false"}): Incomplete value range; source explicitly evaluates for "true", which must be in the domain.
+- guard(b2, n8, v2 = 'no'): Incomplete routing; source states both conditions lead forward ("If there is, continue... If not, continue"), but model only routes 'no', leaving 'yes' undefined and breaking the path.
+- branch(b2, XOR) & branch(b3, XOR): Misrepresented control flow; both are declared as exclusive splits but each has only one outgoing precedence edge (`b2→n8`, `b3→n9`), failing to reflect the described conditional choices.
+- guard(b3, n9, v3 = 'false'): Incorrect progression; source specifies continuing when the option is "true", whereas the model forces termination on "false".
+- action(n9, "End"): Hallucinated step; source only notes "The process ends when all steps have been completed" without naming a discrete final action.

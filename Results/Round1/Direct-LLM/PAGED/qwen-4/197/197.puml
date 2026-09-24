@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_customer|
+start
+:gather required items;
+:inquire about availability of products;
+:send inquiry;
+:wait for invoice;
+:v1: Is invoice received? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:review pricing and terms;
+:send purchase requisition;
+split
+:wait for purchase invoice;
+:v2: Is purchase invoice received? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+->;
+endif
+split again
+:wait for shipment;
+:v3: Is shipment received? ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+->;
+endif
+end split
+:receive invoice;
+:make payment;
+stop
+endif
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the process for ACME;
+:begin with the New Resupply Cycle;
+:Check Levels of Inventory;
+:v1: Inventory Level ({inventory is below or equal to the minimum, inventory is greater than the minimum}); <<objectSignal>>
+if () then ([v1 = 'inventory is below or equal to the minimum'])
+:generate an Equal to or below minimum Report;
+:create Purchase Orders (POs);
+repeat :;
+:If the PO is created, it needs to be reviewed. If the PO needs to be reworked, it needs to be created again.;
+:v2: PO Status ({PO is rejected, PO is approved}); <<objectSignal>>
+backward:it needs to be reworked;
+repeat while () is ([v2 = 'PO is rejected']) not ([v2 = 'PO is approved'])
+:it is printed and released in the system;
+split
+:reserve funds for the released POs;
+:receive the Packing Slip;
+split again
+:mail the POs to the supplier;
+:receive the inventory;
+end split
+:receive the Invoice;
+:proceed to the Three-way match;
+:release the funds;
+:issue the payment;
+:the Resupply Cycle is complete and the process ends;
+stop
+else ([v1 = 'inventory is greater than the minimum'])
+:generate an Above Minimum Report;
+stop
+endif
+@enduml

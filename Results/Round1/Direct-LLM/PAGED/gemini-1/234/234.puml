@@ -1,0 +1,115 @@
+@startuml
+!theme plain
+|a_student| student
+|a_selling_agency| selling agency
+|a_client| client
+|a_ppc| PPC
+|a_finance| finance department
+|a_warehouse| warehouse
+|a_logistic| logistic department
+|a_default| Default
+|a_default|
+start
+:start;
+:supply requirement and document it;
+:check order reception method;
+:v1: check order reception method ({Fax, Mail/Phone}); <<objectSignal>>
+if () then ([v1 = 'Fax'])
+:input order into Excel (fax);
+else ([v1 = 'Mail/Phone'])
+:input order into Excel (mail/phone);
+endif
+:Once the Excel list is complete after a week, send it to the student;
+|a_student|
+:receive Excel list and start parallel tasks;
+:type orders into MS-Access database;
+|a_default|
+:ensure that it is completed;
+split
+:control the incoming order;
+split again
+:continue to do the check;
+end split
+:orders input completed and checked;
+:decision on order correctness;
+:v2: decision on order correctness ({Correct, Incorrect}); <<objectSignal>>
+if () then ([v2 = 'Correct'])
+:release order (correct);
+:Send the Excel list to the student;
+|a_student|
+:upon receiving it, continue with the process;
+|a_default|
+:check order value;
+:v3: check order value ({<= 5000 €, > 5000 €}); <<objectSignal>>
+if () then ([v3 = '<= 5000 €'])
+:release order (<5k€);
+stop
+else ([v3 = '> 5000 €'])
+split
+:send for sign-off (>5k€);
+split again
+:continue with the check;
+split again
+:Contact the selling agency;
+|a_selling_agency|
+:upon receiving the actual issue;
+end split
+|a_default|
+endif
+else ([v2 = 'Incorrect'])
+:contact selling agency (incorrect);
+|a_selling_agency|
+:upon receiving the actual issue;
+|a_default|
+:send the order for sign off;
+endif
+|a_client|
+:contact client after sign-off;
+|a_default|
+:release order post sign-off;
+|a_ppc|
+:Once the order is received by PPC;
+:PPC initiates production;
+:the goods will be produced;
+|a_default|
+:check if issue solvable;
+:v4: check if issue solvable ({Unsolvable, Solvable}); <<objectSignal>>
+if () then ([v4 = 'Unsolvable'])
+:cancel order (unsolvable);
+stop
+else ([v4 = 'Solvable'])
+:release order (solvable);
+:check if order needs cancellation;
+:v5: check if order needs cancellation ({Cancel, Do not cancel}); <<objectSignal>>
+if () then ([v5 = 'Cancel'])
+:process ends (cancel);
+stop
+else ([v5 = 'Do not cancel'])
+:check quality of goods;
+|a_finance|
+:create and send quality report;
+|a_default|
+:release order via memo;
+|a_warehouse|
+:ensure that the memo is achieved in the warehouse;
+|a_default|
+split
+|a_finance|
+:send invoice to finance;
+:report the achievement to the finance department;
+split again
+|a_default|
+:commission goods;
+:send the goods;
+split again
+|a_logistic|
+:sign and send memo to logistic;
+:ensure that the signed memo is achieved in the logistic department;
+end split
+|a_default|
+:ensure memos are archived;
+:close order;
+stop
+endif
+endif
+@enduml

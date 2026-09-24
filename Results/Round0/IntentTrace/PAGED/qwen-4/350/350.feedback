@@ -1,0 +1,41 @@
+Omission
+- [N1] Within matched traces (2->0) omitted: i5:If you still want to try again, please provide the userdata for flickr.
+
+Addition
+- [N2] Node-level addition: action(n8,"is the login successful after retry") (reason: These elements model login success checks and termination steps for subsequent retries that are not described in the source text. The text concludes after the second abort option.)
+- [N3] Node-level addition: action(n9,"end process successful login after retry") (reason: These elements model login success checks and termination steps for subsequent retries that are not described in the source text. The text concludes after the second abort option.)
+- [N4] Node-level addition: action(n13,"is the login successful after third try") (reason: These elements model login success checks and termination steps for subsequent retries that are not described in the source text. The text concludes after the second abort option.)
+- [N5] Node-level addition: action(n14,"end process successful login after third try") (reason: These elements model login success checks and termination steps for subsequent retries that are not described in the source text. The text concludes after the second abort option.)
+- [N6] Node-level addition: action(n15,"end process abort after third failure") (reason: These elements model login success checks and termination steps for subsequent retries that are not described in the source text. The text concludes after the second abort option.)
+- [N7] Node-level addition: label(n2,n3,"No") (reason: The 'No' labels on the transition edges do not appear in the source text. Failure/continuation paths are implied by the conditional logic but not explicitly labeled.)
+- [N8] Node-level addition: label(n6,n8,"No") (reason: The 'No' labels on the transition edges do not appear in the source text. Failure/continuation paths are implied by the conditional logic but not explicitly labeled.)
+- [N9] Node-level addition: label(n11,n13,"No") (reason: The 'No' labels on the transition edges do not appear in the source text. Failure/continuation paths are implied by the conditional logic but not explicitly labeled.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"start the flickr login process") -> action(n2,"provide userdata for flickr") -> action(n3,"is the login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr again after first failure") -> action(n8,"is the login successful after retry") -> branch(b3,XOR) -> action(n9,"end process successful login after retry") -> end(e3)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start the flickr login process") -> action(n2,"provide userdata for flickr") -> action(n3,"is the login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr again after first failure") -> action(n8,"is the login successful after retry") -> branch(b3,XOR) -> action(n10,"do you want to try again after second failure") -> branch(b4,XOR) -> action(n11,"provide userdata for flickr again after second failure") -> action(n13,"is the login successful after third try") -> branch(b5,XOR) -> action(n14,"end process successful login after third try") -> end(e5)
+- [N12] Added trace (model 3): init(i1) -> action(n1,"start the flickr login process") -> action(n2,"provide userdata for flickr") -> action(n3,"is the login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr again after first failure") -> action(n8,"is the login successful after retry") -> branch(b3,XOR) -> action(n10,"do you want to try again after second failure") -> branch(b4,XOR) -> action(n11,"provide userdata for flickr again after second failure") -> action(n13,"is the login successful after third try") -> branch(b5,XOR) -> action(n15,"end process abort after third failure") -> end(e6)
+- [N13] Within matched traces (0->0) added: init(i1)
+- [N14] Within matched traces (1->0) added: init(i1)
+- [N15] Within matched traces (2->0) added: init(i1)
+- [N16] Within matched traces (3->5) added: init(i1)
+- [N17] Within matched traces (3->5) added: action(n3,"is the login successful")
+- [N18] Within matched traces (3->5) added: branch(b1,XOR)
+- [N19] Within matched traces (3->5) added: action(n5,"do you want to try again")
+- [N20] Within matched traces (3->5) added: branch(b2,XOR)
+- [N21] Within matched traces (4->4) added: init(i1)
+- [N22] Within matched traces (4->4) added: action(n3,"is the login successful")
+- [N23] Within matched traces (4->4) added: action(n8,"is the login successful after retry")
+- [N24] Within matched traces (4->4) added: branch(b3,XOR)
+- [N25] Within matched traces (4->4) added: action(n10,"do you want to try again after second failure")
+- [N26] Within matched traces (4->4) added: branch(b4,XOR)
+- [N27] Within matched traces (5->4) added: init(i1)
+- [N28] Within matched traces (5->4) added: action(n3,"is the login successful")
+- [N29] Within matched traces (5->4) added: action(n8,"is the login successful after retry")
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `[]`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v3 = 'Yes'` on `b3 -> n10` uses undefined variable `v3`. | DSL: guard(b1,n5,"v1 = 'Yes'"); guard(b3,n10,"v3 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n15` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v3 = 'Yes'` on `b3 -> n10` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n5,"v1 = 'Yes'"); guard(b3,n10,"v3 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

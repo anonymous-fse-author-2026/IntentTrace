@@ -1,0 +1,7 @@
+- `branch(b1, XOR)`, `guard(b1, n4, v1 = 'Yes')`, `guard(b1, n5, v1 = 'No')`: The model hallucinates conditional branching and a duplicate action node (`n5`). The source text simply states "check if the user has already liked the company and save the action" without specifying alternative paths or choices.
+- `action(n5, "Save action")`: This node has no outgoing precedence edge, creating a dead end that fails to reach the final steps, which contradicts the source progression ("Finally, redirect and the process will come to an end").
+- `action(n1, "start")`, `action(n7, "End")`: These represent hallucinated explicit actions. The source phrases "To begin the process" and "the process will come to an end" signify the process boundaries, which are already handled by `init(i1)` and `end(e1)`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Save action")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Save action")

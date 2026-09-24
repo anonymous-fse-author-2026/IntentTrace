@@ -1,0 +1,142 @@
+Omission
+- [N1] Node-level omission: i7:continue with the process. (reason: The model lacks an action step to represent continuing the process immediately following a good payment history.)
+- [N2] Within matched traces (0->14) omitted: i4:checking their payment history.
+- [N3] Within matched traces (0->14) omitted: i6:If the payment history is good
+- [N4] Within matched traces (0->14) omitted: i7:continue with the process.
+- [N5] Within matched traces (1->1) omitted: i7:continue with the process.
+- [N6] Within matched traces (1->1) omitted: i11:check for product availability.
+- [N7] Within matched traces (1->1) omitted: i16:Simultaneously
+- [N8] Within matched traces (2->2) omitted: i7:continue with the process.
+- [N9] Within matched traces (2->2) omitted: i11:check for product availability.
+- [N10] Within matched traces (2->2) omitted: i16:Simultaneously
+- [N11] Within matched traces (3->3) omitted: i7:continue with the process.
+- [N12] Within matched traces (3->3) omitted: i11:check for product availability.
+- [N13] Within matched traces (3->3) omitted: i16:Simultaneously
+- [N14] Within matched traces (4->10) omitted: i7:continue with the process.
+- [N15] Within matched traces (4->10) omitted: i11:check for product availability.
+- [N16] Within matched traces (4->10) omitted: i16:Simultaneously
+- [N17] Within matched traces (5->11) omitted: i7:continue with the process.
+- [N18] Within matched traces (5->11) omitted: i11:check for product availability.
+- [N19] Within matched traces (5->11) omitted: i16:Simultaneously
+- [N20] Within matched traces (6->12) omitted: i7:continue with the process.
+- [N21] Within matched traces (6->12) omitted: i11:check for product availability.
+- [N22] Within matched traces (6->12) omitted: i16:Simultaneously
+- [N23] Within matched traces (9->15) omitted: i16:Simultaneously
+- [N24] Within matched traces (10->16) omitted: i16:Simultaneously
+- [N25] Within matched traces (11->17) omitted: i16:Simultaneously
+- [N26] Within matched traces (12->24) omitted: i16:Simultaneously
+- [N27] Within matched traces (13->25) omitted: i16:Simultaneously
+- [N28] Within matched traces (14->26) omitted: i16:Simultaneously
+
+Addition
+- [N29] Node-level addition: guard(b2,n6,"v2 == \"No\"") (reason: The model invents a negative path (bad payment history) and an accompanying action to send a declining message that the source text never defines.)
+- [N30] Node-level addition: action(n6,"Send customer declining message") (reason: The model invents a negative path (bad payment history) and an accompanying action to send a declining message that the source text never defines.)
+- [N31] Node-level addition: action(n26,"Continue process") (reason: The model adds a 'Continue process' action after checking reminders, which lacks any corresponding segmented input text.)
+- [N32] Node-level addition: action(n28,"End process after activating donning process") (reason: These explicitly modeled 'End process after...' action steps are entirely invented; the source does not command active execution steps for ending at these specific nodes.)
+- [N33] Node-level addition: action(n29,"End process after closing order") (reason: These explicitly modeled 'End process after...' action steps are entirely invented; the source does not command active execution steps for ending at these specific nodes.)
+- [N34] Node-level addition: action(n30,"End process after continuing process") (reason: These explicitly modeled 'End process after...' action steps are entirely invented; the source does not command active execution steps for ending at these specific nodes.)
+- [N35] Node-level addition: action(n31,"End process after sending declining message to private customer") (reason: These explicitly modeled 'End process after...' action steps are entirely invented; the source does not command active execution steps for ending at these specific nodes.)
+- [N36] Added trace (model 0): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> action(n6,"Send customer declining message") -> converge(c1) -> action(n13,"End process due to no products and decline message") -> end(e1)
+- [N37] Added trace (model 4): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n23,"Close order") -> action(n29,"End process after closing order") -> end(e3)
+- [N38] Added trace (model 5): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n26,"Continue process") -> action(n30,"End process after continuing process") -> end(e4)
+- [N39] Added trace (model 6): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n27,"Activate donning process") -> action(n28,"End process after activating donning process") -> end(e2)
+- [N40] Added trace (model 7): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n23,"Close order") -> action(n29,"End process after closing order") -> end(e3)
+- [N41] Added trace (model 8): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n26,"Continue process") -> action(n30,"End process after continuing process") -> end(e4)
+- [N42] Added trace (model 9): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n3,"Check customer's payment history") -> action(n5,"Is payment history good") -> branch(b2,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n27,"Activate donning process") -> action(n28,"End process after activating donning process") -> end(e2)
+- [N43] Added trace (model 18): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n23,"Close order") -> action(n29,"End process after closing order") -> end(e3)
+- [N44] Added trace (model 19): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n26,"Continue process") -> action(n30,"End process after continuing process") -> end(e4)
+- [N45] Added trace (model 20): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n15,"Inform stock department") -> branch(b8,AND) -> converge(c4) -> action(n18,"Write invoice") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n27,"Activate donning process") -> action(n28,"End process after activating donning process") -> end(e2)
+- [N46] Added trace (model 21): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n23,"Close order") -> action(n29,"End process after closing order") -> end(e3)
+- [N47] Added trace (model 22): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n26,"Continue process") -> action(n30,"End process after continuing process") -> end(e4)
+- [N48] Added trace (model 23): init(i1) -> action(n1,"Start order processing by prioritizing orders based on when received") -> action(n2,"Check if customer exists") -> branch(b1,XOR) -> action(n4,"Verify customer status") -> action(n7,"Is customer a private customer") -> branch(b3,XOR) -> action(n9,"Create new customer") -> action(n10,"Check product availability") -> action(n11,"Are products available") -> branch(b4,XOR) -> converge(c2) -> action(n14,"Continue process and send order confirmation") -> branch(b7,AND) -> action(n16,"Inform accounting department") -> branch(b9,AND) -> converge(c3) -> action(n17,"Packing goods") -> converge(c5) -> action(n19,"Goods ready for delivery and invoice sent") -> action(n20,"Close order") -> action(n21,"Deliver goods and invoice to customer") -> action(n22,"Has payment been received") -> branch(b5,XOR) -> action(n24,"Check quantity of reminders for payment") -> action(n25,"Are reminders less than three") -> branch(b6,XOR) -> action(n27,"Activate donning process") -> action(n28,"End process after activating donning process") -> end(e2)
+- [N49] Within matched traces (0->14) added: action(n7,"Is customer a private customer")
+- [N50] Within matched traces (0->14) added: branch(b3,XOR)
+- [N51] Within matched traces (0->14) added: action(n9,"Create new customer")
+- [N52] Within matched traces (1->1) added: branch(b8,AND)
+- [N53] Within matched traces (1->1) added: converge(c3)
+- [N54] Within matched traces (1->1) added: action(n29,"End process after closing order")
+- [N55] Within matched traces (1->1) added: end(e3)
+- [N56] Within matched traces (2->2) added: branch(b8,AND)
+- [N57] Within matched traces (2->2) added: converge(c3)
+- [N58] Within matched traces (2->2) added: action(n22,"Has payment been received")
+- [N59] Within matched traces (2->2) added: branch(b5,XOR)
+- [N60] Within matched traces (2->2) added: action(n30,"End process after continuing process")
+- [N61] Within matched traces (2->2) added: end(e4)
+- [N62] Within matched traces (3->3) added: branch(b8,AND)
+- [N63] Within matched traces (3->3) added: converge(c3)
+- [N64] Within matched traces (3->3) added: action(n22,"Has payment been received")
+- [N65] Within matched traces (3->3) added: branch(b5,XOR)
+- [N66] Within matched traces (3->3) added: action(n25,"Are reminders less than three")
+- [N67] Within matched traces (3->3) added: action(n28,"End process after activating donning process")
+- [N68] Within matched traces (3->3) added: end(e2)
+- [N69] Within matched traces (4->10) added: branch(b9,AND)
+- [N70] Within matched traces (4->10) added: converge(c4)
+- [N71] Within matched traces (4->10) added: action(n29,"End process after closing order")
+- [N72] Within matched traces (4->10) added: end(e3)
+- [N73] Within matched traces (5->11) added: branch(b9,AND)
+- [N74] Within matched traces (5->11) added: converge(c4)
+- [N75] Within matched traces (5->11) added: action(n22,"Has payment been received")
+- [N76] Within matched traces (5->11) added: branch(b5,XOR)
+- [N77] Within matched traces (5->11) added: action(n30,"End process after continuing process")
+- [N78] Within matched traces (5->11) added: end(e4)
+- [N79] Within matched traces (6->12) added: branch(b9,AND)
+- [N80] Within matched traces (6->12) added: converge(c4)
+- [N81] Within matched traces (6->12) added: action(n22,"Has payment been received")
+- [N82] Within matched traces (6->12) added: branch(b5,XOR)
+- [N83] Within matched traces (6->12) added: action(n25,"Are reminders less than three")
+- [N84] Within matched traces (6->12) added: action(n28,"End process after activating donning process")
+- [N85] Within matched traces (6->12) added: end(e2)
+- [N86] Within matched traces (7->13) added: action(n31,"End process after sending declining message to private customer")
+- [N87] Within matched traces (7->13) added: end(e5)
+- [N88] Within matched traces (8->14) added: action(n7,"Is customer a private customer")
+- [N89] Within matched traces (9->15) added: action(n7,"Is customer a private customer")
+- [N90] Within matched traces (9->15) added: action(n11,"Are products available")
+- [N91] Within matched traces (9->15) added: branch(b8,AND)
+- [N92] Within matched traces (9->15) added: converge(c3)
+- [N93] Within matched traces (9->15) added: action(n29,"End process after closing order")
+- [N94] Within matched traces (9->15) added: end(e3)
+- [N95] Within matched traces (10->16) added: action(n7,"Is customer a private customer")
+- [N96] Within matched traces (10->16) added: action(n11,"Are products available")
+- [N97] Within matched traces (10->16) added: branch(b8,AND)
+- [N98] Within matched traces (10->16) added: converge(c3)
+- [N99] Within matched traces (10->16) added: action(n22,"Has payment been received")
+- [N100] Within matched traces (10->16) added: branch(b5,XOR)
+- [N101] Within matched traces (10->16) added: action(n30,"End process after continuing process")
+- [N102] Within matched traces (10->16) added: end(e4)
+- [N103] Within matched traces (11->17) added: action(n7,"Is customer a private customer")
+- [N104] Within matched traces (11->17) added: action(n11,"Are products available")
+- [N105] Within matched traces (11->17) added: branch(b8,AND)
+- [N106] Within matched traces (11->17) added: converge(c3)
+- [N107] Within matched traces (11->17) added: action(n22,"Has payment been received")
+- [N108] Within matched traces (11->17) added: branch(b5,XOR)
+- [N109] Within matched traces (11->17) added: action(n25,"Are reminders less than three")
+- [N110] Within matched traces (11->17) added: action(n28,"End process after activating donning process")
+- [N111] Within matched traces (11->17) added: end(e2)
+- [N112] Within matched traces (12->24) added: action(n7,"Is customer a private customer")
+- [N113] Within matched traces (12->24) added: action(n11,"Are products available")
+- [N114] Within matched traces (12->24) added: branch(b9,AND)
+- [N115] Within matched traces (12->24) added: converge(c4)
+- [N116] Within matched traces (12->24) added: action(n29,"End process after closing order")
+- [N117] Within matched traces (12->24) added: end(e3)
+- [N118] Within matched traces (13->25) added: action(n7,"Is customer a private customer")
+- [N119] Within matched traces (13->25) added: action(n11,"Are products available")
+- [N120] Within matched traces (13->25) added: branch(b9,AND)
+- [N121] Within matched traces (13->25) added: converge(c4)
+- [N122] Within matched traces (13->25) added: action(n22,"Has payment been received")
+- [N123] Within matched traces (13->25) added: branch(b5,XOR)
+- [N124] Within matched traces (13->25) added: action(n30,"End process after continuing process")
+- [N125] Within matched traces (13->25) added: end(e4)
+- [N126] Within matched traces (14->26) added: action(n7,"Is customer a private customer")
+- [N127] Within matched traces (14->26) added: action(n11,"Are products available")
+- [N128] Within matched traces (14->26) added: branch(b9,AND)
+- [N129] Within matched traces (14->26) added: converge(c4)
+- [N130] Within matched traces (14->26) added: action(n22,"Has payment been received")
+- [N131] Within matched traces (14->26) added: branch(b5,XOR)
+- [N132] Within matched traces (14->26) added: action(n25,"Are reminders less than three")
+- [N133] Within matched traces (14->26) added: action(n28,"End process after activating donning process")
+- [N134] Within matched traces (14->26) added: end(e2)
+
+Mutation
+- [N135] Node-level mutation: element=action(n2,"Check if customer exists"); source=i2:check the customer's information.; reason=The element changes the strict instruction 'check the customer's information' into 'Check if customer exists', substituting the action with what should be its outcome condition.
+- [N136] Node-level mutation: element=action(n20,"Close order"); source=i22:Once the order is closed,; reason=The source specifies a temporal condition/state ('Once the order is closed'), but the model transforms it into an active execution step ('Close order') occurring before delivery.
+- [N137] Node-level mutation: element=action(n24,"Check quantity of reminders for payment"); source=i26:check the quantity of reminders; reason=The model invents and adds the qualifier 'for payment' which is absent from the strict source text.

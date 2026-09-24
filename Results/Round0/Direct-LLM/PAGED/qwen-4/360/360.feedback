@@ -1,0 +1,8 @@
+- `defines(v1, "is the input a URN", {})` and `defines(v2, "is the input a URN or URL", {})`: Ranges are empty `{}`, failing to reflect the expected categorical values ("URN", "URL") required by the source checks, violating SMC6.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to define routing conditions. The source explicitly directs flow based on input type ("If it is...", "If the input is..."), but the model omits the conditions needed to execute this exclusive choice logic, violating SMC4.
+- `action(n2, "is the input a URN")` and `action(n5, "is the input a URN or URL")`: Conditional evaluation points are incorrectly modeled as executable `action` nodes preceding branches, rather than being implemented as guard conditions on the branches themselves, distorting the intended control-flow structure, violating SMC4.
+- `action(n10, "link to designated DS using URLs")` and `action(n11, "link to designated DS")`: The source describes a single concluding linkage step ("which we then use to link to a designated DS. Finally, we link to the designated DS"), but the model duplicates it into two sequential actions, hallucinating extra behavior, violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

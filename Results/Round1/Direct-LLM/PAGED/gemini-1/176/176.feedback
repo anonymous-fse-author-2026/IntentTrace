@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i6:the eligibility of the applicant is assessed. (reason: This action is only implemented as a mutated question, meaning the exact literal action of 'assessing' eligibility is not faithfully covered by any element.)
+- [N2] Node-level omission: i9:If the applicant is not eligible (reason: The condition is only implemented by a mutated guard with invented variables ('v1 = No'), leaving the actual source condition unrepresented.)
+- [N3] Within matched traces (0->2) omitted: i13:Once the acceptance pack is sent, the process ends.
+- [N4] Within matched traces (1->3) omitted: i11:If the application is rejected, the loan application process ends.
+- [N5] Within matched traces (2->2) omitted: i13:Once the acceptance pack is sent, the process ends.
+- [N6] Within matched traces (3->3) omitted: i11:If the application is rejected, the loan application process ends.
+
+Addition
+- [N7] Added trace (model 0): init(i1) -> action(n2,"Receive loan application") -> branch(b2,AND) -> action(n3,"Assess loan risk") -> converge(c1) -> action(n5,"Is applicant eligible?") -> branch(b1,XOR) -> action(n6,"Prepare acceptance pack") -> action(n7,"Send acceptance pack") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n2,"Receive loan application") -> branch(b2,AND) -> action(n3,"Assess loan risk") -> converge(c1) -> action(n5,"Is applicant eligible?") -> branch(b1,XOR) -> action(n8,"Reject application") -> end(e2)
+- [N9] Within matched traces (0->2) added: action(n4,"Check credit history")
+- [N10] Within matched traces (1->3) added: action(n4,"Check credit history")
+
+Mutation
+- [N11] Node-level mutation: element=action(n5,"Is applicant eligible?"); source=i6:the eligibility of the applicant is assessed.; reason=The source describes the active process of 'assessing' eligibility, but the model turns it into a boolean question ('Is applicant eligible?'), changing the instruction type.
+- [N12] Node-level mutation: element=label(b2,n3,"Assess Risk"); source=i3:assessing the loan risk; reason=The label 'Assess Risk' drops the specific qualifier 'loan' that is present in the source text.
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i7:If the applicant is eligible; reason=The guard introduces an invented variable 'v1' and a specific string value 'Yes' that do not exist in the source text.
+- [N14] Node-level mutation: element=guard(b1,n8,"v1 = 'No'"); source=i9:If the applicant is not eligible; reason=The guard introduces an invented variable 'v1' and a specific string value 'No' that do not exist in the source text.

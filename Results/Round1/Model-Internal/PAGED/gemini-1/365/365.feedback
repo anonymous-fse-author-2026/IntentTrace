@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i9:if the passenger is denied permission, they should leave the area (reason: While an action for leaving exists, the explicit conditional phrasing for this step is unfulfilled by any correct element (only handled by structurally reversed/mutated guards).)
+- [N2] Node-level omission: i11:If the exit control check outcome is unsuccessful, the passenger should leave the area (reason: This redundant specific condition is entirely unmodeled and omitted from the logic.)
+- [N3] Within matched traces (0->0) omitted: i9:if the passenger is denied permission, they should leave the area
+- [N4] Within matched traces (0->0) omitted: i11:If the exit control check outcome is unsuccessful, the passenger should leave the area
+- [N5] Within matched traces (1->1) omitted: i13:the process ends
+- [N6] Within matched traces (2->2) omitted: i9:if the passenger is denied permission, they should leave the area
+- [N7] Within matched traces (2->2) omitted: i11:If the exit control check outcome is unsuccessful, the passenger should leave the area
+- [N8] Within matched traces (3->3) omitted: i13:the process ends
+
+Addition
+- [N9] Node-level addition: label(n4,n6,"Yes") (reason: The model invents 'Yes' labels on sequential flow transitions between check steps, which lack any source support.)
+- [N10] Node-level addition: label(n5,n10,"Yes") (reason: The model invents 'Yes' labels on sequential flow transitions between check steps, which lack any source support.)
+- [N11] Node-level addition: action(n9,"End of successful process") (reason: The model creates steps for 'End of successful process', but the condition/phrase 'successful process' does not exist in any provided input element.)
+- [N12] Node-level addition: action(n13,"End of successful process") (reason: The model creates steps for 'End of successful process', but the condition/phrase 'successful process' does not exist in any provided input element.)
+- [N13] Within matched traces (1->1) added: action(n6,"Is permission denied after biometric check?")
+- [N14] Within matched traces (1->1) added: branch(b2,XOR)
+- [N15] Within matched traces (1->1) added: action(n9,"End of successful process")
+- [N16] Within matched traces (1->1) added: end(e2)
+- [N17] Within matched traces (3->3) added: action(n10,"Is permission denied after ID document check?")
+- [N18] Within matched traces (3->3) added: branch(b3,XOR)
+- [N19] Within matched traces (3->3) added: action(n13,"End of successful process")
+- [N20] Within matched traces (3->3) added: end(e4)
+
+Mutation
+- [N21] Node-level mutation: element=action(n6,"Is permission denied after biometric check?") -> action(n10,"Is permission denied after ID document check?"); source=i8:After the exit control checks, if the passenger is denied permission; reason=The model splits and alters the granularity of the unified condition from the source text, inventing separate, specific check steps ('after biometric check' and 'after ID document check') instead of maintaining the original structure.
+- [N22] Node-level mutation: element=guard(b2,n7,"v2 = 'No'") -> guard(b3,n11,"v3 = 'No'") -> guard(b2,n8,"v2 = 'Yes'") -> guard(b3,n12,"v3 = 'Yes'"); source=i8:After the exit control checks, if the passenger is denied permission; reason=The guards completely reverse the logic of the source text. They route to 'Leave the area' when 'Is permission denied?' is evaluated to 'No', and route to 'Proceed' when evaluated to 'Yes'.

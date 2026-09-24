@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: Input element i1 is not faithfully implemented; its sole textual candidate (action:n1) distorts the instruction. Per strict audit rules, i1 remains uncovered.)
+- [N2] Node-level omission: i2:If the amount is less than 200 € (reason: Input element i2 is not faithfully implemented; its sole textual candidate (action:n2) alters the currency unit. Per strict audit rules, i2 remains uncovered.)
+- [N3] Within matched traces (1->1) omitted: i4:However, if the amount is 200 € or more, we evaluate the expense report.
+- [N4] Within matched traces (2->3) omitted: i4:However, if the amount is 200 € or more, we evaluate the expense report.
+
+Addition
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start verifying account") -> action(n2,"Is the amount less than 200 euros") -> branch(b1,XOR) -> action(n4,"Evaluate the expense report") -> action(n5,"Is the expense report acceptable") -> branch(b2,XOR) -> converge(c1) -> action(n7,"End process") -> end(e1)
+- [N6] Within matched traces (0->0) added: converge(c1)
+- [N7] Within matched traces (0->0) added: action(n7,"End process")
+- [N8] Within matched traces (0->0) added: end(e1)
+- [N9] Within matched traces (1->1) added: action(n2,"Is the amount less than 200 euros")
+- [N10] Within matched traces (1->1) added: branch(b1,XOR)
+- [N11] Within matched traces (1->1) added: action(n4,"Evaluate the expense report")
+- [N12] Within matched traces (2->3) added: action(n2,"Is the amount less than 200 euros")
+- [N13] Within matched traces (2->3) added: branch(b1,XOR)
+- [N14] Within matched traces (2->3) added: action(n4,"Evaluate the expense report")
+- [N15] Within matched traces (2->3) added: action(n5,"Is the expense report acceptable")
+- [N16] Within matched traces (2->3) added: branch(b2,XOR)
+
+Mutation
+- [N17] Node-level mutation: element=action(n1,"start verifying account"); source=i1:To check the account, we start by verifying the amount.; reason=Content 'start verifying account' drops the critical target 'the amount' and incorrectly shifts focus to 'account', altering the instructed verification task.
+- [N18] Node-level mutation: element=action(n2,"Is the amount less than 200 euros"); source=i2:If the amount is less than 200 €; reason=Content 'Is the amount less than 200 euros' changes the explicit currency unit notation from the euro sign (€) to the spelled-out word 'euros', violating the exact source data format.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=False].

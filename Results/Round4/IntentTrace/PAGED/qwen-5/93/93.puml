@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:receive form;
+:is form complete;
+:v1: is form complete ({needs to be sent back, need to check the income}); <<objectSignal>>
+if () then ([v1 = 'needs to be sent back'])
+:send back form;
+:end process;
+stop
+else ([v1 = 'need to check the income'])
+:check income;
+:check deductibles and house;
+:is declaration needed;
+:v2: is declaration needed ({need to check the declaration, need to invite the declarant}); <<objectSignal>>
+if () then ([v2 = 'need to check the declaration'])
+:end process;
+stop
+else ([v2 = 'need to invite the declarant'])
+:invite declarant;
+:end process;
+stop
+endif
+endif
+@enduml

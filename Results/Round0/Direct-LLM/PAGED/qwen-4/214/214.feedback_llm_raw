@@ -1,0 +1,8 @@
+
+
+- `action(n8)` and `precedence(b3, n8)`: Forms a dead-end path contradicting the source requirement "If the genre is missing, we should continue the process", as no outgoing precedence exists to advance control flow (violates SMC4, SMC5).
+- `action(n10)` and `precedence(b4, n10)`: Forms a dead-end path contradicting the source requirement regarding additional genres, as the model halts execution without routing to subsequent steps (violates SMC4, SMC5).
+- `defines(v2, ...)` and `defines(v3, ...)`: Embeds procedural instructions (`"No  continue"`, `"No  check next"`) inside value ranges instead of defining clean decision domains, failing to faithfully represent the source's binary checks (violates SMC6).
+- `guard(b5, n14, v5 = 'No')` and `action(n14, "end: no additional samples")`: Incorrectly uses variable `v5` ("is the sample missing?") to evaluate the termination condition, conflating it with the distinct source concept "if there are no additional samples, the process ends" (violates SMC4, SMC6).
+- `label(n3, c1, "No  continue")`: Attaches a contradictory label to the edge following successful data capture, misrepresenting the semantic meaning of the transition and node payload (violates SMC2).
+- `guard(b2, c1, v2 = 'No  continue')` and `guard(b3, n9, v3 = 'No  check next')`: Reference non-atomic, instruction-laden range values as guard conditions instead of standard decision outcomes, reinforcing the SMC6 violation.

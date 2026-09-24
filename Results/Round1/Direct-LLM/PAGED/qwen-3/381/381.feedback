@@ -1,0 +1,11 @@
+Omission
+- [N1] Node-level omission: i7:If a code is available, the process will end along with the hotel reservation. (reason: The source mandates handling a 'hotel reservation' alongside the process ending when a code is available, but no element in the model implements this step.)
+
+Addition
+- [N2] Added trace (model 0): init(i1) -> action(n2,"choose your destination and calculate the distance") -> action(n3,"check if you need to book a train or a flight") -> branch(b1,XOR) -> action(n4,"book a train") -> converge(c1) -> action(n6,"check if code is available within 24 hours") -> branch(b2,XOR) -> end(e1)
+- [N3] Added trace (model 3): init(i1) -> action(n2,"choose your destination and calculate the distance") -> action(n3,"check if you need to book a train or a flight") -> branch(b1,XOR) -> action(n5,"book a flight") -> converge(c1) -> action(n6,"check if code is available within 24 hours") -> branch(b2,XOR) -> end(e1)
+- [N4] Within matched traces (2->2) added: action(n10,"check if code is available")
+- [N5] Within matched traces (3->5) added: action(n10,"check if code is available")
+
+Mutation
+- [N6] Node-level mutation: element=guard(b2,n8,"v2 = \"unavailable\""); source=i6:Otherwise, if 24 hours have passed, you should call a travel agency.; reason=The guard evaluates 'v2 = "unavailable"' instead of the source's explicit time condition '24 hours have passed', altering the decision logic from duration-based to state-based.

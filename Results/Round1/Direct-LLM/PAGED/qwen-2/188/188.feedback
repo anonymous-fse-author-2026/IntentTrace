@@ -1,0 +1,20 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Check Banking Privilege Status") -> branch(b1,XOR) -> action(n5,"Error Message") -> end(e1)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Check Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Check fulfillment of loan conditions") -> branch(b2,XOR) -> action(n8,"Error Message") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Check Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Check fulfillment of loan conditions") -> branch(b2,XOR) -> action(n9,"Calculate threshold amount") -> action(n10,"Check Creditworthiness") -> branch(b3,XOR) -> end(e4)
+- [N4] Within matched traces (0->2) added: init(i1)
+- [N5] Within matched traces (0->2) added: branch(b1,XOR)
+- [N6] Within matched traces (0->2) added: branch(b2,XOR)
+- [N7] Within matched traces (0->2) added: branch(b3,XOR)
+- [N8] Within matched traces (0->2) added: branch(b4,XOR)
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'") -> guard(b1,n6,"v1 = 'No'"); source=If there is a "Construct Error Response"; reason=The model substitutes the explicit string condition with generic boolean placeholders (v1 = 'Yes'/v1 = 'No'), altering the original logic and values.
+- [N10] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'") -> guard(b2,n9,"v2 = 'No'"); source=If there is a "Construct Error Response"; reason=Replaces the specific error response condition with abstracted boolean guards (v2 = 'Yes'/v2 = 'No'), losing the source payload.
+- [N11] Node-level mutation: element=guard(b3,n11,"v3 = 'Yes'") -> guard(b3,e4,"v3 = 'No'"); source=If there is a "Check Creditworthiness"; reason=Swaps the creditworthiness evaluation condition for placeholder boolean values (v3 = 'Yes'/v3 = 'No'), mutating the decision criteria.
+- [N12] Node-level mutation: element=guard(b4,n14,"v4 = 'Yes'") -> guard(b4,n15,"v4 = 'No'"); source=If there is a "Construct Approve Response" ... Otherwise, if there is a "Construct Reject Response"; reason=Uses generic true/false flags (v4 = 'Yes'/v4 = 'No') instead of modeling the distinct approve vs. reject response conditions specified in the text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=1 and out=0. | DSL: action(n14,"Approved Message")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e3 | DSL: end(e3)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n14 | DSL: action(n14,"Approved Message")

@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:Ensure Freights are ready to be shipped;
+:Ship Freight;
+:Deliver Freight and Notify Delivery;
+:v_cond: Event Trigger ({Return, Invoice, Claim}); <<objectSignal>>
+fork
+if () then ([v_cond = 'Return'])
+:Process Merchandise Return Request;
+:v1: Return Decision ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v1 = 'Accepted'])
+:Accept Merchandise Return;
+:Proceed with Returning Merchandise;
+stop
+else ([v1 = 'Rejected'])
+:Reject Merchandise Return;
+stop
+endif
+endif
+fork again
+if () then ([v_cond = 'Invoice'] 5 days have passed)
+:Invoice the Customer;
+stop
+endif
+fork again
+if () then ([v_cond = 'Claim'] Loss Claim Lodged)
+:Approve Loss Claim and End Process;
+stop
+endif
+end fork
+@enduml

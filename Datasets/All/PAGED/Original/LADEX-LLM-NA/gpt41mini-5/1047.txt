@@ -1,0 +1,45 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"Start Rental Items Return Process","start","","","",""
+2,"Items returned to the store or picked up by delivery crew","condition","1","","",""
+3,"Customer returns the items to the store","entity","2","","",""
+4,"Delivery crew picks up items at event site","entity","2","","",""
+5,"Count items and compare to original contract","entity","3,4","","",""
+6,"Order is complete and all items were returned","condition","5","","",""
+7,"Order is incomplete and items are missing","condition","5","","",""
+8,"Order is complete but items are damaged","condition","5","","",""
+9,"Email customer about damage and additional charges","entity","8","","",""
+10,"Items packed for existing order or stored for future orders","condition","6,7,9","","",""
+11,"Items packed for existing order","entity","10","","",""
+12,"Items stored for future orders","entity","10","","",""
+13,"Email customer for missing items and replacement charges","entity","7","","",""
+14,"Take damaged items out of inventory temporarily","entity","8","","",""
+15,"Customer returns missing items","condition","13","","",""
+16,"Customer returns the missing items","entity","15","","",""
+17,"Customer does not return missing items","entity","15","","",""
+18,"Items repaired and added into inventory or discarded","condition","14,16,17","","",""
+19,"Items are repaired and added into inventory","entity","18","","",""
+20,"Items can't be repaired and are discarded","entity","18","","",""
+21,"Email customer with replacement charges due to discarded items","entity","20","","",""
+22,"Items packed for existing order or stored for future orders again","condition","19,21","","",""
+23,"Items are packed for an existing order","entity","22","","",""
+24,"Items are stored for future orders","entity","22","","",""
+25,"Email customer with replacement charges","entity","7,21","","",""
+26,"End","end","11,12,13,16,17,23,24,25","","",""

@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates a step. Source text states "the process begins by entering expenses," with no preceding activity.
+- `defines(v1, "Approval Check 1", {})` and `defines(v2, "Approval Check 2", {})`: Ranges are empty, failing to represent the source's binary decision space ("approved or disapproved").
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements on all outgoing edges. The source explicitly defines conditional routing ("If the request is not approved...", "...if the request is approved..."), which requires guards to faithfully implement the control-flow logic.
+- `precedence(b2, n7)`: Skips a required payout step. Source text specifies that after the second check, "if it is approved, the expenses can be paid out. Finally, after the expenses are paid out, the process comes to an end," but the model routes directly from the branch to the end action.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=3 and out=1. | DSL: action(n2,"Enter Expenses")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n2` has 0 guards; exactly one is required.

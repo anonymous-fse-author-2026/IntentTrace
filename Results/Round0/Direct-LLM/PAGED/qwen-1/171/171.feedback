@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinated step; the description explicitly states the process "begins by entering expenses" with no preceding initialization phase. (SMC1)
+- `action(n5, "enter expenses")` and `action(n8, "enter expenses")`: Dead-end nodes with no outgoing `precedence` edges; they fail to implement the described feedback loops ("goes back to entering expenses") and incorrectly duplicate the initial entry step instead of directing control flow back to `n2` or a `converge` node. (SMC3, SMC4)
+- `action(n10, "End")`: Hallucinated step; the description states the process "comes to an end", which is already correctly terminated by `end(e1)` without needing an intermediate terminal action. (SMC1, SMC2)
+- `defines(v1, "is request approved?", {"No", "Yes"})` and `defines(v2, "is request approved?", {"No", "Yes"})`: Redundant duplication of the same decision variable; the source describes a single approval criterion evaluated at two distinct checkpoints, which should be modeled with one variable reused across both `guard` statements. (SMC6)
+- `action(n4, "is request approved?")` and `action(n7, "is request approved?")`: Misrepresented payload; the source describes these as decision checkpoints governing exclusive paths, which is semantically captured by the subsequent `branch` elements, making these action nodes redundant and conflating activities with gateways. (SMC2, SMC4)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"enter expenses"); action(n8,"enter expenses")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"enter expenses"); action(n8,"enter expenses")

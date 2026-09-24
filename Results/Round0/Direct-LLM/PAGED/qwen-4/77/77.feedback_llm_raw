@@ -1,0 +1,9 @@
+
+
+- `action(n7)`, `action(n9)`, `action(n11)`, `action(n13)`, `action(n15)`, `action(n18)`: Have no outgoing precedence edges and do not connect to an `end` node, creating dead ends that omit the continuous workflow progression described in the source (SMC1, SMC5).
+- `defines(v1,...,{})`, `defines(v2,...,{})`, `defines(v6,...,{})`, `defines(v7,...,{})`, `defines(v8,...,{})`: Declare decision variables with empty ranges `{}`, failing to capture the evaluation options (e.g., "NOT OK" vs "okay") required by the source conditions (SMC6).
+- `branch(b1,...)`, `branch(b2,...)`, `branch(b4,...)`, `branch(b6,...)`, `branch(b7,...)`, `branch(b8,...)`: Lack `guard` definitions, incorrectly modeling conditional steps like `"If the process model is 'NOT OK'"` as arbitrary non-deterministic splits rather than data-driven decisions (SMC4).
+- `guard(b3, n12, v3 = 'Yes No')`: Routes the `"are there any issues?"` condition to `action(n12)` (`"need to check the process..."`), whereas the source states `"If there are any issues, fix them..."`, which should route to `action(n11)`; the conditional logic is misassigned (SMC4).
+- `defines(v3,...,{"Yes No"})`, `defines(v5,...,{"OK NOT OK"})`: Define value sets as unsplit strings instead of discrete comma-separated values, conflating distinct decision outcomes implied by phrases like `"If there are any issues"` (SMC6).
+- `end(e1)`, `end(e2)`, `end(e3)`: Introduce three disjoint termination points, conflicting with the source's singular conclusion: `"Finally, present the project and the process will come to an end"` (SMC5).
+- `actor(a_default,...)`: Assigns every node to a single generic participant, ignoring the source's explicit references to distributed responsibilities: `"assign roles in the team"` and `"perform work according to your assigned role"` (SMC7).

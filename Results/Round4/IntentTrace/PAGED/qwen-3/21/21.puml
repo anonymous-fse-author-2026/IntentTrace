@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:supply the requirement;
+:document the requirement;
+:v1: How was the order received? ({via fax, via mail or phone}); <<objectSignal>>
+if () then ([v1 = 'via fax'])
+:input the order into Excel file;
+else ([v1 = 'via mail or phone'])
+:input the order into Excel file;
+endif
+:Excel list;
+:send the Excel list to the student;
+:type the orders into the MS-Access database;
+:MS-Access database;
+:ensure that database input is completed;
+split
+:control the incoming order;
+split again
+:continue to do the check;
+end split
+:is the order correct?;
+:v2: is the order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:release the order;
+:send the Excel list to the student;
+:continue with the process;
+:is the order worth less than 5.000 €?;
+:v3: is the order worth less than 5.000 €? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:release the order;
+else ([v3 = 'No'])
+:send the order for sign off and continue with the check;
+:upon receiving the actual issue;
+:order signed off;
+:contact the client;
+:release the order;
+endif
+:v_issue: issue resolution ({cannot be solved, can be solved}); <<objectSignal>>
+if () then ([v_issue = 'cannot be solved'])
+:cancel the order;
+else ([v_issue = 'can be solved'])
+:release the order;
+endif
+:order received by PPC;
+:PPC initiate production;
+:goods will be produced;
+:v_cancel: does the order need to be cancelled? ({Yes, No}); <<objectSignal>>
+if () then ([v_cancel = 'Yes'])
+:If the order needs to be cancelled, the process ends;
+stop
+else ([v_cancel = 'No'])
+:check the quality of the goods;
+:create and send quality report to the finance department;
+:release the order via memo;
+:ensure that the memo is achieved in the warehouse;
+:send the invoice;
+:report the achievement to the finance department;
+split
+:commission the goods;
+split again
+:sign and send the memo;
+:send the goods;
+:ensure that the signed memo is achieved in the logistic department;
+:archive the memo;
+end split
+:close the order;
+:This marks the end of the process;
+stop
+endif
+else ([v2 = 'No'])
+:contact the selling agency;
+endif
+@enduml

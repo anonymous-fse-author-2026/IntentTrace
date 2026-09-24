@@ -1,0 +1,238 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "n_wake",
+      "type": "action",
+      "content": "wake up"
+    },
+    {
+      "id": "b_first",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_shower1",
+      "type": "action",
+      "content": "take a shower"
+    },
+    {
+      "id": "n_breakfast1",
+      "type": "action",
+      "content": "have breakfast"
+    },
+    {
+      "id": "c_merge1",
+      "type": "converge"
+    },
+    {
+      "id": "b_second",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_third",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_shower2",
+      "type": "action",
+      "content": "take a shower"
+    },
+    {
+      "id": "c_merge2",
+      "type": "converge"
+    },
+    {
+      "id": "c_merge3",
+      "type": "converge"
+    },
+    {
+      "id": "n_bus",
+      "type": "action",
+      "content": "get on the bus"
+    },
+    {
+      "id": "e_finish",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_hungry",
+      "name": "Are you hungry?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_still_hungry",
+      "name": "Are you still hungry?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "n_wake",
+        "b_first",
+        "n_shower1",
+        "n_breakfast1",
+        "c_merge1",
+        "b_second",
+        "b_third",
+        "n_shower2",
+        "c_merge2",
+        "c_merge3",
+        "n_bus",
+        "e_finish"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "n_wake"
+    },
+    {
+      "type": "precedence",
+      "A": "n_wake",
+      "B": "b_first"
+    },
+    {
+      "type": "precedence",
+      "A": "b_first",
+      "B": "n_shower1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_first",
+      "B": "c_merge1"
+    },
+    {
+      "type": "precedence",
+      "A": "n_shower1",
+      "B": "b_second"
+    },
+    {
+      "type": "precedence",
+      "A": "b_second",
+      "B": "c_merge2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_second",
+      "B": "c_merge1"
+    },
+    {
+      "type": "precedence",
+      "A": "c_merge1",
+      "B": "n_breakfast1"
+    },
+    {
+      "type": "precedence",
+      "A": "n_breakfast1",
+      "B": "b_third"
+    },
+    {
+      "type": "precedence",
+      "A": "b_third",
+      "B": "c_merge2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_third",
+      "B": "c_merge3"
+    },
+    {
+      "type": "precedence",
+      "A": "c_merge2",
+      "B": "n_shower2"
+    },
+    {
+      "type": "precedence",
+      "A": "n_shower2",
+      "B": "c_merge3"
+    },
+    {
+      "type": "precedence",
+      "A": "c_merge3",
+      "B": "n_bus"
+    },
+    {
+      "type": "precedence",
+      "A": "n_bus",
+      "B": "e_finish"
+    },
+    {
+      "type": "guard",
+      "A": "b_first",
+      "B": "n_shower1",
+      "condition": "v_hungry = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_first",
+      "B": "c_merge1",
+      "condition": "v_hungry = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_second",
+      "B": "c_merge2",
+      "condition": "v_still_hungry = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_second",
+      "B": "c_merge1",
+      "condition": "v_still_hungry = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_third",
+      "B": "c_merge2",
+      "condition": "v_still_hungry = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_third",
+      "B": "c_merge3",
+      "condition": "v_still_hungry = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "At the start, wake up."
+    },
+    {
+      "id": "i2",
+      "content": "If you are not hungry, take a shower."
+    },
+    {
+      "id": "i3",
+      "content": "Otherwise, have breakfast."
+    },
+    {
+      "id": "i4",
+      "content": "If you are still not hungry, take a shower."
+    },
+    {
+      "id": "i5",
+      "content": "After that, get on the bus and the process will be complete."
+    }
+  ]
+}

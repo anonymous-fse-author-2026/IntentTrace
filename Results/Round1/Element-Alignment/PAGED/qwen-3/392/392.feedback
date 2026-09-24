@@ -1,0 +1,11 @@
+Addition
+- [N1] Node-level addition: guard(b3,e4,"v3 = false") (reason: Defines a false/else path for the Manual Task branch, but the source text provides no instruction or outcome for when a Manual Task is absent.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e4)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e4)
+- [N4] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N5] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N6] Within matched traces (2->4) added: branch(b1,XOR)
+- [N7] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b2,n6,"v2 = false"); source=i6:However, if it is "Service Task 3", then the process will come to an end.; reason=The source explicitly binds the termination path to 'Service Task 3', but the guard uses a generic boolean false ('v2 = false'), dropping the specific condition/value required by the text.

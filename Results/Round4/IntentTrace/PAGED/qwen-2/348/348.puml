@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_proc| Process Actor
+|a_proc|
+start
+:Bill for Purchased Goods/Services and Receive Invoice;
+split
+:Check Invoice Completeness;
+:v_comp: Invoice Complete? ({Yes, No}); <<objectSignal>>
+if () then ([v_comp = 'No'])
+:Return Invoice (Incomplete);
+stop
+else ([v_comp = 'Yes'])
+:Check Invoice Compliance;
+:v_comp2: Invoice Compliant? ({Compliant, Non-Compliant}); <<objectSignal>>
+if () then ([v_comp2 = 'Non-Compliant'])
+:Conduct Further Checks;
+:v_res: Resolution Method ({Phone, Mail}); <<objectSignal>>
+if () then ([v_res = 'Phone'])
+:Resolve via Phone Call;
+else ([v_res = 'Mail'])
+:Return Invoice via Mail;
+endif
+else ([v_comp2 = 'Compliant'])
+->;
+endif
+:Pay Invoice and Resolve Returned Issues;
+stop
+endif
+split again
+:Bill Client;
+:v_resp: Client Response? ({No Response, Response}); <<objectSignal>>
+if () then ([v_resp = 'No Response'])
+:Wait 10 Days;
+:Send Reminder and End;
+stop
+else ([v_resp = 'Response'])
+:Check Client Satisfaction;
+:v_sat: Client Satisfied? ({Satisfied, Unsatisfied}); <<objectSignal>>
+if () then ([v_sat = 'Unsatisfied'])
+:Resolve Payment Discrepancy;
+stop
+else ([v_sat = 'Satisfied'])
+:Continue Process;
+:Notify Client of Payment;
+stop
+endif
+endif
+end split
+@enduml

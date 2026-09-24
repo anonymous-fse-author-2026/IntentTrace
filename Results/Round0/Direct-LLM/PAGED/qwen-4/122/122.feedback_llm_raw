@@ -1,0 +1,7 @@
+
+
+- `defines(v1, "Is input a URN or URL?", {})`: The value range is defined as an empty set `{}`, contradicting the source text which explicitly identifies the possible inputs as "URN" and "URL".
+- `branch(b1, XOR)` (missing `guard`): The model provides no `guard` statements on the outgoing edges of `b1` to route execution based on the input type, failing to operationalize the source logic: "If it is [a URN], we proceed... If the input is a 'URL', we simply continue".
+- `label(n1, n2, "Yes No")`: The label is incorrectly attached to the edge from `action(n1, "start")` to `action(n2, "Is input a URN or URL?")`; decision outcome tags must label the outgoing edges of `branch(b1)`, not an edge preceding the decision.
+- `action(n2, "Is input a URN or URL?")`: The source describes a single evaluative checkpoint ("we start by checking if the input is a 'URN'"), not a procedural step followed by a split; modeling the check as an `action` node sequentially preceding `branch(b1)` misrepresents the decision point as a task and distorts the control-flow structure.
+- Omitted behavior: The model contains only one decision point, completely omitting the explicit subsequent step documented in the text: "After this, we again check if the input is a 'URN' or a 'URL' and take the corresponding action."

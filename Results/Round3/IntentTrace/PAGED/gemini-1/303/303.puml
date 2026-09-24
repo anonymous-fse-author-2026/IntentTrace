@@ -1,0 +1,94 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the process;
+:begin by supplying the requirement;
+:and then documenting it;
+:v1: received method ({fax, mail or phone}); <<objectSignal>>
+if () then ([v1 = 'fax'])
+:If the order is received via fax,;
+:via fax;
+else ([v1 = 'mail or phone'])
+:If the order is received via mail or phone;
+:via mail or phone;
+endif
+:input the order into an Excel file.;
+:Once the Excel list is complete after a week, send it to the student.;
+:type the orders into the MS-Access database;
+:After typing the orders into the database, ensure that it is completed.;
+split
+:control the incoming order.;
+split again
+:At the same time, continue to do the check.;
+end split
+:v2: evaluate order ({correct, incorrect, less than 5000, more than 5000}); <<objectSignal>>
+switch ()
+case ([v2 = 'correct'])
+:If the order is correct;
+:is correct;
+:release it;
+:v2: evaluate order ({correct, incorrect, less than 5000, more than 5000}); <<objectSignal>>
+switch ()
+case ([v2 = 'incorrect'])
+stop
+case ([v2 = 'more than 5000'])
+stop
+case ([v2 = 'correct'])
+:Send the Excel list to the student;
+:and upon receiving it, continue with the process.;
+case ([v2 = 'less than 5000'])
+endswitch
+case ([v2 = 'incorrect'])
+:if the order is incorrect;
+:is incorrect;
+:contact the selling agency;
+:v4: issue solved ({no, yes}); <<objectSignal>>
+if () then ([v4 = 'no'])
+:If the issue cannot be solved;
+:cannot be solved;
+:cancel the order.;
+else ([v4 = 'yes'])
+:If the issue can be solved;
+:can be solved;
+:release the order.;
+:Once the order is received by PPC;
+:Once the order is received by PPC, they will initiate production.;
+:After PPC initiates production, the goods will be produced.;
+endif
+:v5: evaluate cancellation ({yes, no}); <<objectSignal>>
+if () then ([v5 = 'yes'])
+:If the order needs to be cancelled;
+:needs to be cancelled;
+:the process ends.;
+stop
+else ([v5 = 'no'])
+:If not;
+:check the quality of the goods.;
+:create and send a quality report to the finance department.;
+split
+:Release the order via memo;
+:and ensure that the memo is achieved in the warehouse.;
+split again
+:Send the invoice;
+:report the achievement to the finance department.;
+split again
+:At the same time, commission the goods and sign and send the memo.;
+:Also, send the goods and ensure that the signed memo is achieved in the logistic department.;
+end split
+:Finally, archive the memo and close the order.;
+:This marks the end of the process.;
+stop
+endif
+case ([v2 = 'less than 5000'])
+:If the order is worth less than 5.000 €;
+:worth less than 5.000 €;
+case ([v2 = 'more than 5000'])
+:If the order is worth more than 5.000 €;
+:worth more than 5.000 €;
+:send it for sign off and continue with the check.;
+:Contact the selling agency and upon receiving the actual issue, send the order for sign off.;
+:Once the order is signed off, contact the client and release the order.;
+endswitch
+@enduml

@@ -1,0 +1,10 @@
+- `action(n1, "start")`: Hallucinated behavior; the description begins directly with "request information about the organization" without an initial "start" step.
+- `action(n6, "End process - Potential client")`, `action(n9, "End process - Target reached")`, `action(n10, "End process - Dissatisfied or other reason")`: Hallucinated steps; the source simply states that "the process will come to an end" without defining these as distinct actions before termination.
+- `action(n4, "Is the customer in Intake stage?")`, `action(n8, "Has target been reached?")`: Misrepresented as executable actions; the source presents these as decision conditions governing the subsequent branches, not as independent process steps.
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Missing `guard()` statements to encode the documented routing criteria ("Intake" stage vs. "Potential client", and "target has been reached" vs. "dissatisfied"), omitting essential choice logic.
+- `defines(v1, "Is the customer in Intake stage?", {})`, `defines(v2, "Has target been reached?", {})`: Value ranges are declared as empty `{}`, failing to faithfully represent the possible decision values implied by the source text.
+- `actor(a_default, "Default", [...])`: Incorrectly assigns all nodes to a generic participant instead of the "customer" explicitly stated as performing the steps in the description.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

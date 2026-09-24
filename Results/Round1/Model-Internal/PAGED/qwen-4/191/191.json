@@ -1,0 +1,270 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start registration for event participation"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check if there is a fee"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "register a post-seminar request"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "create a purchase request"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "End process after post-seminar request registration"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "check if purchase request is approved"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "receive an approved notification"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "receive a rejection notification"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "register a post-seminar request after approval"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "End process after rejection notification or post-seminar registration"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check if there is a fee",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "check if purchase request is approved",
+      "R_X": [
+        "Approved",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "n5",
+        "e1",
+        "n6",
+        "b2",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "e2",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "\"v1 = 'No'\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "\"v1 = 'Yes'\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "\"v2 = 'Approved'\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "\"v2 = 'Rejected'\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please register your participation for the event."
+    },
+    {
+      "id": "i2",
+      "content": "If there is no fee"
+    },
+    {
+      "id": "i3",
+      "content": "you should proceed to register a post-seminar request"
+    },
+    {
+      "id": "i4",
+      "content": "However, if there is a fee, you need to create a purchase request."
+    },
+    {
+      "id": "i5",
+      "content": "Once you have registered a post-seminar request, the process will come to an end."
+    },
+    {
+      "id": "i6",
+      "content": "Next, you should check if the purchase request has been approved."
+    },
+    {
+      "id": "i7",
+      "content": "If it is approved, you will receive an approved notification."
+    },
+    {
+      "id": "i8",
+      "content": "On the other hand, if the purchase request is rejected, you will be notified of the rejection."
+    },
+    {
+      "id": "i9",
+      "content": "If you receive an approved notification, you should then register a post-seminar request."
+    },
+    {
+      "id": "i10",
+      "content": "If you receive a rejection notification, the process will come to an end."
+    }
+  ]
+}

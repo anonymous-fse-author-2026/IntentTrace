@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To initiate the process for ACME Company, the Resupply Cycle is triggered -> i2:followed by checking the Inventory Level. -> i5:Otherwise, a Purchase Order is created. -> i6:The Purchase Order is then reviewed. -> i7:If the Purchase Order is rejected, it is reworked. -> i6:The Purchase Order is then reviewed.
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: The generic 'start' action duplicates the implicit initiation already captured by init:i1 and action:n2, adding no distinct source-backed step.)
+- [N3] Node-level addition: label(n9,c2,"Completed rework") (reason: The label 'Completed rework' introduces a transitional status/state not mentioned in the source text, which simply states the order is reworked without defining a completion label for the path.)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Trigger Resupply Cycle") -> action(n3,"Check Inventory Level") -> action(n4,"Inventory greater than Minimum Level?") -> branch(b1,XOR) -> action(n6,"Create Purchase Order") -> converge(c2) -> action(n7,"Review Purchase Order") -> action(n8,"Purchase Order accepted?") -> branch(b2,XOR) -> action(n10,"Reserve funds for payment") -> action(n11,"Send Purchase Order to Supplier") -> branch(b3,AND) -> action(n13,"Receive Invoice") -> action(n15,"Record Invoice") -> converge(c1) -> action(n16,"Release funds for payment") -> action(n17,"Issue payment to Supplier") -> action(n18,"End Process") -> end(e2)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start")
+- [N7] Within matched traces (2->1) added: init(i1)
+- [N8] Within matched traces (2->1) added: action(n1,"start")
+- [N9] Within matched traces (2->1) added: action(n4,"Inventory greater than Minimum Level?")
+- [N10] Within matched traces (2->1) added: branch(b1,XOR)
+- [N11] Within matched traces (2->1) added: converge(c1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'") -> guard(b1,n6,"v1 = 'No'"); source=i3:If the Inventory is greater than the Minimum Level; reason=The guards replace the explicit domain condition ('Inventory greater than Minimum Level') with abstract boolean checks ('v1 = Yes/No'), dropping the original operator, subject, and threshold.
+- [N13] Node-level mutation: element=guard(b2,n9,"v2 = 'Rejected'"); source=i7:If the Purchase Order is rejected, it is reworked.; reason=The guards substitute the explicit acceptance/rejection criteria with abstract variable assignments ('v2 = Rejected/Accepted'), failing to preserve the original decision targets and logic fidelity.
+- [N14] Node-level mutation: element=guard(b2,n10,"v2 = 'Accepted'"); source=i8:However, if the Purchase Order is accepted, funds are reserved for payment.; reason=The guards substitute the explicit acceptance/rejection criteria with abstract variable assignments ('v2 = Rejected/Accepted'), failing to preserve the original decision targets and logic fidelity.

@@ -1,0 +1,9 @@
+
+
+- `action(n4, "continue with the process")`: Lacks any outgoing `precedence` statement, creating a dead end that breaks the control flow required by the text ("After this, we again check...").
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Outgoing edges lack `guard` statements to define selection conditions, leaving the exclusive choices underspecified despite the source explicitly conditioning steps on input type ("If it is a 'URN'... If the input is a 'URL'...").
+- `label(n1, n2, "is not URN")` and `label(n3, n5, "is URL")`: Placed on sequential edges between non-branch nodes instead of on outgoing branch edges, misaligning with decision-point semantics and the source's conditional structure.
+- `action(n8...)` through `action(n17...)`: Artificially duplicates entire sub-chains (n8/n9, n10/n11, n12/n13, etc.) across two disjoint paths with no textual basis; the source describes a single linear progression after the checks ("we send a DNS query. The result... use to link to a designated DS").
+- `defines(v1, "check if the input is a URN", {})` and `defines(v2, "check if the input is a URN or a URL", {})`: Ranges are empty `{}`, failing to specify the expected input values or decision outcomes implied by the source's branching conditions.
+- `action(n16, "process ends")` and `action(n17, "process ends")`: Incorrectly models termination as executable action steps rather than using the dedicated `end` nodes, adding unsupported processing to the source's simple conclusion ("the process comes to an end").
+- Path via `b2 -> n6/n7`: Repeats the initial "resolve vs continue" actions instead of advancing toward the DNS query phase, distorting the chronological progression explicitly outlined in the text ("Once we have resolved the URN to a domain-name, we send a DNS query").

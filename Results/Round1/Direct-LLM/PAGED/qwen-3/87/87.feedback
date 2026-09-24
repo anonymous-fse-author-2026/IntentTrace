@@ -1,0 +1,16 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i6:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.
+- [N2] Within matched traces (1->3) omitted: i8:Once the invoices are returned to the client, receive the completed ones.
+
+Addition
+- [N3] Node-level addition: action(n3,"End process") (reason: The source only instructs to check whether the process has started, but provides no instruction to terminate the process if it has not.)
+- [N4] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: The source only instructs to check whether the process has started, but provides no instruction to terminate the process if it has not.)
+- [N5] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: No source text describes a waiting period for the client to complete invoices prior to receiving them.)
+- [N6] Node-level addition: guard(b2,n12,"v2 = 'Not Completed'") (reason: The source does not define a negative outcome, wait step, or return loop when the process completion check fails; these are invented to create a feedback structure.)
+- [N7] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: The source does not define a negative outcome, wait step, or return loop when the process completion check fails; these are invented to create a feedback structure.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N9] Added trace (model 2): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n4,"Check completeness of the invoices") -> branch(b3,XOR) -> action(n5,"Return invoices to client through postal mail") -> action(n6,"Wait for completion of invoices by client") -> action(n7,"Receive completed invoices") -> action(n8,"Mark relevant box on invoice entry form") -> converge(c1) -> action(n10,"Check if the process has been completed") -> branch(b2,XOR) -> action(n12,"Return invoices to client through postal mail") -> action(n13,"Wait for completion of invoices by client") -> action(n14,"Receive completed invoices") -> end(e2)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n4,"Check completeness of the invoices") -> branch(b3,XOR) -> action(n9,"Continue the process") -> converge(c1) -> action(n10,"Check if the process has been completed") -> branch(b2,XOR) -> action(n12,"Return invoices to client through postal mail") -> action(n13,"Wait for completion of invoices by client") -> action(n14,"Receive completed invoices") -> end(e2)
+- [N11] Within matched traces (0->1) added: action(n6,"Wait for completion of invoices by client")
+- [N12] Within matched traces (0->1) added: converge(c1)
+- [N13] Within matched traces (1->3) added: converge(c1)

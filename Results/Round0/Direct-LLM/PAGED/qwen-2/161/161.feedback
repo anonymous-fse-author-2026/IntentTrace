@@ -1,0 +1,9 @@
+- `action(n8, "assign negative points again")`: Missing outgoing precedence; the path dies here instead of flowing to "However, if the process is okay, you can continue with it."
+- `action(n22, "continue working according role")`: Missing outgoing precedence; the flow breaks prematurely instead of executing "Finally, present the project and the process will come to an end."
+- `branch(b6, AND)`: Forces parallel execution of fixing/extending and checking/analyzing, contradicting the source's conditional "If there are any issues... If you need to check... If you need to analyze..." which implies mutually exclusive or sequential choices requiring an XOR/OR gateway.
+- `precedence(n17, e1)`: Routes directly to termination after the first presentation, omitting the required source continuation: "If not, continue working according to your role. If the project is accepted, present it again... Finally, present the project..."
+- Control-flow topology (nodes n15–n22): Lacks necessary feedback edges to cycle back to "continue working according to your role" and re-evaluate acceptance, incorrectly modeling the source's iterative progression as a strictly linear chain.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=1 and out=0. | Node `n22` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n12,"assign roles in team"); action(n22,"continue working according role"); action(n8,"assign negative points again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n12, n22, n8 | DSL: action(n12,"assign roles in team"); action(n22,"continue working according role"); action(n8,"assign negative points again")

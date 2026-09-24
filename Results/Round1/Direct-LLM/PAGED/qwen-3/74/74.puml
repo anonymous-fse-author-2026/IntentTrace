@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Enter Metadata;
+split
+:IN-Patient Step;
+split again
+:Send Data to Suppliers;
+:Extract and Transfer Data from Suppliers to Doctor;
+:Confirm GOP;
+:v1: Confirm GOP ({Confirmed, Not Confirmed}); <<objectSignal>>
+if () then ([v1 = 'Confirmed'])
+:End Process: GOP Confirmed;
+stop
+else ([v1 = 'Not Confirmed'])
+:Register Case;
+:Handle Claim;
+:Extract Data from Suppliers;
+:Enter Data on Patient Record or Confirm IN-Patient Status;
+:Send Data Back to Suppliers;
+:Receive Payment;
+:End Process: Payment Received;
+endif
+split again
+:Create Claim;
+end split
+stop
+@enduml

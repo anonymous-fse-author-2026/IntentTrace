@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start order processing by prioritizing orders based on when received;
+:Check if customer exists;
+:v1: Check if customer exists ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Check customer's payment history;
+:Is payment history good;
+:v2: Is payment history good ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Send customer declining message;
+:End process due to no products and decline message;
+stop
+else ([v2 = 'Yes'])
+->;
+endif
+else ([v1 = 'No'])
+:Verify customer status;
+:Is customer a private customer;
+:v3: Is customer a private customer ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Send customer declining message;
+:End process after sending declining message to private customer;
+stop
+else ([v3 = 'No'])
+:Create new customer;
+:Check product availability;
+:Are products available;
+:v4: Are products available ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:Produce missing goods and send declining message;
+else ([v4 = 'Yes'])
+->;
+endif
+endif
+endif
+:Continue process and send order confirmation;
+split
+:Inform stock department;
+split
+:Packing goods;
+split again
+:Write invoice;
+end split
+:Goods ready for delivery and invoice sent;
+:Close order;
+:Deliver goods and invoice to customer;
+:Has payment been received;
+:v5: Has payment been received ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Close order;
+:End process after closing order;
+stop
+else ([v5 = 'No'])
+:Check quantity of reminders for payment;
+:Are reminders less than three;
+:v6: Are reminders less than three ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:Continue process;
+:End process after continuing process;
+stop
+else ([v6 = 'No'])
+:Activate donning process;
+:End process after activating donning process;
+stop
+endif
+endif
+split again
+:Inform accounting department;
+split
+split again
+end split
+end split
+@enduml

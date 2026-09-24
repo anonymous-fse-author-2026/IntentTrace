@@ -1,0 +1,7 @@
+
+
+- `action(n14, "Start homework assignment")`: Missing outgoing precedence edge, breaking the workflow cycle described in "another homework assignment will be given."
+- `action(n7, "Request exception again")`: Missing outgoing precedence edge, creating a dead end despite the source implying a retry loop for unapproved exceptions.
+- `precedence(n25, n27)` & `end(e2)`: Incorrectly routes exam failures directly to process termination instead of looping back to exam registration, contradicting "If the exam is failed, another sign-up for the exam is required."
+- `defines(v1, "Is an exception needed for course registration", {})`, `defines(v3, "Is this the last homework", {})`, `defines(v4, "Did the exam pass", {})`: Declared with empty ranges `{}`, failing to represent the binary decision options (Yes/No, Last/Not last, Pass/Fail) explicitly stated in the source.
+- `defines(v2, "Is the exception approved", {"Continue"})` and `guard(b2, c1, v2 = 'Continue')`: The range value "Continue" and corresponding guard condition inaccurately model an approval status decision; they should reflect approval outcomes (e.g., Approved/Denied) rather than a procedural flow descriptor, misaligning with "After the exception is approved."

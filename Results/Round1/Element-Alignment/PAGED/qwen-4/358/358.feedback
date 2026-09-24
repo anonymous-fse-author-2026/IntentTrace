@@ -1,0 +1,51 @@
+Omission
+- [N1] Node-level omission: i8:And if the answer is "Yes" again, then we enter the invoice in SAP. (reason: The source explicitly describes a repeated "Yes" check followed by invoice entry, but the model lacks any corresponding faithful implementation, replacing it with unrelated decision structures and duplicate steps.)
+- [N2] Within matched traces (1->2) omitted: i8:And if the answer is "Yes" again, then we enter the invoice in SAP.
+
+Addition
+- [N3] Node-level addition: action(n1,"start process") (reason: Invents a "start process" action step that has no supporting text in the source.)
+- [N4] Node-level addition: action(n7,"vendor exists in SAP") (reason: Invents a "vendor exists in SAP" validation step not described in the source text.)
+- [N5] Node-level addition: action(n11,"invoice entry decision") (reason: Invents an "invoice entry decision" step with no basis in the provided units.)
+- [N6] Node-level addition: guard(b4,n12,"v4 = 'No'") (reason: Guards referencing v4 with "No"/"Yes" outcomes are orphaned and do not align with any remaining source unit.)
+- [N7] Node-level addition: guard(b4,n14,"v4 = 'Yes'") (reason: Guards referencing v4 with "No"/"Yes" outcomes are orphaned and do not align with any remaining source unit.)
+- [N8] Node-level addition: action(n12,"need vendor master record") (reason: Duplicate actions requiring a vendor record and ending the process, placed in an unsupported location with no source justification.)
+- [N9] Node-level addition: action(n13,"end due to missing vendor master") (reason: Duplicate actions requiring a vendor record and ending the process, placed in an unsupported location with no source justification.)
+- [N10] Node-level addition: action(n15,"priority decision again") (reason: Invents a "priority decision again" step that does not appear in the source.)
+- [N11] Node-level addition: action(n5,"give priority") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: action(n14,"give priority") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: action(n16,"enter invoice in SAP") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Node-level addition: guard(b2,n5,"v2 = 'Yes'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N15] Added trace (model 1): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n3,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N16] Added trace (model 3): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N17] Added trace (model 4): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N18] Added trace (model 5): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N19] Added trace (model 6): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N20] Added trace (model 7): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N21] Added trace (model 8): init(i1) -> action(n1,"start process") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N22] Within matched traces (0->0) added: action(n1,"start process")
+- [N23] Within matched traces (0->0) added: action(n7,"vendor exists in SAP")
+- [N24] Within matched traces (1->2) added: action(n1,"start process")
+- [N25] Within matched traces (1->2) added: action(n7,"vendor exists in SAP")
+- [N26] Within matched traces (1->2) added: action(n11,"invoice entry decision")
+- [N27] Within matched traces (1->2) added: branch(b4,XOR)
+- [N28] Within matched traces (1->2) added: action(n14,"give priority")
+- [N29] Within matched traces (1->2) added: action(n15,"priority decision again")
+- [N30] Within matched traces (1->2) added: action(n16,"enter invoice in SAP")
+
+Mutation
+- [N31] Node-level mutation: element=guard(b1,n4,"v1 = 'No'") -> action(n4,"second decision"); source=i2:if the answer is "No", then we continue the process.; reason=While the branch and guard correctly capture the "No" condition, the prescribed action "continue the process" is replaced by "second decision", altering the explicit workflow instruction.
+- [N32] Node-level mutation: element=guard(b2,c1,"v2 = 'No'"); source=i3:If the answer is "No" again, we continue the process.; reason=The branch and guard reflect the repeated "No" condition, but routing directly to a converge node omits and distorts the explicit instruction to "continue the process".
+
+Permutation
+- [N33] Within matched traces (0->0) reordered: expected [i3:If the answer is "No" again, we continue the process.] but observed [converge(c1)] elsewhere; in its place the model has [action(n3,"give priority")]
+- [N34] Within matched traces (1->2) reordered: expected [i3:If the answer is "No" again, we continue the process.] but observed [converge(c1)] elsewhere; in its place the model has [action(n3,"give priority")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=0 and out=1. | Node `n4` has in=0 and out=1. | Node `n5` has in=0 and out=1. | DSL: action(n3,"give priority"); action(n4,"second decision"); action(n5,"give priority")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=0. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S3] STC13 failed: Every guard must be attached to an existing precedence edge. | Guard `v1 = 'Yes'` is attached to `b1 -> n3` without a precedence edge. | Guard `v1 = 'No'` is attached to `b1 -> n4` without a precedence edge. | Guard `v2 = 'Yes'` is attached to `b2 -> n5` without a precedence edge. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,n4,"v1 = 'No'"); guard(b2,n5,"v2 = 'Yes'")
+- [S4] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b2, b3, b4, c1, e1, e2, e4, n10, n11, n12, n13, n14, n15, n16, n18, n19, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b2,XOR); branch(b3,XOR); branch(b4,XOR); converge(c1); end(e1); end(e2); end(e4); action(n10,"enter invoice in SAP") (+15 more)
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, i1, n1 | DSL: branch(b1,XOR); init(i1); action(n1,"start process")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v2=Yes].

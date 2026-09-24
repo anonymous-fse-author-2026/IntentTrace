@@ -1,0 +1,10 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to bind outgoing edges to the decision conditions "If the inventory level is at or below the minimum..." and "If the purchase status is rejected...", leaving the exclusive choice logic semantically undefined.
+- `action(n3, "inventory at or below minimum")` and `action(n7, "purchase status approved")`: Misrepresented as executable tasks positioned before branches (`precedence(n3, b1)`, `precedence(n7, b2)`), while the source treats them as conditional states ("if the inventory level is at or below the minimum", "if the purchase status is approved").
+- `action(n5, "process ends")`, `action(n16, "process ends")`, and `action(n17, "process ends")`: Unnecessary action nodes inserted immediately before `end(e1)`, `end(e2)`, and `end(e3)`. The text states "the process ends" as a direct termination event, not as a task step followed by an end node.
+- `defines(v1, ...)` and `defines(v2, ...)`: Specify empty ranges `{}`, contradicting the source's implicit binary domains for inventory status ("at or below the minimum" vs "above the minimum") and purchase status ("rejected" vs "approved").
+- `precedence(n10, n7)`: Breaks the chronological loop by forcing flow from `n10` through the misclassified action `n7` instead of connecting directly to `branch(b2, XOR)`, distorting "Rework the purchase order and then review it" followed immediately by the status decision.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"purchase status approved")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

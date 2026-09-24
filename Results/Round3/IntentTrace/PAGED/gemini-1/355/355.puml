@@ -1,0 +1,69 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start by checking the customer's order.;
+:v1: Customer type ({Registered, New}); <<objectSignal>>
+if () then ([v1 = 'Registered'])
+:If the customer is a registered customer,;
+:then check their payment morale.;
+:v2: Payment morale ({Good, Bad}); <<objectSignal>>
+if () then ([v2 = 'Good'])
+:If their payment morale is good,;
+:continue with the process.;
+:At the same time,;
+:check the availability of the items.;
+:v4: Availability ({Out of stock, In stock}); <<objectSignal>>
+if () then ([v4 = 'Out of stock'])
+:If the items are out of stock,;
+:start production.;
+:If production is started,;
+:produce the article;
+:and send the order confirmation.;
+else ([v4 = 'In stock'])
+:If they are in stock,;
+:Once the availability is checked,;
+:send the order confirmation.;
+endif
+:Simultaneously,;
+:send the invoice and deliver the product.;
+:Check the payment status.;
+:v6: Payment status ({Received, Not received}); <<objectSignal>>
+if () then ([v6 = 'Received'])
+:If payment is received,;
+:close the order.;
+stop
+else ([v6 = 'Not received'])
+:If no payment is received,;
+:check the number of reminders.;
+:v7: Reminders ({More than 3, 3 or fewer}); <<objectSignal>>
+if () then ([v7 = 'More than 3'])
+:If there are more than three reminders,;
+:engage a lawyer.;
+stop
+else ([v7 = '3 or fewer'])
+:If there are three or fewer reminders,;
+:send a reminder.;
+:Check the payment status.;
+stop
+endif
+endif
+else ([v2 = 'Bad'])
+:If their payment morale is bad;
+endif
+else ([v1 = 'New'])
+:If they are a new customer,;
+:then check their status.;
+:v3: Customer status ({End customer, Wholesaler}); <<objectSignal>>
+if () then ([v3 = 'End customer'])
+:or if they are an end customer,;
+else ([v3 = 'Wholesaler'])
+:If the customer is a wholesaler,;
+:enter their data and take the order.;
+endif
+endif
+:reject the order;
+:and end the process.;
+stop
+@enduml

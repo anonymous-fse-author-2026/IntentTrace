@@ -1,0 +1,10 @@
+
+
+- action(n1, "start"): Node payload does not faithfully represent the documented first step, which is to "start by placing an order".
+- defines(v1, "check customer eligibility", {}), defines(v2, ...), defines(v3, ...), defines(v4, ...): Decision variable ranges are empty `{}` instead of reflecting the documented value spaces (e.g., {"not eligible to order", "eligible to order"}).
+- branch(b1, XOR), branch(b2, XOR), branch(b3, XOR), branch(b4, XOR): Missing guard statements to bind decision variables to outgoing edges, failing to capture the explicit conditional logic described in the text.
+- action(n8, "prepare products for shipment"), action(n9, "prepare products for shipment"): Duplicate action hallucinated; the description specifies preparing products only once prior to the subsequent simultaneous steps.
+- precedence(n3, b5), precedence(b5, c5), precedence(c5, n17): Chronology violated by routing the "inform customer not eligible" path into an AND gateway and merging it with reminder logic, directly contradicting "After informing the customer, the process ends."
+- branch(b5, AND), branch(b6, AND), branch(b7, AND), converge(c1, c2, c3): Control-flow logic misrepresents concurrency; the source mandates a single split/join pattern for "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment", but the model fractures this across disjoint AND gateways and converges without proper synchronization.
+- action(n17, "send another payment reminder"): Forms a terminal dead path with no outgoing precedence, violating the intended progression "If the number of reminders is less than 3, continue the process" which necessitates a cyclic return to payment/reminder handling.
+- precedence(b2, n9), precedence(n9, b7): Sequence distorted by splitting the product preparation step across two separate branches, breaking the direct chronological flow stated in "Prepare the products for shipment. Simultaneously, complete the following steps...".

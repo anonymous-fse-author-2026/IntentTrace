@@ -1,0 +1,8 @@
+
+
+- `defines(v2, "Is there another filter to apply", {"no"})`: Range omits an affirmative value; source text implies a binary decision ("If there is, continue... If not, continue"), requiring both outcomes in the variable range.
+- `defines(v3, "Is submit option true", {"false"})`: Range omits "true"; source text explicitly checks whether the option is set to "true", making the current range unfaithful to the documented behavior.
+- `guard(b3, n9, v3 = 'false')`: Condition contradicts source text "if the option to submit is set to 'true', continue with the process"; the guard should evaluate to `'true'` to allow progression under the stated condition.
+- `branch(b2, XOR)` with `precedence(b2, n8)`: Control-flow logic is incomplete; the XOR gateway has only one outgoing edge, failing to model the source's conditional split ("If there is... If not...") and leaving the positive case without a traversable path.
+- `branch(b3, XOR)` with `precedence(b3, n9)`: Control-flow logic is incomplete; the single outgoing edge causes a dead-end when the stated condition (submit option = "true") is met, violating faithful initiation-to-end path mirroring.
+- `guard(b2, n8, v2 = 'no')`: Restricts progression exclusively to the "no" outcome, contradicting source text which states "If there is, continue... If not, continue" (both branches should proceed).

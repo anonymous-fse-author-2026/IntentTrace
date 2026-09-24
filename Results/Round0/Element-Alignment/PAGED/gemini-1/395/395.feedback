@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i3:At the same time, (reason: The model missed the concurrency aspect (no parallel gateway) indicated by 'at the same time'.)
+- [N2] Node-level omission: i12:flag it again and send another reminder. (reason: The model loops back to the first 'flag and send reminder' step rather than including this distinct second reminder step.)
+- [N3] Node-level omission: i16:check if an HR Specialist is required. (reason: The model flattens the logic into a single branch b3 and skips this distinct nested checking action/decision.)
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: The model adds explicit 'start' and 'end' action nodes which have no grounding in the text.)
+- [N5] Node-level addition: action(n15,"end") (reason: The model adds explicit 'start' and 'end' action nodes which have no grounding in the text.)
+- [N6] Node-level addition: label(n4,n5,"Referee Reports still not completed") (reason: These descriptive sequence flow labels do not correspond to text spans.)
+- [N7] Node-level addition: label(n5,n6,"Referee Reports still not completed after second check") (reason: These descriptive sequence flow labels do not correspond to text spans.)
+- [N8] Node-level addition: label(n11,c2,"Finalize process") (reason: These descriptive sequence flow labels do not correspond to text spans.)
+- [N9] Node-level addition: label(n12,c2,"Finalize process") (reason: These descriptive sequence flow labels do not correspond to text spans.)
+- [N10] Node-level addition: label(n13,c2,"Finalize process") (reason: These descriptive sequence flow labels do not correspond to text spans.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"flag and send reminder")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Referee Reports not completed']`. | Variable `v2` has an invalid range `['Referee Reports still not completed after second check']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Referee Reports not completed'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'Referee Reports still not completed after second check'` on `b2 -> n4` uses undefined variable `v2`. | DSL: guard(b1,n4,"v1 = 'Referee Reports not completed'"); guard(b2,n4,"v2 = 'Referee Reports still not completed after second check'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Referee Reports not completed'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Referee Reports still not completed after second check'` on `b2 -> n4` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n4,"v1 = 'Referee Reports not completed'"); guard(b2,n4,"v2 = 'Referee Reports still not completed after second check'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

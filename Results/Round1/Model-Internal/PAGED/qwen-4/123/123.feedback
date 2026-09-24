@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i2:start by obtaining the raw material from the received list (reason: This mandatory initial acquisition step is completely absent from the model; no action or structural node implements it.)
+- [N2] Node-level omission: i6:conclude the process (reason: No element faithfully implements this instruction; the only candidates (n4, n9) distort it with added qualifiers, leaving the source unit behaviorally uncovered.)
+- [N3] Node-level omission: i7:end the process (reason: No action element faithfully implements this instruction; the only candidates (n5, n10) simplify it to 'End', failing to reproduce the source granularity despite the presence of structural end nodes.)
+- [N4] Within matched traces (0->0) omitted: i2:start by obtaining the raw material from the received list
+- [N5] Within matched traces (1->1) omitted: i2:start by obtaining the raw material from the received list
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n3,"v1 = \"Yes\"") -> guard(b1,n6,"v1 = \"No\""); source=i3:If the raw material is not available in stock, then select a supplier. However, if the raw material is available in stock, proceed to check the raw material and conclude the process.; reason=Replaces the explicit business conditions ('available in stock' / 'not available in stock') with abstract variable assignments ('v1 = Yes/No'), stripping the semantic meaning and failing the operator/value agreement requirement.
+- [N7] Node-level mutation: element=action(n4,"Conclude process with available stock") -> action(n9,"Conclude process with purchased stock"); source=i6:conclude the process; reason=Injects invented qualifiers ('with available stock' / 'with purchased stock') that alter the instruction's scope and granularity relative to the source unit.
+- [N8] Node-level mutation: element=action(n5,"End") -> action(n10,"End"); source=i7:end the process; reason=Collapses the explicit verbal command into a bare 'End', dropping the required verb-object structure and changing granularity.
+- [N9] Node-level mutation: element=action(n8,"Check raw material after PO"); source=i5:proceed to check the raw material; reason=Appends 'after PO' context not present in the source unit, narrowing the instruction's applicability and altering its original scope.

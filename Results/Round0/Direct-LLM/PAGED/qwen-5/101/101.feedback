@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` / `precedence(b1, n4)`: Declares an exclusive-choice gateway but provides only one outgoing edge and zero `guard` statements, failing to implement the conditional routing implied by "check if the user has already liked the company".
+- `defines(v1, "Has the user already liked the company", {})`: Specifies an empty value range `{}`, which does not faithfully reflect the binary (e.g., true/false) decision state required by the source verification step.
+- Control flow from `b1` to `n4`: Enforces a single deterministic path past the decision point, omitting the branching logic needed to handle different outcomes of the check as described in the source.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

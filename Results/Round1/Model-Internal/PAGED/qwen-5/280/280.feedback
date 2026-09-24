@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (3->3) omitted: i14:If the Packing Slip is received, proceed to receive the Invoice.
+
+Addition
+- [N2] Node-level addition: guard(b3,e1,"v3 = 'Packing Slip Pending'") (reason: Defines a 'Packing Slip Pending' path routing to an end state, which is not described anywhere in the source text.)
+- [N3] Node-level addition: guard(b4,e1,"v4 = 'Inventory Pending'") (reason: Defines an 'Inventory Pending' path routing to an end state, unsupported by the source text.)
+- [N4] Node-level addition: guard(b5,e1,"v5 = 'Failed Match'") (reason: Defines a 'Failed Match' path routing to an end state, with no corresponding failure handling described in the source.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n10,"Reserve Funds for Released POs") -> action(n12,"Receive Packing Slip") -> branch(b3,XOR) -> action(n14,"Proceed to Receive Invoice") -> action(n16,"Receive Invoice") -> action(n17,"Three-way Match") -> branch(b5,XOR) -> end(e1)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n11,"Mail POs to Supplier") -> action(n13,"Receive Inventory") -> branch(b4,XOR) -> action(n15,"Proceed to Receive Packing Slip") -> action(n17,"Three-way Match") -> branch(b5,XOR) -> end(e1)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n11,"Mail POs to Supplier") -> action(n13,"Receive Inventory") -> branch(b4,XOR) -> end(e1)
+- [N8] Within matched traces (1->2) added: action(n8,"Print and Release PO")
+- [N9] Within matched traces (1->2) added: branch(b6,AND)
+- [N10] Within matched traces (1->2) added: action(n10,"Reserve Funds for Released POs")
+- [N11] Within matched traces (1->2) added: action(n12,"Receive Packing Slip")
+- [N12] Within matched traces (1->2) added: branch(b3,XOR)
+- [N13] Within matched traces (1->2) added: end(e1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=2 and out=1. | Node `n6` has in=2 and out=1. | DSL: action(n17,"Three-way Match"); action(n6,"Create Purchase Order (PO)")

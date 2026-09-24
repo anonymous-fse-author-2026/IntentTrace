@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:choose destination and calculate distance;
+:do you need to book train or flight?;
+:v1: do you need to book train or flight? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:book a train;
+else ([v1 = 'Yes'])
+:book a flight;
+endif
+:is code available within 24 hours?;
+:v2: is code available within 24 hours? ({within 24 hours, 24 hours passed}); <<objectSignal>>
+if () then ([v2 = 'within 24 hours'])
+:end with hotel reservation;
+stop
+else ([v2 = '24 hours passed'])
+:call a travel agency;
+:v3: is code now available? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:end with hotel reservation;
+stop
+else ([v3 = 'No'])
+:cancel your journey;
+:end;
+stop
+endif
+endif
+@enduml

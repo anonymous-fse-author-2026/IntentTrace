@@ -1,0 +1,17 @@
+Addition
+- [N1] Node-level addition: action(n18,"end process") (reason: Describes a third process termination ('end process') that has no supporting reference or implied flow in the source text. (Structural nodes end:e3 and converge:c1 are excluded from addition checks per guidelines.))
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"claim what is requested") -> action(n3,"check insured status of claimant") -> action(n4,"is claimant insured?") -> branch(b1,XOR) -> action(n5,"evaluate the claim") -> action(n9,"is claim simple or complex?") -> branch(b2,XOR) -> action(n10,"send simple claim forms") -> converge(c1) -> action(n12,"receive returned forms") -> action(n13,"check forms for completeness") -> action(n14,"are all relevant details provided?") -> branch(b3,XOR) -> action(n16,"inform claimant to complete details") -> action(n18,"end process") -> end(e3)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"claim what is requested") -> action(n3,"check insured status of claimant") -> action(n4,"is claimant insured?") -> branch(b1,XOR) -> action(n5,"evaluate the claim") -> action(n9,"is claim simple or complex?") -> branch(b2,XOR) -> action(n11,"send complex claim forms") -> converge(c1) -> action(n12,"receive returned forms") -> action(n13,"check forms for completeness") -> action(n14,"are all relevant details provided?") -> branch(b3,XOR) -> action(n15,"register the claim") -> action(n17,"end process") -> end(e2)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"claim what is requested") -> action(n3,"check insured status of claimant") -> action(n4,"is claimant insured?") -> branch(b1,XOR) -> action(n5,"evaluate the claim") -> action(n9,"is claim simple or complex?") -> branch(b2,XOR) -> action(n11,"send complex claim forms") -> converge(c1) -> action(n12,"receive returned forms") -> action(n13,"check forms for completeness") -> action(n14,"are all relevant details provided?") -> branch(b3,XOR) -> action(n16,"inform claimant to complete details") -> action(n18,"end process") -> end(e3)
+- [N5] Within matched traces (0->4) added: init(i1)
+- [N6] Within matched traces (1->0) added: init(i1)
+- [N7] Within matched traces (1->0) added: converge(c1)
+- [N8] Within matched traces (2->0) added: init(i1)
+- [N9] Within matched traces (2->0) added: action(n17,"end process")
+- [N10] Within matched traces (2->0) added: end(e2)
+
+Mutation
+- [N11] Node-level mutation: element=action(n10,"send simple claim forms") -> action(n11,"send complex claim forms"); source=i5:If the claim is a simple one or a complex one, send the relevant forms accordingly.; reason=The source generically instructs to 'send the relevant forms accordingly' based on claim type. The model mutates this by splitting it into two highly specific actions ('send simple claim forms', 'send complex claim forms'), inventing qualifiers and altering the original instruction's granularity.
+
+Permutation
+- [N12] Within matched traces (2->0) reordered: expected [i6:Once the forms are returned, check them for completeness.] but observed [action(n12,"receive returned forms")] elsewhere; in its place the model has [action(n15,"register the claim")]

@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the process;
+:receiving the claim;
+:create the claim and record it;
+:make a decision on the claim;
+:v1: decision on the claim ({rejected, accepted}); <<objectSignal>>
+if () then ([v1 = 'rejected'])
+:reject it;
+:review the claim rejection;
+:v2: claim rejection accepted ({accepted, not accepted}); <<objectSignal>>
+if () then ([v2 = 'accepted'])
+:continue the process;
+else ([v2 = 'not accepted'])
+:continue the process;
+endif
+else ([v1 = 'accepted'])
+:offer the benefit;
+:prepare the claim discharge;
+:record the benefit payment;
+endif
+split
+:operate outgoing payment;
+split again
+:close the claim;
+end split
+:the process ends;
+stop
+@enduml

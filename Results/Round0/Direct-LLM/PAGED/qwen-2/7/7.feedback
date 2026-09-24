@@ -1,0 +1,11 @@
+- `branch(b1)`, `branch(b2)`: Missing `guard` statements to enforce the explicit conditional logic ("If you are not hungry...", "If you are still not hungry..."); declared variables `v1` and `v2` are never referenced in any condition.
+- `defines(v1, ...)`, `defines(v2, ...)`: Specify empty ranges `{}` instead of valid decision values (e.g., `{'Yes', 'No'}` or `{true, false}`), failing to model the binary nature of the hunger checks.
+- `branch(b3, AND)`: Hallucinates parallel concurrency (AND gateway) that has no basis in the strictly sequential process description.
+- `precedence(c1, n5)`: Violates source chronology by routing the initial shower path directly to "get on the bus", bypassing the mandatory second decision block ("If you are still not hungry...").
+- `action(n5, "get on the bus")`, `action(n9, "get on the bus")`: Duplicates the final transportation step; the source text mentions "get on the bus" only once after all prior steps are complete.
+- `action(n8, "have breakfast again")`: Modifies the exact source wording ("Otherwise, have breakfast.") by inserting the word "again".
+- `precedence(b3, c1)`, `precedence(b3, n6)`: Creates concurrent branching after the first breakfast that contradicts the source's linear chronological order of checks and actions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

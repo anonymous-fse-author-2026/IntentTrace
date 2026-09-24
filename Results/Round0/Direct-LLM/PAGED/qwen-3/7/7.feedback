@@ -1,0 +1,10 @@
+- `branch(b3, AND)`: Introduces concurrent splitting not present in the sequential source text ("Otherwise, have breakfast. If you are still not hungry...").
+- `precedence(n4, b3)`, `precedence(b3, c1)`, `precedence(b3, n6)`: Disrupts source chronology; after `action(n4, "have breakfast")`, control should proceed directly to the second decision, but the model splits via `b3`, allowing one path to bypass the second check entirely.
+- `action(n5, "get on the bus")`, `action(n9, "get on the bus")`: Hallucinates a duplicated final step; the source explicitly states "get on the bus" exactly once at the end.
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Lacks `guard` statements to implement the conditional routing logic described in the source ("If you are not hungry... Otherwise..." and "If you are still not hungry... Otherwise...").
+- `defines(v1, "are you hungry?", {})`, `defines(v2, "are you still hungry after breakfast?", {})`: Empty ranges `{}` violate SMC6; they do not reflect the binary (yes/no or true/false) decision space implied by the source questions.
+- Path `i1 → n1 → n2 → b1 → action(n3, "take a shower") → c1 → action(n5, "get on the bus")`: Omits the second hunger evaluation; contrary to the source ("If you are still not hungry..."), the model routes directly to the bus without evaluating the second condition.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

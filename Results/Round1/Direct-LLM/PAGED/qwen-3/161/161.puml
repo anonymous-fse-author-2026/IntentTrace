@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+-> Completed start;
+:join the team and agree on domain;
+-> Completed join team;
+repeat :create process model and check it;
+:is process model NOT OK?;
+:v1: is process model NOT OK? ({Yes, Model OK}); <<objectSignal>>
+backward:assign negative points;
+repeat while () is ([v1 = 'Yes']) not ([v1 = 'Model OK'])
+:if process is okay continue with it;
+:v6: b6_decision ({Fix, Check}); <<objectSignal>>
+if () then ([v6 = 'Fix'] If there are any issues)
+:fix issues in next session and extend to levels 2 and 3;
+-> After fixing;
+else ([v6 = 'Check'] Need to check/analyze)
+:check process and assign points or analyze field of study;
+:v3: check process and assign points or analyze field of study ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:assign roles in team;
+else ([v3 = 'No'])
+->;
+endif
+endif
+:continue with process and perform work according role;
+-> Work performed;
+:check progress and consult problems;
+-> Progress checked;
+:is project accepted?;
+:v4: is project accepted? ({Accepted, Not accepted}); <<objectSignal>>
+if () then ([v4 = 'Accepted'] Project accepted)
+:present project;
+-> First presentation;
+:end of process;
+-> To re-evaluation;
+else ([v4 = 'Not accepted'] Continue work)
+:continue working according role;
+-> Re-evaluate;
+endif
+:is project accepted?;
+:v4: is project accepted? ({Accepted, Not accepted}); <<objectSignal>>
+if () then ([v4 = 'Accepted'] Re-accepted)
+:present project again;
+-> To final presentation;
+:present project and end process;
+stop
+else ([v4 = 'Not accepted'] Not accepted yet)
+:continue working according role;
+endif
+@enduml

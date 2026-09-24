@@ -1,0 +1,8 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process -> i2:trigger the resupply cycle and then check the inventory level -> i3:If the inventory level is at or below the minimum -> i4:create a purchase order -> i6:After creating the purchase order, review it. -> i7:If the purchase status is rejected -> i8:rework the purchase order -> i6:After creating the purchase order, review it.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i3:If the inventory level is at or below the minimum; reason=Guard uses abstract assignment 'v1 = true' instead of the specified inventory threshold comparison, altering the decision logic and dropping the unit/value context.
+- [N3] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i5:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Guard uses abstract assignment 'v1 = false' instead of the specified 'above the minimum' condition, altering the decision logic.
+- [N4] Node-level mutation: element=guard(b2,n9,"v2 = true"); source=i7:If the purchase status is rejected; reason=Guard uses abstract assignment 'v2 = true' instead of the literal status value 'rejected', changing the payload and decision semantics.
+- [N5] Node-level mutation: element=guard(b2,n13,"v2 = false"); source=i9:if the purchase status is approved, reserve the funds.; reason=Guard uses abstract assignment 'v2 = false' instead of the literal status value 'approved', changing the payload and decision semantics.

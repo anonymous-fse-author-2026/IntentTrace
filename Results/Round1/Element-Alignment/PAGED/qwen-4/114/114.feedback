@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 1): i1:In the beginning, you sell cars. -> i3:If you "get a paycheck", then you also continue the process. -> i4:Once you pay the bill, the process ends.
+
+Addition
+- [N2] Node-level addition: action(n4,"No check paycheck") (reason: Introduces a 'No check paycheck' transitional action not present in the source text; the original specifies two independent conditional continuations without dictating a sequential fallback or an explicit intermediate check step.)
+- [N3] Within matched traces (0->0) added: converge(c1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=0 and out=0. | Node `n5` has in=0 and out=1. | DSL: action(n4,"No check paycheck"); action(n5,"did you get a paycheck")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b2, e1, n4, n5, n6 | DSL: branch(b2,XOR); end(e1); action(n4,"No check paycheck"); action(n5,"did you get a paycheck"); action(n6,"Yes continue process after paycheck")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"No check paycheck")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=No]. | Branch `b2` has no enabled outgoing guard at state [v2=No].

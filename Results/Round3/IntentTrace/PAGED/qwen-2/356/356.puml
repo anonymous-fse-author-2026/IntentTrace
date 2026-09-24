@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:Ensure Freights are ready to be shipped;
+:Ship Freight;
+:v_cond: Event Trigger ({Return, Invoice, Claim}); <<objectSignal>>
+fork
+if () then ([v_cond = 'Invoice'] 5 days have passed)
+:Invoice the Customer;
+stop
+endif
+fork again
+if () then ([v_cond = 'Claim'] Loss Claim Lodged)
+:Approve Loss Claim and End Process;
+stop
+endif
+end fork
+@enduml

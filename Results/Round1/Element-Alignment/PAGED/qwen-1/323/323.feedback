@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i6:confirm the shipping address and ensure that it is correct. (reason: The source mandates a distinct verification step immediately following the address check/continuation. The model fails to implement this as a standalone post-merge step, incorrectly absorbing it into the parallel branch arms instead.)
+- [N2] Within matched traces (0->0) omitted: i6:confirm the shipping address and ensure that it is correct.
+- [N3] Within matched traces (1->0) omitted: i6:confirm the shipping address and ensure that it is correct.
+
+Addition
+- [N4] Node-level addition: action(n1,"Start") (reason: The source combines initiation and the first task into a single compound instruction ('start by providing...'). The model invents a separate 'Start' action that lacks independent textual support and unnecessarily fragments the original step.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Provide shipping information") -> action(n3,"Determine shipping details") -> action(n4,"Is the shipping address saved or new?") -> branch(b1,XOR) -> action(n6,"Confirm shipping address") -> action(n7,"Select shipping speed") -> action(n8,"End") -> end(e1)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n1,"Start")
+- [N8] Within matched traces (1->0) added: init(i1)
+- [N9] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N10] Node-level mutation: element=action(n5,"Confirm shipping address") -> action(n6,"Confirm shipping address"); source=i3:If a "Saved shipping address" has been selected, then continue with the process. However, if a "New shipping address" has been entered, also continue with the process.; reason=The source explicitly states that both branches simply 'continue with the process,' indicating they should rejoin before the next step. The model mutates this by replacing the specified continuation with 'Confirm shipping address' on each arm, altering the workflow sequence and prematurely executing a step that belongs post-convergence.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"Select shipping speed")

@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process by sending appointment approval form;
+:receive the approval;
+:contact TS to clarify the timing;
+:check the approval;
+:v1: resource_type ({internal, external}); <<objectSignal>>
+if () then ([v1 = "internal"])
+:authorize appointment for internal resource;
+else ([v1 = "external"])
+:authorize appointment for external resource;
+endif
+:send mandatory documentation and approval to HR services;
+:scan form and record into GovSource system;
+:check the approval again before sending to HR services;
+:send approval and mandatory documentation to HR services;
+:v2: has_variations ({yes, no}); <<objectSignal>>
+if () then ([v2 = "no"])
+:no variations present;
+else ([v2 = "yes"])
+:complete business case;
+:complete business case and attach;
+endif
+stop
+@enduml

@@ -1,0 +1,10 @@
+- `action(n1, "start election process")`: The model omits the specific source text requirement to "begin with the rector's final year in their current position".
+- `branch(b1, XOR)`: Missing guards on the outgoing edges to represent the conditions for `n6` ("candidate meets the required criteria") and `n7` ("candidate does not meet the criteria").
+- `action(n11, "publicize candidate list")` and `branch(b3, AND)`: The text specifies "Once the list of candidates has been formed, it should be made public. Simultaneously, the candidates should promote their ideas... and organize a public meeting". The model incorrectly places publicizing the list (`n11`) inside the parallel branch alongside the simultaneous actions, instead of sequentially before them.
+- `branch(b2, XOR)`: Missing guards on the outgoing edges to represent the conditions for `n15` ("voting fails") and `n16` ("voting is successful").
+- `action(n15, "repeat election process")`: The text states "If the voting fails, another election should be conducted." The model fails to represent this cycle, instead routing `n15` to `c2` and continuing to `n17` to end the process.
+- `defines(v1, "check if candidate meets criteria", {})` and `defines(v2, "check if voting was successful", {})`: The variables have empty ranges `{}` instead of defining the boolean or state values necessary to evaluate their respective XOR gateways.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n16` has 0 guards; exactly one is required.

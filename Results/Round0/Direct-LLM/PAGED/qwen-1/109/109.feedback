@@ -1,0 +1,8 @@
+- `defines(v1, "is the contract okay", {})`: Range is empty `{}`, failing to capture the source's binary decision space ("deemed okay" vs. "any missing details"), violating SMC6.
+- `branch(b1, XOR)`: Missing `guard` statements to associate `v1` with outgoing edges to `n5` and `n6`; omits the explicit conditional routing described as "If the contract is deemed okay... However, if there are any missing details...", violating SMC4.
+- `action(n4, "is the contract okay")`: Incorrectly models a decision condition as an executable task node; the description presents this as a direct conditional trigger for branching, not a distinct workflow step, violating SMC2.
+- `action(n7, "end the process after organizing team")` and `action(n8, "end the process after contacting customer")`: Hallucinates explicit termination actions; the source simply states "the process will come to an end" immediately after the respective tasks, requiring only terminal `end` nodes, violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

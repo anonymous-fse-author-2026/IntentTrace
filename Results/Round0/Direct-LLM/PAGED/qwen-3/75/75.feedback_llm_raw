@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start")`: Hallucinates an undocumented step; the description explicitly states to "begin by receiving the claim", so control should flow directly to `action(n2, "receive claim")`.
+- `action(n8, "accept the claim")`: Omits the required action and mislabels the accepted-path transition, contradicting the source instruction "if the claim is to be accepted, offer the benefit."
+- `guard(b1, n8, v1 = 'Accepted')`: Routes the accepted outcome directly to the erroneous `n8` node, skipping the mandated chronological sequence "offer the benefit" → "prepare the claim discharge" → "record the benefit payment."
+- `branch(b3, AND)`: Misused as a merge/join point via `precedence(n11, b3)`; the DSL grammar reserves `branch` for splits and `converge` for rejoining flows, violating control-flow logic (SMC4).
+- `precedence(n7, b2)`, `precedence(b2, n11)`, `precedence(n11, b3)`, `precedence(b3, n7)`: Creates an infinite cycle (`n7 → b2 → n11 → b3 → n7`) that breaks source chronology and traps the rejection path, preventing termination.
+- `precedence(n7, b2)`: Incorrectly scopes the concurrent steps to trigger only after the rejection continuation, contradicting "At the same time, complete the following steps: operate outgoing payment and close the claim," which describes a general terminal concurrency phase.
+- `converge(c1)` & `precedence(c1, n13)`: Fails to mirror intended source progressions because the rejection branch (`n7`) loops indefinitely instead of routing toward `c1`, leaving the `init`-to-`end` path for rejected claims incomplete.

@@ -1,0 +1,6 @@
+
+
+- `defines(v3, "is process completed", {"No"})`: Violates SMC6; the value range is incomplete. Checking a completion status requires at least `{"Yes", "No"}` or a boolean domain, whereas the model restricts it to a single negative value.
+- `branch(b3, XOR)` and `guard(b3, n13, v3 = 'No')`: Violates SMC1 and SMC4; the source describes a linear progression ("proceed with checking if the process has been completed. Finally, the process ends.") with no conditional split. Introducing an XOR branch and conditional guard hallucinates a decision point and alternative control flow not supported by the text.
+- `guard(b3, n13, v3 = 'No')`: Violates SMC4/SMC5; the routing condition is logically inverted. The model transitions to `"end process"` when the completion status is `'No'`, contradicting standard workflow semantics where termination should follow successful completion (`'Yes'`).
+- `actor(a_default, "Default", [...])`: Violates SMC7; the source explicitly locates the process in the `"Admin Office"`, but the actor declaration uses the generic name `"Default"`, failing to reflect the documented responsible entity or context.

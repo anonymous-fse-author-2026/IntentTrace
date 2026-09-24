@@ -1,0 +1,15 @@
+- `defines(v3, "Check Creditworthiness", {"Yes"})` & `defines(v4, "Construct Approve Response", {"Yes"})`: Variable ranges are restricted to a single value, contradicting their use in XOR branches (`b3`, `b4`) that model conditional choices ("If there is a... Otherwise...") and inherently require multiple possible outcomes (SMC6).
+- `branch(b4, XOR)` & `precedence(b4, n15)`: Misrepresents the source's direct exclusive choice. The description states: "If there is a 'Construct Approve Response', then the process ends with an 'Approved Message'. Otherwise, if there is a 'Construct Reject Response', then the process ends with a 'Reject Message'." The model incorrectly routes the negative path through `action(n15, "Construct Reject Response")` to a secondary branch `b5` instead of directly splitting to the respective message nodes (SMC4).
+- `branch(b5, XOR)`, `action(n17, "End of procedure")`, `end(e5)`, `defines(v5, ...)` & associated guards/edges: Hallucinated elements with no basis in the source text, which specifies immediate process termination after the "Reject Message" with no subsequent decision point or separate "End of procedure" step (SMC1).
+- `precedence(b4, n15)`: Lacks a corresponding guard condition to explicitly model the "Otherwise" clause, leaving an unguarded implicit transition that contrasts with the guarded alternative `guard(b4, n14, v4 = 'Yes')` (SMC4).
+- `action(n4, "Construct Error Response from Banking Privilege Status")` & `action(n7, "Construct Error Response from loan conditions")`: Omit the explicitly documented preceding steps "check the Banking Privilege Status" and "check the fulfillment of loan conditions", collapsing distinct documented behaviors into a single node and altering the stated chronology (SMC1).
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes'` on `b3 -> n11` uses undefined variable `v3`. | Guard `v4 = 'Yes'` on `b4 -> n14` uses undefined variable `v4`. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n15` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | Guard `v4 = 'Yes'` on `b4 -> n14` cannot be evaluated: `v4` has no declared range. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range.

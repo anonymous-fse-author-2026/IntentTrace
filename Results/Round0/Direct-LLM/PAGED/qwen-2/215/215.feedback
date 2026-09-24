@@ -1,0 +1,16 @@
+- `action(n3, "Inventory level is at or below the minimum")` and `action(n7, "Purchase Order is approved")`: Misuse action nodes for decision conditions; the source describes these as branching triggers ("If the 'Inventory level is at or below the minimum'..." and "If the Purchase Order is approved..."), not executable steps, violating SMC2.
+- `branch(b2, XOR)` and missing `guard` declarations: Fails to define guards for the outgoing edges of `b2`; the source requires explicit routing based on whether the order is "approved" or "rejected", violating SMC4.
+- `precedence(n9, n11)` and missing outgoing precedence from `n11`: Breaks the intended control flow; the source states "if the Purchase Order is rejected, then rework the order... review the Purchase Order again," requiring a cycle back to the approval decision, but `n11` dead-ends with no outgoing edges, violating SMC1 and SMC5.
+- `defines(v2, "Purchase Order is approved", {})`: Contains an empty range `{}` instead of reflecting the binary decision values (approved/rejected) mandated by the source, violating SMC6.
+- `defines(v1, "Inventory level is at or below the minimum", {"Inventory Level is above the minimum"})`: Incorrectly uses a condition string as the variable identifier and populates the range solely with the opposing condition, failing to accurately model the source's decision space, violating SMC6.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"Review Purchase Order")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Inventory Level is above the minimum']`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Inventory Level is above the minimum'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'Inventory Level is above the minimum'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n9 | DSL: action(n11,"Review Purchase Order"); action(n9,"Rework the order")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Inventory Level is above the minimum'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'Inventory Level is above the minimum'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

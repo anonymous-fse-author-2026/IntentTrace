@@ -1,0 +1,25 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i6:On the other hand, if they are marked as "Completed", the process should be continued.
+
+Addition
+- [N2] Node-level addition: action(n3,"End process") (reason: The text only instructs to check if the process started; it provides no instruction to terminate the workflow if it has not.)
+- [N3] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: The source proceeds directly from returning invoices to receiving the completed ones. No waiting step is described or implied.)
+- [N4] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: The source proceeds directly from returning invoices to receiving the completed ones. No waiting step is described or implied.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n4,"Check completeness of the invoices") -> branch(b3,AND) -> action(n9,"Continue the process") -> converge(c1) -> action(n10,"Check if the process has been completed") -> branch(b2,XOR) -> action(n11,"End process") -> end(e2)
+- [N7] Within matched traces (0->1) added: init(i1)
+- [N8] Within matched traces (0->1) added: action(n6,"Wait for completion of invoices by client")
+- [N9] Within matched traces (0->1) added: action(n11,"End process")
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: branch(b3,AND)
+- [N12] Within matched traces (1->1) added: action(n5,"Return invoices to client through postal mail")
+- [N13] Within matched traces (1->1) added: action(n6,"Wait for completion of invoices by client")
+
+Mutation
+- [N14] Node-level mutation: element=guard(b2,n12,"v2 = 'Incomplete'"); source=i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail. -> i5:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.; reason=The guard uses the value 'Incomplete' while the source explicitly and repeatedly specifies 'Uncompleted'.
+- [N15] Node-level mutation: element=guard(b2,n11,"v2 = 'Completed'"); source=i4:However, if they are marked as "Completed", the process should be continued.; reason=The source directs to continue the process when invoices are completed, but the model incorrectly routes this condition to 'End process', reversing the intended outcome.
+- [N16] Node-level mutation: element=action(n11,"End process"); source=i6:On the other hand, if they are marked as "Completed", the process should be continued.; reason=The source directs to continue the process when invoices are completed, but the model incorrectly routes this condition to 'End process', reversing the intended outcome.
+
+Permutation
+- [N17] Within matched traces (0->1) reordered: expected [i5:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]
+- [N18] Within matched traces (1->1) reordered: expected [i4:However, if they are marked as "Completed", the process should be continued.] but observed [branch(b2,XOR) -> action(n11,"End process")] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]

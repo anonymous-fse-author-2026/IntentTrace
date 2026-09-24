@@ -1,0 +1,6 @@
+
+
+- `guard(b4, n13, v4 = 'Approved')` → `action(n13, "translate receipts")`: Omits the documented step "continue to check if there is a need for translation" after the first approval, bypassing a required translation-requirement decision node and forcing translation directly.
+- Missing second review decision branch/nodes: The source specifies "Once again, evaluate the review decision. If the report is rejected, edit the report. If it is approved, translate the receipts and then confirm them.", but the model contains no corresponding evaluation action or XOR branch, instead jumping directly from `action(n14, "confirm receipts")` to `action(n15, "evaluate receipts decision")`.
+- `branch(b4, XOR)` control flow: Collapses two distinct decision phases mandated by the source (approval → second translation check → second review decision) into a single transition, violating source chronology (SMC3) and control-flow logic (SMC4).
+- `converge(c3)` → `action(n19, "End")` → `end(e2)`: Creates an alternative termination path for all "edit report" actions, contradicting the source statement "The process ends by processing the expense and then ending it," which indicates a single intended completion condition (SMC1/SMC5).

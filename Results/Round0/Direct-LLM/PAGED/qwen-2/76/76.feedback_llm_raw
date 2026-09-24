@@ -1,0 +1,7 @@
+
+
+- branch(b1) / action(n6, "continue process"): The description states that if someone "Knows SLA", they should "continue the process"; the model omits this action on the corresponding branch, routing branch(b1) directly to converge(c1).
+- branch(b3, AND) / precedence(b3, c2): The description requires proceeding to "enter the date" after "Look up"; the model introduces an unjustified AND gateway b3 that incorrectly routes control flow to converge(c2) and subsequently to the end, bypassing the date entry and urgency evaluation steps.
+- branch(b1, XOR) / branch(b2, XOR): The description explicitly defines conditional transitions ("if someone 'Knows SLA'", "if it is 'Urgent'"), but the model lacks any guard statements to link these branches to the declared decision variables v1 and v2.
+- defines(v1, "knows sla?", {}) / defines(v2, "urgent?", {}): Both decision variables are declared with empty ranges {}, which fails to capture the expected boolean or categorical value spaces implied by the source conditions.
+- converge(c1) / precedence(b1, c1) / precedence(b3, c1): The source describes a straightforward exclusive choice followed by a sequence, but the model incorrectly structures the flow to synchronize an AND gateway into c1, distorting the intended XOR split/join logic.

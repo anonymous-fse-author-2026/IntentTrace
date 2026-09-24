@@ -1,0 +1,16 @@
+- `defines(v1, "get a bonus", {"no"})` / `defines(v2, "get a paycheck", {"no"})`: Hallucinates decision variables and finite ranges not mentioned in the source, which specifies no variables or value spaces.
+- `guard(b1, n4, v1 = 'no')` / `guard(b2, n5, v2 = 'no')` / `label(b3, n2, "no")` / `label(b3, n3, "no")`: Adds conditional guards and labels dependent on the hallucinated variables, contradicting the unconditional progression in the source: "If you 'get a bonus', then you continue the process. If you 'get a paycheck', then you also continue the process."
+- `action(n8, "end process")` / `action(n9, "end process")`: Inserts unnecessary intermediate actions before termination, misrepresenting the direct source statement: "Once you pay the bill, the process ends."
+- `branch(b3, AND)`: Models concurrent execution of "get a bonus" and "get a paycheck", while the source frames them as alternative or sequential triggers that both lead to the same continuation, not parallel tasks.
+- `precedence(b3, n2)` / `precedence(b3, n3)` → divergent paths to `n4`/`n5`, `n6`/`n7`: Duplicates subsequent steps ("continue process", "pay the bill") across two parallel branches instead of merging them into a single shared flow, violating the linear chronological progression of the source.
+- `end(e1)` / `end(e2)`: Creates two separate termination points, conflicting with the source's singular conclusion: "the process ends."
+- `branch(b1, XOR)` / `branch(b2, XOR)`: Defined as exclusive choice gateways but each possesses only one outgoing edge (`b1→n4`, `b2→n5`), introducing redundant branching logic not supported by the source text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['no']`. | Variable `v2` has an invalid range `['no']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'no'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'no'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b1,n4,"v1 = 'no'"); guard(b2,n5,"v2 = 'no'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'no'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'no'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n4,"v1 = 'no'"); guard(b2,n5,"v2 = 'no'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

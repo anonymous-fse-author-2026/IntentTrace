@@ -1,0 +1,7 @@
+
+
+- `action(n3, "Inventory level is at or below the minimum")`: Misclassifies a conditional check as a process action. The source states this as a decision criterion ("If the 'Inventory level is at or below the minimum'"), which should be modeled as a guard on a branch, not a standalone action step.
+- `action(n7, "Purchase Order is approved")`: Misclassifies a decision outcome as a process action. The source treats approval/rejection as routing conditions governing the next step, not as executable activities, violating node payload faithfulness.
+- `action(n11, "Review Purchase Order")` / absent `precedence`: Breaks the required cyclical flow. The source mandates returning to the review phase ("Once the order needs to be reworked, review the Purchase Order again."), but `n11` has no outgoing edges, creating a dead end instead of looping back.
+- `branch(b2, XOR)` / `defines(v2, "Purchase Order is approved", {})`: Omits critical decision logic. The source dictates branching based on approval status, yet `b2` lacks `guard` statements and `v2` has an empty range `{}` with no usage, failing to represent the exclusive choice.
+- `defines(v1, "Inventory level is at or below the minimum", {"Inventory Level is above the minimum"})`: Incomplete domain specification. The source explicitly contrasts two inventory states, but the variable range only defines the "above the minimum" option.

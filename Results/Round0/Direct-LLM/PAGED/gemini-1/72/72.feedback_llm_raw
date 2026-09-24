@@ -1,0 +1,8 @@
+- branch(b1, XOR): Lacks guards on its outgoing edges to represent the conditions "If the invoice is incomplete" and "if the invoice is complete" specified in the text.
+- branch(b2, XOR): Lacks guards on its outgoing edges to represent the conditions "If the issue can be resolved with a phone call" and "if the issue requires mail back".
+- branch(b3, XOR): Has only one outgoing edge (`precedence(b3, n14)`), failing to model the alternative control-flow path for when there is a response from the client.
+- branch(b4, XOR): Has only one outgoing edge (`precedence(b4, n17)`), violating exclusive choice logic and failing to represent an alternative path.
+- action(n16, "Resolve payment discrepancy if client is unsatisfied") and action(n17, "Continue process if client is satisfied"): The model incorrectly chains these actions sequentially instead of placing them on alternative branches of an XOR gateway based on client satisfaction.
+- converge(c1): Incorrectly joins an unconditional parallel flow from `branch(b5, AND)` with a conditional flow from `action(n8)`, which will cause a deadlock if the upstream XOR gateway `branch(b2)` routes to `action(n9)`.
+- action(n7, "Is the invoice non-compliant?"): The model omits the subsequent required action "further checks are conducted" which the text explicitly states must happen "If the invoice is non-compliant".
+- defines(v1, v2, v3, v4): Decision variables are defined with empty ranges `{}` instead of the corresponding sets of expected boolean or categorical values implied by the text's conditions.

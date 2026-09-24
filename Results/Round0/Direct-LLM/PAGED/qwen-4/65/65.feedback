@@ -1,0 +1,12 @@
+- `action(n5, "Create a scorecard from the business requirements")`: Lacks any outgoing precedence edge, creating a dead-end path that severs this documented step from the main workflow and breaks process continuity (SMC4).
+- `action(n8, "Request a response from vendors by a set date")`: Lacks any outgoing precedence edge, disconnecting this documented step from subsequent activities and violating the source's chronological progression (SMC3).
+- `branch(b4, AND)` routing to `n11` and `n12`: Enforces parallel execution, contradicting the source's explicit sequential ordering: "Once the proposals have been received, they should be scored again. Following this, presentations should be attended..." (SMC3/SMC4).
+- `action(n14, "Is pricing and scope adjustment necessary")`: Misrepresents a decision condition as an executable action; the source treats this as a conditional gateway ("If necessary..."), not a task to perform (SMC2).
+- `defines(v1, "Is pricing and scope adjustment necessary", {})` and `branch(b1, XOR)`: Defines an empty value range `{}` and omits required `guard` statements to dictate routing logic, failing to capture the conditional branching described in the text (SMC4/SMC6).
+- `action(n1, "Start the J and J local contacts process")` and `action(n20, "You have completed this procedure")`: Hallucinated steps not present in the source, which begins directly with "identify the business need" and concludes with "A contract should be created..., and this marks the end of the process" (SMC1).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n17` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")

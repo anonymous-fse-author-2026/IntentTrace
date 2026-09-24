@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:run: Password Verification;
+:condition: Select Cancel / Reset password / Retry;
+:v1: condition  Select Cancel / Reset password / Retry ({Select Cancel, Reset password, Retry}); <<objectSignal>>
+switch ()
+case ([v1 = 'Select Cancel'])
+:iforgot.apple.com;
+case ([v1 = 'Reset password'])
+:iforgot.apple.com;
+:reset password;
+:run: Return to iTunes purchases page;
+:select price of the item;
+:condition: Enter Password / Enter Apple ID;
+:v2: condition  Enter Password / Enter Apple ID ({Enter Password, Enter Apple ID}); <<objectSignal>>
+if () then ([v2 = 'Enter Password'])
+:verify the password;
+else ([v2 = 'Enter Apple ID'])
+:enter the password;
+:re-enter and verify password;
+endif
+case ([v1 = 'Retry'])
+:re-enter password;
+:verify re-entered password;
+endswitch
+stop
+@enduml

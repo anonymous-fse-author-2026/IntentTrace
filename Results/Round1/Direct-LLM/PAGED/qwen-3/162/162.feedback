@@ -1,0 +1,12 @@
+Addition
+- [N1] Added trace (model 2): init(i1) -> action(n2,"provide userdata for flickr") -> action(n3,"is login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr") -> action(n8,"do you still want to try again") -> branch(b3,XOR) -> end(e3)
+- [N2] Within matched traces (1->3) added: action(n3,"is login successful")
+- [N3] Within matched traces (2->1) added: action(n3,"is login successful")
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'"); source=i3:If the login is successful, the process will end.; reason=Replaces the explicit natural language condition with a generic variable assignment v1='Yes', dropping the original semantic context.
+- [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:However, if the login fails, we will continue with the process. If you want to try again,; reason=Replaces the explicit 'login fails' condition with a generic v1='No' assignment, altering the specific logical trigger.
+- [N6] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i4:However, if the login fails, we will continue with the process. If you want to try again,; reason=Replaces the explicit 'want to try again' condition with a generic v2='Yes' assignment, losing the original textual condition.
+- [N7] Node-level mutation: element=guard(b2,e2,"v2 = 'No'"); source=i5:On the other hand, if you choose to abort, the process will end.; reason=Replaces the explicit 'choose to abort' condition with a generic v2='No' assignment, altering the specific logical trigger.
+- [N8] Node-level mutation: element=guard(b3,n9,"v3 = 'Yes'"); source=i6:If you still want to try again, please provide the userdata for flickr.; reason=Replaces the explicit 'still want to try again' condition with a generic v3='Yes' assignment, losing the original textual condition.
+- [N9] Node-level mutation: element=guard(b3,e3,"v3 = 'No'"); source=i7:Alternatively, if you decide to abort, the process will end.; reason=Replaces the explicit 'decide to abort' condition with a generic v3='No' assignment, altering the specific logical trigger.

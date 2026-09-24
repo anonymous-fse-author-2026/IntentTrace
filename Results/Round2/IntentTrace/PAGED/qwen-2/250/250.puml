@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:pick up order;
+:request stock check;
+:check inventory;
+:v1: is stock rejected? ({is rejected, Otherwise}); <<objectSignal>>
+if () then ([v1 = 'is rejected'])
+:end process - stock rejected;
+stop
+else ([v1 = 'Otherwise'])
+:request shipping details;
+:receive shipping details;
+:v2: next step ({proceed, send goods}); <<objectSignal>>
+if () then ([v2 = 'proceed'])
+->;
+else ([v2 = 'send goods'])
+:send goods;
+:send invoice;
+endif
+:receive payment;
+:end process;
+stop
+endif
+@enduml

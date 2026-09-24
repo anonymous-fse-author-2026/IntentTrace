@@ -1,0 +1,8 @@
+
+
+- `guard`: Missing for `branch(b1)`, `branch(b2)`, and `branch(b3)`. The source specifies explicit conditional logic ("If there is no suitable candidate available...", "if there is still no suitable candidate available"), which must be captured via guards to define XOR routing per SMC4.
+- `defines(v1, "...", {})`, `defines(v2, "...", {})`, `defines(v3, "...", {})`: Value ranges are empty `{}`. The source implies a binary availability assessment (available/not available), violating SMC6.
+- `action(n4, "...")` & `branch(b2)`: Hallucinated control-flow. Source states "if there is a suitable candidate available, then continue with the process", but the model routes through an additional check and XOR split instead of proceeding directly to selection.
+- `precedence(n6, n10)` leading to `end(e2)`: Premature termination. The model ends the process after `action(n6, "advertise the vacancy again")`, whereas the source explicitly concludes "Once the candidate is appointed, the process comes to an end".
+- `converge(c1)`: Misapplied join. It incorrectly merges outputs from `branch(b2)` (initial affirmative path) and `branch(b3)` (post-advertisement path), collapsing distinct sequential progressions into a single convergence point contrary to the source narrative.
+- `action(n9, "...")` & `action(n10, "...")`: Redundant terminal steps. Source describes a single conclusion ("the process comes to an end") following appointment, but the model implements two disjoint end paths.

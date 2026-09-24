@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start pathology process;
+:receive gross pathology request;
+:complete registration gross pathology request;
+:assign container to gross pathology request;
+:create barcode scan;
+:start scan for specimen description;
+:end scan for specimen description;
+:start scan for registration gross pathology request continuation;
+split
+:write macroscopic description;
+split again
+:process tissue;
+:digitalization required;
+:v1: digitalization required ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:perform digitalization;
+else ([v1 = 'No'])
+:skip digitalization;
+endif
+:digitalization required again;
+:v2: digitalization required again ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:perform digitalization;
+else ([v2 = 'No'])
+:skip digitalization;
+endif
+:complete tissue processing tasks;
+end split
+:assign cases to pathologist;
+:perform microscopic examination and diagnosis;
+:write pathology report;
+:confirm pathology report;
+:deliver pathology report;
+:process post-report;
+:close pathology procedure;
+:deliver pathology report and complete post-report processing;
+:end pathology process;
+stop
+@enduml

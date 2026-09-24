@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:items returned to store;
+:v1: return method ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:customer returns items to store;
+else ([v1 = false])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to the original contract;
+:v2: order status ({complete, incomplete, damaged}); <<objectSignal>>
+switch ()
+case ([v2 = "damaged"])
+:email customer to inform of damage and additional charges;
+:v4: packing choice ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:email customer with replacement charges;
+else ([v4 = false])
+:items are repaired and added into inventory;
+split
+:v6: repair outcome ({true, false}); <<objectSignal>>
+if () then ([v6 = false])
+:items can't be repaired and are discarded;
+split
+stop
+split again
+:temporarily take damaged items out of inventory;
+:v9: final packing ({true, false}); <<objectSignal>>
+if () then ([v9 = true])
+:items packed for existing order;
+else ([v9 = false])
+:items stored for future orders;
+endif
+stop
+end split
+else ([v6 = true])
+:email customer with replacement charges;
+endif
+split again
+stop
+end split
+endif
+case ([v2 = "complete"])
+:items packed for existing order;
+case ([v2 = "incomplete"])
+:items stored for future orders;
+endswitch
+@enduml

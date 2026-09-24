@@ -1,0 +1,10 @@
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements to enforce the conditions "If you are not hungry... Otherwise" and "If you are still not hungry... Otherwise", leaving the exclusive choice unguided and semantically incomplete (SMC4).
+- `defines(v1, "are you hungry?", {})` & `defines(v2, "are you still hungry after breakfast?", {})`: Ranges are empty `{}`, whereas the source implies a binary decision space (e.g., `{true, false}` or `{"Yes", "No"}`) for the hunger status (SMC6).
+- `precedence(n3, c1)`: Routing from `action(n3, "take a shower")` directly to `converge(c1)` skips the subsequent hunger evaluation, contradicting the source which requires a second check ("If you are still not hungry...") regardless of the first outcome (SMC3/SMC5).
+- `branch(b3, AND)`: Introduces parallel execution after `action(n4, "have breakfast")`. The source describes a strictly sequential timeline with no concurrent steps (SMC4).
+- `action(n5, "get on the bus")` & `action(n9, "get on the bus")`: Duplicates the bus boarding step. The source specifies a single terminal action: "After that, get on the bus and the process will be complete" (SMC1/SMC5).
+- `converge(c1)`, `converge(c2)`, & `converge(c3)`: Incorrectly placed synchronization points fragment the linear chronology. The source dictates a direct progression from the final conditional step to the bus ride without requiring path joins (SMC3/SMC4).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,22 @@
+Addition
+- [N1] Node-level addition: action(n1,"start") (reason: The 'start' action has no corresponding instruction or signal in the source text; it is an invented placeholder step.)
+- [N2] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Identify parts") -> action(n3,"Need to elicit information from customer") -> branch(b1,XOR) -> action(n4,"Check availability of parts") -> converge(c1) -> action(n6,"Are parts supplied to customer") -> branch(b2,XOR) -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Identify parts") -> action(n3,"Need to elicit information from customer") -> branch(b1,XOR) -> action(n5,"Proceed with process") -> converge(c1) -> action(n6,"Are parts supplied to customer") -> branch(b2,XOR) -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N4] Within matched traces (0->1) added: init(i1)
+- [N5] Within matched traces (0->1) added: action(n1,"start")
+- [N6] Within matched traces (0->1) added: action(n6,"Are parts supplied to customer")
+- [N7] Within matched traces (1->3) added: init(i1)
+- [N8] Within matched traces (1->3) added: action(n1,"start")
+- [N9] Within matched traces (1->3) added: action(n3,"Need to elicit information from customer")
+- [N10] Within matched traces (1->3) added: action(n6,"Are parts supplied to customer")
+- [N11] Within matched traces (2->1) added: init(i1)
+- [N12] Within matched traces (2->1) added: action(n1,"start")
+- [N13] Within matched traces (2->1) added: action(n3,"Need to elicit information from customer")
+- [N14] Within matched traces (2->1) added: branch(b1,XOR)
+- [N15] Within matched traces (2->1) added: action(n4,"Check availability of parts")
+
+Mutation
+- [N16] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the team needs to elicit information from the customer; reason=The guard replaces the explicit natural-language condition with a generic boolean assignment ('v1 = "Yes"'), losing the original semantic qualifier.
+- [N17] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:if they already have the availability information; reason=The guard substitutes the specific condition with a generic negation ('v1 = "No"'), altering the payload/logic fidelity.
+- [N18] Node-level mutation: element=guard(b2,c2,"v2 = 'Yes'"); source=i6:If the parts are supplied to the customer, the team can also continue with the process.; reason=Condition is distorted into a dummy variable check ('v2 = "Yes"') rather than reflecting the stated supply status.
+- [N19] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:if they need to record the customer's details; reason=Condition is replaced with a generic false flag ('v2 = "No"'), failing to preserve the original requirement text.

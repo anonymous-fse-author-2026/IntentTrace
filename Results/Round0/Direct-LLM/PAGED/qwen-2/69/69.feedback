@@ -1,0 +1,11 @@
+- action(n1, "start"): Hallucinates a process initiation step; the source explicitly states "we first trigger the Resupply Cycle" without any preceding action.
+- action(n18, "end of process"): Hallucinates a final termination step; the source states the process "ends after the payment is issued" with no explicit closing task.
+- defines(v1, "is purchase order good?", {}): Declares an empty value range, failing to reflect the decision alternatives implied by "if the purchase order is not good" versus "if the purchase order is good".
+- branch(b1, XOR) with missing guard statements: Omits edge guards for the exclusive choice, failing to encode the documented conditional criteria ("if the purchase order is not good"/"if good").
+- action(n5, "is purchase order good?"): Incorrectly models a decision condition as a standalone process action instead of integrating it into the gateway logic, adding an unmentioned step to the flow.
+- precedence(n11, c2): Routes the "review purchase order again" step to converge *after* payment issuance (n17), causing the rejected path to bypass fund reservation, PO transmission, concurrent receipt/recording, and payment issuance, contradicting the source's intended progression.
+- actor(a_default, "Default", [...] ): Assigns all nodes to a "Default" participant despite the source containing no actor roles or responsibility allocations.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

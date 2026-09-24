@@ -1,0 +1,11 @@
+- `action(n1, "Start the invoice processing")`: Hallucinated action. The source explicitly states "The first step is to receive and categorize the invoice."
+- `defines(v1, ...)`: The range `{"Reject invoice", "Return invoice to client for completion", "Process Invoice for SAP Entry"}` omits the condition "Forward Invoice to Admin Officer" present in the source text.
+- `precedence(b1, n4)`: Missing a guard condition. The source specifies this path is taken "If the instruction is to 'Forward Invoice to Admin Officer'".
+- `action(n6, "Receive and categorize the invoice again")`: Fails to loop back to the initial categorization step (`n2`) and lacks any outgoing precedence, resulting in an invalid dead-end path.
+- `action(n4, "Sort the invoice")`: Lacks an outgoing precedence to an end node or further steps, resulting in an invalid dead-end path.
+- `action(n5, "End process")` and `action(n9, "End process")`: Hallucinated as distinct operational actions; the source phrase "the process ends" denotes process termination (which is correctly modeled by `e1` and `e2`), not actions performed by an actor.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4, n6 | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")

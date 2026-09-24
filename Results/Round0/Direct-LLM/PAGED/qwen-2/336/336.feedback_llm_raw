@@ -1,0 +1,7 @@
+
+
+- `branch(b2, XOR)`: Uses exclusive choice instead of concurrency. The source states “At the same time, we complete the following steps: checking deductibles and checking the house,” which requires parallel execution (AND gateway), not XOR.
+- `action(n10, "Proceed to next process or end")` & `end(e4)`: Hallucinates a third process outcome. The source only specifies two post-decision paths: “If we need to check the declaration, the process ends. Otherwise, if we need to invite the declarant, the process also ends.”
+- `guard(b1, n4, v1 = 'Yes')` & `defines(v2, "Is income check needed", {})`: Misassigned decision logic. The source ties continuation to “if we need to check the income,” but the model gates this path with `v1` (“Is form complete”). `v2` is defined for the income check but left empty `{}` and unused in guards, omitting the stated condition.
+- `action(n4, "Is income check needed")` & `precedence(n4, b2)`: Falsely models a condition as a sequential step. The source treats the income check requirement as a trigger to continue the process, not as a mandatory action node that must execute between `b1` and `b2`.
+- `defines(v2, ..., {})` & `defines(v3, ..., {})`: Invalid ranges and missing guards. Both variables use empty ranges `{}`, breaking DSL grammar, and fail to model the criteria for “check the declaration” and “invite the declarant.” As a result, `branch(b3, XOR)` lacks the necessary `guard` statements to route correctly to `n8` and `n9`.

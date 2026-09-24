@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i3:If you "get a bonus", then you continue the process. (reason: Per the strict coverage rule, the explicit conditions defined in these units are not faithfully implemented by any element. The model relies on mutated placeholder guards, leaving the actual triggers uncovered.)
+- [N2] Node-level omission: i4:If you "get a paycheck", then you also continue the process. (reason: Per the strict coverage rule, the explicit conditions defined in these units are not faithfully implemented by any element. The model relies on mutated placeholder guards, leaving the actual triggers uncovered.)
+- [N3] Omitted trace (input 1): i1:In the beginning -> i2:you sell cars. -> i4:If you "get a paycheck", then you also continue the process. -> i5:Once you pay the bill, the process ends.
+
+Mutation
+- [N4] Node-level mutation: element=guard(b3,c1,"v2 = 'Yes'"); source=i3:If you "get a bonus", then you continue the process. -> i4:If you "get a paycheck", then you also continue the process.; reason=The guard contents 'v1 = \'Yes\'' and 'v2 = \'Yes\'' replace the specific source conditions ('get a bonus' / 'get a paycheck') with generic boolean placeholders, distorting the decision logic.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` has no enabled outgoing guard at state [v1=No, v2=No].

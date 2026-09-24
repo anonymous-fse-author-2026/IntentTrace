@@ -1,0 +1,119 @@
+Omission
+- [N1] Node-level omission: i20:The customer is then emailed with replacement charges, and the process is complete. (reason: The model lacks an action element for emailing the customer with replacement charges at this stage; it only includes a structural end node for the completion clause.)
+- [N2] Omitted trace (input 0): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. -> i4:During this step, the items are counted and compared to the original contract. -> i5:If the "Order is complete and all items were returned," then we proceed with the process. -> i8:After this, if the "Items are packed for an existing order," we continue the process. -> i14:Finally, when the process is complete, it ends.
+- [N3] Omitted trace (input 5): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. -> i4:During this step, the items are counted and compared to the original contract. -> i7:Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i9:Alternatively, if the "Items are stored for future orders," we also continue the process. -> i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i16:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i20:The customer is then emailed with replacement charges, and the process is complete.
+- [N4] Omitted trace (input 6): i1:To begin the process, Rental Items are Returned to the Store. -> i3:However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i4:During this step, the items are counted and compared to the original contract. -> i5:If the "Order is complete and all items were returned," then we proceed with the process. -> i8:After this, if the "Items are packed for an existing order," we continue the process. -> i14:Finally, when the process is complete, it ends.
+- [N5] Omitted trace (input 11): i1:To begin the process, Rental Items are Returned to the Store. -> i3:However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i4:During this step, the items are counted and compared to the original contract. -> i7:Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i9:Alternatively, if the "Items are stored for future orders," we also continue the process. -> i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i16:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i20:The customer is then emailed with replacement charges, and the process is complete.
+- [N6] Within matched traces (1->0) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N7] Within matched traces (1->0) omitted: i8:After this, if the "Items are packed for an existing order," we continue the process.
+- [N8] Within matched traces (2->0) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N9] Within matched traces (2->0) omitted: i8:After this, if the "Items are packed for an existing order," we continue the process.
+- [N10] Within matched traces (3->5) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N11] Within matched traces (3->5) omitted: i15:If the "Items are repaired and added into inventory," we continue the process.
+- [N12] Within matched traces (4->5) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N13] Within matched traces (4->5) omitted: i16:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.
+- [N14] Within matched traces (7->6) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N15] Within matched traces (7->6) omitted: i8:After this, if the "Items are packed for an existing order," we continue the process.
+- [N16] Within matched traces (8->6) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N17] Within matched traces (8->6) omitted: i8:After this, if the "Items are packed for an existing order," we continue the process.
+- [N18] Within matched traces (9->11) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N19] Within matched traces (9->11) omitted: i15:If the "Items are repaired and added into inventory," we continue the process.
+- [N20] Within matched traces (10->11) omitted: i4:During this step, the items are counted and compared to the original contract.
+- [N21] Within matched traces (10->11) omitted: i16:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.
+
+Addition
+- [N22] Node-level addition: action(b4,"process packing route") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N23] Node-level addition: action(b5,"process storage route") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N24] Node-level addition: action(b7,"handle return yes") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N25] Node-level addition: action(b8,"handle return no") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N26] Node-level addition: action(b9,"final pack route") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N27] Node-level addition: action(b10,"final store route") (reason: These routing and handling steps are invented placeholders with no corresponding instruction or condition in the source text.)
+- [N28] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n15,"customer returns missing items") -> action(b7,"handle return yes") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n13,"email customer with replacement charges") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N29] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> action(b8,"handle return no") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N30] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> action(b8,"handle return no") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n13,"email customer with replacement charges") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N31] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> action(b5,"process storage route") -> branch(b12,XOR) -> action(n18,"items packed for existing order") -> action(b9,"final pack route") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N32] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n15,"customer returns missing items") -> action(b7,"handle return yes") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n13,"email customer with replacement charges") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N33] Added trace (model 8): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> action(b8,"handle return no") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N34] Added trace (model 9): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> action(b8,"handle return no") -> converge(c4) -> action(n10,"email customer with replacement charges") -> action(n11,"items are repaired and added into inventory") -> branch(b6,XOR) -> action(n13,"email customer with replacement charges") -> converge(c3) -> action(n14,"end process") -> end(e2)
+- [N35] Added trace (model 10): init(i1) -> action(n1,"start") -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(nc,"count and compare items to original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> action(b5,"process storage route") -> branch(b12,XOR) -> action(n18,"items packed for existing order") -> action(b9,"final pack route") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N36] Within matched traces (1->0) added: init(i1)
+- [N37] Within matched traces (1->0) added: converge(c1)
+- [N38] Within matched traces (1->0) added: action(nc,"count and compare items to original contract")
+- [N39] Within matched traces (1->0) added: action(b7,"handle return yes")
+- [N40] Within matched traces (1->0) added: converge(c4)
+- [N41] Within matched traces (1->0) added: action(n11,"items are repaired and added into inventory")
+- [N42] Within matched traces (1->0) added: branch(b6,XOR)
+- [N43] Within matched traces (1->0) added: action(n12,"items can't be repaired and are discarded")
+- [N44] Within matched traces (1->0) added: converge(c3)
+- [N45] Within matched traces (2->0) added: init(i1)
+- [N46] Within matched traces (2->0) added: converge(c1)
+- [N47] Within matched traces (2->0) added: action(nc,"count and compare items to original contract")
+- [N48] Within matched traces (2->0) added: action(n15,"customer returns missing items")
+- [N49] Within matched traces (2->0) added: action(b7,"handle return yes")
+- [N50] Within matched traces (2->0) added: converge(c4)
+- [N51] Within matched traces (2->0) added: action(n11,"items are repaired and added into inventory")
+- [N52] Within matched traces (2->0) added: branch(b6,XOR)
+- [N53] Within matched traces (2->0) added: action(n12,"items can't be repaired and are discarded")
+- [N54] Within matched traces (2->0) added: converge(c3)
+- [N55] Within matched traces (3->5) added: init(i1)
+- [N56] Within matched traces (3->5) added: converge(c1)
+- [N57] Within matched traces (3->5) added: action(nc,"count and compare items to original contract")
+- [N58] Within matched traces (3->5) added: action(b5,"process storage route")
+- [N59] Within matched traces (3->5) added: action(b10,"final store route")
+- [N60] Within matched traces (3->5) added: converge(c5)
+- [N61] Within matched traces (4->5) added: init(i1)
+- [N62] Within matched traces (4->5) added: converge(c1)
+- [N63] Within matched traces (4->5) added: action(nc,"count and compare items to original contract")
+- [N64] Within matched traces (4->5) added: action(b5,"process storage route")
+- [N65] Within matched traces (4->5) added: action(b10,"final store route")
+- [N66] Within matched traces (4->5) added: converge(c5)
+- [N67] Within matched traces (7->6) added: init(i1)
+- [N68] Within matched traces (7->6) added: converge(c1)
+- [N69] Within matched traces (7->6) added: action(nc,"count and compare items to original contract")
+- [N70] Within matched traces (7->6) added: action(b7,"handle return yes")
+- [N71] Within matched traces (7->6) added: converge(c4)
+- [N72] Within matched traces (7->6) added: action(n11,"items are repaired and added into inventory")
+- [N73] Within matched traces (7->6) added: branch(b6,XOR)
+- [N74] Within matched traces (7->6) added: action(n12,"items can't be repaired and are discarded")
+- [N75] Within matched traces (7->6) added: converge(c3)
+- [N76] Within matched traces (8->6) added: init(i1)
+- [N77] Within matched traces (8->6) added: converge(c1)
+- [N78] Within matched traces (8->6) added: action(nc,"count and compare items to original contract")
+- [N79] Within matched traces (8->6) added: action(n15,"customer returns missing items")
+- [N80] Within matched traces (8->6) added: action(b7,"handle return yes")
+- [N81] Within matched traces (8->6) added: converge(c4)
+- [N82] Within matched traces (8->6) added: action(n11,"items are repaired and added into inventory")
+- [N83] Within matched traces (8->6) added: branch(b6,XOR)
+- [N84] Within matched traces (8->6) added: action(n12,"items can't be repaired and are discarded")
+- [N85] Within matched traces (8->6) added: converge(c3)
+- [N86] Within matched traces (9->11) added: init(i1)
+- [N87] Within matched traces (9->11) added: converge(c1)
+- [N88] Within matched traces (9->11) added: action(nc,"count and compare items to original contract")
+- [N89] Within matched traces (9->11) added: action(b5,"process storage route")
+- [N90] Within matched traces (9->11) added: action(b10,"final store route")
+- [N91] Within matched traces (9->11) added: converge(c5)
+- [N92] Within matched traces (10->11) added: init(i1)
+- [N93] Within matched traces (10->11) added: converge(c1)
+- [N94] Within matched traces (10->11) added: action(nc,"count and compare items to original contract")
+- [N95] Within matched traces (10->11) added: action(b5,"process storage route")
+- [N96] Within matched traces (10->11) added: action(b10,"final store route")
+- [N97] Within matched traces (10->11) added: converge(c5)
+
+Mutation
+- [N98] Node-level mutation: element=action(n17,"temporarily take damaged items out of inventory"); source=i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.; reason=The element drops the required "and additional charges" condition present in the source text, altering the execution trigger.
+
+Permutation
+- [N99] Within matched traces (1->0) reordered: expected [i12:If the "Customer returns the missing items," we continue the process.] but observed [branch(b3,XOR) -> action(n15,"customer returns missing items")] elsewhere; in its place the model has [action(n10,"email customer with replacement charges")]
+- [N100] Within matched traces (2->0) reordered: expected [i13:However, if the "Customer does not return the missing items," we still continue the process.] but observed [branch(b3,XOR)] elsewhere; in its place the model has [action(n10,"email customer with replacement charges")]
+- [N101] Within matched traces (3->5) reordered: expected [i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.] but observed [action(n17,"temporarily take damaged items out of inventory")] elsewhere; in its place the model has [action(n9,"items stored for future orders")]
+- [N102] Within matched traces (4->5) reordered: expected [i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.] but observed [action(n17,"temporarily take damaged items out of inventory")] elsewhere; in its place the model has [action(n9,"items stored for future orders")]
+- [N103] Within matched traces (7->6) reordered: expected [i12:If the "Customer returns the missing items," we continue the process.] but observed [branch(b3,XOR) -> action(n15,"customer returns missing items")] elsewhere; in its place the model has [action(n10,"email customer with replacement charges")]
+- [N104] Within matched traces (8->6) reordered: expected [i13:However, if the "Customer does not return the missing items," we still continue the process.] but observed [branch(b3,XOR)] elsewhere; in its place the model has [action(n10,"email customer with replacement charges")]
+- [N105] Within matched traces (9->11) reordered: expected [i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.] but observed [action(n17,"temporarily take damaged items out of inventory")] elsewhere; in its place the model has [action(n9,"items stored for future orders")]
+- [N106] Within matched traces (10->11) reordered: expected [i11:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.] but observed [action(n17,"temporarily take damaged items out of inventory")] elsewhere; in its place the model has [action(n9,"items stored for future orders")]
+
+Structural Check
+- [S1] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c2` has in=2 and out=0. | DSL: converge(c2)
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1 | DSL: end(e1)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b4, c2, n5, n8 | DSL: action(b4,"process packing route"); converge(c2); action(n5,"order is complete and all items were returned"); action(n8,"items packed for existing order")
+- [S4] STC22 failed: Every node must be assigned to exactly one actor. | Node `b7` is not assigned to any actor. | Node `b8` is not assigned to any actor. | DSL: action(b7,"handle return yes"); action(b8,"handle return no")

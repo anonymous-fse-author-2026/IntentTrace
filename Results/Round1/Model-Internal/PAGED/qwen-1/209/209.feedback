@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i8:the order is considered as "NOK" and the process ends. (reason: The model routes the failed installation path directly to a converge node without implementing the explicit action to mark the order as 'NOK' before termination.)
+- [N2] Within matched traces (1->1) omitted: i8:the order is considered as "NOK" and the process ends.
+
+Addition
+- [N3] Node-level addition: action(n1,"start process") (reason: Content 'start process' is invented; the source text only describes beginning with receiving a request, making this step unsupported.)
+- [N4] Node-level addition: guard(b3,n13,"v3 = 'Yes'") (reason: Introduces a 'Yes' condition guard not present in the source text, which simply states 'if everything is in order'.)
+- [N5] Node-level addition: guard(b3,n15,"v3 = 'No'") (reason: Models an explicit negative branch ('No') for the final condition, which is completely absent from the source description.)
+- [N6] Node-level addition: action(n15,"end no") (reason: Invented terminal action corresponding to the undescribed negative branch.)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"receive order request") -> action(n3,"register order") -> action(n4,"evaluate order") -> action(n5,"evaluation result ok") -> branch(b1,XOR) -> action(n8,"perform installation") -> action(n9,"installation successful") -> branch(b2,XOR) -> action(n10,"check installation") -> action(n11,"prepare billing") -> action(n12,"everything in order") -> branch(b3,XOR) -> action(n15,"end no") -> end(e3)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n1,"start process")
+- [N10] Within matched traces (0->0) added: action(n5,"evaluation result ok")
+- [N11] Within matched traces (1->1) added: init(i1)
+- [N12] Within matched traces (1->1) added: action(n1,"start process")
+- [N13] Within matched traces (1->1) added: action(n9,"installation successful")
+- [N14] Within matched traces (1->1) added: action(n6,"mark order as NOK")
+- [N15] Within matched traces (1->1) added: action(n7,"end NOK")
+- [N16] Within matched traces (1->1) added: end(e1)
+- [N17] Within matched traces (2->2) added: init(i1)
+- [N18] Within matched traces (2->2) added: action(n1,"start process")
+- [N19] Within matched traces (2->2) added: branch(b3,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=guard(b2,c1,"v2 = 'No'"); source=i7:If the installation is not successful; reason=Source specifies the condition as 'not successful', but the guard substitutes the arbitrary literal value 'No', altering the semantic meaning.
+- [N21] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i9:if the installation is successful; reason=Source specifies the condition as 'successful', but the guard substitutes the arbitrary literal value 'Yes', distorting the original condition.

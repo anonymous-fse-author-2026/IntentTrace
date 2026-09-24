@@ -1,0 +1,8 @@
+- `action(n1, "Start Process")`: The source text specifies to "start by placing an order", but the model abstracts this to a generic "Start Process" action.
+- `branch(b5, AND)`: The model adds an AND split after "Inform Ineligible Customer" (via `precedence(n3, b5)`) that leads to subsequent parts of the process (`c5`, `c6`), contradicting the source text which states "After informing the customer, the process ends."
+- `action(n8, "Prepare Products for Shipment")` and `action(n9, "Prepare Products for Shipment")`: The model inappropriately duplicates this action for each incoming branch path instead of converging the control flow first.
+- `action(n12, "Check Payment Status")` and `action(n13, "Check Payment Status")`: The model erroneously duplicates the action to check the payment status in sequence.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`: The model completely omits `guard` statements for all exclusive branches, failing to represent the explicit conditions in the text (e.g., "not eligible to order", "available").
+- `defines(v1, ...)`, `defines(v2, ...)`, `defines(v3, ...)`, `defines(v4, ...)`: The model defines empty ranges `{}` for all variables, missing the explicitly quoted states from the text (e.g., "eligible to order", "available").
+- `action(n15, "Send Payment Reminder")`: The source text dictates to "send a reminder and close the order", but the model omits the action to close the order in the unreceived payment path.
+- `action(n17, "Continue Process")`: The node is a dead end with no outgoing precedence to a loop-back or an `end` node, failing to form a valid control-flow path for continuing the process.

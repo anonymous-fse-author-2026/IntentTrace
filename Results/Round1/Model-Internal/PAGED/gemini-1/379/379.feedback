@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum -> i4:generate an Equal to or below minimum Report -> i6:create Purchase Orders (POs) -> i11:needs to be reviewed -> i8:needs to be reworked -> i6:create Purchase Orders (POs)
+- [N2] Within matched traces (3->1) omitted: i13:receive the Packing Slip
+
+Addition
+- [N3] Node-level addition: action(n18,"perform three-way match") (reason: The model invents a separate action step to 'perform' the match, which lacks explicit source support beyond 'proceed to', which is already perfectly covered by action:n17.)
+- [N4] Within matched traces (2->0) added: action(n18,"perform three-way match")
+- [N5] Within matched traces (3->1) added: action(n18,"perform three-way match")
+- [N6] Within matched traces (0->2) added: action(n3,"is inventory below or equal to minimum?")
+- [N7] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'") -> guard(b1,n5,"v1 = 'No'"); source=i3:If the inventory is below or equal to the minimum; reason=The guards abstract the specific inventory threshold condition into generic boolean variable assignments ('v1 = Yes' and 'v1 = No'), discarding the actual logic.
+- [N9] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'") -> guard(b2,n11,"v2 = 'No'"); source=i9:If the PO is approved; reason=The guards abstract the specific approval condition into generic boolean variable assignments ('v2 = Yes' and 'v2 = No'), discarding the specific logic.

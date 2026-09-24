@@ -1,0 +1,20 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i9:Finally, when the process is complete, it ends.
+- [N2] Within matched traces (1->2) omitted: i13:Once again, when the process is complete, it ends.
+- [N3] Within matched traces (1->2) omitted: i14:The customer is then emailed with replacement charges, and the process is complete.
+
+Addition
+- [N4] Added trace (model 1): init(i1) -> action(n1,"Start rental items return process") -> action(n2,"How were the items returned?") -> branch(b1,XOR) -> action(n3,"Count items and compare to original contract") -> action(n4,"Order status?") -> branch(b2,XOR) -> action(n7,"Email customer to inform of damage and additional charges") -> action(n8,"Temporarily take damaged items out of inventory") -> action(n9,"Items repair status?") -> branch(b4,XOR) -> action(n10,"Items are repaired and added into inventory") -> converge(c1) -> action(n13,"Items packed for an existing order?") -> branch(b5,XOR) -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"Start rental items return process") -> action(n2,"How were the items returned?") -> branch(b1,XOR) -> action(n3,"Count items and compare to original contract") -> action(n4,"Order status?") -> branch(b2,XOR) -> converge(c1) -> action(n13,"Items packed for an existing order?") -> branch(b5,XOR) -> end(e1)
+- [N6] Within matched traces (0->0) added: action(n13,"Items packed for an existing order?")
+- [N7] Within matched traces (0->0) added: branch(b5,XOR)
+- [N8] Within matched traces (0->0) added: end(e1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=0 and out=0. | Node `n15` has in=0 and out=1. | Node `n3` has in=2 and out=1. | DSL: action(n14,"Email customer with replacement charges"); action(n15,"End"); action(n3,"Count items and compare to original contract")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> e1` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> e1` has 2 guards; exactly one is required.
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: n14, n15 | DSL: action(n14,"Email customer with replacement charges"); action(n15,"End")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n14 | DSL: action(n14,"Email customer with replacement charges")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Delivery Crew picks-up items at the event site]. | XOR branch `b3` has overlapping guards at state [v3=Customer returns the missing items]. | XOR branch `b5` has overlapping guards at state [v5=Items are packed for an existing order].

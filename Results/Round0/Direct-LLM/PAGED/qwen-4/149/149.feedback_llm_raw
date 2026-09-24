@@ -1,0 +1,7 @@
+
+
+- `defines(v1, "Production Order Received?", {})` and `defines(v2, "Check Material Availability", {})`: Declare empty value ranges `{}`, failing to represent the binary/categorical decision spaces required by the source conditions, violating SMC6.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard` statements to bind outgoing edges to the source conditions ("if a production order is received", "if there are unavailable materials"), violating SMC4.
+- `precedence(n4, c1)` and `precedence(c1, n5)`: Route the "Update Sales Information and Proceed to Dispatch" path into the material availability check, contradicting the source which states this alternative should "proceed to order dispatch", violating SMC3 and SMC5.
+- `precedence(n8, n9)` and `precedence(n9, n10)`: Sequentially chain updating stock and dispatching motorcycles, contradicting the source's explicit concurrency ("At the same time, the stock is updated and the motorcycles are dispatched"), violating SMC4.
+- `precedence(b2, c2)`: Creates a direct jump to production when materials are available, omitting the documented behavior "a manufacturing order is placed", violating SMC1.

@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "is purchase order good?", {})`: The value range is empty `{}`, failing to represent the binary decision options ("good" vs "not good") explicitly stated in the source description (SMC6).
+- `branch(b1, XOR)` and missing `guard` statements: The model declares an XOR split but omits `guard` conditions for the edges to `n6` and `n7`. The source explicitly dictates path selection based on PO quality ("If the purchase order is not good... if the purchase order is good"), making their absence a violation of SMC1 and SMC4.
+- `precedence(n11, c2)` and `converge(c2)`: Routing `n11` ("review purchase order again") to `c2` merges it with `n17` ("issue payment"), creating an alternate termination path that bypasses sending to the supplier, receiving/recording documents, and issuing payment. This contradicts the source's unified progression that ends exclusively "after the payment is issued" (SMC3, SMC5).
+- `actor(a_default, "Default", [...])`: Assigning every node to a single generic actor ignores the external participant explicitly mentioned in the source ("send the purchase order to the supplier"), misrepresenting task responsibilities (SMC7).

@@ -1,0 +1,23 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i13:However, if there are variations, a business case is completed.
+- [N2] Within matched traces (3->3) omitted: i13:However, if there are variations, a business case is completed.
+
+Addition
+- [N3] Node-level addition: action(n13,"check for variations") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N4] Within matched traces (0->0) added: action(n13,"check for variations")
+- [N5] Within matched traces (0->0) added: converge(c2)
+- [N6] Within matched traces (1->1) added: action(n13,"check for variations")
+- [N7] Within matched traces (2->2) added: action(n13,"check for variations")
+- [N8] Within matched traces (2->2) added: converge(c2)
+- [N9] Within matched traces (3->3) added: action(n13,"check for variations")
+
+Mutation
+- [N10] Node-level mutation: element=guard(b2,n15,"v2 = 'yes'") -> action(n15,"complete business case"); source=i14:However, if there are variations, a business case is completed and attached.; reason=Drops the critical qualifier 'and attached', altering the granularity and complete instruction of the source unit.
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'internal'` on `b1 -> n7` uses undefined variable `v1`. | Guard `v1 = 'external'` on `b1 -> n8` uses undefined variable `v1`. | Guard `v2 = 'no'` on `b2 -> n14` uses undefined variable `v2`. | Guard `v2 = 'yes'` on `b2 -> n15` uses undefined variable `v2`. | DSL: guard(b1,n7,"v1 = 'internal'"); guard(b1,n8,"v1 = 'external'"); guard(b2,n14,"v2 = 'no'"); guard(b2,n15,"v2 = 'yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'internal'` on `b1 -> n7` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'external'` on `b1 -> n8` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'no'` on `b2 -> n14` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'yes'` on `b2 -> n15` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n7,"v1 = 'internal'"); guard(b1,n8,"v1 = 'external'"); guard(b2,n14,"v2 = 'no'"); guard(b2,n15,"v2 = 'yes'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

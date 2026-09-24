@@ -1,0 +1,21 @@
+Addition
+- [N1] Added trace (model 5): init(i1) -> action(n1,"Orders Required") -> action(n2,"place Bulk order") -> action(n3,"Order with prior internal credit allowance") -> branch(b1,XOR) -> action(n5,"Outstanding Balance") -> action(n6,"place new order") -> branch(b4,AND) -> action(n8,"End at Warehouse") -> end(e1)
+- [N2] Within matched traces (0->0) added: init(i1)
+- [N3] Within matched traces (1->1) added: init(i1)
+- [N4] Within matched traces (1->1) added: action(n13,"installation needs to be scheduled")
+- [N5] Within matched traces (2->3) added: init(i1)
+- [N6] Within matched traces (2->3) added: action(n3,"Order with prior internal credit allowance")
+- [N7] Within matched traces (3->4) added: init(i1)
+- [N8] Within matched traces (3->4) added: action(n3,"Order with prior internal credit allowance")
+- [N9] Within matched traces (3->4) added: action(n13,"installation needs to be scheduled")
+- [N10] Within matched traces (4->2) added: init(i1)
+- [N11] Within matched traces (4->2) added: action(n3,"Order with prior internal credit allowance")
+- [N12] Within matched traces (4->2) added: action(n9,"Payments are Received")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.; reason=Replaces the explicit business condition with a generic opaque check (`v1 = 'Yes'`), dropping the specific qualifier required for faithful reproduction.
+- [N14] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:However, if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance.; reason=Replaces the explicit threshold/condition with a generic opaque check (`v1 = 'No'`), obscuring the actual trigger logic.
+- [N15] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:If Payments are Received, the process continues.; reason=Abstracts the payment receipt verification into a meaningless boolean placeholder (`v2 = 'Yes'`), failing to preserve the operational data.
+- [N16] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:However, if no payments are received, the order is dropped.; reason=Uses a generic negative boolean (`v2 = 'No'`) instead of modeling the specific non-payment condition stated in the source.
+- [N17] Node-level mutation: element=guard(b3,n14,"v3 = 'Yes'"); source=i9:If the installation needs to be scheduled, an Installer will be assigned.; reason=Substitutes the concrete scheduling requirement with a placeholder `v3 = 'Yes'`, violating the strict fidelity standard.
+- [N18] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i10:On the other hand, if the order does not require installation, it will be packed for delivery.; reason=Substitutes the concrete non-installation requirement with a placeholder `v3 = 'No'`, dropping the meaningful business rule.

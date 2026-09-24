@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i5:If the report indicates that the inventory is equal to or below the minimum (reason: The conditional check explicitly verifying the report contents before creating POs is omitted from the model.)
+- [N2] Node-level omission: i11:If the PO needs to be reworked, it needs to be created again. (reason: The action step detailing that reworked POs must be created again and its respective condition are entirely omitted.)
+- [N3] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum, generate an Equal to or below minimum Report. -> i5:If the report indicates that the inventory is equal to or below the minimum -> i6:create Purchase Orders (POs) -> i10:If the PO is created, it needs to be reviewed. -> i8:If the PO is rejected, it needs to be reworked. -> i11:If the PO needs to be reworked, it needs to be created again. -> i6:create Purchase Orders (POs)
+- [N4] Within matched traces (2->0) omitted: i5:If the report indicates that the inventory is equal to or below the minimum
+- [N5] Within matched traces (3->1) omitted: i5:If the report indicates that the inventory is equal to or below the minimum
+- [N6] Within matched traces (3->1) omitted: i15:If the Packing Slip is received, proceed to receive the Invoice.
+
+Addition
+- [N7] Node-level addition: action(n16,"Receive Invoice") (reason: There is no separate 'Receive Invoice' action stated in the source text; it only instructs to 'proceed to receive' it and uses it as a condition.)
+- [N8] Within matched traces (2->0) added: action(n16,"Receive Invoice")
+- [N9] Within matched traces (2->0) added: converge(c1)
+
+Mutation
+- [N10] Node-level mutation: element=action(n5,"End: Process Ends (Above Minimum)"); source=i7:If the report indicates that the inventory is above the minimum, the process ends.; reason=The action step specifies the process end but completely drops the preceding conditional logic 'If the report indicates that the inventory is above the minimum'.
+- [N11] Node-level mutation: element=action(n7,"Review PO"); source=i10:If the PO is created, it needs to be reviewed.; reason=The element faithfully restates the review step but completely drops the preceding condition 'If the PO is created'.
+- [N12] Node-level mutation: element=action(n14,"Proceed to Receive Invoice"); source=i15:If the Packing Slip is received, proceed to receive the Invoice.; reason=The element implements proceeding to receive the invoice but completely drops the condition 'If the Packing Slip is received'.
+- [N13] Node-level mutation: element=action(n15,"Proceed to Receive Packing Slip"); source=i16:If the inventory is received, proceed to receive the Packing Slip.; reason=The element implements proceeding to receive the packing slip but completely drops the condition 'If the inventory is received'.
+- [N14] Node-level mutation: element=action(n17,"Three-way Match"); source=i17:If the Invoice is received, proceed to the Three-way match.; reason=The element implements the Three-way match step but completely drops the condition 'If the Invoice is received'.
+- [N15] Node-level mutation: element=action(n18,"Release Funds"); source=i18:If the Three-way match is successful, release the funds.; reason=The element implements releasing the funds but completely drops the conditional logic 'If the Three-way match is successful'.

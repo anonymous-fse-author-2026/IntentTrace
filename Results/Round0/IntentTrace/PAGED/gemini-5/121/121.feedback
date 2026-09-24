@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i4:completing the payment (reason: The text explicitly mentions the act of completing the payment, but the model has no corresponding action step for it (only an unsupported success condition check).)
+- [N2] Within matched traces (0->0) omitted: i4:completing the payment
+
+Addition
+- [N3] Node-level addition: action(n4,"Payment successful?") (reason: The source text does not describe checking payment success, separate ending actions, or any alternative path involving contacting support.)
+- [N4] Node-level addition: action(n5,"End of successful process") (reason: The source text does not describe checking payment success, separate ending actions, or any alternative path involving contacting support.)
+- [N5] Node-level addition: action(n6,"Contact support") (reason: The source text does not describe checking payment success, separate ending actions, or any alternative path involving contacting support.)
+- [N6] Node-level addition: action(n7,"End of process with support contact") (reason: The source text does not describe checking payment success, separate ending actions, or any alternative path involving contacting support.)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start passenger process") -> action(n2,"Fill in passenger information") -> action(n3,"Proceed to payment page") -> action(n4,"Payment successful?") -> branch(b1,XOR) -> action(n6,"Contact support") -> action(n7,"End of process with support contact") -> end(e2)
+- [N8] Within matched traces (0->0) added: action(n4,"Payment successful?")
+- [N9] Within matched traces (0->0) added: branch(b1,XOR)
+- [N10] Within matched traces (0->0) added: action(n5,"End of successful process")
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Examine Order;
+split
+:Prepare Assembling Order;
+split again
+:Check Availability;
+end split
+:Is Backorder Required?;
+:v2: Is Backorder Required? ({Backorder, Reserved}); <<objectSignal>>
+if () then ([v2 = "Backorder"])
+:Check Availability Again;
+stop
+else ([v2 = "Reserved"])
+:Assemble Bike;
+:Ship Product;
+stop
+endif
+@enduml

@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: If the invoice is non-compliant, further checks are conducted. (reason: Explicit action describing intermediate verification steps is absent from the model; it was incorrectly collapsed directly into routing guards.)
+- [N2] Node-level omission: if it is returned, non-compliance is resolved. (reason: Recurring conditional trigger for resolution is not implemented as a distinct guard or action; the model assumes resolution flows automatically without this explicit check.)
+- [N3] Node-level omission: After that, the invoice is paid (reason: Initial payment step mentioned prior to the simultaneous billing phase is missing; the model only captures the later combined payment/notification step.)
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Content 'start' redundantly duplicates the implicit function of the init node and lacks a distinct supporting source span.)
+- [N5] Node-level addition: action(n5,"End of process: Invoice returned due to incompleteness") (reason: Claims the process terminates upon incomplete return. Source only states 'it is returned,' with no indication of process termination at this stage.)
+- [N6] Node-level addition: action(n10,"End of process: Invoice returned due to mail back") (reason: Claims the process terminates upon mail-back return. Source only states 'the invoice is returned,' lacking any end-of-process signal here.)
+- [N7] Node-level addition: action(n18,"End of process: Payment completed and client notified") (reason: Asserts process termination after payment completion/notification. Source indicates workflow continuation elsewhere, and this specific end-state label has no textual basis.)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=If the invoice is non-compliant; reason=Maps the 'non-compliant=true' outcome directly to phone resolution. The source introduces an intermediate conditional ('If the issue can be resolved with a phone call') before resolution occurs; skipping this alters the control flow logic.
+- [N9] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=But if the issue requires mail back; reason=Maps the 'non-compliant=false' outcome to the mail-back return. The source ties the mail-back requirement to unresolved issues, not to compliant invoices. This reverses/misaligns the intended routing logic.
+- [N10] Node-level mutation: element=guard(b3,e3,"v3 = 'No'"); source=If there is no response; reason=Invents a termination route for when a response IS received (v3='No'). The source text exclusively describes the no-response branch and provides no logic or endpoint for the positive response case.
+- [N11] Node-level mutation: element=guard(b4,n17,"v4 = 'Yes'"); source=If the client is unsatisfied; reason=Routes the 'unsatisfied=true' outcome to a node labeled 'Continue process if client is satisfied'. The guard condition and target action payload are logically contradictory.
+- [N12] Node-level mutation: element=guard(b4,e4,"v4 = 'No'"); source=However, if the client is satisfied; reason=Routes the 'satisfied' outcome to a process end node. The source explicitly states the process continues upon satisfaction, directly contradicting the modeled termination.

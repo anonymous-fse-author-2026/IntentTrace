@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i3:Once you have paid for the products and have enough to eat, the process comes to an end. (reason: Completely omits the required prerequisite condition 'have enough to eat', which must be satisfied concurrently with payment before the process terminates.)
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> action(n7,"purchase meat") -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: converge(c1)
+
+Mutation
+- [N6] Node-level mutation: element=branch(b1,AND); source=i2:If you choose to take a salad, then you can continue with the process. Similarly, if you opt for sausages or meat, you can also continue with the process.; reason=Gateway is configured as AND, implying mandatory parallel execution of all branches, but the source describes alternative selection paths (salad versus sausages/meat), which requires an XOR or OR gateway.
+- [N7] Node-level mutation: element=action(n6,"purchase sausages"); source=i2:If you choose to take a salad, then you can continue with the process. Similarly, if you opt for sausages or meat, you can also continue with the process.; reason=Alters the specified action from 'opt for sausages' to 'purchase sausages', changing the intended outcome and granularity.
+- [N8] Node-level mutation: element=action(n7,"purchase meat"); source=i2:If you choose to take a salad, then you can continue with the process. Similarly, if you opt for sausages or meat, you can also continue with the process.; reason=Alters the specified action from 'opt for ... meat' to 'purchase meat', changing the intended outcome and granularity.

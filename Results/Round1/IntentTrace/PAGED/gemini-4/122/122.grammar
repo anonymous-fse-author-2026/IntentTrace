@@ -1,0 +1,39 @@
+{
+  "ok": false,
+  "accepted_count": 22,
+  "rejected_count": 2,
+  "accepted": [
+    "init(i1)",
+    "action(n1, \"start\")",
+    "action(n2, \"Is input a URN or URL?\")",
+    "branch(b1, XOR)",
+    "action(n3, \"Resolve URN to domain-name\")",
+    "action(n4, \"Send DNS query\")",
+    "action(n6, 'After this, we again check if the input is a \"URN\" or a \"URL\" and take the corresponding action.')",
+    "action(n5, \"Link to designated DS and end\")",
+    "end(e1)",
+    "converge(c1)",
+    "defines(v1, \"Is input a URN or URL?\", {\"URN\", \"URL\"})",
+    "actor(a_default, \"Default\", [i1, n1, n2, b1, n3, n4, n5, n6, e1, c1])",
+    "precedence(i1, n1)",
+    "precedence(n1, n2)",
+    "precedence(n2, b1)",
+    "precedence(b1, n3)",
+    "precedence(n3, n4)",
+    "precedence(n4, c1)",
+    "precedence(b1, n6)",
+    "precedence(n6, c1)",
+    "precedence(c1, n5)",
+    "precedence(n5, e1)"
+  ],
+  "rejected": [
+    {
+      "statement": "guard(b1, n3, v1 == \"URN\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b1, n6, v1 == \"URL\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    }
+  ]
+}

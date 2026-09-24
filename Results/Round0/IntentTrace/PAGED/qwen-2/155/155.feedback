@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step, followed by checking the Inventory Level. -> i2:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i4:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i6:On the other hand, if the Purchase Order is rejected, then rework the order. -> i8:In case the order needs to be reworked, review the Purchase Order again. -> i4:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Resupply Cycle Triggered") -> action(n2,"Check Inventory Level") -> action(n3,"Inventory Level at or below minimum") -> branch(b1,XOR) -> action(n4,"Create Purchase Order") -> action(n6,"Reviewing Purchase Order") -> action(n7,"Purchase Order Approved") -> branch(b2,XOR) -> action(n8,"Reserve Funds for Purchase") -> action(n10,"Send Order to Suppliers") -> branch(b3,AND) -> action(n13,"Supplier sends invoice") -> action(n15,"Record invoice") -> converge(c1) -> action(n16,"Release reserved funds") -> action(n17,"Issue payment to supplier") -> action(n18,"End Process") -> end(e2)
+- [N3] Within matched traces (0->2) added: init(i1)
+- [N4] Within matched traces (0->2) added: action(n3,"Inventory Level at or below minimum")
+- [N5] Within matched traces (0->2) added: branch(b1,XOR)
+- [N6] Within matched traces (2->0) added: init(i1)
+- [N7] Within matched traces (2->0) added: converge(c1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"Reviewing Purchase Order")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n9 | DSL: action(n11,"Reviewing Purchase Order"); action(n9,"Rework Order")

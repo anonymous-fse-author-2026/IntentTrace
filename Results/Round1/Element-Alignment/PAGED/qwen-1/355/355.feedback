@@ -1,0 +1,128 @@
+Omission
+- [N1] Node-level omission: i12:Check the payment status. (reason: The source explicitly requires checking payment status before evaluating receipt, but no corresponding action or decision node exists in the model.)
+- [N2] Node-level omission: i14:If no payment is received, check the number of reminders. (reason: The step to retrieve/check the number of reminders is entirely missing; the model skips directly to evaluating the threshold condition.)
+- [N3] Within matched traces (2->4) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N4] Within matched traces (2->4) omitted: i12:Check the payment status.
+- [N5] Within matched traces (3->10) omitted: i12:Check the payment status.
+- [N6] Within matched traces (4->17) omitted: i6:enter their data and take the order.
+- [N7] Within matched traces (4->17) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N8] Within matched traces (4->17) omitted: i12:Check the payment status.
+- [N9] Within matched traces (5->23) omitted: i6:enter their data and take the order.
+- [N10] Within matched traces (5->23) omitted: i12:Check the payment status.
+- [N11] Within matched traces (6->5) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N12] Within matched traces (6->5) omitted: i12:Check the payment status.
+- [N13] Within matched traces (6->5) omitted: i14:If no payment is received, check the number of reminders.
+- [N14] Within matched traces (7->11) omitted: i12:Check the payment status.
+- [N15] Within matched traces (7->11) omitted: i14:If no payment is received, check the number of reminders.
+- [N16] Within matched traces (8->18) omitted: i6:enter their data and take the order.
+- [N17] Within matched traces (8->18) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N18] Within matched traces (8->18) omitted: i12:Check the payment status.
+- [N19] Within matched traces (8->18) omitted: i14:If no payment is received, check the number of reminders.
+- [N20] Within matched traces (9->24) omitted: i6:enter their data and take the order.
+- [N21] Within matched traces (9->24) omitted: i12:Check the payment status.
+- [N22] Within matched traces (9->24) omitted: i14:If no payment is received, check the number of reminders.
+- [N23] Within matched traces (10->6) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N24] Within matched traces (10->6) omitted: i12:Check the payment status.
+- [N25] Within matched traces (10->6) omitted: i14:If no payment is received, check the number of reminders.
+- [N26] Within matched traces (11->12) omitted: i12:Check the payment status.
+- [N27] Within matched traces (11->12) omitted: i14:If no payment is received, check the number of reminders.
+- [N28] Within matched traces (12->19) omitted: i6:enter their data and take the order.
+- [N29] Within matched traces (12->19) omitted: i11:Simultaneously, send the invoice and deliver the product.
+- [N30] Within matched traces (12->19) omitted: i12:Check the payment status.
+- [N31] Within matched traces (12->19) omitted: i14:If no payment is received, check the number of reminders.
+- [N32] Within matched traces (13->25) omitted: i6:enter their data and take the order.
+- [N33] Within matched traces (13->25) omitted: i12:Check the payment status.
+- [N34] Within matched traces (13->25) omitted: i14:If no payment is received, check the number of reminders.
+
+Addition
+- [N35] Node-level addition: action(n1,"start process") (reason: The 'start process' action is not described in the source text and redundantly duplicates the implicit start already covered by init:i1.)
+- [N36] Node-level addition: action(n22,"are reminders more than 3") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N37] Added trace (model 0): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> converge(c1) -> action(n8,"reject order") -> action(n9,"end process") -> end(e1)
+- [N38] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> end(e2)
+- [N39] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> end(e3)
+- [N40] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> end(e4)
+- [N41] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> end(e2)
+- [N42] Added trace (model 8): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> end(e3)
+- [N43] Added trace (model 9): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> end(e4)
+- [N44] Added trace (model 14): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> end(e2)
+- [N45] Added trace (model 15): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> end(e3)
+- [N46] Added trace (model 16): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c2) -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> end(e4)
+- [N47] Added trace (model 20): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> end(e2)
+- [N48] Added trace (model 21): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> end(e3)
+- [N49] Added trace (model 22): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,OR) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> end(e4)
+- [N50] Within matched traces (0->13) added: init(i1)
+- [N51] Within matched traces (0->13) added: action(n1,"start process")
+- [N52] Within matched traces (1->13) added: init(i1)
+- [N53] Within matched traces (1->13) added: action(n1,"start process")
+- [N54] Within matched traces (1->13) added: action(n3,"is customer registered")
+- [N55] Within matched traces (2->4) added: init(i1)
+- [N56] Within matched traces (2->4) added: action(n1,"start process")
+- [N57] Within matched traces (2->4) added: branch(b7,AND)
+- [N58] Within matched traces (3->10) added: init(i1)
+- [N59] Within matched traces (3->10) added: action(n1,"start process")
+- [N60] Within matched traces (3->10) added: branch(b7,AND)
+- [N61] Within matched traces (4->17) added: init(i1)
+- [N62] Within matched traces (4->17) added: action(n1,"start process")
+- [N63] Within matched traces (4->17) added: action(n3,"is customer registered")
+- [N64] Within matched traces (4->17) added: action(n7,"is end customer")
+- [N65] Within matched traces (5->23) added: init(i1)
+- [N66] Within matched traces (5->23) added: action(n1,"start process")
+- [N67] Within matched traces (5->23) added: action(n3,"is customer registered")
+- [N68] Within matched traces (5->23) added: action(n7,"is end customer")
+- [N69] Within matched traces (6->5) added: init(i1)
+- [N70] Within matched traces (6->5) added: action(n1,"start process")
+- [N71] Within matched traces (6->5) added: branch(b7,AND)
+- [N72] Within matched traces (6->5) added: converge(c5)
+- [N73] Within matched traces (6->5) added: action(n20,"is payment received")
+- [N74] Within matched traces (7->11) added: init(i1)
+- [N75] Within matched traces (7->11) added: action(n1,"start process")
+- [N76] Within matched traces (7->11) added: branch(b7,AND)
+- [N77] Within matched traces (7->11) added: converge(c5)
+- [N78] Within matched traces (7->11) added: action(n20,"is payment received")
+- [N79] Within matched traces (8->18) added: init(i1)
+- [N80] Within matched traces (8->18) added: action(n1,"start process")
+- [N81] Within matched traces (8->18) added: action(n3,"is customer registered")
+- [N82] Within matched traces (8->18) added: action(n7,"is end customer")
+- [N83] Within matched traces (8->18) added: converge(c5)
+- [N84] Within matched traces (8->18) added: action(n20,"is payment received")
+- [N85] Within matched traces (9->24) added: init(i1)
+- [N86] Within matched traces (9->24) added: action(n1,"start process")
+- [N87] Within matched traces (9->24) added: action(n3,"is customer registered")
+- [N88] Within matched traces (9->24) added: action(n7,"is end customer")
+- [N89] Within matched traces (9->24) added: converge(c5)
+- [N90] Within matched traces (9->24) added: action(n20,"is payment received")
+- [N91] Within matched traces (10->6) added: init(i1)
+- [N92] Within matched traces (10->6) added: action(n1,"start process")
+- [N93] Within matched traces (10->6) added: branch(b7,AND)
+- [N94] Within matched traces (10->6) added: converge(c5)
+- [N95] Within matched traces (10->6) added: action(n20,"is payment received")
+- [N96] Within matched traces (11->12) added: init(i1)
+- [N97] Within matched traces (11->12) added: action(n1,"start process")
+- [N98] Within matched traces (11->12) added: branch(b7,AND)
+- [N99] Within matched traces (11->12) added: converge(c5)
+- [N100] Within matched traces (11->12) added: action(n20,"is payment received")
+- [N101] Within matched traces (12->19) added: init(i1)
+- [N102] Within matched traces (12->19) added: action(n1,"start process")
+- [N103] Within matched traces (12->19) added: action(n3,"is customer registered")
+- [N104] Within matched traces (12->19) added: action(n7,"is end customer")
+- [N105] Within matched traces (12->19) added: converge(c5)
+- [N106] Within matched traces (12->19) added: action(n20,"is payment received")
+- [N107] Within matched traces (13->25) added: init(i1)
+- [N108] Within matched traces (13->25) added: action(n1,"start process")
+- [N109] Within matched traces (13->25) added: action(n3,"is customer registered")
+- [N110] Within matched traces (13->25) added: action(n7,"is end customer")
+- [N111] Within matched traces (13->25) added: converge(c5)
+- [N112] Within matched traces (13->25) added: action(n20,"is payment received")
+
+Mutation
+- [N113] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N114] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N115] Node-level mutation: element=guard(b2,c1,"v2 = 'Bad'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N116] Node-level mutation: element=guard(b3,c1,"v3 = 'Yes'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N117] Node-level mutation: element=guard(b2,n10,"v2 = 'Good'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N118] Node-level mutation: element=guard(b3,c2,"v3 = 'No'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N119] Node-level mutation: element=guard(b3,c3,"v3 = 'No'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N120] Node-level mutation: element=guard(b4,n14,"v4 = 'Yes'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N121] Node-level mutation: element=guard(b4,n15,"v4 = 'No'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N122] Node-level mutation: element=guard(b5,n21,"v5 = 'Yes'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.
+- [N123] Node-level mutation: element=guard(b5,n22,"v5 = 'No'"); source=i2:If the customer is a registered customer, then check their payment morale. -> i3:If they are a new customer, then check their status. -> i4:If their payment morale is good, continue with the process. -> i5:If their payment morale is bad or if they are an end customer, reject the order and end the process. -> i8:If the items are out of stock, start production. If they are in stock, continue with the process. -> i13:If payment is received, close the order.; reason=These guards replace explicit textual conditions and qualifiers with unbound variables and generic values (e.g., v1 = 'Yes', v2 = 'Good', v4 = 'Yes'), distorting the original data and failing to preserve the specified operators/targets.

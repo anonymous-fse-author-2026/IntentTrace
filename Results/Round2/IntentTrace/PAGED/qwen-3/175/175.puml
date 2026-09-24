@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_proc| Process Actor
+|a_proc|
+start
+:Rental Items are Returned to the Store;
+:v_ret: return method ({store, site}); <<objectSignal>>
+if () then ([v_ret = "store"])
+:Customer returns the items to the store;
+else ([v_ret = "site"])
+:Delivery Crew picks-up items at the event site;
+endif
+:During this step, the items are counted and compared to the original contract;
+:v_stat: order status ({complete, incomplete, damaged}); <<objectSignal>>
+switch ()
+case ([v_stat = "complete"])
+:Order is complete and all items were returned;
+:v_pck1: packing choice 1 ({packed, stored}); <<objectSignal>>
+if () then ([v_pck1 = "packed"])
+:Items are packed for an existing order;
+else ([v_pck1 = "stored"])
+:Items are stored for future orders;
+endif
+case ([v_stat = "incomplete"])
+:Order is incomplete and items are missing;
+:email customer with replacement charges;
+:v_cus: customer return missing ({returns, not_returns}); <<objectSignal>>
+if () then ([v_cus = "returns"])
+:Customer returns the missing items;
+else ([v_cus = "not_returns"])
+:Customer does not return the missing items;
+endif
+case ([v_stat = "damaged"])
+:Order is complete but items are damaged;
+:temporarily take damaged items out of inventory;
+:v_rep: repair outcome ({repaired, discarded}); <<objectSignal>>
+if () then ([v_rep = "repaired"])
+:Items are repaired and added into inventory;
+else ([v_rep = "discarded"])
+:Items can't be repaired and are discarded;
+:email customer with replacement charges;
+endif
+endswitch
+:v_final: final packing choice ({packed, stored}); <<objectSignal>>
+if () then ([v_final = "packed"])
+:Items are packed for an existing order;
+else ([v_final = "stored"])
+:Items are stored for future orders;
+endif
+stop
+@enduml

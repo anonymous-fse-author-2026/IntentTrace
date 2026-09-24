@@ -1,0 +1,14 @@
+- `defines(v1, "How was the order received?", {"via mail or phone"})`: Omits the "via fax" option explicitly stated in the source; the range only lists a single value instead of reflecting both documented reception methods. (SMC6)
+- `branch(b1, XOR)` and `guard(b1, n5, v1 = 'via mail or phone')`: The source states that both fax and mail/phone receipts lead to inputting the order into Excel, but the model uses an exclusive split with a guard that only permits the 'mail or phone' path, effectively blocking the fax route and misrepresenting the unconditional convergence. (SMC1, SMC4)
+- Sequence following `action(n30, "goods will be produced")`: Omits the explicit conditional decision "If the order needs to be cancelled, the process ends. If not, check the quality of the goods." The model proceeds linearly from n30 to n31 without this branch or associated termination path. (SMC1, SMC4)
+- `converge(c3)`: Lacks an outgoing `precedence` edge connecting to `action(n42, "close the order")`, causing the primary control flow to deadlock at the join point instead of progressing to closing the order as described. (SMC3, SMC5)
+- `action(n43, "end")` and `action(n44, "end")`: Hallucinated action nodes. The source describes process termination conditions ("the process ends", "marks the end of the process"), not executable workflow steps labeled "end". (SMC1, SMC2)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['via mail or phone']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'via mail or phone'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'via mail or phone'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'via mail or phone'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'via mail or phone'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

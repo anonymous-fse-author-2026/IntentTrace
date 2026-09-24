@@ -1,0 +1,95 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:No more candidates;
+:v1: No more candidates ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:run re advertise position;
+:end TS recruitment;
+stop
+else ([v1 = 'No'])
+:voluntary redundancy accepted;
+:v2: voluntary redundancy accepted ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:investigate voluntary redundancy acceptance;
+:send Appointment Approval form;
+else ([v2 = 'No'])
+:send Appointment Approval form;
+endif
+:receive Appointment Approval form by next level manager;
+:approver is existing employee;
+:v3: approver is existing employee ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:end TS recruitment;
+stop
+else ([v3 = 'Yes'])
+:form approved;
+:v4: form approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:send form and documentation to client HR;
+:receive form and documentation by client HR;
+:HR scans completed form and records position in GovSource;
+:variations present;
+:v5: variations present ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:require complete business case;
+:carry forward Appointment Approval;
+else ([v5 = 'No'])
+:carry forward Appointment Approval;
+endif
+:position requires medical assessment;
+:v6: position requires medical assessment ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:apply 12 percent rate for medical assessment;
+else ([v6 = 'No'])
+:no medical assessment necessary;
+endif
+:TS HR coordinator informs recruitment manager;
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+:assessment satisfactory;
+:v7: assessment satisfactory ({No, Yes}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:make formal verbal offer of employment;
+:candidate accepts verbal offer;
+:v8: candidate accepts verbal offer ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v8 = 'Yes'])
+:create formal written offer;
+:candidate receives documents;
+:rate is forty percent;
+:v9: rate is forty percent ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+:renegotiation required;
+:renegotiation successful;
+:v10: renegotiation successful ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:end TS recruitment;
+stop
+else ([v10 = 'No'])
+->;
+endif
+else ([v9 = 'No'])
+:end TS recruitment;
+stop
+endif
+case ([v8 = 'No'])
+:send commencement pack to candidate;
+case ([v8 = 'No'])
+:send letter of appointment to candidate;
+case ([v8 = 'No'])
+endswitch
+else ([v7 = 'No'])
+->;
+endif
+:contact next candidate on shortlist;
+else ([v4 = 'No'])
+:end TS recruitment;
+stop
+endif
+endif
+endif
+@enduml

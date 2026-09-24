@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Request to purchase a motorcycle;
+:Production order received;
+:v1: Production order received ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Continue the process;
+split
+:Materials unavailable;
+:v2: Materials unavailable ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:Order materials from supplier;
+:Goods received from supplier;
+:v4: Goods received from supplier ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:Issue goods;
+:Produce motorcycles;
+:Update stock;
+else ([v4 = false])
+->;
+endif
+:End process;
+stop
+else ([v2 = false])
+:Available goods for production;
+:v3: Available goods for production ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:Place manufacturing order;
+else ([v3 = false])
+->;
+endif
+endif
+split again
+:Dispatch motorcycles;
+:Update stock;
+:Update sales information;
+split again
+end split
+else ([v1 = false])
+:Update sales information;
+:Proceed to order dispatch;
+endif
+@enduml

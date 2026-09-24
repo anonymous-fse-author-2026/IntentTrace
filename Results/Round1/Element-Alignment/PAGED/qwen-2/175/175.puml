@@ -1,0 +1,86 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "Yes"])
+:customer returns items to store;
+else ([v1 = "No"])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to original contract;
+:order is complete and all items were returned;
+:v2: order is complete and all items were returned ({Yes, No, Other}); <<objectSignal>>
+switch ()
+case ([v2 = "Yes"])
+:order is incomplete and items are missing;
+:v3: order is incomplete and items are missing ({Yes, No, Other}); <<objectSignal>>
+switch ()
+case ([v3 = "No"])
+:customer returns missing items;
+:v7: customer returns missing items ({Yes, No}); <<objectSignal>>
+if () then ([v7 = "No"])
+->;
+else ([v7 = "Yes"])
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+:v9: items packed for existing order ({Yes, No}); <<objectSignal>>
+if () then ([v9 = "No"])
+->;
+else ([v9 = "Yes"])
+:end process;
+stop
+endif
+split again
+:items stored for future orders;
+:v10: items stored for future orders ({Yes, No}); <<objectSignal>>
+if () then ([v10 = "No"])
+->;
+else ([v10 = "Yes"])
+endif
+end split
+endif
+case ([v3 = "Other"])
+:customer does not return missing items;
+:v8: customer does not return missing items ({Yes, No}); <<objectSignal>>
+if () then ([v8 = "No"])
+->;
+else ([v8 = "Yes"])
+endif
+case ([v3 = "Yes"])
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: items are repaired and added into inventory ({Yes, No}); <<objectSignal>>
+if () then ([v6 = "Yes"])
+:items can't be repaired and are discarded;
+else ([v6 = "No"])
+:email customer with replacement charges;
+:end process;
+stop
+endif
+endswitch
+stop
+case ([v2 = "No"])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: items packed for existing order ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "No"])
+->;
+else ([v4 = "Yes"])
+endif
+split again
+:items stored for future orders;
+:v5: items stored for future orders ({Yes, No}); <<objectSignal>>
+if () then ([v5 = "No"])
+->;
+else ([v5 = "Yes"])
+endif
+end split
+case ([v2 = "Other"])
+endswitch
+@enduml

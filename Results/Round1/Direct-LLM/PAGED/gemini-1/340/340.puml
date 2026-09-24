@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Part Provision Team
+|a_default|
+start
+:identify parts;
+-> Check if information needs to be elicited;
+:does the team need to elicit information from the customer?;
+:v1: does the team need to elicit information from the customer? ({Need to elicit information, Already have the availability information}); <<objectSignal>>
+if () then ([v1 = 'Need to elicit information'])
+:check availability of the parts;
+-> Check if parts are available or need ordering;
+:do they need to record the customer's details?;
+:v2: do they need to record the customer's details? ({Parts are supplied to the customer, Need to record customer details}); <<objectSignal>>
+if () then ([v2 = 'Need to record customer details'])
+:order part from Disuki;
+:receive part from Disuki;
+else ([v2 = 'Parts are supplied to the customer'])
+->;
+endif
+:contract the customer;
+-> Proceed with process or after contacting customer;
+else ([v1 = 'Already have the availability information'])
+->;
+endif
+:collect all necessary parts;
+-> Proceed to payment step;
+:proceed with payment;
+stop
+@enduml

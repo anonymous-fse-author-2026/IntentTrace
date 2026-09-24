@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:Orders Required;
+:place Bulk order;
+:Order with prior internal credit allowance;
+:v1: Credit Condition ({Order with prior internal credit allowance, Exceeds purchaser credit allowance}); <<objectSignal>>
+if () then ([v1 = 'Order with prior internal credit allowance'])
+:process order for delivery;
+else ([v1 = 'Exceeds purchaser credit allowance'])
+:Outstanding Balance;
+:place new order;
+:record in Accounts Receivable;
+:Payments Received;
+:v2: Payment Status ({Payments are Received, No payments received}); <<objectSignal>>
+if () then ([v2 = 'Payments are Received'])
+:continue process;
+else ([v2 = 'No payments received'])
+:drop order;
+:end process;
+stop
+endif
+endif
+:identify order for installation;
+:installation required;
+:v3: Installation Requirement ({Installation needs to be scheduled, Order does not require installation}); <<objectSignal>>
+if () then ([v3 = 'Installation needs to be scheduled'])
+:assign Installer;
+stop
+else ([v3 = 'Order does not require installation'])
+:pack for delivery;
+stop
+endif
+@enduml

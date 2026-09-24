@@ -1,0 +1,10 @@
+- action(n4, "All assessments completed"): Hallucinated action; the source text implies direct progression to assessing eligibility after the parallel steps, without an explicit intermediate action.
+- action(n6, "Is applicant eligible"): Hallucinated action; the text describes a condition for branching, not a separate actionable process step.
+- action(n10, "End process after rejection"): Hallucinated action; ending the process should be represented by transitioning directly to an end node, not by an action step.
+- action(n11, "End process after acceptance pack sent"): Hallucinated action; ending the process should be represented by transitioning directly to an end node rather than adding an action.
+- branch(b1, XOR): Missing guard conditions on the outgoing edges to `n7` and `n8` to evaluate the source conditions "If the applicant is eligible" and "If the applicant is not eligible".
+- defines(v1, "Is applicant eligible", {}): The variable has an empty range, failing to capture the possible eligibility outcomes.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

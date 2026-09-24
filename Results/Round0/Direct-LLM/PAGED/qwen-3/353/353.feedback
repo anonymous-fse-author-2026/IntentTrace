@@ -1,0 +1,18 @@
+- `guard(b1, n3, v1 = 'Yes')` & `guard(b1, n4, v1 = 'No')`: Incorrectly binds `v1` ("check if order has been received") to sum-condition routing; source text sequences sum checks after receipt verification, not as mutually exclusive outcomes dependent on receipt status.
+- `branch(b2, XOR)` with `guard(b2, n5, v2 = 'Yes')` & `guard(b2, n11, v2 = 'No')`: Both outcomes route to "continue with the process", completely omitting the required discount evaluations (>2000, 1000-1500, 500-999) when the sum is not <500.
+- `guard(b6, n13, v6 = 'No')` & `guard(b6, n14, v6 = 'No')`: Identical guards on diverging edges remove deterministic control flow and provide no path for `v6 = 'Yes'`; source explicitly mandates computing a 4% discount when sum > 2000.
+- `precedence(b5, n9)` & `guard(b5, n9, v5 = 'No')` / `precedence(b9, n18)` & `guard(b9, n18, v9 = 'No')`: Creates unintended feedback loops back to decision nodes `n9` and `n18`; source describes a strictly linear progression with no retry or iteration behavior.
+- `branch(b10, AND)` & `precedence(b10, c1)`: Misuses an AND gateway to spawn a concurrent path directly to convergence `c1`, allowing the model to bypass the mandated second verification phase ("Once again, check the sum..."); source requires sequential execution before billing.
+- `defines(v6, "is sum of order greater than 2000", {"No"})`: Restricts the variable's value space to a single option, contradicting the binary decision context required by the source rules and the surrounding branch structure.
+- `action(n21, "process end")`: Hallucinates an explicit operational step for termination; source states "the process will come to an end" as a natural consequence of completing the bill, accurately represented only by `end(e1)`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n18` has in=2 and out=1. | Node `n9` has in=2 and out=1. | DSL: action(n18,"is sum of order between 500 and 999"); action(n9,"is sum of order between 500 and 999")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v6` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v6 = 'No'` on `b6 -> n13` uses undefined variable `v6`. | Guard `v6 = 'No'` on `b6 -> n14` uses undefined variable `v6`. | DSL: guard(b6,n13,"v6 = 'No'"); guard(b6,n14,"v6 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b5 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b9 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v6 = 'No'` on `b6 -> n13` cannot be evaluated: `v6` has no declared range. | Guard `v6 = 'No'` on `b6 -> n14` cannot be evaluated: `v6` has no declared range. | DSL: guard(b6,n13,"v6 = 'No'"); guard(b6,n14,"v6 = 'No'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b6` cannot be evaluated: `v6` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b6` cannot be evaluated: `v6` has no declared range.

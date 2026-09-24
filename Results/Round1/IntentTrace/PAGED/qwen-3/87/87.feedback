@@ -1,0 +1,23 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i6:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.
+- [N2] Within matched traces (1->1) omitted: i7:Once the invoices are returned to the client, receive the completed ones.
+- [N3] Within matched traces (1->1) omitted: i8:mark the relevant box on the invoice entry form
+
+Addition
+- [N4] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: Both elements describe waiting for client completion, which is not described anywhere in the source text.)
+- [N5] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: Both elements describe waiting for client completion, which is not described anywhere in the source text.)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n5_2,"If the invoices are still marked as \"Uncompleted\", they should be returned to the client via postal mail.")
+- [N8] Within matched traces (0->0) added: action(n6,"Wait for completion of invoices by client")
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: action(n7_2,"Once the invoices are returned to the client, receive the completed ones.")
+- [N11] Within matched traces (1->1) added: converge(c1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b2,n12,"v2 = 'Not Completed'"); source=i4:marked as "Uncompleted"; reason=The guard payload uses 'Not Completed' while the source explicitly requires the term 'Uncompleted'.
+
+Permutation
+- [N13] Within matched traces (0->0) reordered: expected [i4:marked as "Uncompleted"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]
+
+Structural Check
+- [S1] STC22 failed: Every node must be assigned to exactly one actor. | Node `b3` is not assigned to any actor. | DSL: branch(b3,AND)

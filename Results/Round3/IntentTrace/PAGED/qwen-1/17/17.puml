@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receiving an order request;
+:register the order;
+:evaluate the order;
+:v1: evaluation result ({ok, NOK}); <<objectSignal>>
+if () then ([v1 = 'NOK'])
+:order is considered as NOK;
+stop
+else ([v1 = 'ok'])
+:installation process takes place;
+:v2: installation status ({successful, not successful}); <<objectSignal>>
+if () then ([v2 = 'not successful'])
+stop
+else ([v2 = 'successful'])
+:check the installation;
+:prepare billing;
+:order is marked as ok;
+stop
+endif
+endif
+@enduml

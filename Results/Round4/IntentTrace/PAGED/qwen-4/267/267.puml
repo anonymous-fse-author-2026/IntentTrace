@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:For EC-Lille: Initially,;
+:v1: Is 'research schedule directly' option selected ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Research schedule;
+else ([v1 = false])
+:provide indications;
+:proceed with the research schedule;
+endif
+:After validating the schedule,;
+:check if the schedule is satisfactory;
+:v2: Is schedule satisfactory ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+:perform the action Research schedule;
+:check if the schedule is still not satisfactory;
+:v3: Is schedule still not satisfactory after researching again ({true, false}); <<objectSignal>>
+if () then ([v3 = true] If it is still not satisfactory,)
+:provide indications;
+else ([v3 = false] Alternatively, if the schedule is satisfactory,)
+:write a ticket order to SNCF;
+endif
+else ([v2 = true])
+:proceed with writing a ticket order to SNCF;
+endif
+:After writing the ticket order, validate it;
+:Check if the ticket order is approved;
+:v4: Is ticket order approved ({true, false}); <<objectSignal>>
+if () then ([v4 = false])
+:the process ends;
+stop
+else ([v4 = true])
+:validate the ticket order;
+:Check again if the ticket order is approved;
+:v5: Is ticket order approved after second validation ({true, false}); <<objectSignal>>
+if () then ([v5 = false])
+:the process ends;
+stop
+else ([v5 = true])
+:validate the ticket order;
+:Check once more if the ticket order is approved;
+:v6: Is ticket order approved after third validation ({true, false}); <<objectSignal>>
+if () then ([v6 = false])
+:the process ends;
+stop
+else ([v6 = true])
+:the process ends;
+stop
+endif
+endif
+endif
+@enduml

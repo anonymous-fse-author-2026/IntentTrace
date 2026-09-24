@@ -1,0 +1,49 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:items returned to store;
+:v1: return_method ({Customer, Crew}); <<objectSignal>>
+if () then ([v1 = 'Customer'])
+:customer returns items to store;
+else ([v1 = 'Crew'])
+:delivery crew picks up items at event site;
+endif
+:items counted and compared to original contract;
+:v2: order_status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'Complete'])
+:order is complete and all items were returned;
+case ([v2 = 'Incomplete'])
+:order is incomplete and items are missing;
+case ([v2 = 'Damaged'])
+:email customer to inform of damage and additional charges;
+endswitch
+:v4: pack_status ({Packed, Stored}); <<objectSignal>>
+if () then ([v4 = 'Packed'])
+:items packed for existing order;
+else ([v4 = 'Stored'])
+:items stored for future orders;
+endif
+:v5: damage_action ({Remove, Keep}); <<objectSignal>>
+if () then ([v5 = 'Remove'])
+:temporarily take damaged items out of inventory;
+else ([v5 = 'Keep'])
+:end process;
+endif
+:v7: missing_response ({Returned, Not Returned}); <<objectSignal>>
+if () then ([v7 = 'Returned'])
+:customer returns missing items;
+else ([v7 = 'Not Returned'])
+:customer does not return missing items;
+endif
+:v6: repair_outcome ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v6 = 'Repaired'])
+:items are repaired and added into inventory;
+else ([v6 = 'Discarded'])
+:items can't be repaired and are discarded;
+endif
+:end process;
+stop
+@enduml

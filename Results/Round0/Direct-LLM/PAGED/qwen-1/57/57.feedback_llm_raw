@@ -1,0 +1,10 @@
+
+
+- `action(n4, "add item to cart / continue shopping")` & `branch(b1, XOR)`: Merges two mutually exclusive choices into a single action node, whereas the source treats them as distinct alternatives ("If they choose to 'Add item to cart'... if they select 'Continue Shopping'...").
+- `action(n6, "continue shopping")`: Lacks any outgoing `precedence` relation, creating a dead-end that violates the instruction to "continue with the process".
+- `defines(v1, ...)` & `defines(v3, ...)`: Specify empty ranges `{}`, failing to capture the explicit decision values/options implied by the source (e.g., shopping choices, credit card/inventory statuses).
+- `branch(b1, XOR)` & `branch(b3, XOR)`: Operate without `guard` statements, failing to enforce the documented decision criteria ("Add item to cart" vs "Continue Shopping"; "credit card is approved and there is inventory in stock" vs "denied or no inventory").
+- `action(n9, "checkout tasks completed?")` & `branch(b2, XOR)`: Introduce a decision point not found in the description, which proceeds directly from the parallel checks to evaluating the credit card and inventory status.
+- `branch(b3, XOR)` splitting to `action(n11, ...)` and `action(n16, ...)`: Routes the confirmation steps exclusively to the success path, contradicting the source directive "In either case, the order confirmation number should be displayed, followed by the final order being shown...".
+- `actor(a_default, ...)` assigns all nodes to a single "Default" participant, ignoring the clear separation between customer responsibilities ("customer needs to make...", "they should search...", "they need to enter...") and system/merchant operations (authorization, inventory checks, emailing notices).
+- `action(n10, "credit card approved and inventory in stock?")`: Misrepresents a conditional check as a standalone action node instead of modeling it via edge `guard`s, distorting the control-flow logic described in the text.

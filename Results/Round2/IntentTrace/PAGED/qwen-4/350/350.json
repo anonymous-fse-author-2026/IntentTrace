@@ -1,0 +1,268 @@
+{
+  "elements": [
+    {
+      "id": "n2",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "provide userdata for flickr"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "is the login successful"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "end process successful login"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "do you want to try again"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "provide userdata for flickr again after first failure"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "abort process after first failure"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "provide userdata for flickr still try again"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "abort process decide to abort"
+    },
+    {
+      "id": "c_start",
+      "type": "converge"
+    },
+    {
+      "id": "c_loop",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_login",
+      "name": "is the login successful",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_retry",
+      "name": "retry option",
+      "R_X": [
+        "Retry1",
+        "Retry2",
+        "Abort1",
+        "Abort2"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "b2",
+        "n6",
+        "n7",
+        "e2",
+        "n8",
+        "n9",
+        "c_start",
+        "c_loop"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "c_start"
+    },
+    {
+      "type": "precedence",
+      "A": "c_loop",
+      "B": "c_start"
+    },
+    {
+      "type": "precedence",
+      "A": "c_start",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v_login = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v_login = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v_retry = 'Retry1'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v_retry = 'Retry2'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v_retry = 'Abort1'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v_retry = 'Abort2'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i2",
+      "content": "If the login is successful"
+    },
+    {
+      "id": "i3",
+      "content": "successful, the process will end."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "i6",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i7",
+      "content": "On the other hand, if you choose to abort, the process will end."
+    },
+    {
+      "id": "i8",
+      "content": "If you still want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i9",
+      "content": "Alternatively, if you decide to abort, the process will end."
+    }
+  ]
+}

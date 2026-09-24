@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` / `precedence(b1, n6)` / `precedence(b1, n7)`: Uses an XOR gateway to route flow to two actions simultaneously, but the description specifies "At the same time, two steps need to be completed", which requires an AND gateway for parallel concurrency (SMC4).
+- `action(n4, "Reject Order")` / `end(e1)`: Halts the process upon rejection, directly contradicting "If the order is to be rejected, the process should continue", which mandates that the rejection path must not terminate early but instead proceed to the subsequent parallel activities (SMC1, SMC5).
+- `branch(b2, XOR)` / `action(n9, "End")` / `end(e2)`: Omits the explicit instruction "availability needs to be checked again" for the backorder scenario, routing directly to termination instead of executing the re-check step before ending (SMC1).
+- `defines(v1, "Is Order Rejected?", {})` / `defines(v2, "Is Backorder Required?", {})`: Declares decision variables with empty ranges `{}`, failing to represent the implicit binary value domains (e.g., accepted/rejected, backorder/reserved) necessitated by the conditional branches in the text (SMC6).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

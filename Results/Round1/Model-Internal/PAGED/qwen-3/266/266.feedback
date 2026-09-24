@@ -1,0 +1,62 @@
+Omission
+- [N1] Node-level omission: i11:If the review is successful, it moves on to the approval stage (reason: No branch, guard, or routing logic in the model captures the review success condition; the flow skips this decision point entirely.)
+- [N2] Node-level omission: i7:site design (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N3] Node-level omission: i9:site development takes 2 days (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N4] Node-level omission: i10:review process that lasts 1 day (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N5] Node-level omission: i12:approval stage, which takes half a day (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N6] Node-level omission: i15:site needs to be rebuilt, which takes 3 days (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N7] Node-level omission: i16:If the rebuild is complete, the process ends. (reason: These input units lack faithful implementation. Their only corresponding model elements either drop mandatory duration qualifiers or reverse/distort conditional logic, leaving the source requirements unmet per the strict coverage rule.)
+- [N8] Within matched traces (1->7) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N9] Within matched traces (1->7) omitted: i5:the process ends
+- [N10] Within matched traces (2->2) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N11] Within matched traces (2->2) omitted: i5:the process ends
+- [N12] Within matched traces (3->8) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N13] Within matched traces (3->8) omitted: i5:the process ends
+- [N14] Within matched traces (4->3) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N15] Within matched traces (4->3) omitted: i5:the process ends
+- [N16] Within matched traces (5->10) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N17] Within matched traces (5->10) omitted: i5:the process ends
+- [N18] Within matched traces (6->5) omitted: i11:If the review is successful, it moves on to the approval stage
+- [N19] Within matched traces (6->5) omitted: i5:the process ends
+
+Addition
+- [N20] Node-level addition: action(n9,"End process") (reason: Models a process termination after storyboard failure, which is not described in the source text.)
+- [N21] Node-level addition: guard(b2,n9,"v2 = 'Not successful'") (reason: Supports the unsupported storyboard-failure termination path; no source condition justifies this route.)
+- [N22] Node-level addition: action(n13,"Review rebuilt site") (reason: 'Review rebuilt site' is an invented step with no backing in any input element.)
+- [N23] Node-level addition: action(n15,"Approve rebuilt site") (reason: 'Approve rebuilt site' is an invented step with no backing in any input element.)
+- [N24] Node-level addition: guard(b4,n15,"v4 = 'Successful'") (reason: Routes to the invented n15 action; lacks source justification.)
+- [N25] Node-level addition: guard(b5,n16,"v5 = 'Approved'") (reason: Uses 'Approved' condition to trigger termination, which does not correspond to any source clause.)
+- [N26] Node-level addition: label(n5,c1,"Site ready") (reason: Label text 'Site ready' is invented; the source describes workflow transitions but never uses this status phrasing.)
+- [N27] Node-level addition: label(n6,c1,"Site ready") (reason: Label text 'Site ready' is invented; the source describes workflow transitions but never uses this status phrasing.)
+- [N28] Node-level addition: action(n11,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N29] Node-level addition: action(n14,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N30] Node-level addition: action(n16,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N31] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N32] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N33] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N34] Added trace (model 9): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N35] Within matched traces (0->0) added: action(n2,"Is meeting successful?")
+- [N36] Within matched traces (3->8) added: action(n13,"Review rebuilt site")
+- [N37] Within matched traces (4->3) added: action(n13,"Review rebuilt site")
+- [N38] Within matched traces (5->10) added: action(n13,"Review rebuilt site")
+- [N39] Within matched traces (5->10) added: branch(b4,XOR)
+- [N40] Within matched traces (5->10) added: action(n15,"Approve rebuilt site")
+- [N41] Within matched traces (6->5) added: action(n13,"Review rebuilt site")
+- [N42] Within matched traces (6->5) added: branch(b4,XOR)
+- [N43] Within matched traces (6->5) added: action(n15,"Approve rebuilt site")
+
+Mutation
+- [N44] Node-level mutation: element=action(n6,"Design site"); source=i7:site design; reason=Drops the explicit duration qualifier 'which takes 10 days' present in the source context, violating the strict granularity requirement.
+- [N45] Node-level mutation: element=action(n7,"Develop site"); source=i9:site development takes 2 days; reason=Drops the required duration qualifier 'takes 2 days'.
+- [N46] Node-level mutation: element=action(n8,"Review site"); source=i10:review process that lasts 1 day; reason=Drops the required duration qualifier 'lasts 1 day'.
+- [N47] Node-level mutation: element=action(n10,"Approve site"); source=i12:approval stage, which takes half a day; reason=Drops the required duration qualifier 'takes half a day'.
+- [N48] Node-level mutation: element=action(n12,"Rebuild site"); source=i15:site needs to be rebuilt, which takes 3 days; reason=Drops the required duration qualifier 'takes 3 days'.
+- [N49] Node-level mutation: element=guard(b4,n14,"v4 = 'Not successful'"); source=i16:If the rebuild is complete, the process ends.; reason=Guard condition uses 'Not successful' while the source explicitly requires 'complete', distorting the trigger logic for process termination.
+
+Permutation
+- [N50] Within matched traces (1->7) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n6,"Design site")]
+- [N51] Within matched traces (2->2) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Prepare content")]
+- [N52] Within matched traces (3->8) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n6,"Design site")]
+- [N53] Within matched traces (4->3) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Prepare content")]
+- [N54] Within matched traces (5->10) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n6,"Design site")]
+- [N55] Within matched traces (6->5) reordered: expected [i6:If the storyboard is successful] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Prepare content")]

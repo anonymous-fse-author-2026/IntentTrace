@@ -1,0 +1,8 @@
+- `precedence(n3, c1)`, `converge(c1)`, `precedence(c1, n6)`: Violates SMC1/SMC3/SMC5. The source states "If the decision is to send a negative email, then the process ends," but the model routes this path through a convergence node and an extra action (`n6`) instead of terminating directly.
+- `action(n6, "Process ends after interview")`, `precedence(c1, n6)`: Violates SMC2/SMC4. The payload explicitly references the interview, yet it is positioned after `converge(c1)`, placing it on the negative-email path as well. The source says "Once the interview is conducted, the process comes to an end," implying direct termination after `n5`, not a shared post-convergence step.
+- `defines(v1, "decide whether to send a negative email or invite candidate", {})`: Violates SMC6. Declares an empty value range `{}` for a decision variable that actually governs a binary choice between "send a negative email" and "invite the candidate".
+- `branch(b1, XOR)`, `precedence(b1, n3)`, `precedence(b1, n4)`: Violates SMC1/SMC4. Omits `guard(...)` statements for the outgoing edges. The source explicitly defines the routing conditions ("If the decision is to send... However, if the decision is to invite..."), which must be captured as guards to faithfully represent the exclusive choice logic.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

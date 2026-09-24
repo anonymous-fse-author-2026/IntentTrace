@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start ONS Bootstrapping process;
+:Is input a URN?;
+:v1: Is input a URN? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Resolve URN to domain-name;
+else ([v1 = 'No'])
+->;
+endif
+:Again check if the input is a URN or a URL;
+:v1: Is input a URN? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Send DNS query for the domain-name;
+:Get list of URLs from DNS query;
+:Link to designated DS;
+:End of process;
+stop
+else ([v1 = 'No'])
+:Send DNS query for the URL;
+:Get list of URLs from DNS query;
+:Link to designated DS;
+:End of process;
+stop
+endif
+@enduml

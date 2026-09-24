@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Prioritize orders based on when received;
+:Check customer information;
+:v_cust_exist: Customer exists ({true, false}); <<objectSignal>>
+if () then ([v_cust_exist = true])
+:Check payment history;
+:v_pay_good: Payment history good ({true, false}); <<objectSignal>>
+if () then ([v_pay_good = true])
+:Continue with the process;
+else ([v_pay_good = false])
+stop
+endif
+else ([v_cust_exist = false])
+:Verify customer status;
+:v_cust_type: Customer type ({private, wholesaler}); <<objectSignal>>
+if () then ([v_cust_type = "private"])
+:Send declining message to private customer;
+stop
+else ([v_cust_type = "wholesaler"])
+:Create new customer;
+:Check product availability;
+:v_prod_avail: Products available ({true, false}); <<objectSignal>>
+if () then ([v_prod_avail = false])
+:Produce missing goods and send decline message, thus ending the process;
+else ([v_prod_avail = true])
+:Continue with the process and send order confirmation;
+endif
+endif
+endif
+split
+:Inform stock department;
+split again
+:Inform accounting department;
+end split
+:Pack goods and write invoice;
+:Goods ready for delivery and invoice sent;
+:Deliver goods and invoice to customer;
+:v_pay_received: Payment received ({true, false}); <<objectSignal>>
+if () then ([v_pay_received = true])
+:Close order;
+stop
+else ([v_pay_received = false])
+:Check quantity of reminders;
+:v_reminders: Number of reminders ({[0-10]}); <<objectSignal>>
+if () then ([v_reminders < 3])
+:Continue with the process;
+stop
+else ([v_reminders >= 3])
+:Activate donning process;
+stop
+endif
+endif
+@enduml

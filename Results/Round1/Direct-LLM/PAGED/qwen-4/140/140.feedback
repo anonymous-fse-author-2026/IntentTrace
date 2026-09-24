@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i8:Rework the purchase order and then review it. (reason: The source explicitly sequences rework followed by another review step. The model only implements rework (n8) and omits the subsequent review loop.)
+- [N2] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i5:If the purchase status is rejected, rework the purchase order. -> i8:Rework the purchase order and then review it. -> i4:After creating the purchase order, review it.
+
+Addition
+- [N3] Node-level addition: label(n2,n3,"Yes") (reason: Connection labels 'Yes' and 'No' are entirely invented; the source text provides no textual basis for labeling these edges.)
+- [N4] Node-level addition: label(n6,n7,"No") (reason: Connection labels 'Yes' and 'No' are entirely invented; the source text provides no textual basis for labeling these edges.)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n3,"Is inventory level at or below minimum")
+- [N7] Within matched traces (2->1) added: init(i1)
+- [N8] Within matched traces (2->1) added: action(n7,"Is purchase status rejected")
+- [N9] Within matched traces (3->2) added: init(i1)
+- [N10] Within matched traces (3->2) added: action(n7,"Is purchase status rejected")
+
+Mutation
+- [N11] Node-level mutation: element=action(n14,"Reserve funds after second approval"); source=i6:However, if the purchase status is approved, reserve the funds. -> i9:Reserve the funds and send the order to the supplier.; reason=Content invents the qualifier 'after second approval', which is not present in the source text.
+- [N12] Node-level mutation: element=action(n15,"Send order to supplier after second approval"); source=i9:Reserve the funds and send the order to the supplier.; reason=Content invents the qualifier 'after second approval', distorting the straightforward instruction to send the order.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=2 and out=2. | DSL: branch(b2,XOR)

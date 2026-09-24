@@ -1,0 +1,11 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i7:they should receive the shipping details
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n8,"receive shipping details") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+- [N4] Within matched traces (1->2) added: action(n5,"is stock rejected?")
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'"); source=i4:If the stock is rejected; reason=Replaces the explicit semantic condition 'stock is rejected' with an opaque variable assignment 'v1 = Yes', dropping the specific trigger data required by the strict standard.
+- [N6] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i6:Otherwise, the supplier should request shipping details.; reason=Replaces the contextual negation 'Otherwise' with 'v1 = No', inventing a variable mechanism not present in the source and obscuring the actual branching logic.

@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Initially, it is important to check the Referee Reports.;
+:At the same time,;
+:monitor if the Referee Reports have been completed;
+:v1: reports_completed ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "Yes"])
+:If they have been completed,;
+else ([v1 = "No"])
+:flag it and send a reminder;
+repeat :;
+:check again if the Referee Reports have been completed;
+:v2: recheck_completed ({Yes, No}); <<objectSignal>>
+backward:flag it again and send another reminder.;
+repeat while () is ([v2 = "No"]) not ([v2 = "Yes"])
+:If they have,;
+endif
+:organizing interviews for the Selection Panel with the top candidates;
+:receive feedback from the interview candidates;
+:check if a Psychometric Test is required;
+:v3: psycho_required ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "Yes"])
+:If it is,;
+:check if an HR Specialist is required;
+:v4: hr_required ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "Yes"])
+:If an HR Specialist is required,;
+:schedule the test with a third party;
+else ([v4 = "No"])
+:complete the Psychometric Test;
+endif
+else ([v3 = "No"])
+:coordinate the second round of selection;
+endif
+:Finally, you should request the final candidate ranking and continue with the process.;
+stop
+@enduml

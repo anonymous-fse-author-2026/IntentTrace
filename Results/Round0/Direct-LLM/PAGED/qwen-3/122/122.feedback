@@ -1,0 +1,8 @@
+- `defines(v1, "Is input a URN or URL?", {})`: Violates SMC6; the range is empty `{}`, but the source explicitly states the input is either a "URN" or a "URL", requiring a finite set range like `{"URN", "URL"}`.
+- Missing `guard` relations for `branch(b1, XOR)`: Violates SMC4; the model provides no guards on the edges leaving `b1` to enforce the source's explicit conditional logic ("If it is [a URN], we proceed...", "If the input is a 'URL', we simply continue...").
+- `label(n1, n2, "Yes No")`: Violates SMC1/SMC2; hallucinates "Yes No" not present in the source, and misplaces it on the edge preceding the decision rather than on the branch outcomes where the source distinguishes between "URN" and "URL".
+- `action(n2, "Is input a URN or URL?")`: Violates SMC2; incorrectly models a control-flow evaluation as an executable action step, whereas the source describes it solely as a conditional check that directs subsequent branching.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

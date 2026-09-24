@@ -1,0 +1,33 @@
+Omission
+- [N1] Node-level omission: i16:Similarly, when the invoice is received, record it as well. (reason: Completely absent from the model.)
+- [N2] Node-level omission: i17:After recording the packing slip and invoice, release the reserved funds and issue the payment to the supplier. (reason: Completely absent from the model.)
+- [N3] Omitted trace (input 0): i1:To begin the process, start with the Resupply Cycle Triggered step, -> i2:followed by checking the Inventory Level. -> i5:However, if the "Inventory Level is above the minimum" -> i6:then the process ends.
+- [N4] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step, -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum" -> i4:then proceed to Create Purchase Order. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i10:On the other hand, if the Purchase Order is rejected, -> i11:On the other hand, if the Purchase Order is rejected, then rework the order. -> i13:In case the order needs to be reworked, review the Purchase Order again. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+- [N5] Omitted trace (input 3): i1:To begin the process, start with the Resupply Cycle Triggered step, -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum" -> i4:then proceed to Create Purchase Order. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i8:If the Purchase Order is approved, -> i9:then reserve the funds for the purchase. -> i12:Once the funds are reserved, send the Order to Suppliers. -> i14:Simultaneously, complete the following steps: the Supplier sends a packing slip and an invoice. -> i16:Similarly, when the invoice is received, record it as well. -> i17:After recording the packing slip and invoice, release the reserved funds and issue the payment to the supplier. -> i18:Finally, the process ends after the payment is issued to the supplier.
+- [N6] Within matched traces (2->0) omitted: i7:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+- [N7] Within matched traces (2->0) omitted: i17:After recording the packing slip and invoice, release the reserved funds and issue the payment to the supplier.
+- [N8] Within matched traces (2->1) omitted: i7:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+- [N9] Within matched traces (2->1) omitted: i12:Once the funds are reserved, send the Order to Suppliers.
+- [N10] Within matched traces (2->1) omitted: i17:After recording the packing slip and invoice, release the reserved funds and issue the payment to the supplier.
+
+Addition
+- [N11] Node-level addition: action(n5,"Wait for replenishment") (reason: 'Wait for replenishment' has no supporting text; the source explicitly states the process ends on this path.)
+- [N12] Within matched traces (2->0) added: converge(c1)
+- [N13] Within matched traces (2->0) added: action(n6,"Evaluate PO")
+- [N14] Within matched traces (2->1) added: action(n5,"Wait for replenishment")
+- [N15] Within matched traces (2->1) added: converge(c1)
+- [N16] Within matched traces (2->1) added: action(n6,"Evaluate PO")
+
+Mutation
+- [N17] Node-level mutation: element=action(n2,"Generate Purchase Request"); source=i4:then proceed to Create Purchase Order.; reason=Content 'Generate Purchase Request' alters the specified action 'Create Purchase Order'.
+- [N18] Node-level mutation: element=action(n8,"Confirm delivery schedule"); source=i9:then reserve the funds for the purchase.; reason=Content 'Confirm delivery schedule' completely replaces the instructed 'reserve the funds'.
+- [N19] Node-level mutation: element=action(n6,"Evaluate PO"); source=i13:In case the order needs to be reworked, review the Purchase Order again.; reason=Content 'Evaluate PO' distorts the specific instruction to review the order again.
+- [N20] Node-level mutation: element=action(n13,"Accept delivery"); source=i15:Once the packing slip is received, record it.; reason=Content 'Accept delivery' changes the required recording action.
+
+Permutation
+- [N21] Within matched traces (2->0) reordered: expected [i4:then proceed to Create Purchase Order.] but observed [action(n2,"Generate Purchase Request")] elsewhere; in its place the model has [action(n4,"Submit order to supplier")]
+- [N22] Within matched traces (2->1) reordered: expected [i4:then proceed to Create Purchase Order.] but observed [action(n2,"Generate Purchase Request")] elsewhere; in its place the model has [branch(b1,XOR)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Evaluate PO")
+- [S2] STC22 failed: Every node must be assigned to exactly one actor. | Node `b1` is not assigned to any actor. | Node `b2` is not assigned to any actor. | Node `c1` is not assigned to any actor. | Node `e1` is not assigned to any actor. | Node `i1` is not assigned to any actor. | Node `n1` is not assigned to any actor. | Node `n11` is not assigned to any actor. | Node `n12` is not assigned to any actor. | Node `n13` is not assigned to any actor. | Node `n2` is not assigned to any actor. | Node `n4` is not assigned to any actor. | Node `n5` is not assigned to any actor. | Node `n6` is not assigned to any actor. | Node `n8` is not assigned to any actor. | Node `n9` is not assigned to any actor. | DSL: branch(b1,XOR); branch(b2,XOR); converge(c1); end(e1); init(i1); action(n1,"Check stock levels"); action(n11,"Review Purchase Order"); action(n12,"Send packing slip and invoice") (+7 more)

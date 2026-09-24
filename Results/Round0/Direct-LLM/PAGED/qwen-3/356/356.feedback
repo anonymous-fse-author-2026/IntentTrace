@@ -1,0 +1,9 @@
+- `action(n4, "Deliver Freight")`: Has incoming precedence from `b2` but no outgoing precedence, leaving it as an unfinished dead-end. The source mandates its completion ("complete the following steps: deliver the freight...").
+- `guard(b1, n8, v1 = 'No (No Return Request)')`: Routes the absence of a return request directly to `action(n8, "Reject Merchandise Return")`. The source treats lodging a request and the subsequent accept/reject decision as distinct stages; no request should not trigger a rejection action.
+- `branch(b3, AND)`: Models alternative conditional triggers as an unconditional concurrent split. The source frames these as independent conditions ("If it has been 5 days...", "If a loss claim report is lodged..."), not mandatory parallel flows.
+- `precedence(b3, n10)` and `precedence(b3, n11)`: Forces both `action(n10, "Invoice the Customer")` and `action(n11, "Approve Loss Claim and End Process")` to execute together after notification, contradicting the source's distinct conditional outcomes.
+- `precedence(b2, n6)`: Includes `action(n6, "Check for Merchandise Return Request")` in the concurrent split `b2`. The source only specifies delivering and notifying as simultaneous ("At the same time, complete the following steps: deliver the freight and notify the delivery"), introducing the return check subsequently.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"Deliver Freight")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"Deliver Freight")

@@ -1,0 +1,26 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i12:We should download the sample.
+- [N2] Within matched traces (1->3) omitted: i12:We should download the sample.
+
+Addition
+- [N3] Node-level addition: action(n1,"start the process") (reason: The source only implies initiation via 'At the beginning'; there is no explicit 'start the process' action described.)
+- [N4] Node-level addition: action(n10,"get: music ids for the next genre") (reason: The text never mentions retrieving IDs for a 'next genre'; it only repeats the directive to continue the process.)
+- [N5] Node-level addition: guard(b4,n10,"v4 = 'Yes'") (reason: The text never mentions retrieving IDs for a 'next genre'; it only repeats the directive to continue the process.)
+- [N6] Node-level addition: label(n3,c1,"No  continue") (reason: Edge label 'No  continue' contains fabricated routing text with no basis in the source material.)
+- [N7] Node-level addition: action(n15,"end: process completed") (reason: The source describes termination but does not include a separate 'process completed' action step.)
+- [N8] Node-level addition: guard(b2,c1,"v2 = 'No  continue'") (reason: Guards carrying artificial hints ('No  continue', 'No  check next') lack any corresponding phrasing or logic in the source text.)
+- [N9] Node-level addition: guard(b3,n9,"v3 = 'No  check next'") (reason: Guards carrying artificial hints ('No  continue', 'No  check next') lack any corresponding phrasing or logic in the source text.)
+- [N10] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n3,"capture: data from FMA") -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n13,"download: the sample") -> action(n15,"end: process completed") -> end(e2)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n4,"can we capture data from Jamendo?") -> branch(b2,XOR) -> action(n5,"capture: data from Jamendo") -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n13,"download: the sample") -> action(n15,"end: process completed") -> end(e2)
+- [N12] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n4,"can we capture data from Jamendo?") -> branch(b2,XOR) -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n13,"download: the sample") -> action(n15,"end: process completed") -> end(e2)
+- [N13] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n4,"can we capture data from Jamendo?") -> branch(b2,XOR) -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n14,"end: no additional samples") -> end(e1)
+- [N14] Within matched traces (0->1) added: action(n1,"start the process")
+- [N15] Within matched traces (1->3) added: action(n1,"start the process")
+
+Mutation
+- [N16] Node-level mutation: element=guard(b4,n11,"v4 = 'No'"); source=i10:if there are no additional genres; reason=The guard triggers continuation when `v4 = 'No'`, but the source explicitly states the process should continue when the condition 'there are no additional genres' is true. The logic polarity is reversed.
+- [N17] Node-level mutation: element=guard(b5,n13,"v5 = 'Yes'"); source=i11:If the sample is missing; reason=The guard routes to downloading the sample when `v5 = 'Yes'` (missing), whereas the source instructs to continue the process if the sample is missing. The outcome logic is altered.
+
+Permutation
+- [N18] Within matched traces (0->1) reordered: expected [i4:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]
+- [N19] Within matched traces (1->3) reordered: expected [i4:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]

@@ -1,0 +1,8 @@
+
+
+- branch(b1, ...), branch(b2, ...), branch(b3, ...), branch(b4, ...): Lack corresponding guard statements to enforce the explicit conditions stated in the text (e.g., "if a production order is received", "If there are unavailable materials", "if there are available goods"), leaving routing decisions uncontrolled. (SMC4, SMC6)
+- defines(v1, ...), defines(v2, ...), defines(v3, ...), defines(v4, ...): Declared with empty value ranges {} and never referenced in any guard relation, failing to operationalize the decision criteria described in the source. (SMC6)
+- action(n5, "Proceed to order dispatch") and action(n9, "Place manufacturing order"): Have no outgoing precedence edges, creating dead-end paths that cannot reach end(e1) and omitting the documented progression to process completion. (SMC1, SMC5)
+- branch(b5, AND) with precedences (b5, c1), (b5, n14), (b5, n6): Forces material verification and motorcycle dispatch to initiate immediately after "Continue", contradicting the source chronology which specifies these occur "After the goods are issued and the motorcycles are produced" or "At the same time" with production. The direct b5 -> c1 edge also forms a structurally invalid synchronization point. (SMC3, SMC4)
+- branch(b4, XOR): Possesses only a single outgoing edge (precedence(b4, n11)), unnecessarily modeling a deterministic sequence ("the goods are issued and the motorcycles are produced") as a conditional split. (SMC4)
+- action(n13, "Update stock") and action(n15, "Update stock"): Duplicate the stock update across disconnected flows, misrepresenting the source instruction that "Simultaneously, the stock is updated and the sales information is updated" as a unified concluding step before termination. (SMC1, SMC2)

@@ -1,0 +1,6 @@
+
+
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce the explicit textual conditions ("If the inventory is below or equal to the minimum...", "If the PO is approved..."), leaving the exclusive choices unlinked to their triggering criteria (SMC1/SMC4).
+- `defines(v1, "is inventory below or equal to minimum?", {})` and `defines(v2, "is po approved?", {})`: Declared with empty ranges `{}`, which fails to faithfully capture the boolean/conditional value spaces implied by the source text (SMC6).
+- `precedence(n15, c1)` and `precedence(n14, c1)`: Models "receive inventory" (`n15`) and "receive packing slip" (`n14`) as parallel sibling activities that converge simultaneously. The source explicitly mandates a sequential dependency: "If the inventory is received, proceed to receive the Packing Slip." (SMC3/SMC4).
+- `precedence(n18, n19)`: Linearizes the flow from "perform three-way match" to "release funds if successful", omitting the conditional logic required by the source ("If the Three-way match is successful, release the funds.") and incorrectly treating a conditional branch as a mandatory sequence (SMC1/SMC4).

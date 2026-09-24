@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Is meeting successful?;
+:v1: Is meeting successful? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process;
+stop
+else ([v1 = 'Yes'])
+:Create storyboard;
+split
+:Prepare content;
+-> Site ready;
+split again
+:Design site;
+-> Site ready;
+end split
+:Develop site;
+:Review site;
+:v2: Review site ({Not successful, Successful}); <<objectSignal>>
+if () then ([v2 = 'Not successful'])
+:End process;
+stop
+else ([v2 = 'Successful'])
+:Approve site;
+:v3: Approve site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Approved'])
+:End process;
+stop
+else ([v3 = 'Rejected'])
+:Rebuild site;
+:Review rebuilt site;
+:v4: Review rebuilt site ({Not successful, Successful}); <<objectSignal>>
+if () then ([v4 = 'Not successful'])
+:End process;
+stop
+else ([v4 = 'Successful'])
+:Approve rebuilt site;
+:v5: Approve rebuilt site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v5 = 'Approved'])
+:End process;
+else ([v5 = 'Rejected'])
+:Rebuild site again;
+endif
+stop
+endif
+endif
+endif
+endif
+@enduml

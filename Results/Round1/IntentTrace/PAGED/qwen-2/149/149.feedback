@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 0): i2:the process begins with a request to purchase a motorcycle -> i5:update the sales information and proceed to order dispatch -> i13:the process ends -> i14:Simultaneously, the stock is updated and the sales information is updated.
+- [N2] Within matched traces (1->2) omitted: i3:continue the process
+- [N3] Within matched traces (2->3) omitted: i3:continue the process
+- [N4] Within matched traces (2->3) omitted: i10:Once the materials are received from the supplier
+
+Addition
+- [N5] Added trace (model 0): init(i1) -> action(n1,"Request to Purchase Motorcycle") -> action(n2,"Production Order Received?") -> branch(b1,XOR) -> action(n3,"Continue with Production Order") -> converge(c1) -> action(n5,"Check Material Availability") -> branch(b2,XOR) -> action(n6,"Order Materials from Supplier") -> action(n7,"Receive Materials from Supplier") -> converge(c2) -> action(n8,"Issue Goods and Produce Motorcycles") -> action(n9,"Update Stock Information") -> action(n10,"Dispatch Motorcycles") -> action(n13,"Update Stock and Sales Information") -> action(n11,"End of Process") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Request to Purchase Motorcycle") -> action(n2,"Production Order Received?") -> branch(b1,XOR) -> action(n3,"Continue with Production Order") -> converge(c1) -> action(n5,"Check Material Availability") -> branch(b2,XOR) -> action(n12,"Place Manufacturing Order") -> converge(c2) -> action(n8,"Issue Goods and Produce Motorcycles") -> action(n9,"Update Stock Information") -> action(n10,"Dispatch Motorcycles") -> action(n13,"Update Stock and Sales Information") -> action(n11,"End of Process") -> end(e1)
+- [N7] Within matched traces (1->2) added: action(n4,"Update Sales Information and Proceed to Dispatch")
+- [N8] Within matched traces (1->2) added: converge(c1)
+- [N9] Within matched traces (2->3) added: action(n4,"Update Sales Information and Proceed to Dispatch")
+- [N10] Within matched traces (2->3) added: converge(c1)
+- [N11] Within matched traces (2->3) added: action(n5,"Check Material Availability")
+
+Permutation
+- [N12] Within matched traces (1->2) reordered: expected [i14:Simultaneously, the stock is updated and the sales information is updated.] but observed [action(n13,"Update Stock and Sales Information")] elsewhere; in its place the model has [action(n11,"End of Process")]
+- [N13] Within matched traces (2->3) reordered: expected [i14:Simultaneously, the stock is updated and the sales information is updated.] but observed [action(n13,"Update Stock and Sales Information")] elsewhere; in its place the model has [action(n11,"End of Process")]

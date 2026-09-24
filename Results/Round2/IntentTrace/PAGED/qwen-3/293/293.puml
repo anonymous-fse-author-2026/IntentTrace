@@ -1,0 +1,96 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:v1: no more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:re-advertise position;
+:Finally, the process ends.;
+stop
+else ([v1 = 'No'])
+:terms and conditions need sorting?;
+:v2: terms and conditions need sorting? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:candidate accepted voluntary redundancy?;
+:v3: candidate accepted voluntary redundancy? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:conduct further investigation;
+else ([v3 = 'No'])
+:process continues;
+endif
+else ([v2 = 'No'])
+:proceed with recruitment process;
+endif
+:send Appointment Approval form;
+:receive Appointment Approval form by next level manager;
+:approver is existing client employee?;
+:v4: approver is existing client employee? ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:form not authorized by external resource;
+:Finally, the process ends.;
+stop
+else ([v4 = 'Yes'])
+:form approved?;
+:recruitment manager sends form and other documentation;
+:client HR receives form and documentation;
+:The HR department scans the completed form and records the position against the stored position in GovSource;
+:any variations?;
+:v6: any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:a complete business case is required;
+else ([v6 = 'No'])
+:Otherwise, the process continues;
+endif
+:The Appointment Approval is carried forward;
+:position requires medical assessment?;
+:v7: position requires medical assessment? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:medical assessment applicable at 12 percent rate;
+:arrange and complete medical assessment within 21 days;
+else ([v7 = 'No'])
+:medical assessment not necessary;
+endif
+:TS HR coordinator informs recruitment manager;
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+:medical assessment satisfactory?;
+:v8: medical assessment satisfactory? ({No, Yes}); <<objectSignal>>
+if () then ([v8 = 'No'])
+:the next candidate on the shortlist should be contacted;
+:Finally, the process ends.;
+stop
+else ([v8 = 'Yes'])
+:recruitment manager makes formal verbal offer of employment to candidate;
+:send commencement pack and letter of appointment to candidate;
+:candidate accepts verbal offer?;
+:v9: candidate accepts verbal offer? ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+:recruitment manager creates a formal written offer;
+else ([v9 = 'No'])
+:If the candidate declines, the process continues;
+endif
+:candidate receives documents;
+:rate is 40 percent?;
+:v10: rate is 40 percent? ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:renegotiation required;
+:renegotiation successful?;
+:v11: renegotiation successful? ({No, Yes}); <<objectSignal>>
+if () then ([v11 = 'No'])
+:the next candidate on the shortlist should be identified;
+:Finally, the process ends.;
+stop
+else ([v11 = 'Yes'])
+:Finally, the process ends.;
+stop
+endif
+else ([v10 = 'No'])
+:Finally, the process ends.;
+stop
+endif
+endif
+endif
+endif
+@enduml

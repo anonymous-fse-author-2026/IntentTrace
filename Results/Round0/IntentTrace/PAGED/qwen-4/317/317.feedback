@@ -1,0 +1,46 @@
+Omission
+- [N1] Node-level omission: i13:coordinate the second round of selection (reason: The source explicitly prescribes this step when a Psychometric Test is not required, but the model lacks any corresponding action element or outgoing path for this negative branch.)
+- [N2] Omitted trace (input 0): i1:For Talent Seek: -> i2:Initially, it is important to check the Referee Reports. -> i3:monitor if the Referee Reports have been completed. -> i4:If they have been completed, you can proceed with the process. -> i9:move on to organizing interviews for the Selection Panel with the top candidates. -> i10:receive feedback from the interview candidates. -> i11:check if a Psychometric Test is required. -> i13:coordinate the second round of selection -> i16:request the final candidate ranking
+- [N3] Omitted trace (input 3): i1:For Talent Seek: -> i2:Initially, it is important to check the Referee Reports. -> i3:monitor if the Referee Reports have been completed. -> i5:if they have not been completed, you should flag it and send a reminder. -> i6:check again if the Referee Reports have been completed. -> i7:If they have, you can continue with the process. -> i9:move on to organizing interviews for the Selection Panel with the top candidates. -> i10:receive feedback from the interview candidates. -> i11:check if a Psychometric Test is required. -> i13:coordinate the second round of selection -> i16:request the final candidate ranking
+
+Addition
+- [N4] Node-level addition: action(n10,"Check if Referee Reports are still uncompleted") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N5] Node-level addition: guard(b3,n11,"v3 = 'No'") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N6] Node-level addition: guard(b3,n12,"v3 = 'Yes'") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N7] Node-level addition: action(n11,"Contact support for further assistance") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N8] Node-level addition: action(n12,"End of process") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N9] Node-level addition: action(n21,"End of process") (reason: These elements introduce a tertiary completion check, a support escalation path, premature process terminations, and a redundant end step that are entirely absent from the source text. The text flows directly from the second reminder to interview organization upon completion, and concludes naturally after requesting the final ranking.)
+- [N10] Node-level addition: action(n7,"Has Re-check confirmed completion?") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Within matched traces (1->0) added: converge(c2)
+- [N12] Within matched traces (1->0) added: action(n19,"Complete Psychometric Test")
+- [N13] Within matched traces (1->0) added: action(n21,"End of process")
+- [N14] Within matched traces (1->0) added: end(e3)
+- [N15] Within matched traces (2->1) added: action(n21,"End of process")
+- [N16] Within matched traces (2->1) added: end(e3)
+- [N17] Within matched traces (4->2) added: action(n7,"Has Re-check confirmed completion?")
+- [N18] Within matched traces (4->2) added: converge(c2)
+- [N19] Within matched traces (4->2) added: action(n19,"Complete Psychometric Test")
+- [N20] Within matched traces (4->2) added: action(n21,"End of process")
+- [N21] Within matched traces (4->2) added: end(e3)
+- [N22] Within matched traces (5->3) added: action(n7,"Has Re-check confirmed completion?")
+- [N23] Within matched traces (5->3) added: action(n21,"End of process")
+- [N24] Within matched traces (5->3) added: end(e3)
+- [N25] Within matched traces (6->4) added: action(n7,"Has Re-check confirmed completion?")
+- [N26] Within matched traces (6->4) added: action(n10,"Check if Referee Reports are still uncompleted")
+- [N27] Within matched traces (6->4) added: branch(b3,XOR)
+- [N28] Within matched traces (6->4) added: action(n11,"Contact support for further assistance")
+- [N29] Within matched traces (6->4) added: end(e1)
+- [N30] Within matched traces (6->5) added: action(n7,"Has Re-check confirmed completion?")
+- [N31] Within matched traces (6->5) added: action(n10,"Check if Referee Reports are still uncompleted")
+- [N32] Within matched traces (6->5) added: branch(b3,XOR)
+- [N33] Within matched traces (6->5) added: action(n12,"End of process")
+- [N34] Within matched traces (6->5) added: end(e2)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b4` has in=1 and out=1. | DSL: branch(b4,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v4 = 'Yes'` on `b4 -> n16` uses undefined variable `v4`. | DSL: guard(b4,n16,"v4 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v4 = 'Yes'` on `b4 -> n16` cannot be evaluated: `v4` has no declared range. | DSL: guard(b4,n16,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` cannot be evaluated: `v4` has no declared range.

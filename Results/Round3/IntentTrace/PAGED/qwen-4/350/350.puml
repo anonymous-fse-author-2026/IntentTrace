@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:provide userdata for flickr;
+:is the login successful;
+:v_login: is the login successful ({Yes, No}); <<objectSignal>>
+if () then ([v_login = 'Yes'])
+:end process successful login;
+stop
+else ([v_login = 'No'])
+:do you want to try again;
+:v_retry: retry option ({Retry1, Retry2, Abort1, Abort2}); <<objectSignal>>
+switch ()
+case ([v_retry = 'Retry1'])
+:provide userdata for flickr again after first failure;
+case ([v_retry = 'Abort1'])
+:abort process after first failure;
+case ([v_retry = 'Retry2'])
+:provide userdata for flickr still try again;
+case ([v_retry = 'Abort2'])
+:abort process decide to abort;
+endswitch
+endif
+@enduml

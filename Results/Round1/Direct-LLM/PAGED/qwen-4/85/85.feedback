@@ -1,0 +1,8 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process for ACME Company, -> i2:start by receiving the customer request and then check the current inventory level. -> i3:If the inventory level is at or below the minimum, accept the customer request. -> i5:After accepting the customer request, create a purchase order. -> i7:Once the purchase order is created, review it. -> i8:If the purchase order is rejected, rework the purchase order. -> i7:Once the purchase order is created, review it.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the inventory level is at or below the minimum, accept the customer request.; reason=Replaces the explicit inventory threshold condition with an abstract boolean assignment ('v1 = Yes'), dropping the required operational logic from the source.
+- [N3] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:However, if the inventory level is above the minimum, reject the customer request.; reason=Replaces the explicit upper-bound inventory condition with an abstract boolean assignment ('v1 = No'), losing the precise branching criteria.
+- [N4] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i9:However, if the purchase order is approved, reserve the funds.; reason=Substitutes the explicit 'approved' status condition with an abstract boolean ('v2 = Yes'), distorting the guard's payload.
+- [N5] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i8:If the purchase order is rejected, rework the purchase order.; reason=Substitutes the explicit 'rejected' status condition with an abstract boolean ('v2 = No'), altering the intended routing logic.

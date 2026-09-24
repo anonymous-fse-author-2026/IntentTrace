@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i2:if the answer is "No", then we continue the process. (reason: The model captures the condition via a guard but completely omits the explicitly instructed action to continue the process.)
+- [N2] Node-level omission: i3:If the answer is "No" again, we continue the process. (reason: Fails to implement the explicit instruction to continue the process on the second negative check; only a routing guard is present.)
+
+Addition
+- [N3] Node-level addition: action(n1,"start process") (reason: Generic placeholder actions ('start process', 'initial decision', 'second decision') lack any corresponding source text or operational meaning.)
+- [N4] Node-level addition: action(n2,"initial decision") (reason: Generic placeholder actions ('start process', 'initial decision', 'second decision') lack any corresponding source text or operational meaning.)
+- [N5] Node-level addition: action(n4,"second decision") (reason: Generic placeholder actions ('start process', 'initial decision', 'second decision') lack any corresponding source text or operational meaning.)
+- [N6] Node-level addition: action(n7,"vendor exists in SAP") (reason: Invented status checks and decision placeholders ('vendor exists in SAP', 'invoice entry decision', 'priority decision again') are unsupported by the source.)
+- [N7] Node-level addition: action(n11,"invoice entry decision") (reason: Invented status checks and decision placeholders ('vendor exists in SAP', 'invoice entry decision', 'priority decision again') are unsupported by the source.)
+- [N8] Node-level addition: action(n15,"priority decision again") (reason: Invented status checks and decision placeholders ('vendor exists in SAP', 'invoice entry decision', 'priority decision again') are unsupported by the source.)
+- [N9] Node-level addition: action(n12,"need vendor master record") (reason: Duplicate or displaced actions ('need vendor master record', 'end due to missing...', 'give priority') appear in model paths not justified by the segmented source units.)
+- [N10] Node-level addition: action(n13,"end due to missing vendor master") (reason: Duplicate or displaced actions ('need vendor master record', 'end due to missing...', 'give priority') appear in model paths not justified by the segmented source units.)
+- [N11] Node-level addition: action(n14,"give priority") (reason: Duplicate or displaced actions ('need vendor master record', 'end due to missing...', 'give priority') appear in model paths not justified by the segmented source units.)
+- [N12] Node-level addition: guard(b4,n12,"v4 = 'No'") (reason: Guards reference undefined variables (v4) and model branching logic that does not exist in the provided source segments.)
+- [N13] Node-level addition: guard(b4,n14,"v4 = 'Yes'") (reason: Guards reference undefined variables (v4) and model branching logic that does not exist in the provided source segments.)
+- [N14] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N15] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> end(e3)
+- [N16] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N17] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N18] Added trace (model 6): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N19] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> end(e3)
+- [N20] Added trace (model 8): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> end(e_start_yes)
+- [N21] Within matched traces (0->0) added: action(n1,"start process")
+- [N22] Within matched traces (0->0) added: action(n2,"initial decision")
+- [N23] Within matched traces (0->0) added: action(n7,"vendor exists in SAP")
+- [N24] Within matched traces (1->2) added: action(n1,"start process")
+- [N25] Within matched traces (1->2) added: action(n2,"initial decision")
+- [N26] Within matched traces (1->2) added: action(n7,"vendor exists in SAP")
+- [N27] Within matched traces (1->2) added: action(n11,"invoice entry decision")
+- [N28] Within matched traces (1->2) added: branch(b4,XOR)
+- [N29] Within matched traces (1->2) added: action(n14,"give priority")
+- [N30] Within matched traces (1->2) added: action(n15,"priority decision again")
+
+Mutation
+- [N31] Node-level mutation: element=guard(b1,e_start_yes,"v1 = 'Yes'"); source=i4:However, if the answer is "Yes", then we give it priority.; reason=Guard routes a 'Yes' outcome directly to an end node, fundamentally contradicting the source which mandates giving priority instead.
+- [N32] Node-level mutation: element=action(n9,"end due to missing vendor master"); source=i6:If the answer is "No", then we need a Vendor master record and the process ends.; reason=Injects the unsourced qualifier 'due to missing vendor master', distorting the neutral termination instruction in the source.
+- [N33] Node-level mutation: element=guard(b5,e3,"v5 = 'No'"); source=i9:And if the answer is "Yes" again, then we enter the invoice in SAP.; reason=Routes a 'No' outcome to an end node, arbitrarily terminating the process where the source specifies continued execution or invoice entry.

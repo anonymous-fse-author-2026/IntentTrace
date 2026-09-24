@@ -1,0 +1,10 @@
+- action(n3, "Inventory Level at or below minimum") & action(n7, "Purchase Order Approved"): Incorrectly modeled as executable steps instead of decision conditions; the source text frames them as conditional checks ("If the 'Inventory level is at or below the minimum'", "If the Purchase Order is approved") that should govern branch routing, not standalone activities (SMC2, SMC4).
+- precedence(n2, n3), precedence(n3, b1), precedence(n6, n7), precedence(n7, b2): Forces sequential execution through the condition nodes before the XOR splits, contradicting source chronology where decisions occur immediately after "checking the Inventory Level" and "Reviewing the Purchase Order" without intervening steps (SMC3, SMC4).
+- branch(b1, XOR), branch(b2, XOR): Missing guard statements to associate v1 and v2 with their outgoing paths (b1→n4/n5, b2→n8/n9); the model fails to explicitly encode the conditional logic required by the source text for routing (SMC4, SMC6).
+- action(n11, "Reviewing Purchase Order"): Lacks an outgoing precedence edge, breaking the required feedback loop; the source explicitly states "In case the order needs to be reworked, review the Purchase Order again," necessitating a return path to the review/decision point (SMC1, SMC3, SMC4).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"Reviewing Purchase Order")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n9 | DSL: action(n11,"Reviewing Purchase Order"); action(n9,"Rework Order")

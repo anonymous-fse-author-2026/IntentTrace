@@ -1,0 +1,7 @@
+
+
+- `defines(v1,...)`, `defines(v2,...)`, `defines(v3,...)`, `defines(v4,...)`, `defines(v5,...)`: Ranges are empty `{}`, failing to capture the implicit binary decision spaces required by the source ("If there is coverage", "If it is accepted", "Repeat... if necessary"), violating SMC6.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`, `branch(b5, XOR)`: Completely lack `guard()` statements for outgoing edges. The source explicitly ties each split to a condition, leaving the XOR routing semantically undefined, violating SMC4.
+- `action(n9, "...")`, `action(n10, "...")`, `action(n11, "...")`, `end(e1)`, `end(e2)`, `end(e3)`: Hallucinates three separate "repeat" nodes and three disjoint termination points, whereas the source specifies a single iteration option ("Repeat the same steps if necessary") and a single conclusion ("The process concludes once all steps have been completed"), violating SMC1 and SMC5.
+- `precedence` graph: Contains zero backward edges to implement the feedback loop mandated by "Repeat the same steps if necessary"; enforces a strictly acyclic, forward-only tree that breaks the intended chronological progression, violating SMC3 and SMC4.
+- `action(n3, "is there coverage")` / `action(n6, "has the offer been accepted")`: Incorrectly modeled as procedural tasks rather than decision gates; combined with absent guards, this misrepresents the source's explicit conditional evaluations, violating SMC2.

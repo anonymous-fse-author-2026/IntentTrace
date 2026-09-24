@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start acme process")`: Hallucinates a step not present in the source, which begins directly with "start by receiving the customer request." (SMC1)
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard()` statements despite the source explicitly specifying decision conditions ("inventory level is at or below the minimum" / "above the minimum", and "purchase order is rejected" / "approved"). (SMC4)
+- `defines(v1, "check inventory level", {})` and `defines(v2, "review purchase order", {})`: Declare empty value ranges `{}`, failing to represent the numeric threshold or approval statuses required by the described decision logic. (SMC6)
+- `action(n7, "rework purchase order")`: Dangles in the control flow; the source requires a feedback loop ("In case the purchase order needs to be reworked, review it again."), but the model omits the precedence edge from `n7` back to `action(n6, "review purchase order")`. (SMC3/SMC4)
+- `action(n4, "accept request and create PO")`: Merges two distinct sequential steps ("accept the customer request" and "create a purchase order") into a single node, deviating from the exact chronology specified in the text. (SMC2/SMC3)

@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates a distinct initial step; the description explicitly states passengers "start the process by undergoing immigration checks", making this action redundant and unfaithful to the documented chronology.
+- `defines(v1, "Select method for exit control checks: Biometrics or ID documents?", {})`: Specifies an empty range `{}`, completely omitting the documented selection options ("Biometrics" and "ID documents").
+- `defines(v2, ...)` and `defines(v3, ...)`: Restrict value ranges to `{"No"}`, omitting the alternative outcome ("Yes"/denied/unsuccessful), which prevents correct evaluation of the permission check outcomes described in the text.
+- `guard(b2, n7, v2 = 'No')` and `guard(b3, n11, v3 = 'No')`: Map the `'No'` condition to `action(n7)` and `action(n11)` ("Leave the area..."), directly contradicting the source which mandates leaving only when the passenger is "denied permission" or the outcome is "unsuccessful".
+- `precedence(b2, n8)` and `precedence(b3, n12)`: Lack corresponding guards for the allowed/successful outcomes, leaving half of each XOR branch's routing logic undefined despite the source describing a clear binary progression ("leave the area" vs. "proceed to the next step").

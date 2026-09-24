@@ -1,0 +1,166 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Please provide userdata for flickr"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check login status"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "login_status",
+      "R_X": [
+        "Success",
+        "Fail"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "user_decision",
+      "R_X": [
+        "Retry",
+        "Abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "c1",
+        "n1",
+        "n2",
+        "b1",
+        "b2",
+        "e1",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v1 = 'Success'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "b2",
+      "condition": "v1 = 'Fail'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e2",
+      "condition": "v2 = 'Abort'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'Retry'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i3",
+      "content": "If the login is successful"
+    },
+    {
+      "id": "i5",
+      "content": "the process will end."
+    },
+    {
+      "id": "i6",
+      "content": "if the login fails"
+    },
+    {
+      "id": "i7",
+      "content": "If you want to try again"
+    },
+    {
+      "id": "i8",
+      "content": "if you choose to abort"
+    }
+  ]
+}

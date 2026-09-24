@@ -1,0 +1,20 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i9:send the data back to the suppliers.
+
+Addition
+- [N2] Added trace (model 2): init(i1) -> action(n1,"Start and enter the metadata") -> action(n2,"Proceed to the IN-Patient step") -> branch(b2,AND) -> action(n4,"Create a claim") -> branch(b3,AND) -> action(n10,"Handle the claim") -> action(n11,"Extract data from suppliers") -> action(n12,"Enter data on patient record or confirm IN-Patient status") -> branch(b1,XOR) -> action(n13,"Enter data on patient record") -> branch(b4,AND) -> converge(c2) -> action(n18,"Send data back to suppliers") -> action(n19,"Receive the payment") -> converge(c3) -> action(n20,"Process ends after receiving payment") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"Start and enter the metadata") -> action(n2,"Proceed to the IN-Patient step") -> branch(b2,AND) -> action(n4,"Create a claim") -> branch(b3,AND) -> action(n10,"Handle the claim") -> action(n11,"Extract data from suppliers") -> action(n12,"Enter data on patient record or confirm IN-Patient status") -> branch(b1,XOR) -> action(n14,"Confirm IN-Patient status") -> branch(b5,AND) -> converge(c1) -> action(n15,"Register the case") -> action(n16,"Handle the claim") -> action(n17,"Receive the payment") -> converge(c3) -> action(n20,"Process ends after receiving payment") -> end(e2)
+- [N4] Added trace (model 4): init(i1) -> action(n1,"Start and enter the metadata") -> action(n2,"Proceed to the IN-Patient step") -> branch(b2,AND) -> action(n4,"Create a claim") -> branch(b3,AND) -> action(n10,"Handle the claim") -> action(n11,"Extract data from suppliers") -> action(n12,"Enter data on patient record or confirm IN-Patient status") -> branch(b1,XOR) -> action(n14,"Confirm IN-Patient status") -> branch(b5,AND) -> converge(c2) -> action(n18,"Send data back to suppliers") -> action(n19,"Receive the payment") -> converge(c3) -> action(n20,"Process ends after receiving payment") -> end(e2)
+- [N5] Within matched traces (0->1) added: branch(b2,AND)
+- [N6] Within matched traces (0->1) added: action(n4,"Create a claim")
+- [N7] Within matched traces (0->1) added: branch(b3,AND)
+- [N8] Within matched traces (0->1) added: branch(b4,AND)
+- [N9] Within matched traces (0->1) added: converge(c1)
+- [N10] Within matched traces (1->0) added: action(n2,"Proceed to the IN-Patient step")
+- [N11] Within matched traces (1->0) added: branch(b2,AND)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=1 and out=0. | DSL: action(n9,"Register the case")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n14` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n9 | DSL: action(n9,"Register the case")

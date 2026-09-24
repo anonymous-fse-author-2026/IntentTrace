@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i6:However, if they are marked as "Completed", the process should be continued. (reason: The model omits the entire conditional branching logic for invoice status ('Completed' vs 'Uncompleted'). It presents a linear flow instead of routing based on the marks, and skips the explicit continuation path for completed invoices as well as the reiterated handling instructions.)
+- [N2] Node-level omission: i7:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail. (reason: The model omits the entire conditional branching logic for invoice status ('Completed' vs 'Uncompleted'). It presents a linear flow instead of routing based on the marks, and skips the explicit continuation path for completed invoices as well as the reiterated handling instructions.)
+- [N3] Node-level omission: i8:they should be returned to the client via postal mail. (reason: The model omits the entire conditional branching logic for invoice status ('Completed' vs 'Uncompleted'). It presents a linear flow instead of routing based on the marks, and skips the explicit continuation path for completed invoices as well as the reiterated handling instructions.)
+- [N4] Node-level omission: i9:On the other hand, if they are marked as "Completed", the process should be continued. (reason: The model omits the entire conditional branching logic for invoice status ('Completed' vs 'Uncompleted'). It presents a linear flow instead of routing based on the marks, and skips the explicit continuation path for completed invoices as well as the reiterated handling instructions.)
+- [N5] Within matched traces (1->0) omitted: i6:However, if they are marked as "Completed", the process should be continued.
+- [N6] Within matched traces (1->0) omitted: i7:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.
+- [N7] Within matched traces (1->0) omitted: i8:they should be returned to the client via postal mail.
+- [N8] Within matched traces (2->0) omitted: i6:However, if they are marked as "Completed", the process should be continued.
+- [N9] Within matched traces (2->0) omitted: i7:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.
+- [N10] Within matched traces (2->0) omitted: i9:On the other hand, if they are marked as "Completed", the process should be continued.
+
+Addition
+- [N11] Node-level addition: action(n1,"start") (reason: Content 'start' is invented; the source only provides contextual framing for beginning the process, not a discrete 'start' action step.)
+- [N12] Node-level addition: guard(b1,n3,"v1 = 'Yes'") (reason: Guards introduce abstract variables ('v1 = 'Yes''/'No'') and binary outcomes not present in the source text, which merely instructs to check if it has started.)
+- [N13] Node-level addition: guard(b1,n4,"v1 = 'No'") (reason: Guards introduce abstract variables ('v1 = 'Yes''/'No'') and binary outcomes not present in the source text, which merely instructs to check if it has started.)
+- [N14] Node-level addition: action(n4,"End") (reason: Models an early termination path for a negative check result, but the source text does not describe any action or endpoint if the process has not started.)
+- [N15] Node-level addition: guard(b2,n9,"v2 = 'Yes'") (reason: Guards rely on invented variable assignments ('v2 = 'Yes''/'No'') for the completion check, lacking any textual basis.)
+- [N16] Node-level addition: guard(b2,n10,"v2 = 'No'") (reason: Guards rely on invented variable assignments ('v2 = 'Yes''/'No'') for the completion check, lacking any textual basis.)
+- [N17] Node-level addition: action(n10,"Proceed to verify completeness of invoices") (reason: Creates a loop back to invoice verification, whereas the source text explicitly concludes the process immediately after the completion check.)
+- [N18] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n3,"Proceed to verify completeness of invoices") -> action(n5,"Return uncompleted invoices to client via postal mail") -> action(n6,"Receive completed invoices from client") -> action(n7,"Mark relevant box on invoice entry form") -> action(n8,"Check if process has been completed") -> branch(b2,XOR) -> action(n10,"Proceed to verify completeness of invoices") -> end(e2)
+- [N19] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> end(e1)
+- [N20] Within matched traces (0->0) added: action(n1,"start")
+- [N21] Within matched traces (1->0) added: action(n1,"start")
+- [N22] Within matched traces (1->0) added: action(n5,"Return uncompleted invoices to client via postal mail")
+- [N23] Within matched traces (2->0) added: action(n1,"start")
+- [N24] Within matched traces (2->0) added: action(n5,"Return uncompleted invoices to client via postal mail")

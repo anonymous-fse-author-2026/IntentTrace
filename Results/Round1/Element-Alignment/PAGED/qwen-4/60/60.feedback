@@ -1,0 +1,63 @@
+Omission
+- [N1] Node-level omission: i10:Once again, evaluate the review decision. (reason: No corresponding action element exists to perform the second review evaluation; the model jumps directly from the translation check into a branching structure.)
+- [N2] Omitted trace (input 1): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i4:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i5:If translation is required, proceed to translate the receipts. -> i7:After this, evaluate the review decision. -> i8:If the report is rejected, edit the report.
+- [N3] Omitted trace (input 2): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i4:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i6:If not, confirm the receipts. -> i7:After this, evaluate the review decision. -> i8:If the report is rejected, edit the report.
+- [N4] Within matched traces (4->2) omitted: i5:If translation is required, proceed to translate the receipts.
+- [N5] Within matched traces (5->2) omitted: i6:If not, confirm the receipts.
+- [N6] Within matched traces (7->3) omitted: i5:If translation is required, proceed to translate the receipts.
+- [N7] Within matched traces (8->3) omitted: i6:If not, confirm the receipts.
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Vague 'start' step lacks the specific UI interaction details provided in the source and is functionally redundant with the subsequent click/select actions.)
+- [N9] Node-level addition: action(n11,"check translation need again") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Node-level addition: action(n18,"end") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n5,"review report") -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n10,"edit report") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n16,"edit report") -> action(n18,"end") -> end(e2)
+- [N12] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n5,"review report") -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n11,"check translation need again") -> branch(b4,XOR) -> action(n13,"confirm receipts again") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> end(e1)
+- [N13] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n5,"review report") -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n11,"check translation need again") -> branch(b4,XOR) -> action(n13,"confirm receipts again") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n16,"edit report") -> action(n18,"end") -> end(e2)
+- [N14] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n7,"translate receipts") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> end(e1)
+- [N15] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n7,"translate receipts") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n16,"edit report") -> action(n18,"end") -> end(e2)
+- [N16] Added trace (model 8): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n8,"confirm receipts") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> end(e1)
+- [N17] Added trace (model 9): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n8,"confirm receipts") -> converge(c1) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n16,"edit report") -> action(n18,"end") -> end(e2)
+- [N18] Within matched traces (0->0) added: init(i1)
+- [N19] Within matched traces (0->0) added: action(n1,"start")
+- [N20] Within matched traces (0->0) added: converge(c1)
+- [N21] Within matched traces (0->0) added: action(n14,"evaluate receipt decision")
+- [N22] Within matched traces (0->0) added: branch(b5,XOR)
+- [N23] Within matched traces (0->0) added: action(n15,"process expense")
+- [N24] Within matched traces (0->0) added: action(n17,"end")
+- [N25] Within matched traces (0->0) added: end(e1)
+- [N26] Within matched traces (3->2) added: init(i1)
+- [N27] Within matched traces (3->2) added: action(n1,"start")
+- [N28] Within matched traces (4->2) added: init(i1)
+- [N29] Within matched traces (4->2) added: action(n1,"start")
+- [N30] Within matched traces (4->2) added: action(n4,"is expense > 1000?")
+- [N31] Within matched traces (4->2) added: action(n5,"review report")
+- [N32] Within matched traces (5->2) added: init(i1)
+- [N33] Within matched traces (5->2) added: action(n1,"start")
+- [N34] Within matched traces (5->2) added: action(n4,"is expense > 1000?")
+- [N35] Within matched traces (5->2) added: action(n5,"review report")
+- [N36] Within matched traces (6->3) added: init(i1)
+- [N37] Within matched traces (6->3) added: action(n1,"start")
+- [N38] Within matched traces (6->3) added: action(n18,"end")
+- [N39] Within matched traces (6->3) added: end(e2)
+- [N40] Within matched traces (7->3) added: init(i1)
+- [N41] Within matched traces (7->3) added: action(n1,"start")
+- [N42] Within matched traces (7->3) added: action(n4,"is expense > 1000?")
+- [N43] Within matched traces (7->3) added: action(n5,"review report")
+- [N44] Within matched traces (7->3) added: action(n18,"end")
+- [N45] Within matched traces (7->3) added: end(e2)
+- [N46] Within matched traces (8->3) added: init(i1)
+- [N47] Within matched traces (8->3) added: action(n1,"start")
+- [N48] Within matched traces (8->3) added: action(n4,"is expense > 1000?")
+- [N49] Within matched traces (8->3) added: action(n5,"review report")
+- [N50] Within matched traces (8->3) added: action(n18,"end")
+- [N51] Within matched traces (8->3) added: end(e2)
+
+Mutation
+- [N52] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i2:If the expense is greater than 1000,; reason=Guards replace the explicit numeric thresholds (>1000, <=1000) with generic boolean values ('Yes'/'No'), dropping critical source data.
+- [N53] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation.; reason=Guards replace the explicit numeric thresholds (>1000, <=1000) with generic boolean values ('Yes'/'No'), dropping critical source data.
+- [N54] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i5:If translation is required, proceed to translate the receipts.; reason=Guards substitute the explicit condition 'translation is required' with generic 'Yes'/'No' flags, altering the documented logic trigger.
+- [N55] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i6:If not, confirm the receipts.; reason=Guards substitute the explicit condition 'translation is required' with generic 'Yes'/'No' flags, altering the documented logic trigger.
+- [N56] Node-level mutation: element=guard(b4,n12,"v4 = 'Yes'"); source=i10:Once again, evaluate the review decision.; reason=Guards use generic 'Yes'/'No' instead of reflecting the actual review decision outcomes (approved/rejected) established by the preceding evaluation step.
+- [N57] Node-level mutation: element=guard(b4,n13,"v4 = 'No'"); source=i11:If it is approved, translate the receipts and then confirm them.; reason=Guards use generic 'Yes'/'No' instead of reflecting the actual review decision outcomes (approved/rejected) established by the preceding evaluation step.
+- [N58] Node-level mutation: element=action(n12,"translate receipts again") -> action(n13,"confirm receipts again"); source=i11:If it is approved, translate the receipts and then confirm them.; reason=Both actions invent the qualifier 'again' which is absent from the source, violating the strict requirement to reproduce instructions without invented modifiers.

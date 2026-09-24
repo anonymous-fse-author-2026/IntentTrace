@@ -1,0 +1,6 @@
+- `branch(b3, AND)`: The model incorrectly inserts a parallel AND gateway after "Ship Material" (n5), which violates the sequential flow described in the source ("Once the P.O. is submitted, proceed to Ship Material. At this point, check if...").
+- `action(n12, "communicate shipment problems before shipment")`: This node is placed in a parallel branch and has no outgoing edges (dead end). It incorrectly models the instruction "In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material", which implies a loop back to "Ship Material" after communicating problems.
+- `branch(b1, XOR)`: Missing guards on its outgoing edges to represent the source conditions "If it is [okay]" and "if there are any problems".
+- `branch(b2, XOR)`: Missing guards on its outgoing edges to represent the source conditions "if it is okay" and "Otherwise".
+- `defines(v1, "is shipment okay first check", {})` and `defines(v2, "is shipment okay second check", {})`: Both variables are defined with empty ranges `{}` instead of valid values.
+- `action(n11, "communicate shipment problems second time")`: The node is a dead end with no outgoing control-flow edge to loop back or terminate the process.

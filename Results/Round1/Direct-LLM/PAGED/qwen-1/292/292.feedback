@@ -1,0 +1,25 @@
+Addition
+- [N1] Node-level addition: action(n9,"accept claim") (reason: The model includes an explicit 'accept claim' action step, but the source text only presents acceptance as a conditional gateway leading directly to offering the benefit, with no discrete action described.)
+- [N2] Added trace (model 1): init(i1) -> action(n2,"receive claim") -> action(n3,"create and record claim") -> action(n4,"decide on claim") -> branch(b1,XOR) -> action(n5,"reject claim") -> action(n6,"review rejection") -> branch(b2,XOR) -> converge(c1) -> branch(b3,AND) -> action(n8,"close the claim") -> converge(c2) -> action(n15,"end") -> end(e1)
+- [N3] Added trace (model 3): init(i1) -> action(n2,"receive claim") -> action(n3,"create and record claim") -> action(n4,"decide on claim") -> branch(b1,XOR) -> action(n9,"accept claim") -> action(n10,"offer benefit") -> action(n11,"prepare discharge") -> action(n12,"record payment") -> converge(c1) -> branch(b3,AND) -> action(n8,"close the claim") -> converge(c2) -> action(n15,"end") -> end(e1)
+- [N4] Within matched traces (0->0) added: branch(b3,AND)
+- [N5] Within matched traces (0->0) added: action(n7,"operate outgoing payment")
+- [N6] Within matched traces (0->0) added: converge(c2)
+- [N7] Within matched traces (1->0) added: converge(c2)
+- [N8] Within matched traces (1->0) added: action(n15,"end")
+- [N9] Within matched traces (1->0) added: end(e1)
+- [N10] Within matched traces (2->2) added: converge(c1)
+- [N11] Within matched traces (2->2) added: branch(b3,AND)
+- [N12] Within matched traces (2->2) added: action(n7,"operate outgoing payment")
+- [N13] Within matched traces (2->2) added: converge(c2)
+- [N14] Within matched traces (3->2) added: converge(c1)
+- [N15] Within matched traces (3->2) added: branch(b3,AND)
+- [N16] Within matched traces (3->2) added: converge(c2)
+- [N17] Within matched traces (3->2) added: action(n15,"end")
+- [N18] Within matched traces (3->2) added: end(e1)
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=Accepted].

@@ -1,0 +1,9 @@
+
+
+- `defines(v3, "Is PO rejected", {"Yes"})`: Omits the `"No"` value from the variable range, preventing `branch(b3,...)` from faithfully modeling the source's binary decision between rejection and approval.
+- `action(n12, "Is PO approved")` & `branch(b4, XOR)`: Misrepresents a gateway as a sequential action; the source presents a single exclusive choice ("If the PO is rejected... If the PO is approved..."), not two consecutive decision points.
+- `precedence(n13, n17)`: Violates source chronology; the text states "If the PO is created, it needs to be reviewed," but the model places the review step (`n17`) after the PO is already printed and released (`n13`).
+- `action(n15,...)`, `action(n16,...)`, `action(n47,...)`, `action(n48,...)`: Breaks the documented cycle; the source specifies "If the PO needs to be reworked, it needs to be created again," but these nodes form dead ends with no outgoing precedence links back to creation or review.
+- `action(n20,...)`, `action(n21,...)`, `action(n22,...)`, `action(n26,...)`, `action(n30,...)`, `action(n34,...)`, `action(n35,...)`, `action(n41,...)`: Incorrectly models flow synchronizations as explicit action nodes instead of `converge()` structures, and `n22` hallucinates a third parallel branch not supported by the source text.
+- `action(n25,...)`, `action(n29,...)`, `action(n33,...)`, `action(n37,...)`, `action(n40,...)`: Hallucinates explicit waiting and re-checking steps for fund reservation, packing slips, invoices, and inventory, contradicting the source's direct conditional statements ("If funds are reserved..., receive the Packing Slip.", etc.).
+- `action(n46,...)`, `branch(b10,...)`, `action(n49,...)`, `action(n50,...)`, `end(e3)`, `defines(v10,...)`: Hallucinates a complete failure-handling and alternate termination path ("No match proceed with review...", "Contact support...", etc.) for the Three-way match that is entirely absent from the source description.

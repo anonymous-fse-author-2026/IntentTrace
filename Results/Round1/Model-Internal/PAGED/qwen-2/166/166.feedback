@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i1:the first step is to assess the potential for seizure, significant hemorrhage, or acute respiratory distress. (reason: Despite being partially referenced by mutated elements, no element faithfully implements this as a single, non-fragmented assessment step as explicitly prescribed by the source.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start procedure") (reason: The 'start procedure' action is invented and lacks any supporting text in the source; the process simply begins directly with the assessment.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start procedure") -> branch(b1,AND) -> action(n3,"assess potential for significant hemorrhage") -> converge(c1) -> action(n5,"administer midazolam 10 mg as needed") -> action(n6,"end procedure") -> end(e1)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start procedure") -> branch(b1,AND) -> action(n4,"assess potential for acute respiratory distress") -> converge(c1) -> action(n5,"administer midazolam 10 mg as needed") -> action(n6,"end procedure") -> end(e1)
+- [N5] Within matched traces (0->0) added: action(n1,"start procedure")
+- [N6] Within matched traces (0->0) added: branch(b1,AND)
+
+Mutation
+- [N7] Node-level mutation: element=action(n2,"assess potential for seizure") -> action(n3,"assess potential for significant hemorrhage") -> action(n4,"assess potential for acute respiratory distress"); source=i1:the first step is to assess the potential for seizure, significant hemorrhage, or acute respiratory distress.; reason=The source prescribes a single, unified assessment step covering three potential conditions. The model incorrectly fragments this into three distinct actions routed through an AND gateway with a converge node, fundamentally altering the granularity, logical structure, and implied concurrency of the original instruction.

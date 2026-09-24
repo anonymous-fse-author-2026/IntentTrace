@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To initiate the process for ACME Company, the Resupply Cycle is triggered, -> i2:followed by checking the Inventory Level. -> i3:If the Inventory is greater than the Minimum Level, -> i5:Otherwise, a Purchase Order is created. -> i6:The Purchase Order is then reviewed. -> i7:If the Purchase Order is rejected, it is reworked. -> i8:it is reworked. -> i6:The Purchase Order is then reviewed.
+
+Addition
+- [N2] Within matched traces (2->0) added: converge(c1)
+- [N3] Within matched traces (3->1) added: converge(c1)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n4,"v1 <= 50"); source=i3:If the Inventory is greater than the Minimum Level,; reason=Both guards replace the textual comparison against 'Minimum Level' with a hardcoded numeric threshold of 50. While the directional logic (> vs <=) matches the branching intent, the substitution of a specific number for an abstract variable threshold alters the condition's evaluation parameter.
+- [N5] Node-level mutation: element=guard(b1,e1,"v1 > 50"); source=i5:Otherwise, a Purchase Order is created.; reason=Both guards replace the textual comparison against 'Minimum Level' with a hardcoded numeric threshold of 50. While the directional logic (> vs <=) matches the branching intent, the substitution of a specific number for an abstract variable threshold alters the condition's evaluation parameter.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"Review Purchase Order")
+- [S2] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c2` has in=1 and out=1. | DSL: converge(c2)
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Rejected'` on `b2 -> n6` uses undefined variable `v2`. | Guard `v2 = 'Accepted'` on `b2 -> n7` uses undefined variable `v2`. | DSL: guard(b2,n6,"v2 = 'Rejected'"); guard(b2,n7,"v2 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Rejected'` on `b2 -> n6` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'Accepted'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n6,"v2 = 'Rejected'"); guard(b2,n7,"v2 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

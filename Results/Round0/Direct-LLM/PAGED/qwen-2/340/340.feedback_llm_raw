@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step not present in the description, which explicitly states `"the first step is to identify the parts."` (SMC1)
+- `action(n5, "do the parts need to be ordered and received from Disuki?")` & `branch(b2, XOR)`: Introduces a decision point and branching structure that is entirely absent from the source text. (SMC1)
+- `guard(b2, n6, v2 = 'Order not needed  proceed')` routing to `action(n6, "order part from Disuki")`: Logically inverted; the guard condition specifies ordering is unnecessary, yet directs control flow to the ordering action. (SMC2/SMC4)
+- `branch(b2, XOR)` splitting `action(n6, "order part from Disuki")` and `action(n7, "receive part from Disuki")`: Incorrectly models the source phrase `"order and receive the part"` as mutually exclusive choices rather than a sequential or coupled operation. (SMC4)
+- `precedence(n7, n8)` placing `action(n8, "record customer details")` after `action(n7, "receive part from Disuki")`: Reverses documented chronology. The source states `"if they need to record the customer's details, they should order and receive the part"`, establishing recording as a precondition for ordering/receiving. (SMC3)
+- `precedence(b1, c2)`: Creates a direct jump from an XOR branch to a convergence node. The source indicates that when information is already available or parts are supplied, the team `"can proceed with the process"` / `"continue with the process"`, but the model provides no representative step or transitional logic for this continuation. (SMC3/SMC5)
+- `converge(c1)` joining flows from `action(n6, ...)` and `action(n8, ...)` after `branch(b2, XOR)`: Misapplies join semantics. An XOR split denotes an exclusive choice, so a subsequent converge node implies synchronization/waiting, contradicting the exclusive nature of the split. (SMC4)

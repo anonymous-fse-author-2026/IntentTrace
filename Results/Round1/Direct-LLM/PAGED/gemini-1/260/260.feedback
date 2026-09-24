@@ -1,0 +1,22 @@
+Omission
+- [N1] Omitted trace (input 1): i1:the process begins -> i2:receiving the invoice -> i3:sorted per client -> i4:sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked. -> i11:If the priority is high -> i12:a red stamp is placed on the entry invoice -> i14:The invoice compliance is then checked -> i15:If it is not complete, the check continues. -> i14:The invoice compliance is then checked
+- [N2] Omitted trace (input 5): i1:the process begins -> i2:receiving the invoice -> i3:sorted per client -> i4:sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked. -> i13:If it is low, the process continues. -> i14:The invoice compliance is then checked -> i15:If it is not complete, the check continues. -> i14:The invoice compliance is then checked
+
+Addition
+- [N3] Node-level addition: guard(b1,n9,"v1 == \"complete\"") (reason: The condition 'v1 == complete' lacks any corresponding text in the provided segmented source units.)
+- [N4] Node-level addition: guard(b3,n15,"v3 == \"none\"") (reason: The condition 'v3 == none' lacks any corresponding text in the provided segmented source units.)
+- [N5] Node-level addition: action(n8,"end process: incomplete invoice") (reason: The element invents an action step 'end process: incomplete invoice' which adds the qualifier 'incomplete invoice' without source support.)
+- [N6] Node-level addition: action(n17,"end process: completed successfully") (reason: The element invents an action step 'end process: completed successfully' which adds the outcome 'completed successfully' without source support.)
+- [N7] Within matched traces (2->1) added: branch(b1,XOR)
+- [N8] Within matched traces (2->1) added: action(n17,"end process: completed successfully")
+- [N9] Within matched traces (3->2) added: branch(b1,XOR)
+- [N10] Within matched traces (3->2) added: action(n17,"end process: completed successfully")
+- [N11] Within matched traces (4->3) added: branch(b1,XOR)
+- [N12] Within matched traces (6->4) added: branch(b1,XOR)
+- [N13] Within matched traces (6->4) added: action(n17,"end process: completed successfully")
+- [N14] Within matched traces (7->5) added: branch(b1,XOR)
+- [N15] Within matched traces (7->5) added: action(n17,"end process: completed successfully")
+- [N16] Within matched traces (8->6) added: branch(b1,XOR)
+
+Mutation
+- [N17] Node-level mutation: element=action(n13,"process non-compliance invoice for experienced staff"); source=i18:the non-compliance invoice is processed; reason=The element adds the target 'for experienced staff', distorting the original action which does not specify this within the segment.

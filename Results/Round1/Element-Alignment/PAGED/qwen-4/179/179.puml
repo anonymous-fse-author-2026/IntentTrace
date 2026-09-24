@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start by joining the team and agreeing on teams domain;
+:create a process model;
+:is the process model OK;
+:v1: is the process model OK ({OK, NOT OK}); <<objectSignal>>
+if () then ([v1 = 'NOT OK'])
+:assign negative points;
+:is the process model OK after assigning negative points;
+:v2: is the process model OK after assigning negative points ({OK, NOT OK}); <<objectSignal>>
+if () then ([v2 = 'NOT OK'])
+:assign negative points again;
+:continue with the process;
+split
+:need to fix issues in the next session and extend process to levels two and three;
+split again
+end split
+else ([v2 = 'OK'])
+:continue with the process;
+endif
+else ([v1 = 'OK'])
+:continue with the process;
+endif
+:need to check the process and assign points or analyze field of study;
+:v3: need to check the process and assign points or analyze field of study ({check, analyze}); <<objectSignal>>
+if () then ([v3 = 'check'])
+:continue with the process;
+:is the process OK after checking and assigning points;
+:v4: is the process OK after checking and assigning points ({OK, NOT OK}); <<objectSignal>>
+if () then ([v4 = 'OK'])
+:continue with the process according to assigned roles;
+else ([v4 = 'NOT OK'])
+:continue with the process according to assigned roles;
+endif
+else ([v3 = 'analyze'])
+:assign roles in the team;
+endif
+:perform work according to your assigned role;
+:check the progress and consult problems that arise;
+:is the project accepted;
+:v5: is the project accepted ({accepted, not accepted}); <<objectSignal>>
+if () then ([v5 = 'accepted'])
+:present the project;
+else ([v5 = 'not accepted'])
+:continue working according to your role;
+:is the project accepted after continuing work;
+:v6: is the project accepted after continuing work ({accepted, not accepted}); <<objectSignal>>
+if () then ([v6 = 'accepted'])
+:present the project;
+else ([v6 = 'not accepted'])
+:continue working according to your role;
+endif
+endif
+:present the project and end the process;
+stop
+@enduml

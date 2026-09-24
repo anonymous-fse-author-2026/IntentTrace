@@ -1,0 +1,9 @@
+- branch(b1) through branch(b14): Missing `guard` statements on all outgoing sequence flows to evaluate the choice conditions described in the source text.
+- branch(b1), branch(b2), branch(b7), branch(b8), branch(b9), branch(b11), branch(b12), branch(b14): Modeled as XOR gateways but each has only a single outgoing edge, failing to represent alternative paths when the respective conditions evaluate to false.
+- branch(b15): Uses an AND gateway to split paths for "Customer returns the items" (n2) and "Delivery Crew picks-up items" (n4), which are mutually exclusive alternatives ("If... However, if...") rather than parallel activities.
+- branch(b16): Uses an AND gateway to split paths for "Items are repaired" (n24) and "Items can't be repaired" (n26), which are mutually exclusive outcomes ("If... On the other hand, if...").
+- branch(b6): Uses a single XOR gateway to simultaneously route to four options (packing, storing, missing items, damaged items), misrepresenting the source text where missing (n17) and damaged item (n19) checks are concurrent or sequential steps rather than mutually exclusive alternatives to packing/storing.
+- precedence(n27, c4): The path for discarded items bypasses the final packing/storing steps (n28), contradicting the source text which states "Lastly, the items are packed for an existing order" sequentially after handling discarded items.
+- end: The model omits the mid-process termination ("Finally, when the process is complete, it ends.") that occurs immediately after the missing items handling.
+- end: The model omits the process termination ("Once again, when the process is complete, it ends.") that explicitly occurs prior to the final action where the customer is emailed with replacement charges.
+- defines(v1) through defines(v14): The ranges for all defined decision variables are empty `{}` instead of specifying the possible condition values (e.g., boolean values).

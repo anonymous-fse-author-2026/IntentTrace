@@ -1,0 +1,7 @@
+- defines(v1, "Know SLA?", {}) and defines(v2, "Is task Urgent?", {}): Empty value ranges {} violate SMC6. The source specifies discrete decision states (e.g., "Knows SLA" vs. "don't Know SLA", "Urgent" vs. "Non Urgent"), requiring populated finite sets rather than empty ranges.
+- branch(b1, XOR) and branch(b2, XOR) (edges: precedence(b1, n3), precedence(b1, n4), precedence(b2, n7), precedence(b2, n8)): Missing guard statements violate SMC4. The model defines exclusive choice structures but omits boolean conditions on variables v1 and v2 to route flows, failing to represent the source's conditional logic ("if someone 'Knows SLA'", "If the task is 'Urgent'").
+- action(n9, "End"): Hallucinates an explicit action step before termination, violating SMC1. The source states "Finally, the process ends" immediately following the conditional paths without an intermediate action, so converge(c2) should connect directly to end(e1).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

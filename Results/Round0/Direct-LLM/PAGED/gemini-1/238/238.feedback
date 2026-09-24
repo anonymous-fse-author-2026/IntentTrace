@@ -1,0 +1,12 @@
+- `action(n1, "start WIGGO process")`: Hallucinated action not present in the source text, which simply states to "start by placing an Order".
+- `action(n4, "Credit Limit Okay")`, `action(n7, "Article Available")`, `action(n14, "Payment Received")`, and `action(n17, "Reminder Count Ge 3")`: The model incorrectly defines decision outcomes and conditions as explicit process actions rather than evaluating them at gateways.
+- `action(n16, "End")`, `action(n19, "End")`, and `action(n22, "End")`: Hallucinated explicit actions for ending the process, which should be modeled simply by transitioning to `end()` nodes.
+- `action(n5, "Send Denial To Customer")`: Lacks an outgoing control-flow edge to an end node, leaving the path deadlocked instead of properly terminating.
+- Omitted behavior: The model completely misses the intermediate check step described in the source: "After checking the availability, if the response is 'Okay', proceed to Check the Availability of the Article again. If the response is 'No', send a Denial to the Customer."
+- `guard(b1, n6, v1 = 'Yes')` and `defines(v1, "Credit Limit Okay", {"No", "Yes"})`: The variable and guard use the value 'Yes', but the source text explicitly specifies "If the response is 'Okay'". 
+- `precedence(c1, n10)`: The model incorrectly schedules `action(n10, "Send Order Confirmation")` to occur after producing or collecting the goods (`converge(c1)`), whereas the text states it occurs "After checking the availability of the Article".
+- `precedence(n18, n20)` and `precedence(n20, n21)`: The model forces `action(n20, "Send Reminder")` to execute strictly between writing off and closing the order. This contradicts the text, which explicitly links the two directly ("After writing off the Order, close the Order") and specifies the reminder as an additional (concurrent) step ("Additionally, send a Reminder").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")

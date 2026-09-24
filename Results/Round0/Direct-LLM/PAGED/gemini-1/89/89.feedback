@@ -1,0 +1,13 @@
+- `action(n3, "send: Design to Faculty")`: The model omits the explicitly documented subsequent action where "the Faculty will choose the design" before moving on to identify copyright-requiring content.
+- `actor(a_default, "Default", [...])`: The model fails to assign tasks to the specific actors identified in the text; all actions are assigned to a "Default" actor, ignoring the distinct roles of the "Faculty" and "MPC" (e.g., "MPC should Calculate the Course Packet Cost").
+- `action(n1, "start the process")`: The model incorrectly hallucinates the introductory phrase "To start the process" as an explicit executable action rather than starting directly with "Course Packet Information Received should be sent".
+- `action(n5, "condition: if need to...")` and `action(n9, "condition: if Price...")`: The model incorrectly represents decision evaluations as sequential action steps instead of using decision variables and routing logic.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: The model is missing `guard` statements on the outgoing precedence edges of these gateways to define the conditions for each path (e.g., "if the 'Entire Course Packet Copyright Cleared'" or "if the Price of the Course Packet is finalized").
+- `action(n6, "notify: Contact Faculty...")`: The node acts as a dead end with no outgoing precedence or process conclusion. The text explicitly states "then the process should be continued", implying a loopback or sequential progression, not a deadlock.
+- `label(n4, n5, "Yes No")` and `label(n8, n9, "Yes No")`: The model misplaces conditional labels onto the strict sequential edges leading into the condition-actions, instead of properly guarding the paths diverging from the XOR branches `b1` and `b2`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")

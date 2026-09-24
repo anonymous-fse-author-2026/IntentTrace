@@ -1,0 +1,5 @@
+
+
+- `defines(v1, "is x greater than 2", {"Yes", "No"})`, `defines(v2, "is x greater than 2", {"Yes", "No"})`: Violates SMC6. The source explicitly uses numeric comparisons ("greater than 2", "less than 2"), but the variables are restricted to categorical string ranges `{"Yes", "No"}`, failing to reflect the numeric domain specified in the text.
+- `guard(b1, n5, v1 = 'No')`, `guard(b2, n8, v2 = 'No')`: Violates SMC4. Mapping the source's "less than 2" condition to `v1 = 'No'` (the logical negation of "greater than 2") implicitly includes the boundary case `x = 2`, contradicting the explicit source constraint "less than 2".
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `action(n4, "continue process")`, `action(n5, "continue process")`, `action(n7, "continue process")`, `action(n8, "continue process")`: Violates SMC4. The source dictates that both conditions result in the identical outcome ("the process should be continued"), but the model unnecessarily enforces divergent XOR control flow with separate action nodes, misrepresenting identical continuations as conditional branching.

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Request information about organization;
+:Schedule an appointment;
+:Is the customer in Intake stage?;
+:v1: Is the customer in Intake stage? ({Intake, Potential client}); <<objectSignal>>
+if () then ([v1 = "Intake"])
+:Proceed with Control and measurement;
+:Revisit after two weeks;
+:Has target been reached?;
+:v2: Has target been reached? ({Target reached, Dissatisfied}); <<objectSignal>>
+if () then ([v2 = "Target reached"])
+:End process - Target reached;
+stop
+else ([v2 = "Dissatisfied"])
+:End process - Dissatisfied or other reason;
+stop
+endif
+else ([v1 = "Potential client"])
+:End process - Potential client;
+stop
+endif
+@enduml

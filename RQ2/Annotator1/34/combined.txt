@@ -1,0 +1,20 @@
+Root Cause Analysis
+
+Root Cause 1: The model hallucinates unstated "All actions completed" labels on the transitions converging from the parallel branches.
+- Includes:
+    - [N1] Node-level addition: label(n9,c1,"All actions completed") (reason: These labels assert specific content ('All actions completed') that does not correspond to any text in the source.)
+    - [N2] Node-level addition: label(n10,c1,"All actions completed") (reason: These labels assert specific content ('All actions completed') that does not correspond to any text in the source.)
+    - [N3] Node-level addition: label(n11,c1,"All actions completed") (reason: These labels assert specific content ('All actions completed') that does not correspond to any text in the source.)
+
+Root Cause 2: The model introduces an explicit but unstated checking action ("check if candidate meets criteria") prior to the conditional split for evaluating candidate criteria.
+- Includes:
+    - [N4] Within matched traces (0->6) added: action(n5,"check if candidate meets criteria")
+
+Root Cause 3: The model incorrectly adds a meeting conclusion action and an end node to the failed election path, inappropriately duplicating the successful path's conclusion instead of properly handling the repeat election logic.
+- Includes:
+    - [N5] Within matched traces (1->1) added: action(n19,"conclude public meeting and inform candidate")
+    - [N6] Within matched traces (1->1) added: end(e3)
+    - [N7] Within matched traces (3->3) added: action(n19,"conclude public meeting and inform candidate")
+    - [N8] Within matched traces (3->3) added: end(e3)
+    - [N9] Within matched traces (5->5) added: action(n19,"conclude public meeting and inform candidate")
+    - [N10] Within matched traces (5->5) added: end(e3)

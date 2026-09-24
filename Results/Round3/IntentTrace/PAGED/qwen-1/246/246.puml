@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:review received application;
+:load case data;
+:review case;
+:check if there are any new findings;
+:v1: check if there are any new findings ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:they should recalculate the refund.;
+else ([v1 = 'No'])
+:send letter of denial;
+endif
+repeat :check again if there are any new findings;
+:v2: check again if there are any new findings ({Yes, No}); <<objectSignal>>
+backward:they should recalculate the refund.;
+repeat while () is ([v2 = 'Yes']) not ([v2 = 'No'])
+:send another letter of denial;
+:write back case data;
+:end process;
+stop
+@enduml

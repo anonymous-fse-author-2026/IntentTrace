@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i8:If pesto is not available (reason: The model lacks a guard or specific condition node for the negative pesto availability path.)
+- [N2] Node-level omission: i10:Once the pesto is obtained, cook the spaghetti. (reason: This secondary sequence involving cooking spaghetti after obtaining pesto is entirely missing from the model.)
+- [N3] Within matched traces (0->0) omitted: i10:Once the pesto is obtained, cook the spaghetti.
+- [N4] Within matched traces (1->1) omitted: i8:If pesto is not available
+
+Addition
+- [N5] Node-level addition: action(n5,"merge after parallel tasks") (reason: The model includes a specific action to 'merge after parallel tasks' which is not described as an action in the text.)
+- [N6] Node-level addition: action(n13,"take tomato sauce as is") (reason: There is no mention in the text of an action to 'take tomato sauce as is'.)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N8] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> action(n13,"take tomato sauce as is") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N9] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> action(n10,"cook tomato sauce") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N10] Added trace (model 6): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N11] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> action(n13,"take tomato sauce as is") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N12] Within matched traces (0->0) added: converge(c1)
+- [N13] Within matched traces (0->0) added: action(n5,"merge after parallel tasks")
+- [N14] Within matched traces (1->1) added: converge(c1)
+- [N15] Within matched traces (1->1) added: action(n5,"merge after parallel tasks")
+- [N16] Within matched traces (1->1) added: action(n6,"is pesto available?")
+- [N17] Within matched traces (1->1) added: branch(b1,XOR)
+- [N18] Within matched traces (2->4) added: converge(c1)
+- [N19] Within matched traces (2->4) added: action(n5,"merge after parallel tasks")
+- [N20] Within matched traces (2->4) added: action(n6,"is pesto available?")
+- [N21] Within matched traces (2->4) added: branch(b1,XOR)
+- [N22] Within matched traces (2->4) added: action(n7,"retrieve pesto from cupboard")
+- [N23] Within matched traces (2->4) added: converge(c2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

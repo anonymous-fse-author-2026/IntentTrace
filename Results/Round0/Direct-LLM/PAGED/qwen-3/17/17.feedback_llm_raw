@@ -1,0 +1,5 @@
+
+
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements. The source explicitly dictates routing logic ("If the evaluation result is 'NOK'/ 'ok'", "if the installation is not successful/successful"), but the model omits `guard(...)` declarations to attach these boolean conditions to the outgoing edges, violating SMC1 and SMC4.
+- `defines(v1, "is evaluation result ok", {})` and `defines(v2, "is installation successful", {})`: Variable ranges are empty `{}`. The description implies concrete outcome values for these decisions (e.g., "ok"/"NOK" for evaluation, successful/unsuccesful for installation), violating SMC6 by failing to specify a valid value domain.
+- `action(n4, "is evaluation result ok")` and `action(n7, "is installation successful")`: Incorrectly modeled as executable actions. The source frames these purely as conditional checks that determine control flow; representing them as procedural steps preceding unguarded branches misaligns with the described decision semantics, violating SMC2 and SMC4.

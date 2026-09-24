@@ -1,0 +1,144 @@
+Omission
+- [N1] Node-level omission: i8:In this case, send a refusal and end the process. (reason: The model completely omits this refusal and termination path for a permitted customer, moving straight to releasing the order instead.)
+- [N2] Node-level omission: i10:end the process. (reason: This standalone termination step is not faithfully implemented by any action element.)
+- [N3] Node-level omission: i13:check the worth of the order (reason: While the threshold condition is modeled, the explicit action to 'check the worth' is missing.)
+- [N4] Within matched traces (0->20) omitted: i8:In this case, send a refusal and end the process.
+- [N5] Within matched traces (0->20) omitted: i9:send a refusal and end the process.
+- [N6] Within matched traces (0->20) omitted: i10:end the process.
+- [N7] Within matched traces (1->0) omitted: i10:end the process.
+- [N8] Within matched traces (2->24) omitted: i13:check the worth of the order
+- [N9] Within matched traces (2->24) omitted: i18:At the same time, complete the following steps: check the product quality, start production, and produce the product.
+- [N10] Within matched traces (3->33) omitted: i13:check the worth of the order
+- [N11] Within matched traces (3->33) omitted: i18:At the same time, complete the following steps: check the product quality, start production, and produce the product.
+- [N12] Within matched traces (4->6) omitted: i13:check the worth of the order
+- [N13] Within matched traces (4->6) omitted: i10:end the process.
+- [N14] Within matched traces (5->15) omitted: i13:check the worth of the order
+- [N15] Within matched traces (5->15) omitted: i10:end the process.
+- [N16] Within matched traces (6->10) omitted: i13:check the worth of the order
+- [N17] Within matched traces (6->10) omitted: i24:Ship the product and send the invoice.
+- [N18] Within matched traces (6->10) omitted: i10:end the process.
+- [N19] Within matched traces (7->19) omitted: i13:check the worth of the order
+- [N20] Within matched traces (7->19) omitted: i24:Ship the product and send the invoice.
+- [N21] Within matched traces (7->19) omitted: i10:end the process.
+- [N22] Within matched traces (8->7) omitted: i13:check the worth of the order
+- [N23] Within matched traces (8->7) omitted: i10:end the process.
+- [N24] Within matched traces (9->16) omitted: i13:check the worth of the order
+- [N25] Within matched traces (9->16) omitted: i10:end the process.
+- [N26] Within matched traces (10->8) omitted: i13:check the worth of the order
+- [N27] Within matched traces (10->8) omitted: i10:end the process.
+- [N28] Within matched traces (11->17) omitted: i13:check the worth of the order
+- [N29] Within matched traces (11->17) omitted: i10:end the process.
+- [N30] Within matched traces (12->9) omitted: i13:check the worth of the order
+- [N31] Within matched traces (13->18) omitted: i13:check the worth of the order
+
+Addition
+- [N32] Node-level addition: action(n9,"end process") (reason: This 'end process' action is placed on the negative customer path, but the source explicitly limits that path to 'send a refusal' without an end instruction.)
+- [N33] Node-level addition: action(n28,"end process") (reason: There is no supporting input text element for an explicit 'end process' action following the report archiving step.)
+- [N34] Added trace (model 1): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n8,"send refusal") -> action(n9,"end process") -> end(e2)
+- [N35] Added trace (model 2): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n16,"check the product quality") -> end(e9)
+- [N36] Added trace (model 3): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n17,"start production") -> end(e10)
+- [N37] Added trace (model 4): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n18,"produce the product") -> end(e11)
+- [N38] Added trace (model 5): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n20,"send material report to the warehouse") -> action(n21,"end process") -> end(e3)
+- [N39] Added trace (model 11): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n16,"check the product quality") -> end(e9)
+- [N40] Added trace (model 12): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n17,"start production") -> end(e10)
+- [N41] Added trace (model 13): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n18,"produce the product") -> end(e11)
+- [N42] Added trace (model 14): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n2,"check the order") -> action(n4,"is order okay") -> branch(b1,XOR) -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n20,"send material report to the warehouse") -> action(n21,"end process") -> end(e3)
+- [N43] Added trace (model 21): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n16,"check the product quality") -> end(e9)
+- [N44] Added trace (model 22): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n17,"start production") -> end(e10)
+- [N45] Added trace (model 23): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n18,"produce the product") -> end(e11)
+- [N46] Added trace (model 25): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n22,"create a quality report") -> action(n25,"send quality report to Finance") -> action(n27,"archive the report") -> action(n28,"end process") -> end(e4)
+- [N47] Added trace (model 26): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n31,"close the order") -> action(n37,"end process") -> end(e5)
+- [N48] Added trace (model 27): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n32,"is reminder sent more than three times") -> branch(b5,XOR) -> action(n33,"acquire a lawyer") -> action(n35,"complete the court proceedings") -> end(e6)
+- [N49] Added trace (model 28): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n32,"is reminder sent more than three times") -> branch(b5,XOR) -> action(n34,"send a reminder") -> action(n36,"send a reminder") -> end(e7)
+- [N50] Added trace (model 29): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n13,"sign off on the order") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n24,"send the order to accounting") -> end(e8)
+- [N51] Added trace (model 30): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n16,"check the product quality") -> end(e9)
+- [N52] Added trace (model 31): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n17,"start production") -> end(e10)
+- [N53] Added trace (model 32): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n18,"produce the product") -> end(e11)
+- [N54] Added trace (model 34): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n22,"create a quality report") -> action(n25,"send quality report to Finance") -> action(n27,"archive the report") -> action(n28,"end process") -> end(e4)
+- [N55] Added trace (model 35): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n31,"close the order") -> action(n37,"end process") -> end(e5)
+- [N56] Added trace (model 36): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n32,"is reminder sent more than three times") -> branch(b5,XOR) -> action(n33,"acquire a lawyer") -> action(n35,"complete the court proceedings") -> end(e6)
+- [N57] Added trace (model 37): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n23,"send the product to shipment") -> action(n26,"ship the product and send the invoice") -> action(n29,"check the payment") -> action(n30,"is payment received") -> branch(b4,XOR) -> action(n32,"is reminder sent more than three times") -> branch(b5,XOR) -> action(n34,"send a reminder") -> action(n36,"send a reminder") -> end(e7)
+- [N58] Added trace (model 38): init(i1) -> action(n1,"receive the order") -> branch(b6,AND) -> action(n3,"check the customer") -> converge(c1) -> action(n7,"is customer permitted") -> branch(b2,XOR) -> action(n10,"release the order") -> action(n11,"transfer the data in the database") -> action(n12,"is worth greater than 10000 Euro") -> branch(b3,XOR) -> action(n14,"continue with the process") -> converge(c2) -> action(n15,"sign off on the order and forward it to production") -> branch(b7,AND) -> action(n19,"create a material report") -> branch(b8,AND) -> action(n24,"send the order to accounting") -> end(e8)
+- [N59] Within matched traces (0->20) added: converge(c1)
+- [N60] Within matched traces (0->20) added: action(n9,"end process")
+- [N61] Within matched traces (0->20) added: end(e2)
+- [N62] Within matched traces (1->0) added: action(n4,"is order okay")
+- [N63] Within matched traces (2->24) added: converge(c1)
+- [N64] Within matched traces (2->24) added: action(n7,"is customer permitted")
+- [N65] Within matched traces (3->33) added: converge(c1)
+- [N66] Within matched traces (3->33) added: action(n7,"is customer permitted")
+- [N67] Within matched traces (3->33) added: action(n12,"is worth greater than 10000 Euro")
+- [N68] Within matched traces (4->6) added: action(n7,"is customer permitted")
+- [N69] Within matched traces (4->6) added: branch(b2,XOR)
+- [N70] Within matched traces (4->6) added: branch(b7,AND)
+- [N71] Within matched traces (4->6) added: action(n19,"create a material report")
+- [N72] Within matched traces (4->6) added: branch(b8,AND)
+- [N73] Within matched traces (4->6) added: action(n28,"end process")
+- [N74] Within matched traces (4->6) added: end(e4)
+- [N75] Within matched traces (5->15) added: action(n7,"is customer permitted")
+- [N76] Within matched traces (5->15) added: branch(b2,XOR)
+- [N77] Within matched traces (5->15) added: action(n12,"is worth greater than 10000 Euro")
+- [N78] Within matched traces (5->15) added: branch(b7,AND)
+- [N79] Within matched traces (5->15) added: action(n19,"create a material report")
+- [N80] Within matched traces (5->15) added: branch(b8,AND)
+- [N81] Within matched traces (5->15) added: action(n28,"end process")
+- [N82] Within matched traces (5->15) added: end(e4)
+- [N83] Within matched traces (6->10) added: action(n7,"is customer permitted")
+- [N84] Within matched traces (6->10) added: branch(b2,XOR)
+- [N85] Within matched traces (6->10) added: branch(b7,AND)
+- [N86] Within matched traces (6->10) added: action(n19,"create a material report")
+- [N87] Within matched traces (6->10) added: branch(b8,AND)
+- [N88] Within matched traces (7->19) added: action(n7,"is customer permitted")
+- [N89] Within matched traces (7->19) added: branch(b2,XOR)
+- [N90] Within matched traces (7->19) added: action(n12,"is worth greater than 10000 Euro")
+- [N91] Within matched traces (7->19) added: branch(b7,AND)
+- [N92] Within matched traces (7->19) added: action(n19,"create a material report")
+- [N93] Within matched traces (7->19) added: branch(b8,AND)
+- [N94] Within matched traces (8->7) added: action(n7,"is customer permitted")
+- [N95] Within matched traces (8->7) added: branch(b2,XOR)
+- [N96] Within matched traces (8->7) added: branch(b7,AND)
+- [N97] Within matched traces (8->7) added: action(n19,"create a material report")
+- [N98] Within matched traces (8->7) added: branch(b8,AND)
+- [N99] Within matched traces (8->7) added: action(n26,"ship the product and send the invoice")
+- [N100] Within matched traces (9->16) added: action(n7,"is customer permitted")
+- [N101] Within matched traces (9->16) added: branch(b2,XOR)
+- [N102] Within matched traces (9->16) added: action(n12,"is worth greater than 10000 Euro")
+- [N103] Within matched traces (9->16) added: branch(b7,AND)
+- [N104] Within matched traces (9->16) added: action(n19,"create a material report")
+- [N105] Within matched traces (9->16) added: branch(b8,AND)
+- [N106] Within matched traces (9->16) added: action(n26,"ship the product and send the invoice")
+- [N107] Within matched traces (10->8) added: action(n7,"is customer permitted")
+- [N108] Within matched traces (10->8) added: branch(b2,XOR)
+- [N109] Within matched traces (10->8) added: branch(b7,AND)
+- [N110] Within matched traces (10->8) added: action(n19,"create a material report")
+- [N111] Within matched traces (10->8) added: branch(b8,AND)
+- [N112] Within matched traces (10->8) added: action(n26,"ship the product and send the invoice")
+- [N113] Within matched traces (10->8) added: action(n30,"is payment received")
+- [N114] Within matched traces (11->17) added: action(n7,"is customer permitted")
+- [N115] Within matched traces (11->17) added: branch(b2,XOR)
+- [N116] Within matched traces (11->17) added: action(n12,"is worth greater than 10000 Euro")
+- [N117] Within matched traces (11->17) added: branch(b7,AND)
+- [N118] Within matched traces (11->17) added: action(n19,"create a material report")
+- [N119] Within matched traces (11->17) added: branch(b8,AND)
+- [N120] Within matched traces (11->17) added: action(n26,"ship the product and send the invoice")
+- [N121] Within matched traces (11->17) added: action(n30,"is payment received")
+- [N122] Within matched traces (12->9) added: action(n7,"is customer permitted")
+- [N123] Within matched traces (12->9) added: branch(b2,XOR)
+- [N124] Within matched traces (12->9) added: branch(b7,AND)
+- [N125] Within matched traces (12->9) added: action(n19,"create a material report")
+- [N126] Within matched traces (12->9) added: branch(b8,AND)
+- [N127] Within matched traces (12->9) added: action(n26,"ship the product and send the invoice")
+- [N128] Within matched traces (12->9) added: action(n30,"is payment received")
+- [N129] Within matched traces (13->18) added: action(n7,"is customer permitted")
+- [N130] Within matched traces (13->18) added: branch(b2,XOR)
+- [N131] Within matched traces (13->18) added: action(n12,"is worth greater than 10000 Euro")
+- [N132] Within matched traces (13->18) added: branch(b7,AND)
+- [N133] Within matched traces (13->18) added: action(n19,"create a material report")
+- [N134] Within matched traces (13->18) added: branch(b8,AND)
+- [N135] Within matched traces (13->18) added: action(n26,"ship the product and send the invoice")
+- [N136] Within matched traces (13->18) added: action(n30,"is payment received")
+
+Mutation
+- [N137] Node-level mutation: element=action(n35,"complete the court proceedings"); source=i33:Acquire a lawyer and complete the court proceedings.; reason=The element implements only the 'complete the court proceedings' portion, dropping the 'Acquire a lawyer' instruction stated in this unit.
+- [N138] Node-level mutation: element=action(n36,"send a reminder"); source=i34:Send a reminder and then send the reminder.; reason=The element implements only a single 'send a reminder' action, explicitly dropping the second reminder step mandated by the source text.
+- [N139] Node-level mutation: element=action(n37,"end process"); source=i30:Close the order and end the process.; reason=The element implements only the 'end process' portion, entirely dropping the 'Close the order' instruction from this segment.

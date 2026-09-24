@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+-> Identify the parts;
+:identify parts;
+-> Check if information needs to be elicited;
+:v1: does the team need to elicit information from the customer? ({Need to check availability, Proceed with process or after contacting customer}); <<objectSignal>>
+if () then ([v1 = 'Need to check availability'])
+:check availability of the parts;
+-> Check if parts are available or need ordering;
+:do the parts need to be ordered and received from Disuki?;
+:v2: do the parts need to be ordered and received from Disuki? ({Order not needed  proceed, Order and receive the part}); <<objectSignal>>
+if () then ([v2 = 'Order not needed  proceed'])
+:order part from Disuki;
+-> Contact the customer or after receiving parts;
+else ([v2 = 'Order and receive the part'])
+:receive part from Disuki;
+-> Record the customer's details;
+:record customer details;
+-> Contact the customer or after receiving parts;
+endif
+:contact the customer;
+-> Proceed with process or after contacting customer;
+else ([v1 = 'Proceed with process or after contacting customer'])
+->;
+endif
+:collect all necessary parts;
+-> Proceed to payment step;
+:proceed with payment;
+-> Payment completed;
+:end of process;
+stop
+@enduml

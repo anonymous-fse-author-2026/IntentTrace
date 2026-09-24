@@ -1,0 +1,88 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:advise unsuccessful candidates;
+:are there more candidates?;
+:v1: are there more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "No"])
+:re-advertise position;
+else ([v1 = "Yes"])
+:check if the candidate has accepted a voluntary redundancy;
+:v2: check if terms and conditions need to be sorted out ({Yes, No}); <<objectSignal>>
+if () then ([v2 = "Yes"])
+:send appointment approval form;
+:is the approver an external resource?;
+:v3: is the approver an external resource? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "No"])
+:continue process;
+else ([v3 = "Yes"])
+:approve form;
+:was the form authorized by the external approver?;
+:v4: was the form authorized by the external approver? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "Yes"])
+:scan and record form in GovSource;
+else ([v4 = "No"])
+->;
+endif
+endif
+else ([v2 = "No"])
+:continue process (no terms needed);
+endif
+:inform recruitment manager and liaise with HR representative;
+:are there any variations?;
+:v5: are there any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = "Yes"])
+:create business case;
+else ([v5 = "No"])
+:continue process;
+split
+:is medical assessment required (12% rate)?;
+:v6: is medical assessment required (12% rate)? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = "Yes"])
+:arrange and complete medical assessment (21 days);
+:inform recruitment manager and liaise with HR representative;
+:is assessment satisfactory?;
+:v7: is assessment satisfactory? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = "No"])
+:contact next candidate on shortlist;
+else ([v7 = "Yes"])
+:continue process;
+:make formal verbal offer to candidate;
+:does candidate accept offer?;
+:v8: does candidate accept offer? ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v8 = "Yes"])
+:create formal written offer;
+:send commencement pack and letter of appointment;
+:is there a 40% rate?;
+:v9: is there a 40% rate? ({Yes, No}); <<objectSignal>>
+if () then ([v9 = "Yes"])
+:renegotiate terms;
+:are renegotiations successful?;
+:v10: are renegotiations successful? ({Yes, No}); <<objectSignal>>
+if () then ([v10 = "No"])
+:identify next candidate on shortlist;
+else ([v10 = "Yes"])
+:continue process;
+endif
+else ([v9 = "No"])
+->;
+endif
+case ([v8 = "No"])
+:continue process;
+case ([v8 = "No"])
+endswitch
+endif
+:end of procedure;
+stop
+else ([v6 = "No"])
+->;
+endif
+split again
+end split
+endif
+endif
+@enduml

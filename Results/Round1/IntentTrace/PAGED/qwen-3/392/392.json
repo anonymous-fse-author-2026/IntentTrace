@@ -1,0 +1,174 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start User Task"
+    },
+    {
+      "id": "b_start",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Continue Process after Service Task 1"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Is User Task Service Task 2?"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Continue Process after Service Task 2"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "End Process due to Service Task 3"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Is there a Manual Task?"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End Process if Manual Task Yes"
+    },
+    {
+      "id": "c_merge",
+      "type": "converge"
+    },
+    {
+      "id": "e_end",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is User Task Service Task 1?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is User Task Service Task 2?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b_start",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n8",
+        "n9",
+        "c_merge",
+        "e_end"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b_start"
+    },
+    {
+      "type": "precedence",
+      "A": "b_start",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b_start",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b_start",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "c_merge",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e_end"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e_end"
+    },
+    {
+      "type": "guard",
+      "A": "b_start",
+      "B": "n3",
+      "condition": "\"v1 = 'Yes'\""
+    },
+    {
+      "type": "guard",
+      "A": "b_start",
+      "B": "n4",
+      "condition": "\"v1 = 'No' and v2 = 'Yes'\""
+    },
+    {
+      "type": "guard",
+      "A": "b_start",
+      "B": "n6",
+      "condition": "\"v1 = 'No' and v2 = 'No'\""
+    }
+  ],
+  "input_elements": []
+}

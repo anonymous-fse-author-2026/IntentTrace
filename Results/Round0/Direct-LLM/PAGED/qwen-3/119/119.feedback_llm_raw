@@ -1,0 +1,8 @@
+
+
+- `branch(b3, AND)`: Incorrectly forces concurrent execution of `action(n2, "get a bonus")` and `action(n3, "get a paycheck")`, whereas the source presents them as alternative conditional triggers ("If you... If you also...").
+- `action(n8, "end process")` & `action(n9, "end process")`: Hallucinates intermediate workflow steps; the source states the process immediately terminates after the final task ("Once you pay the bill, the process ends."), which should connect directly to the `end()` nodes without extra actions.
+- `guard(b1, n4, v1 = 'no')` & `guard(b2, n5, v2 = 'no')`: Logically inverted and misaligned; the source specifies continuation happens when you "get a bonus" or "get a paycheck", not when conditions evaluate to `'no'`.
+- `defines(v1, "get a bonus", {"no"})` & `defines(v2, "get a paycheck", {"no"})`: Introduces undeclared decision variables with artificially restricted value domains, neither of which appear in the source description.
+- `precedence(n4, n6)`, `precedence(n5, n7)`, & subsequent edges: Duplicates the continuation and termination phases into two parallel, non-converging paths, violating the source's single linear progression ("then you continue... Once you pay the bill, the process ends.").
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Misplaced after unconditional actions `n2` and `n3`; the source implies the events themselves act as the gateways for continuation, not mandatory steps followed by separate exclusive choice points.

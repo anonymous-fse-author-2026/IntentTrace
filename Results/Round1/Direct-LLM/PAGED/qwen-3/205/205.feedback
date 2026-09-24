@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To initiate the process for ACME Company, the Resupply Cycle is triggered -> i2:checking the Inventory Level -> i3:If the Inventory is greater than the Minimum Level -> i4:Otherwise, a Purchase Order is created. -> i5:The Purchase Order is then reviewed. -> i6:If the Purchase Order is rejected, it is reworked.
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: The 'start' action has no corresponding source unit; the process initiation is already fully captured by init:i1 and action:n2 mapping to i1.)
+- [N3] Within matched traces (2->0) added: init(i1)
+- [N4] Within matched traces (2->0) added: action(n1,"start")
+- [N5] Within matched traces (3->1) added: init(i1)
+- [N6] Within matched traces (3->1) added: action(n1,"start")
+- [N7] Within matched traces (0->2) added: init(i1)
+- [N8] Within matched traces (0->2) added: action(n1,"start")
+- [N9] Within matched traces (0->2) added: action(n15,"End of Process")
+- [N10] Within matched traces (0->2) added: end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Insufficient'"); source=i3:If the Inventory is greater than the Minimum Level -> i4:Otherwise, a Purchase Order is created.; reason=The source specifies a numeric comparison and an implicit negative fallback, but the guard substitutes these with an abstract string equality ('v1 = "Insufficient"'), altering the original condition logic and data representation.
+- [N12] Node-level mutation: element=guard(b1,c2,"v1 = 'Sufficient'"); source=i3:If the Inventory is greater than the Minimum Level; reason=The source states a direct comparative condition ('greater than the Minimum Level'), which is mutated into an abstract string equality ('v1 = "Sufficient"'), changing the explicit threshold logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"Review Purchase Order")

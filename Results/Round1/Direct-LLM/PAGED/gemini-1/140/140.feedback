@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i13:Otherwise, if the purchase status is approved (reason: This repeated conditional path provided in the source sequence lacks any corresponding explicit element.)
+- [N2] Omitted trace (input 1): i1:To begin the process, -> i2:trigger the resupply cycle -> i3:check the inventory level -> i4:If the inventory level is at or below the minimum -> i5:create a purchase order -> i8:review it -> i9:If the purchase status is rejected -> i10:rework the purchase order -> i8:review it
+- [N3] Omitted trace (input 4): i1:To begin the process, -> i2:trigger the resupply cycle -> i3:check the inventory level -> i4:If the inventory level is at or below the minimum -> i5:create a purchase order -> i8:review it -> i13:Otherwise, if the purchase status is approved -> i12:reserve the funds -> i14:send the order to the supplier -> i15:receive the packing slip -> i17:record it -> i7:the process ends
+- [N4] Omitted trace (input 5): i1:To begin the process, -> i2:trigger the resupply cycle -> i3:check the inventory level -> i4:If the inventory level is at or below the minimum -> i5:create a purchase order -> i8:review it -> i13:Otherwise, if the purchase status is approved -> i12:reserve the funds -> i14:send the order to the supplier -> i16:receive the invoice -> i17:record it -> i7:the process ends
+- [N5] Within matched traces (2->1) omitted: i7:the process ends
+- [N6] Within matched traces (3->2) omitted: i7:the process ends
+
+Mutation
+- [N7] Node-level mutation: element=action(n1,"Start the resupply process"); source=i2:trigger the resupply cycle; reason=The element alters the precise wording by changing 'trigger' to 'Start' and 'cycle' to 'process', losing the exact granularity of the source text.
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i4:If the inventory level is at or below the minimum; reason=The condition drops the specific threshold and operators, abstracting it into an imprecise 'v1 = Yes'.
+- [N9] Node-level mutation: element=guard(b1,e1,"v1 = 'No'"); source=i6:Otherwise, if the inventory level is above the minimum; reason=The condition replaces the explicit inventory threshold test with an abstract 'v1 = No'.
+- [N10] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i9:If the purchase status is rejected; reason=The specific condition is altered into an abstract 'v2 = Yes' instead of evaluating the rejected status.
+- [N11] Node-level mutation: element=guard(b2,n14,"v2 = 'No'"); source=i11:However, if the purchase status is approved; reason=The specific condition is altered into an abstract 'v2 = No' instead of verifying the approved status.

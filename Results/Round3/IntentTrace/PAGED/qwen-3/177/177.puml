@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:ensure Freights are ready to be shipped;
+:ship the freight;
+split
+:deliver the freight;
+split again
+:notify the delivery;
+end split
+:request for merchandise return is lodged;
+:v_return_status: return_status ({accepted, rejected})
+v_loss_claim: loss_claim_lodged ({true, false}); <<objectSignal>>
+switch ()
+case (case 1)
+:invoice the customer;
+:end with customer being invoiced;
+stop
+case ([v_return_status = 'accepted'])
+:accept the merchandise return;
+:return the merchandise;
+:end with merchandise being returned;
+stop
+case ([v_return_status = 'rejected'])
+:reject the merchandise return;
+:end with merchandise return request being rejected;
+stop
+case ([v_loss_claim = true])
+:approve the loss claim;
+:end with loss claim approved;
+stop
+endswitch
+@enduml

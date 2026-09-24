@@ -1,0 +1,10 @@
+
+
+- `action(n1, "start selling cars")`: Payload adds "start", diverging from the source text "sell cars".
+- `branch(b3, AND)`: Enforces concurrent execution of bonus and paycheck checks, whereas the source "If you 'get a bonus'... If you 'get a paycheck'..." describes conditional continuations, not parallel mandatory steps.
+- `precedence(b3, n2)` & `precedence(b3, n3)` (missing converge): Creates two disjoint paths that never rejoin, contradicting the source's single linear progression where either condition leads to continuing and subsequently paying the bill.
+- `action(n8, "end process")`, `action(n9, "end process")`, `end(e1)`, `end(e2)`: Hallucinates duplicate termination actions and two separate end nodes instead of a single transition directly after paying the bill as stated in the source.
+- `defines(v1, "get a bonus", {"no"})` & `defines(v2, "get a paycheck", {"no"})`: Restricts variable domains to `{"no"}`, omitting positive values necessary to evaluate "If you 'get a bonus'" and "If you 'get a paycheck'".
+- `guard(b1, n4, v1 = 'no')` & `guard(b2, n5, v2 = 'no')`: Requires variables to equal `'no'` to proceed, inverting the source logic where receiving a bonus or paycheck triggers continuation.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Introduces redundant split nodes after `n2` and `n3` despite having only single outgoing edges, unnecessarily fragmenting the direct conditional flow described.
+- `label(b3, n2, "no")` & `label(b3, n3, "no")`: Assigns unsupported "no" labels to edges initiating the checks, which has no basis in the source and conflicts with the intended conditional semantics.

@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i3:they should "continue the process".
+- [N2] Within matched traces (1->0) omitted: i3:they should "continue the process".
+
+Addition
+- [N3] Node-level addition: guard(b2,n6,"v2 = false") (reason: The guard 'v2 = false' implies handling a 'Non Urgent' case, but no corresponding input element or source span exists in the provided segmentation to support this branch condition.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n5,"red stamp") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N7] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N8] Within matched traces (2->0) added: action(n2,"knows sla?")
+- [N9] Within matched traces (3->0) added: action(n2,"knows sla?")
+
+Mutation
+- [N10] Node-level mutation: element=action(n2,"knows sla?"); source=i2:if someone "Knows SLA"; reason=Element content 'knows sla?' drops the subject 'someone' and reformulates the declarative condition into a question, failing strict fidelity to the source phrasing.
+- [N11] Node-level mutation: element=guard(b1,c1,"v1 = true"); source=i2:if someone "Knows SLA"; reason=The guard replaces the semantic textual condition with an abstract variable assignment 'v1 = true', altering the original logic representation.
+- [N12] Node-level mutation: element=guard(b1,n7,"v1 = false"); source=i4:If they don't "Know SLA", they should "Look up".; reason=The guard substitutes the explicit negative condition with 'v1 = false', changing the source's linguistic negation into a detached variable state.
+- [N13] Node-level mutation: element=action(n4,"urgent?"); source=i6:If the task is "Urgent"; reason=Element content 'urgent?' omits the critical subject 'the task' and converts the statement into a question, deviating from the source instruction.
+- [N14] Node-level mutation: element=guard(b2,n5,"v2 = true"); source=i6:If the task is "Urgent"; reason=The guard swaps the descriptive condition for 'v2 = true', modifying the original comparative logic into a generic boolean check.

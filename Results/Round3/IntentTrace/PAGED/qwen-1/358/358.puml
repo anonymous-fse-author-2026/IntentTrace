@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:if the answer is "No", then we continue the process.;
+:If the answer is "No" again, we continue the process.;
+:However, if the answer is "Yes", then we give it priority.;
+:After that, we look up the Vendor on SAP.;
+:v2: vendor lookup result ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:If the answer is "No", then we need a Vendor master record and the process ends.;
+stop
+else ([v2 = 'Yes'])
+:But if the answer is "Yes", then we enter the invoice in SAP.;
+:And if the answer is "Yes" again, then we enter the invoice in SAP.;
+:Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends.;
+stop
+endif
+@enduml

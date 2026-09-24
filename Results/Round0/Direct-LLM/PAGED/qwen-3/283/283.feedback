@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to implement the source's conditional routing ("If you are not hungry... Otherwise..." / "If you are still not hungry... Otherwise..."), incorrectly modeling deterministic checks as arbitrary exclusive choices.
+- `defines(v1, "are you hungry", {})` and `defines(v2, "are you hungry again", {})`: Value ranges are empty `{}`, failing to specify the binary/hunger states required to evaluate the conditional branches.
+- `action(n9, "You have completed this procedure")`: Hallucinates a distinct executable step; the source states "the process will be complete" solely as a termination marker following "get on the bus", not as an additional action.
+- `action(n2, "are you hungry")` and `action(n5, "are you hungry again")`: Misrepresents conditional inquiries ("If you are not hungry", "If you are still not hungry") as standalone process tasks rather than flow-control conditions attached to the subsequent branch nodes.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

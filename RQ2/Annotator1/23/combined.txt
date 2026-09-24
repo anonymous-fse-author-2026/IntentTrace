@@ -1,0 +1,12 @@
+Root Cause Analysis
+
+Root Cause 1: The model includes an unsupported "start procedure" action node that is not grounded in the source text.
+- Includes:
+    - [N1] Node-level addition: action(n1,"start procedure") (reason: The action 'start procedure' has no supporting source text; the text simply announces 'the first step is' to assess the patient.)
+    - [N4] Within matched traces (0->0) added: action(n1,"start procedure")
+
+Root Cause 2: The model incorrectly splits a single assessment step into multiple concurrent actions using an AND gateway, which generates unwarranted parallel traces.
+- Includes:
+    - [N2] Added trace (model 1): init(i1) -> action(n1,"start procedure") -> branch(b1,AND) -> action(n3,"assess potential for significant hemorrhage") -> converge(c1) -> action(n5,"administer midazolam 10 mg as needed") -> action(n6,"end procedure") -> end(e1)
+    - [N3] Added trace (model 2): init(i1) -> action(n1,"start procedure") -> branch(b1,AND) -> action(n4,"assess potential for acute respiratory distress") -> converge(c1) -> action(n5,"administer midazolam 10 mg as needed") -> action(n6,"end procedure") -> end(e1)
+    - [N5] Within matched traces (0->0) added: branch(b1,AND)

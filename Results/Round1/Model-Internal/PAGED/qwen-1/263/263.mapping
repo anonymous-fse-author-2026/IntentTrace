@@ -1,0 +1,651 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2",
+        "guard:b1->n3",
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "If the meeting is successful, the next step is to work on the storyboard, which takes a full day"
+      ],
+      "justification": "Captures the meeting success check, the implicit branching point, the success guard, and the storyboard action with the correct duration."
+    },
+    {
+      "refs": [
+        "guard:b1->n4",
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "However, if the meeting is not successful, the process ends."
+      ],
+      "justification": "Accurately maps the failure condition, the termination action, and the terminal end node."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content."
+      ],
+      "justification": "n6 captures content preparation, while b4 and c1 correctly model the parallel split and join implied by the conjunction 'and'."
+    },
+    {
+      "refs": [
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "After that, the site development takes 2 days"
+      ],
+      "justification": "Exact match for the development step and its specified duration."
+    },
+    {
+      "refs": [
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "Once the site is built, it goes through a review process that lasts 1 day."
+      ],
+      "justification": "Direct match for the review step and its stated duration."
+    },
+    {
+      "refs": [
+        "action:n10",
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "If the review is successful, it moves on to the approval stage, which takes half a day."
+      ],
+      "justification": "Faithfully restates the review success check and the subsequent approval stage with the correct duration."
+    },
+    {
+      "refs": [
+        "action:n12"
+      ],
+      "verbatim_texts": [
+        "If the approval is complete, the process ends."
+      ],
+      "justification": "Maps the successful approval outcome to the end-process action and the structural end node."
+    },
+    {
+      "refs": [
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "However, if the approval is rejected, the site needs to be rebuilt, which takes 3 days."
+      ],
+      "justification": "Correctly implements the rebuild action with the specified 3-day duration."
+    },
+    {
+      "refs": [
+        "action:n14",
+        "guard:b3->n15",
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "If the rebuild is complete, the process ends."
+      ],
+      "justification": "Captures the completion check, the exclusive branch, the success guard, the end action, and the terminal node."
+    },
+    {
+      "refs": [
+        "guard:b3->n16",
+        "action:n16",
+        "action:n17"
+      ],
+      "verbatim_texts": [
+        "If the rebuild is rejected again, the site needs to be rebuilt again, which also takes 3 days."
+      ],
+      "justification": "Accurately models the second rejection guard, the repeated rebuild task with duration, and the final process termination."
+    }
+  ],
+  "mutations": [
+    {
+      "refs": [
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content."
+      ],
+      "reason": "The model incorrectly renames the task to 'Site design and development preparation', erroneously merging two distinct source steps. The source explicitly assigns the 10-day duration only to site design, while site development occurs later as a separate 2-day step."
+    },
+    {
+      "refs": [
+        "guard:b2->n11"
+      ],
+      "verbatim_texts": [
+        "If the review is successful, it moves on to the approval stage, which takes half a day."
+      ],
+      "reason": "The model incorrectly fuses two separate conditions into a single branch placed immediately after the review step. The source specifies that the rejection condition applies to the approval stage, meaning the split should occur after the approval step completes, not right after the review."
+    },
+    {
+      "refs": [
+        "guard:b2->n13"
+      ],
+      "verbatim_texts": [
+        "However, if the approval is rejected, the site needs to be rebuilt, which takes 3 days."
+      ],
+      "reason": "The model incorrectly fuses two separate conditions into a single branch placed immediately after the review step. The source specifies that the rejection condition applies to the approval stage, meaning the split should occur after the approval step completes, not right after the review."
+    }
+  ],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "The process starts with an informational meeting that lasts half a day"
+      ],
+      "reason": "No action element models the half-day informational meeting. The model only includes a generic 'Start' node, completely omitting the substantive first step described in the text."
+    },
+    {
+      "verbatim_texts": [
+        "If the storyboard is successful"
+      ],
+      "reason": "The model proceeds directly from the storyboard action to the parallel tasks without implementing the conditional check required before proceeding to site design and content preparation."
+    }
+  ],
+  "additions": [
+    {
+      "refs": [
+        "action:n1"
+      ],
+      "reason": "Both elements contain generic or invented labels ('Start', 'Merge: Site design and content preparation completed') that do not appear in the source text and function merely as structural placeholders rather than faithful representations of source steps."
+    },
+    {
+      "refs": [
+        "action:n7"
+      ],
+      "reason": "Both elements contain generic or invented labels ('Start', 'Merge: Site design and content preparation completed') that do not appear in the source text and function merely as structural placeholders rather than faithful representations of source steps."
+    }
+  ],
+  "targets": [
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "Start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: Start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "Is the informational meeting successful?",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: Is the informational meeting successful?"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "Work on storyboard (full day)",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: Work on storyboard (full day)"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "End Process",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: End Process"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "Site design and development preparation (10 days)",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: Site design and development preparation (10 days)"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "Content preparation",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: Content preparation"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "Merge: Site design and content preparation completed",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: Merge: Site design and content preparation completed"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "Site development (2 days)",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: Site development (2 days)"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "Review process (1 day)",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: Review process (1 day)"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "Is the review successful?",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: Is the review successful?"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "Approval stage (half a day)",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: Approval stage (half a day)"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "End Process",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: End Process"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "Rebuild site (3 days)",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: Rebuild site (3 days)"
+    },
+    {
+      "ref_id": "action:n14",
+      "kind": "action",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "Is the rebuild approved?",
+      "aliases": [
+        "action:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n14: Is the rebuild approved?"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "End Process",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: End Process"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "action:n16",
+      "kind": "action",
+      "node_id": "n16",
+      "gateway": "",
+      "string_value": "Rebuild site again (3 days)",
+      "aliases": [
+        "action:n16",
+        "n16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n16: Rebuild site again (3 days)"
+    },
+    {
+      "ref_id": "action:n17",
+      "kind": "action",
+      "node_id": "n17",
+      "gateway": "",
+      "string_value": "End Process",
+      "aliases": [
+        "action:n17",
+        "n17"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n17: End Process"
+    },
+    {
+      "ref_id": "end:e4",
+      "kind": "end",
+      "node_id": "e4",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e4",
+        "e4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e4"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "branch:b4",
+      "kind": "branch",
+      "node_id": "b4",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b4",
+        "b4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b4 (AND)"
+    },
+    {
+      "ref_id": "guard:b1->n3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = true",
+      "aliases": [
+        "guard:b1->n3"
+      ],
+      "from": "b1",
+      "to": "n3",
+      "source_line": "guard b1->n3: v1 = true",
+      "guard": {
+        "from": "b1",
+        "to": "n3",
+        "condition": "v1 = true"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = false",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = false",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = false"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = true",
+      "aliases": [
+        "guard:b2->n11"
+      ],
+      "from": "b2",
+      "to": "n11",
+      "source_line": "guard b2->n11: v2 = true",
+      "guard": {
+        "from": "b2",
+        "to": "n11",
+        "condition": "v2 = true"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n13",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = false",
+      "aliases": [
+        "guard:b2->n13"
+      ],
+      "from": "b2",
+      "to": "n13",
+      "source_line": "guard b2->n13: v2 = false",
+      "guard": {
+        "from": "b2",
+        "to": "n13",
+        "condition": "v2 = false"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n15",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = true",
+      "aliases": [
+        "guard:b3->n15"
+      ],
+      "from": "b3",
+      "to": "n15",
+      "source_line": "guard b3->n15: v3 = true",
+      "guard": {
+        "from": "b3",
+        "to": "n15",
+        "condition": "v3 = true"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n16",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = false",
+      "aliases": [
+        "guard:b3->n16"
+      ],
+      "from": "b3",
+      "to": "n16",
+      "source_line": "guard b3->n16: v3 = false",
+      "guard": {
+        "from": "b3",
+        "to": "n16",
+        "condition": "v3 = false"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 10,
+    "mutation_count": 3,
+    "omission_count": 2,
+    "addition_count": 2,
+    "match_relation_count": 18,
+    "mutation_relation_count": 3,
+    "omission_relation_count": 2,
+    "unique_refs_in_matches": 18,
+    "unique_refs_in_mutations": 3,
+    "unique_refs_in_additions": 2,
+    "unique_refs_covered": 23,
+    "total_mappable_targets": 32,
+    "input_text_length": 1002,
+    "element_count": 32
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

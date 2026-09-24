@@ -1,0 +1,11 @@
+- `defines(v1, "is inventory below or equal to minimum?", {})`: Empty range `{}` violates SMC6; source implies a binary decision requiring explicit values (e.g., `{true, false}`).
+- `branch(b1, XOR)` / missing `guard(...)`: Lacks edge guards to enforce routing; source explicitly defines conditions "If the inventory is below or equal to the minimum" and "If the inventory is greater than the minimum".
+- `action(n7, "generate equal to or below minimum report")`: Has no outgoing `precedence`; source dictates this path continues to "create Purchase Orders (POs)".
+- `[Truncated process flow]`: Violates SMC1 by stopping after reporting; entirely omits documented steps including "create Purchase Orders (POs)", "needs to be reviewed", "If the PO is rejected, it needs to be reworked", "If the PO is approved, it is printed and released", "Simultaneously, reserve funds... and mail the POs", receiving sequences, "Three-way match", "release the funds", and "issue the payment".
+- `action(n1, "start")`: Hallucinates an undocumented node; source begins directly with "begin with the New Resupply Cycle".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"generate equal to or below minimum report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"generate equal to or below minimum report")

@@ -1,0 +1,8 @@
+- `guard(b1, ...)` statements: Missing entirely, omitting the source's explicit routing conditions ("If the contract is deemed okay" and "if there are any missing details").
+- `action(n7, "end process after organizing team")`, `action(n8, "end process after contacting customer")`: Hallucinated steps; the source states "organize a suitable team and the process will come to an end" and "contact the customer directly and the process will also come to an end", requiring direct transitions to `end` nodes without intermediate actions.
+- `defines(v1, "is contract okay", {})`: Declares a decision variable with an empty range `{}` and leaves it unused, failing to encode the decision criteria described in the text.
+- `action(n4, "is contract okay")`: Misrepresents a decision predicate as a sequential action; per the source, this condition should govern the split at `branch(b1)` via guards rather than acting as a preceding step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

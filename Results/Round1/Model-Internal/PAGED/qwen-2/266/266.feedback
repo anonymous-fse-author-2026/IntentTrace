@@ -1,0 +1,45 @@
+Omission
+- [N1] Node-level omission: If the storyboard is successful (reason: No branch or guard element exists in the model to evaluate whether the storyboard was successful before triggering the parallel design/content steps.)
+- [N2] Node-level omission: an informational meeting that lasts half a day, involving the customer and the web design team (reason: The substantive meeting activity described in the opening sentence is not represented by any action element; only a structural init and a generic 'start' action are present, losing the actual task definition.)
+- [N3] Within matched traces (1->3) omitted: i4:If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content.
+- [N4] Within matched traces (2->2) omitted: i4:If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content.
+- [N5] Within matched traces (2->2) omitted: i9:If the rebuild is rejected again, the site needs to be rebuilt again, which also takes 3 days.
+
+Addition
+- [N6] Node-level addition: action(n1,"start") (reason: Content 'start' is overly generic and does not correspond to any specific instruction or task in the source text.)
+- [N7] Node-level addition: label(n5,c1,"Site ready") (reason: Label 'Site ready' does not appear in the source text; it is an invented semantic tag for the convergence connectors.)
+- [N8] Node-level addition: label(n6,c1,"Site ready") (reason: Label 'Site ready' does not appear in the source text; it is an invented semantic tag for the convergence connectors.)
+- [N9] Node-level addition: guard(b2,n9,"v2 = 'Not successful'") (reason: Source text only specifies the successful review path; the 'Not successful' guard and corresponding 'End process' action are entirely invented.)
+- [N10] Node-level addition: action(n9,"End process") (reason: Source text only specifies the successful review path; the 'Not successful' guard and corresponding 'End process' action are entirely invented.)
+- [N11] Node-level addition: action(n13,"Review rebuilt site") (reason: 'Review rebuilt site' is not mentioned anywhere in the source text between the rebuild step and the final outcomes.)
+- [N12] Node-level addition: guard(b4,n15,"v4 = 'Successful'") (reason: 'Successful' guard and 'Approve rebuilt site' action are invented; source proceeds directly to termination or rebuild-again logic without an intermediate approval gate.)
+- [N13] Node-level addition: action(n15,"Approve rebuilt site") (reason: 'Successful' guard and 'Approve rebuilt site' action are invented; source proceeds directly to termination or rebuild-again logic without an intermediate approval gate.)
+- [N14] Node-level addition: guard(b5,n16,"v5 = 'Approved'") (reason: This entire sub-decision tree ('Approved'/'Rejected' guards and 'End process' action) is invented. Source text simply states the site needs to be rebuilt again without an additional approval mechanism.)
+- [N15] Node-level addition: guard(b5,n17,"v5 = 'Rejected'") (reason: This entire sub-decision tree ('Approved'/'Rejected' guards and 'End process' action) is invented. Source text simply states the site needs to be rebuilt again without an additional approval mechanism.)
+- [N16] Node-level addition: action(n16,"End process") (reason: This entire sub-decision tree ('Approved'/'Rejected' guards and 'End process' action) is invented. Source text simply states the site needs to be rebuilt again without an additional approval mechanism.)
+- [N17] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N18] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N19] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n17,"Rebuild site again") -> end(e5)
+- [N20] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N21] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n11,"End process") -> end(e3)
+- [N22] Added trace (model 8): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n14,"End process") -> end(e4)
+- [N23] Added trace (model 9): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N24] Added trace (model 10): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n17,"Rebuild site again") -> end(e5)
+- [N25] Within matched traces (0->0) added: action(n1,"start")
+- [N26] Within matched traces (1->3) added: action(n1,"start")
+- [N27] Within matched traces (1->3) added: branch(b6,AND)
+- [N28] Within matched traces (1->3) added: action(n5,"Prepare content")
+- [N29] Within matched traces (1->3) added: converge(c1)
+- [N30] Within matched traces (1->3) added: action(n13,"Review rebuilt site")
+- [N31] Within matched traces (2->2) added: action(n1,"start")
+- [N32] Within matched traces (2->2) added: branch(b6,AND)
+- [N33] Within matched traces (2->2) added: action(n5,"Prepare content")
+- [N34] Within matched traces (2->2) added: converge(c1)
+
+Mutation
+- [N35] Node-level mutation: element=action(n6,"Design site"); source=which takes 10 days and is done by the web design team; reason=Drops the explicit duration (10 days) and responsible actor (web design team) specified in the source text.
+- [N36] Node-level mutation: element=action(n8,"Review site"); source=that lasts 1 day; reason=Omits the explicit duration constraint for the review process stated in the source.
+- [N37] Node-level mutation: element=action(n10,"Approve site"); source=which takes half a day; reason=Omits the explicit duration constraint for the approval stage stated in the source.
+- [N38] Node-level mutation: element=action(n12,"Rebuild site"); source=which takes 3 days; reason=Omits the explicit duration constraint for the first rebuild step stated in the source.
+- [N39] Node-level mutation: element=action(n17,"Rebuild site again"); source=which also takes 3 days; reason=Omits the explicit duration constraint for the second rebuild step stated in the source.
+- [N40] Node-level mutation: element=guard(b4,n14,"v4 = 'Not successful'"); source=i8:If the rebuild is complete, the process ends.; reason=Guard payload states 'v4 = "Not successful"' leads to the end node, but the source explicitly states 'complete' leads to the end. The condition logic is reversed/distorted.

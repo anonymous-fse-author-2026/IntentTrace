@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i2:If the inventory level is at or below the minimum (reason: Only supported element mutates the comparison operator, failing to faithfully implement the condition.)
+- [N2] Node-level omission: i3:accept the customer request. (reason: Absorbed into a mutated, conflated action node; lacks a dedicated step as specified in the source.)
+- [N3] Node-level omission: i5:reject the customer request. (reason: Absorbed into a mutated, conflated action node; lacks a dedicated step as specified in the source.)
+- [N4] Node-level omission: i6:create a purchase order. (reason: Absorbed into a mutated, conflated action node; lacks a dedicated step as specified in the source.)
+- [N5] Node-level omission: i7:If the customer request is rejected, the process ends. (reason: Absorbed into a mutated, conflated action node; lacks a dedicated termination path as specified in the source.)
+- [N6] Node-level omission: i12:if the purchase order is approved, reserve the funds. (reason: Only supported element invents additional qualifiers, failing to faithfully implement the step.)
+- [N7] Node-level omission: i13:In case the purchase order needs to be reworked, review it again. (reason: Completely absent from the model; the feedback loop to review a reworked purchase order is not represented.)
+- [N8] Omitted trace (input 1): i1:To begin the process for ACME Company, start by receiving the customer request and then check the current inventory level. -> i2:If the inventory level is at or below the minimum -> i3:accept the customer request. -> i6:create a purchase order. -> i8:Once the purchase order is created, review it. -> i9:If the purchase order is rejected -> i10:rework the purchase order. -> i13:In case the purchase order needs to be reworked, review it again. -> i8:Once the purchase order is created, review it.
+
+Addition
+- [N9] Within matched traces (2->0) added: init(i1)
+- [N10] Within matched traces (3->1) added: init(i1)
+- [N11] Within matched traces (0->2) added: init(i1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n4,"\"v1 = 'below_minimum'\""); source=i2:If the inventory level is at or below the minimum; reason=Uses a strict equality operator (=) instead of the required inclusive threshold (at or below / <=), altering the decision logic.
+- [N13] Node-level mutation: element=action(n4,"accept request and create PO"); source=i3:accept the customer request. -> i6:create a purchase order.; reason=Conflates two distinct sequential steps (request acceptance and PO creation) into a single node, violating the source's explicit granularity.
+- [N14] Node-level mutation: element=action(n5,"reject request - end process"); source=i5:reject the customer request. -> i7:If the customer request is rejected, the process ends.; reason=Conflates the rejection action with the subsequent termination condition into one node, removing the explicit conditional flow separation.
+- [N15] Node-level mutation: element=action(n8,"approve purchase order and reserve funds"); source=i12:if the purchase order is approved, reserve the funds.; reason=Invents the phrase 'approve purchase order' alongside the reservation step, expanding the action beyond what the source specifies.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"review purchase order")

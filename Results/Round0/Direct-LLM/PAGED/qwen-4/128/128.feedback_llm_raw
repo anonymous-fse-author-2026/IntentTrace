@@ -1,0 +1,8 @@
+
+
+- defines(v1, "How were the items returned?", {"Delivery Crew picks-up items at the event site"}): Omits the documented decision alternative "Customer returns the items to the store" from the variable's value range.
+- defines(v3, "Customer returns the missing items?", {"Customer does not return the missing items"}): Omits the documented decision alternative "Customer returns the missing items" from the variable's value range.
+- defines(v5, "Items packed for an existing order?", {"Items are stored for future orders"}): Omits the documented decision alternative "Items are packed for an existing order" from the variable's value range.
+- branch(b5, XOR) & precedence(b5, n14): Models only a single sequential exit path, failing to represent the exclusive choice between "Items are packed for an existing order" and "Items are stored for future orders" explicitly stated in the description.
+- action(n14, "Email customer with replacement charges"): Incorrectly positioned as a mandatory step for all flows exiting b5; the source text specifies both packing/storing options simply "continue the process", with the replacement charge email specifically tied to discarded items (n12) or stated as a concluding remark rather than a universal post-decision action.
+- guard(b1, n3, v1 = 'Delivery Crew picks-up items at the event site'): Defines a condition for only one outgoing edge of an XOR branch while the associated variable v1 lacks the complementary value, leaving the "Customer returns the items to the store" path structurally and semantically unsupported.

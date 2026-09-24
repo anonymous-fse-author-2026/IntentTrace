@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: No `guard` statements are attached to these branches to implement the source conditions ("If you are not hungry... Otherwise..." / "If you are still not hungry... Otherwise..."), leaving the exclusive choice logic semantically incomplete.
+- `defines(v1, "are you hungry", {})` and `defines(v2, "are you hungry again", {})`: Use empty ranges `{}` instead of capturing the implied binary decision space (hungry/not hungry), failing to faithfully represent the source's parameters.
+- `action(n6, "take shower again")` and `action(n7, "have breakfast again")`: Payloads add the word "again", which is absent from the source text ("take a shower" / "have breakfast"), hallucinating altered step descriptions.
+- `action(n9, "You have completed this procedure")`: Hallucinates a discrete procedural step; the description states termination follows automatically without an intervening action ("get on the bus and the process will be complete.").
+- `v1` and `v2` (declared in `defines`): Defined as decision variables but never referenced in any `guard` statement, severing the logical connection between the source's conditional rules and the model's routing edges.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

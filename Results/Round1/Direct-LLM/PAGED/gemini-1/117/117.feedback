@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i2:proceed with repairing any issues that were identified. (reason: The step is not faithfully implemented because the corresponding element invents the qualifier 'from hardware check'.)
+- [N2] Node-level omission: i3:After the necessary repairs have been made, conclude the hardware inspection. (reason: The step is not faithfully implemented because the corresponding element drops the qualifier 'necessary'.)
+- [N3] Node-level omission: i5:If the test results indicate that everything is functioning properly (reason: The payload of the condition is not faithfully implemented by any guard or action element without mutation.)
+- [N4] Omitted trace (input 0): i1:To initiate the computer repair process, begin by examining the hardware. -> i2:proceed with repairing any issues that were identified. -> i3:After the necessary repairs have been made, conclude the hardware inspection.
+
+Addition
+- [N5] Node-level addition: guard(b1,n7,"v1 == \"No\"") (reason: The negative condition 'v1 == "No"' has no corresponding source text in the provided input segments.)
+- [N6] Within matched traces (1->0) added: action(n3,"Conclude hardware inspection after repairs")
+- [N7] Within matched traces (2->1) added: action(n3,"Conclude hardware inspection after repairs")
+- [N8] Within matched traces (2->1) added: action(n5,"Is system functioning properly after test")
+- [N9] Within matched traces (2->1) added: branch(b1,XOR)
+
+Mutation
+- [N10] Node-level mutation: element=action(n2,"Repair any issues identified from hardware check"); source=i2:proceed with repairing any issues that were identified.; reason=The element adds the invented qualifier 'from hardware check', which is not present in this source segment.
+- [N11] Node-level mutation: element=action(n3,"Conclude hardware inspection after repairs"); source=i3:After the necessary repairs have been made, conclude the hardware inspection.; reason=The element drops the qualifier 'necessary' from the repairs.
+- [N12] Node-level mutation: element=action(n5,"Is system functioning properly after test"); source=i5:If the test results indicate that everything is functioning properly; reason=The element drops 'test results indicate', adds 'after test', and changes 'everything' to 'system', severely altering the original phrasing.
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 == \"Yes\""); source=i5:If the test results indicate that everything is functioning properly; reason=The element replaces the descriptive text condition with an invented boolean check 'v1 == "Yes"'.

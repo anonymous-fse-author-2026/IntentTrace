@@ -1,0 +1,14 @@
+- `action(n1, "start the process")`: Hallucinates an initial step; the source begins directly with "checking if the input is a 'URN'", not a generic initialization.
+- `precedence(n4, ...)`: Missing outgoing edge from `n4`; the source states "If the input is a 'URL', we simply continue with the process. After this, we again check...", requiring `precedence(n4, n5)` to preserve chronology and completion.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lacking `guard` statements on outgoing edges; XOR splits require explicit conditions to determine when to resolve the URN versus continue, per source decision logic.
+- `label(n1, n2, "is not URN")` and `label(n3, n5, "is URL")`: Misplaced on sequential transitions instead of outgoing branch edges, failing to bind decision semantics to the actual split points `b1` and `b2`.
+- `action(n8)` through `action(n17)` (duplicated pairs like `n8`/`n9`, `n10`/`n11`): Fabricates two identical parallel workflows; the source describes a single unified sequence ("send a DNS query... list of URLs... link... end").
+- Absence of `converge` construct: The two paths exiting `b2` never rejoin, contradicting the source's linear progression ("Once we have resolved the URN to a domain-name, we send a DNS query...").
+- `end(e1)` and `end(e2)`: Unjustified dual termination points; the source specifies only one conclusion ("the process comes to an end").
+- `defines(v1, "check if the input is a URN", {})` and `defines(v2, "check if the input is a URN or a URL", {})`: Empty value ranges `{}` fail to represent the actual decision space (e.g., `{"URN", "URL"}` or boolean flags), violating faithful variable modeling.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"continue with the process")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"continue with the process")

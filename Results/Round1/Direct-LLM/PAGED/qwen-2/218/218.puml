@@ -1,0 +1,19 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+repeat :enter expenses;
+:generate spreadsheet;
+:is the request approved;
+:v1: is the request approved ({Approved, Not Approved}); <<objectSignal>>
+repeat while () is ([v1 = "Not Approved"]) not ([v1 = "Approved"])
+:pay out expenses;
+:is the request approved;
+:v1: is the request approved ({Approved, Not Approved}); <<objectSignal>>
+if () then ([v1 = "Approved"])
+:pay out expenses;
+stop
+else ([v1 = "Not Approved"])
+endif
+@enduml

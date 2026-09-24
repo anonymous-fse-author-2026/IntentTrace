@@ -1,0 +1,16 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i6:On the other hand, if they are marked as "Completed", the process should be continued.
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> action(n4,"Check completeness of the invoices") -> branch(b3,AND) -> action(n9,"Continue the process") -> converge(c1) -> action(n10,"Check if the process has been completed") -> branch(b2,XOR) -> action(n11,"End process") -> end(e2)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (1->0) added: init(i1)
+- [N5] Within matched traces (1->0) added: action(n5,"Return invoices to client through postal mail")
+
+Mutation
+- [N6] Node-level mutation: element=branch(b3,AND); source=i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail. -> i4:However, if they are marked as "Completed", the process should be continued.; reason=Gateway is configured as AND (parallel execution), but the source describes mutually exclusive invoice states that require an XOR (exclusive) decision. This fundamentally alters process flow and concurrency behavior.
+- [N7] Node-level mutation: element=guard(b2,n12,"v2 = 'Not Completed'"); source=i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail. -> i5:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.; reason=Guard content 'v2 = "Not Completed"' distorts the exact quoted source value '"Uncompleted"'. Stricter standard requires preserving the precise terminology used in the source.
+- [N8] Node-level mutation: element=guard(b2,n11,"v2 = 'Completed'"); source=i4:However, if they are marked as "Completed", the process should be continued. -> i10:Finally, the process ends.; reason=Routes 'Completed' directly to 'End process', contradicting source logic where 'Completed' triggers continuation (i4/i6). Termination occurs unconditionally only after all prior steps finish (i10), making this guard's target and conditional mapping logically incorrect.
+
+Permutation
+- [N9] Within matched traces (0->0) reordered: expected [i5:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]

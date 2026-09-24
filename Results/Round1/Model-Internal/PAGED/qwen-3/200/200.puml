@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Check Customer Eligibility;
+:v1: Check Customer Eligibility ({Eligible, Not Eligible}); <<objectSignal>>
+if () then ([v1 = 'Not Eligible'])
+:Inform Ineligible Customer;
+split
+:End Process - Ineligible;
+stop
+split again
+:Continue Process;
+stop
+split again
+:Inform Lawyer;
+stop
+end split
+else ([v1 = 'Eligible'])
+:Open New Order in ERP System;
+:Perform Availability Check;
+:v2: Perform Availability Check ({Available, Not Available}); <<objectSignal>>
+if () then ([v2 = 'Not Available'])
+:Start Producing Missing Parts;
+:Prepare Products for Shipment;
+split
+:Ship Products;
+split again
+:Send Invoice;
+split again
+:Check Payment Status;
+end split
+:Check Payment Status;
+:v3: Check Payment Status ({Received, Not Received}); <<objectSignal>>
+if () then ([v3 = 'Received'])
+:Close Order - Payment Received;
+else ([v3 = 'Not Received'])
+:Send Payment Reminder;
+:Check Number of Reminders;
+:v4: Check Number of Reminders ({< 3, = 3}); <<objectSignal>>
+if () then ([v4 = '< 3'])
+else ([v4 = '= 3'])
+endif
+endif
+else ([v2 = 'Available'])
+:Prepare Products for Shipment;
+split
+split again
+split again
+end split
+endif
+endif
+@enduml

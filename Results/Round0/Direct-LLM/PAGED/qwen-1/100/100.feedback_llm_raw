@@ -1,0 +1,8 @@
+
+
+- `action(n4, "end")`, `action(n6, "end")`: Hallucinated steps; the source states "the process ends", which should be modeled solely by `end` nodes without redundant action wrappers.
+- `guard(b1, c1, v1 = 'Yes')`: Breaks source chronology by routing a confirmed bonus directly to the convergence point and bill payment, skipping the subsequent verification implied by "If you 'get a paycheck', then you also continue the process."
+- `guard(b1, n3, v1 = 'No')`: Prescribes an execution path for an absent bonus that is not documented in the source, violating the constraint against hallucinating undocumented behaviors.
+- `defines(v2, "get a paycheck?", {"Yes"})`: Defines an incomplete value range for a decision variable; the absence of a negative option contradicts the implicit binary nature of the check and leaves branch `b2` underspecified.
+- `precedence(b2, n4)`: Represents an unguarded outgoing edge from an XOR branch, violating control-flow semantics that require explicit conditions for all exclusive choices.
+- `label(n1, n2, "No")`: Adds an arbitrary descriptive tag to a control-flow edge that is not grounded in any part of the provided source text.

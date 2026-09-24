@@ -1,0 +1,51 @@
+Omission
+- [N1] Node-level omission: i2:Bill for Purchased Goods/Services (reason: This specific start/billing event is completely unmodeled.)
+- [N2] Node-level omission: i9:further checks are conducted (reason: The action to conduct further checks is entirely missing from the model.)
+- [N3] Omitted trace (input 1): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i12:if the issue requires mail back -> i13:the invoice is returned.
+- [N4] Omitted trace (input 2): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i14:the invoice is paid -> i17:the client is notified of the payment. -> i19:If the client is unsatisfied -> i20:payment discrepancy is resolved.
+- [N5] Omitted trace (input 3): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i14:the invoice is paid -> i17:the client is notified of the payment. -> i21:if the client is satisfied
+- [N6] Omitted trace (input 4): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i15:Bill Client -> i16:a period of 10 days is given -> i18:a reminder is sent
+- [N7] Omitted trace (input 5): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i14:the invoice is paid -> i17:the client is notified of the payment. -> i19:If the client is unsatisfied -> i20:payment discrepancy is resolved.
+- [N8] Omitted trace (input 7): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i15:Bill Client -> i16:a period of 10 days is given -> i18:a reminder is sent
+- [N9] Within matched traces (0->0) omitted: i2:Bill for Purchased Goods/Services
+- [N10] Within matched traces (6->5) omitted: i2:Bill for Purchased Goods/Services
+- [N11] Within matched traces (6->5) omitted: i6:if the invoice is complete
+- [N12] Within matched traces (6->5) omitted: i14:the invoice is paid
+
+Addition
+- [N13] Node-level addition: action(n9,"Resolve Compliance Issue") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N14] Node-level addition: action(n11,"Invoice Process Complete") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N15] Node-level addition: action(n12,"Bill Client Process Complete") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N16] Node-level addition: action(n13,"After Receiving Invoice") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N17] Node-level addition: action(n17,"End Billing Process") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N18] Node-level addition: action(n21,"Payment Process Complete") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N19] Node-level addition: action(n22,"Finalize Payment Process") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N20] Node-level addition: label(n13,n14,"Yes") (reason: These elements introduce generic compliance steps, explicit completion events, and progression labels that have no corresponding justification in the source units.)
+- [N21] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n4,"Is Invoice Complete?") -> branch(b1,XOR) -> action(n6,"Is Invoice Compliant?") -> branch(b2,XOR) -> action(n7,"Resolve Non-Compliance via Phone") -> action(n9,"Resolve Compliance Issue") -> action(n10,"Pay Invoice") -> action(n11,"Invoice Process Complete") -> end(e3)
+- [N22] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n4,"Is Invoice Complete?") -> branch(b1,XOR) -> action(n6,"Is Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Return Invoice via Mail") -> end(e2)
+- [N23] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n17,"End Billing Process") -> end(e5)
+- [N24] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n19,"Resolve Payment Discrepancy") -> action(n21,"Payment Process Complete") -> end(e6)
+- [N25] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n12,"Bill Client Process Complete") -> end(e4)
+- [N26] Within matched traces (0->0) added: action(n2,"Bill Client")
+- [N27] Within matched traces (0->0) added: branch(b4,AND)
+- [N28] Within matched traces (0->0) added: branch(b5,AND)
+- [N29] Within matched traces (6->5) added: action(n2,"Bill Client")
+- [N30] Within matched traces (6->5) added: branch(b4,AND)
+- [N31] Within matched traces (6->5) added: branch(b5,AND)
+- [N32] Within matched traces (6->5) added: action(n13,"After Receiving Invoice")
+- [N33] Within matched traces (6->5) added: action(n14,"Wait for 10 Days")
+- [N34] Within matched traces (6->5) added: action(n15,"Send Reminder")
+- [N35] Within matched traces (6->5) added: branch(b6,AND)
+- [N36] Within matched traces (6->5) added: action(n22,"Finalize Payment Process")
+- [N37] Within matched traces (6->5) added: end(e7)
+
+Mutation
+- [N38] Node-level mutation: element=action(n4,"Is Invoice Complete?") -> guard(b1,n5,"v1 = 'No'"); source=i4:If the invoice is incomplete; reason=The action reverses the 'incomplete' condition to ask 'Is Invoice Complete?', and the guard uses a generic 'No' instead of preserving the explicit condition text.
+- [N39] Node-level mutation: element=action(n5,"Return Invoice: Incomplete"); source=i5:it is returned.; reason=The action appends the invented qualifier ': Incomplete', which is not present in the isolated source segment.
+- [N40] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i6:if the invoice is complete; reason=The guard replaces the explicit 'complete' condition with a generic 'Yes' boolean.
+- [N41] Node-level mutation: element=action(n6,"Is Invoice Compliant?"); source=i8:If the invoice is non-compliant; reason=The action asks 'Is Invoice Compliant?', reversing the source text's condition of being non-compliant.
+- [N42] Node-level mutation: element=guard(b2,n7,"v2 = 'Non-Compliant'"); source=i10:If the issue can be resolved with a phone call; reason=The guard condition 'v2 = Non-Compliant' completely replaces and ignores the text's specific condition regarding resolving with a phone call.
+- [N43] Node-level mutation: element=action(n7,"Resolve Non-Compliance via Phone"); source=i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved.; reason=The element merges the explicit conditional logic and the action into a single operational step ('via Phone'), altering the conditional nature of the source.
+- [N44] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i12:if the issue requires mail back; reason=The guard uses a generic 'v2 = No' boolean instead of conveying the explicit 'requires mail back' condition.
+- [N45] Node-level mutation: element=action(n8,"Return Invoice via Mail"); source=i12:if the issue requires mail back -> i13:the invoice is returned.; reason=The element compresses the conditional check and the return action into one generic step, dropping the explicit decision gate.
+- [N46] Node-level mutation: element=action(n18,"Check Client Satisfaction"); source=i19:If the client is unsatisfied -> i21:if the client is satisfied; reason=The model invents an explicit manual 'Check Client Satisfaction' action to execute the condition evaluation, mutating the purely conditional logic of the text.

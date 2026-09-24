@@ -1,0 +1,17 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process in the Admin Office, first check if it has started. -> i2:After that, verify the completeness of the invoices. -> i3:If they are marked as "Uncompleted" -> i5:they should be returned to the client through postal mail. -> i7:If the invoices are still marked as "Uncompleted" -> i9:they should be returned to the client via postal mail. -> i2:After that, verify the completeness of the invoices.
+- [N2] Within matched traces (0->0) omitted: i6:the process should be continued.
+- [N3] Within matched traces (1->0) omitted: i6:the process should be continued.
+
+Addition
+- [N4] Added trace (model 1): init(i1) -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n3,"Proceed to verify completeness of invoices") -> action(n5,"Return uncompleted invoices to client via postal mail") -> action(n6,"Receive completed invoices from client") -> action(n7,"Mark relevant box on invoice entry form") -> action(n8,"Check if process has been completed") -> branch(b2,XOR) -> action(n10,"Proceed to verify completeness of invoices") -> end(e2)
+- [N5] Added trace (model 2): init(i1) -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> end(e1)
+- [N6] Within matched traces (0->0) added: action(n5,"Return uncompleted invoices to client via postal mail")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = 'Uncompleted'") -> guard(b1,n4,"v1 = 'Completed'"); source=i4:If they are marked as "Uncompleted", they should be returned to the client through postal mail. However, if they are marked as "Completed", the process should be continued.; reason=The guards incorrectly route the conditions to the wrong outcomes. The source dictates Uncompleted -> return via mail and Completed -> continue, but the model routes Uncompleted to verifying completeness (n3) and Completed to End (n4).
+- [N8] Node-level mutation: element=guard(b2,n9,"v2 = 'Uncompleted'") -> guard(b2,n10,"v2 = 'Completed'"); source=i8:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail. On the other hand, if they are marked as "Completed", the process should be continued.; reason=Similar logical inversion; Uncompleted is routed to End (n9) and Completed to verifying completeness (n10), contradicting the source's explicit directional instructions.
+
+Permutation
+- [N9] Within matched traces (1->0) reordered: expected [i3:If they are marked as "Uncompleted"] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n3,"Proceed to verify completeness of invoices")]
+- [N10] Within matched traces (1->0) reordered: expected [i7:If the invoices are still marked as "Uncompleted"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n6,"Receive completed invoices from client")]

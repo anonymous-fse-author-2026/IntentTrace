@@ -1,0 +1,11 @@
+- `action(n1, "start")`: Misrepresents the transitional phrase "To start" as an executable action.
+- `action(n8, "assign negative points again")`: Lacks an outgoing control-flow edge, creating an unintended dead end.
+- `action(n12, "assign roles in team")`: Lacks an outgoing control-flow edge, creating an unintended dead end.
+- `action(n22, "continue working according role")`: Lacks an outgoing control-flow edge, creating an unintended dead end.
+- `branch(b6, AND)`: Incorrectly uses a parallel gateway for the conditional alternatives ("If there are any issues...", "If you need to check...", and "If you need to analyze..."), which should be modeled as an exclusive or inclusive choice.
+- `action(n11, "check process and assign points or analyze field of study")`: Inaccurately merges two separate conditional clauses and their actions ("If you need to check..." and "If you need to analyze...") into a single action node payload.
+- `branch(b3, XOR)` / `guard(b3, c2, ...)`: Completely omits the documented action "continue with the process" for the "check the process and assign points" condition.
+- `action(n13, "continue with process and perform work according role")`: Executed unconditionally after the convergence `c2`, ignoring the explicit condition "If the process is okay..." specified in the source text.
+- `action(n19, "present project again")`: Placed chronologically before the evaluation `action(n20, "is project accepted?")`, violating the intended sequence "If the project is accepted, present it again."
+- `action(n17, "end of process")`: Incorrectly models the termination statement ("the process will come to an end") as an executable action payload rather than mapping it directly to an end node.
+- `action(n22, "continue working according role")` path: Omits the final documented step "Finally, present the project", which should follow this path before the process ends.

@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process for ACME Company -> i2:receiving the customer request -> i3:check the current inventory level -> i4:If the inventory level is at or below the minimum -> i5:is at or below the minimum -> i6:accept the customer request -> i9:create a purchase order -> i11:is rejected -> i12:rework the purchase order -> i16:review it again -> i11:is rejected
+
+Addition
+- [N2] Within matched traces (2->0) added: converge(c2)
+- [N3] Within matched traces (2->0) added: action(n9,"review purchase order")
+- [N4] Within matched traces (3->1) added: converge(c2)
+- [N5] Within matched traces (3->1) added: action(n9,"review purchase order")
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i5:is at or below the minimum; reason=The source text explicitly specifies a threshold ('at or below the minimum'), but the model alters this to a generic boolean check ('v1 = Yes').
+- [N7] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i7:is above the minimum; reason=The source text explicitly specifies a threshold ('above the minimum'), but the model alters this to a generic boolean check ('v1 = No').
+- [N8] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i11:is rejected; reason=The source text specifies a status ('is rejected'), but the model replaces it with a generic boolean check ('v2 = No').
+- [N9] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i14:is approved; reason=The source text specifies a status ('is approved'), but the model replaces it with a generic boolean check ('v2 = Yes').

@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Place Order;
+:Check Customer's Credit Limit;
+:v1: Credit response ({Okay, No}); <<objectSignal>>
+if () then ([v1 = 'Okay'])
+:Check Availability of Article;
+:v2: Availability check ({Okay, No}); <<objectSignal>>
+if () then ([v2 = 'Okay'])
+:Check Availability of Article again;
+:v3: Second availability check ({Available, Not Available}); <<objectSignal>>
+if () then ([v3 = 'Not Available'])
+:Produce the Goods;
+else ([v3 = 'Available'])
+:Collect the Goods;
+endif
+:Send Order Confirmation;
+split
+:Ship the Goods;
+split again
+:Send the Invoice;
+end split
+:Check Payment status;
+:v4: Payment status ({Received, Not Received}); <<objectSignal>>
+if () then ([v4 = 'Received'])
+:Close the Order;
+stop
+else ([v4 = 'Not Received'])
+:Check Reminder count;
+:v5: Reminder count check ({Geq3, Lt3}); <<objectSignal>>
+if () then ([v5 = 'Geq3'])
+:Write off the Order;
+:Close the Order;
+stop
+else ([v5 = 'Lt3'])
+:Send a Reminder;
+endif
+endif
+else ([v2 = 'No'])
+:Send Denial to Customer;
+stop
+endif
+else ([v1 = 'No'])
+:Send Denial to Customer;
+stop
+endif
+@enduml

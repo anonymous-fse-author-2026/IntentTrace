@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i3:If the Inventory is greater than the Minimum Level, (reason: No element faithfully implements the threshold comparison; the associated guard mutates it to a string equality check, leaving the original condition unrepresented.)
+- [N2] Node-level omission: i7:If the Purchase Order is rejected, it is reworked. (reason: The conditional logic is distorted by the guard's string-equality transformation; no element preserves the original natural-language decision structure.)
+- [N3] Node-level omission: i9:However, if the Purchase Order is accepted, funds are reserved for payment. (reason: The conditional logic is distorted by the guard's string-equality transformation; no element preserves the original natural-language decision structure.)
+- [N4] Within matched traces (1->0) omitted: i8:it is reworked.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Contains the generic label 'start' with no supporting source text; process initiation is already fully captured by init:i1 and action:n2.)
+- [N6] Within matched traces (0->3) added: init(i1)
+- [N7] Within matched traces (0->3) added: action(n1,"start")
+- [N8] Within matched traces (0->3) added: action(n15,"End of Process")
+- [N9] Within matched traces (0->3) added: end(e1)
+- [N10] Within matched traces (1->0) added: init(i1)
+- [N11] Within matched traces (1->0) added: action(n1,"start")
+- [N12] Within matched traces (1->0) added: action(n15,"End of Process")
+- [N13] Within matched traces (1->0) added: end(e1)
+- [N14] Within matched traces (2->1) added: init(i1)
+- [N15] Within matched traces (2->1) added: action(n1,"start")
+- [N16] Within matched traces (2->1) added: converge(c1)
+- [N17] Within matched traces (3->2) added: init(i1)
+- [N18] Within matched traces (3->2) added: action(n1,"start")
+- [N19] Within matched traces (3->2) added: converge(c1)
+
+Mutation
+- [N20] Node-level mutation: element=guard(b1,n4,"v1 = 'Below Minimum'"); source=i3:If the Inventory is greater than the Minimum Level, -> i5:Otherwise, a Purchase Order is created.; reason=Replaces the implicit threshold comparison ('Otherwise' / ≤ Minimum) with a strict string equality check ('v1 = Below Minimum'), altering the evaluation operator and value representation.
+- [N21] Node-level mutation: element=guard(b1,c2,"v1 = 'Above Minimum'"); source=i3:If the Inventory is greater than the Minimum Level,; reason=Changes the operator from a comparative threshold ('greater than') to an equality operator ('='), and substitutes the reference value with a string literal ('Above Minimum').
+- [N22] Node-level mutation: element=guard(b2,n6,"v2 = 'Rejected'"); source=i7:If the Purchase Order is rejected, it is reworked.; reason=Converts the natural-language condition 'is rejected' into a variable string equality 'v2 = Rejected', changing the logical evaluation mechanism.
+- [N23] Node-level mutation: element=guard(b2,n7,"v2 = 'Accepted'"); source=i9:However, if the Purchase Order is accepted, funds are reserved for payment.; reason=Converts the natural-language condition 'is accepted' into a variable string equality 'v2 = Accepted', altering the operator and evaluation logic.

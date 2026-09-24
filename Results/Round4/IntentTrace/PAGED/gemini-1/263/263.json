@@ -1,0 +1,457 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "The process starts with an informational meeting that lasts half a day"
+    },
+    {
+      "id": "b_meeting",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "If the meeting is successful,"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "work on the storyboard, which takes a full day"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "If the storyboard is successful,"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "the next steps are site design"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "site design, which takes 10 days"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "and preparing the content."
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "preparing the content"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "After that,"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "the site development takes 2 days"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "goes through a review process that lasts 1 day."
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "If the review is successful,"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "moves on to the approval stage, which takes half a day."
+    },
+    {
+      "id": "b_app",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "If the approval is complete,"
+    },
+    {
+      "id": "c_reb",
+      "type": "converge"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "the site needs to be rebuilt, which takes 3 days."
+    },
+    {
+      "id": "b_reb",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "If the rebuild is complete,"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "the site needs to be rebuilt again, which also takes 3 days."
+    },
+    {
+      "id": "c_end",
+      "type": "converge"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_meeting",
+      "name": "Is the meeting successful?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_app",
+      "name": "Is the approval complete?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_reb",
+      "name": "Is the rebuild complete?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "b_meeting",
+        "i2",
+        "i3",
+        "i5",
+        "i6",
+        "b4",
+        "i7",
+        "i8",
+        "i9",
+        "c1",
+        "i10",
+        "i11",
+        "i12",
+        "i13",
+        "i14",
+        "b_app",
+        "i15",
+        "c_reb",
+        "i16",
+        "b_reb",
+        "i17",
+        "i18",
+        "c_end",
+        "i4",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b_meeting"
+    },
+    {
+      "type": "precedence",
+      "A": "b_meeting",
+      "B": "i2"
+    },
+    {
+      "type": "guard",
+      "A": "b_meeting",
+      "B": "i2",
+      "condition": "v_meeting = \"Yes\""
+    },
+    {
+      "type": "precedence",
+      "A": "b_meeting",
+      "B": "c_end"
+    },
+    {
+      "type": "guard",
+      "A": "b_meeting",
+      "B": "c_end",
+      "condition": "v_meeting = \"No\""
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "b_app"
+    },
+    {
+      "type": "precedence",
+      "A": "b_app",
+      "B": "i15"
+    },
+    {
+      "type": "guard",
+      "A": "b_app",
+      "B": "i15",
+      "condition": "v_app = \"Yes\""
+    },
+    {
+      "type": "precedence",
+      "A": "b_app",
+      "B": "c_reb"
+    },
+    {
+      "type": "guard",
+      "A": "b_app",
+      "B": "c_reb",
+      "condition": "v_app = \"No\""
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "c_end"
+    },
+    {
+      "type": "precedence",
+      "A": "c_reb",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "b_reb"
+    },
+    {
+      "type": "precedence",
+      "A": "b_reb",
+      "B": "i17"
+    },
+    {
+      "type": "guard",
+      "A": "b_reb",
+      "B": "i17",
+      "condition": "v_reb = \"Yes\""
+    },
+    {
+      "type": "precedence",
+      "A": "b_reb",
+      "B": "i18"
+    },
+    {
+      "type": "guard",
+      "A": "b_reb",
+      "B": "i18",
+      "condition": "v_reb = \"No\""
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "c_end"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "c_reb"
+    },
+    {
+      "type": "precedence",
+      "A": "c_end",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "e1"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "The process starts with an informational meeting that lasts half a day"
+    },
+    {
+      "id": "i2",
+      "content": "If the meeting is successful,"
+    },
+    {
+      "id": "i3",
+      "content": "work on the storyboard, which takes a full day"
+    },
+    {
+      "id": "i4",
+      "content": "the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "If the storyboard is successful,"
+    },
+    {
+      "id": "i6",
+      "content": "the next steps are site design"
+    },
+    {
+      "id": "i7",
+      "content": "site design, which takes 10 days"
+    },
+    {
+      "id": "i8",
+      "content": "and preparing the content."
+    },
+    {
+      "id": "i9",
+      "content": "preparing the content"
+    },
+    {
+      "id": "i10",
+      "content": "After that,"
+    },
+    {
+      "id": "i11",
+      "content": "the site development takes 2 days"
+    },
+    {
+      "id": "i12",
+      "content": "goes through a review process that lasts 1 day."
+    },
+    {
+      "id": "i13",
+      "content": "If the review is successful,"
+    },
+    {
+      "id": "i14",
+      "content": "moves on to the approval stage, which takes half a day."
+    },
+    {
+      "id": "i15",
+      "content": "If the approval is complete,"
+    },
+    {
+      "id": "i16",
+      "content": "the site needs to be rebuilt, which takes 3 days."
+    },
+    {
+      "id": "i17",
+      "content": "If the rebuild is complete,"
+    },
+    {
+      "id": "i18",
+      "content": "the site needs to be rebuilt again, which also takes 3 days."
+    }
+  ]
+}

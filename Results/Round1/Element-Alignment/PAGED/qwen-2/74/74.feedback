@@ -1,0 +1,26 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i3:send data to suppliers and create a claim.
+
+Addition
+- [N2] Node-level addition: label(b3,n3,"Yes") (reason: The labels 'Yes' introduce conditional semantics to a purely parallel AND-split and lack any supporting text in the source.)
+- [N3] Node-level addition: label(b3,n4,"Yes") (reason: The labels 'Yes' introduce conditional semantics to a purely parallel AND-split and lack any supporting text in the source.)
+- [N4] Node-level addition: label(b3,n5,"Yes") (reason: The labels 'Yes' introduce conditional semantics to a purely parallel AND-split and lack any supporting text in the source.)
+- [N5] Node-level addition: guard(b1,n8,"v1 = 'Confirmed'") (reason: Introduces explicit variable-based guards ('v1 = Confirmed/Not Confirmed') and a binary decision structure where the source describes a linear sequence without conditional branching.)
+- [N6] Node-level addition: guard(b1,n9,"v1 = 'Not Confirmed'") (reason: Introduces explicit variable-based guards ('v1 = Confirmed/Not Confirmed') and a binary decision structure where the source describes a linear sequence without conditional branching.)
+- [N7] Node-level addition: action(n8,"End Process: GOP Confirmed") (reason: Invents a distinct termination step labeled 'End Process: GOP Confirmed', duplicating the termination intent of the source while adding an unsupported conditional outcome.)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N11] Added trace (model 5): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N12] Within matched traces (0->0) added: init(i1)
+- [N13] Within matched traces (0->0) added: branch(b1,XOR)
+- [N14] Within matched traces (0->0) added: action(n8,"End Process: GOP Confirmed")
+- [N15] Within matched traces (1->1) added: init(i1)
+- [N16] Within matched traces (1->1) added: converge(c1)
+- [N17] Within matched traces (1->1) added: action(n6,"Extract and Transfer Data from Suppliers to Doctor")
+- [N18] Within matched traces (1->1) added: action(n7,"Confirm GOP")
+- [N19] Within matched traces (1->1) added: branch(b1,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=action(n11,"Extract Data from Suppliers Again"); source=i8:Extract the data from the suppliers and enter it on the patient's record or confirm the IN-Patient status.; reason=Adds the temporal qualifier 'Again' to the action content, which is absent from the source unit and alters the step's context.
+- [N21] Node-level mutation: element=action(n15,"End Process: Payment Received"); source=i10:Finally, receive the payment and conclude the process.; reason=Appends ': Payment Received' to the conclusion step, specifying a conditional state/outcome not stated in the source text.

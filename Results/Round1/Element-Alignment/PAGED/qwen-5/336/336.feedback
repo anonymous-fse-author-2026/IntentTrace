@@ -1,0 +1,28 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i5:if we need to check the income
+- [N2] Within matched traces (2->2) omitted: i5:if we need to check the income
+- [N3] Within matched traces (3->1) omitted: i5:if we need to check the income
+- [N4] Within matched traces (4->2) omitted: i5:if we need to check the income
+
+Addition
+- [N5] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n8,"End process as declaration check needed") -> end(e2)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n9,"End process as invitation needed") -> end(e3)
+- [N7] Within matched traces (1->1) added: branch(b2,XOR)
+- [N8] Within matched traces (1->1) added: action(n5,"Complete check deductibles")
+- [N9] Within matched traces (1->1) added: converge(c1)
+- [N10] Within matched traces (2->2) added: branch(b2,XOR)
+- [N11] Within matched traces (2->2) added: action(n5,"Complete check deductibles")
+- [N12] Within matched traces (2->2) added: converge(c1)
+- [N13] Within matched traces (3->1) added: branch(b1,XOR)
+- [N14] Within matched traces (3->1) added: action(n4,"Is income check needed")
+- [N15] Within matched traces (4->2) added: branch(b1,XOR)
+- [N16] Within matched traces (4->2) added: action(n4,"Is income check needed")
+
+Mutation
+- [N17] Node-level mutation: element=branch(b2,XOR); source=i6:checking deductibles and checking the house; reason=The source specifies concurrent execution ('At the same time... and'), but the model uses an exclusive XOR gateway, distorting the intended parallel flow.
+- [N18] Node-level mutation: element=guard(b1,n3,"v2 = 'No'"); source=i3:If it needs to be sent back, the process ends.; reason=Replaces the explicit textual condition with an invented variable assignment 'v2 = No', losing the original semantic trigger.
+- [N19] Node-level mutation: element=guard(b1,n4,"v2 = 'Yes'"); source=i4:if we need to check the income, we continue with the process; reason=Replaces the explicit textual condition with an invented variable assignment 'v2 = Yes', losing the original semantic trigger.
+- [N20] Node-level mutation: element=guard(b2,n5,"v1 = 'Yes'"); source=i6:checking deductibles and checking the house; reason=Imposes an exclusive guard 'v1 = Yes' on a task that the source indicates should run concurrently, contradicting the parallel logic.
+- [N21] Node-level mutation: element=guard(b2,n6,"v1 = 'No'"); source=i6:checking deductibles and checking the house; reason=Imposes an exclusive guard 'v1 = No' on a task that the source indicates should run concurrently, contradicting the parallel logic.
+- [N22] Node-level mutation: element=guard(b3,n8,"v3 = 'Yes'"); source=i8:If we need to check the declaration, the process ends.; reason=Replaces the explicit textual condition with an invented variable assignment 'v3 = Yes', losing the original semantic trigger.
+- [N23] Node-level mutation: element=guard(b3,n9,"v3 = 'No'"); source=i9:Otherwise, if we need to invite the declarant, the process also ends.; reason=Replaces the explicit textual condition with an invented variable assignment 'v3 = No', losing the original semantic trigger.

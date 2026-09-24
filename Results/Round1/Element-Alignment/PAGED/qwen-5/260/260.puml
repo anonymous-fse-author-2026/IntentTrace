@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:receive invoice;
+:sort per client;
+:sort per vendor;
+:attach entry form to invoice;
+:enter required information onto form;
+:check completeness of invoice;
+:v1: check completeness of invoice ({Complete, Not Complete}); <<objectSignal>>
+if () then ([v1 = "Not Complete"])
+:end process: incomplete invoice;
+stop
+else ([v1 = "Complete"])
+:enter sla information date and check priority;
+:check priority level;
+:v2: check priority level ({High, Low}); <<objectSignal>>
+if () then ([v2 = "High"])
+:place red stamp on entry invoice;
+else ([v2 = "Low"])
+->;
+endif
+:check compliance status;
+:v3: check compliance status ({Experienced Staff, Normal Case, Other}); <<objectSignal>>
+switch ()
+case ([v3 = "Experienced Staff"])
+:process non-compliance invoice for experienced staff;
+:batch and allocate to deo;
+:end process: completed successfully;
+stop
+case ([v3 = "Normal Case"])
+:call client;
+case ([v3 = "Other"])
+:send postal mail requesting complete information and end process;
+stop
+endswitch
+endif
+@enduml

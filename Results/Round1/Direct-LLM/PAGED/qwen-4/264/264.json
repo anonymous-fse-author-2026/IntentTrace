@@ -1,0 +1,320 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start the process by sending appointment approval form"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "receive the approval"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "contact TS to clarify the timing"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "check the approval"
+    },
+    {
+      "id": "n5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "authorize appointment for internal resource"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "authorize appointment for external resource"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "send mandatory documentation and approval to HR services"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "scan form and record into GovSource system"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "check the approval again before sending to HR services"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "send approval and mandatory documentation to HR services"
+    },
+    {
+      "id": "n12",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "no variations present"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "complete business case and attach"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n20",
+      "type": "action",
+      "content": "end of process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is resource internal or external",
+      "R_X": [
+        "internal",
+        "external"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "no variations present",
+      "R_X": [
+        "no",
+        "yes"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "c1",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n19",
+        "c2",
+        "n20",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n20"
+    },
+    {
+      "type": "precedence",
+      "A": "n20",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "n5",
+      "B": "n6",
+      "condition": "v1 = \"internal\""
+    },
+    {
+      "type": "guard",
+      "A": "n5",
+      "B": "n7",
+      "condition": "v1 = \"external\""
+    },
+    {
+      "type": "guard",
+      "A": "n12",
+      "B": "n13",
+      "condition": "v3 = \"no\""
+    },
+    {
+      "type": "guard",
+      "A": "n12",
+      "B": "n19",
+      "condition": "v3 = \"yes\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "Initially, the appointment approval form is sent."
+    },
+    {
+      "id": "i2",
+      "content": "After that, the approval is received."
+    },
+    {
+      "id": "i3",
+      "content": "Following the approval, there is a contact with TS to clarify the timing."
+    },
+    {
+      "id": "i4",
+      "content": "Once the approval is received, it is checked."
+    },
+    {
+      "id": "i5",
+      "content": "If the resource is internal, the appointment is authorized."
+    },
+    {
+      "id": "i6",
+      "content": "If the resource is external, the appointment is also authorized."
+    },
+    {
+      "id": "i7",
+      "content": "After the approval, the mandatory documentation along with the approval is sent to HR services."
+    },
+    {
+      "id": "i8",
+      "content": "The form is then scanned and recorded into the GovSource system."
+    },
+    {
+      "id": "i9",
+      "content": "The approval is checked and then sent along with the mandatory documentation to HR services."
+    },
+    {
+      "id": "i10",
+      "content": "HR services receive the documentations and this marks the end of the process."
+    },
+    {
+      "id": "i11",
+      "content": "If there are no variations, the process continues."
+    },
+    {
+      "id": "i12",
+      "content": "However, if there are variations, a business case is completed."
+    },
+    {
+      "id": "i13",
+      "content": "However, if there are variations, a business case is completed and attached."
+    }
+  ]
+}

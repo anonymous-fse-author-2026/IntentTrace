@@ -1,0 +1,15 @@
+- `action(n1, "start")`: Hallucinated step; the text states "To begin the process, trigger the resupply cycle" without a separate explicit start action.
+- `defines` declarations: Variables `v1`, `v2`, and `v3` have empty ranges `{}` instead of reflecting the state spaces described in the source (e.g., above/below minimum, accepted/rejected).
+- `branch(b1, XOR)` outgoing edges: Missing guards on `precedence(b1, n4)` and `precedence(b1, n5)` to evaluate whether the inventory level is "above the minimum" or "below the minimum".
+- `branch(b2, XOR)` outgoing edges: Missing guards on outgoing edges to evaluate whether the purchase order is "rejected" or "accepted".
+- `branch(b2, XOR)` routing: Incorrectly connects to three outgoing paths (`n7`, `n9`, `n12`); the text describes a binary exclusive choice between rework and continuing the process.
+- Parallel execution logic: The source specifies "At the same time, complete the following steps: reserve funds for the purchase and send the purchase order", which requires an `AND` gateway, but the model entirely lacks an `AND` branch.
+- `action(n9, "reserve funds and send PO")`: Incorrectly merges two distinct parallel actions into a single node payload. 
+- `branch(b3, XOR)`: Has no outgoing `precedence` edges, creating a dead end and failing to connect the reworked process back to the main flow.
+- `action(n10)` and `action(n13)`: Incorrectly duplicate the "receive packing slip and release funds" steps across separate paths instead of properly synchronizing and converging the flow.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=0. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, n7, n8 | DSL: branch(b3,XOR); action(n7,"rework: purchase order"); action(n8,"review: purchase order")

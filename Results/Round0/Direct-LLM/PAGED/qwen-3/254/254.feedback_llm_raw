@@ -1,0 +1,7 @@
+
+
+- action(n1, "start election process"): Payload omits the specific documented initial trigger: "begin with the rector's final year in their current position." (SMC2)
+- defines(v1, "check if candidate meets criteria", {}) and defines(v2, "check if voting was successful", {}): Value ranges are empty "{}"; source describes explicit binary decision outcomes ("meets criteria"/"does not meet", "fails"/"successful"), requiring concrete domains like {true, false}. (SMC6)
+- branch(b1, XOR) and branch(b2, XOR): Missing guard statements to enforce the documented conditional routing logic ("If a candidate meets the required criteria...", "If the voting fails..."). (SMC4)
+- action(n11, "publicize candidate list"): Hallucinates a third concurrent path from branch(b3, AND). Source only specifies two simultaneous activities ("promote their ideas to the public and organize a public meeting"), making this node redundant with action(n8) and unsupported. (SMC1)
+- precedence(n15, c2) / action(n15, "repeat election process"): Breaks the required feedback cycle. Source mandates "If the voting fails, another election should be conducted," which requires a precedence edge returning to the election phase (e.g., n12 or n13), but the model incorrectly routes forward to convergence and the final steps. (SMC3/SMC5)

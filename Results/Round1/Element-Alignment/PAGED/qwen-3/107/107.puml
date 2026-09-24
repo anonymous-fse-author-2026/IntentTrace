@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start parts provision process;
+:request authorisation for extra Parts;
+:authorisation given;
+:v1: authorisation given ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:obtain requested Parts from stock;
+else ([v1 = 'No'] stop work and wait for parts)
+:have parts arrived;
+:v2: have parts arrived ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:resume work;
+endif
+endif
+:end process;
+stop
+@enduml

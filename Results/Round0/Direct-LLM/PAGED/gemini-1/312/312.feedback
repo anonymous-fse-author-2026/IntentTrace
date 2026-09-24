@@ -1,0 +1,12 @@
+- `action(n3, "approve expense report")`: Lacks an outgoing precedence to an end node, creating a dead-end path that does not faithfully reflect a valid source progression.
+- `branch(b1, XOR)`: Missing guards on its outgoing edges to `n3` and `n4` to represent the source conditions "If the amount is less than 200 €" and "if the amount is 200 € or more".
+- `branch(b2, XOR)`: Missing guards on its outgoing edges to `n6` and `n8` to represent the source conditions "If the expense report is deemed acceptable" and "if the expense report is not satisfactory".
+- `defines(v1, "is amount less than 200 euros", {})` and `defines(v2, "is expense report acceptable", {})`: Variables are defined with empty ranges instead of valid value domains.
+- `action(n7, "end process")` and `action(n8, "end process")`: Hallucinated as actions; the source phrases "the process comes to an end" and "the process also ends" describe control-flow termination (which should just route to `end` nodes), not executable actions.
+- `action(n2, "is amount less than 200 euros")` and `action(n5, "is expense report acceptable")`: Modeled as executable actions, but these are conditional checks. The actual actions in the text are "verifying the amount" and "evaluate the expense report".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=1 and out=0. | DSL: action(n3,"approve expense report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n3 | DSL: action(n3,"approve expense report")

@@ -1,0 +1,8 @@
+
+
+- `defines(v1,...,{}), defines(v2,...,{}), defines(v3,...,{}), defines(v4,...,{})`: Ranges are empty `{}` instead of boolean sets (e.g., `{true, false}`), violating SMC6 since all represent binary yes/no decisions.
+- `branch(b1,...), branch(b2,...), branch(b3,...), branch(b4,...)`: Absence of `guard` statements leaves all XOR splits conditionally ungrounded, violating SMC4.
+- `branch(b2, XOR)` & `precedence(b2, c1)`: Omits the control flow for the unresolved case; the source requires "flag it again and send another reminder" if reports remain incomplete, but the model only routes to `c1`, violating SMC1 and SMC4.
+- Missing action node: The description explicitly mandates a repeated notification ("flag it again and send another reminder"), yet no corresponding `action` element exists in the model, violating SMC1.
+- `precedence(n1, n2)` & `precedence(n2, n3)`: Enforces strict sequential ordering for checking reports and monitoring completion, whereas the source states these occur "At the same time," violating SMC3 and SMC4.
+- `actor(a_default, "Default", [...])`: Assigns every step to a single generic participant, failing to reflect distributed responsibilities explicitly named in the source (e.g., "Selection Panel", "interview candidates", "HR Specialist", "third party"), violating SMC7.

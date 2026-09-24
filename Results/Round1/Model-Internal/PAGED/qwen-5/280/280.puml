@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start: Initiate New Resupply Cycle;
+:Check Inventory Levels;
+:v1: Check Inventory Levels ({Inventory <= Minimum, Inventory > Minimum}); <<objectSignal>>
+if () then ([v1 = 'Inventory <= Minimum'])
+:Generate Equal to or below minimum Report;
+repeat :Create Purchase Order (PO);
+:Review PO;
+:v2: Review PO ({Approved, Rejected}); <<objectSignal>>
+backward:Rework PO;
+repeat while () is ([v2 = 'Rejected']) not ([v2 = 'Approved'])
+:Print and Release PO;
+split
+:Reserve Funds for Released POs;
+-> Funds Reserved;
+:Receive Packing Slip;
+:v3: Receive Packing Slip ({Packing Slip Received, Packing Slip Pending}); <<objectSignal>>
+if () then ([v3 = 'Packing Slip Pending'])
+->;
+else ([v3 = 'Packing Slip Received'])
+:Proceed to Receive Invoice;
+:Receive Invoice;
+:Three-way Match;
+:v5: Three-way Match ({Successful Match, Failed Match}); <<objectSignal>>
+if () then ([v5 = 'Failed Match'])
+->;
+else ([v5 = 'Successful Match'])
+:Release Funds;
+-> Funds Released;
+:Issue Payment;
+-> Payment Issued;
+:End: Resupply Cycle Complete;
+stop
+endif
+endif
+split again
+:Mail POs to Supplier;
+-> POs Mailed;
+:Receive Inventory;
+:v4: Receive Inventory ({Inventory Received, Inventory Pending}); <<objectSignal>>
+if () then ([v4 = 'Inventory Pending'])
+->;
+else ([v4 = 'Inventory Received'])
+:Proceed to Receive Packing Slip;
+endif
+end split
+else ([v1 = 'Inventory > Minimum'])
+:Generate Above Minimum Report;
+:End: Process Ends (Above Minimum);
+endif
+stop
+@enduml

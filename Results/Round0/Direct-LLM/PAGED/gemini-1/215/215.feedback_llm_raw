@@ -1,0 +1,9 @@
+- action(n3, "Inventory level is at or below the minimum"): This branch condition is incorrectly modeled as an executable action step preceding the gateway.
+- action(n7, "Purchase Order is approved"): This branch condition is incorrectly modeled as an executable action step preceding the gateway.
+- action(n5, "End process") and action(n17, "End process after payment is issued"): Process terminations are incorrectly modeled as action nodes instead of routing directly to `end` nodes.
+- branch(b1, XOR): Missing a guard on the outgoing edge `precedence(b1, n4)` for the "Inventory level is at or below the minimum" condition.
+- branch(b2, XOR): Missing guards on the outgoing edges `precedence(b2, n8)` and `precedence(b2, n9)` to reflect the "approved" and "rejected" conditions.
+- action(n11, "Review Purchase Order"): Instead of forming a control-flow cycle back to the original review step (`n6`) for "review the Purchase Order again", the model introduces a duplicate action node with no outgoing edges, breaking the process path.
+- defines(v1, "Inventory level is at or below the minimum", {"Inventory Level is above the minimum"}): The variable range is incomplete as it omits the "at or below the minimum" value.
+- defines(v2, "Purchase Order is approved", {}): The variable range is empty, failing to define the "approved" and "rejected" outcomes specified in the text.
+- actor(a_default, "Default", [...]): The model incorrectly assigns all nodes to a default actor, failing to define and assign the Supplier actor to `n12` and `n13` despite the text stating "the Supplier sends a packing slip and an invoice".

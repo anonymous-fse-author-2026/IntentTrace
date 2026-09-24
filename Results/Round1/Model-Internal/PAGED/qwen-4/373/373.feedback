@@ -1,0 +1,44 @@
+Omission
+- [N1] Node-level omission: i6:offer the benefit. (reason: The positive branch lacks the required action to offer the benefit; it is subsumed by a mutated declarative state instead.)
+
+Addition
+- [N2] Node-level addition: action(n11,"Merge after benefit recording and rejection continue") (reason: 'Merge after benefit recording and rejection continue' is procedural metadata with no corresponding instruction in the source text.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start receiving the claim") -> action(n2,"Create and record the claim") -> action(n3,"Make decision on the claim") -> branch(b1,XOR) -> action(n4,"Reject the claim") -> action(n6,"Review the claim rejection") -> action(n7,"Is claim rejection accepted") -> branch(b2,XOR) -> action(n8,"Continue the process") -> converge(c1) -> action(n11,"Merge after benefit recording and rejection continue") -> branch(b3,AND) -> action(n13,"Close the claim") -> converge(c2) -> action(n14,"End") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"Start receiving the claim") -> action(n2,"Create and record the claim") -> action(n3,"Make decision on the claim") -> branch(b1,XOR) -> action(n5,"Accept the claim") -> action(n9,"Prepare the claim discharge") -> action(n10,"Record the benefit payment") -> converge(c1) -> action(n11,"Merge after benefit recording and rejection continue") -> branch(b3,AND) -> action(n13,"Close the claim") -> converge(c2) -> action(n14,"End") -> end(e1)
+- [N5] Within matched traces (0->0) added: branch(b2,XOR)
+- [N6] Within matched traces (0->0) added: action(n8,"Continue the process")
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (0->0) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N9] Within matched traces (0->0) added: branch(b3,AND)
+- [N10] Within matched traces (0->0) added: action(n12,"Operate outgoing payment")
+- [N11] Within matched traces (0->0) added: converge(c2)
+- [N12] Within matched traces (1->0) added: action(n7,"Is claim rejection accepted")
+- [N13] Within matched traces (1->0) added: converge(c1)
+- [N14] Within matched traces (1->0) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N15] Within matched traces (1->0) added: branch(b3,AND)
+- [N16] Within matched traces (1->0) added: action(n12,"Operate outgoing payment")
+- [N17] Within matched traces (1->0) added: converge(c2)
+- [N18] Within matched traces (2->2) added: converge(c1)
+- [N19] Within matched traces (2->2) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N20] Within matched traces (2->2) added: branch(b3,AND)
+- [N21] Within matched traces (2->2) added: action(n12,"Operate outgoing payment")
+- [N22] Within matched traces (2->2) added: converge(c2)
+- [N23] Within matched traces (3->2) added: action(n2,"Create and record the claim")
+- [N24] Within matched traces (3->2) added: action(n3,"Make decision on the claim")
+- [N25] Within matched traces (3->2) added: branch(b1,XOR)
+- [N26] Within matched traces (3->2) added: action(n5,"Accept the claim")
+- [N27] Within matched traces (3->2) added: action(n9,"Prepare the claim discharge")
+- [N28] Within matched traces (3->2) added: action(n10,"Record the benefit payment")
+- [N29] Within matched traces (3->2) added: converge(c1)
+- [N30] Within matched traces (3->2) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N31] Within matched traces (3->2) added: branch(b3,AND)
+
+Mutation
+- [N32] Node-level mutation: element=action(n5,"Accept the claim"); source=i5:if the claim is to be accepted -> i6:offer the benefit.; reason=The action content 'Accept the claim' replaces the instructed step 'offer the benefit', altering the intended outcome/action on the acceptance path.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n8` has in=2 and out=1. | DSL: action(n8,"Continue the process")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> n8` has 2 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=No].

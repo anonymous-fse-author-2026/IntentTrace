@@ -1,0 +1,15 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i5:check the fulfillment of loan conditions. If there is a "Construct Error Response"
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n8,"Error Message") -> end(e2)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (1->2) added: init(i1)
+- [N5] Within matched traces (2->3) added: init(i1)
+- [N6] Within matched traces (2->3) added: action(n13,"Construct Approve Response")
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` has no enabled outgoing guard at state [v3=No].

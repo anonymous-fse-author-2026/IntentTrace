@@ -1,0 +1,6 @@
+
+
+- `guard(b8, n23, v8 = 'Yes')` & `action(n23, "Resolve non-compliance")`: The source states "If the invoice is returned, non-compliance is resolved," but the model triggers this action based on client response (`v8 = 'Yes'`), misrepresenting the documented trigger condition (SMC2/SMC4).
+- `action(n23, ...)`, `action(n28, ...)`, `action(n29, ...)`: These nodes lack outgoing `precedence` edges, creating dead-end paths that do not reach `end(e1)` or advance the flow as instructed ("if the client is satisfied, the process continues"), breaking init-to-end progression (SMC5).
+- `branch(b4, XOR)` through `branch(b7, XOR)`: The model chains the source's repetitive conditional statements ("If the invoice is incomplete...", "If the issue can be resolved with a phone call...") into a nested sequence of exclusive choices, imposing an artificial mutual-exclusivity hierarchy that distorts the source's independent/repetitive conditional structure (SMC4).
+- `precedence(b10, c2)` & `precedence(c2, n20)`: `c2` merges sequential resolution flows (`n6`, `n9`, `n15`, `n19`) with one branch of an `AND` split (`b10`) originating from payment. This creates an unintended synchronization barrier before `action(n20, "Bill client")`, contradicting the source's statement that billing occurs simultaneously with subsequent steps and altering control-flow chronology (SMC3/SMC4).

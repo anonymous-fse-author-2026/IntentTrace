@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i3:then proceed with the acquisition of the pricing.
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Check Answer") -> branch(b1,XOR) -> action(n3,"Acquire Pricing A") -> action(n4,"Recheck Answer") -> branch(b2,XOR) -> converge(c1) -> action(n6,"Margin Calculation") -> action(n7,"Prepare Offer") -> action(n8,"Calculate Transport Rate") -> action(n9,"End Process") -> end(e1)
+- [N3] Within matched traces (1->0) added: branch(b1,XOR)
+- [N4] Within matched traces (1->0) added: action(n3,"Acquire Pricing A")
+
+Permutation
+- [N5] Within matched traces (2->0) reordered: expected [i7:On the other hand, if the answer is "yes" once more, then continue with the process.] but observed [action(n4,"Recheck Answer") -> action(n3,"Acquire Pricing A")] elsewhere; in its place the model has [action(n5,"Acquire Pricing B")]
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

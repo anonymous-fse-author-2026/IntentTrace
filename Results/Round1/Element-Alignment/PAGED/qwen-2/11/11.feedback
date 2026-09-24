@@ -1,0 +1,13 @@
+Addition
+- [N1] Node-level addition: label(n9,n7,"Completed rework") (reason: The label 'Completed rework' introduces a connector description not present in any source unit; the text only states the order is reworked without specifying a labeled return path to review.)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Trigger Resupply Cycle") -> action(n3,"Check Inventory Level") -> action(n4,"Inventory greater than Minimum Level?") -> branch(b1,XOR) -> action(n6,"Create Purchase Order") -> converge(c_merge) -> action(n7,"Review Purchase Order") -> action(n8,"Purchase Order accepted?") -> branch(b2,XOR) -> action(n10,"Reserve funds for payment") -> action(n11,"Send Purchase Order to Supplier") -> branch(b3,AND) -> action(n13,"Receive Invoice") -> action(n15,"Record Invoice") -> converge(c1) -> action(n16,"Release funds for payment") -> action(n17,"Issue payment to Supplier") -> action(n18,"End Process") -> end(e2)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (1->1) added: init(i1)
+- [N5] Within matched traces (1->1) added: action(n4,"Inventory greater than Minimum Level?")
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the Inventory is greater than the Minimum Level, then the process ends.; reason=The guards replace the explicit quantitative comparison ('greater than the Minimum Level') and logical alternative ('Otherwise') with generic boolean variable assignments ('v1 = Yes', 'v1 = No'), stripping the original condition's domain-specific payload and threshold.
+- [N7] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:Otherwise, a Purchase Order is created.; reason=The guards replace the explicit quantitative comparison ('greater than the Minimum Level') and logical alternative ('Otherwise') with generic boolean variable assignments ('v1 = Yes', 'v1 = No'), stripping the original condition's domain-specific payload and threshold.
+
+Structural Check
+- [S1] STC18 failed: Labels are only allowed on existing precedence edges. | Label is attached to non-existing edge `n9 -> n7`. | DSL: label(n9,n7,"Completed rework")

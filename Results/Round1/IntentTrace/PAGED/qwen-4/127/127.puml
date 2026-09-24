@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Identify parts;
+:v1: Need to elicit information from customer ({Yes, No})
+v2: Are parts supplied to customer ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v1 = 'Yes'])
+:Need to elicit information from customer;
+:Check availability of parts;
+case ([v1 = 'No'])
+:Proceed with process;
+case ([v2 = 'Yes'])
+:Are parts supplied to customer;
+:v2: Are parts supplied to customer ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Order and receive part from Disuki;
+else ([v2 = 'Yes'])
+->;
+endif
+case ([v2 = 'No'])
+:Record customer details;
+endswitch
+:Contract customer;
+:Proceed with payment;
+:End;
+stop
+@enduml

@@ -1,0 +1,9 @@
+
+
+- action(n1, "start flight booking process for Flight Centre"): Hallucinates an initial setup step; the source states the process simply "begins with the availability of the departing flight" (SMC1, SMC3).
+- branch(b1, XOR) / branch(b2, XOR) / action(n6, "Wait for departing flight availability"): Introduces exclusive choices and a waiting loop not present in the source, which describes a strictly linear progression with no alternatives or retries (SMC1, SMC4).
+- precedence(b1, n3) / precedence(b1, n6) / precedence(b2, n6) / precedence(b2, n2): XOR branches b1 and b2 split control flow but lack corresponding guard(...) statements to define the routing conditions (SMC4).
+- action(n2, "Is departing flight available") / action(n7, "Is departing flight available"): Misrepresents the trigger condition as executable decision nodes; the source treats availability as the starting state ("begins with the availability of the departing flight"), not a repeated operational check (SMC2).
+- defines(v1, "Is departing flight available", {}) / defines(v2, "Is departing flight available", {}): Declares undocumented variables with empty ranges {}, failing to reflect any source-defined decision parameters or valid value spaces (SMC6).
+- precedence(b2, n6) / precedence(n6, n7) / precedence(n7, b2): Forms an unbounded feedback cycle entirely absent from the source text, disrupting the intended chronological progression (SMC1, SMC3).
+- action(n5, "End process"): Inserts an unnecessary concluding action before end(e1); the source indicates the process simply "comes to an end" directly after completion without an intermediate closing step (SMC1, SMC2).

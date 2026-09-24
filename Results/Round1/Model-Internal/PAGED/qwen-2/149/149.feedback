@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i4:Alternatively, if there are available goods for production, a manufacturing order is placed. (reason: The source explicitly requires placing a manufacturing order when goods are available, but the model routes the positive guard directly to a converge node, completely skipping this action step.)
+- [N2] Node-level omission: i8:Simultaneously, the stock is updated and the sales information is updated. (reason: While stock updating is captured elsewhere, this unit explicitly mandates a simultaneous update of sales information at this stage. The model omits this specific data-update step.)
+- [N3] Within matched traces (1->0) omitted: i8:Simultaneously, the stock is updated and the sales information is updated.
+- [N4] Within matched traces (2->0) omitted: i4:Alternatively, if there are available goods for production, a manufacturing order is placed.
+- [N5] Within matched traces (3->0) omitted: i4:Alternatively, if there are available goods for production, a manufacturing order is placed.
+- [N6] Within matched traces (3->0) omitted: i8:Simultaneously, the stock is updated and the sales information is updated.
+
+Addition
+- [N7] Node-level addition: action(n5,"Check Material Availability") (reason: "Check Material Availability" is not described in the source text, which proceeds directly to conditional branches on material/goods status without specifying an explicit verification task.)
+- [N8] Node-level addition: guard(b2,c2,"v2 = true") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"Request to Purchase Motorcycle") -> action(n2,"Production Order Received?") -> branch(b1,XOR) -> action(n3,"Continue with Production Order") -> converge(c1) -> action(n5,"Check Material Availability") -> branch(b2,XOR) -> converge(c2) -> action(n8,"Issue Goods and Produce Motorcycles") -> action(n9,"Update Stock Information") -> action(n10,"Dispatch Motorcycles") -> action(n11,"End of Process") -> end(e1)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"Request to Purchase Motorcycle") -> action(n2,"Production Order Received?") -> branch(b1,XOR) -> action(n4,"Update Sales Information and Proceed to Dispatch") -> converge(c1) -> action(n5,"Check Material Availability") -> branch(b2,XOR) -> action(n6,"Order Materials from Supplier") -> action(n7,"Receive Materials from Supplier") -> converge(c2) -> action(n8,"Issue Goods and Produce Motorcycles") -> action(n9,"Update Stock Information") -> action(n10,"Dispatch Motorcycles") -> action(n11,"End of Process") -> end(e1)
+- [N11] Added trace (model 3): init(i1) -> action(n1,"Request to Purchase Motorcycle") -> action(n2,"Production Order Received?") -> branch(b1,XOR) -> action(n4,"Update Sales Information and Proceed to Dispatch") -> converge(c1) -> action(n5,"Check Material Availability") -> branch(b2,XOR) -> converge(c2) -> action(n8,"Issue Goods and Produce Motorcycles") -> action(n9,"Update Stock Information") -> action(n10,"Dispatch Motorcycles") -> action(n11,"End of Process") -> end(e1)
+- [N12] Within matched traces (0->0) added: converge(c1)
+- [N13] Within matched traces (0->0) added: action(n5,"Check Material Availability")
+- [N14] Within matched traces (1->0) added: converge(c1)
+- [N15] Within matched traces (1->0) added: action(n5,"Check Material Availability")
+- [N16] Within matched traces (1->0) added: action(n9,"Update Stock Information")
+- [N17] Within matched traces (1->0) added: action(n10,"Dispatch Motorcycles")
+- [N18] Within matched traces (2->0) added: converge(c1)
+- [N19] Within matched traces (2->0) added: action(n5,"Check Material Availability")
+- [N20] Within matched traces (2->0) added: branch(b2,XOR)
+- [N21] Within matched traces (2->0) added: action(n6,"Order Materials from Supplier")
+- [N22] Within matched traces (3->0) added: converge(c1)
+- [N23] Within matched traces (3->0) added: action(n5,"Check Material Availability")
+- [N24] Within matched traces (3->0) added: branch(b2,XOR)
+- [N25] Within matched traces (3->0) added: action(n6,"Order Materials from Supplier")
+- [N26] Within matched traces (3->0) added: action(n9,"Update Stock Information")
+- [N27] Within matched traces (3->0) added: action(n10,"Dispatch Motorcycles")

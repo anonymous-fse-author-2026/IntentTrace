@@ -1,0 +1,37 @@
+Omission
+- [N1] Within matched traces (3->0) omitted: i11:the transaction will end.
+- [N2] Within matched traces (4->3) omitted: i11:the transaction will end.
+
+Addition
+- [N3] Node-level addition: action(n9,"checkout tasks completed?") (reason: Invented interrogative step ('checkout tasks completed?') with no supporting source span or behavioral requirement in the segmented units.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n17,"checkout tasks not completed") -> end(e3)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n17,"checkout tasks not completed") -> end(e3)
+- [N8] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n6,"continue shopping") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N9] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n6,"continue shopping") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N10] Within matched traces (0->8) added: init(i1)
+- [N11] Within matched traces (0->8) added: converge(c1)
+- [N12] Within matched traces (0->8) added: action(n9,"checkout tasks completed?")
+- [N13] Within matched traces (0->8) added: branch(b2,XOR)
+- [N14] Within matched traces (0->8) added: action(n17,"checkout tasks not completed")
+- [N15] Within matched traces (0->8) added: end(e3)
+- [N16] Within matched traces (1->0) added: init(i1)
+- [N17] Within matched traces (1->0) added: converge(c1)
+- [N18] Within matched traces (1->0) added: action(n9,"checkout tasks completed?")
+- [N19] Within matched traces (2->3) added: init(i1)
+- [N20] Within matched traces (2->3) added: converge(c1)
+- [N21] Within matched traces (2->3) added: action(n9,"checkout tasks completed?")
+- [N22] Within matched traces (3->0) added: init(i1)
+- [N23] Within matched traces (3->0) added: converge(c1)
+- [N24] Within matched traces (3->0) added: action(n9,"checkout tasks completed?")
+- [N25] Within matched traces (3->0) added: action(n10,"credit card approved and inventory in stock?")
+- [N26] Within matched traces (4->3) added: init(i1)
+- [N27] Within matched traces (4->3) added: converge(c1)
+- [N28] Within matched traces (4->3) added: action(n9,"checkout tasks completed?")
+- [N29] Within matched traces (4->3) added: action(n10,"credit card approved and inventory in stock?")
+
+Mutation
+- [N30] Node-level mutation: element=guard(b3,n11,"v3 = 'Approved'"); source=i8:If the credit card is approved and there is inventory in stock,; reason=Incorrectly isolates the decision logic to credit card status alone ('Approved'/'Denied'), dropping the mandatory concurrent inventory requirement specified in the source for both outcomes.
+- [N31] Node-level mutation: element=guard(b3,n16,"v3 = 'Denied'"); source=i10:if the credit card is denied or there is no inventory in stock; reason=Incorrectly isolates the decision logic to credit card status alone ('Approved'/'Denied'), dropping the mandatory concurrent inventory requirement specified in the source for both outcomes.
+- [N32] Node-level mutation: element=action(n17,"checkout tasks not completed"); source=i10:if the credit card is denied or there is no inventory in stock; reason=Replaces the explicit, compound failure conditions with a vague, inaccurate descriptor ('checkout tasks not completed'), altering the precise trigger defined in the text.

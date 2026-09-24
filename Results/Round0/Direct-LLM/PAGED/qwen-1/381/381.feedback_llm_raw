@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Hallucinates an introductory step; the description begins directly with `"choose your destination and calculate the distance."`
+- `branch(b1)`, `branch(b2)`, `branch(b3)`: Lack corresponding `guard(...)` statements, failing to encode the explicit textual conditions (`"If the answer is 'no'"`, `"If the answer is 'yes'"`, `"If a code is available within 24 hours"`, `"if a code is not available"`).
+- `defines(v1, ...)`, `defines(v2, ...)`, `defines(v3, ...)`: Declare empty ranges `{}` instead of specifying the value domains implied by the source decisions (e.g., `{"yes", "no"}` or boolean/threshold values).
+- `action(n7, ...)`, `action(n11, ...)`: Model successful code availability as a standalone action leading to termination, omitting the source requirement that this outcome concludes `"along with the hotel reservation."`
+- `action(n8, ...)`, `action(n9, ...)`, `action(n12, ...)`, `action(n13, ...)`: Route the elapsed-time branch directly to termination after contacting the agency, entirely skipping the mandatory `"cancel your journey"` step specified in the source (`"if a code is not available, you should cancel your journey. In that case, the process will end as well."`).
+- `precedence(n4, n6)` / `precedence(n5, n10)` flow structure: Artificially duplicates the entire post-booking verification sequence for train and flight separately, contradicting the source's single unified continuation (`"If a code is available within 24 hours, the process will end. Otherwise..."`) that applies after either booking choice.

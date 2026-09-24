@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:check if order has been received;
+:order_sum: sum of the order ({[0-]}); <<objectSignal>>
+if () then ([order_sum < 500])
+:is sum of order less than 500;
+:order_sum: sum of the order ({[0-]}); <<objectSignal>>
+if () then ([order_sum < 500])
+:continue with the process;
+else ([order_sum >= 500])
+:continue with the process;
+split
+:is sum of order greater than 2000;
+:order_sum: sum of the order ({[0-]}); <<objectSignal>>
+if () then ([order_sum > 2000])
+:compute discount of 4 percent;
+else ([order_sum <= 2000])
+:is sum of order less than 500;
+:order_sum: sum of the order ({[0-]}); <<objectSignal>>
+if () then ([order_sum < 500])
+:continue with the process;
+else ([order_sum >= 500])
+:is sum of order between 1000 and 1500;
+if () then ( )
+:compute discount of 3 percent;
+else ( )
+:is sum of order between 500 and 999;
+if () then ( )
+:compute discount of 2 percent;
+else ( )
+->;
+endif
+endif
+endif
+endif
+split again
+end split
+endif
+else ([order_sum >= 500])
+:is sum of order greater than 2000;
+:order_sum: sum of the order ({[0-]}); <<objectSignal>>
+if () then ([order_sum > 2000])
+:compute discount of 4 percent;
+else ([order_sum <= 2000])
+:is sum of order between 1000 and 1500;
+if () then ( )
+:compute discount of 3 percent;
+else ( )
+:is sum of order between 500 and 999;
+if () then ( )
+:compute discount of 2 percent;
+else ( )
+->;
+endif
+endif
+endif
+endif
+:create the bill;
+:process end;
+stop
+@enduml

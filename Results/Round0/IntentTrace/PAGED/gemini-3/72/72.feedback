@@ -1,0 +1,61 @@
+Omission
+- [N1] Node-level omission: i7:further checks are conducted. (reason: The model failed to include the action for conducting further checks when the invoice is non-compliant.)
+- [N2] Node-level omission: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved. (reason: The model missed this entire segment about paying the invoice then resolving non-compliance if it is returned.)
+- [N3] Omitted trace (input 3): i1:In the beginning, the process starts with -> i2:Bill for Purchased Goods/Services and then Receive Invoice -> i5:if the invoice is complete, the process continues -> i10:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i11:Bill Client -> i14:The invoice is paid and the client is notified of the payment. -> i17:if the client is satisfied, the process continues.
+- [N4] Omitted trace (input 6): i1:In the beginning, the process starts with -> i2:Bill for Purchased Goods/Services and then Receive Invoice -> i5:if the invoice is complete, the process continues -> i6:If the invoice is non-compliant -> i7:further checks are conducted. -> i8:If the issue can be resolved with a phone call, non-compliance is resolved. -> i10:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i11:Bill Client -> i14:The invoice is paid and the client is notified of the payment. -> i17:if the client is satisfied, the process continues.
+- [N5] Omitted trace (input 7): i1:In the beginning, the process starts with -> i2:Bill for Purchased Goods/Services and then Receive Invoice -> i5:if the invoice is complete, the process continues -> i6:If the invoice is non-compliant -> i7:further checks are conducted. -> i9:if the issue requires mail back, the invoice is returned. -> i10:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i11:Bill Client -> i12:If there is no response -> i13:a period of 10 days is given -> i15:After 10 days, a reminder is sent and the process ends.
+- [N6] Omitted trace (input 9): i1:In the beginning, the process starts with -> i2:Bill for Purchased Goods/Services and then Receive Invoice -> i5:if the invoice is complete, the process continues -> i6:If the invoice is non-compliant -> i7:further checks are conducted. -> i9:if the issue requires mail back, the invoice is returned. -> i10:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i11:Bill Client -> i14:The invoice is paid and the client is notified of the payment. -> i17:if the client is satisfied, the process continues.
+- [N7] Within matched traces (4->1) omitted: i7:further checks are conducted.
+- [N8] Within matched traces (4->1) omitted: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N9] Within matched traces (5->2) omitted: i7:further checks are conducted.
+- [N10] Within matched traces (5->2) omitted: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N11] Within matched traces (5->2) omitted: i11:Bill Client
+- [N12] Within matched traces (8->3) omitted: i7:further checks are conducted.
+- [N13] Within matched traces (8->3) omitted: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N14] Within matched traces (8->3) omitted: i11:Bill Client
+- [N15] Within matched traces (8->3) omitted: i14:The invoice is paid and the client is notified of the payment.
+- [N16] Within matched traces (8->3) omitted: i16:If the client is unsatisfied, payment discrepancy is resolved.
+- [N17] Within matched traces (1->4) omitted: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N18] Within matched traces (2->5) omitted: i10:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N19] Within matched traces (2->5) omitted: i11:Bill Client
+
+Addition
+- [N20] Node-level addition: action(n5,"End of process: Invoice returned due to incompleteness") (reason: These specific explicit actions defining process ends have no direct support in the text beyond structurally ending the path.)
+- [N21] Node-level addition: action(n10,"End of process: Invoice returned due to mail back") (reason: These specific explicit actions defining process ends have no direct support in the text beyond structurally ending the path.)
+- [N22] Node-level addition: action(n18,"End of process: Payment completed and client notified") (reason: These specific explicit actions defining process ends have no direct support in the text beyond structurally ending the path.)
+- [N23] Within matched traces (0->0) added: action(n5,"End of process: Invoice returned due to incompleteness")
+- [N24] Within matched traces (0->0) added: end(e1)
+- [N25] Within matched traces (4->1) added: action(n3,"Is the invoice incomplete?")
+- [N26] Within matched traces (4->1) added: branch(b1,XOR)
+- [N27] Within matched traces (4->1) added: converge(c1)
+- [N28] Within matched traces (4->1) added: action(n11,"Pay the invoice and notify client of payment")
+- [N29] Within matched traces (4->1) added: branch(b6,AND)
+- [N30] Within matched traces (5->2) added: action(n3,"Is the invoice incomplete?")
+- [N31] Within matched traces (5->2) added: branch(b1,XOR)
+- [N32] Within matched traces (5->2) added: branch(b4,XOR)
+- [N33] Within matched traces (5->2) added: action(n17,"Continue process if client is satisfied")
+- [N34] Within matched traces (5->2) added: action(n18,"End of process: Payment completed and client notified")
+- [N35] Within matched traces (5->2) added: end(e4)
+- [N36] Within matched traces (8->3) added: action(n3,"Is the invoice incomplete?")
+- [N37] Within matched traces (8->3) added: branch(b1,XOR)
+- [N38] Within matched traces (8->3) added: action(n10,"End of process: Invoice returned due to mail back")
+- [N39] Within matched traces (8->3) added: end(e2)
+- [N40] Within matched traces (1->4) added: action(n3,"Is the invoice incomplete?")
+- [N41] Within matched traces (1->4) added: branch(b1,XOR)
+- [N42] Within matched traces (1->4) added: branch(b5,AND)
+- [N43] Within matched traces (1->4) added: converge(c1)
+- [N44] Within matched traces (1->4) added: action(n11,"Pay the invoice and notify client of payment")
+- [N45] Within matched traces (1->4) added: branch(b6,AND)
+- [N46] Within matched traces (2->5) added: action(n3,"Is the invoice incomplete?")
+- [N47] Within matched traces (2->5) added: branch(b1,XOR)
+- [N48] Within matched traces (2->5) added: branch(b5,AND)
+- [N49] Within matched traces (2->5) added: converge(c1)
+- [N50] Within matched traces (2->5) added: branch(b4,XOR)
+- [N51] Within matched traces (2->5) added: action(n17,"Continue process if client is satisfied")
+- [N52] Within matched traces (2->5) added: action(n18,"End of process: Payment completed and client notified")
+- [N53] Within matched traces (2->5) added: end(e4)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | Node `b4` has in=1 and out=1. | DSL: branch(b3,XOR); branch(b4,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n17` has 0 guards; exactly one is required.

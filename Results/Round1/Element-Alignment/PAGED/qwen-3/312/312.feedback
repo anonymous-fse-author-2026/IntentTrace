@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: The core behavioral requirement 'verifying the amount' is not implemented. The sole candidate element (n1) mutates it, leaving this source unit unfaithfully executed and effectively absent from the model.)
+
+Addition
+- [N2] Within matched traces (1->1) added: action(n2,"is amount less than 200 euros")
+- [N3] Within matched traces (1->1) added: branch(b1,XOR)
+- [N4] Within matched traces (2->2) added: action(n2,"is amount less than 200 euros")
+- [N5] Within matched traces (2->2) added: branch(b1,XOR)
+
+Mutation
+- [N6] Node-level mutation: element=action(n1,"start account check"); source=i1:To check the account, we start by verifying the amount.; reason=Distorts the source by replacing the concrete task 'verifying the amount' with the vague phrase 'start account check', dropping the critical verification action and altering the instruction's granularity.
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = true") -> guard(b1,n4,"v1 = false"); source=i2:If the amount is less than 200 €,; reason=Replaces the explicit threshold and comparison operator ('less than 200 €') with abstract boolean assignments ('v1 = true/false'), fundamentally altering the condition's payload and losing the quantitative logic.
+- [N8] Node-level mutation: element=guard(b2,n6,"v2 = true") -> guard(b2,n8,"v2 = false"); source=i5:If the expense report is deemed acceptable,; reason=Replaces the explicit qualitative criterion ('deemed acceptable') with abstract boolean assignments ('v2 = true/false'), dropping the actual decision logic required by the source.

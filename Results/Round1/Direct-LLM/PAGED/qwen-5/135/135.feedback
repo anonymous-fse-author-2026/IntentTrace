@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i14:In case there were any previous shipment problems, make sure to communicate them (reason: The source explicitly requires handling prior shipment problems via communication before advancing to Ship Material. No model element captures this specific contingency or backward-flow condition.)
+- [N2] Within matched traces (0->0) omitted: i8:proceed to Send Payment.
+- [N3] Within matched traces (0->0) omitted: i13:Finally, once the payment is sent, the process comes to an end.
+- [N4] Within matched traces (1->1) omitted: i13:Finally, once the payment is sent, the process comes to an end.
+- [N5] Within matched traces (2->1) omitted: i14:In case there were any previous shipment problems, make sure to communicate them
+
+Addition
+- [N6] Added trace (model 2): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> branch(n5,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> end(e1)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> branch(n5,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> end(e2)
+
+Mutation
+- [N8] Node-level mutation: element=guard(n5,n6,"v1 = 'Yes'"); source=i6:At this point, check if the shipment is okay. -> i7:If it is, then proceed to Send Payment.; reason=The guard assigns a positive value ('v1 = Yes') to route toward 'Communicate shipment problems'. This reverses the source logic, which states that an 'okay' shipment proceeds to Send Payment, while communication is reserved for problematic shipments.

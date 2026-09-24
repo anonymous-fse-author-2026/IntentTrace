@@ -1,0 +1,163 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Provide userdata for flickr login"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End process after successful login"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "End process after abort"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is login successful",
+      "R_X": [
+        "Success",
+        "Fail"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Choose to try login again",
+      "R_X": [
+        "Retry",
+        "Abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "n8",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Success'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Fail'"
+    },
+    {
+      "type": "guard",
+      "A": "n5",
+      "B": "n2",
+      "condition": "v2 = 'Retry'"
+    },
+    {
+      "type": "guard",
+      "A": "n5",
+      "B": "n8",
+      "condition": "v2 = 'Abort'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i2",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "i4",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if you choose to abort, the process will end."
+    }
+  ]
+}

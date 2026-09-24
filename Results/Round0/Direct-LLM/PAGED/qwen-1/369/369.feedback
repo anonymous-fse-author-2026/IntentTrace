@@ -1,0 +1,10 @@
+- action(n4, "cook spaghetti") & precedence(b3, n4): Placed in the initial parallel split before the pesto decision, violating the source chronology "Once the pesto is obtained, cook the spaghetti," which dictates it must follow action(n7, "retrieve pesto from cupboard").
+- branch(b1, XOR) & branch(b2, XOR): Missing guard(...) statements to bind conditions to variables v1 and v2, failing to encode the explicit conditional logic ("If pesto is available...", "If tomato sauce is stolen...").
+- action(n1, "start process"), action(n5, "merge after parallel tasks"), action(n12, "end process"): Hallucinated procedural steps with no basis in the source description.
+- action(n13, "take tomato sauce as is"): Hallucinates an explicit fallback action not documented in the source, which only specifies what to do if the sauce is stolen.
+- defines(v1, "is pesto available?", {}) & defines(v2, "has tomato sauce been stolen?", {}): Specify empty value ranges {}, inaccurately representing the binary decision variables implied by the textual conditions.
+- converge(c1) & converge(c2): Introduce unnecessary synchronization points that fracture the control flow into a redundant split-join structure not supported by the source's described progression.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

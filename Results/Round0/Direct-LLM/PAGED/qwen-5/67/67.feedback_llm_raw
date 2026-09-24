@@ -1,0 +1,10 @@
+
+
+- action(n1, "start"): Hallucinated element; the source text begins directly with "Course registration" and contains no explicit initiation step.
+- branch(b4, AND), branch(b5, AND), branch(b6, AND): Introduce unjustified parallel splits; the description only specifies concurrency for "granting accreditation and announcing the date of the exam", while all other steps are strictly sequential.
+- converge(c3), converge(c4), converge(c5), converge(c6): Misused as sequential connectors; each receives only a single incoming precedence edge, contradicting their defined purpose as points "where split flows rejoin".
+- precedence(n12, c2), precedence(c2, n13): Fails to model the loop for "another homework assignment will be given"; execution proceeds linearly forward instead of cycling back to the homework phase.
+- precedence(n21, c6), precedence(c6, n22): Incorrectly handles "if the exam is failed, another sign-up for the exam is required" by routing to termination (n22) rather than looping back to exam sign-up/attendance.
+- defines(v1, "Is exception needed?", {}), defines(v2, "Is homework the last one?", {}), defines(v3, "Is exam passed?", {}): Specify empty value ranges, failing to capture the binary decision contexts required to govern the corresponding XOR branches.
+- branch(b1, XOR), branch(b2, XOR), branch(b3, XOR): Lack guard statements to link decision variables to outgoing edges, leaving the routing logic for exception handling, homework iteration, and exam outcomes semantically undefined.
+- precedence(i1, n1), precedence(n1, b4), precedence(b4, n2), precedence(n2, b5), precedence(b5, n3): Artificially fragment the opening sequence ("first step is Course registration. If an exception is needed..."); inserts unnecessary AND splits that disrupt the documented chronological order.

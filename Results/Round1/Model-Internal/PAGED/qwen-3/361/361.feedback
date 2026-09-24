@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i12:review it again. (reason: No element faithfully implements the repeated review requirement; the closest candidate (n8) drops the essential 'again' qualifier, leaving the source unit uncovered.)
+- [N2] Within matched traces (2->3) omitted: i13:At the same time, complete the following steps:
+- [N3] Within matched traces (3->4) omitted: i13:At the same time, complete the following steps:
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: The step 'start' has no supporting source unit; i1 is a temporal announcer properly handled structurally by init:i1, not an actionable task.)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n7,"rework: purchase order") -> action(n8,"review: purchase order") -> branch(b3,XOR) -> end(e3)
+- [N6] Within matched traces (0->0) added: action(n1,"start")
+- [N7] Within matched traces (1->1) added: action(n1,"start")
+- [N8] Within matched traces (1->1) added: branch(b3,XOR)
+- [N9] Within matched traces (1->1) added: end(e2)
+- [N10] Within matched traces (2->3) added: action(n1,"start")
+- [N11] Within matched traces (3->4) added: action(n1,"start")
+
+Mutation
+- [N12] Node-level mutation: element=action(n8,"review: purchase order"); source=i12:review it again.; reason=The element content 'review: purchase order' omits the critical qualifier 'again', which indicates a repeated verification step in a loop rather than a single linear check, altering the intended process logic.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b3 -> e2` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> e3` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=accepted].

@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i5:If the input is a "URL" (reason: No element faithfully implements this condition without dropping the URL target.)
+- [N2] Node-level omission: i7:we send a DNS query (reason: No element faithfully implements this action without inventing unsupported qualifiers.)
+
+Addition
+- [N3] Node-level addition: guard(b2,n4,"v1 = 'Yes'") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N4] Node-level addition: guard(b2,n8,"v1 = 'No'") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N5] Node-level addition: action(n8,"Send DNS query for the URL") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N6] Node-level addition: action(n9,"Get list of URLs from DNS query") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N7] Node-level addition: action(n10,"Link to designated DS") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N8] Node-level addition: action(n11,"End of process") (reason: These elements invent explicit yes/no logic for the second check and an entire duplicate branch of execution that is not supported by the provided source text.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n3,"Resolve URN to domain-name") -> converge(c1) -> action(n12,"Again check if the input is a URN or a URL") -> branch(b2,XOR) -> action(n8,"Send DNS query for the URL") -> action(n9,"Get list of URLs from DNS query") -> action(n10,"Link to designated DS") -> action(n11,"End of process") -> end(e2)
+- [N10] Added trace (model 3): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> converge(c1) -> action(n12,"Again check if the input is a URN or a URL") -> branch(b2,XOR) -> action(n8,"Send DNS query for the URL") -> action(n9,"Get list of URLs from DNS query") -> action(n10,"Link to designated DS") -> action(n11,"End of process") -> end(e2)
+- [N11] Within matched traces (1->2) added: branch(b2,XOR)
+- [N12] Within matched traces (1->2) added: action(n4,"Send DNS query for the domain-name")
+- [N13] Within matched traces (1->2) added: action(n5,"Get list of URLs from DNS query")
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,c1,"v1 = 'No'"); source=i5:If the input is a "URL"; reason=The model reduces the explicit check for a 'URL' to a generic 'No' condition, dropping the specified target.
+- [N15] Node-level mutation: element=action(n4,"Send DNS query for the domain-name"); source=i7:we send a DNS query; reason=The element adds the unsupported qualifier 'for the domain-name', distorting the source instruction.

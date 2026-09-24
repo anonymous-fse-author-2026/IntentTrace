@@ -1,0 +1,24 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin with, you should choose your destination and calculate the distance. -> i2:continue to check if you need to book a train or a flight. -> i3:If the answer is "no", then proceed to book a train. -> i5:If a code is available within 24 hours, the process will end.
+- [N2] Omitted trace (input 1): i1:To begin with, you should choose your destination and calculate the distance. -> i2:continue to check if you need to book a train or a flight. -> i4:However, if the answer is "yes", then book a flight. -> i5:If a code is available within 24 hours, the process will end.
+- [N3] Within matched traces (2->0) omitted: i2:continue to check if you need to book a train or a flight.
+- [N4] Within matched traces (4->1) omitted: i2:continue to check if you need to book a train or a flight.
+- [N5] Within matched traces (3->2) omitted: i2:continue to check if you need to book a train or a flight.
+- [N6] Within matched traces (5->3) omitted: i2:continue to check if you need to book a train or a flight.
+
+Addition
+- [N7] Within matched traces (2->0) added: converge(c1)
+- [N8] Within matched traces (2->0) added: action(n6,"Is a code available within 24 hours?")
+- [N9] Within matched traces (4->1) added: converge(c1)
+- [N10] Within matched traces (4->1) added: action(n6,"Is a code available within 24 hours?")
+- [N11] Within matched traces (4->1) added: action(n10,"Is a code available?")
+- [N12] Within matched traces (3->2) added: converge(c1)
+- [N13] Within matched traces (3->2) added: action(n6,"Is a code available within 24 hours?")
+- [N14] Within matched traces (5->3) added: converge(c1)
+- [N15] Within matched traces (5->3) added: action(n6,"Is a code available within 24 hours?")
+- [N16] Within matched traces (5->3) added: action(n10,"Is a code available?")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"Process ends")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1 | DSL: end(e1)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"Process ends")

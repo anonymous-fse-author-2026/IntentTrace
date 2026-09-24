@@ -1,0 +1,45 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i15:If there are less than three reminders, we continue with the process.
+- [N2] Within matched traces (4->5) omitted: i8:If the products are not available, we produce the missing goods and send a decline message, thus ending the process.
+- [N3] Within matched traces (6->6) omitted: i15:If there are less than three reminders, we continue with the process.
+
+Addition
+- [N4] Added trace (model 0): init(i1) -> action(n1,"Start process") -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> action(n8,"Send decline message") -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"Start process") -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> converge(c1) -> action(n19,"Send order confirmation") -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> converge(n24) -> branch(b5,XOR) -> action(n25,"Close order") -> action(n26,"Deliver goods and invoice to customer") -> end(e4)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"Start process") -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> converge(c1) -> action(n19,"Send order confirmation") -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> converge(n24) -> branch(b5,XOR) -> action(n28,"Reminders less than three?") -> branch(b6,XOR) -> action(n30,"Activate donning process") -> end(e5)
+- [N7] Added trace (model 8): init(i1) -> action(n1,"Start process") -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n6,"Verify customer status") -> branch(b3,XOR) -> action(n13,"Create new customer") -> action(n14,"Check product availability") -> branch(b4,XOR) -> converge(c1) -> action(n19,"Send order confirmation") -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> converge(n24) -> branch(b5,XOR) -> action(n25,"Close order") -> action(n26,"Deliver goods and invoice to customer") -> end(e4)
+- [N8] Added trace (model 9): init(i1) -> action(n1,"Start process") -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n6,"Verify customer status") -> branch(b3,XOR) -> action(n13,"Create new customer") -> action(n14,"Check product availability") -> branch(b4,XOR) -> converge(c1) -> action(n19,"Send order confirmation") -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> converge(n24) -> branch(b5,XOR) -> action(n28,"Reminders less than three?") -> branch(b6,XOR) -> action(n30,"Activate donning process") -> end(e5)
+- [N9] Within matched traces (0->1) added: init(i1)
+- [N10] Within matched traces (0->1) added: action(n19,"Send order confirmation")
+- [N11] Within matched traces (0->1) added: branch(b7,AND)
+- [N12] Within matched traces (0->1) added: action(n20,"Inform stock department")
+- [N13] Within matched traces (0->1) added: converge(c2)
+- [N14] Within matched traces (0->1) added: converge(n24)
+- [N15] Within matched traces (1->1) added: init(i1)
+- [N16] Within matched traces (1->1) added: action(n19,"Send order confirmation")
+- [N17] Within matched traces (1->1) added: branch(b7,AND)
+- [N18] Within matched traces (1->1) added: action(n20,"Inform stock department")
+- [N19] Within matched traces (1->1) added: converge(c2)
+- [N20] Within matched traces (2->2) added: init(i1)
+- [N21] Within matched traces (2->2) added: action(n19,"Send order confirmation")
+- [N22] Within matched traces (2->2) added: branch(b7,AND)
+- [N23] Within matched traces (2->2) added: action(n20,"Inform stock department")
+- [N24] Within matched traces (2->2) added: converge(c2)
+- [N25] Within matched traces (2->2) added: converge(n24)
+- [N26] Within matched traces (3->5) added: init(i1)
+- [N27] Within matched traces (4->5) added: init(i1)
+- [N28] Within matched traces (4->5) added: action(n11,"Send decline message")
+- [N29] Within matched traces (4->5) added: end(e2)
+- [N30] Within matched traces (5->6) added: init(i1)
+- [N31] Within matched traces (5->6) added: converge(c2)
+- [N32] Within matched traces (5->6) added: converge(n24)
+- [N33] Within matched traces (6->6) added: init(i1)
+- [N34] Within matched traces (6->6) added: converge(c2)
+- [N35] Within matched traces (7->7) added: init(i1)
+- [N36] Within matched traces (7->7) added: converge(c2)
+- [N37] Within matched traces (7->7) added: converge(n24)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n16` has in=1 and out=0. | Node `n17` has in=0 and out=1. | DSL: action(n16,"Produce missing goods"); action(n17,"Send decline message")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e3, n17 | DSL: end(e3); action(n17,"Send decline message")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n16 | DSL: action(n16,"Produce missing goods")

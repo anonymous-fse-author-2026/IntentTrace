@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step. The source explicitly begins with "receiving the claim" without a preceding "start" action.
+- `action(n8, "accept the claim")`: Omitted/mislabeled behavior. The source states "if the claim is to be accepted, offer the benefit", but the model labels this step "accept the claim" and completely omits the benefit offering.
+- `precedence(n7, b2), precedence(b2, n11), precedence(n11, b3), precedence(b3, n7)`: Forms an unintended control-flow cycle. The source describes a linear progression that terminates ("Finally, the process ends."), whereas the model loops indefinitely between these elements.
+- `branch(b2, AND) & precedence(n10, c1)`: Misplaces the parallel execution block. The source instructs to "complete the following steps: operate outgoing payment and close the claim" at the same time, but the model restricts this parallel split to only the rejection path (`n7 → b2`), while the acceptance path (`n10`) skips it entirely.
+- `converge(c1)`: Fails to faithfully represent flow convergence. Due to the incorrect routing of parallel tasks, `c1` merges mismatched flows (`n10`, `b3`, `n12`) rather than correctly joining the synchronized completion of all downstream activities before the end.

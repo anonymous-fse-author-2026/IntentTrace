@@ -1,0 +1,11 @@
+- `actor(a_default, "Default", [...])`: The actor is named "Default", but the source text explicitly assigns the responsibilities to the "buyer" ("For the buyer...").
+- `action(n1, "start the process")`: Hallucinated action; the source text states that "the first step is to visit the Amazon.com Marketplace".
+- `action(n3, "did you find the book?")`: Misrepresents the source text, which instructs to "search for a book", not evaluate a question.
+- `branch(b1, XOR)`, `action(n8, "end of process")`, `end(e2)`: Hallucinated control flow and actions; the source text describes a single sequence and does not include branching or alternative paths for failing to find a book.
+- `action(n5, "can you proceed with purchase?")`, `branch(b2, XOR)`, `action(n9, "contact support or end process")`, `end(e3)`: Hallucinated behaviors and branching; the source text does not mention evaluating the ability to proceed, alternative outcomes, or contacting support.
+- `action(n7, "end of process")`: Hallucinated action step; the text states "Finally, the process ends", which is already adequately captured by the `end(e1)` node.
+- `defines(v1, "did you find the book?", {})`, `defines(v2, "can you proceed with purchase?", {})`: Hallucinated decision variables; the text describes a straight-through progression without choices.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

@@ -1,0 +1,684 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:a_start"
+      ],
+      "verbatim_texts": [
+        "To start the ExpenseReport process, begin by clicking on \"Start\" and then selecting \"Edit Report\"."
+      ],
+      "justification": "Captures the process initiation and the opening UI interaction steps."
+    },
+    {
+      "refs": [
+        "guard:b_exp->a_rev",
+        "action:a_rev"
+      ],
+      "verbatim_texts": [
+        "If the expense is greater than 1000, the report should be reviewed."
+      ],
+      "justification": "Models the high-expense decision gateway, the correct >1000 threshold, and the review action."
+    },
+    {
+      "refs": [
+        "guard:b_exp->a_chkTrans",
+        "action:a_chkTrans"
+      ],
+      "verbatim_texts": [
+        "However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation."
+      ],
+      "justification": "Models the complementary <=1000 guard and the subsequent translation check step."
+    },
+    {
+      "refs": [
+        "guard:b_trans->a_trans",
+        "action:a_trans"
+      ],
+      "verbatim_texts": [
+        "If translation is required, proceed to translate the receipts."
+      ],
+      "justification": "Models the translation decision split, the 'Yes' guard, and the translation action."
+    },
+    {
+      "refs": [
+        "guard:b_trans->a_conf",
+        "action:a_conf"
+      ],
+      "verbatim_texts": [
+        "If not, confirm the receipts."
+      ],
+      "justification": "Models the 'No' translation guard and the direct confirmation action."
+    },
+    {
+      "refs": [
+        "action:a_edit1",
+        "action:a_edit2",
+        "action:a_edit3",
+        "guard:b_r1->c_rej",
+        "guard:b_r2->c_rej",
+        "guard:b_r3->c_rej",
+        "guard:b_r4->a_edit2",
+        "guard:b_rec->a_edit3"
+      ],
+      "verbatim_texts": [
+        "If the report is rejected, edit the report."
+      ],
+      "justification": "Collectively models all rejection outcomes described throughout the text, including multiple evaluation loops and the repeated edit steps. Structural redundancy preserves the described routing behaviour."
+    },
+    {
+      "refs": [
+        "action:a_chkCont",
+        "guard:b_r1->c_app",
+        "guard:b_r2->c_app",
+        "guard:b_r3->c_app"
+      ],
+      "verbatim_texts": [
+        "If it is approved, continue to check if there is a need for translation."
+      ],
+      "justification": "Collectively models the multiple approval paths that route back to re-evaluating the translation need, preserving the loop structure described in the text."
+    },
+    {
+      "refs": [
+        "action:a_transConf",
+        "guard:b_r4->a_transConf"
+      ],
+      "verbatim_texts": [
+        "If it is approved, translate the receipts and then confirm them."
+      ],
+      "justification": "Models the secondary approval branch and the combined translate-and-confirm action."
+    },
+    {
+      "refs": [
+        "guard:b_rec->a_proc",
+        "action:a_proc"
+      ],
+      "verbatim_texts": [
+        "If the receipts are accepted, proceed to process the expense."
+      ],
+      "justification": "Models the final receipts decision, the expense processing step, and the process termination. Structural end node is implicitly supported."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:a_start",
+      "kind": "action",
+      "node_id": "a_start",
+      "gateway": "",
+      "string_value": "click Start then select Edit Report",
+      "aliases": [
+        "action:a_start",
+        "a_start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_start: click Start then select Edit Report"
+    },
+    {
+      "ref_id": "action:a_rev",
+      "kind": "action",
+      "node_id": "a_rev",
+      "gateway": "",
+      "string_value": "review the report",
+      "aliases": [
+        "action:a_rev",
+        "a_rev"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_rev: review the report"
+    },
+    {
+      "ref_id": "action:a_chkTrans",
+      "kind": "action",
+      "node_id": "a_chkTrans",
+      "gateway": "",
+      "string_value": "check if translation is needed",
+      "aliases": [
+        "action:a_chkTrans",
+        "a_chkTrans"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_chkTrans: check if translation is needed"
+    },
+    {
+      "ref_id": "action:a_trans",
+      "kind": "action",
+      "node_id": "a_trans",
+      "gateway": "",
+      "string_value": "translate the receipts",
+      "aliases": [
+        "action:a_trans",
+        "a_trans"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_trans: translate the receipts"
+    },
+    {
+      "ref_id": "action:a_conf",
+      "kind": "action",
+      "node_id": "a_conf",
+      "gateway": "",
+      "string_value": "confirm the receipts",
+      "aliases": [
+        "action:a_conf",
+        "a_conf"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_conf: confirm the receipts"
+    },
+    {
+      "ref_id": "action:a_edit1",
+      "kind": "action",
+      "node_id": "a_edit1",
+      "gateway": "",
+      "string_value": "edit the report",
+      "aliases": [
+        "action:a_edit1",
+        "a_edit1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_edit1: edit the report"
+    },
+    {
+      "ref_id": "action:a_chkCont",
+      "kind": "action",
+      "node_id": "a_chkCont",
+      "gateway": "",
+      "string_value": "continue to check if there is a need for translation",
+      "aliases": [
+        "action:a_chkCont",
+        "a_chkCont"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_chkCont: continue to check if there is a need for translation"
+    },
+    {
+      "ref_id": "action:a_edit2",
+      "kind": "action",
+      "node_id": "a_edit2",
+      "gateway": "",
+      "string_value": "edit the report",
+      "aliases": [
+        "action:a_edit2",
+        "a_edit2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_edit2: edit the report"
+    },
+    {
+      "ref_id": "action:a_transConf",
+      "kind": "action",
+      "node_id": "a_transConf",
+      "gateway": "",
+      "string_value": "translate the receipts and then confirm them",
+      "aliases": [
+        "action:a_transConf",
+        "a_transConf"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_transConf: translate the receipts and then confirm them"
+    },
+    {
+      "ref_id": "action:a_proc",
+      "kind": "action",
+      "node_id": "a_proc",
+      "gateway": "",
+      "string_value": "process the expense",
+      "aliases": [
+        "action:a_proc",
+        "a_proc"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_proc: process the expense"
+    },
+    {
+      "ref_id": "action:a_edit3",
+      "kind": "action",
+      "node_id": "a_edit3",
+      "gateway": "",
+      "string_value": "edit the report",
+      "aliases": [
+        "action:a_edit3",
+        "a_edit3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_edit3: edit the report"
+    },
+    {
+      "ref_id": "branch:b_exp",
+      "kind": "branch",
+      "node_id": "b_exp",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_exp",
+        "b_exp"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_exp (XOR)"
+    },
+    {
+      "ref_id": "branch:b_trans",
+      "kind": "branch",
+      "node_id": "b_trans",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_trans",
+        "b_trans"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_trans (XOR)"
+    },
+    {
+      "ref_id": "branch:b_r1",
+      "kind": "branch",
+      "node_id": "b_r1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_r1",
+        "b_r1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_r1 (XOR)"
+    },
+    {
+      "ref_id": "branch:b_r2",
+      "kind": "branch",
+      "node_id": "b_r2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_r2",
+        "b_r2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_r2 (XOR)"
+    },
+    {
+      "ref_id": "branch:b_r3",
+      "kind": "branch",
+      "node_id": "b_r3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_r3",
+        "b_r3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_r3 (XOR)"
+    },
+    {
+      "ref_id": "branch:b_r4",
+      "kind": "branch",
+      "node_id": "b_r4",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_r4",
+        "b_r4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_r4 (XOR)"
+    },
+    {
+      "ref_id": "branch:b_rec",
+      "kind": "branch",
+      "node_id": "b_rec",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_rec",
+        "b_rec"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_rec (XOR)"
+    },
+    {
+      "ref_id": "converge:c_rej",
+      "kind": "converge",
+      "node_id": "c_rej",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_rej",
+        "c_rej"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_rej"
+    },
+    {
+      "ref_id": "converge:c_app",
+      "kind": "converge",
+      "node_id": "c_app",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_app",
+        "c_app"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_app"
+    },
+    {
+      "ref_id": "guard:b_exp->a_rev",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_exp = '>1000'",
+      "aliases": [
+        "guard:b_exp->a_rev"
+      ],
+      "from": "b_exp",
+      "to": "a_rev",
+      "source_line": "guard b_exp->a_rev: v_exp = '>1000'",
+      "guard": {
+        "from": "b_exp",
+        "to": "a_rev",
+        "condition": "v_exp = '>1000'"
+      }
+    },
+    {
+      "ref_id": "guard:b_exp->a_chkTrans",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_exp = '<=1000'",
+      "aliases": [
+        "guard:b_exp->a_chkTrans"
+      ],
+      "from": "b_exp",
+      "to": "a_chkTrans",
+      "source_line": "guard b_exp->a_chkTrans: v_exp = '<=1000'",
+      "guard": {
+        "from": "b_exp",
+        "to": "a_chkTrans",
+        "condition": "v_exp = '<=1000'"
+      }
+    },
+    {
+      "ref_id": "guard:b_trans->a_trans",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_trans = 'Yes'",
+      "aliases": [
+        "guard:b_trans->a_trans"
+      ],
+      "from": "b_trans",
+      "to": "a_trans",
+      "source_line": "guard b_trans->a_trans: v_trans = 'Yes'",
+      "guard": {
+        "from": "b_trans",
+        "to": "a_trans",
+        "condition": "v_trans = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_trans->a_conf",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_trans = 'No'",
+      "aliases": [
+        "guard:b_trans->a_conf"
+      ],
+      "from": "b_trans",
+      "to": "a_conf",
+      "source_line": "guard b_trans->a_conf: v_trans = 'No'",
+      "guard": {
+        "from": "b_trans",
+        "to": "a_conf",
+        "condition": "v_trans = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r1->c_rej",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Rejected'",
+      "aliases": [
+        "guard:b_r1->c_rej"
+      ],
+      "from": "b_r1",
+      "to": "c_rej",
+      "source_line": "guard b_r1->c_rej: v_rev = 'Rejected'",
+      "guard": {
+        "from": "b_r1",
+        "to": "c_rej",
+        "condition": "v_rev = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r1->c_app",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Approved'",
+      "aliases": [
+        "guard:b_r1->c_app"
+      ],
+      "from": "b_r1",
+      "to": "c_app",
+      "source_line": "guard b_r1->c_app: v_rev = 'Approved'",
+      "guard": {
+        "from": "b_r1",
+        "to": "c_app",
+        "condition": "v_rev = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r2->c_rej",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Rejected'",
+      "aliases": [
+        "guard:b_r2->c_rej"
+      ],
+      "from": "b_r2",
+      "to": "c_rej",
+      "source_line": "guard b_r2->c_rej: v_rev = 'Rejected'",
+      "guard": {
+        "from": "b_r2",
+        "to": "c_rej",
+        "condition": "v_rev = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r2->c_app",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Approved'",
+      "aliases": [
+        "guard:b_r2->c_app"
+      ],
+      "from": "b_r2",
+      "to": "c_app",
+      "source_line": "guard b_r2->c_app: v_rev = 'Approved'",
+      "guard": {
+        "from": "b_r2",
+        "to": "c_app",
+        "condition": "v_rev = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r3->c_rej",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Rejected'",
+      "aliases": [
+        "guard:b_r3->c_rej"
+      ],
+      "from": "b_r3",
+      "to": "c_rej",
+      "source_line": "guard b_r3->c_rej: v_rev = 'Rejected'",
+      "guard": {
+        "from": "b_r3",
+        "to": "c_rej",
+        "condition": "v_rev = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r3->c_app",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Approved'",
+      "aliases": [
+        "guard:b_r3->c_app"
+      ],
+      "from": "b_r3",
+      "to": "c_app",
+      "source_line": "guard b_r3->c_app: v_rev = 'Approved'",
+      "guard": {
+        "from": "b_r3",
+        "to": "c_app",
+        "condition": "v_rev = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r4->a_edit2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Rejected'",
+      "aliases": [
+        "guard:b_r4->a_edit2"
+      ],
+      "from": "b_r4",
+      "to": "a_edit2",
+      "source_line": "guard b_r4->a_edit2: v_rev = 'Rejected'",
+      "guard": {
+        "from": "b_r4",
+        "to": "a_edit2",
+        "condition": "v_rev = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_r4->a_transConf",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rev = 'Approved'",
+      "aliases": [
+        "guard:b_r4->a_transConf"
+      ],
+      "from": "b_r4",
+      "to": "a_transConf",
+      "source_line": "guard b_r4->a_transConf: v_rev = 'Approved'",
+      "guard": {
+        "from": "b_r4",
+        "to": "a_transConf",
+        "condition": "v_rev = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rec->a_proc",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rec = 'Accepted'",
+      "aliases": [
+        "guard:b_rec->a_proc"
+      ],
+      "from": "b_rec",
+      "to": "a_proc",
+      "source_line": "guard b_rec->a_proc: v_rec = 'Accepted'",
+      "guard": {
+        "from": "b_rec",
+        "to": "a_proc",
+        "condition": "v_rec = 'Accepted'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rec->a_edit3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rec = 'Rejected'",
+      "aliases": [
+        "guard:b_rec->a_edit3"
+      ],
+      "from": "b_rec",
+      "to": "a_edit3",
+      "source_line": "guard b_rec->a_edit3: v_rec = 'Rejected'",
+      "guard": {
+        "from": "b_rec",
+        "to": "a_edit3",
+        "condition": "v_rec = 'Rejected'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 9,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 25,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 25,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 25,
+    "total_mappable_targets": 36,
+    "input_text_length": 893,
+    "element_count": 36
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

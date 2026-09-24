@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process, begin by selecting a filter and then applying it. -> i2:After applying the filter, click on the Submit button. -> i3:Next, check if the option to submit is set to "false" -> i4:If it is, then apply another filter. -> i5:apply another filter -> i2:After applying the filter, click on the Submit button.
+- [N2] Within matched traces (1->1) omitted: i7:continue with the process
+- [N3] Within matched traces (2->3) omitted: i7:continue with the process
+
+Addition
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n8,"continue with process after submit false") -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n10,"continue with process if another filter to apply") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n13,"continue with process if option submit true") -> end(e1)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n8,"continue with process after submit false") -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n11,"continue with process if no more filters") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n13,"continue with process if option submit true") -> end(e1)
+- [N6] Within matched traces (1->1) added: init(i1)
+- [N7] Within matched traces (2->3) added: init(i1)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n6,"v1 = 'true'"); source=i4:If it is, then apply another filter.; reason=Source states this path executes when the option is 'false', but the guard incorrectly specifies 'true'.
+- [N9] Node-level mutation: element=guard(b1,n8,"v1 = 'false'") -> action(n8,"continue with process after submit false"); source=i6:If the option to submit is set to "true", then continue with the process.; reason=Source ties this continuation to the 'true' state, but the guard specifies 'false' and the action content incorrectly references 'submit false'.
+- [N10] Node-level mutation: element=guard(b3,n13,"v3 = 'false'"); source=i12:Finally, if the option to submit is set to "true", continue with the process.; reason=Source specifies continuation when the option is 'true', but the guard incorrectly specifies 'false'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"select a filter")

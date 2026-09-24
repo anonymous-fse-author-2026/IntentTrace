@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:v1: no more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:re-advertise position;
+else ([v1 = 'No'])
+:terms and conditions need sorting?;
+:v2: terms and conditions need sorting? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:candidate accepted voluntary redundancy?;
+:v3: candidate accepted voluntary redundancy? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:conduct further investigation;
+else ([v3 = 'No'])
+:process continues;
+endif
+else ([v2 = 'No'])
+:proceed with recruitment process;
+endif
+:send Appointment Approval form;
+:receive Appointment Approval form by next level manager;
+:approver is existing client employee?;
+:v4: approver is existing client employee? ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:form not authorized by external resource;
+else ([v4 = 'Yes'])
+:form approved?;
+:recruitment manager sends form and other documentation;
+:client HR receives form and documentation;
+:The HR department scans the completed form and records the position against the stored position in GovSource;
+:any variations?;
+:v6: any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:a complete business case is required;
+else ([v6 = 'No'])
+:Otherwise, the process continues;
+endif
+endif
+endif
+stop
+@enduml

@@ -1,0 +1,9 @@
+
+
+- `precedence(n2, b1)` and `precedence(b1, n3)`: Places XOR branch `b1` before verification action `n3`, violating source chronology which requires the system to "verify the completeness of the invoices" before branching on their status.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack corresponding `guard()` statements, omitting the mandatory conditional routing described as "If they are marked as 'Uncompleted'" and "if they are marked as 'Completed'".
+- `defines(v2, "Check if process has been completed", {})`: Specifies an empty value range `{}` instead of faithfully reflecting the documented invoice status domain `{"Uncompleted", "Completed"}`.
+- `action(n4, "End")` and `precedence(b1, n4)`: Creates an immediate termination path from `b1`, contradicting the source instruction that if invoices are "Completed", "the process should be continued" rather than ending prematurely.
+- `action(n10, "Proceed to verify completeness of invoices")`: Hallucinates a dead-end verification step with no outgoing precedence, which is absent from the source description.
+- `branch(b2, XOR)` and `precedence(n8, b2)`: Introduces an unjustified decision split after the completion check, conflicting with the source's linear progression: "proceed with checking if the process has been completed. Finally, the process ends."
+- `defines(v1, "Check if process has started in Admin Office", {})`: Hallucinates a decision variable with an empty range `{}` and no guards, misrepresenting "first check if it has started" as a routed choice rather than a sequential prerequisite.

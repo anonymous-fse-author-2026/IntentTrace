@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i6:If the credit card is approved and there is inventory in stock, they can continue with the process. (reason: Because the only modeling candidates for these conditions are mutated guards that invent variables and split the logic, the source conditions themselves are not faithfully implemented.)
+- [N2] Node-level omission: i7:if the credit card is denied or there is no inventory in stock (reason: Because the only modeling candidates for these conditions are mutated guards that invent variables and split the logic, the source conditions themselves are not faithfully implemented.)
+- [N3] Within matched traces (2->0) omitted: i8:the transaction will end.
+- [N4] Within matched traces (4->3) omitted: i8:the transaction will end.
+
+Addition
+- [N5] Node-level addition: action(n16,"transaction denied") (reason: The step 'transaction denied' does not appear in the source text, which only states the transaction will end.)
+- [N6] Added trace (model 1): init(i1) -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> branch(n9,XOR) -> branch(n10,XOR) -> converge(c3) -> action(n16,"transaction denied") -> converge(c2) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N7] Added trace (model 2): init(i1) -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> branch(n9,XOR) -> converge(c3) -> action(n16,"transaction denied") -> converge(c2) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N8] Added trace (model 4): init(i1) -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> branch(n9,XOR) -> branch(n10,XOR) -> converge(c3) -> action(n16,"transaction denied") -> converge(c2) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N9] Added trace (model 5): init(i1) -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> branch(n9,XOR) -> converge(c3) -> action(n16,"transaction denied") -> converge(c2) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N10] Within matched traces (0->0) added: branch(b4,AND)
+- [N11] Within matched traces (0->0) added: action(n7,"enter address shipping method and payment information")
+- [N12] Within matched traces (0->0) added: converge(c1)
+- [N13] Within matched traces (0->0) added: branch(n9,XOR)
+- [N14] Within matched traces (0->0) added: branch(n10,XOR)
+- [N15] Within matched traces (0->0) added: converge(c2)
+- [N16] Within matched traces (0->0) added: action(n11,"display order confirmation number")
+- [N17] Within matched traces (0->0) added: action(n12,"show final order to customer")
+- [N18] Within matched traces (0->0) added: action(n13,"confirm the order")
+- [N19] Within matched traces (0->0) added: action(n14,"send confirmation notice via email")
+- [N20] Within matched traces (0->0) added: action(n15,"order entry complete")
+- [N21] Within matched traces (0->0) added: end(e1)
+- [N22] Within matched traces (1->0) added: converge(c1)
+- [N23] Within matched traces (2->0) added: converge(c1)
+- [N24] Within matched traces (3->3) added: converge(c1)
+- [N25] Within matched traces (4->3) added: converge(c1)
+
+Mutation
+- [N26] Node-level mutation: element=guard(n9,n10,"v_chk = 'Ready'"); source=i6:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i7:if the credit card is denied or there is no inventory in stock; reason=The guards replace the explicit natural-language conditions with invented technical variables and states (v_chk, v_app, Ready, Failed, Approved, Denied). They also fragment a single compound decision into two separate XOR branches, altering the original logical structure and thresholds.
+- [N27] Node-level mutation: element=guard(n9,c3,"v_chk = 'Failed'"); source=i6:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i7:if the credit card is denied or there is no inventory in stock; reason=The guards replace the explicit natural-language conditions with invented technical variables and states (v_chk, v_app, Ready, Failed, Approved, Denied). They also fragment a single compound decision into two separate XOR branches, altering the original logical structure and thresholds.
+- [N28] Node-level mutation: element=guard(n10,c2,"v_app = 'Approved'"); source=i6:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i7:if the credit card is denied or there is no inventory in stock; reason=The guards replace the explicit natural-language conditions with invented technical variables and states (v_chk, v_app, Ready, Failed, Approved, Denied). They also fragment a single compound decision into two separate XOR branches, altering the original logical structure and thresholds.
+- [N29] Node-level mutation: element=guard(n10,c3,"v_app = 'Denied'"); source=i6:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i7:if the credit card is denied or there is no inventory in stock; reason=The guards replace the explicit natural-language conditions with invented technical variables and states (v_chk, v_app, Ready, Failed, Approved, Denied). They also fragment a single compound decision into two separate XOR branches, altering the original logical structure and thresholds.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"search for item")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e2 | DSL: end(e2)

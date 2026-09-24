@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i2:check if the stock levels are below the threshold (reason: The actual conditional check and its associated threshold logic are not faithfully implemented by any element; existing candidates distort the instruction into a static label and abstract boolean guards.)
+- [N2] Node-level omission: i3:If they are (reason: The actual conditional check and its associated threshold logic are not faithfully implemented by any element; existing candidates distort the instruction into a static label and abstract boolean guards.)
+
+Addition
+- [N3] Node-level addition: action(n1,"Start process") (reason: Invents a discrete 'Start process' action step not present in the source; the opening clause only serves as a structural/process initiator cue.)
+- [N4] Node-level addition: action(n4,"End process") (reason: Invents explicit executable 'End process' action steps; the source only describes process termination as a structural conclusion, not as a performable task.)
+- [N5] Node-level addition: action(n5,"End process") (reason: Invents explicit executable 'End process' action steps; the source only describes process termination as a structural conclusion, not as a performable task.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start process") -> action(n2,"Stock levels below threshold") -> branch(b1,XOR) -> action(n5,"End process") -> end(e2)
+- [N7] Within matched traces (0->0) added: action(n1,"Start process")
+- [N8] Within matched traces (0->0) added: action(n4,"End process")
+
+Mutation
+- [N9] Node-level mutation: element=action(n2,"Stock levels below threshold"); source=i2:check if the stock levels are below the threshold; reason=Distorts the imperative conditional check into a static declarative label ('Stock levels below threshold'), changing the instruction type and dropping the active evaluation verb.
+- [N10] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:check if the stock levels are below the threshold -> i3:If they are; reason=Replaces the concrete threshold comparison with an abstract variable assignment ('v1 = Yes'), completely losing the specific condition logic and values from the source.
+- [N11] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i2:check if the stock levels are below the threshold -> i3:If they are; reason=Replaces the concrete threshold comparison with an abstract variable assignment ('v1 = No'), completely losing the specific condition logic and values from the source.

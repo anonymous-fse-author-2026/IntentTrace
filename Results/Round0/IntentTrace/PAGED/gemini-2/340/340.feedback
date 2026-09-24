@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:If the parts are supplied to the customer, the team can also continue with the process. (reason: The model completely omitted this condition and its resulting flow.)
+- [N2] Omitted trace (input 2): i1:the first step is to identify the parts. -> i4:if they already have the availability information -> i5:If the parts are supplied to the customer, the team can also continue with the process. -> i9:After all the necessary parts are collected, -> i10:the team can proceed with the payment. -> i11:Once the payment is made, the process comes to an end.
+- [N3] Omitted trace (input 3): i1:the first step is to identify the parts. -> i4:if they already have the availability information -> i6:if they need to record the customer's details -> i7:they should order and receive the part from Disuki. -> i8:Once the part is received, the team can then contract the customer. -> i9:After all the necessary parts are collected, -> i10:the team can proceed with the payment. -> i11:Once the payment is made, the process comes to an end.
+- [N4] Within matched traces (1->0) omitted: i6:if they need to record the customer's details
+- [N5] Within matched traces (0->2) omitted: i3:they should then check the availability of the parts.
+- [N6] Within matched traces (0->2) omitted: i5:If the parts are supplied to the customer, the team can also continue with the process.
+
+Addition
+- [N7] Node-level addition: action(n5,"do the parts need to be ordered and received from Disuki?") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N8] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N9] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N10] Node-level addition: guard(b2,n7,"v2 = 'Order and receive the part'") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N11] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N12] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N13] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: These actions, guards, and labels introduce logic and flow descriptions ('do the parts need to be ordered...', 'Order not needed proceed') that have no basis in the source text.)
+- [N14] Within matched traces (1->0) added: init(i1)
+- [N15] Within matched traces (1->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N16] Within matched traces (1->0) added: branch(b2,XOR)
+- [N17] Within matched traces (1->1) added: init(i1)
+- [N18] Within matched traces (1->1) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N19] Within matched traces (1->1) added: branch(b2,XOR)
+- [N20] Within matched traces (0->2) added: init(i1)
+
+Mutation
+- [N21] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer,; reason=The source specifies checking availability if they need to elicit information, but the model guard alters this condition to 'Need to check availability'.
+- [N22] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information; reason=The text explicitly states 'if they already have the availability information', but the model replaces this logic with 'Proceed with process or after contacting customer'.
+
+Permutation
+- [N23] Within matched traces (1->1) reordered: expected [i7:they should order and receive the part from Disuki.] but observed [action(n7,"receive part from Disuki")] elsewhere; in its place the model has [action(n8,"record customer details")]

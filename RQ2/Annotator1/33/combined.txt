@@ -1,0 +1,17 @@
+Root Cause Analysis
+
+Root Cause 1: The eligibility decision is incorrectly decomposed into a separate action node preceding an unguarded branch, and the corresponding decision variable is declared without a valid value domain.
+- Includes:
+    - [N1] Within matched traces (2->1) added: action(n6,"Is applicant eligible")
+    - [N2] Within matched traces (2->1) added: branch(b1,XOR)
+    - [N3] Within matched traces (3->3) added: action(n6,"Is applicant eligible")
+    - [N4] Within matched traces (3->3) added: branch(b1,XOR)
+    - [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+    - [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.
+
+Root Cause 2: An explicit synchronization action ("All assessments completed") was hallucinated after the concurrent tasks, disrupting the source chronology and causing permutation mismatches in trace alignment.
+- Includes:
+    - [N5] Within matched traces (0->0) reordered: expected [i4:assessing the loan risk] but observed [action(n2,"Assess loan risk")] elsewhere; in its place the model has [action(n4,"All assessments completed")]
+    - [N6] Within matched traces (1->2) reordered: expected [i5:checking the credit history] but observed [action(n3,"Check credit history")] elsewhere; in its place the model has [action(n4,"All assessments completed")]
+    - [N7] Within matched traces (2->1) reordered: expected [i4:assessing the loan risk] but observed [action(n2,"Assess loan risk")] elsewhere; in its place the model has [action(n4,"All assessments completed")]
+    - [N8] Within matched traces (3->3) reordered: expected [i5:checking the credit history] but observed [action(n3,"Check credit history")] elsewhere; in its place the model has [action(n4,"All assessments completed")]

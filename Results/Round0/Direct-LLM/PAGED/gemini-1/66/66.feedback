@@ -1,0 +1,12 @@
+- `actor(a_default, "Default", ...)`: The model assigns all steps to a "Default" actor, but the source text explicitly states the process takes place "in the Admin Office".
+- `branch(b1, XOR)` and `precedence(b1, n4)`: The model hallucinates a decision and an early "End" (`n4`) after checking if the process has started (`n2`). The text unconditionally directs to the next step: "After that, verify the completeness of the invoices."
+- `precedence(n3, n5)`: The model enforces an unconditional sequence from verifying invoices (`n3`) to returning uncompleted invoices (`n5`), omitting the conditional branching logic entirely. It fails to capture the "Completed" path ("if they are marked as 'Completed', the process should be continued").
+- `branch(b2, XOR)` and `precedence(b2, n10)`: The model hallucinates a second branch and a path (`n10`) after checking if the process has been completed. The source text has no loop or branch here; it simply states, "proceed with checking if the process has been completed. Finally, the process ends."
+- `action(n10, "Proceed to verify completeness of invoices")`: This node has no outgoing precedence edge to an end event, creating an invalid dead-end path in the control flow.
+- `defines(...)`: The model fails to define the actual decision variable and ranges for the invoice status ("Uncompleted", "Completed") that drives the main branch in the source text, and omits all `guard()` statements for the conditional paths.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"Proceed to verify completeness of invoices")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10 | DSL: action(n10,"Proceed to verify completeness of invoices")

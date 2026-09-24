@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i3:Mac compares the inventory levels in the spreadsheet with the sales (reason: No element faithfully implements this step because the only candidate drops the 'in the spreadsheet' qualifier.)
+- [N2] Node-level omission: i5:Mac doesn't need to manually count the inventory (reason: No element faithfully implements this step because the candidate action drops the 'inventory' object.)
+- [N3] Node-level omission: i6:if the inventory level is low, Mac needs to manually count the inventory of items (reason: The source unit is not faithfully implemented; the candidate action drops the 'of items' qualifier and the guard alters the condition.)
+- [N4] Node-level omission: i7:Once Mac counts each item individually (reason: No element faithfully implements this step because the candidate action wrongly alters the instruction from 'individually' to 'manually'.)
+- [N5] Node-level omission: i9:Mac selects suppliers for the needed products (reason: No element faithfully implements this step because the candidate action alters the target to 'low stock items'.)
+- [N6] Node-level omission: i10:and places the order(s) (reason: No element faithfully implements this step because the candidate action improperly adds an invented qualifier 'for needed products'.)
+
+Addition
+- [N7] Node-level addition: action(n1,"start inventory check process") (reason: This action 'start inventory check process' is invented and does not correspond to any specific step or instruction in the source text.)
+- [N8] Within matched traces (0->0) added: action(n1,"start inventory check process")
+- [N9] Within matched traces (0->0) added: converge(c1)
+- [N10] Within matched traces (0->0) added: action(n11,"received the order")
+- [N11] Within matched traces (1->1) added: action(n1,"start inventory check process")
+- [N12] Within matched traces (1->1) added: action(n4,"is inventory level high")
+
+Mutation
+- [N13] Node-level mutation: element=action(n3,"compare inventory levels with sales"); source=i3:Mac compares the inventory levels in the spreadsheet with the sales; reason=The element drops the specific location qualifier 'in the spreadsheet' from the comparison step.
+- [N14] Node-level mutation: element=guard(b1,n5,"v1 == true"); source=i4:If the inventory level is high; reason=The guard evaluates a generic boolean variable against 'true' rather than faithfully extracting and checking the specific threshold 'high'.
+- [N15] Node-level mutation: element=action(n5,"no manual count needed"); source=i5:Mac doesn't need to manually count the inventory; reason=The element drops the core object 'inventory' from the instruction, changing it simply to 'no manual count needed'.
+- [N16] Node-level mutation: element=guard(b1,n6,"v1 == false"); source=i6:if the inventory level is low, Mac needs to manually count the inventory of items; reason=The guard evaluates a generic boolean variable against 'false' instead of explicitly checking the threshold 'low'.
+- [N17] Node-level mutation: element=action(n6,"need manual inventory count"); source=i6:if the inventory level is low, Mac needs to manually count the inventory of items; reason=The element drops the precise qualifier 'of items' from the inventory counting instruction.
+- [N18] Node-level mutation: element=action(n7,"count each item manually"); source=i7:Once Mac counts each item individually; reason=The element distorts the text by substituting the specific instruction to count 'individually' with 'manually'.
+- [N19] Node-level mutation: element=action(n9,"select suppliers for low stock items"); source=i9:Mac selects suppliers for the needed products; reason=The element incorrectly changes the selection target from 'needed products' to 'low stock items'.
+- [N20] Node-level mutation: element=action(n10,"place orders for needed products"); source=i10:and places the order(s); reason=The element invents and appends the target qualifier 'for needed products' which is absent from this specific textual segment.

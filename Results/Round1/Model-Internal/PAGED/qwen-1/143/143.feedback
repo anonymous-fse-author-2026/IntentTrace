@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i9:If the Faculty needs to reconsider the course packet content to decrease the price (reason: No element faithfully preserves the requirement to 'decrease the price'; the corresponding action mutates the goal entirely.)
+- [N2] Node-level omission: i11:the MPC should notify the Bookstore of the Course packet, Course number, Faculty name, and sections. (reason: No element faithfully lists the mandatory notification fields; the corresponding action omits them completely.)
+- [N3] Omitted trace (input 0): i1:To start the process, Course Packet Information Received should be sent, -> i2:followed by sending the Design to Faculty. -> i3:the Faculty will choose the design. -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i5:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added" -> i3:the Faculty will choose the design.
+- [N4] Omitted trace (input 1): i1:To start the process, Course Packet Information Received should be sent, -> i2:followed by sending the Design to Faculty. -> i3:the Faculty will choose the design. -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i6:if the "Entire Course Packet Copyright Cleared" -> i7:the MPC should Calculate the Course Packet Cost. -> i8:add the Bookstore margin to determine the retail price. -> i9:If the Faculty needs to reconsider the course packet content to decrease the price -> i3:the Faculty will choose the design.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Invents a 'start' action step from the introductory announcer phrase 'To start the process', which carries no executable behavior or system task.)
+- [N6] Node-level addition: action(n14,"end") (reason: Invents an 'end' action step from the concluding phrase 'process will end', which is already structurally handled by end:e1 and adds no behavioral step.)
+- [N7] Within matched traces (2->0) added: init(i1)
+- [N8] Within matched traces (2->0) added: action(n1,"start")
+- [N9] Within matched traces (2->0) added: action(n14,"end")
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n8,"v1 = false"); source=i5:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added"; reason=Guards replace the explicit textual conditions with abstract boolean payloads (v1 = false / v1 = true), losing the specific decision criteria described in the source.
+- [N11] Node-level mutation: element=guard(b1,n9,"v1 = true"); source=i6:if the "Entire Course Packet Copyright Cleared"; reason=Guards replace the explicit textual conditions with abstract boolean payloads (v1 = false / v1 = true), losing the specific decision criteria described in the source.
+- [N12] Node-level mutation: element=guard(b2,n12,"v2 = false"); source=i9:If the Faculty needs to reconsider the course packet content to decrease the price; reason=Guards replace the explicit textual conditions with abstract boolean payloads (v2 = false / v2 = true), losing the specific decision criteria described in the source.
+- [N13] Node-level mutation: element=guard(b2,n13,"v2 = true"); source=i10:if the Price of the Course Packet is finalized; reason=Guards replace the explicit textual conditions with abstract boolean payloads (v2 = false / v2 = true), losing the specific decision criteria described in the source.
+- [N14] Node-level mutation: element=action(n12,"reconsider: Re-evaluate content after reconsideration"); source=i9:If the Faculty needs to reconsider the course packet content to decrease the price; reason=Drops the critical quantitative objective 'to decrease the price' and alters the action to a vague 'Re-evaluate content after reconsideration', changing the core meaning.
+- [N15] Node-level mutation: element=action(n13,"notify: Notify bookstore of finalization"); source=i11:the MPC should notify the Bookstore of the Course packet, Course number, Faculty name, and sections.; reason=Omits all mandatory data fields (Course packet, Course number, Faculty name, sections), reducing the precise notification requirement to a generic 'finalization'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | Node `n9` has in=2 and out=1. | DSL: action(n5,"identify: Content requiring copyright clearance"); action(n9,"calculate: Calculate the Course Packet Cost")

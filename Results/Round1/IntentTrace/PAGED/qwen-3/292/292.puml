@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:receive claim;
+:create and record claim;
+:decide on claim;
+:v1: decide on claim ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:reject claim;
+:review rejection;
+:v2: payment path ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:operate outgoing payment;
+:close the claim;
+else ([v2 = 'No'])
+->;
+endif
+else ([v1 = 'Yes'])
+:accept claim;
+:offer benefit;
+:prepare discharge;
+:record payment;
+:v2: payment path ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:operate outgoing payment;
+:close the claim;
+else ([v2 = 'No'])
+->;
+endif
+endif
+:end;
+stop
+@enduml

@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i5:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer. (reason: The model completely omits this second availability check loop and its associated conditional denial branch.)
+
+Addition
+- [N2] Node-level addition: action(n19,"End") (reason: Models an 'End' action on the negative branch of the reminder count check (v4='No'), but the source text does not describe any behavior or termination when the reminder count is below 3.)
+- [N3] Node-level addition: guard(b4,n19,"v4 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i3:If the response is "Okay"; reason=The guard condition specifies v1 = 'Yes', whereas the source text explicitly states the expected response value is 'Okay'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")

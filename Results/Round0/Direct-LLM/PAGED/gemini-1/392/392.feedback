@@ -1,0 +1,9 @@
+- `actor(a_default, "Default", [...])`: The actor is named "Default", but the source description explicitly assigns the process to "MyPool".
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Missing `guard` statements on all outgoing precedence edges to accurately route flow based on the "Service Task 1", "Service Task 2", "Service Task 3", and "Manual Task" conditions.
+- `defines(v1, ...)`, `defines(v2, ...)`, `defines(v3, ...)`: The decision variables are defined with empty ranges `{}`, failing to reflect the value spaces implied by the source conditions.
+- `action(n2, "Is User Task Service Task 1?")`, `action(n4, "Is User Task Service Task 2?")`, `action(n8, "Is there a Manual Task?")`: Modeled as action steps, but the source describes these as conditional evaluations ("If the task is...", "if there is...") rather than executable tasks.
+- `action(n3, ...)`, `action(n5, ...)`, `action(n6, ...)`, `action(n7, ...)`, `action(n9, ...)`, `action(n10, ...)`, `action(n11, ...)`: Modeled as explicit actions, but they represent control flow logic (continuing, merging, ending) or hallucinated implicit paths rather than actual documented tasks to be performed.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n10` has 0 guards; exactly one is required.

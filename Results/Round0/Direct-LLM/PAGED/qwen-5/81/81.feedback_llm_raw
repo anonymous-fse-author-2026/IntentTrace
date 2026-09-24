@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step; the source begins directly with "receive and categorize the invoice."
+- `action(n3, "...")` and `action(n14, "...")`: Hallucinates standalone decision-question nodes; the source describes conditional flows directly after categorization without intermediate question actions.
+- `defines(v1, ...)` and `defines(v2, ...)`: Hallucinates a second identical variable `v2`; the source describes a single instruction-based decision. Additionally, the range `{"Forward", "Reject", "Return", "SAP"}` abbreviates the full source instruction texts (e.g., "Forward Invoice to Admin Officer", "Return invoice to client for completion"), violating SMC6.
+- `precedence(n9, n14)` and the downstream `branch(b2, XOR)` / `n15`–`n24` chain: Misrepresents the "Return invoice to client for completion" path by linearly duplicating the entire branching structure instead of forming a cycle back to the original "Receive and Categorize Invoice" step (`n2`) as stated in "then the invoice is received and categorized again."
+- `action(n5, "End Process")` and `end(e1)`: Arbitrarily terminates the "Forward" branch after "Sort Invoice"; the source specifies sorting as the next step but does not state the process ends there.
+- `guard(b2, n15, v2 = 'Forward')` and related `b2` guards: Duplicate guard conditions and routing logic for a non-existent second decision point, contradicting the source's single conditional structure.

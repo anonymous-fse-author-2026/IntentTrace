@@ -1,0 +1,9 @@
+
+
+- `branch(b1, XOR)`: Lacks `guard` statements to model the conditional split based on whether invoices are marked as "Uncompleted" or "Completed", contradicting the source.
+- `precedence(n2, b1)` and `precedence(b1, n3)`: Violates source chronology by splitting the flow before `action(n3, "Proceed to verify completeness of invoices")`; the description states "verify the completeness of the invoices. If they are marked as...", requiring verification to occur linearly before the status decision.
+- `action(n4, "End")` and `precedence(b1, n4)`: Hallucinates a premature termination path directly after the start check; the source indicates the process continues to invoice handling and only ends after final completion checks.
+- `action(n4, "End")` and `action(n9, "End")`: Misuses "End" as action payloads instead of correctly relying on `end` nodes for termination, blurring the distinction between process steps and flow endpoints.
+- `branch(b2, XOR)` and `action(n10, ...)`: Introduces an unjustified second decision point after `action(n8)`; the description explicitly concludes with "proceed with checking if the process has been completed. Finally, the process ends." without further branching.
+- `action(n10, "Proceed to verify completeness of invoices")`: Is a dangling node with no outgoing `precedence` edges, creating a broken path that fails to reach a terminal `end` node.
+- `defines(v1, ..., {})` and `defines(v2, ..., {})`: Specify empty value ranges `{}`, failing to capture the categorical/boolean states implied by the source text (e.g., started/not-started status, "Uncompleted"/"Completed" markings).

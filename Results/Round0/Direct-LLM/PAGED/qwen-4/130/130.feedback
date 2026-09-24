@@ -1,0 +1,8 @@
+- action(n1, "start acquiring new client"): Hallucinates a preliminary step not documented in the source, which explicitly states "the first step is to identify the need for a new client."
+- branch(b1, XOR): Lacks corresponding guard statements to enforce the source's explicit conditional routing ("If the response is positive..." vs "if the response is negative..."), leaving the exclusive choice semantically undefined.
+- defines(v1, "is the response positive?", {}): Specifies an empty value range "{}" for the decision variable, which does not faithfully represent the binary outcome domain implied by the source text.
+- action(n10, "is the response positive?"): Incorrectly models a decision gateway as a sequential action node instead of attaching conditions directly to the branch's outgoing edges, introducing a non-faithful processing step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required.

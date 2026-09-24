@@ -1,0 +1,9 @@
+- `action(n3, "does the invoice need to be re-sent  posted  or blocked?")`: Incorrectly classified as a process step; the source describes a control-flow decision ("If there is a need to..."), which should be handled directly by the `branch` node without an intervening task.
+- `defines(v1, "does the invoice need to be re-sent  posted  or blocked?", {})`: Range `{}` is empty, contradicting the source which specifies three explicit routing options ("re-send", "post", "block").
+- `guard(b1, n4, ...)`, `guard(b1, n5, ...)`, `guard(b1, n6, ...)` (missing): The source explicitly defines conditional routing ("If there is a need to...", "If the option is to...", "if the decision is to..."), but the model lacks corresponding `guard` statements to bind these conditions to the XOR branch paths.
+- `action(n8, "You have completed this procedure")`: Hallucinated step; the source only states "the process comes to an end" with no mention of a completion task or confirmation message.
+- `action(n4, "re-send the invoice")`: Omits the recipient specified in the source text, which requires the invoice to be sent "to the customer".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

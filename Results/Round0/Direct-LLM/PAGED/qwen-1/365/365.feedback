@@ -1,0 +1,14 @@
+- `action(n1, "start")`: Hallucinates a distinct initial step; the description explicitly states passengers "start the process by undergoing immigration checks", making this action redundant and unfaithful to the documented chronology.
+- `defines(v1, "Select method for exit control checks: Biometrics or ID documents?", {})`: Specifies an empty range `{}`, completely omitting the documented selection options ("Biometrics" and "ID documents").
+- `defines(v2, ...)` and `defines(v3, ...)`: Restrict value ranges to `{"No"}`, omitting the alternative outcome ("Yes"/denied/unsuccessful), which prevents correct evaluation of the permission check outcomes described in the text.
+- `guard(b2, n7, v2 = 'No')` and `guard(b3, n11, v3 = 'No')`: Map the `'No'` condition to `action(n7)` and `action(n11)` ("Leave the area..."), directly contradicting the source which mandates leaving only when the passenger is "denied permission" or the outcome is "unsuccessful".
+- `precedence(b2, n8)` and `precedence(b3, n12)`: Lack corresponding guards for the allowed/successful outcomes, leaving half of each XOR branch's routing logic undefined despite the source describing a clear binary progression ("leave the area" vs. "proceed to the next step").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['No']`. | Variable `v3` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'No'` on `b3 -> n11` uses undefined variable `v3`. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'No'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

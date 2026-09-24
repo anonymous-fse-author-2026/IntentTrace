@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Payload misrepresents the explicit initial instruction "register your participation for the event" (SMC2).
+- `defines(v1, "Is there a fee?", {})` and `defines(v2, "Check purchase request approval status", {})`: Specify empty value ranges `{}`, failing to capture the binary decision spaces (fee/no fee, approved/rejected) implied by the description (SMC6).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack required `guard` statements to operationalize the explicit routing conditions "if there is no fee", "if there is a fee", "if it is approved", and "if ... rejected" (SMC4).
+- `action(n3, "Register post-seminar request")`: Lacks a `precedence` link to an `end` node, omitting the documented terminal condition "Once you have registered a post-seminar request, the process will come to an end" for the no-fee path (SMC1, SMC5).
+- `precedence(e1, n8)`: Violates process semantics by directing flow from a terminating `end` node (`e1`) to an active step (`n8`). The source sequence places registration directly after the approved notification ("you should then register a post-seminar request"), with termination occurring subsequently, not before (SMC3, SMC5).

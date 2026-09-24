@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:trigger: resupply cycle;
+:check: inventory level;
+:v1: check  inventory level ({above, below}); <<objectSignal>>
+if () then (["v1 = 'above'"])
+stop
+else (["v1 = 'below'"])
+:create: purchase order;
+:review: purchase order;
+:v2: review  purchase order ({rejected, accepted}); <<objectSignal>>
+if () then (["v2 = 'rejected'"])
+:rework: purchase order;
+:review: purchase order;
+else (["v2 = 'accepted'"])
+split
+:reserve funds and send PO;
+split again
+:send to supplier;
+end split
+:receive packing slip and release funds;
+stop
+endif
+endif
+@enduml

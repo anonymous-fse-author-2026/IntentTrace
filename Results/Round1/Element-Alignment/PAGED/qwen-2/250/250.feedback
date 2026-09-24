@@ -1,0 +1,12 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i7:At the same time, the supplier should also send the goods and send the invoice.
+
+Addition
+- [N2] Added trace (model 2): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n9,"send goods") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+- [N4] Within matched traces (1->1) added: action(n5,"is stock rejected?")
+- [N5] Within matched traces (1->1) added: converge(c1)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i4:If the stock is rejected, then the process ends.; reason=The guard content 'v1 = Yes' replaces the explicit source condition 'stock is rejected' with a generic, untyped boolean variable, altering the semantic payload and losing the domain-specific logic.
+- [N7] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i5:Otherwise, the supplier should request shipping details.; reason=The guard content 'v1 = No' replaces the source's implicit negative branch marker ('Otherwise') with a generic boolean variable, distorting the original conditional logic.

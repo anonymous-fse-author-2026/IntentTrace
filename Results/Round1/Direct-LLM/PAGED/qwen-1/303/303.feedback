@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i4:after a week (reason: The timing constraint specifying that the Excel list must be complete 'after a week' is not represented by any timer, delay, or conditional element in the model.)
+
+Addition
+- [N2] Node-level addition: action(n26,"end process") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b3,n16,"v3 = 'yes'"); source=If the order is worth less than 5.000 €; reason=The guard uses a generic boolean `v3 = 'yes'` instead of preserving the specific monetary threshold and operator (`< 5000 €`) stated in the source.
+- [N4] Node-level mutation: element=guard(b3,n17,"v3 = 'no'"); source=If the order is worth more than 5.000 €; reason=The guard uses `v3 = 'no'` instead of the explicit `> 5000 €` condition, losing the critical value and operator.
+- [N5] Node-level mutation: element=guard(b4,n25,"v4 = 'no'"); source=If the issue cannot be solved; reason=Replaces the explicit condition `cannot be solved` with a generic `v4 = 'no'`, altering the logical payload.
+- [N6] Node-level mutation: element=guard(b4,n27,"v4 = 'yes'"); source=If the issue can be solved; reason=Replaces the explicit condition `can be solved` with `v4 = 'yes'`, changing the specific business logic to a generic boolean.
+- [N7] Node-level mutation: element=guard(b5,n30,"v5 = 'yes'"); source=If the order needs to be cancelled; reason=Substitutes the specific cancellation condition with `v5 = 'yes'`, dropping the semantic context.
+- [N8] Node-level mutation: element=guard(b5,n31,"v5 = 'no'"); source=If not; reason=Uses `v5 = 'no'` instead of reflecting the negated cancellation state (`If not`), misrepresenting the branch logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=1 and out=0. | Node `n2` has in=0 and out=0. | Node `n3` has in=0 and out=0. | Node `n4` has in=0 and out=1. | Node `n6` has in=2 and out=0. | Node `n7` has in=0 and out=0. | Node `n8` has in=0 and out=1. | DSL: action(n1,"start process"); action(n2,"supply requirement"); action(n3,"document requirement"); action(n4,"is order received via fax"); action(n6,"send Excel list to student"); action(n7,"type orders into MS-Access database"); action(n8,"ensure database typing is completed")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, b3, b4, b5, b6, b7, b8, c1, c2, c3, c4, e1, e2, e3, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n2, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n3, n30, n31, n32, n33, n34, n35, n36, n37, n38, n39, n4, n40, n41, n42, n5, n5_fx, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,XOR); branch(b4,XOR); branch(b5,XOR); branch(b6,AND); branch(b7,AND); branch(b8,AND) (+49 more)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, i1, n1, n2, n3, n4, n5, n5_fx, n6, n7 | DSL: branch(b1,XOR); init(i1); action(n1,"start process"); action(n2,"supply requirement"); action(n3,"document requirement"); action(n4,"is order received via fax"); action(n5,"input order into Excel file"); action(n5_fx,"input order into Excel file") (+2 more)

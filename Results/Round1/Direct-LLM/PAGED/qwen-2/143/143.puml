@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_admin| Admin
+|a_faculty| Faculty
+|a_mpc| MPC
+|a_admin|
+start
+:start;
+:send: Course Packet Information Received;
+:send: Design to Faculty;
+|a_faculty|
+:choose: Faculty chooses the design;
+|a_admin|
+repeat :identify: Content requiring copyright clearance;
+:contact: Contact publisher for clearance;
+:v1: is copyright cleared? ({true, false}); <<objectSignal>>
+backward:notify: Contact Faculty to inform of denial and ask if new content should be added;
+repeat while () is ([v1 = false]) not ([v1 = true])
+|a_mpc|
+repeat :calculate: Calculate the Course Packet Cost;
+:add: Add Bookstore margin to determine retail price;
+:v2: is price finalized? ({true, false}); <<objectSignal>>
+backward:reconsider: Re-evaluate content after reconsideration;
+repeat while () is ([v2 = false]) not ([v2 = true])
+:notify: Notify bookstore of finalization;
+|a_admin|
+stop
+@enduml

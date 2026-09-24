@@ -1,0 +1,32 @@
+Omission
+- [N1] Node-level omission: i3:If the order is to be rejected (reason: The conditional split and logic are not faithfully implemented, as the only candidate distorts it into a mandatory action with no branch.)
+- [N2] Node-level omission: i4:the process should continue (reason: The explicit continuation path corresponding to this condition is omitted entirely from the model.)
+- [N3] Node-level omission: i5:If the order is to be accepted (reason: The decision branch and condition for an accepted order are completely missing from the model.)
+- [N4] Node-level omission: i12:If the item can be reserved (reason: The condition is not faithfully covered in the diagram, as its only candidate was recorded as a mutated generic guard.)
+- [N5] Omitted trace (input 0): i1:the first step is -> i2:look at the order -> i3:If the order is to be rejected -> i4:the process should continue
+- [N6] Omitted trace (input 4): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted -> i6:At the same time -> i8:checking availability -> i12:If the item can be reserved -> i4:the process should continue -> i13:assemble the bike -> i14:ship the product
+- [N7] Within matched traces (3->0) omitted: i5:If the order is to be accepted
+- [N8] Within matched traces (3->0) omitted: i8:checking availability
+- [N9] Within matched traces (1->1) omitted: i5:If the order is to be accepted
+- [N10] Within matched traces (2->2) omitted: i5:If the order is to be accepted
+- [N11] Within matched traces (2->3) omitted: i5:If the order is to be accepted
+- [N12] Within matched traces (2->3) omitted: i10:availability needs to be checked again
+
+Addition
+- [N13] Within matched traces (3->0) added: action(n3,"order rejected?")
+- [N14] Within matched traces (3->0) added: action(n4,"prepare assembling order")
+- [N15] Within matched traces (3->0) added: converge(c1)
+- [N16] Within matched traces (1->1) added: action(n3,"order rejected?")
+- [N17] Within matched traces (1->1) added: converge(c1)
+- [N18] Within matched traces (1->1) added: action(n6,"backorder?")
+- [N19] Within matched traces (1->1) added: branch(b2,XOR)
+- [N20] Within matched traces (2->2) added: action(n3,"order rejected?")
+- [N21] Within matched traces (2->3) added: action(n3,"order rejected?")
+- [N22] Within matched traces (2->3) added: action(n9,"assemble bike")
+- [N23] Within matched traces (2->3) added: action(n10,"ship product")
+- [N24] Within matched traces (2->3) added: end(e2)
+
+Mutation
+- [N25] Node-level mutation: element=action(n3,"order rejected?"); source=i3:If the order is to be rejected; reason=The source defines a conditional branching path, but the model completely drops the decision structure and flattening it into a mandatory sequential action step ('order rejected?').
+- [N26] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i9:If there is a backorder; reason=The guard logic mutates the specific backorder condition into an invented, generic boolean check ('v2 = 'Yes'').
+- [N27] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i12:If the item can be reserved; reason=The guard modifies the condition logic, replacing the reservation check with an invented variable evaluation ('v2 = 'No'').

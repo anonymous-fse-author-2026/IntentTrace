@@ -1,0 +1,46 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i3:condition is "Order with prior internal credit allowance" -> i8:If Payments are Received, the process continues. -> i9:Payments are Received -> i12:identify the order for installation. -> i13:If the installation needs to be scheduled, an Installer will be assigned. -> i14:installation needs to be scheduled
+- [N2] Omitted trace (input 1): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i3:condition is "Order with prior internal credit allowance" -> i8:If Payments are Received, the process continues. -> i10:no payments are received -> i11:the order is dropped
+- [N3] Omitted trace (input 2): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i3:condition is "Order with prior internal credit allowance" -> i8:If Payments are Received, the process continues. -> i9:Payments are Received -> i12:identify the order for installation. -> i13:If the installation needs to be scheduled, an Installer will be assigned. -> i15:order does not require installation -> i16:it will be packed for delivery.
+- [N4] Omitted trace (input 3): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i4:order exceeds the purchaser's credit allowance -> i5:there will be an Outstanding Balance -> i6:a new order is placed and the process ends at the Warehouse. -> i7:it will be recorded in the Accounts Receivable. -> i8:If Payments are Received, the process continues. -> i10:no payments are received -> i11:the order is dropped
+- [N5] Within matched traces (4->0) omitted: i5:there will be an Outstanding Balance
+- [N6] Within matched traces (4->0) omitted: i6:a new order is placed and the process ends at the Warehouse.
+- [N7] Within matched traces (5->1) omitted: i5:there will be an Outstanding Balance
+- [N8] Within matched traces (5->1) omitted: i6:a new order is placed and the process ends at the Warehouse.
+- [N9] Within matched traces (4->2) omitted: i5:there will be an Outstanding Balance
+- [N10] Within matched traces (5->3) omitted: i5:there will be an Outstanding Balance
+
+Addition
+- [N11] Node-level addition: action(n17,"end process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: action(n18,"end process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"Orders Required") -> action(n3,"place Bulk order") -> branch(b1,XOR) -> action(n6,"Outstanding Balance") -> action(n7,"place new order") -> end(e1)
+- [N14] Within matched traces (4->0) added: init(i1)
+- [N15] Within matched traces (4->0) added: action(n17,"end process")
+- [N16] Within matched traces (4->0) added: end(e2)
+- [N17] Within matched traces (5->1) added: init(i1)
+- [N18] Within matched traces (5->1) added: action(n18,"end process")
+- [N19] Within matched traces (5->1) added: end(e3)
+- [N20] Within matched traces (4->2) added: init(i1)
+- [N21] Within matched traces (4->2) added: action(n11,"drop order")
+- [N22] Within matched traces (4->2) added: action(n17,"end process")
+- [N23] Within matched traces (4->2) added: end(e2)
+- [N24] Within matched traces (5->3) added: init(i1)
+- [N25] Within matched traces (5->3) added: action(n11,"drop order")
+- [N26] Within matched traces (5->3) added: action(n18,"end process")
+- [N27] Within matched traces (5->3) added: end(e3)
+
+Mutation
+- [N28] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:condition is "Order with prior internal credit allowance"; reason=Guard uses generic 'Yes' check instead of the specific allowance condition.
+- [N29] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:order exceeds the purchaser's credit allowance; reason=Guard uses generic 'No' check instead of the specific credit exceedance condition.
+- [N30] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i9:Payments are Received; reason=Guard uses generic 'Yes' check instead of the payment receipt condition.
+- [N31] Node-level mutation: element=guard(b2,n11,"v2 = 'No'"); source=i10:no payments are received; reason=Guard uses generic 'No' check instead of the non-payment condition.
+- [N32] Node-level mutation: element=guard(b3,n15,"v3 = 'Yes'"); source=i14:installation needs to be scheduled; reason=Guard uses generic 'Yes' check instead of the scheduling requirement condition.
+- [N33] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i15:order does not require installation; reason=Guard uses generic 'No' check instead of the non-installation condition.
+
+Permutation
+- [N34] Within matched traces (4->0) reordered: expected [i4:order exceeds the purchaser's credit allowance] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"process order for delivery")]
+- [N35] Within matched traces (5->1) reordered: expected [i4:order exceeds the purchaser's credit allowance] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"process order for delivery")]
+- [N36] Within matched traces (4->2) reordered: expected [i4:order exceeds the purchaser's credit allowance] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"process order for delivery")]
+- [N37] Within matched traces (4->2) reordered: expected [i6:a new order is placed and the process ends at the Warehouse.] but observed [action(n12,"end process")] elsewhere; in its place the model has [action(n8,"record in Accounts Receivable")]
+- [N38] Within matched traces (5->3) reordered: expected [i4:order exceeds the purchaser's credit allowance] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"process order for delivery")]
+- [N39] Within matched traces (5->3) reordered: expected [i6:a new order is placed and the process ends at the Warehouse.] but observed [action(n12,"end process")] elsewhere; in its place the model has [action(n8,"record in Accounts Receivable")]

@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i1:For testing purposes, the process should be continued from the beginning. (reason: The source explicitly mandates a reset/loop back to the beginning for testing purposes. The model only places a structural start node and omits the required looping or reset behavior entirely.)
+- [N2] Omitted trace (input 0): i1:For testing purposes, the process should be continued from the beginning. -> i2:If the value of "x" is greater than 2 -> i3:the process should be continued.
+- [N3] Omitted trace (input 1): i1:For testing purposes, the process should be continued from the beginning. -> i4:On the other hand, if the value of "x" is less than 2, the process should still be continued.
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: The content 'start' is fabricated and does not correspond to any instruction in the source text.)
+- [N5] Node-level addition: action(n5,"End") (reason: The content 'End' is unsupported; the source text concludes with a continuation directive, never describing a termination step.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n3,"Continue the process") -> converge(c1) -> action(n5,"End") -> end(e1)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n5,"End") -> end(e1)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:If the value of "x" is greater than 2; reason=The source specifies a concrete numeric threshold comparison (x > 2), but the guard distorts this into an abstract boolean equality (v1 = 'Yes'). Operator, value, and data type are all incorrect.
+- [N9] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:On the other hand, if the value of "x" is less than 2, the process should still be continued.; reason=The source specifies a concrete numeric threshold comparison (x < 2), but the guard distorts this into an abstract boolean equality (v1 = 'No'). Operator, value, and data type are all incorrect.

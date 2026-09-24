@@ -1,0 +1,19 @@
+- action(n1, "start"): Hallucinates an initial step; the description begins directly with "make a purchase and then connect to the website." (SMC1)
+- precedence(b1, n6) / action(n6, "continue shopping"): Node n6 lacks any outgoing precedence, creating a dead end; the description states that selecting "Continue Shopping" means the user "should continue with the process", requiring a loop back or link to subsequent steps. (SMC3, SMC5)
+- action(n9, "checkout tasks completed?") / action(n10, "credit card approved and inventory in stock?"): Mislabels conditional checks as executable steps; the description frames these as evaluation criteria, which must be represented using `branch` and `guard` elements. (SMC2)
+- defines(v1, ...) / defines(v3, ...): Declares empty value ranges `{}`; ranges must contain valid options or intervals corresponding to the source decisions, otherwise guards cannot evaluate them. (SMC6)
+- defines(v2, "checkout tasks completed?", {"Checkout Tasks Not Completed"}) / guard(b2, n17, ...): Fabricates a decision variable and route not present in the text; the description flows directly from parallel checkout tasks to checking credit card approval and inventory status. (SMC1, SMC4, SMC6)
+- branch(b1) / branch(b3): Missing `guard` constraints for XOR splits; the source explicitly defines routing conditions ("Add item to cart" vs "Continue Shopping" at b1, and "approved/in stock" vs "denied/no inventory" at b3) that require guard predicates. (SMC4)
+- precedence(b3, n11) through precedence(n14, n15): Routes confirmation and email steps exclusively through the approved path; the source explicitly mandates that "In either case, the order confirmation number should be displayed... [and] emailed", requiring these steps to execute regardless of the approval/inventory outcome. (SMC4, SMC5)
+- actor(a_default, ...): Assigns all nodes, including automated backend tasks ("authorize credit card", "check inventory levels", "send confirmation notice via email"), to a single default actor; the source distinguishes customer-facing actions from system/backend processing responsibilities. (SMC7)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"continue shopping")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Checkout Tasks Not Completed']`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` uses undefined variable `v2`. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"continue shopping")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

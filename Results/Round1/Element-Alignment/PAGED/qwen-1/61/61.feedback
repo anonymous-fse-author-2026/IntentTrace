@@ -1,0 +1,13 @@
+Addition
+- [N1] Node-level addition: guard(b1,c1,"v1 = true") (reason: These guards contain artificial boolean conditions ('v1 = true', etc.) that invent decision logic not present in the source text, which describes a purely linear sequence of steps.)
+- [N2] Node-level addition: guard(b2,c1,"v2 = true") (reason: These guards contain artificial boolean conditions ('v1 = true', etc.) that invent decision logic not present in the source text, which describes a purely linear sequence of steps.)
+- [N3] Node-level addition: guard(b3,n13,"v3 = true") (reason: These guards contain artificial boolean conditions ('v1 = true', etc.) that invent decision logic not present in the source text, which describes a purely linear sequence of steps.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n3` has in=1 and out=0. | DSL: action(n10,"Leave seller a feedback"); action(n3,"Receive invoice")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=0 and out=1. | Node `b2` has in=0 and out=1. | Node `b3` has in=0 and out=1. | Node `b4` has in=0 and out=0. | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,XOR); branch(b4,AND)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, b3, b4, c1, e1, n10, n13, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,XOR); branch(b4,AND); converge(c1); end(e1); action(n10,"Leave seller a feedback"); action(n13,"Process concludes") (+3 more)
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, b2, b4, c1, i1, n1, n10, n2, n3, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b4,AND); converge(c1); init(i1); action(n1,"Start the buying process"); action(n10,"Leave seller a feedback"); action(n2,"Make payment through the L2 bpmn process") (+4 more)
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=False]. | Branch `b2` has no enabled outgoing guard at state [v2=False]. | Branch `b3` has no enabled outgoing guard at state [v3=False].

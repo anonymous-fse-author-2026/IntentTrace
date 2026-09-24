@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i16:If the PO needs to be reworked, it needs to be created again. (reason: No element models this feedback loop or the re-creation action specified in the source.)
+- [N2] Omitted trace (input 0): i1:To start the process for ACME, -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory. -> i7:If the inventory is greater than the minimum, generate an Above Minimum Report. -> i10:the process ends.
+- [N3] Omitted trace (input 1): i1:To start the process for ACME, -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory. -> i4:If the inventory is below or equal to the minimum, -> i6:generate an Equal to or below minimum Report. -> i8:If the report indicates that the inventory is equal to or below the minimum, -> i9:create Purchase Orders (POs). -> i15:If the PO is created, it needs to be reviewed. -> i11:If the PO is rejected, -> i12:it needs to be reworked. -> i16:If the PO needs to be reworked, it needs to be created again. -> i9:create Purchase Orders (POs).
+
+Addition
+- [N4] Node-level addition: action(n20,"verify funds reservation") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N5] Node-level addition: action(n23,"check if funds reserved") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N6] Node-level addition: action(n30,"verify invoice receipt") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N7] Node-level addition: action(n31,"check if invoice received") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N8] Node-level addition: action(n42,"evaluate Three way match") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N9] Node-level addition: action(n21,"prepare POs for mailing") (reason: These verification, checking, and preparation steps are invented and lack support in any source unit.)
+- [N10] Within matched traces (2->0) added: branch(b11,AND)
+- [N11] Within matched traces (2->0) added: action(n20,"verify funds reservation")
+- [N12] Within matched traces (2->0) added: action(n23,"check if funds reserved")
+- [N13] Within matched traces (2->0) added: action(n30,"verify invoice receipt")
+- [N14] Within matched traces (2->0) added: action(n31,"check if invoice received")
+- [N15] Within matched traces (2->0) added: action(n42,"evaluate Three way match")
+- [N16] Within matched traces (3->1) added: action(n21,"prepare POs for mailing")
+- [N17] Within matched traces (3->1) added: action(n30,"verify invoice receipt")
+- [N18] Within matched traces (3->1) added: action(n31,"check if invoice received")
+- [N19] Within matched traces (3->1) added: action(n42,"evaluate Three way match")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=0 and out=0. | DSL: action(n9,"process ends")
+- [S2] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c2` has in=2 and out=0. | DSL: converge(c2)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1, n9 | DSL: end(e1); action(n9,"process ends")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: c2, n6, n9 | DSL: converge(c2); action(n6,"generate Above Minimum Report"); action(n9,"process ends")

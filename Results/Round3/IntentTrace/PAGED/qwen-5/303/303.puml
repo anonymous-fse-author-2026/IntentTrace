@@ -1,0 +1,70 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:supply requirement;
+:document requirement;
+:check order reception channel;
+:v1: is order received via fax ({fax, mail or phone}); <<objectSignal>>
+if () then ([v1 = 'fax'])
+:input order into Excel file;
+else ([v1 = 'mail or phone'])
+:log order channel;
+endif
+:after a week;
+:send Excel list to student;
+:type orders into MS-Access database;
+:ensure database typing is completed;
+:control incoming order;
+:At the same time, continue to do the check.;
+:is order correct;
+:v2: is order correct ({correct, incorrect}); <<objectSignal>>
+if () then ([v2 = 'correct'])
+:release order;
+:Send the Excel list to the student and upon receiving it, continue with the process.;
+else ([v2 = 'incorrect'])
+:contact selling agency;
+:is order worth less than 5000;
+:v3: is order worth less than 5000 ({yes, no}); <<objectSignal>>
+if () then ([v3 = 'yes'])
+:If the order is worth less than 5.000 €, release it.;
+else ([v3 = 'no'])
+:split tasks for sign off and continue check;
+:send order for sign off;
+:continue check;
+:contact selling agency and upon receiving actual issue send order for sign off;
+:contact client and release order;
+endif
+endif
+:PPC initiates production upon receiving order;
+:goods will be produced;
+:can issue be solved;
+:v4: can issue be solved ({no, yes}); <<objectSignal>>
+if () then ([v4 = 'no'])
+:cancel order;
+stop
+else ([v4 = 'yes'])
+:release order;
+:does order need to be cancelled;
+:v5: does order need to be cancelled ({yes, no}); <<objectSignal>>
+if () then ([v5 = 'yes'])
+stop
+else ([v5 = 'no'])
+:check quality of goods;
+:create and send quality report to finance department;
+:Release the order via memo and ensure that the memo is achieved in the warehouse.;
+:ensure memo achieved in warehouse;
+:send invoice;
+:report achievement to finance department;
+:commission goods;
+:sign and send memo;
+:send goods;
+:ensure signed memo achieved in logistic department;
+:archive memo and close order;
+:end process;
+stop
+endif
+endif
+@enduml

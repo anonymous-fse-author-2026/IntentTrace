@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i6:we reject the invoice. (reason: This distinct step was not faithfully implemented; its granularity was lost when improperly merged into a single action with the subsequent step.)
+- [N2] Node-level omission: i7:If the invoice is rejected, we return it to the client (reason: This distinct step was not faithfully implemented; it was merged into a preceding action, omitting its status as a separate step.)
+
+Addition
+- [N3] Node-level addition: action(n3,"Can client pay?") (reason: This action step ('Can client pay?') is an invented node. The confirmation step is already handled by action:n2, and the source text does not contain a separate action step merely asking this question.)
+- [N4] Node-level addition: action(n5,"End") (reason: The model creates 'End' as an action step, but the source text describes process completion as a structural state, not as a distinct action step performed by an actor.)
+- [N5] Node-level addition: action(n7,"End") (reason: The model creates 'End' as an action step, which lacks source support because ending is a structural state in the source, not a distinct operational action step.)
+- [N6] Within matched traces (0->0) added: action(n3,"Can client pay?")
+- [N7] Within matched traces (0->0) added: action(n5,"End")
+- [N8] Within matched traces (0->0) added: end(e1)
+- [N9] Within matched traces (1->1) added: action(n3,"Can client pay?")
+- [N10] Within matched traces (1->1) added: action(n7,"End")
+
+Mutation
+- [N11] Node-level mutation: element=action(n6,"Reject invoice and return to client"); source=i6:we reject the invoice. -> i7:If the invoice is rejected, we return it to the client; reason=The element improperly merges two distinct source units into a single action step ('Reject invoice and return to client'), violating the granularity of the source text and dropping the conditional phrasing of the return step.

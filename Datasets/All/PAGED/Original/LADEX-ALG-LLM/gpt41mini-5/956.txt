@@ -1,0 +1,80 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"start New Resupply Cycle","start","","","",""
+2,"Check Levels of Inventory","entity","1","","",""
+3,"Is inventory below or equal to minimum","condition","2","","",""
+4,"Generate Equal to or below minimum Report","entity","3","Yes","",""
+5,"Generate Above Minimum Report","entity","3","No","",""
+6,"Does report indicate inventory equal or below minimum","condition","4,5","","",""
+7,"Create Purchase Orders","entity","6","Yes","",""
+8,"End process because inventory is above minimum","end","6","No","",""
+9,"Is Purchase Order rejected","condition","7","","",""
+10,"Rework Purchase Order","entity","9","Yes","",""
+11,"Is Purchase Order approved","condition","9","No","",""
+12,"Print and release Purchase Order in system","entity","11","Yes","",""
+13,"Is Purchase Order created after rework","condition","10","","",""
+14,"Review Purchase Order","entity","13","Yes","",""
+15,"Create Purchase Order","entity","13","No","",""
+16,"Merge Review and Create Purchase Order","entity","14,15","","",""
+17,"Merge Print and Release with Review/Create","entity","12,16","","",""
+18,"Reserve funds for released Purchase Orders","entity","17","","",""
+19,"Mail Purchase Orders to supplier","entity","17","","",""
+20,"Have funds been reserved for released Purchase Orders","condition","18","","",""
+21,"Have Purchase Orders been mailed to supplier","condition","19","","",""
+22,"Receive Packing Slip","entity","20","Yes","",""
+23,"Wait for funds to be reserved","entity","20","No","",""
+24,"Receive inventory","entity","21","Yes","",""
+25,"Wait for Purchase Orders to be mailed to supplier","entity","21","No","",""
+26,"Receive Packing Slip after receiving inventory","entity","24","","",""
+27,"Merge Receive Packing Slip paths","entity","22,26","","",""
+28,"Has Packing Slip been received","condition","27","","",""
+29,"Receive Invoice","entity","28","Yes","",""
+30,"Wait for Packing Slip to be received","entity","28","No","",""
+31,"Has Invoice been received","condition","29","","",""
+32,"Wait for Invoice to be received","entity","31","No","",""
+33,"Perform Three way match","entity","31","Yes","",""
+34,"Is Three way match successful","condition","33","","",""
+35,"Release funds","entity","34","Yes","",""
+36,"End process due to unsuccessful Three way match","end","34","No","",""
+37,"Issue payment","entity","35","","",""
+38,"Resupply Cycle complete","end","37","","",""
+39,"Merge after funds reserved and POs mailed","entity","23,25","","",""
+40,"Merge after receive packing slip and inventory paths","entity","39,27","","",""
+41,"Merge before has packing slip been received","entity","20,21","","",""
+42,"Merge all receive steps before packing slip check","entity","40,41","","",""
+43,"Merge before receive invoice","entity","28,42","","",""
+44,"Merge after Wait for Invoice and Receive Invoice","entity","32,29","","",""
+45,"Merge before three way match","entity","44,33","","",""
+46,"Merge all before three way match decision","entity","43,45","","",""
+47,"Merge after three way match and wait for invoice","entity","31,33","","",""
+48,"Merge before PO approval and rejection","entity","9,11","","",""
+49,"Merge after PO printing and releases","entity","12,17","","",""
+50,"Merge all PO creation and release steps","entity","48,49","","",""
+51,"Merge all before checking funds and mailing POs","entity","50,18,19","","",""
+52,"Merge all before receiving packing slip and inventory","entity","21,22","","",""
+53,"Merge all after waiting steps","entity","23,25,30,32","","",""
+54,"Merge all waits with receive steps","entity","53,52","","",""
+55,"Merge after merge all receive steps and waits","entity","54,40","","",""
+56,"Merge all before Three way match sequence","entity","55","","",""
+57,"Merge after release funds and issue payment","entity","35,37","","",""
+58,"End process because PO was not approved","end","11","No","",""
+59,"End process because PO was not created after rework","end","13","No","",""
+60,"Wait for PO creation after rework","entity","10","","",""
+61,"End process because PO was rejected after rework","end","9","No","",""

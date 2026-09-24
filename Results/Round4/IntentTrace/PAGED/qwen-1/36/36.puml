@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start Talent Seek process;
+:applicant wishes to discuss terms and conditions;
+:v1: applicant wishes to discuss terms and conditions ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:discuss terms and conditions with candidate;
+else ([v1 = 'No'])
+->;
+endif
+:applicant wants to modify terms and conditions;
+:v2: applicant wants to modify terms and conditions ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:change is within set client limits;
+:v3: change is within set client limits ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:relay applicant changes due to exceeding client limits;
+else ([v3 = 'Yes'])
+:relay applicant changes and continue process;
+endif
+else ([v2 = 'No'])
+->;
+endif
+:seek approval for the offer and continue with the process;
+:modify terms and conditions accordingly;
+:send appointment approval and mandatory documentation to HR Services;
+:scan and upload the completed approval form to Cloud Source;
+:make a formal offer;
+:changes are acceptable;
+:v4: changes are acceptable ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:continue with the process;
+:v5: client accepts the changes ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:the process ends;
+stop
+else ([v5 = 'No'])
+:select new candidate from the list;
+stop
+endif
+else ([v4 = 'No'])
+:select new applicant from the list;
+stop
+endif
+@enduml

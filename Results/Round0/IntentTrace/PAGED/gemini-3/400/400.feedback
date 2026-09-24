@@ -1,0 +1,69 @@
+Omission
+- [N1] Within matched traces (4->6) omitted: i7:If the answer is "No" again, we continue the process.
+- [N2] Within matched traces (7->8) omitted: i16:Once the invoice is entered in SAP
+- [N3] Within matched traces (8->8) omitted: i16:Once the invoice is entered in SAP
+
+Addition
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"Is the answer No at the beginning?") -> branch(b1,XOR) -> action(n3,"Is the answer No second time?") -> branch(b2,XOR) -> action(n18,"Continue process after first No answer") -> converge(c1) -> action(n20,"Give it priority after first No answers") -> action(n21,"Look up the Vendor on SAP") -> action(n22,"Is Vendor found on SAP?") -> branch(b6,XOR) -> action(n25,"Enter the invoice in SAP") -> action(n26,"Is invoice entry confirmed?") -> branch(b7,XOR) -> action(n27,"Need a Vendor master record") -> action(n28,"End process due to missing Vendor master record") -> end(e5)
+- [N5] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"Is the answer No at the beginning?") -> branch(b1,XOR) -> action(n3,"Is the answer No second time?") -> branch(b2,XOR) -> action(n19,"Continue process after second No answer") -> converge(c1) -> action(n20,"Give it priority after first No answers") -> action(n21,"Look up the Vendor on SAP") -> action(n22,"Is Vendor found on SAP?") -> branch(b6,XOR) -> action(n25,"Enter the invoice in SAP") -> action(n26,"Is invoice entry confirmed?") -> branch(b7,XOR) -> action(n27,"Need a Vendor master record") -> action(n28,"End process due to missing Vendor master record") -> end(e5)
+- [N6] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"Is the answer No at the beginning?") -> branch(b1,XOR) -> action(n4,"Give it priority") -> action(n5,"Look up the Vendor on SAP") -> action(n6,"Is Vendor found on SAP?") -> branch(b3,XOR) -> action(n9,"Enter the invoice in SAP") -> action(n10,"Is the invoice entry confirmed?") -> branch(b4,XOR) -> action(n11,"Need a Vendor master record") -> action(n12,"End process due to missing Vendor master record") -> end(e2)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n20,"Give it priority after first No answers")
+- [N10] Within matched traces (1->2) added: init(i1)
+- [N11] Within matched traces (1->2) added: action(n20,"Give it priority after first No answers")
+- [N12] Within matched traces (1->2) added: branch(b7,XOR)
+- [N13] Within matched traces (1->2) added: action(n29,"Give it priority after invoice entry")
+- [N14] Within matched traces (1->2) added: action(n30,"Is answer Yes again?")
+- [N15] Within matched traces (1->2) added: branch(b8,XOR)
+- [N16] Within matched traces (1->2) added: action(n33,"End process after placing invoices in Outbox")
+- [N17] Within matched traces (1->2) added: end(e6)
+- [N18] Within matched traces (2->3) added: init(i1)
+- [N19] Within matched traces (2->3) added: converge(c1)
+- [N20] Within matched traces (2->3) added: action(n20,"Give it priority after first No answers")
+- [N21] Within matched traces (3->5) added: init(i1)
+- [N22] Within matched traces (3->5) added: action(n20,"Give it priority after first No answers")
+- [N23] Within matched traces (3->5) added: branch(b7,XOR)
+- [N24] Within matched traces (3->5) added: action(n29,"Give it priority after invoice entry")
+- [N25] Within matched traces (3->5) added: action(n30,"Is answer Yes again?")
+- [N26] Within matched traces (3->5) added: branch(b8,XOR)
+- [N27] Within matched traces (3->5) added: action(n33,"End process after placing invoices in Outbox")
+- [N28] Within matched traces (3->5) added: end(e6)
+- [N29] Within matched traces (4->6) added: init(i1)
+- [N30] Within matched traces (4->6) added: branch(b1,XOR)
+- [N31] Within matched traces (4->6) added: action(n4,"Give it priority")
+- [N32] Within matched traces (5->2) added: init(i1)
+- [N33] Within matched traces (5->2) added: branch(b1,XOR)
+- [N34] Within matched traces (5->2) added: action(n3,"Is the answer No second time?")
+- [N35] Within matched traces (5->2) added: action(n20,"Give it priority after first No answers")
+- [N36] Within matched traces (5->2) added: branch(b7,XOR)
+- [N37] Within matched traces (5->2) added: action(n29,"Give it priority after invoice entry")
+- [N38] Within matched traces (5->2) added: action(n30,"Is answer Yes again?")
+- [N39] Within matched traces (5->2) added: branch(b8,XOR)
+- [N40] Within matched traces (5->2) added: action(n33,"End process after placing invoices in Outbox")
+- [N41] Within matched traces (5->2) added: end(e6)
+- [N42] Within matched traces (6->6) added: init(i1)
+- [N43] Within matched traces (7->8) added: init(i1)
+- [N44] Within matched traces (7->8) added: action(n17,"End process after placing invoices in Outbox")
+- [N45] Within matched traces (7->8) added: end(e3)
+- [N46] Within matched traces (8->8) added: init(i1)
+- [N47] Within matched traces (8->8) added: branch(b3,XOR)
+- [N48] Within matched traces (8->8) added: action(n17,"End process after placing invoices in Outbox")
+- [N49] Within matched traces (8->8) added: end(e3)
+
+Mutation
+- [N50] Node-level mutation: element=guard(b2,n18,"v2 = 'Yes'"); source=i7:If the answer is "No" again, we continue the process.; reason=The model assigns a 'v2 = Yes' guard to this connection, but the text only describes continuing the process if the answer is 'No' again; it does not explicitly define a 'Yes' outcome for this step.
+
+Permutation
+- [N51] Within matched traces (1->2) reordered: expected [i16:Once the invoice is entered in SAP] but observed [converge(c1)] elsewhere; in its place the model has [action(n31,"Enter the invoice in SAP again")]
+- [N52] Within matched traces (3->5) reordered: expected [i16:Once the invoice is entered in SAP] but observed [converge(c1)] elsewhere; in its place the model has [action(n31,"Enter the invoice in SAP again")]
+- [N53] Within matched traces (5->2) reordered: expected [i16:Once the invoice is entered in SAP] but observed [converge(c1)] elsewhere; in its place the model has [action(n31,"Enter the invoice in SAP again")]
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | Node `b8` has in=1 and out=1. | DSL: branch(b5,XOR); branch(b8,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v5` has an invalid range `['Yes']`. | Variable `v8` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v5 = 'Yes'` on `b5 -> n15` uses undefined variable `v5`. | Guard `v8 = 'Yes'` on `b8 -> n31` uses undefined variable `v8`. | DSL: guard(b5,n15,"v5 = 'Yes'"); guard(b8,n31,"v8 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v5 = 'Yes'` on `b5 -> n15` cannot be evaluated: `v5` has no declared range. | Guard `v8 = 'Yes'` on `b8 -> n31` cannot be evaluated: `v8` has no declared range. | DSL: guard(b5,n15,"v5 = 'Yes'"); guard(b8,n31,"v8 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` cannot be evaluated: `v5` has no declared range. | Branch `b8` cannot be evaluated: `v8` has no declared range.

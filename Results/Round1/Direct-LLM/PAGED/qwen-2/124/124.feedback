@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue. (reason: The model skips the initial rejection/acceptance decision entirely. Although both arms lead to continuation, the source explicitly defines this conditional checkpoint before the parallel steps, requiring a corresponding branch or action element.)
+- [N2] Node-level omission: i3:If the order is to be accepted (reason: The model skips the initial rejection/acceptance decision entirely. Although both arms lead to continuation, the source explicitly defines this conditional checkpoint before the parallel steps, requiring a corresponding branch or action element.)
+- [N3] Within matched traces (0->0) omitted: i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.
+- [N4] Within matched traces (1->1) omitted: i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.
+
+Addition
+- [N5] Added trace (model 2): init(i1) -> action(n2,"look at the order") -> branch(b1,AND) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> end(e1)
+- [N6] Added trace (model 3): init(i1) -> action(n2,"look at the order") -> branch(b1,AND) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> end(e2)
+- [N7] Within matched traces (1->1) added: converge(c1)
+- [N8] Within matched traces (1->1) added: action(n6,"backorder?")
+
+Mutation
+- [N9] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i7:If the item can be reserved; reason=The guard replaces the explicit business condition 'If the item can be reserved' with an abstract variable assignment 'v2 = No', dropping the original semantic qualifier and altering the documented logic.

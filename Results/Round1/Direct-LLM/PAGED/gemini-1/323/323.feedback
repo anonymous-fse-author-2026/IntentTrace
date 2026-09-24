@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i1:To begin, start by providing the requested shipping information. (reason: The specific behavior to provide the 'requested' shipping information is not faithfully implemented by any element due to the dropped qualifier.)
+- [N2] Node-level omission: i5:confirm the shipping address and ensure that it is correct (reason: The complete instruction to confirm the address and 'ensure that it is correct' is not faithfully implemented.)
+- [N3] Node-level omission: i6:proceed to select the desired shipping speed (reason: The specific behavior to select the 'desired' shipping speed is not faithfully implemented due to the dropped qualifier.)
+- [N4] Omitted trace (input 1): i1:To begin, start by providing the requested shipping information. -> i2:proceed to determine the shipping details -> i4:if a "New shipping address" has been entered -> i5:confirm the shipping address and ensure that it is correct -> i6:proceed to select the desired shipping speed -> i7:the process comes to an end
+
+Mutation
+- [N5] Node-level mutation: element=action(n2,"Provide shipping information"); source=i1:To begin, start by providing the requested shipping information.; reason=The action drops the qualifier 'requested' from the shipping information.
+- [N6] Node-level mutation: element=action(n5,"Confirm shipping address"); source=i5:confirm the shipping address and ensure that it is correct; reason=The action drops the second part of the instruction to 'ensure that it is correct'.
+- [N7] Node-level mutation: element=action(n7,"Select shipping speed"); source=i6:proceed to select the desired shipping speed; reason=The action drops the qualifier 'desired' from the shipping speed.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Saved shipping address].

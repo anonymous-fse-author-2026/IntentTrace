@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v1: Answer 1 ({No, No again, Yes, Yes priority}); <<objectSignal>>
+switch ()
+case ([v1 = 'No'])
+:if the answer is "No;
+:we continue the process;
+case ([v1 = 'No again'])
+:If the answer is "No" again;
+:we continue the process;
+case ([v1 = 'Yes'])
+:However, if the answer is "Yes;
+:then we give it priority;
+case ([v1 = 'Yes priority'])
+:However, if the answer is "Yes", then we give it priority.;
+endswitch
+:we look up the Vendor on SAP;
+:v2: Answer 2 ({No, Yes, Yes priority, Yes again}); <<objectSignal>>
+switch ()
+case ([v2 = 'No'])
+:If the answer is "No;
+:we need a Vendor master record;
+:the process ends;
+stop
+case ([v2 = 'Yes'])
+:But if the answer is "Yes;
+:then we enter the invoice in SAP;
+:we place the entered invoices in the normal Outbox;
+:the process ends;
+stop
+case ([v2 = 'Yes priority'])
+:if the answer is "Yes;
+:then we give it priority;
+:v3: Continue from priority ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:we enter the invoice in SAP;
+:we place the entered invoices in the normal Outbox;
+:the process ends;
+stop
+else ([v3 = 'No'])
+stop
+endif
+case ([v2 = 'Yes again'])
+:And if the answer is "Yes" again;
+:we enter the invoice in SAP;
+:we place the entered invoices in the normal Outbox;
+:the process ends;
+stop
+endswitch
+@enduml

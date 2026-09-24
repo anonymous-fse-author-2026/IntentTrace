@@ -1,0 +1,8 @@
+- `defines(v1, "check if there is a fee", {})`, `defines(v2, "check if purchase request is approved", {})`: Ranges are empty `{}`; source implies discrete decision outcomes ("no fee"/"fee", "approved"/"rejected"), requiring explicit value sets per SMC6.
+- `branch(b1, ...)`, `branch(b2, ...)`: Missing `guard` statements linking `v1`/`v2` to outgoing edges; control-flow logic omits the conditional transitions ("If there is no fee...", "If it is approved...") required by SMC4.
+- `action(n5, "End process after post-seminar request registration")`, `action(n10, "End process after rejection notification or post-seminar registration")`: Hallucinated tasks; source describes termination as a state change ("the process will come to an end"), not an executable activity, violating SMC1 and SMC2.
+- `precedence(n3, n5)`, `precedence(c1, n10)`: Detour through hallucinated steps before reaching `end(e1)`/`end(e2)` contradicts the immediate termination stated in the source ("Once you have registered..., the process will come to an end."), breaching SMC3 and SMC5.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

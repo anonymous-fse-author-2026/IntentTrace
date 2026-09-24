@@ -1,0 +1,6 @@
+
+
+- `action(n20, "Give it priority after first No answers")`: Hallucinates a priority step on the "No" continuation path. The source explicitly states priority is given only "if the answer is 'Yes'", not when the process simply continues after "No". (SMC1, SMC2)
+- `guard(b2, n18, v2 = 'Yes')` / `action(n18, "Continue process after second No answer")`: The guard evaluates for a 'Yes' answer, but routes to an action explicitly named for a 'No' outcome. Additionally, the source does not define behavior for a second 'Yes' answer, making this branch speculative and its payload contradictory. (SMC2, SMC4)
+- Precedence splitting after `branch(b1)`: The model forks into two entirely disjoint, duplicated workflows (one for `v1='Yes'`, one for `v1='No'`) that run in parallel without merging until their separate `end` nodes. The description outlines one unified process where conditional paths should converge before "Look up the Vendor on SAP", fundamentally misrepresenting the intended single-process progression. (SMC4, SMC5)
+- `defines(v5, ..., {"Yes"})` & `defines(v8, ..., {"Yes"})`: Variable ranges are hardcoded to only `{"Yes"}` while driving XOR branches (`b5`, `b8`). This omits the complementary decision value required for an exclusive choice, failing to faithfully capture the decision space implied by the textual checks. (SMC6)

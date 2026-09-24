@@ -1,0 +1,20 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i2:start by obtaining the raw material from the received list
+- [N2] Within matched traces (1->1) omitted: i2:start by obtaining the raw material from the received list
+
+Addition
+- [N3] Within matched traces (0->0) added: action(n_i2,"Obtain raw material from received list")
+- [N4] Within matched traces (1->1) added: action(n_i2,"Obtain raw material from received list")
+
+Mutation
+- [N5] Node-level mutation: element=action(n4,"Conclude process with available stock"); source=i6:conclude the process; reason=Invents the qualifier 'with available stock', which is not present in the source unit and alters the stated granularity.
+- [N6] Node-level mutation: element=action(n8,"Check raw material after PO"); source=i5:proceed to check the raw material; reason=Invents the contextual suffix 'after PO', adding information not contained in the corresponding source unit.
+- [N7] Node-level mutation: element=action(n9,"Conclude process with purchased stock"); source=i6:conclude the process; reason=Invents the qualifier 'with purchased stock', deviating from the exact source instruction.
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v1 = 'No'` on `b1 -> n6` uses undefined variable `v1`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,n6,"v1 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'No'` on `b1 -> n6` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,n6,"v1 = 'No'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

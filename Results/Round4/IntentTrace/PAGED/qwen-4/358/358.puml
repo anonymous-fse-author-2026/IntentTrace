@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:initial check;
+:second decision;
+:second check;
+:give priority;
+:flow merge;
+:lookup vendor on SAP;
+:v3: vendor exists in SAP ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:need vendor master record;
+:end due to missing vendor master;
+stop
+else ([v3 = 'Yes'])
+:enter invoice in SAP;
+:invoice decision;
+:give priority;
+:priority decision again;
+:enter invoice in SAP;
+:place invoices in normal Outbox;
+:end process;
+stop
+endif
+@enduml

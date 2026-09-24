@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:place an order;
+:check the customer;
+:v1: is customer eligible to order ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:inform customer not eligible;
+:end process;
+stop
+else ([v1 = 'Yes'])
+:open new order in ERP system;
+:perform availability check;
+:v2: is product available ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:start producing the missing parts;
+else ([v2 = 'Yes'])
+->;
+endif
+:prepare the products for shipment;
+endif
+@enduml

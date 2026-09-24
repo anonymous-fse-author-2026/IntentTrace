@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Examine Order;
+:Is Order Rejected?;
+split
+:Prepare Assembling Order;
+split again
+:Check Availability;
+end split
+repeat :;
+:Is Backorder Required?;
+:v2: Availability Check ({Backorder, Reserved, Failed}); <<objectSignal>>
+backward:Check Availability Again;
+repeat while () is ([v2 = "Backorder"]) not ([v2 = "Failed"])
+:End;
+stop
+@enduml

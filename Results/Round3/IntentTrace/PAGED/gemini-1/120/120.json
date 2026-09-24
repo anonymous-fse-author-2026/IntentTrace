@@ -1,0 +1,323 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "To start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "ask the 1st Level Support if there is an issue"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "If the issue is resolved"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "provide feedback for the account manager"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "If it is a 1st Level issue"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "ask the developer for assistance"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "check the result again."
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "If it is still a 1st Level issue"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "ask the developer for help"
+    },
+    {
+      "id": "n4b",
+      "type": "action",
+      "content": "provide feedback for the account manager"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "end the process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Ask the developer and then provide feedback for the 1st Level support."
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Finally, provide feedback for the 1st Level support and then provide feedback for the account manager."
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "status1",
+      "R_X": [
+        "resolved",
+        "issue",
+        "other"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "status2",
+      "R_X": [
+        "resolved",
+        "issue"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "c2",
+        "n3",
+        "n4",
+        "n4b",
+        "n5",
+        "n6",
+        "n7",
+        "b2",
+        "n8",
+        "n9",
+        "n10",
+        "e2",
+        "n11",
+        "n12",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n4b"
+    },
+    {
+      "type": "precedence",
+      "A": "n4b",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c2",
+      "condition": "v1 = \"resolved\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"issue\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n11",
+      "condition": "v1 = \"other\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c2",
+      "condition": "v2 = \"resolved\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = \"issue\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start"
+    },
+    {
+      "id": "i2",
+      "content": "ask the 1st Level Support if there is an issue"
+    },
+    {
+      "id": "i3",
+      "content": "If the issue is resolved"
+    },
+    {
+      "id": "i4",
+      "content": "provide feedback for the account manager"
+    },
+    {
+      "id": "i5",
+      "content": "If it is a 1st Level issue"
+    },
+    {
+      "id": "i6",
+      "content": "ask the developer for assistance"
+    },
+    {
+      "id": "i7",
+      "content": "check the result again."
+    },
+    {
+      "id": "i8",
+      "content": "If it is still a 1st Level issue"
+    },
+    {
+      "id": "i9",
+      "content": "ask the developer for help"
+    },
+    {
+      "id": "i10",
+      "content": "and end the process"
+    },
+    {
+      "id": "i11",
+      "content": "Ask the developer and then provide feedback for the 1st Level support."
+    },
+    {
+      "id": "i12",
+      "content": "Finally, provide feedback for the 1st Level support and then provide feedback for the account manager."
+    }
+  ]
+}

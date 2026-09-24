@@ -1,0 +1,9 @@
+
+
+- `branch(b3, AND)`: Splits control flow into returning invoices (`n5`) and continuing the process (`n9`) concurrently. The source describes mutually exclusive paths: "If they are marked as 'Uncompleted'... However, if they are marked as 'Completed'...", requiring an XOR gateway.
+- `action(n6, "Wait for completion...")` and `action(n13, "Wait for completion...")`: Hallucinates waiting steps not present in the source, which only states: "Once the invoices are returned to the client, receive the completed ones."
+- `defines(v1, "Has the process started", {"No"})` and `defines(v2, "Check if the process has been completed", {"Completed"})`: Variable ranges are incomplete, listing only a single value. The checks imply binary outcomes, making the ranges semantically invalid for routing decisions.
+- `guard(b1, n3, v1 = 'No')`: Routes to an immediate end (`n3` → `e1`) if the process hasn't started. The source only instructs to "first check if it has started" before proceeding to verify invoices, specifying no termination condition.
+- Missing `defines` for invoice status: The source explicitly conditions the workflow on whether invoices are "'Uncompleted'" or "'Completed'", but the model omits a corresponding decision variable and applies no guards to `b3`.
+- `precedence(n14, n8)`: Creates a backward loop from receiving invoices back to marking the form. The source outlines a linear finish: "mark the relevant box... and proceed with checking if the process has been completed. Finally, the process ends."
+- `guard(b2, n11, v2 = 'Completed')` / implicit else path: When the process is not completed, the model loops back to returning invoices (`n12`). The source does not prescribe re-mailing at this stage; it simply concludes the process after the final completion check.

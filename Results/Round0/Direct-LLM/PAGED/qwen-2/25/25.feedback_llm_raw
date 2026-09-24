@@ -1,0 +1,7 @@
+
+
+- `guard` statements for `branch(b1, XOR)`: Missing conditions on outgoing edges to `n4` and `n5`; source explicitly states "If a 'Saved shipping address' has been selected... if a 'New shipping address' has been entered...", requiring boolean/data guards tied to variable `v1`.
+- `defines(v1, "Is shipping address saved or new", {})` and `defines(v2, "Is shipping address correct", {})`: Ranges are empty `{}`; source implies discrete decision values (e.g., Saved/New, Correct/Incorrect) that must be declared in the value space per SMC6.
+- `branch(b2, XOR)`, `precedence(b2, n10)`, `action(n10, "End")`, `end(e2)`: Hallucinated control-flow split and premature termination path; source states "After confirming the shipping address, proceed to select the desired shipping speed. Finally, once the shipping speed has been chosen, the process comes to an end," describing a single linear progression, not a choice between ending immediately or selecting speed.
+- `guard` statement for `branch(b2, XOR)`: Missing condition for the edge to `n8`; source includes "...ensure that it is correct," which implies a validation condition that should govern the transition to speed selection.
+- `action(n9, "End")` and `action(n10, "End")`: Redundant/Hallucinated end steps; source describes only one conclusion point after speed selection, making dual "End" actions and two `end()` declarations (`e1`, `e2`) unfaithful to the documented single termination behavior.

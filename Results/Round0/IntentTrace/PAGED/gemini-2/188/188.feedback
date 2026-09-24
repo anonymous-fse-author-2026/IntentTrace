@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i4:check the Banking Privilege Status (reason: The model lacks a distinct action element for checking the Banking Privilege Status.)
+- [N2] Node-level omission: i8:check the fulfillment of loan conditions (reason: The model lacks a distinct action element for checking the fulfillment of loan conditions.)
+- [N3] Within matched traces (0->0) omitted: i4:check the Banking Privilege Status
+- [N4] Within matched traces (1->0) omitted: i4:check the Banking Privilege Status
+- [N5] Within matched traces (1->0) omitted: i8:check the fulfillment of loan conditions
+- [N6] Within matched traces (2->2) omitted: i4:check the Banking Privilege Status
+- [N7] Within matched traces (2->2) omitted: i8:check the fulfillment of loan conditions
+- [N8] Within matched traces (3->3) omitted: i4:check the Banking Privilege Status
+- [N9] Within matched traces (3->3) omitted: i8:check the fulfillment of loan conditions
+
+Addition
+- [N10] Node-level addition: action(n17,"End of procedure") (reason: The text does not mention an 'End of procedure' action or a corresponding negative guard for the reject response branch.)
+- [N11] Node-level addition: guard(b5,n17,"v5 = 'No'") (reason: The text does not mention an 'End of procedure' action or a corresponding negative guard for the reject response branch.)
+- [N12] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n8,"Error Message") -> end(e2)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n9,"Calculate threshold amount") -> action(n10,"Check Creditworthiness") -> branch(b3,XOR) -> action(n11,"Designate Status") -> action(n12,"Initialize Loan Form") -> action(n13,"Construct Approve Response") -> branch(b4,XOR) -> action(n15,"Construct Reject Response") -> branch(b5,XOR) -> action(n17,"End of procedure") -> end(e5)
+- [N14] Within matched traces (2->2) added: action(n4,"Construct Error Response from Banking Privilege Status")
+- [N15] Within matched traces (2->2) added: action(n7,"Construct Error Response from loan conditions")
+- [N16] Within matched traces (3->3) added: action(n4,"Construct Error Response from Banking Privilege Status")
+- [N17] Within matched traces (3->3) added: action(n7,"Construct Error Response from loan conditions")
+- [N18] Within matched traces (3->3) added: action(n13,"Construct Approve Response")
+- [N19] Within matched traces (3->3) added: branch(b4,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=action(n4,"Construct Error Response from Banking Privilege Status"); source=i5:If there is a "Construct Error Response"; reason=The model altered the action to specifically include 'from Banking Privilege Status', whereas the text states it universally.
+- [N21] Node-level mutation: element=action(n7,"Construct Error Response from loan conditions"); source=i5:If there is a "Construct Error Response"; reason=The model altered the action to specifically include 'from loan conditions', which is not phrased that way for the response itself in the text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes'` on `b3 -> n11` uses undefined variable `v3`. | Guard `v4 = 'Yes'` on `b4 -> n14` uses undefined variable `v4`. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n15` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | Guard `v4 = 'Yes'` on `b4 -> n14` cannot be evaluated: `v4` has no declared range. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range.

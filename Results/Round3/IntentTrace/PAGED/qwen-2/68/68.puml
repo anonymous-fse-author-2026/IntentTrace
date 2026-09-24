@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Customer returns the items to the store or Delivery Crew picks-up items at the event site;
+:Count and compare items to contract;
+:v_order_status: Order status ({Incomplete missing, Damaged}); <<objectSignal>>
+if () then ([v_order_status = 'Incomplete missing'])
+:Email customer missing items and replacement charges;
+:v_missing_return: Missing items return ({Returns missing, Does not return missing}); <<objectSignal>>
+if () then ([v_missing_return = 'Returns missing'])
+:Customer returns the missing items;
+else ([v_missing_return = 'Does not return missing'])
+:Customer does not return the missing items;
+endif
+else ([v_order_status = 'Damaged'])
+:Email customer damage and additional charges;
+:Temporarily remove damaged items from inventory;
+:Items are repaired and added into inventory;
+:Lastly, the items are packed for an existing order;
+:Items are packed for an existing order;
+endif
+stop
+@enduml

@@ -1,0 +1,13 @@
+Addition
+- [N1] Node-level addition: action(n1,"start loan application process") (reason: The step 'start loan application process' is not described in the source text, which begins directly with the application check. It introduces an unbacked preparatory action.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start loan application process") -> action(n2,"check loan application") -> action(n3,"is application rejected") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon") -> branch(b2,XOR) -> action(n6,"end process") -> end(e2)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"start loan application process")
+- [N5] Within matched traces (1->2) added: init(i1)
+- [N6] Within matched traces (1->2) added: action(n1,"start loan application process")
+- [N7] Within matched traces (1->2) added: action(n3,"is application rejected")
+- [N8] Within matched traces (1->2) added: branch(b1,XOR)
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'") -> guard(b1,n5,"v1 = 'No'"); source=i2:If the application is rejected, the process ends.; reason=Both guards replace the explicit textual condition 'application is rejected' (and its logical complement) with abstract variable assignments `v1 = 'Yes'` and `v1 = 'No'`, stripping away the semantic meaning required by the source.
+- [N10] Node-level mutation: element=guard(b2,n6,"v2 = 'No'") -> guard(b2,n7,"v2 = 'Yes'"); source=i3:However, if special terms are agreed upon, the process continues.; reason=These guards substitute the concrete condition 'special terms are agreed upon' with generic flags `v2 = 'No'` and `v2 = 'Yes'`, altering the guard payload and logic relative to the source text.

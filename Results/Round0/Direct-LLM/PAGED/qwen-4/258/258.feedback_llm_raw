@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start flight booking process for Flight Centre")`: Hallucinates an initial step; the source states "the process begins with the availability of the departing flight."
+- `action(n6, "Wait for departing flight availability")`, `action(n7, "Is departing flight available")`: Hallucinates a waiting loop and duplicate verification; the source implies a single check: "Once the departing flight is available, the next step is..."
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Introduces exclusive choice gates not present in the source, which outlines a strictly linear, unconditional workflow.
+- `precedence(b2, n6)`, `precedence(b2, n2)`: Creates cyclic/retrograde control flow (`n6`→`n7`→`b2`→`n6`/`n2`) that violates the source's exact chronological order.
+- `action(n5, "End process")`: Hallucinates an intermediate terminal step before `end(e1)`; the source indicates immediate termination: "once the flight selection is complete, the process comes to an end."
+- `defines(v1, "Is departing flight available", {})`, `defines(v2, "Is departing flight available", {})`: Declares duplicate variables with empty ranges `{}` that fail to capture the availability condition; additionally, no `guard` statements associate them with the defined branches.
+- `action(n2, "Is departing flight available")`: Misrepresents a process prerequisite as a sequential task; per source ("Once the departing flight is available, the next step is..."), this condition should control the transition to return flight selection via a guard, not operate as an independent action node.

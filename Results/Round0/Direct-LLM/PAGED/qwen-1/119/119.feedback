@@ -1,0 +1,14 @@
+- branch(b3, AND): Forces parallel execution of "get a bonus" and "get a paycheck", contradicting the source's conditional/alternative phrasing ("If you 'get a bonus'... If you 'get a paycheck'...").
+- guard(b1, n4, v1 = 'no'), guard(b2, n5, v2 = 'no') & defines(v1, "get a bonus", {"no"}), defines(v2, "get a paycheck", {"no"}): Conditions continuation on variables equaling 'no' and restricts value spaces exclusively to {"no"}, directly contradicting "If you 'get a bonus', then you continue the process" and "If you 'get a paycheck', then you also continue the process".
+- action(n4)/action(n5), action(n6)/action(n7), action(n8)/action(n9), end(e1)/end(e2): Hallucinates duplicate continuation, bill-payment, and termination nodes creating two disjoint paths, whereas the source specifies a single unified progression ("continue the process", "Once you pay the bill, the process ends").
+- label(b3, n2, "no"), label(b3, n3, "no"): Incorrectly annotates edges leading to the bonus and paycheck actions with "no", misrepresenting positive triggers as negative outcomes per the source text.
+- Control-flow topology (branch(b3, AND) without converge & multiple ends): Splits control flow via AND but never rejoins, violating the singular chronological sequence and terminating at two separate ends instead of faithfully mirroring "the process ends".
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['no']`. | Variable `v2` has an invalid range `['no']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'no'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'no'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b1,n4,"v1 = 'no'"); guard(b2,n5,"v2 = 'no'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'no'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'no'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n4,"v1 = 'no'"); guard(b2,n5,"v2 = 'no'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

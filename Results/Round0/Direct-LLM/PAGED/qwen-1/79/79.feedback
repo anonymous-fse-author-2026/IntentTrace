@@ -1,0 +1,9 @@
+- `action(n1, "start the purchase process")`: Hallucinates a step; the source text begins directly with `"the customer needs to make a purchase"` without an intermediate start action.
+- `branch(b1, XOR)`: Lacks required `guard` statements on its outgoing edges, failing to model the conditional logic `"If they choose to 'Add Items to cart'"` versus `"if they decide not to add items to the cart"`.
+- `defines(v1, "add items to cart?", {})`: Specifies an empty value range `{}`, which does not capture the binary decision space (e.g., yes/no or true/false) required by the documented choice.
+- `action(n7, "End of process")` and `action(n9, "End of process")`: Introduce undocumented intermediary steps before termination; the source states the process simply `"will end"` after checkout or shopping, with no extra action required.
+- `actor(a_default, "Default", [i1, n1, ..., e2])`: Misidentifies the responsible party (source specifies `"the customer"`) and incorrectly assigns structural control-flow elements (`i1`, `b1`, `e1`, `e2`) to a participant instead of executable tasks.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

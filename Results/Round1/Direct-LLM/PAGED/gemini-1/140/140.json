@@ -1,0 +1,330 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start the resupply process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check inventory level"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Create purchase order"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Review purchase order"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Rework purchase order"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Reserve funds"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Send order to supplier"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Receive packing slip"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "Receive invoice"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Record packing slip"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Record invoice"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is inventory level at or below minimum",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is purchase status rejected",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "e1",
+        "n5",
+        "c1",
+        "n6",
+        "b2",
+        "n8",
+        "n14",
+        "n15",
+        "b3",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "e2",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n14",
+      "condition": "v2 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process,"
+    },
+    {
+      "id": "i2",
+      "content": "trigger the resupply cycle"
+    },
+    {
+      "id": "i3",
+      "content": "check the inventory level"
+    },
+    {
+      "id": "i4",
+      "content": "If the inventory level is at or below the minimum"
+    },
+    {
+      "id": "i5",
+      "content": "create a purchase order"
+    },
+    {
+      "id": "i6",
+      "content": "Otherwise, if the inventory level is above the minimum"
+    },
+    {
+      "id": "i7",
+      "content": "the process ends"
+    },
+    {
+      "id": "i8",
+      "content": "review it"
+    },
+    {
+      "id": "i9",
+      "content": "If the purchase status is rejected"
+    },
+    {
+      "id": "i10",
+      "content": "rework the purchase order"
+    },
+    {
+      "id": "i11",
+      "content": "However, if the purchase status is approved"
+    },
+    {
+      "id": "i12",
+      "content": "reserve the funds"
+    },
+    {
+      "id": "i13",
+      "content": "Otherwise, if the purchase status is approved"
+    },
+    {
+      "id": "i14",
+      "content": "send the order to the supplier"
+    },
+    {
+      "id": "i15",
+      "content": "receive the packing slip"
+    },
+    {
+      "id": "i16",
+      "content": "receive the invoice"
+    },
+    {
+      "id": "i17",
+      "content": "record it"
+    }
+  ]
+}

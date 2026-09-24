@@ -1,0 +1,109 @@
+@startuml
+!theme plain
+|a_rm| Recruitment Manager
+|a_nlm| Next Level Manager
+|a_chr| Client HR
+|a_tshrc| TS HR Coordinator
+|a_hrr| HR Representative
+|a_rm|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:No more candidates;
+:v1: No more candidates ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:run re advertise position;
+:end TS recruitment;
+stop
+else ([v1 = 'No'])
+:voluntary redundancy accepted;
+:v2: voluntary redundancy accepted ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:investigate voluntary redundancy acceptance;
+:send Appointment Approval form;
+else ([v2 = 'No'])
+:send Appointment Approval form;
+endif
+|a_nlm|
+:receive Appointment Approval form by next level manager;
+:approver is existing employee;
+:v3: approver is existing employee ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:external authorization review;
+else ([v3 = 'Yes'])
+->;
+endif
+|a_rm|
+:form approved;
+:v4: form approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:send form and documentation to client HR;
+|a_chr|
+:receive form and documentation by client HR;
+:HR scans completed form and records position in GovSource;
+:variations present;
+:v5: variations present ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:require complete business case;
+|a_rm|
+:carry forward Appointment Approval;
+|a_chr|
+else ([v5 = 'No'])
+|a_rm|
+:carry forward Appointment Approval;
+|a_chr|
+endif
+|a_rm|
+:position requires medical assessment;
+:v6: position requires medical assessment ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'] up to 21 days)
+:apply 12 percent rate for medical assessment;
+else ([v6 = 'No'])
+:no medical assessment necessary;
+endif
+|a_tshrc|
+:TS HR coordinator informs recruitment manager;
+|a_hrr|
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+|a_rm|
+:assessment satisfactory;
+:v7: assessment satisfactory ({No, Yes}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:make formal verbal offer of employment;
+:candidate accepts verbal offer;
+split
+:create formal written offer;
+split again
+:send commencement pack to candidate;
+split again
+:send letter of appointment to candidate;
+end split
+repeat :;
+:candidate receives documents;
+:rate is forty percent;
+:v9: rate is forty percent ({Yes, No}); <<objectSignal>>
+backward:verify candidate acceptance;
+repeat while () is ([v9 = 'No']) not ([v9 = 'Yes'])
+:renegotiation required;
+:renegotiation successful;
+split
+split again
+end split
+:v10: renegotiation successful ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:end TS recruitment;
+stop
+else ([v10 = 'No'])
+->;
+endif
+else ([v7 = 'No'])
+->;
+endif
+:contact next candidate on shortlist;
+stop
+else ([v4 = 'No'])
+:end TS recruitment;
+stop
+endif
+endif
+@enduml

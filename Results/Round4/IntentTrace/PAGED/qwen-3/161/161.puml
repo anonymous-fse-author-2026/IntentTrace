@@ -1,0 +1,49 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:join the team and agree on domain;
+:create process model and check it;
+:is process model NOT OK?;
+:v1: process model status ({NOT OK, OK}); <<objectSignal>>
+if () then ([v1 = 'NOT OK'])
+:assign negative points;
+:check process model again;
+:is process model STILL NOT OK?;
+:v2: process model second check ({NOT OK, OK}); <<objectSignal>>
+if () then ([v2 = 'NOT OK'])
+:assign negative points again;
+else ([v2 = 'OK'])
+:if process is okay continue with it;
+:fix issues in next session and extend to levels 2 and 3;
+:check process and assign points or analyze field of study;
+:v3: task type ({check points, analyze field}); <<objectSignal>>
+if () then ([v3 = 'analyze field'])
+:assign roles in team;
+else ([v3 = 'check points'])
+->;
+endif
+:continue with process and perform work according role;
+:check progress and consult problems;
+:is project accepted?;
+:v4: project acceptance ({accepted, not accepted}); <<objectSignal>>
+if () then ([v4 = 'accepted'])
+:present it;
+else ([v4 = 'not accepted'])
+:continue working according role;
+endif
+:present it again;
+:v5: final presentation required ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+:finally present project and end process;
+else ([v5 = false])
+->;
+endif
+endif
+stop
+else ([v1 = 'OK'])
+->;
+endif
+@enduml

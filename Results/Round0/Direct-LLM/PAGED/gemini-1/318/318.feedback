@@ -1,0 +1,15 @@
+- defines(v1, "is order okay", {"No"}): The variable range omits "Yes", which is required to reflect the source text ("If the order is okay...").
+- precedence(b1, c1): This outgoing edge from the XOR gateway b1 lacks a guard condition (e.g., v1 = 'Yes') to evaluate when the order is okay.
+- converge(c1): This join node causes a control-flow deadlock. It synchronizes the parallel branches from b6 (order and customer checks), but the order branch can terminate early at e1 (if the order is not okay), leaving the customer branch waiting indefinitely at c1.
+- branch(b2, XOR): On the path where the customer is permitted (`guard(b2, n10, v2 = 'Yes')`), the model completely omits the documented behavior to "send a refusal and end the process" as explicitly stated in the text ("...if the customer is permitted, continue with the process. In this case, send a refusal and end the process.").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n16` has in=1 and out=0. | Node `n17` has in=1 and out=0. | Node `n18` has in=1 and out=0. | DSL: action(n16,"check the product quality"); action(n17,"start production"); action(n18,"produce the product")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n16, n17, n18 | DSL: action(n16,"check the product quality"); action(n17,"start production"); action(n18,"produce the product")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start WIGGO process;
+:Place Order;
+:Check Customer Credit Limit;
+:Credit response okay;
+:v1: Credit response okay ({Okay, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Send Denial to Customer;
+:End process;
+stop
+else ([v1 = 'Okay'])
+:Check Availability of Article;
+:Availability okay first check;
+:v2: Availability okay first check ({Okay, No}); <<objectSignal>>
+if () then ([v2 = 'Okay'])
+:Check Availability of Article again;
+:Article available second check;
+:v3: Article available second check ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v3 = 'Yes'])
+:Collect Goods;
+case ([v3 = 'No'])
+:Produce Goods;
+case (else)
+:Send Order Confirmation;
+endswitch
+split
+:Ship Goods;
+split again
+:Send Invoice;
+end split
+else ([v2 = 'No'])
+:Send Denial to Customer;
+:End process;
+stop
+endif
+endif
+@enduml

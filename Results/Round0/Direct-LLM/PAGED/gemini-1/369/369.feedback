@@ -1,0 +1,11 @@
+- `action(n7, "retrieve pesto from cupboard")`: The model omits the chronologically required action "Once the pesto is obtained, cook the spaghetti" after retrieving the pesto, failing to capture all documented behaviors.
+- `branch(b1, XOR)`: Missing `guard` statements on outgoing edges to enforce the source conditions "If pesto is available" and "If pesto is not available".
+- `branch(b2, XOR)`: Missing `guard` statements on outgoing edges to evaluate the condition "If tomato sauce is stolen".
+- `branch(b2, XOR)`: Has three outgoing edges (`n10`, `n13`, `c2`), but the source only describes a choice to "cook it" (or implicitly bypass), not three distinct paths.
+- `action(n13, "take tomato sauce as is")`: Hallucinated action that does not appear in the source text.
+- `action(n1, "start process")`, `action(n5, "merge after parallel tasks")`, `action(n12, "end process")`: Hallucinated actions; these are structural modeling artifacts rather than documented steps in the source text.
+- `defines(v1, "is pesto available?", {})` and `defines(v2, "has tomato sauce been stolen?", {})`: Variable ranges are empty `{}` instead of defining the value spaces (e.g., boolean or yes/no) required to evaluate the source text's conditions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

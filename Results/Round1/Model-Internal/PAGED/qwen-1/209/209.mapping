@@ -1,0 +1,620 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "the process begins with receiving an order request."
+      ],
+      "justification": "The init node captures the process start, and the action node faithfully reproduces the receiving request step."
+    },
+    {
+      "refs": [
+        "action:n3",
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "the order is registered and evaluated."
+      ],
+      "justification": "Correctly splits the compound instruction into two sequential actions matching the source granularity."
+    },
+    {
+      "refs": [
+        "guard:b1->c1"
+      ],
+      "verbatim_texts": [
+        "If the evaluation result is \"NOK\""
+      ],
+      "justification": "Branch models the decision point; guard preserves the exact condition and value from the text."
+    },
+    {
+      "refs": [
+        "action:n6",
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "the order is considered as \"NOK\" and the process comes to an end."
+      ],
+      "justification": "Accurately implements the marking step, termination action, and structural end node described in the clause."
+    },
+    {
+      "refs": [
+        "action:n5",
+        "guard:b1->n8"
+      ],
+      "verbatim_texts": [
+        "if the evaluation result is \"ok\""
+      ],
+      "justification": "Both the action and guard faithfully restate the positive evaluation condition."
+    },
+    {
+      "refs": [
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "then the installation process takes place."
+      ],
+      "justification": "Direct correspondence to the installation execution step."
+    },
+    {
+      "refs": [
+        "branch:b2"
+      ],
+      "verbatim_texts": [
+        "If the installation is not successful"
+      ],
+      "justification": "Structurally captures the second decision point regarding installation outcome."
+    },
+    {
+      "refs": [
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "if the installation is successful"
+      ],
+      "justification": "Action step correctly models the positive installation condition as a behavioral node."
+    },
+    {
+      "refs": [
+        "action:n10"
+      ],
+      "verbatim_texts": [
+        "the next step is to check the installation."
+      ],
+      "justification": "Faithfully reproduces the verification step following successful installation."
+    },
+    {
+      "refs": [
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "the billing is prepared."
+      ],
+      "justification": "Exact match to the billing preparation instruction."
+    },
+    {
+      "refs": [
+        "action:n12"
+      ],
+      "verbatim_texts": [
+        "if everything is in order"
+      ],
+      "justification": "Action restates the condition context; branch correctly introduces the final decision gateway."
+    },
+    {
+      "refs": [
+        "action:n13",
+        "action:n14"
+      ],
+      "verbatim_texts": [
+        "the order is marked as \"ok\" and the process is completed."
+      ],
+      "justification": "Precisely captures the final marking action, termination step, and structural end."
+    }
+  ],
+  "mutations": [
+    {
+      "refs": [
+        "guard:b2->c1"
+      ],
+      "verbatim_texts": [
+        "If the installation is not successful"
+      ],
+      "reason": "Source specifies the condition as 'not successful', but the guard substitutes the arbitrary literal value 'No', altering the semantic meaning."
+    },
+    {
+      "refs": [
+        "guard:b2->n10"
+      ],
+      "verbatim_texts": [
+        "if the installation is successful"
+      ],
+      "reason": "Source specifies the condition as 'successful', but the guard substitutes the arbitrary literal value 'Yes', distorting the original condition."
+    }
+  ],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "the order is considered as \"NOK\" and the process ends."
+      ],
+      "reason": "The model routes the failed installation path directly to a converge node without implementing the explicit action to mark the order as 'NOK' before termination."
+    }
+  ],
+  "additions": [
+    {
+      "refs": [
+        "action:n1"
+      ],
+      "reason": "Content 'start process' is invented; the source text only describes beginning with receiving a request, making this step unsupported."
+    },
+    {
+      "refs": [
+        "guard:b3->n13"
+      ],
+      "reason": "Introduces a 'Yes' condition guard not present in the source text, which simply states 'if everything is in order'."
+    },
+    {
+      "refs": [
+        "guard:b3->n15"
+      ],
+      "reason": "Models an explicit negative branch ('No') for the final condition, which is completely absent from the source description."
+    },
+    {
+      "refs": [
+        "action:n15"
+      ],
+      "reason": "Invented terminal action corresponding to the undescribed negative branch."
+    }
+  ],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start process",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start process"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "receive order request",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: receive order request"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "register order",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: register order"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "evaluate order",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: evaluate order"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "evaluation result ok",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: evaluation result ok"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "mark order as NOK",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: mark order as NOK"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "end NOK",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: end NOK"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "perform installation",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: perform installation"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "installation successful",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: installation successful"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "check installation",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: check installation"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "prepare billing",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: prepare billing"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "everything in order",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: everything in order"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "mark order as ok",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: mark order as ok"
+    },
+    {
+      "ref_id": "action:n14",
+      "kind": "action",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "end ok",
+      "aliases": [
+        "action:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n14: end ok"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "end no",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: end no"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "guard:b1->c1",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'NOK'",
+      "aliases": [
+        "guard:b1->c1"
+      ],
+      "from": "b1",
+      "to": "c1",
+      "source_line": "guard b1->c1: v1 = 'NOK'",
+      "guard": {
+        "from": "b1",
+        "to": "c1",
+        "condition": "v1 = 'NOK'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->c1",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'No'",
+      "aliases": [
+        "guard:b2->c1"
+      ],
+      "from": "b2",
+      "to": "c1",
+      "source_line": "guard b2->c1: v2 = 'No'",
+      "guard": {
+        "from": "b2",
+        "to": "c1",
+        "condition": "v2 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'ok'",
+      "aliases": [
+        "guard:b1->n8"
+      ],
+      "from": "b1",
+      "to": "n8",
+      "source_line": "guard b1->n8: v1 = 'ok'",
+      "guard": {
+        "from": "b1",
+        "to": "n8",
+        "condition": "v1 = 'ok'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n10",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Yes'",
+      "aliases": [
+        "guard:b2->n10"
+      ],
+      "from": "b2",
+      "to": "n10",
+      "source_line": "guard b2->n10: v2 = 'Yes'",
+      "guard": {
+        "from": "b2",
+        "to": "n10",
+        "condition": "v2 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n13",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b3->n13"
+      ],
+      "from": "b3",
+      "to": "n13",
+      "source_line": "guard b3->n13: v3 = 'Yes'",
+      "guard": {
+        "from": "b3",
+        "to": "n13",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n15",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b3->n15"
+      ],
+      "from": "b3",
+      "to": "n15",
+      "source_line": "guard b3->n15: v3 = 'No'",
+      "guard": {
+        "from": "b3",
+        "to": "n15",
+        "condition": "v3 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 12,
+    "mutation_count": 2,
+    "omission_count": 1,
+    "addition_count": 4,
+    "match_relation_count": 16,
+    "mutation_relation_count": 2,
+    "omission_relation_count": 1,
+    "unique_refs_in_matches": 16,
+    "unique_refs_in_mutations": 2,
+    "unique_refs_in_additions": 4,
+    "unique_refs_covered": 22,
+    "total_mappable_targets": 29,
+    "input_text_length": 665,
+    "element_count": 29
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

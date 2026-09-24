@@ -1,0 +1,6 @@
+- `defines(v1, "is application rejected?", {})` and `defines(v2, "are special terms agreed upon?", {})`: Both specify empty ranges `{}`, failing to reflect the binary decision values (e.g., true/false or yes/no) required to evaluate the conditions in the source text.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard` statements to associate outgoing edges with `v1` and `v2`. The source explicitly dictates path selection via conditions ("If the application is rejected...", "if special terms are agreed upon..."), but the model leaves these exclusive splits unconstrained, incompletely representing the control-flow choice logic.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

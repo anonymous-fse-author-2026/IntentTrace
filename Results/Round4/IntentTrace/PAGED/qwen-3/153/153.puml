@@ -1,0 +1,60 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process at 8:00 am;
+:empty the mailbox;
+:is the mailbox empty?;
+:v1: is the mailbox empty? ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:continue the process;
+:is the mailbox empty?;
+:v2: is the mailbox empty? ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+:continue the process;
+:is the information complete?;
+:v3: is the information complete? ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:add incoming mail number date and record it in letter book;
+else ([v3 = false])
+:make a telephone call to the sender;
+:add incoming mail number date and record it in letter book;
+endif
+:take letter book and member register to Miranda;
+:v5: has applicant become a member? ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+:has applicant become a member?;
+:stamp new Member on letter and write date on letter;
+:v6: post_stamp_route ({record_data, update_register}); <<objectSignal>>
+if () then ([v6 = "record_data"])
+:write the data;
+split
+:calculate fee;
+split again
+:hand letter to Charles;
+end split
+:ask Charles to write amount in register;
+:print membership card and send to new member;
+:end process;
+else ([v6 = "update_register"])
+:hand letter to Charles;
+:add new member to register;
+:prepare invoice for new members;
+:ask Charles to write amount in register;
+:write fee amount to register;
+stop
+endif
+else ([v5 = false])
+:write to applicant and inform decision;
+endif
+stop
+else ([v2 = true])
+:end process;
+stop
+endif
+else ([v1 = true])
+:end process;
+stop
+endif
+@enduml

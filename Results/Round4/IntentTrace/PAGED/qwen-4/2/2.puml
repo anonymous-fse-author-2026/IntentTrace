@@ -1,0 +1,86 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:advise unsuccessful candidates;
+:check no more candidates;
+:no_more_cand: no more candidates ({Yes, No}); <<objectSignal>>
+if () then ([no_more_cand = 'Yes'])
+:run re advertise position;
+else ([no_more_cand = 'No'])
+:check voluntary redundancy accepted;
+:vol_red_accept: voluntary redundancy accepted ({Yes, No}); <<objectSignal>>
+if () then ([vol_red_accept = 'Yes'])
+:investigate voluntary redundancy acceptance;
+:send Appointment Approval form;
+else ([vol_red_accept = 'No'])
+:send Appointment Approval form;
+endif
+:receive Appointment Approval form by next level manager;
+:check approver is existing employee;
+:approver_exist: approver is existing employee ({Yes, No}); <<objectSignal>>
+if () then ([approver_exist = 'No'])
+->;
+else ([approver_exist = 'Yes'])
+:check form approved;
+:form_approved: form approved ({Yes, No}); <<objectSignal>>
+if () then ([form_approved = 'No'])
+->;
+else ([form_approved = 'Yes'])
+:send form and documentation to client HR;
+:receive form and documentation by client HR;
+:HR scans completed form and records position in GovSource;
+:check variations present;
+:var_present: variations present ({Yes, No}); <<objectSignal>>
+if () then ([var_present = 'Yes'])
+:require complete business case;
+:carry forward Appointment Approval;
+else ([var_present = 'No'])
+:carry forward Appointment Approval;
+endif
+:check position requires medical assessment;
+:req_med_asst: position requires medical assessment ({Yes, No}); <<objectSignal>>
+if () then ([req_med_asst = 'Yes'])
+:apply 12 percent rate for medical assessment;
+:note up to 21 days to arrange and complete;
+else ([req_med_asst = 'No'])
+:no medical assessment necessary;
+endif
+:TS HR coordinator informs recruitment manager;
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+:check assessment satisfactory;
+:asst_sat: assessment satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([asst_sat = 'No'])
+:contact next candidate on shortlist;
+else ([asst_sat = 'Yes'])
+->;
+endif
+:make formal verbal offer of employment;
+:check candidate accepts verbal offer;
+:cand_accept_verbal: candidate accepts verbal offer ({Yes, No}); <<objectSignal>>
+if () then ([cand_accept_verbal = 'Yes'])
+:create formal written offer;
+:send commencement pack to candidate;
+:send letter of appointment to candidate;
+:check candidate receives documents;
+:check rate is forty percent;
+:rate_40pc: rate is forty percent ({Yes, No}); <<objectSignal>>
+if () then ([rate_40pc = 'No'])
+->;
+else ([rate_40pc = 'Yes'])
+:renegotiation required;
+:check renegotiation successful;
+:reneg_succ: renegotiation successful ({Yes, No}); <<objectSignal>>
+if () then ([reneg_succ = 'Yes'])
+->;
+else ([reneg_succ = 'No'])
+:identify next candidate on shortlist;
+endif
+endif
+endif
+endif
+endif
+endif
+stop
+@enduml

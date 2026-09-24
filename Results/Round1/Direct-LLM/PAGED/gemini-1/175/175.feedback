@@ -1,0 +1,120 @@
+Omission
+- [N1] Omitted trace (input 3): i1:To begin the process, -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i7:if the "Order is incomplete and items are missing," -> i11:In case of missing items and replacement charges, we email the customer to inform them. -> i14:if the "Customer does not return the missing items," -> i22:and the process is complete.
+- [N2] Omitted trace (input 10): i1:To begin the process, -> i2:Rental Items are Returned to the Store. -> i4:Delivery Crew picks-up items at the event site, -> i5:During this step, the items are counted and compared to the original contract. -> i7:if the "Order is incomplete and items are missing," -> i11:In case of missing items and replacement charges, we email the customer to inform them. -> i14:if the "Customer does not return the missing items," -> i22:and the process is complete.
+- [N3] Within matched traces (0->0) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N4] Within matched traces (0->0) omitted: i9:if the "Items are packed for an existing order,"
+- [N5] Within matched traces (1->0) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N6] Within matched traces (1->0) omitted: i10:if the "Items are stored for future orders,"
+- [N7] Within matched traces (2->1) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N8] Within matched traces (2->1) omitted: i11:In case of missing items and replacement charges, we email the customer to inform them.
+- [N9] Within matched traces (4->3) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N10] Within matched traces (5->4) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N11] Within matched traces (6->5) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N12] Within matched traces (7->11) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N13] Within matched traces (7->11) omitted: i9:if the "Items are packed for an existing order,"
+- [N14] Within matched traces (8->11) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N15] Within matched traces (8->11) omitted: i10:if the "Items are stored for future orders,"
+- [N16] Within matched traces (9->12) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N17] Within matched traces (9->12) omitted: i11:In case of missing items and replacement charges, we email the customer to inform them.
+- [N18] Within matched traces (11->14) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N19] Within matched traces (12->15) omitted: i5:During this step, the items are counted and compared to the original contract.
+- [N20] Within matched traces (13->16) omitted: i5:During this step, the items are counted and compared to the original contract.
+
+Addition
+- [N21] Node-level addition: guard(b2,n7,"\"v2 = 'Damaged'\"") (reason: The guard creates a condition testing if an item is 'Damaged' which has no corresponding conditional text inside the provided input elements.)
+- [N22] Node-level addition: action(n10,"email customer with replacement charges") (reason: This is a duplicate email action that has no additional corresponding text segment inside the provided input elements.)
+- [N23] Added trace (model 2): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> action(n_email_missing,"email customer to inform them") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> converge(c4) -> action(n14,"end process") -> end(e2)
+- [N24] Added trace (model 6): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n8,"items packed for existing order") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N25] Added trace (model 7): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n11,"items are repaired and added into inventory") -> converge(c3) -> branch(b12,AND) -> action(n18,"items packed for existing order") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N26] Added trace (model 8): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n11,"items are repaired and added into inventory") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N27] Added trace (model 9): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n18,"items packed for existing order") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N28] Added trace (model 10): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n3,"customer returns items to store") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N29] Added trace (model 13): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n6,"order is incomplete and items are missing") -> action(n_email_missing,"email customer to inform them") -> branch(b3,XOR) -> action(n16,"customer does not return missing items") -> converge(c4) -> action(n14,"end process") -> end(e2)
+- [N30] Added trace (model 17): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n8,"items packed for existing order") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N31] Added trace (model 18): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n11,"items are repaired and added into inventory") -> converge(c3) -> branch(b12,AND) -> action(n18,"items packed for existing order") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N32] Added trace (model 19): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n11,"items are repaired and added into inventory") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N33] Added trace (model 20): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n18,"items packed for existing order") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N34] Added trace (model 21): init(i1) -> action(n2,"items returned to store") -> branch(b1,XOR) -> action(n4,"delivery crew picks up items at event site") -> converge(c1) -> action(n_count,"items are counted and compared to the original contract") -> branch(b2,XOR) -> action(n7,"email customer to inform of damage and additional charges") -> action(n17,"temporarily take damaged items out of inventory") -> branch(b11,XOR) -> action(n9,"items stored for future orders") -> converge(c2) -> action(n10,"email customer with replacement charges") -> branch(b6,XOR) -> action(n12,"items can't be repaired and are discarded") -> action(n13,"email customer with replacement charges") -> converge(c3) -> branch(b12,AND) -> action(n19,"items stored for future orders") -> converge(c5) -> action(n20,"end process") -> end(e3)
+- [N35] Within matched traces (0->0) added: converge(c1)
+- [N36] Within matched traces (0->0) added: action(n_count,"items are counted and compared to the original contract")
+- [N37] Within matched traces (1->0) added: converge(c1)
+- [N38] Within matched traces (1->0) added: action(n_count,"items are counted and compared to the original contract")
+- [N39] Within matched traces (2->1) added: converge(c1)
+- [N40] Within matched traces (2->1) added: action(n_count,"items are counted and compared to the original contract")
+- [N41] Within matched traces (2->1) added: action(n_email_missing,"email customer to inform them")
+- [N42] Within matched traces (4->3) added: converge(c1)
+- [N43] Within matched traces (4->3) added: action(n_count,"items are counted and compared to the original contract")
+- [N44] Within matched traces (4->3) added: branch(b2,XOR)
+- [N45] Within matched traces (4->3) added: branch(b11,XOR)
+- [N46] Within matched traces (4->3) added: action(n8,"items packed for existing order")
+- [N47] Within matched traces (4->3) added: converge(c2)
+- [N48] Within matched traces (4->3) added: action(n10,"email customer with replacement charges")
+- [N49] Within matched traces (4->3) added: converge(c3)
+- [N50] Within matched traces (5->4) added: converge(c1)
+- [N51] Within matched traces (5->4) added: action(n_count,"items are counted and compared to the original contract")
+- [N52] Within matched traces (5->4) added: branch(b2,XOR)
+- [N53] Within matched traces (5->4) added: branch(b11,XOR)
+- [N54] Within matched traces (5->4) added: action(n8,"items packed for existing order")
+- [N55] Within matched traces (5->4) added: converge(c2)
+- [N56] Within matched traces (5->4) added: action(n10,"email customer with replacement charges")
+- [N57] Within matched traces (5->4) added: converge(c3)
+- [N58] Within matched traces (5->4) added: branch(b12,AND)
+- [N59] Within matched traces (6->5) added: converge(c1)
+- [N60] Within matched traces (6->5) added: action(n_count,"items are counted and compared to the original contract")
+- [N61] Within matched traces (6->5) added: branch(b2,XOR)
+- [N62] Within matched traces (6->5) added: branch(b11,XOR)
+- [N63] Within matched traces (6->5) added: action(n8,"items packed for existing order")
+- [N64] Within matched traces (6->5) added: converge(c2)
+- [N65] Within matched traces (6->5) added: action(n10,"email customer with replacement charges")
+- [N66] Within matched traces (6->5) added: converge(c3)
+- [N67] Within matched traces (6->5) added: branch(b12,AND)
+- [N68] Within matched traces (6->5) added: action(n18,"items packed for existing order")
+- [N69] Within matched traces (6->5) added: converge(c5)
+- [N70] Within matched traces (7->11) added: converge(c1)
+- [N71] Within matched traces (7->11) added: action(n_count,"items are counted and compared to the original contract")
+- [N72] Within matched traces (8->11) added: converge(c1)
+- [N73] Within matched traces (8->11) added: action(n_count,"items are counted and compared to the original contract")
+- [N74] Within matched traces (9->12) added: converge(c1)
+- [N75] Within matched traces (9->12) added: action(n_count,"items are counted and compared to the original contract")
+- [N76] Within matched traces (9->12) added: action(n_email_missing,"email customer to inform them")
+- [N77] Within matched traces (11->14) added: converge(c1)
+- [N78] Within matched traces (11->14) added: action(n_count,"items are counted and compared to the original contract")
+- [N79] Within matched traces (11->14) added: branch(b2,XOR)
+- [N80] Within matched traces (11->14) added: branch(b11,XOR)
+- [N81] Within matched traces (11->14) added: action(n8,"items packed for existing order")
+- [N82] Within matched traces (11->14) added: converge(c2)
+- [N83] Within matched traces (11->14) added: action(n10,"email customer with replacement charges")
+- [N84] Within matched traces (11->14) added: converge(c3)
+- [N85] Within matched traces (12->15) added: converge(c1)
+- [N86] Within matched traces (12->15) added: action(n_count,"items are counted and compared to the original contract")
+- [N87] Within matched traces (12->15) added: branch(b2,XOR)
+- [N88] Within matched traces (12->15) added: branch(b11,XOR)
+- [N89] Within matched traces (12->15) added: action(n8,"items packed for existing order")
+- [N90] Within matched traces (12->15) added: converge(c2)
+- [N91] Within matched traces (12->15) added: action(n10,"email customer with replacement charges")
+- [N92] Within matched traces (12->15) added: converge(c3)
+- [N93] Within matched traces (12->15) added: branch(b12,AND)
+- [N94] Within matched traces (13->16) added: converge(c1)
+- [N95] Within matched traces (13->16) added: action(n_count,"items are counted and compared to the original contract")
+- [N96] Within matched traces (13->16) added: branch(b2,XOR)
+- [N97] Within matched traces (13->16) added: branch(b11,XOR)
+- [N98] Within matched traces (13->16) added: action(n8,"items packed for existing order")
+- [N99] Within matched traces (13->16) added: converge(c2)
+- [N100] Within matched traces (13->16) added: action(n10,"email customer with replacement charges")
+- [N101] Within matched traces (13->16) added: converge(c3)
+- [N102] Within matched traces (13->16) added: branch(b12,AND)
+- [N103] Within matched traces (13->16) added: action(n18,"items packed for existing order")
+- [N104] Within matched traces (13->16) added: converge(c5)
+
+Mutation
+- [N105] Node-level mutation: element=guard(b1,n3,"\"v1 = 'Yes'\""); source=i3:If the "Customer returns the items to the store,"; reason=The guard introduces an invented variable and equation (v1 = 'Yes') not present in the source text.
+- [N106] Node-level mutation: element=guard(b1,n4,"\"v1 = 'No'\""); source=i4:Delivery Crew picks-up items at the event site,; reason=The guard introduces an invented variable and equation (v1 = 'No') not present in the source text.
+- [N107] Node-level mutation: element=guard(b2,n5,"\"v2 = 'Complete'\""); source=i6:If the "Order is complete and all items were returned,"; reason=The guard introduces an invented variable and equation (v2 = 'Complete') not present in the source text.
+- [N108] Node-level mutation: element=guard(b2,n6,"\"v2 = 'Incomplete'\""); source=i7:if the "Order is incomplete and items are missing,"; reason=The guard introduces an invented variable and equation (v2 = 'Incomplete') not present in the source text.
+- [N109] Node-level mutation: element=guard(b3,n15,"\"v7 = 'Yes'\""); source=i13:If the "Customer returns the missing items,"; reason=The guard introduces an invented variable and equation (v7 = 'Yes') not present in the source text.
+- [N110] Node-level mutation: element=guard(b3,n16,"\"v7 = 'No'\""); source=i14:if the "Customer does not return the missing items,"; reason=The guard introduces an invented variable and equation (v7 = 'No') not present in the source text.
+- [N111] Node-level mutation: element=guard(b11,n8,"\"v4 = 'Packed'\""); source=i9:if the "Items are packed for an existing order,"; reason=The guard introduces an invented variable and equation (v4 = 'Packed') not present in the source text.
+- [N112] Node-level mutation: element=guard(b11,n9,"\"v4 = 'Stored'\""); source=i10:if the "Items are stored for future orders,"; reason=The guard introduces an invented variable and equation (v4 = 'Stored') not present in the source text.
+- [N113] Node-level mutation: element=guard(b6,n11,"\"v6 = 'Yes'\""); source=i16:If the "Items are repaired and added into inventory,"; reason=The guard introduces an invented variable and equation (v6 = 'Yes') not present in the source text.
+- [N114] Node-level mutation: element=guard(b6,n12,"\"v6 = 'No'\""); source=i17:if the "Items can't be repaired and are discarded,"; reason=The guard introduces an invented variable and equation (v6 = 'No') not present in the source text.
+- [N115] Node-level mutation: element=branch(b12,AND); source=i19:Lastly, the items are packed for an existing order. If the "Items are packed for an existing order,"; reason=The branch model applies an AND gateway, which fundamentally changes the logic away from the exclusive alternative (XOR) implied by the text's 'If' condition.

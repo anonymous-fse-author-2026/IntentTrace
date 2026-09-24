@@ -1,0 +1,7 @@
+- action(n1, "Start Metal Works Process"): Omits the explicitly documented initial step "obtaining the raw material from the received list", prematurely jumping to the stock availability check and violating chronological ordering (SMC1, SMC3).
+- branch(b1, XOR) outgoing edges: Lacks guard(...) statements to enforce the conditional routing described as "if the raw material is available in stock" versus "not available in stock", leaving the exclusive choice logic unconstrained and ambiguous (SMC4).
+- defines(v1, "Is raw material available in stock?", {}): Specifies an empty range {} instead of valid outcome values (e.g., {true, false} or {"Yes", "No"}), failing to accurately capture the decision variable's domain required by the source conditions (SMC6).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

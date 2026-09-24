@@ -1,0 +1,24 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the SSP process, first ensure that the Invoice is ready for verification. -> i2:After that, -> i3:check for invoice completeness. -> i4:Once the invoice completeness is confirmed, -> i5:proceed to check for SLA. -> i6:Once the SLA is checked, -> i7:move on to checking for invoice compliance. -> i8:Once these checks are completed, -> i9:the batched invoices are allocated to the Data Entry Officer and this is done by 9 am on the next working day. -> i10:The next step is -> i11:process the invoice batch and then take it to the outbox. -> i12:this should be repeated until all invoices are processed. -> i11:process the invoice batch and then take it to the outbox.
+- [N2] Within matched traces (1->0) omitted: i2:After that,
+- [N3] Within matched traces (1->0) omitted: i4:Once the invoice completeness is confirmed,
+- [N4] Within matched traces (1->0) omitted: i6:Once the SLA is checked,
+- [N5] Within matched traces (1->0) omitted: i10:The next step is
+
+Addition
+- [N6] Node-level addition: label(n1,n2,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N7] Node-level addition: label(n2,n3,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N8] Node-level addition: label(n3,n4,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N9] Node-level addition: label(n4,n5,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N10] Node-level addition: label(n5,n6,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N11] Node-level addition: label(n6,c2,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N12] Node-level addition: label(n9,c1,"Yes") (reason: All labeled edges carry the content 'Yes', which is entirely absent from the source text. These are arbitrary routing labels with no textual justification.)
+- [N13] Within matched traces (1->0) added: init(i1)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,c2,"v1 = 'Yes'") -> guard(b1,n9,"v1 = 'No'"); source=i12:this should be repeated until all invoices are processed.; reason=Replaces the explicit business condition 'until all invoices are processed' with abstract, context-free variable checks ('v1 = Yes/No'), dropping the original target and value semantics.
+- [N15] Node-level mutation: element=guard(b2,c1,"v2 = 'No'"); source=i15:This process of clearing the outbox is done every hour until the outbox is completely cleared; reason=Replaces the explicit termination condition 'until the outbox is completely cleared' with abstract variable checks ('v2 = Yes/No'), distorting the source logic and losing the specific state description.
+- [N16] Node-level mutation: element=guard(b2,n12,"v2 = 'Yes'"); source=i16:until the outbox is completely cleared; reason=Replaces the explicit termination condition 'until the outbox is completely cleared' with abstract variable checks ('v2 = Yes/No'), distorting the source logic and losing the specific state description.
+
+Permutation
+- [N17] Within matched traces (1->0) reordered: expected [i8:Once these checks are completed,] but observed [converge(c2)] elsewhere; in its place the model has [action(n6,"Allocate invoices to Data Entry Officer by 9 am next working day")]

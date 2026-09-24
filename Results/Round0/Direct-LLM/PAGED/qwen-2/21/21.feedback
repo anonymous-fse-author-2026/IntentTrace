@@ -1,0 +1,13 @@
+- `defines(v1, "How was the order received?", {"via mail or phone"})`: Omits `"via fax"` from the variable range despite the source explicitly stating `"If the order is received via fax..."`, violating SMC6.
+- `guard(b1, n5, v1 = 'via mail or phone')` & `branch(b1, XOR)`: The guard restricts execution to only `"mail or phone"`, causing a deadlock for the documented `"via fax"` input; furthermore, `b1` is declared as an XOR branch but possesses only one outgoing precedence (`precedence(b1, n5)`), incorrectly modeling a synonymous convergence as an exclusive split and breaking control-flow integrity (violates SMC1, SMC4).
+- `action(n4, "How was the order received?")`, `action(n13, "is the order correct?")`, `action(n19, "is the order worth less than 5.000 €?")`, `action(n27, "is the issue solvable?")`: Phrased as decision queries but declared as `action` nodes, misrepresenting their semantic role as evaluative gateways rather than executable process steps (violates SMC2).
+- `action(n6, "Excel list")`, `action(n9, "MS-Access database")`: Model passive data repositories/artifacts as active `action` steps, conflating system objects with human/system tasks and distorting node payload meaning (violates SMC2).
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['via mail or phone']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'via mail or phone'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'via mail or phone'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'via mail or phone'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'via mail or phone'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

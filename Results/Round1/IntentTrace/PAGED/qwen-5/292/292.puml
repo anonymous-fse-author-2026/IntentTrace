@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive claim;
+:create and record claim;
+:decide on claim;
+:v1: claim decision ({Reject, Accept, Concurrent}); <<objectSignal>>
+switch ()
+case ([v1 = 'Reject'])
+:reject claim;
+:review rejection;
+:continue the process;
+case ([v1 = 'Concurrent'])
+:operate outgoing payment;
+:close the claim;
+case ([v1 = 'Accept'])
+:accept claim;
+:offer benefit;
+:prepare discharge;
+:record payment;
+endswitch
+stop
+@enduml

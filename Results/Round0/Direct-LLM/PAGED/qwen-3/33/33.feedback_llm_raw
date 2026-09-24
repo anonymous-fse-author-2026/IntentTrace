@@ -1,0 +1,7 @@
+
+
+- `action(n6, "end process")`, `action(n17, "end process")`, `action(n21, "end process")`: Hallucinated steps (SMC1/SMC2). The source uses termination markers like `"the process ends"` and `"ending the process"`, which map directly to `end` nodes; no intermediate "end process" actions are documented.
+- `branch(b5, AND)` & `precedence(b5, n12 | n13 | c2)`: Incorrect control-flow logic (SMC4). The source specifies exactly two simultaneous tracks: `"ship the products and send the invoice while checking for payment"`. The model erroneously splits into three parallel paths, decoupling the invoice and payment steps.
+- `node(n15)` & `precedence(c3, n15)` | `precedence(n14, n15)`: Unstructured merge (SMC4). `n15` receives concurrent inputs from a converge point (`c3`) and a direct action (`n14`) without a defined join gateway, violating the structured progression implied by `"checking for payment"` followed by a single decision.
+- `converge(c2)` & `precedence(b5, c2)`: Structural/chronological flaw (SMC3/SMC4). A converge node cannot validly be an immediate output of a split; placing it directly after `b5` breaks the intended flow where invoicing and payment verification occur concurrently before any reconciliation point.
+- Path `n16 → n17 → e2`: Premature termination (SMC5). The model forces an end state immediately after `"close the order"` upon payment receipt. The source only explicitly mandates termination after the final escalation step (`"inform the lawyer and end the process"`), making the early `end(e2)` an unsupported deviation.

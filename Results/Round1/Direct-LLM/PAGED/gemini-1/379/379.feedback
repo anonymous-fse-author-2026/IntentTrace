@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum -> i4:generate an Equal to or below minimum Report -> i6:create Purchase Orders (POs) -> i11:needs to be reviewed -> i8:needs to be reworked -> i6:create Purchase Orders (POs)
+
+Addition
+- [N2] Node-level addition: action(n18,"perform three-way match") (reason: The source only explicitly instructs to 'proceed to the Three-way match' (covered by n17) and checks if it was successful, but does not state a standalone step to 'perform' it.)
+- [N3] Within matched traces (2->0) added: action(n18,"perform three-way match")
+- [N4] Within matched traces (3->1) added: action(n18,"perform three-way match")
+- [N5] Within matched traces (0->2) added: action(n3,"is inventory below or equal to minimum?")
+- [N6] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n4,"v1 == \"Yes\""); source=i3:If the inventory is below or equal to the minimum; reason=The guard discards the explicit inventory threshold and replaces it with an invented generic variable check ('v1 == "Yes"').
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 == \"No\""); source=i3:If the inventory is below or equal to the minimum; reason=The guard models the alternate path to the threshold condition but uses an invented generic variable check ('v1 == "No"') rather than evaluating the inventory amount.
+- [N9] Node-level mutation: element=guard(b2,n10,"v2 == \"Yes\""); source=i9:If the PO is approved; reason=The guard discards the explicit 'approved' status check in favor of an invented generic boolean condition ('v2 == "Yes"').
+- [N10] Node-level mutation: element=guard(b2,n11,"v2 == \"No\""); source=i9:If the PO is approved; reason=The guard models the rejected path but drops context, using an invented boolean check ('v2 == "No"') instead of checking status.

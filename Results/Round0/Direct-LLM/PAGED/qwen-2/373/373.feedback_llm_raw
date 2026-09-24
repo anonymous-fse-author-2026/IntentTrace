@@ -1,0 +1,6 @@
+
+
+- `action(n5, "Accept the claim")` / `precedence(n5, n9)`: Omits the documented step "offer the benefit" found in the source ("if the claim is to be accepted, offer the benefit"), jumping directly to preparing the claim discharge (violates SMC1).
+- `branch(b2, XOR)` / `guard(b2, n8, v2 = 'No')`: Incorrectly models a divergent choice where the source specifies immediate convergence: "If the claim rejection is accepted, continue the process. But if the claim rejection is not accepted, also continue the process." The model lacks an edge/guard for the accepted outcome and misapplies an XOR gateway (violates SMC1, SMC4).
+- `defines(v2, "Is claim rejection accepted", {"No"})`: The value range omits the affirmative option ("Yes" or "Accepted") required by the source text ("If the claim rejection is accepted..."), violating SMC6.
+- `action(n14, "End")`: Hallucinates an unnecessary action node preceding the terminator. The source simply concludes with "Finally, the process ends," which is accurately captured by `end(e1)` alone (violates SMC1).

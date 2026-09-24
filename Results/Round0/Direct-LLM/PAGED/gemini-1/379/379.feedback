@@ -1,0 +1,10 @@
+- branch(b1, XOR): lacks guards on its outgoing edges to action(n4) and action(n5) to reflect the source conditions "inventory is below or equal to the minimum" and "inventory is greater than the minimum".
+- branch(b2, XOR): lacks guards on its outgoing edges to action(n10) and action(n11) to reflect the source conditions "If the PO is approved" and "If the PO is rejected".
+- defines(v1, "is inventory below or equal to minimum?", {}) and defines(v2, "is po approved?", {}): both variables are defined with empty ranges `{}` instead of containing the possible logical outcomes required by the branches.
+- precedence(n14, c1) and precedence(n15, c1): the model improperly represents action(n14, "receive packing slip") and action(n15, "receive inventory") as concurrent parallel paths that merge at c1. The text states "If the inventory is received, proceed to receive the Packing Slip", dictating a sequential precedence from receiving inventory to receiving the packing slip. 
+- action(n19, "release funds if successful"): the model fails to represent the conditional logic described in "If the Three-way match is successful, release the funds" with a branch (XOR gateway), instead improperly collapsing it into a single unconditional sequential action.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"create purchase orders (pos)")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.

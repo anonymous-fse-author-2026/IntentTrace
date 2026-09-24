@@ -1,0 +1,9 @@
+
+
+- `defines(v1, "get a bonus", {"no"})` / `defines(v2, "get a paycheck", {"no"})`: Hallucinates decision variables and finite ranges not mentioned in the source, which specifies no variables or value spaces.
+- `guard(b1, n4, v1 = 'no')` / `guard(b2, n5, v2 = 'no')` / `label(b3, n2, "no")` / `label(b3, n3, "no")`: Adds conditional guards and labels dependent on the hallucinated variables, contradicting the unconditional progression in the source: "If you 'get a bonus', then you continue the process. If you 'get a paycheck', then you also continue the process."
+- `action(n8, "end process")` / `action(n9, "end process")`: Inserts unnecessary intermediate actions before termination, misrepresenting the direct source statement: "Once you pay the bill, the process ends."
+- `branch(b3, AND)`: Models concurrent execution of "get a bonus" and "get a paycheck", while the source frames them as alternative or sequential triggers that both lead to the same continuation, not parallel tasks.
+- `precedence(b3, n2)` / `precedence(b3, n3)` → divergent paths to `n4`/`n5`, `n6`/`n7`: Duplicates subsequent steps ("continue process", "pay the bill") across two parallel branches instead of merging them into a single shared flow, violating the linear chronological progression of the source.
+- `end(e1)` / `end(e2)`: Creates two separate termination points, conflicting with the source's singular conclusion: "the process ends."
+- `branch(b1, XOR)` / `branch(b2, XOR)`: Defined as exclusive choice gateways but each possesses only one outgoing edge (`b1→n4`, `b2→n5`), introducing redundant branching logic not supported by the source text.

@@ -1,0 +1,33 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i6:retrieve it from the cupboard
+- [N2] Within matched traces (0->1) omitted: i8:Once the pesto is obtained
+- [N3] Within matched traces (0->1) omitted: i4:cook spaghetti
+- [N4] Within matched traces (0->1) omitted: i11:After the sauce is cooked
+- [N5] Within matched traces (1->1) omitted: i8:Once the pesto is obtained
+- [N6] Within matched traces (1->1) omitted: i4:cook spaghetti
+- [N7] Within matched traces (1->1) omitted: i11:After the sauce is cooked
+
+Addition
+- [N8] Node-level addition: action(n5,"merge after parallel tasks") (reason: The content 'merge after parallel tasks' has no corresponding source unit. Synchronization is already handled structurally by converge nodes and temporal phrases; this action invents an unrequested step.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n7,"retrieve pesto from cupboard") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N11] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> action(n10,"cook tomato sauce") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N12] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c1) -> action(n5,"merge after parallel tasks") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N13] Within matched traces (0->1) added: init(i1)
+- [N14] Within matched traces (0->1) added: converge(c1)
+- [N15] Within matched traces (0->1) added: action(n5,"merge after parallel tasks")
+- [N16] Within matched traces (1->1) added: init(i1)
+- [N17] Within matched traces (1->1) added: converge(c1)
+- [N18] Within matched traces (1->1) added: action(n5,"merge after parallel tasks")
+- [N19] Within matched traces (2->3) added: init(i1)
+- [N20] Within matched traces (2->3) added: converge(c1)
+- [N21] Within matched traces (2->3) added: action(n5,"merge after parallel tasks")
+- [N22] Within matched traces (2->3) added: action(n6,"is pesto available?")
+- [N23] Within matched traces (2->3) added: branch(b1,XOR)
+- [N24] Within matched traces (2->3) added: action(n7,"retrieve pesto from cupboard")
+- [N25] Within matched traces (2->3) added: converge(c2)
+- [N26] Within matched traces (2->3) added: action(n11,"combine meal components and prepare meal")
+
+Mutation
+- [N27] Node-level mutation: element=guard(b1,n7,"v1 = true") -> guard(b1,n8,"v1 = false"); source=i5:If pesto is available; reason=The guards replace the explicit condition subject with opaque boolean variables (`v1 = true` / `v1 = false`), dropping the descriptive data ('pesto is available') required for faithful reproduction under the strict standard.
+- [N28] Node-level mutation: element=guard(b2,n10,"v2 = true") -> guard(b2,c2,"v2 = false"); source=i9:If tomato sauce is stolen; reason=Similarly substitutes the source condition with abstract variables (`v2 = true` / `v2 = false`), losing the explicit subject 'tomato sauce is stolen' and failing to preserve the original granularity.

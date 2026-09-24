@@ -1,0 +1,39 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i17:Finally, present the project
+
+Addition
+- [N2] Node-level addition: action(n9,"can continue with the process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N3] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"join the team and agree on the teams domain") -> action(n3,"create a process model and check it") -> action(n4,"is the process model NOT OK") -> branch(b1,XOR) -> action(n5,"assign negative points") -> action(n6,"is the process model still NOT OK") -> branch(b2,XOR) -> action(n8,"can continue with the process") -> action(n10,"are there any issues") -> branch(b3,XOR) -> action(n12,"need to check the process and assign points") -> branch(b4,XOR) -> action(n14,"need to analyze the field of study") -> branch(b5,XOR) -> action(n16,"continue with process if process is okay") -> branch(b6,XOR) -> action(n17,"continue with the process") -> action(n19,"check the progress and consult any problems") -> action(n20,"is the project accepted") -> branch(b7,XOR) -> action(n21,"present the project") -> action(n27,"end process") -> end(e1)
+- [N4] Within matched traces (0->2) added: init(i1)
+- [N5] Within matched traces (0->2) added: action(n20,"is the project accepted")
+- [N6] Within matched traces (0->2) added: branch(b7,XOR)
+- [N7] Within matched traces (0->2) added: action(n26,"present the project")
+- [N8] Within matched traces (0->2) added: action(n28,"end process")
+- [N9] Within matched traces (0->2) added: end(e2)
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: branch(b7,XOR)
+- [N12] Within matched traces (1->1) added: action(n22,"continue working according to your role")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b3,n12,"v3 = 'Yes No'"); source=i8:If you need to check the process and assign points; reason=The guard content uses a generic placeholder value ('v3 = Yes No') instead of capturing the specific textual condition about checking the process and assigning points.
+- [N14] Node-level mutation: element=guard(b4,n14,"v4 = 'Yes No'"); source=i10:If you need to analyze the field of study; reason=The guard content substitutes the actual condition with a generic placeholder ('v4 = Yes No'), losing the semantic meaning of analyzing the field of study.
+- [N15] Node-level mutation: element=guard(b5,n16,"v5 = 'OK NOT OK'"); source=i12:If the process is okay; reason=The guard expresses the condition using a vague variable assignment ('v5 = OK NOT OK') rather than directly reflecting the clear textual condition that the process must be okay.
+
+Permutation
+- [N16] Within matched traces (0->2) reordered: expected [i8:If you need to check the process and assign points] but observed [branch(b3,XOR)] elsewhere; in its place the model has [action(n12,"need to check the process and assign points")]
+- [N17] Within matched traces (0->2) reordered: expected [i10:If you need to analyze the field of study] but observed [branch(b4,XOR)] elsewhere; in its place the model has [action(n14,"need to analyze the field of study")]
+- [N18] Within matched traces (0->2) reordered: expected [i12:If the process is okay] but observed [action(n16,"continue with process if process is okay") -> branch(b5,XOR)] elsewhere; in its place the model has [action(n17,"continue with the process")]
+- [N19] Within matched traces (1->1) reordered: expected [i8:If you need to check the process and assign points] but observed [branch(b3,XOR)] elsewhere; in its place the model has [action(n12,"need to check the process and assign points")]
+- [N20] Within matched traces (1->1) reordered: expected [i10:If you need to analyze the field of study] but observed [branch(b4,XOR)] elsewhere; in its place the model has [action(n14,"need to analyze the field of study")]
+- [N21] Within matched traces (1->1) reordered: expected [i12:If the process is okay] but observed [action(n16,"continue with process if process is okay") -> branch(b5,XOR)] elsewhere; in its place the model has [action(n17,"continue with the process")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | Node `n13` has in=1 and out=0. | Node `n15` has in=1 and out=0. | Node `n18` has in=1 and out=0. | Node `n7` has in=1 and out=0. | Node `n9` has in=1 and out=0. | DSL: action(n11,"fix issues in the next session and extend process to levels 2 and 3"); action(n13,"continue with process"); action(n15,"assign roles in the team"); action(n18,"perform work according to your assigned role"); action(n7,"assign negative points again"); action(n9,"can continue with the process")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['Yes No']`. | Variable `v4` has an invalid range `['Yes No']`. | Variable `v5` has an invalid range `['OK NOT OK']`. | Variable `v6` has an invalid range `[]`. | Variable `v7` has an invalid range `[]`. | Variable `v8` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes No'` on `b3 -> n12` uses undefined variable `v3`. | Guard `v4 = 'Yes No'` on `b4 -> n14` uses undefined variable `v4`. | Guard `v5 = 'OK NOT OK'` on `b5 -> n16` uses undefined variable `v5`. | DSL: guard(b3,n12,"v3 = 'Yes No'"); guard(b4,n14,"v4 = 'Yes No'"); guard(b5,n16,"v5 = 'OK NOT OK'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n18` has 0 guards; exactly one is required. | XOR/OR edge `b7 -> n21` has 0 guards; exactly one is required. | XOR/OR edge `b7 -> n22` has 0 guards; exactly one is required. | XOR/OR edge `b8 -> n24` has 0 guards; exactly one is required. | XOR/OR edge `b8 -> n25` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n13, n15, n18, n7, n9 | DSL: action(n11,"fix issues in the next session and extend process to levels 2 and 3"); action(n13,"continue with process"); action(n15,"assign roles in the team"); action(n18,"perform work according to your assigned role"); action(n7,"assign negative points again"); action(n9,"can continue with the process")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes No'` on `b3 -> n12` cannot be evaluated: `v3` has no declared range. | Guard `v4 = 'Yes No'` on `b4 -> n14` cannot be evaluated: `v4` has no declared range. | Guard `v5 = 'OK NOT OK'` on `b5 -> n16` cannot be evaluated: `v5` has no declared range. | DSL: guard(b3,n12,"v3 = 'Yes No'"); guard(b4,n14,"v4 = 'Yes No'"); guard(b5,n16,"v5 = 'OK NOT OK'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range. | Branch `b5` cannot be evaluated: `v5` has no declared range.

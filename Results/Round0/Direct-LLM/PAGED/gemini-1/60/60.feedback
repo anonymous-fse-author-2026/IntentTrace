@@ -1,0 +1,9 @@
+- action(n1, "start"): The model includes a hallucinated "start" action, whereas the source states the process begins "by clicking on 'Start'".
+- action(n10, "edit report"): This node lacks an outgoing control-flow edge to continue the process or reach an end state, creating an unintended dead end.
+- Omitted behavior: The model entirely omits the explicitly described steps "Once again, evaluate the review decision. If the report is rejected, edit the report." that should follow checking the translation need.
+- branch(b4, XOR): The model incorrectly places action(n12, "translate receipts again") and action(n13, "confirm receipts again") as mutually exclusive choices, whereas the source specifies they occur sequentially ("translate the receipts and then confirm them").
+- guard(b4, n12, v4 = 'Yes') and guard(b4, n13, v4 = 'No'): The model incorrectly uses the variable "check translation need again" as the branching condition, whereas the source dictates this path is executed "If it [the review decision] is approved".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"edit report")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10 | DSL: action(n10,"edit report")

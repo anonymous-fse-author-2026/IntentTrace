@@ -1,0 +1,100 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start with Bill for Purchased Goods or Services;
+:Receive Invoice;
+:Is the invoice incomplete?;
+:v1: Is the invoice incomplete? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Return Invoice;
+else ([v1 = 'No'])
+:Is the invoice non compliant?;
+:v2: Is the invoice non compliant? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Continue with compliant invoice process;
+else ([v2 = 'Yes'])
+:Conduct further checks on non compliant invoice;
+:Can the issue be resolved with phone call?;
+:v3: Can the issue be resolved with phone call? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Resolve non compliance with phone call;
+split
+:Is the invoice incomplete after issue resolution?;
+:v5: Is the invoice incomplete after issue resolution? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Return Invoice;
+else ([v5 = 'No'])
+:Can the issue still be resolved with phone call?;
+:v6: Can the issue still be resolved with phone call? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:Resolve non compliance with phone call;
+:Pay Invoice;
+split
+:Is the invoice returned after payment?;
+:v8: Is the invoice returned after payment? ({Yes, No}); <<objectSignal>>
+if () then ([v8 = 'Yes'])
+:Non compliance resolved;
+:Process ends;
+else ([v8 = 'No'])
+:Process continues;
+endif
+stop
+split again
+:Bill Client;
+:Is there response from client?;
+:v9: Is there response from client? ({No, Yes}); <<objectSignal>>
+if () then ([v9 = 'No'])
+:Wait period of 10 days;
+:Is invoice returned?;
+:v10: Is invoice returned? ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:Non compliance resolved;
+else ([v10 = 'No'])
+:Is there response from client after 10 days?;
+:v11: Is there response from client after 10 days? ({Yes, No}); <<objectSignal>>
+if () then ([v11 = 'No'])
+:Wait period of 10 days;
+:Send reminder after 10 days;
+else ([v11 = 'Yes'])
+->;
+endif
+endif
+else ([v9 = 'Yes'])
+:Pay Invoice and notify client of payment;
+:Is client unsatisfied?;
+:v12: Is client unsatisfied? ({Yes, No}); <<objectSignal>>
+if () then ([v12 = 'Yes'])
+:Resolve payment discrepancy;
+else ([v12 = 'No'])
+:Continue process;
+endif
+:Process ends;
+stop
+endif
+end split
+else ([v6 = 'No'])
+:Does issue still require mail back?;
+:v7: Does issue still require mail back? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:Return Invoice;
+else ([v7 = 'No'])
+->;
+endif
+endif
+endif
+split again
+end split
+else ([v3 = 'No'])
+:Does issue require mail back?;
+:v4: Does issue require mail back? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Return Invoice;
+else ([v4 = 'No'])
+->;
+endif
+endif
+endif
+endif
+@enduml

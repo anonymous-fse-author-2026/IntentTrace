@@ -1,0 +1,21 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To start -> i2:please register your participation for the event. -> i5:if there is a fee -> i6:create a purchase request -> i8:check if the purchase request has been approved -> i11:if the purchase request is rejected -> i12:notified of the rejection -> i13:receive a rejection notification -> i7:the process will come to an end
+- [N2] Within matched traces (0->0) omitted: i7:the process will come to an end
+- [N3] Within matched traces (1->1) omitted: i4:register a post-seminar request
+- [N4] Within matched traces (1->1) omitted: i7:the process will come to an end
+
+Addition
+- [N5] Node-level addition: action(n8,"Register post-seminar request") (reason: Corresponds to unsegmented tail text in the raw source and lacks a designated Input Element reference per the provided segmentation list.)
+- [N6] Within matched traces (1->1) added: action(n8,"Register post-seminar request")
+- [N7] Within matched traces (1->1) added: end(e1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"Rejected notification received")
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `n7 -> e2` references unknown node(s). | DSL: action(n7,"Rejected notification received")
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'Approved'` on `b2 -> n6` uses undefined variable `v2`. | Guard `v2 = 'Rejected'` on `b2 -> n7` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b1,n4,"v1 = 'Yes'"); guard(b2,n6,"v2 = 'Approved'"); guard(b2,n7,"v2 = 'Rejected'")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"Rejected notification received")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Approved'` on `b2 -> n6` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'Rejected'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b1,n4,"v1 = 'Yes'"); guard(b2,n6,"v2 = 'Approved'"); guard(b2,n7,"v2 = 'Rejected'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

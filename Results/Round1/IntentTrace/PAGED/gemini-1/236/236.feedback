@@ -1,0 +1,74 @@
+Omission
+- [N1] Omitted trace (input 7): i1:To start the process -> i2:prioritize orders based on when they were received -> i3:check the customer's information -> i4:If the customer exists -> i5:checking their payment history -> i8:If the payment history is good -> i9:continue with the process -> i14:check for product availability -> i19:If the products are available -> i20:send an order confirmation -> i21:Simultaneously -> i22:inform the stock -> i24:packing the goods and writing the invoice -> i25:the goods are ready for delivery and the invoice is sent -> i26:deliver the goods and invoice to the customer -> i29:if there is an outstanding payment -> i30:If there are less than three reminders -> i29:if there is an outstanding payment
+- [N2] Omitted trace (input 8): i1:To start the process -> i2:prioritize orders based on when they were received -> i3:check the customer's information -> i4:If the customer exists -> i5:checking their payment history -> i8:If the payment history is good -> i9:continue with the process -> i14:check for product availability -> i19:If the products are available -> i20:send an order confirmation -> i21:Simultaneously -> i23:accounting departments -> i24:packing the goods and writing the invoice -> i25:the goods are ready for delivery and the invoice is sent -> i26:deliver the goods and invoice to the customer -> i29:if there is an outstanding payment -> i30:If there are less than three reminders -> i29:if there is an outstanding payment
+- [N3] Omitted trace (input 9): i1:To start the process -> i2:prioritize orders based on when they were received -> i3:check the customer's information -> i6:if the customer does not exist -> i7:verify their customer status -> i12:In the case of a wholesaler -> i13:create a new customer -> i14:check for product availability -> i19:If the products are available -> i20:send an order confirmation -> i21:Simultaneously -> i22:inform the stock -> i24:packing the goods and writing the invoice -> i25:the goods are ready for delivery and the invoice is sent -> i26:deliver the goods and invoice to the customer -> i29:if there is an outstanding payment -> i30:If there are less than three reminders -> i29:if there is an outstanding payment
+- [N4] Omitted trace (input 10): i1:To start the process -> i2:prioritize orders based on when they were received -> i3:check the customer's information -> i6:if the customer does not exist -> i7:verify their customer status -> i12:In the case of a wholesaler -> i13:create a new customer -> i14:check for product availability -> i19:If the products are available -> i20:send an order confirmation -> i21:Simultaneously -> i23:accounting departments -> i24:packing the goods and writing the invoice -> i25:the goods are ready for delivery and the invoice is sent -> i26:deliver the goods and invoice to the customer -> i29:if there is an outstanding payment -> i30:If there are less than three reminders -> i29:if there is an outstanding payment
+- [N5] Within matched traces (1->0) omitted: i9:continue with the process
+- [N6] Within matched traces (1->0) omitted: i14:check for product availability
+- [N7] Within matched traces (1->0) omitted: i15:If the products are not available
+- [N8] Within matched traces (1->0) omitted: i16:produce the missing goods
+- [N9] Within matched traces (1->0) omitted: i17:send a decline message
+- [N10] Within matched traces (1->0) omitted: i18:thus ending the process
+- [N11] Within matched traces (3->1) omitted: i9:continue with the process
+- [N12] Within matched traces (3->1) omitted: i14:check for product availability
+- [N13] Within matched traces (11->2) omitted: i9:continue with the process
+- [N14] Within matched traces (11->2) omitted: i14:check for product availability
+- [N15] Within matched traces (4->3) omitted: i9:continue with the process
+- [N16] Within matched traces (4->3) omitted: i14:check for product availability
+- [N17] Within matched traces (12->4) omitted: i9:continue with the process
+- [N18] Within matched traces (12->4) omitted: i14:check for product availability
+
+Addition
+- [N19] Node-level addition: action(n8,"Send decline message") (reason: The text describes continuing if payment history is good, but lacks any description of what actions to take (or ending the process) if payment history is bad.)
+- [N20] Node-level addition: action(n9,"End") (reason: The text describes continuing if payment history is good, but lacks any description of what actions to take (or ending the process) if payment history is bad.)
+- [N21] Node-level addition: guard(b2,n8,"v2 = 'No'") (reason: The text describes continuing if payment history is good, but lacks any description of what actions to take (or ending the process) if payment history is bad.)
+- [N22] Node-level addition: action(n12,"End") (reason: The text specifies sending a declining message to a private customer but does not explicitly state an 'End' action step here (unlike other branches where it says 'ending the process').)
+- [N23] Node-level addition: action(n27,"End") (reason: The text specifies delivering goods and invoice, but does not dictate a formal 'End' action step here.)
+- [N24] Within matched traces (1->0) added: action(n8,"Send decline message")
+- [N25] Within matched traces (1->0) added: action(n9,"End")
+- [N26] Within matched traces (1->0) added: end(e1)
+- [N27] Within matched traces (3->1) added: converge(c3)
+- [N28] Within matched traces (3->1) added: action(n27,"End")
+- [N29] Within matched traces (3->1) added: end(e4)
+- [N30] Within matched traces (11->2) added: converge(c3)
+- [N31] Within matched traces (11->2) added: action(n24,"Payment received?")
+- [N32] Within matched traces (11->2) added: action(n31,"End")
+- [N33] Within matched traces (11->2) added: end(e5)
+- [N34] Within matched traces (4->3) added: converge(c3)
+- [N35] Within matched traces (4->3) added: action(n27,"End")
+- [N36] Within matched traces (4->3) added: end(e4)
+- [N37] Within matched traces (12->4) added: converge(c3)
+- [N38] Within matched traces (12->4) added: action(n24,"Payment received?")
+- [N39] Within matched traces (12->4) added: action(n31,"End")
+- [N40] Within matched traces (12->4) added: end(e5)
+- [N41] Within matched traces (0->5) added: action(n4,"Does customer exist?")
+- [N42] Within matched traces (0->5) added: action(n12,"End")
+- [N43] Within matched traces (0->5) added: end(e2)
+- [N44] Within matched traces (2->6) added: action(n4,"Does customer exist?")
+- [N45] Within matched traces (2->6) added: action(n10,"Is customer a private customer?")
+- [N46] Within matched traces (5->7) added: action(n4,"Does customer exist?")
+- [N47] Within matched traces (5->7) added: action(n10,"Is customer a private customer?")
+- [N48] Within matched traces (5->7) added: action(n15,"Are products available?")
+- [N49] Within matched traces (5->7) added: converge(c3)
+- [N50] Within matched traces (5->7) added: action(n27,"End")
+- [N51] Within matched traces (5->7) added: end(e4)
+- [N52] Within matched traces (13->8) added: action(n4,"Does customer exist?")
+- [N53] Within matched traces (13->8) added: action(n10,"Is customer a private customer?")
+- [N54] Within matched traces (13->8) added: action(n15,"Are products available?")
+- [N55] Within matched traces (13->8) added: converge(c3)
+- [N56] Within matched traces (13->8) added: action(n24,"Payment received?")
+- [N57] Within matched traces (13->8) added: action(n31,"End")
+- [N58] Within matched traces (13->8) added: end(e5)
+- [N59] Within matched traces (6->9) added: action(n4,"Does customer exist?")
+- [N60] Within matched traces (6->9) added: action(n10,"Is customer a private customer?")
+- [N61] Within matched traces (6->9) added: action(n15,"Are products available?")
+- [N62] Within matched traces (6->9) added: converge(c3)
+- [N63] Within matched traces (6->9) added: action(n27,"End")
+- [N64] Within matched traces (6->9) added: end(e4)
+- [N65] Within matched traces (14->10) added: action(n4,"Does customer exist?")
+- [N66] Within matched traces (14->10) added: action(n10,"Is customer a private customer?")
+- [N67] Within matched traces (14->10) added: action(n15,"Are products available?")
+- [N68] Within matched traces (14->10) added: converge(c3)
+- [N69] Within matched traces (14->10) added: action(n24,"Payment received?")
+- [N70] Within matched traces (14->10) added: action(n31,"End")
+- [N71] Within matched traces (14->10) added: end(e5)

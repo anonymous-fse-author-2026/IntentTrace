@@ -1,0 +1,10 @@
+Omission
+- [N1] Node-level omission: i8:Once the purchase invoice and shipment are received (reason: This explicit timing/condition clause dictates when the subsequent step should occur, but the model provides no corresponding guard, label, or conditional node to represent it.)
+- [N2] Within matched traces (0->0) omitted: i8:Once the purchase invoice and shipment are received
+
+Addition
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"gather required items") -> action(n3,"inquire about availability of products") -> action(n4,"wait for invoice") -> action(n5,"review pricing and terms") -> action(n6,"send purchase requisition") -> branch(b1,AND) -> action(n8,"wait for shipment") -> converge(c1) -> action(n9,"receive invoice") -> action(n10,"make payment") -> action(n11,"end process") -> end(e1)
+
+Mutation
+- [N4] Node-level mutation: element=action(n5,"review pricing and terms"); source=i5:review the pricing and terms of the items; reason=Drops the essential qualifier 'of the items', altering the target and scope of the review action compared to the source unit.
+- [N5] Node-level mutation: element=action(n7,"wait for purchase invoice") -> action(n8,"wait for shipment"); source=i7:wait for the purchase invoice and shipment; reason=Artificially splits a single atomic waiting step into two separate parallel waits. This introduces unintended concurrency and changes the execution logic/granularity specified in the source.

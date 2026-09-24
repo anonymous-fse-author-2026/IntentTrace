@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process for ACME Company, start by receiving the customer request -> i2:check the current inventory level -> i3:If the inventory level is at or below the minimum -> i4:at or below the minimum -> i5:accept the customer request -> i8:After accepting the customer request, create a purchase order. -> i11:Once the purchase order is created, review it. -> i12:rework the purchase order -> i11:Once the purchase order is created, review it.
+- [N2] Within matched traces (0->2) omitted: i10:rejected
+
+Addition
+- [N3] Within matched traces (2->0) added: init(i1)
+- [N4] Within matched traces (3->1) added: init(i1)
+- [N5] Within matched traces (0->2) added: init(i1)
+- [N6] Within matched traces (0->2) added: action(n4,"is inventory at or below minimum level?")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i4:at or below the minimum; reason=The guard uses an abstract boolean variable (v1 = 'Yes') instead of the explicit threshold comparison stated in the text.
+- [N8] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i6:above the minimum; reason=The guard uses an abstract boolean variable (v1 = 'No') instead of the explicit threshold comparison stated in the text.
+- [N9] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i14:approved; reason=The guard replaces the explicit status condition with an abstract boolean variable (v2 = 'Yes'), altering the stated logic.
+- [N10] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i10:rejected; reason=The guard replaces the explicit status condition with an abstract boolean variable (v2 = 'No'), altering the stated logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=2 and out=1. | DSL: action(n9,"review purchase order")

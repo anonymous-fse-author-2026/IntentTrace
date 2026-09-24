@@ -1,0 +1,11 @@
+- `action(n8, "continue: with the process")`: Lacks outgoing precedence edges, creating a dead-end. The source states "If the genre is missing, we should continue the process," implying subsequent steps, but the model terminates here.
+- `action(n10, "get: music ids for the next genre")`: Lacks outgoing precedence edges. The source implies handling additional genres, but the model cuts off the control flow.
+- `defines(v2, "can we capture data from Jamendo?", {"Yes", "No  continue"})`: Includes the value `"No  continue"` which is absent from the source text. The source only specifies continuing if data *can* be captured, never introducing a "No continue" state.
+- `defines(v3, "is the genre missing?", {"Yes", "No  check next"})`: Includes the hallucinated value `"No  check next"`, which is not mentioned in the source description.
+- `label(n3, c1, "No  continue")`: Attaches a descriptive label not found in the source text to the FMA capture path.
+- `action(n12, "is the sample missing?")` & `branch(b5)`: Incorrectly merges two distinct source conditions ("If the sample is missing..." and "...if there are no additional samples...") into a single XOR split. The source describes them as separate sequential checks, violating correct control-flow representation.
+- `guard(b5, n14, v5 = 'No')`: Illogically maps the "No" response to "is the sample missing?" directly to the "no additional samples" termination path. "Sample not missing" does not semantically imply "no additional samples," misrepresenting the source progression.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")

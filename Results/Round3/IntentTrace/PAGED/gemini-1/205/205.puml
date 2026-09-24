@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Initiate Resupply Cycle for ACME Company;
+:Check Inventory Level;
+:v1: Check Inventory Level ({is greater than the Minimum Level, Otherwise,}); <<objectSignal>>
+if () then ([v1 = "is greater than the Minimum Level"])
+stop
+else ([v1 = "Otherwise,"])
+:Create Purchase Order;
+repeat :;
+:Review Purchase Order;
+:v2: Review Purchase Order ({is rejected,, is accepted,}); <<objectSignal>>
+backward:Rework Purchase Order;
+repeat while () is ([v2 = "is rejected,"]) not ([v2 = "is accepted,"])
+:Reserve Funds for Payment;
+:Send Purchase Order to Supplier;
+split
+:Receive Packing Slip;
+:Record Packing Slip;
+split again
+:Receive Invoice;
+:Record Invoice;
+end split
+:Release Funds for Payment;
+:Issue Payment to Supplier;
+stop
+endif
+@enduml

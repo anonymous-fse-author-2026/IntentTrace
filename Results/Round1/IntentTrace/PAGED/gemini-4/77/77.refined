@@ -1,0 +1,98 @@
+init(i1)
+action(i2, "join the team and agree on the team's domain")
+converge(c_i3)
+action(i3, "create a process model and check it")
+branch(b1, XOR)
+action(i4, "If the process model is \"NOT OK\"")
+action(i5, "assign negative points")
+action(i6, "If it is still \"NOT OK\"")
+action(i7, "assign negative points again")
+action(i8, "you can continue with it")
+branch(b3, XOR)
+action(i9, "If there are any issues")
+action(i10, "fix them in the next session and extend the process to levels 2 and 3")
+action(i11, "If you need to check the process and assign points")
+action(i12, "continue with the process")
+action(i13, "If you need to analyze the field of study")
+action(i14, "assign roles in the team")
+action(i15, "If the process is okay")
+converge(c_i16)
+action(i16, "perform work according to your assigned role")
+action(i17, "Check the progress and consult any problems that arise")
+branch(b4, XOR)
+action(i18, "If the project is accepted")
+action(i19, "present it")
+action(i20, "continue working according to your role")
+branch(b5, XOR)
+action(i21, "present it again")
+converge(c_i22)
+action(i22, "Finally, present the project")
+end(i23)
+
+defines(v_b1, "b1", {"NOT_OK", "continue", "okay"})
+defines(v_b3, "b3", {"issues", "check", "analyze"})
+defines(v_b4, "b4", {"accepted", "not_accepted"})
+defines(v_b5, "b5", {"loop", "present"})
+
+actor(a_default, "Default", [i1, i2, c_i3, i3, b1, i4, i5, i6, i7, i8, b3, i9, i10, i11, i12, i13, i14, i15, c_i16, i16, i17, b4, i18, i19, i20, b5, i21, c_i22, i22, i23])
+
+precedence(i1, i2)
+precedence(i2, c_i3)
+precedence(i7, c_i3)
+precedence(c_i3, i3)
+precedence(i3, b1)
+
+precedence(b1, i4)
+precedence(i4, i5)
+precedence(i5, i6)
+precedence(i6, i7)
+
+precedence(b1, i8)
+precedence(i8, b3)
+
+precedence(b3, i9)
+precedence(i9, i10)
+precedence(i10, c_i16)
+
+precedence(b3, i11)
+precedence(i11, i12)
+precedence(i12, c_i16)
+
+precedence(b3, i13)
+precedence(i13, i14)
+precedence(i14, c_i16)
+
+precedence(b1, i15)
+precedence(i15, c_i16)
+
+precedence(b5, c_i16)
+precedence(c_i16, i16)
+precedence(i16, i17)
+precedence(i17, b4)
+
+precedence(b4, i18)
+precedence(i18, i19)
+precedence(i19, c_i22)
+
+precedence(b4, i20)
+precedence(i20, b5)
+
+precedence(b5, i21)
+precedence(i21, c_i22)
+
+precedence(c_i22, i22)
+precedence(i22, i23)
+
+guard(b1, i4, v_b1 = 'NOT_OK')
+guard(b1, i8, v_b1 = 'continue')
+guard(b1, i15, v_b1 = 'okay')
+
+guard(b3, i9, v_b3 = 'issues')
+guard(b3, i11, v_b3 = 'check')
+guard(b3, i13, v_b3 = 'analyze')
+
+guard(b4, i18, v_b4 = 'accepted')
+guard(b4, i20, v_b4 = 'not_accepted')
+
+guard(b5, c_i16, v_b5 = 'loop')
+guard(b5, i21, v_b5 = 'present')

@@ -1,0 +1,8 @@
+- `action(n1, "start acquiring new client")`: Hallucinates an undocumented initial step; the source explicitly states "the first step is to identify the need for a new client," making `n1` an unsupported addition that alters the documented chronology.
+- `defines(v1, "is the response positive?", {})`: Declares an empty value range `{}`; the source describes a clear binary decision context ("If the response is positive... However, if the response is negative..."), so the range must reflect the valid decision outcomes (e.g., `{true, false}`).
+- `branch(b1, XOR)` and its outgoing `precedence` edges: Lacks `guard` statements to enforce the documented choice conditions; the source explicitly defines the branching criteria ("If the response is positive... However, if the response is negative..."), which per DSL semantics must be attached to the XOR branch edges using `guard` to satisfy SMC4.
+- `action(n10, "is the response positive?")`: Misrepresents a decision point as a sequential action; the DSL designates `branch` (with associated `guard` conditions) for decision logic, so placing a standalone action node immediately before `b1` fractures the intended control-flow representation.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required.

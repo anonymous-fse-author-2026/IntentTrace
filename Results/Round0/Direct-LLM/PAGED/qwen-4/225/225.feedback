@@ -1,0 +1,11 @@
+- `action(n1, "start acme process")`: Hallucinated step; the source begins directly with `"start by receiving the customer request"` without an initial startup action.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements to encode the documented decision criteria (`"If the inventory level is at or below the minimum..."`, `"If the purchase order is rejected/approved..."`), leaving the exclusive choice logic underspecified.
+- `defines(v1, "check inventory level", {})` & `defines(v2, "review purchase order", {})`: Value ranges are empty `{}`, failing to reflect the source's implied numeric/status domains, and the variables are never referenced in any guards.
+- `action(n7, "rework purchase order")`: Lacks an outgoing precedence edge returning to `n6` or `b2`, creating a dead-end path that contradicts the source requirement to `"review it again"` after reworking.
+- `action(n15, "end process")`: Redundant step; the source indicates termination occurs immediately after `"issue the payment"` (`n12`), making an intermediate "end process" action unnecessary before `end(e2)`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"rework purchase order")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"rework purchase order")

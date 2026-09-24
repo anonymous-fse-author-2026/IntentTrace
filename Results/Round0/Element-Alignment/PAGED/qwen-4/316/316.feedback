@@ -1,0 +1,14 @@
+Addition
+- [N1] Node-level addition: action(n7,"Request exception again") (reason: The source text does not describe a step to request the exception again if it is not approved.)
+- [N2] Node-level addition: action(n25,"Return to exam attendance") (reason: The source text requires another sign-up upon failure but does not explicitly model a return-to-attendance step.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=1 and out=0. | Node `n7` has in=1 and out=0. | DSL: action(n14,"Start homework assignment"); action(n7,"Request exception again")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Continue']`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Continue'` on `b2 -> c1` uses undefined variable `v2`. | DSL: guard(b2,c1,"v2 = 'Continue'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n23` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n24` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13, n14, n7 | DSL: action(n13,"Assign another homework"); action(n14,"Start homework assignment"); action(n7,"Request exception again")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Continue'` on `b2 -> c1` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,c1,"v2 = 'Continue'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

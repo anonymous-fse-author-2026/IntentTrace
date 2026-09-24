@@ -1,0 +1,47 @@
+Omission
+- [N1] Node-level omission: i4:the process should continue (reason: The model fails to implement the continuation of the process when the order is rejected, ending the path instead.)
+- [N2] Node-level omission: i6:At the same time (reason: The model fails to include a parallel (AND) gateway to execute the subsequent steps concurrently, mapping them exclusively instead.)
+- [N3] Node-level omission: i10:availability needs to be checked again (reason: This explicit secondary action is entirely missing from the model.)
+- [N4] Omitted trace (input 3): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i7:preparing the assembling order -> i13:The next steps are to assemble the bike -> i14:ship the product
+- [N5] Omitted trace (input 4): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i8:checking availability -> i9:If there is a backorder -> i10:availability needs to be checked again -> i11:the process ends
+- [N6] Omitted trace (input 5): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i8:checking availability -> i12:If the item can be reserved, the process should continue. -> i13:The next steps are to assemble the bike -> i14:ship the product
+- [N7] Within matched traces (1->1) omitted: i4:the process should continue
+- [N8] Within matched traces (1->1) omitted: i6:At the same time
+- [N9] Within matched traces (1->1) omitted: i8:checking availability
+- [N10] Within matched traces (1->1) omitted: i10:availability needs to be checked again
+- [N11] Within matched traces (0->2) omitted: i4:the process should continue
+- [N12] Within matched traces (0->2) omitted: i6:At the same time
+- [N13] Within matched traces (1->3) omitted: i4:the process should continue
+- [N14] Within matched traces (1->3) omitted: i6:At the same time
+- [N15] Within matched traces (1->3) omitted: i10:availability needs to be checked again
+- [N16] Within matched traces (2->4) omitted: i4:the process should continue
+- [N17] Within matched traces (2->4) omitted: i6:At the same time
+
+Addition
+- [N18] Node-level addition: action(n1,"start") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N19] Node-level addition: action(n4,"Reject Order") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N20] Node-level addition: action(n5,"End") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N21] Node-level addition: action(n9,"End") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N22] Node-level addition: action(n12,"End") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N23] Node-level addition: label(n10,n11,"12") (reason: These elements lack source justification. The text does not mandate 'start' or 'End' as explicit action steps, does not instruct a 'Reject Order' action (it instructs the process to continue), and provides no support for the label '12'.)
+- [N24] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N25] Within matched traces (1->1) added: action(n1,"start")
+- [N26] Within matched traces (1->1) added: action(n6,"Prepare Assembling Order")
+- [N27] Within matched traces (1->1) added: converge(c1)
+- [N28] Within matched traces (0->2) added: action(n1,"start")
+- [N29] Within matched traces (0->2) added: converge(c1)
+- [N30] Within matched traces (0->2) added: action(n8,"Is Backorder Required?")
+- [N31] Within matched traces (0->2) added: branch(b2,XOR)
+- [N32] Within matched traces (0->2) added: action(n12,"End")
+- [N33] Within matched traces (0->2) added: end(e3)
+- [N34] Within matched traces (1->3) added: action(n1,"start")
+- [N35] Within matched traces (1->3) added: converge(c1)
+- [N36] Within matched traces (2->4) added: action(n1,"start")
+- [N37] Within matched traces (2->4) added: converge(c1)
+- [N38] Within matched traces (2->4) added: action(n8,"Is Backorder Required?")
+- [N39] Within matched traces (2->4) added: action(n12,"End")
+- [N40] Within matched traces (2->4) added: end(e3)
+
+Mutation
+- [N41] Node-level mutation: element=guard(b1,n6,"v1 = \"Accepted_1\"") -> guard(b1,n7,"v1 = \"Accepted_2\""); source=i5:If the order is to be accepted, the process should also continue.; reason=The model distorts the single acceptance condition by inventing mutually exclusive fractional conditions ('Accepted_1' and 'Accepted_2').
+- [N42] Node-level mutation: element=guard(b2,n10,"v2 = \"No\""); source=i12:If the item can be reserved, the process should continue.; reason=The model implements the item reservation condition as a negative string match ('v2 = No') on the prior backorder check rather than faithfully modeling the reservation logic itself.

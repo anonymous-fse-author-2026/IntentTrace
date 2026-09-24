@@ -1,0 +1,52 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:empty the mailbox;
+:check if mailbox is empty;
+:v1: check if mailbox is empty ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+->;
+else ([v1 = 'No'])
+:check if mailbox is empty again;
+:v1: check if mailbox is empty ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:verify information completeness;
+:v2: verify information completeness ({Complete, Not Complete}); <<objectSignal>>
+if () then ([v2 = 'Complete'])
+:add incoming mail number  date  and record in letter book;
+else ([v2 = 'Not Complete'])
+:make telephone call to sender;
+:complete data by adding incoming mail number  date  and record in letter book;
+endif
+:take letter book and member register to Miranda every Wednesday evening;
+:check if applicant becomes a member;
+:v3: check if applicant becomes a member ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:stamp 'new Member' on the letter and write date;
+:after stamping new member on letter and writing date write the data;
+:write data;
+split
+:calculate fee;
+:hand letter to Charles and ask to write amount in register;
+:print membership card with all data and send to new member;
+stop
+split again
+:hand letter to Charles and add new member to register;
+:prepare an invoice for the new members;
+:ask Charles to write the amount in the register and write the fee amount to the register;
+stop
+end split
+else ([v3 = 'No'])
+:write to applicant and inform them of decision;
+stop
+endif
+else ([v1 = 'Yes'])
+->;
+endif
+endif
+:end process;
+stop
+@enduml

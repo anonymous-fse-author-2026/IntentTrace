@@ -1,0 +1,6 @@
+
+
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce the conditional routing specified in the source (“If the inventory is below or equal to the minimum...”, “If the PO is rejected/approved...”); the exclusive split logic is undefined, omitting documented behavior (SMC1, SMC4).
+- `action(n3, "is inventory below or equal to minimum?")` and `action(n9, "is po approved?")`: Modeled as executable procedural steps rather than decision criteria, misrepresenting their semantic role as conditional triggers in the source (SMC2).
+- `defines(v1, "...", {})` and `defines(v2, "...", {})`: Declare empty ranges `{}` instead of capturing the finite binary/categorical value spaces explicitly implied by the source conditions (e.g., `{true, false}` or `{'<=min', '>min'}`), failing to faithfully reflect the source (SMC6).
+- `precedence(n15, c1)`: Routes “receive inventory” directly to a convergence join, but the source explicitly states “If the inventory is received, proceed to receive the Packing Slip,” indicating a mandatory sequential dependency (`n15` → `n14`) that is omitted, breaking the intended path chronology (SMC3, SMC5).

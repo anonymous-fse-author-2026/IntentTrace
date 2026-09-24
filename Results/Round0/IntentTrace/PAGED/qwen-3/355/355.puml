@@ -1,0 +1,71 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:check customer order;
+:is customer registered;
+:v1: is customer registered ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:check payment morale;
+:is payment morale good;
+:v2: is payment morale good ({Bad, Good}); <<objectSignal>>
+if () then ([v2 = 'Good'])
+:continue with process;
+split
+:enter data and take order;
+split again
+:check item availability;
+:are items in stock;
+:v4: are items in stock ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:continue with process;
+:send order confirmation;
+else ([v4 = 'No'])
+:start production;
+:produce article;
+split
+:send order confirmation;
+split again
+:send invoice and deliver product;
+end split
+endif
+:is payment received;
+:v5: is payment received ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:close order;
+:end process;
+stop
+else ([v5 = 'No'])
+:are reminders more than 3;
+:v6: are reminders more than 3 ({More than 3, 3 or fewer}); <<objectSignal>>
+if () then ([v6 = 'More than 3'])
+:engage lawyer;
+:end process;
+stop
+else ([v6 = '3 or fewer'])
+:send reminder;
+-> };
+:end process;
+stop
+endif
+endif
+end split
+else ([v2 = 'Bad'])
+->;
+endif
+else ([v1 = 'No'])
+:check customer status;
+:is end customer;
+:v3: is end customer ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v3 = 'Yes'])
+case ([v3 = 'No'])
+case ([v3 = 'No'])
+endswitch
+endif
+:reject order;
+:end process;
+stop
+@enduml

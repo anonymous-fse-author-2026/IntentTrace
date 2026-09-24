@@ -1,0 +1,51 @@
+Omission
+- [N1] Node-level omission: i2:informational meeting that lasts half a day, involving the customer and the web design team (reason: The model lacks an explicit action step for conducting the initial informational meeting, jumping straight to a success check.)
+- [N2] Within matched traces (0->0) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N3] Within matched traces (1->6) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N4] Within matched traces (2->2) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N5] Within matched traces (3->6) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N6] Within matched traces (3->6) omitted: i16:rebuilt
+- [N7] Within matched traces (3->6) omitted: i17:If the rebuild is complete, the process ends.
+- [N8] Within matched traces (4->2) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N9] Within matched traces (4->2) omitted: i16:rebuilt
+- [N10] Within matched traces (4->2) omitted: i17:If the rebuild is complete, the process ends.
+- [N11] Within matched traces (5->7) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N12] Within matched traces (5->7) omitted: i19:rebuilt again
+- [N13] Within matched traces (6->3) omitted: i2:informational meeting that lasts half a day, involving the customer and the web design team
+- [N14] Within matched traces (6->3) omitted: i19:rebuilt again
+
+Addition
+- [N15] Node-level addition: action(n15,"Approve rebuilt site") (reason: Introduces a second approval branch and decision node not found in the source text, which directly links a second rejection to rebuilding again without an intermediate approval step.)
+- [N16] Node-level addition: guard(b5,n16,"v5 = 'Approved'") (reason: Introduces a second approval branch and decision node not found in the source text, which directly links a second rejection to rebuilding again without an intermediate approval step.)
+- [N17] Node-level addition: guard(b5,n17,"v5 = 'Rejected'") (reason: Introduces a second approval branch and decision node not found in the source text, which directly links a second rejection to rebuilding again without an intermediate approval step.)
+- [N18] Node-level addition: action(n9,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N19] Node-level addition: action(n13,"Review rebuilt site") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N20] Node-level addition: action(n16,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N21] Node-level addition: guard(b2,n9,"v2 = 'Not successful'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N22] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N23] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N24] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N25] Added trace (model 8): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> action(n13,"Review rebuilt site") -> branch(b4,XOR) -> action(n15,"Approve rebuilt site") -> branch(b5,XOR) -> action(n16,"End process") -> end(e5)
+- [N26] Within matched traces (0->0) added: action(n2,"Is meeting successful?")
+- [N27] Within matched traces (5->7) added: action(n13,"Review rebuilt site")
+- [N28] Within matched traces (5->7) added: action(n14,"End process")
+- [N29] Within matched traces (5->7) added: end(e4)
+- [N30] Within matched traces (6->3) added: action(n13,"Review rebuilt site")
+- [N31] Within matched traces (6->3) added: action(n14,"End process")
+- [N32] Within matched traces (6->3) added: end(e4)
+
+Mutation
+- [N33] Node-level mutation: element=guard(b4,n14,"v4 = 'Not successful'"); source=i17:If the rebuild is complete, the process ends.; reason=The guards are inverted. The source states completion leads to the end and rejection leads to rebuilding, but the model assigns 'Not successful' to the end path and 'Successful' to the rebuild path.
+- [N34] Node-level mutation: element=guard(b4,n15,"v4 = 'Successful'"); source=i18:If the rebuild is rejected again, the site needs to be rebuilt again; reason=The guards are inverted. The source states completion leads to the end and rejection leads to rebuilding, but the model assigns 'Not successful' to the end path and 'Successful' to the rebuild path.
+
+Permutation
+- [N35] Within matched traces (1->6) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+- [N36] Within matched traces (2->2) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+- [N37] Within matched traces (3->6) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+- [N38] Within matched traces (4->2) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+- [N39] Within matched traces (5->7) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+- [N40] Within matched traces (6->3) reordered: expected [i10:Once the site is built] but observed [converge(c1)] elsewhere; in its place the model has [action(n7,"Develop site")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Rebuild site again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n17 | DSL: action(n17,"Rebuild site again")

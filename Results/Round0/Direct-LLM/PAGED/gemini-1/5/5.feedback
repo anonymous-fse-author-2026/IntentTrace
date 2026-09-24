@@ -1,0 +1,12 @@
+- `branch(b3, AND)`: The model incorrectly inserts a parallel AND gateway after "Ship Material" (n5), which violates the sequential flow described in the source ("Once the P.O. is submitted, proceed to Ship Material. At this point, check if...").
+- `action(n12, "communicate shipment problems before shipment")`: This node is placed in a parallel branch and has no outgoing edges (dead end). It incorrectly models the instruction "In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material", which implies a loop back to "Ship Material" after communicating problems.
+- `branch(b1, XOR)`: Missing guards on its outgoing edges to represent the source conditions "If it is [okay]" and "if there are any problems".
+- `branch(b2, XOR)`: Missing guards on its outgoing edges to represent the source conditions "if it is okay" and "Otherwise".
+- `defines(v1, "is shipment okay first check", {})` and `defines(v2, "is shipment okay second check", {})`: Both variables are defined with empty ranges `{}` instead of valid values.
+- `action(n11, "communicate shipment problems second time")`: The node is a dead end with no outgoing control-flow edge to loop back or terminate the process.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | Node `n12` has in=1 and out=0. | DSL: action(n11,"communicate shipment problems second time"); action(n12,"communicate shipment problems before shipment")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n12 | DSL: action(n11,"communicate shipment problems second time"); action(n12,"communicate shipment problems before shipment")

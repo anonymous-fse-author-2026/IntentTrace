@@ -1,0 +1,9 @@
+- `action(n1, "start passenger process")`: Hallucinates a preliminary step contrary to the source, which states the process begins directly by "filling in their information".
+- `action(n4, "Payment successful?")`, `branch(b1, XOR)`, `action(n6, "Contact support")`, `action(n7, "End of process with support contact")`, `end(e2)`: Hallucinates a validation gateway, exclusive branching, and a fallback path; the source specifies a strictly linear progression that simply "comes to an end" after payment.
+- `defines(v1, "Payment successful?", {})`: Introduces an undocumented decision variable with an empty range, contradicting the source's complete absence of payment outcome evaluation.
+- `precedence(n3, n4)` and downstream routing: Violates source chronology by inserting a decision node after "proceed to the payment page"; the source requires immediate termination "after completing the payment" without intermediate checks or choices.
+- `action(n4, "Payment successful?")`: Misrepresents the documented terminal step "completing the payment" as a conditional checkpoint rather than the concluding activity.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

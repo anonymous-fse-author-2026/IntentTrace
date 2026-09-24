@@ -1,0 +1,9 @@
+- `action(n1, "start")` and `action(n2, "Is meeting successful?")`: Omit the documented `"informational meeting that lasts half a day"` activity. The meeting should be represented as an action node preceding the decision, rather than being replaced by a generic start step and a question-labeled action.
+- Control flow from `action(n4, "Create storyboard")` to `branch(b6, AND)`: Omits the conditional `"If the storyboard is successful"` specified in the source. The model proceeds unconditionally to subsequent steps, missing the required decision gateway and its failure path.
+- `action(n13, "Review rebuilt site")`, `defines(v4, ...)`, `branch(b4)`, `action(n15, "Approve rebuilt site")`, `defines(v5, ...)`, `branch(b5)`: Hallucinate a review and approval phase for the rebuild cycle. The source text only specifies a direct outcome after rebuilding: `"If the rebuild is complete, the process ends. If the rebuild is rejected again, the site needs to be rebuilt again"`.
+- `actor(a_default, "Default", [...])`: Assigns all process nodes to a single `"Default"` participant, failing to reflect the source-specified responsibilities of the `"customer"` and `"web design team"` for the meeting, storyboard, site design, and development phases.
+- `branch(b2)` and `guard(b2, n9, v2 = 'Not successful')`: Introduces an explicit termination path for a failed review, whereas the source text `"If the review is successful, it moves on to the approval stage"` does not define a fallback or endpoint for an unsuccessful review.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Rebuild site again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n17 | DSL: action(n17,"Rebuild site again")

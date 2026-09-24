@@ -1,0 +1,647 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "supply requirement and document it"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "If the order is received via fax, input the order into an Excel file."
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "If the order is received via mail or phone, also input the order into an Excel file."
+    },
+    {
+      "id": "n35",
+      "type": "action",
+      "content": "Once the Excel list is complete after a week, send it to the student."
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Upon receiving the Excel list, type the orders into the MS-Access database."
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Once the database is completed, control the incoming order."
+    },
+    {
+      "id": "n8a",
+      "type": "action",
+      "content": "At the same time, continue to do the check."
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "If the order is correct, release it."
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "However, if the order is incorrect, contact the selling agency."
+    },
+    {
+      "id": "n14b",
+      "type": "action",
+      "content": "Contact the selling agency and upon receiving the actual issue, send the order for sign off."
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Once the order is signed off, contact the client and release the order."
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "If the order is worth less than 5.000 \u20ac, release it."
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "If the order is worth more than 5.000 \u20ac, send it for sign off and continue with the check."
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Once the order is received by PPC, they will initiate production."
+    },
+    {
+      "id": "n33",
+      "type": "action",
+      "content": "After PPC initiates production, the goods will be produced."
+    },
+    {
+      "id": "n21",
+      "type": "action",
+      "content": "If the issue cannot be solved, cancel the order."
+    },
+    {
+      "id": "n22",
+      "type": "action",
+      "content": "If the issue can be solved, release the order."
+    },
+    {
+      "id": "n24",
+      "type": "action",
+      "content": "If the order needs to be cancelled, the process ends."
+    },
+    {
+      "id": "n25",
+      "type": "action",
+      "content": "If not, check the quality of the goods."
+    },
+    {
+      "id": "n26",
+      "type": "action",
+      "content": "Once the quality is checked, create and send a quality report to the finance department."
+    },
+    {
+      "id": "n27",
+      "type": "action",
+      "content": "Release the order via memo and ensure that the memo is achieved in the warehouse."
+    },
+    {
+      "id": "n28",
+      "type": "action",
+      "content": "Send the invoice and once it is sent, report the achievement to the finance department."
+    },
+    {
+      "id": "n29",
+      "type": "action",
+      "content": "At the same time, commission the goods and sign and send the memo."
+    },
+    {
+      "id": "n30",
+      "type": "action",
+      "content": "Also, send the goods and ensure that the signed memo is achieved in the logistic department."
+    },
+    {
+      "id": "n31",
+      "type": "action",
+      "content": "Finally, archive the memo and close the order."
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c_pre_signoff",
+      "type": "converge"
+    },
+    {
+      "id": "c_join",
+      "type": "converge"
+    },
+    {
+      "id": "c4",
+      "type": "converge"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b8",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check order reception method",
+      "R_X": [
+        "Fax",
+        "Mail/Phone"
+      ]
+    },
+    {
+      "X": "v_decision",
+      "name": "order evaluation result",
+      "R_X": [
+        "Correct",
+        "Incorrect",
+        "<5k",
+        ">5k"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "check if issue solvable",
+      "R_X": [
+        "Unsolvable",
+        "Solvable"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "check if order needs cancellation",
+      "R_X": [
+        "Cancel",
+        "Do not cancel"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "c1",
+        "n35",
+        "n8",
+        "n9",
+        "n8a",
+        "b2",
+        "n12",
+        "n13",
+        "n14b",
+        "c_pre_signoff",
+        "n14",
+        "c_join",
+        "n15",
+        "n16",
+        "n19",
+        "n33",
+        "b4",
+        "n21",
+        "e2",
+        "n22",
+        "b5",
+        "n24",
+        "e3",
+        "n25",
+        "n26",
+        "n27",
+        "b8",
+        "n28",
+        "n29",
+        "n30",
+        "c4",
+        "n31",
+        "e4"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n35"
+    },
+    {
+      "type": "precedence",
+      "A": "n35",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n8a"
+    },
+    {
+      "type": "precedence",
+      "A": "n8a",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c_join"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n14b"
+    },
+    {
+      "type": "precedence",
+      "A": "n14b",
+      "B": "c_pre_signoff"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "c_pre_signoff"
+    },
+    {
+      "type": "precedence",
+      "A": "c_pre_signoff",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c_join"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "c_join"
+    },
+    {
+      "type": "precedence",
+      "A": "c_join",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "n33"
+    },
+    {
+      "type": "precedence",
+      "A": "n33",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n21"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n22"
+    },
+    {
+      "type": "precedence",
+      "A": "n21",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n22",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n24"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n25"
+    },
+    {
+      "type": "precedence",
+      "A": "n24",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n25",
+      "B": "n26"
+    },
+    {
+      "type": "precedence",
+      "A": "n26",
+      "B": "n27"
+    },
+    {
+      "type": "precedence",
+      "A": "n27",
+      "B": "b8"
+    },
+    {
+      "type": "precedence",
+      "A": "b8",
+      "B": "n28"
+    },
+    {
+      "type": "precedence",
+      "A": "b8",
+      "B": "n29"
+    },
+    {
+      "type": "precedence",
+      "A": "b8",
+      "B": "n30"
+    },
+    {
+      "type": "precedence",
+      "A": "n28",
+      "B": "c4"
+    },
+    {
+      "type": "precedence",
+      "A": "n29",
+      "B": "c4"
+    },
+    {
+      "type": "precedence",
+      "A": "n30",
+      "B": "c4"
+    },
+    {
+      "type": "precedence",
+      "A": "c4",
+      "B": "n31"
+    },
+    {
+      "type": "precedence",
+      "A": "n31",
+      "B": "e4"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Fax'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Mail/Phone'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n12",
+      "condition": "v_decision = 'Correct'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n13",
+      "condition": "v_decision = 'Incorrect'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n15",
+      "condition": "v_decision = '<5k'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n16",
+      "condition": "v_decision = '>5k'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n21",
+      "condition": "v4 = 'Unsolvable'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n22",
+      "condition": "v4 = 'Solvable'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n24",
+      "condition": "v5 = 'Cancel'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n25",
+      "condition": "v5 = 'Do not cancel'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process, begin by supplying the requirement and then documenting it."
+    },
+    {
+      "id": "i2",
+      "content": "If the order is received via fax, input the order into an Excel file."
+    },
+    {
+      "id": "i3",
+      "content": "If the order is received via mail or phone, also input the order into an Excel file."
+    },
+    {
+      "id": "i4",
+      "content": "Once the Excel list is complete after a week, send it to the student."
+    },
+    {
+      "id": "i5",
+      "content": "Upon receiving the Excel list, type the orders into the MS-Access database."
+    },
+    {
+      "id": "i7",
+      "content": "Once the database is completed, control the incoming order."
+    },
+    {
+      "id": "i8",
+      "content": "At the same time, continue to do the check."
+    },
+    {
+      "id": "i9",
+      "content": "If the order is correct, release it."
+    },
+    {
+      "id": "i10",
+      "content": "However, if the order is incorrect, contact the selling agency."
+    },
+    {
+      "id": "i11",
+      "content": "If the order is worth less than 5.000 \u20ac, release it."
+    },
+    {
+      "id": "i12",
+      "content": "If the order is worth more than 5.000 \u20ac, send it for sign off and continue with the check."
+    },
+    {
+      "id": "i13",
+      "content": "Contact the selling agency and upon receiving the actual issue, send the order for sign off."
+    },
+    {
+      "id": "i14",
+      "content": "Once the order is signed off, contact the client and release the order."
+    },
+    {
+      "id": "i15",
+      "content": "Once the order is received by PPC, they will initiate production."
+    },
+    {
+      "id": "i16",
+      "content": "If the issue cannot be solved, cancel the order."
+    },
+    {
+      "id": "i17",
+      "content": "If the issue can be solved, release the order."
+    },
+    {
+      "id": "i18",
+      "content": "After PPC initiates production, the goods will be produced."
+    },
+    {
+      "id": "i19",
+      "content": "If the order needs to be cancelled, the process ends."
+    },
+    {
+      "id": "i20",
+      "content": "If not, check the quality of the goods."
+    },
+    {
+      "id": "i21",
+      "content": "Once the quality is checked, create and send a quality report to the finance department."
+    },
+    {
+      "id": "i22",
+      "content": "Release the order via memo and ensure that the memo is achieved in the warehouse."
+    },
+    {
+      "id": "i24",
+      "content": "Send the invoice and once it is sent, report the achievement to the finance department."
+    },
+    {
+      "id": "i25",
+      "content": "At the same time, commission the goods and sign and send the memo."
+    },
+    {
+      "id": "i26",
+      "content": "Also, send the goods and ensure that the signed memo is achieved in the logistic department."
+    },
+    {
+      "id": "i27",
+      "content": "Finally, archive the memo and close the order."
+    }
+  ]
+}

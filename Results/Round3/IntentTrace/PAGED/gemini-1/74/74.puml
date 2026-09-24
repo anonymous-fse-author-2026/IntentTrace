@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Enter Metadata;
+:IN-Patient Step;
+split
+:Send Data to Suppliers;
+:v_n4: Data Extraction Destination ({Doctor, Patient Record}); <<objectSignal>>
+if () then ([v_n4 = 'Doctor'])
+:Extract and Transfer Data from Suppliers to Doctor;
+:Confirm GOP;
+:End Process: GOP Confirmed;
+stop
+else ([v_n4 = 'Patient Record'])
+:Extract Data from Suppliers Again;
+:Enter Data on Patient Record or Confirm IN-Patient Status;
+:Send Data Back to Suppliers;
+endif
+split again
+:Create Claim;
+:v_n5: Case Registration ({Yes, No}); <<objectSignal>>
+if () then ([v_n5 = 'Yes'])
+:Register Case;
+else ([v_n5 = 'No'])
+->;
+endif
+:Handle Claim;
+end split
+:Receive Payment;
+:End Process: Payment Received;
+stop
+@enduml

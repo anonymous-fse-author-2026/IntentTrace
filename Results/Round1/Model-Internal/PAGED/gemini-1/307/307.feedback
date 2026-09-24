@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i6:Simultaneously (reason: The text specifies concurrent execution, but no parallel branch (AND gateway) is modeled.)
+- [N2] Node-level omission: i8:Once the "invoice entered correctly" box is ticked (reason: There is no event, guard, or condition modeled to represent waiting for this box to be ticked.)
+- [N3] Node-level omission: i9:the invoice is checked (reason: The model lacks an action element for the invoice being checked at this stage.)
+- [N4] Omitted trace (input 0): i1:To begin the validation process, start by checking the received invoice for any errors. -> i2:If any errors are found -> i6:Simultaneously -> i3:continue with the process. -> i10:the process ends.
+- [N5] Omitted trace (input 2): i1:To begin the validation process, start by checking the received invoice for any errors. -> i4:If no errors are found -> i5:mark the "invoice entered correctly" box. -> i8:Once the "invoice entered correctly" box is ticked -> i9:the invoice is checked -> i10:the process ends.
+- [N6] Within matched traces (1->0) omitted: i6:Simultaneously
+- [N7] Within matched traces (1->1) omitted: i6:Simultaneously
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: The model invents 'start' as a separate standalone action, which is unsupported as the actual starting action is checking the invoice.)
+- [N9] Within matched traces (1->0) added: init(i1)
+- [N10] Within matched traces (1->0) added: action(n1,"start")
+- [N11] Within matched traces (1->1) added: init(i1)
+- [N12] Within matched traces (1->1) added: action(n1,"start")
+- [N13] Within matched traces (1->1) added: action(n4,"mark invoice entered correctly")
+- [N14] Within matched traces (1->1) added: converge(c1)
+
+Mutation
+- [N15] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:If any errors are found; reason=The model uses a generic variable expression 'v1 = Yes' instead of the specific source condition of errors being found.
+- [N16] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:If no errors are found; reason=The model uses a generic variable expression 'v1 = No' instead of the specific source condition of no errors being found.

@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i9:wait for the purchase invoice and shipment. (reason: The source describes a single, unified wait step for two concurrent deliverables. The model fails to implement this unified step, instead replacing it with artificially split parallel paths and decision checkpoints.)
+- [N2] Within matched traces (0->0) omitted: i6:Once the invoice is received,
+- [N3] Within matched traces (0->0) omitted: i9:wait for the purchase invoice and shipment.
+- [N4] Within matched traces (0->0) omitted: i10:Once the purchase invoice and shipment are received,
+
+Addition
+- [N5] Node-level addition: action(n1,"start process") (reason: Invents an explicit 'start process' action step. The source only uses 'To start the process,' as an introductory announcer, not as a distinct executable task.)
+- [N6] Node-level addition: action(n6,"Is invoice received?") (reason: Introduces an ungrounded decision loop ('Is invoice received?') with an XOR branch, converge node, and binary guards. The source treats invoice receipt as a simple linear transition following a wait, requiring no explicit yes/no check node.)
+- [N7] Node-level addition: guard(b1,c2,"v1 = 'No'") (reason: Introduces an ungrounded decision loop ('Is invoice received?') with an XOR branch, converge node, and binary guards. The source treats invoice receipt as a simple linear transition following a wait, requiring no explicit yes/no check node.)
+- [N8] Node-level addition: guard(b1,n7,"v1 = 'Yes'") (reason: Introduces an ungrounded decision loop ('Is invoice received?') with an XOR branch, converge node, and binary guards. The source treats invoice receipt as a simple linear transition following a wait, requiring no explicit yes/no check node.)
+- [N9] Node-level addition: action(n9,"wait for purchase invoice") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N10] Node-level addition: action(n10,"Is purchase invoice received?") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N11] Node-level addition: action(n11,"wait for shipment") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N12] Node-level addition: action(n12,"Is shipment received?") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N13] Node-level addition: guard(b2,c3,"v2 = 'No'") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N14] Node-level addition: guard(b3,c4,"v3 = 'No'") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N15] Node-level addition: guard(b2,c1,"v2 = 'Yes'") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N16] Node-level addition: guard(b3,c1,"v3 = 'Yes'") (reason: Artificially decomposes a single wait step into two parallel sub-waits, adds separate decision queries for each item, introduces XOR branches, converge nodes, an AND gateway, and multiple boolean guards. None of this branching logic, gating, or explicit questioning appears in the source text.)
+- [N17] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"gather required items") -> action(n3,"inquire about availability of products") -> action(n4,"send inquiry") -> converge(c2) -> action(n5,"wait for invoice") -> action(n6,"Is invoice received?") -> branch(b1,XOR) -> action(n7,"review pricing and terms") -> action(n8,"send purchase requisition") -> branch(b4,AND) -> converge(c4) -> action(n11,"wait for shipment") -> action(n12,"Is shipment received?") -> branch(b3,XOR) -> converge(c1) -> action(n13,"receive invoice") -> action(n14,"make payment") -> action(n15,"transaction complete and process ends") -> end(e1)
+- [N18] Within matched traces (0->0) added: action(n1,"start process")
+- [N19] Within matched traces (0->0) added: action(n6,"Is invoice received?")
+- [N20] Within matched traces (0->0) added: branch(b1,XOR)
+- [N21] Within matched traces (0->0) added: branch(b4,AND)
+- [N22] Within matched traces (0->0) added: converge(c3)
+- [N23] Within matched traces (0->0) added: action(n9,"wait for purchase invoice")
+- [N24] Within matched traces (0->0) added: action(n10,"Is purchase invoice received?")
+- [N25] Within matched traces (0->0) added: branch(b2,XOR)
+- [N26] Within matched traces (0->0) added: converge(c1)

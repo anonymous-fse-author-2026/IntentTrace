@@ -1,0 +1,328 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Note Vendor Number on Invoice Entry Form"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Sort by Vendor or Amount?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Sort Invoices by Vendor"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Sort Invoices by Amount"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Process Invoices (Vendor)"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Process Invoices (Amount)"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Take approximately 20 minutes for every 100 invoices"
+    },
+    {
+      "id": "n_enter",
+      "type": "action",
+      "content": "entered the invoice data"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Tick 'Invoice Entered' on Form"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Place Invoice Batch in Urgent Outbox"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Set Up Hourly Collection"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "End of Process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Sort by Vendor or Amount?",
+      "R_X": [
+        "Vendor",
+        "Amount"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Continue collection?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n_enter",
+        "n9",
+        "n10",
+        "n11",
+        "b2",
+        "n12",
+        "e1",
+        "c1",
+        "c2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"Vendor\""
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"Amount\""
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n_enter"
+    },
+    {
+      "type": "precedence",
+      "A": "n_enter",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c2",
+      "condition": "v2 = \"Yes\""
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n12"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n12",
+      "condition": "v2 = \"No\""
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start,"
+    },
+    {
+      "id": "i2",
+      "content": "note the vendor number on the Invoice entry form"
+    },
+    {
+      "id": "i3",
+      "content": "If you choose to"
+    },
+    {
+      "id": "i4",
+      "content": "\"Sort Invoice by vendor\""
+    },
+    {
+      "id": "i5",
+      "content": "proceed with the process"
+    },
+    {
+      "id": "i6",
+      "content": "if you decide to"
+    },
+    {
+      "id": "i7",
+      "content": "\"Sort invoice by invoice amount\""
+    },
+    {
+      "id": "i8",
+      "content": "continue with the process"
+    },
+    {
+      "id": "i9",
+      "content": "It takes approximately 20 minutes for every 100 invoices"
+    },
+    {
+      "id": "i10",
+      "content": "entered the invoice data"
+    },
+    {
+      "id": "i11",
+      "content": "tick \"invoice entered\" on the invoice entry form"
+    },
+    {
+      "id": "i12",
+      "content": "placed the invoice batch in the Urgent Outbox"
+    },
+    {
+      "id": "i13",
+      "content": "collected every hour"
+    },
+    {
+      "id": "i14",
+      "content": "The collection process will continue every hour"
+    },
+    {
+      "id": "i15",
+      "content": "until the end of the overall process."
+    }
+  ]
+}

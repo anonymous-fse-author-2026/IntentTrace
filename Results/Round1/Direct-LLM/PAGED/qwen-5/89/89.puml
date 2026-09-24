@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|faculty| Faculty
+|mpc| MPC
+|a_default| Default
+|a_default|
+start
+:send: Course Packet Information Received;
+:send: Design to Faculty;
+|faculty|
+:Faculty chooses the design;
+|a_default|
+repeat :identify content requiring copyright clearance and contact publisher;
+:v1: condition  if need to Contact Faculty to inform of denial and ask if new content should be added ({true, false}); <<objectSignal>>
+backward:notify: Contact Faculty to inform of denial and ask if new content should be added;
+repeat while () is ([v1 = true]) not ([v1 = false])
+|mpc|
+repeat :calculate: Course Packet Cost;
+:add: Bookstore margin to determine retail price;
+:v2: condition  if Price of the Course Packet is finalized ({true, false}); <<objectSignal>>
+backward:reconsider content to decrease price;
+repeat while () is ([v2 = false]) not ([v2 = true])
+:notify: Notify Bookstore of Course packet  Course number  Faculty name  and sections;
+|a_default|
+:end: Packet information notified to Bookstore;
+stop
+@enduml

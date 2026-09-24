@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: i7:Rework the purchase order and then review it. (reason: The source describes a single linear rework-then-review sequence. The model replaces it with a multi-step loop containing a second rejection check and additional split/join nodes, failing to faithfully implement the original unit.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start the process") (reason: Content 'start the process' acts as boilerplate duplication of the implicit init node and lacks corresponding behavioral instruction in the source.)
+- [N3] Node-level addition: action(n10,"is purchase status rejected after rework") (reason: Describes a second rejection check ('after rework') that never appears in the source text; entirely invented step.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> action(n10,"is purchase status rejected after rework") -> branch(b3,XOR) -> action(n11,"rework the purchase order again") -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n16,"receive the invoice") -> action(n18,"record the invoice") -> action(n20,"process ends after recording invoice") -> end(e3)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> action(n10,"is purchase status rejected after rework") -> branch(b3,XOR) -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n15,"receive the packing slip") -> action(n17,"record the packing slip") -> action(n19,"process ends after recording packing slip") -> end(e2)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> action(n10,"is purchase status rejected after rework") -> branch(b3,XOR) -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n16,"receive the invoice") -> action(n18,"record the invoice") -> action(n20,"process ends after recording invoice") -> end(e3)
+- [N7] Within matched traces (0->6) added: init(i1)
+- [N8] Within matched traces (0->6) added: action(n1,"start the process")
+- [N9] Within matched traces (0->6) added: action(n4,"is inventory level at or below minimum")
+- [N10] Within matched traces (1->0) added: init(i1)
+- [N11] Within matched traces (1->0) added: action(n1,"start the process")
+- [N12] Within matched traces (1->0) added: action(n10,"is purchase status rejected after rework")
+- [N13] Within matched traces (1->0) added: converge(c2)
+- [N14] Within matched traces (1->0) added: action(n13,"reserve the funds")
+- [N15] Within matched traces (1->0) added: action(n14,"send order to supplier")
+- [N16] Within matched traces (1->0) added: branch(b4,AND)
+- [N17] Within matched traces (1->0) added: action(n15,"receive the packing slip")
+- [N18] Within matched traces (1->0) added: action(n17,"record the packing slip")
+- [N19] Within matched traces (1->0) added: action(n19,"process ends after recording packing slip")
+- [N20] Within matched traces (1->0) added: end(e2)
+- [N21] Within matched traces (2->4) added: init(i1)
+- [N22] Within matched traces (2->4) added: action(n1,"start the process")
+- [N23] Within matched traces (2->4) added: action(n8,"is purchase status rejected")
+- [N24] Within matched traces (3->5) added: init(i1)
+- [N25] Within matched traces (3->5) added: action(n1,"start the process")
+- [N26] Within matched traces (3->5) added: action(n8,"is purchase status rejected")
+
+Mutation
+- [N27] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i2:If the inventory level is at or below the minimum, create a purchase order.; reason=Uses abstract boolean flag 'v1 = true' instead of preserving the explicit inventory level condition and threshold logic.
+- [N28] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i3:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Uses abstract boolean flag 'v1 = false' instead of preserving the explicit 'above minimum' condition.
+- [N29] Node-level mutation: element=guard(b2,n9,"v2 = true"); source=i5:If the purchase status is rejected, rework the purchase order.; reason=Substitutes textual status condition with abstract 'v2 = true', dropping semantic content.
+- [N30] Node-level mutation: element=guard(b2,c2,"v2 = false"); source=i6:However, if the purchase status is approved, reserve the funds.; reason=Substitutes textual approval condition with abstract 'v2 = false', losing the explicit status qualifier.
+- [N31] Node-level mutation: element=guard(b3,n11,"v3 = true"); source=i5:If the purchase status is rejected, rework the purchase order.; reason=Replaces explicit purchase status check with abstract 'v3 = true' flag.
+- [N32] Node-level mutation: element=guard(b3,c1,"v3 = false"); source=i5:If the purchase status is rejected, rework the purchase order.; reason=Replaces expected fallback condition with abstract 'v3 = false' flag.
+- [N33] Node-level mutation: element=action(n6,"process ends because inventory above minimum"); source=i3:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Adds unqualified explanatory phrase 'because inventory above minimum' that alters the original concise instruction.
+- [N34] Node-level mutation: element=action(n11,"rework the purchase order again"); source=i7:Rework the purchase order and then review it.; reason=Introduces invented qualifier 'again' and shifts the linear instruction into a recursive loop step.
+- [N35] Node-level mutation: element=action(n12,"review the purchase order after rework"); source=i7:Rework the purchase order and then review it.; reason=Adds invented qualifier 'after rework', distorting the original granularity and flow.
+- [N36] Node-level mutation: element=action(n19,"process ends after recording packing slip"); source=i12:Record the packing slip and the process ends.; reason=Includes extraneous temporal qualifier 'after recording packing slip' not found in source.
+- [N37] Node-level mutation: element=action(n20,"process ends after recording invoice"); source=i13:Record the invoice and the process ends.; reason=Includes extraneous temporal qualifier 'after recording invoice' not found in source.

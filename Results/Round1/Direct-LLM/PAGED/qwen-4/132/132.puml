@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:customer makes an enquiry;
+:is the article in stock;
+:v1: is the article in stock ({Available, Not Available}); <<objectSignal>>
+if () then ([v1 = "Not Available"])
+:abort the enquiry and end process;
+stop
+else ([v1 = "Available"])
+:reserve the article;
+:calculate the price;
+:send the offer;
+:wait for the customer to accept the offer;
+:v2: has the customer accepted the offer ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v2 = "Accepted"])
+:dispatch the article;
+stop
+else ([v2 = "Rejected"])
+stop
+endif
+endif
+@enduml

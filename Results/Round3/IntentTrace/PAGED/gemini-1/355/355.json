@@ -1,0 +1,815 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "start by checking the customer's order."
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "If the customer is a registered customer,"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "then check their payment morale."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "If they are a new customer,"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "then check their status."
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "If their payment morale is good,"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "continue with the process."
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "If their payment morale is bad"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "or if they are an end customer,"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "reject the order"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "and end the process."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "If the customer is a wholesaler,"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "enter their data and take the order."
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "At the same time,"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "check the availability of the items."
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "If the items are out of stock,"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "start production."
+    },
+    {
+      "id": "i19_in_stock",
+      "type": "action",
+      "content": "If they are in stock,"
+    },
+    {
+      "id": "i19",
+      "type": "action",
+      "content": "Once the availability is checked,"
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "send the order confirmation."
+    },
+    {
+      "id": "i21",
+      "type": "action",
+      "content": "If production is started,"
+    },
+    {
+      "id": "i22",
+      "type": "action",
+      "content": "produce the article"
+    },
+    {
+      "id": "i23",
+      "type": "action",
+      "content": "and send the order confirmation."
+    },
+    {
+      "id": "i24",
+      "type": "action",
+      "content": "Simultaneously,"
+    },
+    {
+      "id": "i25",
+      "type": "action",
+      "content": "send the invoice and deliver the product."
+    },
+    {
+      "id": "i26",
+      "type": "action",
+      "content": "Check the payment status."
+    },
+    {
+      "id": "i27",
+      "type": "action",
+      "content": "If payment is received,"
+    },
+    {
+      "id": "i28",
+      "type": "action",
+      "content": "close the order."
+    },
+    {
+      "id": "i29",
+      "type": "action",
+      "content": "If no payment is received,"
+    },
+    {
+      "id": "i30",
+      "type": "action",
+      "content": "check the number of reminders."
+    },
+    {
+      "id": "i31",
+      "type": "action",
+      "content": "If there are more than three reminders,"
+    },
+    {
+      "id": "i32",
+      "type": "action",
+      "content": "engage a lawyer."
+    },
+    {
+      "id": "i33",
+      "type": "action",
+      "content": "If there are three or fewer reminders,"
+    },
+    {
+      "id": "i34",
+      "type": "action",
+      "content": "send a reminder."
+    },
+    {
+      "id": "i26_loop",
+      "type": "action",
+      "content": "Check the payment status."
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "e_loop",
+      "type": "end"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_pay",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_rem",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c_reject",
+      "type": "converge"
+    },
+    {
+      "id": "c_i16_in",
+      "type": "converge"
+    },
+    {
+      "id": "c_post_conf",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Customer type",
+      "R_X": [
+        "Registered",
+        "New"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Payment morale",
+      "R_X": [
+        "Good",
+        "Bad"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Customer status",
+      "R_X": [
+        "End customer",
+        "Wholesaler"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Availability",
+      "R_X": [
+        "Out of stock",
+        "In stock"
+      ]
+    },
+    {
+      "X": "v6",
+      "name": "Payment status",
+      "R_X": [
+        "Received",
+        "Not received"
+      ]
+    },
+    {
+      "X": "v7",
+      "name": "Reminders",
+      "R_X": [
+        "More than 3",
+        "3 or fewer"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "i8",
+        "i9",
+        "i10",
+        "i11",
+        "i12",
+        "e1",
+        "i13",
+        "i14",
+        "i15",
+        "i16",
+        "i17",
+        "i18",
+        "i19_in_stock",
+        "i19",
+        "i20",
+        "i21",
+        "i22",
+        "i23",
+        "i24",
+        "i25",
+        "i26",
+        "i27",
+        "i28",
+        "i29",
+        "i30",
+        "i31",
+        "i32",
+        "i33",
+        "i34",
+        "i26_loop",
+        "e2",
+        "e3",
+        "e_loop",
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b_pay",
+        "b_rem",
+        "c_reject",
+        "c_i16_in",
+        "c_post_conf"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "c_i16_in"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "c_reject"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "c_reject"
+    },
+    {
+      "type": "precedence",
+      "A": "c_reject",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "c_i16_in"
+    },
+    {
+      "type": "precedence",
+      "A": "c_i16_in",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i19_in_stock"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "i21"
+    },
+    {
+      "type": "precedence",
+      "A": "i21",
+      "B": "i22"
+    },
+    {
+      "type": "precedence",
+      "A": "i22",
+      "B": "i23"
+    },
+    {
+      "type": "precedence",
+      "A": "i23",
+      "B": "c_post_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "i19_in_stock",
+      "B": "i19"
+    },
+    {
+      "type": "precedence",
+      "A": "i19",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "c_post_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "c_post_conf",
+      "B": "i24"
+    },
+    {
+      "type": "precedence",
+      "A": "i24",
+      "B": "i25"
+    },
+    {
+      "type": "precedence",
+      "A": "i25",
+      "B": "i26"
+    },
+    {
+      "type": "precedence",
+      "A": "i26",
+      "B": "b_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "i27"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "i29"
+    },
+    {
+      "type": "precedence",
+      "A": "i27",
+      "B": "i28"
+    },
+    {
+      "type": "precedence",
+      "A": "i28",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "i29",
+      "B": "i30"
+    },
+    {
+      "type": "precedence",
+      "A": "i30",
+      "B": "b_rem"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "i31"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "i33"
+    },
+    {
+      "type": "precedence",
+      "A": "i31",
+      "B": "i32"
+    },
+    {
+      "type": "precedence",
+      "A": "i32",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "i33",
+      "B": "i34"
+    },
+    {
+      "type": "precedence",
+      "A": "i34",
+      "B": "i26_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "i26_loop",
+      "B": "e_loop"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'Registered'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i5",
+      "condition": "v1 = 'New'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i7",
+      "condition": "v2 = 'Good'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i9",
+      "condition": "v2 = 'Bad'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i10",
+      "condition": "v3 = 'End customer'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i13",
+      "condition": "v3 = 'Wholesaler'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "i17",
+      "condition": "v4 = 'Out of stock'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "i19_in_stock",
+      "condition": "v4 = 'In stock'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "i27",
+      "condition": "v6 = 'Received'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "i29",
+      "condition": "v6 = 'Not received'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "i31",
+      "condition": "v7 = 'More than 3'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "i33",
+      "condition": "v7 = '3 or fewer'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by checking the customer's order."
+    },
+    {
+      "id": "i2",
+      "content": "If the customer is a registered customer,"
+    },
+    {
+      "id": "i3",
+      "content": "then check their payment morale."
+    },
+    {
+      "id": "i4",
+      "content": "If they are a new customer,"
+    },
+    {
+      "id": "i5",
+      "content": "then check their status."
+    },
+    {
+      "id": "i6",
+      "content": "If their payment morale is good,"
+    },
+    {
+      "id": "i7",
+      "content": "continue with the process."
+    },
+    {
+      "id": "i8",
+      "content": "If their payment morale is bad"
+    },
+    {
+      "id": "i9",
+      "content": "or if they are an end customer,"
+    },
+    {
+      "id": "i10",
+      "content": "reject the order"
+    },
+    {
+      "id": "i11",
+      "content": "and end the process."
+    },
+    {
+      "id": "i12",
+      "content": "If the customer is a wholesaler,"
+    },
+    {
+      "id": "i13",
+      "content": "enter their data and take the order."
+    },
+    {
+      "id": "i14",
+      "content": "At the same time,"
+    },
+    {
+      "id": "i15",
+      "content": "check the availability of the items."
+    },
+    {
+      "id": "i16",
+      "content": "If the items are out of stock,"
+    },
+    {
+      "id": "i17",
+      "content": "start production."
+    },
+    {
+      "id": "i18",
+      "content": "If they are in stock,"
+    },
+    {
+      "id": "i19",
+      "content": "Once the availability is checked,"
+    },
+    {
+      "id": "i20",
+      "content": "send the order confirmation."
+    },
+    {
+      "id": "i21",
+      "content": "If production is started,"
+    },
+    {
+      "id": "i22",
+      "content": "produce the article"
+    },
+    {
+      "id": "i23",
+      "content": "and send the order confirmation."
+    },
+    {
+      "id": "i24",
+      "content": "Simultaneously,"
+    },
+    {
+      "id": "i25",
+      "content": "send the invoice and deliver the product."
+    },
+    {
+      "id": "i26",
+      "content": "Check the payment status."
+    },
+    {
+      "id": "i27",
+      "content": "If payment is received,"
+    },
+    {
+      "id": "i28",
+      "content": "close the order."
+    },
+    {
+      "id": "i29",
+      "content": "If no payment is received,"
+    },
+    {
+      "id": "i30",
+      "content": "check the number of reminders."
+    },
+    {
+      "id": "i31",
+      "content": "If there are more than three reminders,"
+    },
+    {
+      "id": "i32",
+      "content": "engage a lawyer."
+    },
+    {
+      "id": "i33",
+      "content": "If there are three or fewer reminders,"
+    },
+    {
+      "id": "i34",
+      "content": "send a reminder."
+    }
+  ]
+}

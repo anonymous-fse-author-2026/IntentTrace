@@ -1,0 +1,9 @@
+- `actor(a_default, "Default", [...])`: Violates SMC7; assigns every node to a single generic participant, failing to reflect the distinct responsibilities explicitly stated in the source ("recruitment manager", "next level manager", "external resource"/"existing employee", "client HR", and "TS HR coordinator").
+- `branch(b8, XOR)` combined with `guard(..., n31/n32/n33, v8 = 'Yes')`: Violates SMC4/SMC1; employs an exclusive-choice gateway to dispatch three separate actions under identical conditions, contradicting the source instruction that the written offer, commencement pack, and letter of appointment are sent "Simultaneously" (which requires concurrent/parallel execution, not mutual exclusion).
+- `guard(b9, n38, v9 = 'No')` routing to `action(n38, "end TS recruitment")`: Violates SMC1/SMC5; omits the explicit conditional progression stated in the source ("Otherwise, if the candidate accepts, the process continues."), instead unconditionally terminating the workflow when the 40% rate condition evaluates to false.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"advise unsuccessful candidates")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b8` has overlapping guards at state [v8=Yes].

@@ -1,0 +1,587 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check customer order"
+    },
+    {
+      "id": "b_cust",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_reg",
+      "type": "action",
+      "content": "check payment morale"
+    },
+    {
+      "id": "b_morale",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_new",
+      "type": "action",
+      "content": "check customer status"
+    },
+    {
+      "id": "b_stat",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_whol",
+      "type": "action",
+      "content": "enter data and take order"
+    },
+    {
+      "id": "c_avail",
+      "type": "converge"
+    },
+    {
+      "id": "n_avail",
+      "type": "action",
+      "content": "check item availability"
+    },
+    {
+      "id": "n_stock_q",
+      "type": "action",
+      "content": "are items in stock"
+    },
+    {
+      "id": "b_stock",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_ins",
+      "type": "action",
+      "content": "continue with process"
+    },
+    {
+      "id": "n_outs",
+      "type": "action",
+      "content": "start production"
+    },
+    {
+      "id": "n_prod",
+      "type": "action",
+      "content": "produce article"
+    },
+    {
+      "id": "n_conf",
+      "type": "action",
+      "content": "send order confirmation"
+    },
+    {
+      "id": "n_conf_p",
+      "type": "action",
+      "content": "send order confirmation"
+    },
+    {
+      "id": "c_conf",
+      "type": "converge"
+    },
+    {
+      "id": "n_inv",
+      "type": "action",
+      "content": "send invoice and deliver product"
+    },
+    {
+      "id": "n_pay_q",
+      "type": "action",
+      "content": "check payment status"
+    },
+    {
+      "id": "b_pay",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_close",
+      "type": "action",
+      "content": "close order"
+    },
+    {
+      "id": "n_rem_q",
+      "type": "action",
+      "content": "check number of reminders"
+    },
+    {
+      "id": "b_rem",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_law",
+      "type": "action",
+      "content": "engage lawyer"
+    },
+    {
+      "id": "n_send_rem",
+      "type": "action",
+      "content": "send reminder"
+    },
+    {
+      "id": "c_rej",
+      "type": "converge"
+    },
+    {
+      "id": "n_rej",
+      "type": "action",
+      "content": "reject order"
+    },
+    {
+      "id": "e_rej",
+      "type": "end"
+    },
+    {
+      "id": "e_ok",
+      "type": "end"
+    },
+    {
+      "id": "e_law",
+      "type": "end"
+    },
+    {
+      "id": "e_rem",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_cust",
+      "name": "customer type",
+      "R_X": [
+        "Registered",
+        "New",
+        "Wholesaler"
+      ]
+    },
+    {
+      "X": "v_morale",
+      "name": "payment morale",
+      "R_X": [
+        "Good",
+        "Bad"
+      ]
+    },
+    {
+      "X": "v_stat",
+      "name": "customer status",
+      "R_X": [
+        "EndCustomer",
+        "Other"
+      ]
+    },
+    {
+      "X": "v_stock",
+      "name": "items in stock",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_pay",
+      "name": "payment received",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_rem",
+      "name": "reminders count",
+      "R_X": [
+        ">3",
+        "<=3"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b_cust",
+        "n_reg",
+        "b_morale",
+        "n_new",
+        "b_stat",
+        "n_whol",
+        "c_avail",
+        "n_avail",
+        "n_stock_q",
+        "b_stock",
+        "n_ins",
+        "n_outs",
+        "n_prod",
+        "n_conf",
+        "n_conf_p",
+        "c_conf",
+        "n_inv",
+        "n_pay_q",
+        "b_pay",
+        "n_close",
+        "n_rem_q",
+        "b_rem",
+        "n_law",
+        "n_send_rem",
+        "c_rej",
+        "n_rej",
+        "e_rej",
+        "e_ok",
+        "e_law",
+        "e_rem"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b_cust"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_reg"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_new"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_whol"
+    },
+    {
+      "type": "precedence",
+      "A": "n_reg",
+      "B": "b_morale"
+    },
+    {
+      "type": "precedence",
+      "A": "b_morale",
+      "B": "c_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "b_morale",
+      "B": "c_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_new",
+      "B": "b_stat"
+    },
+    {
+      "type": "precedence",
+      "A": "b_stat",
+      "B": "c_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "b_stat",
+      "B": "c_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_whol",
+      "B": "c_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "c_avail",
+      "B": "n_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "n_avail",
+      "B": "n_stock_q"
+    },
+    {
+      "type": "precedence",
+      "A": "n_stock_q",
+      "B": "b_stock"
+    },
+    {
+      "type": "precedence",
+      "A": "b_stock",
+      "B": "n_ins"
+    },
+    {
+      "type": "precedence",
+      "A": "b_stock",
+      "B": "n_outs"
+    },
+    {
+      "type": "precedence",
+      "A": "n_ins",
+      "B": "n_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "n_outs",
+      "B": "n_prod"
+    },
+    {
+      "type": "precedence",
+      "A": "n_prod",
+      "B": "n_conf_p"
+    },
+    {
+      "type": "precedence",
+      "A": "n_conf",
+      "B": "c_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "n_conf_p",
+      "B": "c_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "c_conf",
+      "B": "n_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "n_inv",
+      "B": "n_pay_q"
+    },
+    {
+      "type": "precedence",
+      "A": "n_pay_q",
+      "B": "b_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "n_close"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "n_rem_q"
+    },
+    {
+      "type": "precedence",
+      "A": "n_close",
+      "B": "e_ok"
+    },
+    {
+      "type": "precedence",
+      "A": "n_rem_q",
+      "B": "b_rem"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "n_law"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "n_send_rem"
+    },
+    {
+      "type": "precedence",
+      "A": "c_rej",
+      "B": "n_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_rej",
+      "B": "e_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_law",
+      "B": "e_law"
+    },
+    {
+      "type": "precedence",
+      "A": "n_send_rem",
+      "B": "e_rem"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_reg",
+      "condition": "v_cust = 'Registered'"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_new",
+      "condition": "v_cust = 'New'"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_whol",
+      "condition": "v_cust = 'Wholesaler'"
+    },
+    {
+      "type": "guard",
+      "A": "b_morale",
+      "B": "c_avail",
+      "condition": "v_morale = 'Good'"
+    },
+    {
+      "type": "guard",
+      "A": "b_morale",
+      "B": "c_rej",
+      "condition": "v_morale = 'Bad'"
+    },
+    {
+      "type": "guard",
+      "A": "b_stat",
+      "B": "c_avail",
+      "condition": "v_stat = 'Other'"
+    },
+    {
+      "type": "guard",
+      "A": "b_stat",
+      "B": "c_rej",
+      "condition": "v_stat = 'EndCustomer'"
+    },
+    {
+      "type": "guard",
+      "A": "b_stock",
+      "B": "n_ins",
+      "condition": "v_stock = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_stock",
+      "B": "n_outs",
+      "condition": "v_stock = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "n_close",
+      "condition": "v_pay = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "n_rem_q",
+      "condition": "v_pay = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "n_law",
+      "condition": "v_rem = '>3'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "n_send_rem",
+      "condition": "v_rem = '<=3'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by checking the customer's order."
+    },
+    {
+      "id": "i2",
+      "content": "If the customer is a registered customer, then check their payment morale."
+    },
+    {
+      "id": "i3",
+      "content": "If they are a new customer, then check their status."
+    },
+    {
+      "id": "i4",
+      "content": "If their payment morale is good, continue with the process."
+    },
+    {
+      "id": "i5",
+      "content": "If their payment morale is bad or if they are an end customer, reject the order and end the process."
+    },
+    {
+      "id": "i6",
+      "content": "If the customer is a wholesaler,"
+    },
+    {
+      "id": "i7",
+      "content": "enter their data and take the order."
+    },
+    {
+      "id": "i9",
+      "content": "check the availability of the items."
+    },
+    {
+      "id": "i10",
+      "content": "If the items are out of stock, start production."
+    },
+    {
+      "id": "i11",
+      "content": "If they are in stock, continue with the process."
+    },
+    {
+      "id": "i12",
+      "content": "Once the availability is checked, send the order confirmation."
+    },
+    {
+      "id": "i13",
+      "content": "produce the article and send the order confirmation."
+    },
+    {
+      "id": "i15",
+      "content": "send the invoice and deliver the product."
+    },
+    {
+      "id": "i16",
+      "content": "Check the payment status."
+    },
+    {
+      "id": "i17",
+      "content": "If payment is received, close the order."
+    },
+    {
+      "id": "i18",
+      "content": "If no payment is received, check the number of reminders."
+    },
+    {
+      "id": "i19",
+      "content": "If there are more than three reminders, engage a lawyer."
+    },
+    {
+      "id": "i20",
+      "content": "If there are three or fewer reminders, send a reminder."
+    }
+  ]
+}

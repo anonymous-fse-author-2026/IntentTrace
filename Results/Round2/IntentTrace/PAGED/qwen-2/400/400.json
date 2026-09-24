@@ -1,0 +1,198 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "if the answer is \"No\", then we continue the process."
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "If the answer is \"No\" again, we continue the process."
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "If the answer is \"No\", then we need a Vendor master record and the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "But if the answer is \"Yes\", then we enter the invoice in SAP."
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "And if the answer is \"Yes\" again, then we enter the invoice in SAP."
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends."
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Vendor lookup result",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "b1",
+        "i6",
+        "e1",
+        "i7",
+        "i8",
+        "i9",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i6",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i7",
+      "condition": "v1 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\", then we continue the process."
+    },
+    {
+      "id": "i3",
+      "content": "If the answer is \"No\" again, we continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "i5",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "i6",
+      "content": "If the answer is \"No\", then we need a Vendor master record and the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "But if the answer is \"Yes\", then we enter the invoice in SAP."
+    },
+    {
+      "id": "i8",
+      "content": "And if the answer is \"Yes\" again, then we enter the invoice in SAP."
+    },
+    {
+      "id": "i9",
+      "content": "Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends."
+    }
+  ]
+}

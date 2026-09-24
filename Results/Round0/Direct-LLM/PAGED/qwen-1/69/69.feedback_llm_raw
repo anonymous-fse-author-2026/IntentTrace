@@ -1,0 +1,6 @@
+
+
+- `precedence(n11, c2)`, `precedence(n17, c2)`, `precedence(c2, n18)`: `c2` incorrectly merges the "review purchase order again" path (`n11`) with the payment step (`n17`) and routes to the end, causing the rework branch to skip "send the purchase order to the supplier", document receipt, and payment processing. This contradicts the source flow where all POs proceed to the supplier after approval or post-rework review.
+- `defines(v1, "is purchase order good?", {})`: The range `{}` is empty, failing to represent the decision values required for the conditions "if the purchase order is not good, we reject it" and "if the purchase order is good, we approve it".
+- Missing `guard(b1, n6, ...)` and `guard(b1, n7, ...)`: The XOR branch `b1` lacks guard conditions, omitting the explicit routing rules stated in the source ("if the purchase order is not good, we reject it. However, if the purchase order is good, we approve it.").
+- `converge(c2)`: Placed after `action(n17, "issue payment")` instead of merging the approval and rework paths before `action(n9, "send purchase order to supplier")`, violating the intended chronological progression where both branches must converge to trigger the simultaneous document receipt steps.

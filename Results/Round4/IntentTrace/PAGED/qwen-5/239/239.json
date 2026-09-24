@@ -1,0 +1,201 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "For the company, the first step is to look at the order."
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue."
+    },
+    {
+      "id": "i3",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n_prepare",
+      "type": "action",
+      "content": "Preparing the assembling order"
+    },
+    {
+      "id": "n_check_avail",
+      "type": "action",
+      "content": "Checking availability"
+    },
+    {
+      "id": "c_parallel",
+      "type": "converge"
+    },
+    {
+      "id": "b_availability",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_check_again",
+      "type": "action",
+      "content": "Availability needs to be checked again"
+    },
+    {
+      "id": "i4",
+      "type": "end"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "If the item can be reserved, the process should continue."
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "The next steps are to assemble the bike and then ship the product."
+    },
+    {
+      "id": "e_final",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_availability",
+      "name": "Availability Status",
+      "R_X": [
+        "Backorder",
+        "Reserved"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "i2",
+        "i3",
+        "n_prepare",
+        "n_check_avail",
+        "c_parallel",
+        "b_availability",
+        "n_check_again",
+        "i4",
+        "i5",
+        "i6",
+        "e_final"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "n_prepare"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "n_check_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "n_prepare",
+      "B": "c_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_avail",
+      "B": "c_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "c_parallel",
+      "B": "b_availability"
+    },
+    {
+      "type": "precedence",
+      "A": "b_availability",
+      "B": "n_check_again"
+    },
+    {
+      "type": "precedence",
+      "A": "b_availability",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_again",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "e_final"
+    },
+    {
+      "type": "guard",
+      "A": "b_availability",
+      "B": "n_check_again",
+      "condition": "v_availability = 'Backorder'"
+    },
+    {
+      "type": "guard",
+      "A": "b_availability",
+      "B": "i5",
+      "condition": "v_availability = 'Reserved'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the company, the first step is to look at the order."
+    },
+    {
+      "id": "i2",
+      "content": "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue."
+    },
+    {
+      "id": "i3",
+      "content": "At the same time, two steps need to be completed: preparing the assembling order and checking availability."
+    },
+    {
+      "id": "i4",
+      "content": "If there is a backorder, availability needs to be checked again and the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "If the item can be reserved, the process should continue."
+    },
+    {
+      "id": "i6",
+      "content": "The next steps are to assemble the bike and then ship the product."
+    }
+  ]
+}

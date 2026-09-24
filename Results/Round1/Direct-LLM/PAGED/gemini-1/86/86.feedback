@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i3:If the raw material is not available in stock (reason: The specific condition is not faithfully implemented because its corresponding guard element abstracts it to a generic boolean.)
+- [N2] Node-level omission: i5:if the raw material is available in stock (reason: The specific condition is not faithfully implemented because its corresponding guard element abstracts it to a generic boolean.)
+- [N3] Node-level omission: i6:proceed to check the raw material and conclude the process (reason: The required action step is not faithfully covered because its candidate element adds an unsupported, invented qualifier.)
+- [N4] Within matched traces (0->0) omitted: i4:select a supplier
+- [N5] Within matched traces (0->0) omitted: i7:send the material purchase order
+
+Addition
+- [N6] Node-level addition: action(n8,"Check raw material and conclude process (After PO)") (reason: This action step lacks any supporting source unit in the provided segmented input elements.)
+- [N7] Added trace (model 1): init(i1) -> action(n2,"Obtain raw material from received list") -> branch(b1,XOR) -> action(n6,"Select a supplier") -> action(n7,"Send material purchase order") -> action(n8,"Check raw material and conclude process (After PO)") -> end(e2)
+
+Mutation
+- [N8] Node-level mutation: element=action(n4,"Check raw material and conclude process (If Available)"); source=i6:proceed to check the raw material and conclude the process; reason=The element adds the invented qualifier '(If Available)' to the action, distorting the literal source instruction.
+- [N9] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i3:If the raw material is not available in stock; reason=The specific condition data ('not available in stock') is dropped and replaced with a generic boolean 'v1 = false'.
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = true"); source=i5:if the raw material is available in stock; reason=The specific condition data ('available in stock') is dropped and replaced with a generic boolean 'v1 = true'.

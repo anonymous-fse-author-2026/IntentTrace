@@ -1,0 +1,105 @@
+Omission
+- [N1] Node-level omission: i15:complete the data by adding the incoming mail number, date, and record it in the letter book (reason: The step was mutated (dropping 'complete the data by') and is therefore not faithfully implemented.)
+- [N2] Node-level omission: i16:Every Wednesday evening (reason: The temporal trigger was improperly modeled as an XOR condition branch and thus is not faithfully covered.)
+- [N3] Node-level omission: i22:After stamping "new Member" on the letter and writing the date on it (reason: This explicit execution ordering dependency is not represented by any node or sequence flow in the model.)
+- [N4] Node-level omission: i24:Simultaneously, (reason: This explicit concurrency word requires a parallel split (AND gateway), which is missing from the model.)
+- [N5] Within matched traces (4->0) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N6] Within matched traces (4->0) omitted: i24:Simultaneously,
+- [N7] Within matched traces (5->0) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N8] Within matched traces (5->0) omitted: i24:Simultaneously,
+- [N9] Within matched traces (5->0) omitted: i32:Prepare an invoice for the new members
+- [N10] Within matched traces (5->0) omitted: i33:write the fee amount to the register
+- [N11] Within matched traces (6->0) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N12] Within matched traces (6->0) omitted: i24:Simultaneously,
+- [N13] Within matched traces (6->0) omitted: i30:Hand the letter to Charles
+- [N14] Within matched traces (6->0) omitted: i31:add the new member to the register
+- [N15] Within matched traces (7->4) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N16] Within matched traces (7->4) omitted: i24:Simultaneously,
+- [N17] Within matched traces (8->4) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N18] Within matched traces (8->4) omitted: i24:Simultaneously,
+- [N19] Within matched traces (8->4) omitted: i32:Prepare an invoice for the new members
+- [N20] Within matched traces (8->4) omitted: i33:write the fee amount to the register
+- [N21] Within matched traces (9->4) omitted: i22:After stamping "new Member" on the letter and writing the date on it
+- [N22] Within matched traces (9->4) omitted: i24:Simultaneously,
+- [N23] Within matched traces (9->4) omitted: i30:Hand the letter to Charles
+- [N24] Within matched traces (9->4) omitted: i31:add the new member to the register
+
+Addition
+- [N25] Node-level addition: action(n15,"skip taking letter book and member register") (reason: The action to 'skip taking letter book' is invented and lacks any source support.)
+- [N26] Node-level addition: action(n19,"after write to applicant") (reason: The action 'after write to applicant' has no backing text in the source.)
+- [N27] Node-level addition: action(n31,"end process") (reason: The explicit action to 'end process' at the conclusion of the second path is not stated in the source text.)
+- [N28] Node-level addition: label(n2,n3,"No") (reason: These sequential flow labels carry the condition 'No' without any corresponding source justification or preceding gateway.)
+- [N29] Node-level addition: label(n4,n6,"No") (reason: These sequential flow labels carry the condition 'No' without any corresponding source justification or preceding gateway.)
+- [N30] Node-level addition: label(n7,n9,"No") (reason: These sequential flow labels carry the condition 'No' without any corresponding source justification or preceding gateway.)
+- [N31] Node-level addition: label(n12,c1,"No") (reason: These sequential flow labels carry the condition 'No' without any corresponding source justification or preceding gateway.)
+- [N32] Node-level addition: label(n14,c2,"No") (reason: These sequential flow labels carry the condition 'No' without any corresponding source justification or preceding gateway.)
+- [N33] Node-level addition: guard(b4,n14,"v4 == \"Yes\"") (reason: These guards evaluate an invented true/false condition for a temporal event that was incorrectly modeled as a branch.)
+- [N34] Node-level addition: guard(b4,n15,"v4 == \"No\"") (reason: These guards evaluate an invented true/false condition for a temporal event that was incorrectly modeled as a branch.)
+- [N35] Added trace (model 2): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n10,"add incoming mail number date and record it in letter book") -> converge(c1) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> action(n15,"skip taking letter book and member register") -> converge(c2) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n17,"stamp new Member on letter and write date on letter") -> action(n20,"write the data") -> action(n21,"calculate fee") -> action(n22,"hand letter to Charles") -> action(n23,"ask Charles to write amount in register") -> action(n24,"print membership card and send to new member") -> action(n25,"end process") -> end(e3)
+- [N36] Added trace (model 3): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n10,"add incoming mail number date and record it in letter book") -> converge(c1) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> action(n15,"skip taking letter book and member register") -> converge(c2) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n18,"write to applicant and inform decision") -> action(n19,"after write to applicant") -> action(n26,"hand letter to Charles") -> action(n27,"add new member to register") -> action(n28,"prepare invoice for new members") -> action(n29,"ask Charles to write amount in register") -> action(n30,"write fee amount to register") -> action(n31,"end process") -> end(e4)
+- [N37] Added trace (model 6): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n11,"make a telephone call to the sender") -> action(n12,"add incoming mail number date and record it in letter book") -> converge(c1) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> action(n15,"skip taking letter book and member register") -> converge(c2) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n17,"stamp new Member on letter and write date on letter") -> action(n20,"write the data") -> action(n21,"calculate fee") -> action(n22,"hand letter to Charles") -> action(n23,"ask Charles to write amount in register") -> action(n24,"print membership card and send to new member") -> action(n25,"end process") -> end(e3)
+- [N38] Added trace (model 7): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n11,"make a telephone call to the sender") -> action(n12,"add incoming mail number date and record it in letter book") -> converge(c1) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> action(n15,"skip taking letter book and member register") -> converge(c2) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n18,"write to applicant and inform decision") -> action(n19,"after write to applicant") -> action(n26,"hand letter to Charles") -> action(n27,"add new member to register") -> action(n28,"prepare invoice for new members") -> action(n29,"ask Charles to write amount in register") -> action(n30,"write fee amount to register") -> action(n31,"end process") -> end(e4)
+- [N39] Within matched traces (2->1) added: converge(c2)
+- [N40] Within matched traces (2->1) added: action(n16,"has applicant become a member?")
+- [N41] Within matched traces (2->1) added: action(n19,"after write to applicant")
+- [N42] Within matched traces (2->1) added: action(n26,"hand letter to Charles")
+- [N43] Within matched traces (2->1) added: action(n27,"add new member to register")
+- [N44] Within matched traces (2->1) added: action(n28,"prepare invoice for new members")
+- [N45] Within matched traces (2->1) added: action(n29,"ask Charles to write amount in register")
+- [N46] Within matched traces (2->1) added: action(n30,"write fee amount to register")
+- [N47] Within matched traces (2->1) added: action(n31,"end process")
+- [N48] Within matched traces (2->1) added: end(e4)
+- [N49] Within matched traces (3->5) added: converge(c2)
+- [N50] Within matched traces (3->5) added: action(n16,"has applicant become a member?")
+- [N51] Within matched traces (3->5) added: action(n19,"after write to applicant")
+- [N52] Within matched traces (3->5) added: action(n26,"hand letter to Charles")
+- [N53] Within matched traces (3->5) added: action(n27,"add new member to register")
+- [N54] Within matched traces (3->5) added: action(n28,"prepare invoice for new members")
+- [N55] Within matched traces (3->5) added: action(n29,"ask Charles to write amount in register")
+- [N56] Within matched traces (3->5) added: action(n30,"write fee amount to register")
+- [N57] Within matched traces (3->5) added: action(n31,"end process")
+- [N58] Within matched traces (3->5) added: end(e4)
+- [N59] Within matched traces (4->0) added: converge(c2)
+- [N60] Within matched traces (4->0) added: action(n21,"calculate fee")
+- [N61] Within matched traces (4->0) added: action(n22,"hand letter to Charles")
+- [N62] Within matched traces (4->0) added: action(n23,"ask Charles to write amount in register")
+- [N63] Within matched traces (5->0) added: converge(c2)
+- [N64] Within matched traces (5->0) added: action(n20,"write the data")
+- [N65] Within matched traces (5->0) added: action(n22,"hand letter to Charles")
+- [N66] Within matched traces (5->0) added: action(n23,"ask Charles to write amount in register")
+- [N67] Within matched traces (5->0) added: action(n24,"print membership card and send to new member")
+- [N68] Within matched traces (5->0) added: action(n25,"end process")
+- [N69] Within matched traces (5->0) added: end(e3)
+- [N70] Within matched traces (6->0) added: converge(c2)
+- [N71] Within matched traces (6->0) added: action(n20,"write the data")
+- [N72] Within matched traces (6->0) added: action(n21,"calculate fee")
+- [N73] Within matched traces (6->0) added: action(n24,"print membership card and send to new member")
+- [N74] Within matched traces (6->0) added: action(n25,"end process")
+- [N75] Within matched traces (6->0) added: end(e3)
+- [N76] Within matched traces (7->4) added: converge(c2)
+- [N77] Within matched traces (7->4) added: action(n21,"calculate fee")
+- [N78] Within matched traces (7->4) added: action(n22,"hand letter to Charles")
+- [N79] Within matched traces (7->4) added: action(n23,"ask Charles to write amount in register")
+- [N80] Within matched traces (8->4) added: converge(c2)
+- [N81] Within matched traces (8->4) added: action(n20,"write the data")
+- [N82] Within matched traces (8->4) added: action(n22,"hand letter to Charles")
+- [N83] Within matched traces (8->4) added: action(n23,"ask Charles to write amount in register")
+- [N84] Within matched traces (8->4) added: action(n24,"print membership card and send to new member")
+- [N85] Within matched traces (8->4) added: action(n25,"end process")
+- [N86] Within matched traces (8->4) added: end(e3)
+- [N87] Within matched traces (9->4) added: converge(c2)
+- [N88] Within matched traces (9->4) added: action(n20,"write the data")
+- [N89] Within matched traces (9->4) added: action(n21,"calculate fee")
+- [N90] Within matched traces (9->4) added: action(n24,"print membership card and send to new member")
+- [N91] Within matched traces (9->4) added: action(n25,"end process")
+- [N92] Within matched traces (9->4) added: end(e3)
+
+Mutation
+- [N93] Node-level mutation: element=action(n12,"add incoming mail number date and record it in letter book"); source=i15:complete the data by adding the incoming mail number, date, and record it in the letter book; reason=The action completely drops the instruction to 'complete the data by', altering the granularity and meaning of the step.
+- [N94] Node-level mutation: element=action(n13,"is it Wednesday evening?"); source=i16:Every Wednesday evening; reason=The model converts a temporal event ('Every Wednesday evening') into an immediate yes/no conditional gateway and check action, distorting the process logic.
+
+Permutation
+- [N95] Within matched traces (3->5) reordered: expected [i15:complete the data by adding the incoming mail number, date, and record it in the letter book] but observed [action(n12,"add incoming mail number date and record it in letter book")] elsewhere; in its place the model has [converge(c1)]
+- [N96] Within matched traces (7->4) reordered: expected [i15:complete the data by adding the incoming mail number, date, and record it in the letter book] but observed [action(n12,"add incoming mail number date and record it in letter book")] elsewhere; in its place the model has [converge(c1)]
+- [N97] Within matched traces (8->4) reordered: expected [i15:complete the data by adding the incoming mail number, date, and record it in the letter book] but observed [action(n12,"add incoming mail number date and record it in letter book")] elsewhere; in its place the model has [converge(c1)]
+- [N98] Within matched traces (9->4) reordered: expected [i15:complete the data by adding the incoming mail number, date, and record it in the letter book] but observed [action(n12,"add incoming mail number date and record it in letter book")] elsewhere; in its place the model has [converge(c1)]

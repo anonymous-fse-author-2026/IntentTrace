@@ -1,0 +1,4 @@
+- defines(v1, "is order okay", {"No"}): The variable range omits "Yes", which is required to reflect the source text ("If the order is okay...").
+- precedence(b1, c1): This outgoing edge from the XOR gateway b1 lacks a guard condition (e.g., v1 = 'Yes') to evaluate when the order is okay.
+- converge(c1): This join node causes a control-flow deadlock. It synchronizes the parallel branches from b6 (order and customer checks), but the order branch can terminate early at e1 (if the order is not okay), leaving the customer branch waiting indefinitely at c1.
+- branch(b2, XOR): On the path where the customer is permitted (`guard(b2, n10, v2 = 'Yes')`), the model completely omits the documented behavior to "send a refusal and end the process" as explicitly stated in the text ("...if the customer is permitted, continue with the process. In this case, send a refusal and end the process.").

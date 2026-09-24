@@ -1,0 +1,49 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:initial decision;
+:v1: initial decision ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+stop
+else ([v1 = 'No'])
+:second decision;
+:v2: second decision ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:give priority;
+else ([v2 = 'No'])
+->;
+endif
+:lookup vendor on SAP;
+:vendor exists in SAP;
+:v3: vendor exists in SAP ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:need vendor master record;
+:end due to missing vendor master;
+stop
+else ([v3 = 'Yes'])
+:enter invoice in SAP;
+:invoice entry decision;
+:v4: invoice entry decision ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:need vendor master record;
+:end due to missing vendor master;
+stop
+else ([v4 = 'Yes'])
+:give priority;
+:priority decision again;
+:v5: priority decision again ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:enter invoice in SAP;
+:place invoices in normal Outbox;
+:end process;
+stop
+else ([v5 = 'No'])
+stop
+endif
+endif
+endif
+endif
+@enduml

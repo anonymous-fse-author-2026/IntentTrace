@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: then proceed with continuing the process. (reason: Each branch arm explicitly instructs to continue the process, but the model relies solely on implicit structural flow to the converge node without modeling this stated continuation directive.)
+- [N2] Node-level omission: then also continue the process. (reason: Each branch arm explicitly instructs to continue the process, but the model relies solely on implicit structural flow to the converge node without modeling this stated continuation directive.)
+- [N3] Node-level omission: then again continue the process. (reason: Each branch arm explicitly instructs to continue the process, but the model relies solely on implicit structural flow to the converge node without modeling this stated continuation directive.)
+
+Addition
+- [N4] Node-level addition: action(n3,"does the invoice need to be re-sent  posted  or blocked?") (reason: Invents an explicit question step synthesizing the three separate conditions into a single query that does not appear in the source text.)
+- [N5] Node-level addition: action(n8,"You have completed this procedure") (reason: Contains a UI-style completion confirmation message entirely absent from the source description.)
+- [N6] Within matched traces (0->0) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N7] Within matched traces (0->0) added: action(n8,"You have completed this procedure")
+- [N8] Within matched traces (1->1) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N9] Within matched traces (1->1) added: action(n8,"You have completed this procedure")
+- [N10] Within matched traces (2->2) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N11] Within matched traces (2->2) added: action(n8,"You have completed this procedure")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n4,"v1 = 're-send'"); source=If there is a need to "re-send the invoice to the customer"; reason=Strict standard violation: The guard abstracts the natural language condition into a variable assignment (`v1 = 're-send'`), and the action drops the target qualifier "to the customer", reducing granularity and deviating from exact source data.
+- [N13] Node-level mutation: element=action(n4,"re-send the invoice"); source=i4:"re-send the invoice to the customer"; reason=Strict standard violation: The guard abstracts the natural language condition into a variable assignment (`v1 = 're-send'`), and the action drops the target qualifier "to the customer", reducing granularity and deviating from exact source data.
+- [N14] Node-level mutation: element=guard(b1,n5,"v1 = 'post'"); source=If the option is to "post the invoice"; reason=Strict standard violation: Replaces the explicit source conditional phrasing with an abstract variable guard, failing to preserve the original instructional context.
+- [N15] Node-level mutation: element=action(n5,"post the invoice"); source=i6:"post the invoice"; reason=Strict standard violation: Replaces the explicit source conditional phrasing with an abstract variable guard, failing to preserve the original instructional context.
+- [N16] Node-level mutation: element=guard(b1,n6,"v1 = 'block'"); source=Alternatively, if the decision is to "block the invoice"; reason=Strict standard violation: Substitutes the source's decision phrasing with a generic variable guard, losing the exact textual framing specified in the input.
+- [N17] Node-level mutation: element=action(n6,"block the invoice"); source=i8:"block the invoice"; reason=Strict standard violation: Substitutes the source's decision phrasing with a generic variable guard, losing the exact textual framing specified in the input.

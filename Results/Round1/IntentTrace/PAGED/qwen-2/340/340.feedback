@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i5:If the parts are supplied to the customer, the team can also continue with the process. (reason: This distinct conditional path is completely absent from the model's branches, actions, and guards.)
+- [N2] Omitted trace (input 1): i1:For the Part Provision Team, the first step is to identify the parts. -> i4:On the other hand, if they already have the availability information, they can proceed with the process. -> i6:However, if they need to record the customer's details, they should order and receive the part from Disuki. -> i7:Once the part is received, the team can then contract the customer. -> i8:After all the necessary parts are collected, the team can proceed with the payment. -> i9:Once the payment is made, the process comes to an end.
+- [N3] Omitted trace (input 2): i1:For the Part Provision Team, the first step is to identify the parts. -> i5:If the parts are supplied to the customer, the team can also continue with the process. -> i6:However, if they need to record the customer's details, they should order and receive the part from Disuki. -> i7:Once the part is received, the team can then contract the customer. -> i8:After all the necessary parts are collected, the team can proceed with the payment. -> i9:Once the payment is made, the process comes to an end.
+- [N4] Within matched traces (0->0) omitted: i6:However, if they need to record the customer's details, they should order and receive the part from Disuki.
+- [N5] Within matched traces (0->0) omitted: i7:Once the part is received, the team can then contract the customer.
+
+Addition
+- [N6] Node-level addition: action(n1,"start") (reason: Generic 'start' action lacks any supporting phrase in the source text.)
+- [N7] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Label content 'Check if parts are available or need ordering' synthesizes a combined verification step not explicitly described as a single step in the source.)
+- [N8] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Within matched traces (0->0) added: converge(c2)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:On the other hand, if they already have the availability information, they can proceed with the process.; reason=The guard content appends 'or after contacting customer', altering the original logical trigger which solely depends on having availability information.
+- [N11] Node-level mutation: element=guard(b2,n6,"v2 = 'Order not needed  proceed'"); source=i6:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=The guard states 'Order not needed  proceed' but routes to the ordering action, directly contradicting the source instruction to order.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=0 and out=1. | Node `n7` has in=0 and out=1. | Node `n8` has in=1 and out=0. | DSL: action(n6,"order part from Disuki"); action(n7,"receive part from Disuki"); action(n8,"record customer details")
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `n8 -> b2` references unknown node(s). | Precedence edge `b2 -> n6` references unknown node(s). | Precedence edge `b2 -> n7` references unknown node(s). | DSL: label(n8,b2,"Proceed to ordering/receiving"); guard(b2,n6,"v2 = 'Order not needed  proceed'"); guard(b2,n7,"v2 = 'Order and receive the part'")
+- [S3] STC17 failed: Guards are only allowed on outgoing edges of XOR/OR branches. | Guard `v2 = 'Order not needed  proceed'` starts at `b2`, which is not XOR/OR branch. | Guard `v2 = 'Order and receive the part'` starts at `b2`, which is not XOR/OR branch. | DSL: guard(b2,n6,"v2 = 'Order not needed  proceed'"); guard(b2,n7,"v2 = 'Order and receive the part'")
+- [S4] STC19 failed: Every non-init node must be reachable from the init node. | Violations: c1, n6, n7, n9 | DSL: converge(c1); action(n6,"order part from Disuki"); action(n7,"receive part from Disuki"); action(n9,"contact the customer")
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4, n5, n8 | DSL: action(n4,"check availability of the parts"); action(n5,"check if customer details need recording"); action(n8,"record customer details")
+- [S6] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `b2` in assigned_nodes.

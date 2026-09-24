@@ -1,0 +1,7 @@
+- `action(n4, "is evaluation result ok")`, `action(n7, "is installation successful")`: Hallucinates discrete process steps not present in the source; the text treats these as implicit branching criteria ("If the evaluation result is...", "if the installation is..."), not separate actionable tasks (SMC1, SMC2).
+- `defines(v1, "is evaluation result ok", {})`, `defines(v2, "is installation successful", {})`: Variable value ranges are empty `{}` instead of explicitly listing the documented outcomes (`{"NOK", "ok"}` for v1; `{"successful", "not successful"}` for v2), failing to faithfully reflect the source decision space (SMC6).
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Lacks `guard` statements to define routing conditions; the model does not link the exclusive splits to `v1`/`v2` as required by the text ("If the evaluation result is 'NOK'/ok", "if the installation is not successful/successful"), leaving the choice logic undefined (SMC4).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

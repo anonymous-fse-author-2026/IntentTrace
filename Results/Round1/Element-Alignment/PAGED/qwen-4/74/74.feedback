@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: i7:Once the data is sent to suppliers (reason: Explicit temporal/conditional trigger governing the subsequent extraction step is absent; no guard or action element implements this prerequisite ordering.)
+- [N2] Within matched traces (0->2) omitted: i3:proceed to the IN-Patient step
+- [N3] Within matched traces (0->2) omitted: i7:Once the data is sent to suppliers
+- [N4] Within matched traces (1->5) omitted: i3:proceed to the IN-Patient step
+- [N5] Within matched traces (1->5) omitted: i12:register the case
+- [N6] Within matched traces (1->5) omitted: i17:Enter the data on the patient's record
+
+Addition
+- [N7] Node-level addition: label(b3,n3,"Yes") (reason: Labels carry the content 'Yes' which has zero basis in the source text describing the parallel/concurrent steps.)
+- [N8] Node-level addition: label(b3,n4,"Yes") (reason: Labels carry the content 'Yes' which has zero basis in the source text describing the parallel/concurrent steps.)
+- [N9] Node-level addition: label(b3,n5,"Yes") (reason: Labels carry the content 'Yes' which has zero basis in the source text describing the parallel/concurrent steps.)
+- [N10] Node-level addition: guard(b1,n8,"v1 = 'Confirmed'") (reason: Guard condition 'v1 = ''Confirmed''' is entirely fabricated; the source describes a linear confirmation followed by termination, with no variable evaluation or conditional routing.)
+- [N11] Node-level addition: guard(b1,n9,"v1 = 'Not Confirmed'") (reason: Guard condition 'v1 = ''Not Confirmed''' is entirely fabricated; no negation logic or alternative fallback path based on confirmation status exists in the source.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n3,"IN-Patient Step") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N13] Added trace (model 1): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n3,"IN-Patient Step") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N14] Added trace (model 3): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N15] Added trace (model 4): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N16] Within matched traces (0->2) added: branch(b1,XOR)
+- [N17] Within matched traces (1->5) added: converge(c1)
+- [N18] Within matched traces (1->5) added: action(n6,"Extract and Transfer Data from Suppliers to Doctor")
+- [N19] Within matched traces (1->5) added: action(n7,"Confirm GOP")
+- [N20] Within matched traces (1->5) added: branch(b1,XOR)
+
+Mutation
+- [N21] Node-level mutation: element=action(n8,"End Process: GOP Confirmed"); source=i10:and the process will come to an end; reason=The element appends the unjustified qualifier ': GOP Confirmed', altering the plain conclusion stated in the source and inventing a state condition.
+- [N22] Node-level mutation: element=action(n11,"Extract Data from Suppliers Again"); source=i14:Extract the data from the suppliers; reason=The element adds the invented qualifier 'Again', changing the granularity and implying a repeated action not specified in the source unit.
+- [N23] Node-level mutation: element=action(n15,"End Process: Payment Received"); source=i19:conclude the process; reason=The element appends the unjustified qualifier ': Payment Received', fabricating a conditional state not present in the source conclusion.
+
+Permutation
+- [N24] Within matched traces (1->5) reordered: expected [i18:send the data back to the suppliers] but observed [action(n13,"Send Data Back to Suppliers")] elsewhere; in its place the model has [action(n14,"Receive Payment")]

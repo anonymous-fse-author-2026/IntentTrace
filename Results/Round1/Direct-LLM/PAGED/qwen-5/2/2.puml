@@ -1,0 +1,106 @@
+@startuml
+!theme plain
+|a_recruit_mgr| Recruitment Manager
+|a_next_mgr| Next Level Manager
+|a_client_hr| Client HR
+|a_ts_hr_coord| TS HR Coordinator
+|a_hr_rep| HR Representative
+|a_recruit_mgr|
+start
+:advise unsuccessful candidates;
+:No more candidates;
+:v1: No more candidates ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:run re advertise position;
+:end TS recruitment;
+else ([v1 = 'No'])
+:v2: voluntary redundancy accepted ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:investigate voluntary redundancy acceptance;
+:send Appointment Approval form;
+else ([v2 = 'No'])
+:send Appointment Approval form;
+endif
+|a_next_mgr|
+:receive Appointment Approval form by next level manager;
+:v3: approver is existing employee ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+stop
+else ([v3 = 'Yes'])
+:v4: form approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+|a_recruit_mgr|
+:send form and documentation to client HR;
+|a_client_hr|
+:receive form and documentation by client HR;
+:HR scans completed form and records position in GovSource;
+:v5: variations present ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:require complete business case;
+:carry forward Appointment Approval;
+else ([v5 = 'No'])
+:carry forward Appointment Approval;
+endif
+|a_ts_hr_coord|
+:v6: position requires medical assessment ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:apply 12 percent rate for medical assessment;
+else ([v6 = 'No'])
+:no medical assessment necessary;
+endif
+:TS HR coordinator informs recruitment manager;
+|a_recruit_mgr|
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+|a_hr_rep|
+:v7: assessment satisfactory ({No, Yes}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+|a_recruit_mgr|
+:make formal verbal offer of employment;
+|a_hr_rep|
+split
+|a_recruit_mgr|
+:create formal written offer;
+:candidate receives documents;
+|a_hr_rep|
+:v9: rate is forty percent ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+|a_recruit_mgr|
+:renegotiation required;
+:renegotiation successful;
+|a_hr_rep|
+:v10: renegotiation successful ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+stop
+else ([v10 = 'No'])
+->;
+endif
+else ([v9 = 'No'])
+:v11: candidate accepts ({Yes, No}); <<objectSignal>>
+if () then ([v11 = 'Yes'])
+stop
+else ([v11 = 'No'])
+stop
+endif
+endif
+split again
+|a_recruit_mgr|
+:send commencement pack to candidate;
+split again
+:send letter of appointment to candidate;
+split again
+end split
+|a_hr_rep|
+else ([v7 = 'No'])
+->;
+endif
+|a_recruit_mgr|
+:contact next candidate on shortlist;
+|a_next_mgr|
+else ([v4 = 'No'])
+stop
+endif
+endif
+|a_recruit_mgr|
+endif
+stop
+@enduml

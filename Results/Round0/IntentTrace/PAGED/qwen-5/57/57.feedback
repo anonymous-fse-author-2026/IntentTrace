@@ -1,0 +1,53 @@
+Omission
+- [N1] Within matched traces (2->0) omitted: i8:the transaction will end.
+- [N2] Within matched traces (4->3) omitted: i8:the transaction will end.
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: Generic 'start' step has no corresponding description or functional requirement in the source text.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N5] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N6] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n17,"checkout tasks not completed") -> end(e3)
+- [N7] Within matched traces (0->2) added: init(i1)
+- [N8] Within matched traces (0->2) added: action(n1,"start")
+- [N9] Within matched traces (0->2) added: branch(b4,AND)
+- [N10] Within matched traces (0->2) added: action(n7,"enter address shipping method and payment information")
+- [N11] Within matched traces (0->2) added: converge(c1)
+- [N12] Within matched traces (0->2) added: action(n9,"checkout tasks completed?")
+- [N13] Within matched traces (0->2) added: branch(b2,XOR)
+- [N14] Within matched traces (0->2) added: action(n17,"checkout tasks not completed")
+- [N15] Within matched traces (0->2) added: end(e3)
+- [N16] Within matched traces (1->0) added: init(i1)
+- [N17] Within matched traces (1->0) added: action(n1,"start")
+- [N18] Within matched traces (1->0) added: converge(c1)
+- [N19] Within matched traces (1->0) added: branch(b3,XOR)
+- [N20] Within matched traces (2->0) added: init(i1)
+- [N21] Within matched traces (2->0) added: action(n1,"start")
+- [N22] Within matched traces (2->0) added: converge(c1)
+- [N23] Within matched traces (2->0) added: action(n9,"checkout tasks completed?")
+- [N24] Within matched traces (2->0) added: action(n10,"credit card approved and inventory in stock?")
+- [N25] Within matched traces (2->0) added: branch(b3,XOR)
+- [N26] Within matched traces (3->3) added: init(i1)
+- [N27] Within matched traces (3->3) added: action(n1,"start")
+- [N28] Within matched traces (3->3) added: converge(c1)
+- [N29] Within matched traces (3->3) added: branch(b3,XOR)
+- [N30] Within matched traces (4->3) added: init(i1)
+- [N31] Within matched traces (4->3) added: action(n1,"start")
+- [N32] Within matched traces (4->3) added: converge(c1)
+- [N33] Within matched traces (4->3) added: action(n9,"checkout tasks completed?")
+- [N34] Within matched traces (4->3) added: action(n10,"credit card approved and inventory in stock?")
+- [N35] Within matched traces (4->3) added: branch(b3,XOR)
+
+Mutation
+- [N36] Node-level mutation: element=guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'"); source=i7:if the credit card is denied or there is no inventory in stock; reason=The guard evaluates 'v2 = Checkout Tasks Not Completed' instead of checking for credit card denial or out-of-stock inventory as specified.
+- [N37] Node-level mutation: element=action(n17,"checkout tasks not completed"); source=i9:the transaction will end; reason=The action content incorrectly states 'checkout tasks not completed' rather than reflecting the transaction termination due to financial/inventory failure.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"continue shopping")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Checkout Tasks Not Completed']`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` uses undefined variable `v2`. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"continue shopping")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

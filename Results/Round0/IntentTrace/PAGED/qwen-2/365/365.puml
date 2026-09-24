@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Passengers undergo immigration checks;
+:Select method for exit control checks: Biometrics or ID documents?;
+if () then ( )
+:Undergo biometric check;
+-> Yes;
+:Is permission denied after biometric check?;
+:v2: Is permission denied after biometric check? ({No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Leave the area and end process;
+stop
+else ( )
+:Proceed to next step;
+:End of successful process;
+stop
+endif
+else ( )
+:Check using identity documents;
+-> Yes;
+:Is permission denied after ID document check?;
+:v3: Is permission denied after ID document check? ({No}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:Leave the area and end process;
+stop
+else ( )
+:Proceed to next step;
+:End of successful process;
+stop
+endif
+endif
+@enduml

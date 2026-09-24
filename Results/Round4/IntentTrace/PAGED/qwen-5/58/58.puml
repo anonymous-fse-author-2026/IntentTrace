@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Prioritize orders based on receipt time;
+:Check customer information;
+:v1: Customer exists ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Check customer payment history;
+:v2: Payment history good ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+->;
+endif
+else ([v1 = false])
+:Verify customer status;
+:v3: Is private customer ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:Send declining message to private customer;
+stop
+else ([v3 = false])
+:Create new customer;
+:Check product availability;
+:v4: Products available ({true, false}); <<objectSignal>>
+if () then ([v4 = false])
+:Produce missing goods and send decline message;
+stop
+else ([v4 = true])
+->;
+endif
+endif
+endif
+:Inform stock and accounting departments;
+:Pack goods and write invoice;
+:Confirm goods ready and invoice sent;
+:v5: Payment received ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+:Close order;
+else ([v5 = false])
+:Check quantity of reminders;
+:v6: Reminders less than three ({true, false}); <<objectSignal>>
+if () then ([v6 = true])
+:Continue process;
+else ([v6 = false])
+:Activate donning process;
+stop
+endif
+endif
+:Deliver goods and invoice to customer;
+stop
+@enduml

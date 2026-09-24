@@ -1,0 +1,87 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({store, pickup}); <<objectSignal>>
+if () then ([v1 = "store"])
+:customer returns items to store;
+else ([v1 = "pickup"])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to the original contract;
+:order is complete and all items were returned;
+:v2: order status ({incomplete, damaged}); <<objectSignal>>
+if () then ([v2 = "incomplete"])
+:order is incomplete and items are missing;
+:v3: missing items handling ({check, returns, no_return}); <<objectSignal>>
+switch ()
+case ([v3 = "returns"])
+:customer returns missing items;
+:v7: customer returns missing ({returns, default}); <<objectSignal>>
+if () then ([v7 = "default"])
+->;
+else ([v7 = "returns"])
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+:v9: packed for order ({packed, default}); <<objectSignal>>
+if () then ([v9 = "default"])
+->;
+else ([v9 = "packed"])
+:end process;
+stop
+endif
+split again
+:items stored for future orders;
+:v10: stored for future ({stored, default}); <<objectSignal>>
+if () then ([v10 = "default"])
+->;
+else ([v10 = "stored"])
+endif
+end split
+endif
+case ([v3 = "no_return"])
+:customer does not return missing items;
+:v8: customer no return ({no_return, default}); <<objectSignal>>
+if () then ([v8 = "default"])
+->;
+else ([v8 = "no_return"])
+endif
+case ([v3 = "check"])
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: item repair status ({discarded, repaired}); <<objectSignal>>
+if () then ([v6 = "discarded"])
+:items can't be repaired and are discarded;
+split
+stop
+split again
+:end process;
+stop
+end split
+else ([v6 = "repaired"])
+:email customer with replacement charges;
+endif
+endswitch
+else ([v2 = "damaged"])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: items disposition ({packed, default}); <<objectSignal>>
+if () then ([v4 = "default"])
+->;
+else ([v4 = "packed"])
+endif
+split again
+:items stored for future orders;
+:v5: items storage ({stored, default}); <<objectSignal>>
+if () then ([v5 = "default"])
+->;
+else ([v5 = "stored"])
+endif
+end split
+endif
+@enduml

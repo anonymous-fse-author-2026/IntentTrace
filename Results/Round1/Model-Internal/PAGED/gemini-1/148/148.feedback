@@ -1,0 +1,35 @@
+Omission
+- [N1] Node-level omission: i3:If you are not hungry (reason: While the branch split is captured, the condition logic itself is not faithfully implemented by any guard or action, representing a partial implementation.)
+- [N2] Node-level omission: i4:take a shower (reason: The action is not faithfully implemented because the available candidate mutated the text with an invented qualifier.)
+- [N3] Node-level omission: i5:Otherwise, have breakfast (reason: The action is not faithfully implemented because the available candidates distorted the phrasing and added invented qualifiers.)
+- [N4] Node-level omission: i6:If you are still not hungry (reason: While the branch split is captured, the exact condition logic is not faithfully preserved by any element, representing a partial implementation.)
+- [N5] Node-level omission: i7:get on the bus and the process will be complete. (reason: While the process end is matched, the specific action step 'get on the bus' is not faithfully isolated and implemented.)
+- [N6] Within matched traces (1->2) omitted: i4:take a shower
+
+Addition
+- [N7] Node-level addition: action(n6,"take a shower (B)") (reason: These elements lack support in the provided segmented input units, as the second shower and breakfast actions are absent from the source list.)
+- [N8] Node-level addition: action(n7,"have breakfast (B)") (reason: These elements lack support in the provided segmented input units, as the second shower and breakfast actions are absent from the source list.)
+- [N9] Node-level addition: guard(b2,n7,"v2 == \"Yes\"") (reason: These elements lack support in the provided segmented input units, as the second shower and breakfast actions are absent from the source list.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n3,"take a shower (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N11] Added trace (model 3): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N12] Within matched traces (0->0) added: converge(c1)
+- [N13] Within matched traces (0->0) added: action(n5,"still not hungry after first action?")
+- [N14] Within matched traces (0->0) added: branch(b2,XOR)
+- [N15] Within matched traces (0->0) added: action(n6,"take a shower (B)")
+- [N16] Within matched traces (0->0) added: converge(c2)
+- [N17] Within matched traces (1->2) added: action(n2,"are you hungry?")
+- [N18] Within matched traces (1->2) added: converge(c1)
+- [N19] Within matched traces (1->2) added: converge(c2)
+- [N20] Within matched traces (2->0) added: action(n2,"are you hungry?")
+- [N21] Within matched traces (2->0) added: action(n3,"take a shower (A)")
+- [N22] Within matched traces (2->0) added: converge(c1)
+- [N23] Within matched traces (2->0) added: converge(c2)
+- [N24] Within matched traces (2->0) added: action(n8,"get on the bus and complete process")
+- [N25] Within matched traces (2->0) added: end(e1)
+
+Mutation
+- [N26] Node-level mutation: element=action(n2,"are you hungry?") -> guard(b1,n3,"v1 == \"No\""); source=i3:If you are not hungry; reason=The elements distort the condition by transforming it into a question action ('are you hungry?') and an invented variable equation ('v1 == "No"') rather than faithfully preserving the source condition.
+- [N27] Node-level mutation: element=action(n3,"take a shower (A)"); source=i4:take a shower; reason=The element adds the invented qualifier '(A)' which is not present in the source text.
+- [N28] Node-level mutation: element=action(n4,"have breakfast (A)") -> guard(b1,n4,"v1 == \"Yes\""); source=i5:Otherwise, have breakfast; reason=The elements distort the fallback path by appending an invented qualifier '(A)', dropping 'Otherwise', and replacing it entirely with an invented variable equation ('v1 == "Yes"').
+- [N29] Node-level mutation: element=action(n5,"still not hungry after first action?") -> guard(b2,n6,"v2 == \"No\""); source=i6:If you are still not hungry; reason=The elements distort the condition by rewriting it as a question with invented text ('after first action?') and converting it into a variable equation ('v2 == "No"').
+- [N30] Node-level mutation: element=action(n8,"get on the bus and complete process"); source=i7:get on the bus and the process will be complete.; reason=The element bundles the process completion state into the action description ('complete process') instead of strictly isolating the action 'get on the bus'.

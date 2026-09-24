@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i14:In case the purchase order needs to be reworked, review it again. (reason: The model fails to implement the mandatory secondary review step that follows the rework action, breaking the described process flow.)
+- [N2] Omitted trace (input 1): i1:To begin the process for ACME Company, start by receiving the customer request and then check the current inventory level. -> i2:If the inventory level is at or below the minimum -> i4:accept the customer request -> i7:After accepting the customer request, create a purchase order. -> i9:Once the purchase order is created, review it. -> i10:If the purchase order is rejected -> i11:rework the purchase order -> i14:In case the purchase order needs to be reworked, review it again. -> i9:Once the purchase order is created, review it.
+
+Addition
+- [N3] Node-level addition: action(n1,"start process for ACME Company") (reason: This action invents a discrete 'start process' step. The source only uses the phrase as a temporal lead-in ('To begin the process... start by receiving...') and does not describe it as an independent operational task.)
+- [N4] Within matched traces (2->0) added: init(i1)
+- [N5] Within matched traces (2->0) added: action(n1,"start process for ACME Company")
+- [N6] Within matched traces (3->1) added: init(i1)
+- [N7] Within matched traces (3->1) added: action(n1,"start process for ACME Company")
+- [N8] Within matched traces (0->2) added: init(i1)
+- [N9] Within matched traces (0->2) added: action(n1,"start process for ACME Company")
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i2:If the inventory level is at or below the minimum -> i3:is at or below the minimum; reason=The guard replaces the explicit threshold comparison ('at or below the minimum') with a generic boolean variable assignment ('v1 = "Yes"'), distorting the core condition logic and data.
+- [N11] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i5:if the inventory level is above the minimum; reason=The guard replaces the explicit threshold comparison ('above the minimum') with a generic boolean variable assignment ('v1 = "No"'), altering the condition.
+- [N12] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i12:if the purchase order is approved; reason=The guard replaces the explicit status check ('is approved') with a generic boolean ('v2 = "Yes"'), changing the represented logic.
+- [N13] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i10:If the purchase order is rejected; reason=The guard replaces the explicit status check ('is rejected') with a generic boolean ('v2 = "No"'), altering the condition payload.

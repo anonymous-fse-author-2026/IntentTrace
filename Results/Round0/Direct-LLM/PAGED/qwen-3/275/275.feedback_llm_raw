@@ -1,0 +1,5 @@
+
+
+- `precedence(n9, n7)`: Introduces an unintended control-flow cycle (`n7` → `n8` → `b2` → `n9` → `n7`). The source description is strictly linear and sequential (`"If the invoices are still marked as "Uncompleted", they should be returned... On the other hand, if they are marked as "Completed", the process should be continued."`), with no indication of iterative or feedback behavior.
+- `branch(b3, XOR)` & `guard(b3, n13, v3 = 'No')`: Hallucinates a conditional split and guarding condition. The source explicitly sequences these steps without a choice point: `"proceed with checking if the process has been completed. Finally, the process ends."`, which requires direct precedence rather than an XOR gateway.
+- `defines(v3, "is process completed", {"No"})`: Artificially restricts the decision variable to a single value `{"No"}`. The source merely describes `"checking if the process has been completed"` without prescribing limited outcomes, and this constraint illogically forces the hallucinated guard to trigger termination.

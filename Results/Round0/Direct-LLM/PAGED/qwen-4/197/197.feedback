@@ -1,0 +1,7 @@
+- `action(n1, "start process")`: Hallucinates a step not documented in the source; the description begins directly with gathering items ("To start the process, the customer needs to gather...").
+- `actor(a_default, "Default", [...])`: Fails to reflect source responsibilities (SMC7); the text explicitly assigns all activities to "the customer", not a generic "Default" participant.
+- `action(n15, "transaction complete and process ends")`: Misclassifies process termination as an executable task; the source describes completion as a passive outcome following payment that should lead directly to the `end` node.
+- `action(n6, "Is invoice received?")`, `action(n10, "Is purchase invoice received?")`, `action(n12, "Is shipment received?")`: Unnecessarily modeled as executable actions; the source treats these as passive waiting/reception triggers ("wait for...", "Once... received") that should be governed solely by the adjacent `branch` and `guard` statements.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=2 and out=1. | Node `n5` has in=2 and out=1. | Node `n9` has in=2 and out=1. | DSL: action(n11,"wait for shipment"); action(n5,"wait for invoice"); action(n9,"wait for purchase invoice")

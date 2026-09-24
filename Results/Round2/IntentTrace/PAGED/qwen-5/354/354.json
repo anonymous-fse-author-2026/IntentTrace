@@ -1,0 +1,277 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start immigration checks"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Select exit control check method"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Undergo biometrics check"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Undergo ID documents check"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Passenger denied permission leave area"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Passenger allowed to continue proceed to next step"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Passenger leave area and end process"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Passenger continue next step and end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Select exit control check method",
+      "R_X": [
+        "biometrics",
+        "ID documents"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Evaluate exit control check permission",
+      "R_X": [
+        "denied",
+        "allowed"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Check exit control check outcome",
+      "R_X": [
+        "unsuccessful",
+        "successful"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "c1",
+        "b2",
+        "n6",
+        "n7",
+        "c2",
+        "b3",
+        "n9",
+        "n10",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'biometrics'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'ID documents'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'denied'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'allowed'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n9",
+      "condition": "v3 = 'unsuccessful'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n10",
+      "condition": "v3 = 'successful'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "Passengers should start the process by undergoing immigration checks, and then they should select the method for exit control checks."
+    },
+    {
+      "id": "i2",
+      "content": "If the passenger chooses to use biometrics, they should undergo a check using biometrics."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the passenger prefers to use ID documents, they should undergo checks using identity documents."
+    },
+    {
+      "id": "i4",
+      "content": "After the exit control checks, if the passenger is denied permission, they should leave the area."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if the passenger is allowed to continue, they should proceed to the next step."
+    },
+    {
+      "id": "i6",
+      "content": "If the exit control check outcome is unsuccessful, the passenger should leave the area and the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "Conversely, if the outcome is successful, the passenger should continue to the next step and the process ends."
+    }
+  ]
+}

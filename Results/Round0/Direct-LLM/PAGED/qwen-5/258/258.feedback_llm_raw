@@ -1,0 +1,8 @@
+
+
+- action(n1, "start flight booking process for Flight Centre"): Hallucinates an initial step not present in the source; the description states the process simply "begins with the availability of the departing flight."
+- action(n5, "End process"): Hallucinates a final action node; the source indicates the process "comes to an end" immediately after completion, directly mapping to `end(e1)`.
+- precedence(b1, n6), precedence(n6, n7), precedence(b2, n6): Forms a cyclic waiting/retry loop that violates the source's linear progression: "Once the departing flight is available, the next step is to select the return flight."
+- branch(b1, XOR), branch(b2, XOR): Introduces unguarded exclusive splits creating undocumented alternative paths; the source describes a straightforward conditional flow upon availability, not a fork with undefined choices.
+- action(n2, "Is departing flight available"), action(n7, "Is departing flight available"): Duplicates the same availability check across two disconnected nodes, misrepresenting the single conditional step outlined in the description.
+- defines(v1, "Is departing flight available", {}), defines(v2, "Is departing flight available", {}): Declares duplicate variables with empty ranges `{}` instead of a valid decision domain (e.g., `{true, false}`), and neither variable is used in any `guard` statement to control the XOR branch outcomes.

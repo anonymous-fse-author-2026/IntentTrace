@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i7:inform management about the potential client's responses (reason: This step is unfulfilled due to the dropped 'potential' qualifier in its corresponding element.)
+- [N2] Node-level omission: i8:the responses need to be analyzed and negotiations can begin (reason: This step is unfulfilled as no element faithfully captures it without inserting unverified qualifiers.)
+- [N3] Node-level omission: i9:detail the offer according to the client's preferences and receive their response (reason: This step is unfulfilled because the corresponding element distorts the action outcome from receiving to waiting.)
+- [N4] Within matched traces (0->2) omitted: i1:To acquire a new client, the first step is to identify the need for a new client.
+- [N5] Within matched traces (1->4) omitted: i1:To acquire a new client, the first step is to identify the need for a new client.
+- [N6] Within matched traces (2->3) omitted: i1:To acquire a new client, the first step is to identify the need for a new client.
+- [N7] Within matched traces (3->5) omitted: i1:To acquire a new client, the first step is to identify the need for a new client.
+
+Addition
+- [N8] Node-level addition: guard(b2,n12,"v2 == \"negative\"") (reason: This guard specifies a 'negative' condition, but the corresponding source phrase ('if the response is negative') is completely missing from the available Input Elements, leaving the element unsupported by any provided text.)
+- [N9] Added trace (model 0): init(i1) -> branch(b3,AND) -> action(n2,"Identify the need for a new client") -> converge(c1) -> action(n6,"Send an offer to the potential client") -> action(n7,"Inform management about client's responses") -> action(n8,"Analyze client's responses and begin negotiations") -> action(n9,"Detail the offer according to client's preferences and wait for response") -> action(n10,"Is the client's response positive") -> branch(b2,XOR) -> action(n11,"Prepare contract for signing") -> action(n13,"Sign the contract") -> converge(c2) -> end(e1)
+- [N10] Added trace (model 1): init(i1) -> branch(b3,AND) -> action(n2,"Identify the need for a new client") -> converge(c1) -> action(n6,"Send an offer to the potential client") -> action(n7,"Inform management about client's responses") -> action(n8,"Analyze client's responses and begin negotiations") -> action(n9,"Detail the offer according to client's preferences and wait for response") -> action(n10,"Is the client's response positive") -> branch(b2,XOR) -> action(n12,"Analyze reasons for rejection and learn from experience") -> converge(c2) -> end(e1)
+- [N11] Within matched traces (2->3) added: action(n10,"Is the client's response positive")
+- [N12] Within matched traces (2->3) added: branch(b2,XOR)
+- [N13] Within matched traces (2->3) added: converge(c2)
+- [N14] Within matched traces (2->3) added: end(e1)
+- [N15] Within matched traces (3->5) added: action(n10,"Is the client's response positive")
+- [N16] Within matched traces (3->5) added: branch(b2,XOR)
+- [N17] Within matched traces (3->5) added: converge(c2)
+- [N18] Within matched traces (3->5) added: end(e1)
+
+Mutation
+- [N19] Node-level mutation: element=action(n7,"Inform management about client's responses"); source=i7:inform management about the potential client's responses; reason=The model drops the crucial qualifier 'potential', changing the designated target from a prospective client to an actual client.
+- [N20] Node-level mutation: element=action(n8,"Analyze client's responses and begin negotiations"); source=i8:the responses need to be analyzed and negotiations can begin; reason=The model adds the invented qualifier 'client's', which is absent from this source unit.
+- [N21] Node-level mutation: element=action(n9,"Detail the offer according to client's preferences and wait for response"); source=i9:detail the offer according to the client's preferences and receive their response; reason=The model alters the outcome from actively 'receiving' the response to passively 'waiting for' it.
+- [N22] Node-level mutation: element=action(n10,"Is the client's response positive"); source=i10:If the response is positive,; reason=The modeled action step invents and inserts the qualifier 'client's', which is not in the verbatim segment.

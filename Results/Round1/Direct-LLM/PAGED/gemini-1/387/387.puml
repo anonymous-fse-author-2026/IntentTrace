@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:trigger the resupply cycle;
+:check the inventory level;
+:v1: inventory level ({at or below minimum, above minimum}); <<objectSignal>>
+if () then ([v1 == "at or below minimum"])
+:create a purchase order;
+repeat :;
+:review the purchase order;
+:v2: purchase status ({rejected, approved}); <<objectSignal>>
+backward:rework the purchase order;
+repeat while () is ([v2 == "rejected"]) not ([v2 == "approved"])
+:reserve the funds;
+:send order to supplier;
+split
+:receive the packing slip;
+:record the packing slip;
+stop
+split again
+:receive the invoice;
+:record the invoice;
+stop
+end split
+else ([v1 == "above minimum"])
+stop
+endif
+@enduml

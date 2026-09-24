@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i1:To initiate the computer repair process, begin by examining the hardware. (reason: The precise instructional text is not faithfully implemented; the matching element contains drifted phrasing and dropped context, leaving the source unit uncovered.)
+- [N2] Node-level omission: i5:If the test results indicate that everything is functioning properly (reason: The explicit positive condition is not faithfully captured due to abstraction and qualifier shifts in all corresponding elements.)
+- [N3] Node-level omission: i6:everything is functioning properly (reason: The explicit positive condition is not faithfully captured due to abstraction and qualifier shifts in all corresponding elements.)
+- [N4] Node-level omission: i7:then the hardware inspection process can be concluded. (reason: The exact conclusion instruction is altered in the corresponding element, leaving the specific source text unimplemented.)
+- [N5] Node-level omission: i9:if the test results indicate that there are still issues (reason: The explicit negative condition is abstracted away in the matching guard, failing to preserve the source logic.)
+- [N6] Node-level omission: i10:then further hardware repairs are required. (reason: The specific 'further' repair requirement is replaced with generic/duplicate text, leaving the source instruction uncovered.)
+
+Addition
+- [N7] Within matched traces (1->1) added: action(n5,"condition: are test results satisfactory?")
+- [N8] Within matched traces (1->1) added: action(n6,"end: conclude hardware repair process")
+
+Mutation
+- [N9] Node-level mutation: element=action(n1,"initiate: start hardware examination"); source=i1:To initiate the computer repair process, begin by examining the hardware.; reason=Content 'initiate: start hardware examination' invents a prefix qualifier and drops the specific process context ('computer repair process'), altering the original instruction.
+- [N10] Node-level mutation: element=action(n5,"condition: are test results satisfactory?"); source=i5:If the test results indicate that everything is functioning properly -> i6:everything is functioning properly; reason=Changes the explicit condition qualifier from 'functioning properly' to 'satisfactory', drifting from the source data and granularity.
+- [N11] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i5:If the test results indicate that everything is functioning properly -> i6:everything is functioning properly; reason=Abstracts the explicit textual condition into a generic variable assignment 'v1 = "Yes"', completely dropping the original logic and data.
+- [N12] Node-level mutation: element=action(n6,"end: conclude hardware repair process"); source=i7:then the hardware inspection process can be concluded.; reason=Alters the target object from 'hardware inspection process' to 'hardware repair process', changing the referenced process entity.
+- [N13] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i9:if the test results indicate that there are still issues; reason=Abstracts the explicit negative condition into a generic variable assignment 'v1 = "No"', dropping the source logic and specific issue descriptor.
+- [N14] Node-level mutation: element=action(n7,"repair: fix identified hardware issues"); source=i10:then further hardware repairs are required.; reason=Duplicates the content of an earlier step instead of capturing the 'further/additional' requirement, dropping a critical qualifier and changing the instructional nuance.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"end: conclude hardware repair process")

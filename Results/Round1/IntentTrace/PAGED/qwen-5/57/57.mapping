@@ -1,0 +1,515 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin the process, the customer needs to make a purchase and then connect to the website."
+      ],
+      "justification": "The opening clause explicitly starts the process and describes the first required action."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "they should search for an item"
+      ],
+      "justification": "Directly corresponds to the search step following the initial setup."
+    },
+    {
+      "refs": [
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "If they choose to \"Add item to cart\", they can proceed to checkout. However, if they select \"Continue Shopping\", they should continue with the process."
+      ],
+      "justification": "Captures the user choice prompt/options and the implicit XOR decision point splitting the flow."
+    },
+    {
+      "refs": [
+        "guard:b1->n5",
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "If they choose to \"Add item to cart\", they can proceed to checkout."
+      ],
+      "justification": "The guard captures the positive selection condition, and the action matches the resulting checkout step."
+    },
+    {
+      "refs": [
+        "guard:b1->n6",
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "However, if they select \"Continue Shopping\", they should continue with the process."
+      ],
+      "justification": "The guard captures the alternative selection, and the action faithfully restates continuing the process."
+    },
+    {
+      "refs": [
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "they need to enter their address, shipping method, and payment information"
+      ],
+      "justification": "Exact match for the data entry requirement upon proceeding to checkout."
+    },
+    {
+      "refs": [
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "At the same time, they should also authorize the credit card and check the inventory levels."
+      ],
+      "justification": "\"At the same time\" triggers the AND parallel split; the action covers the concurrent tasks; convergence follows their completion."
+    },
+    {
+      "refs": [
+        "guard:b3->c2"
+      ],
+      "verbatim_texts": [
+        "If the credit card is approved and there is inventory in stock, they can continue with the process."
+      ],
+      "justification": "Branch models the validation check; guard abstracts the positive outcome to 'Yes'; convergence loops back as implied by 'continue with the process'."
+    },
+    {
+      "refs": [
+        "guard:b3->n16",
+        "action:n16"
+      ],
+      "verbatim_texts": [
+        "However, if the credit card is denied or there is no inventory in stock, the transaction will end."
+      ],
+      "justification": "Guard abstracts the negative outcome to 'No'; action exactly matches the termination step."
+    },
+    {
+      "refs": [
+        "converge:c2"
+      ],
+      "verbatim_texts": [
+        "In either case,"
+      ],
+      "justification": "Structural convergence rejoins the successful and failed paths before proceeding to post-processing steps."
+    },
+    {
+      "refs": [
+        "action:n11",
+        "action:n12"
+      ],
+      "verbatim_texts": [
+        "the order confirmation number should be displayed, followed by the final order being shown to the customer."
+      ],
+      "justification": "Both actions directly map to the sequential display requirements described."
+    },
+    {
+      "refs": [
+        "action:n13",
+        "action:n14"
+      ],
+      "verbatim_texts": [
+        "the order should be confirmed and a confirmation notice should be emailed to the customer."
+      ],
+      "justification": "Accurately splits the compound sentence into two distinct confirmation actions."
+    },
+    {
+      "refs": [
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "Once the order entry is complete, the process will end."
+      ],
+      "justification": "Action marks the completion state, and the structural end node matches the explicit process termination."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "make purchase and connect to website",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: make purchase and connect to website"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "search for item",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: search for item"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "add item to cart / continue shopping",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: add item to cart / continue shopping"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "proceed to checkout",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: proceed to checkout"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "continue shopping",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: continue shopping"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "enter address shipping method and payment information",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: enter address shipping method and payment information"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "authorize credit card and check inventory levels",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: authorize credit card and check inventory levels"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "branch:b4",
+      "kind": "branch",
+      "node_id": "b4",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b4",
+        "b4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b4 (AND)"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "converge:c2",
+      "kind": "converge",
+      "node_id": "c2",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c2",
+        "c2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c2"
+    },
+    {
+      "ref_id": "action:n16",
+      "kind": "action",
+      "node_id": "n16",
+      "gateway": "",
+      "string_value": "the transaction will end",
+      "aliases": [
+        "action:n16",
+        "n16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n16: the transaction will end"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "display order confirmation number",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: display order confirmation number"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "show final order to customer",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: show final order to customer"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "confirm the order",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: confirm the order"
+    },
+    {
+      "ref_id": "action:n14",
+      "kind": "action",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "send confirmation notice via email",
+      "aliases": [
+        "action:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n14: send confirmation notice via email"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "order entry complete",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: order entry complete"
+    },
+    {
+      "ref_id": "converge:c_loop",
+      "kind": "converge",
+      "node_id": "c_loop",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_loop",
+        "c_loop"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_loop"
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Add to cart'",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: v1 = 'Add to cart'",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "v1 = 'Add to cart'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Continue Shopping'",
+      "aliases": [
+        "guard:b1->n6"
+      ],
+      "from": "b1",
+      "to": "n6",
+      "source_line": "guard b1->n6: v1 = 'Continue Shopping'",
+      "guard": {
+        "from": "b1",
+        "to": "n6",
+        "condition": "v1 = 'Continue Shopping'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->c2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b3->c2"
+      ],
+      "from": "b3",
+      "to": "c2",
+      "source_line": "guard b3->c2: v3 = 'Yes'",
+      "guard": {
+        "from": "b3",
+        "to": "c2",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n16",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b3->n16"
+      ],
+      "from": "b3",
+      "to": "n16",
+      "source_line": "guard b3->n16: v3 = 'No'",
+      "guard": {
+        "from": "b3",
+        "to": "n16",
+        "condition": "v3 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 13,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 18,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 18,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 18,
+    "total_mappable_targets": 25,
+    "input_text_length": 972,
+    "element_count": 25
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

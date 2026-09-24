@@ -1,0 +1,8 @@
+
+
+- `init` declaration: Missing. The DSL requires an `init(id)` node to denote the single start of the process, and the source states "To start the SSP process...", but the model omits this declaration entirely.
+- `action(n1, "start")`: Hallucinated step. The source begins directly with "first ensure that the Invoice is ready for verification"; no standalone "start" action is documented.
+- `precedence` relations: Broken cycle control-flow. The source specifies that "'Process invoice batch'... should be repeated until all invoices are processed" and outbox clearing continues "until the outbox is completely cleared", but the model lacks the return edges (e.g., `precedence(b1, n7)` and `precedence(b2, n10)`) required to execute these repetitions.
+- `defines(v1, ...)` and `defines(v2, ...)`: Incomplete value ranges. Both variables are restricted to single-value sets (`{"No"}` and `{"Yes"}`), whereas the source implies binary decision points requiring both outcomes (e.g., `{"Yes", "No"}`) to properly gate the XOR branches and control the loops.
+- `actor(a_default, "Default", [...])`: Misassigned responsibilities. The source explicitly involves the "Data Entry Officer" for allocation and outbox management ("allocated to the Data Entry Officer", "outbox of the Data Entry Officer"), yet the model assigns all nodes, including `n6` and `n10`, to a generic "Default" actor.
+- `label(...)` statements (e.g., `label(n1, n2, "Yes")`): Hallucinated edge metadata. The source provides no descriptive text or transition markers for these steps, adding unjustified information to the model.

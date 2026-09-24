@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:If the 'Customer returns the items to the store,' then we can continue the process. However, if the 'Delivery Crew picks-up items at the event site,';
+:v1: Return method ({Customer returns, Delivery Crew picks-up}); <<objectSignal>>
+if () then ([v1 = 'Customer returns'])
+:Customer returns the items to the store;
+else ([v1 = 'Delivery Crew picks-up'])
+:Delivery Crew picks-up items at the event site;
+endif
+:the items are counted and compared to the original contract;
+:If the 'Order is complete and all items were returned,' then we proceed with the process. However, if the 'Order is incomplete and items are missing,' we still continue the process. Similarly, if the 'Order is complete but items are damaged,';
+:v2: Order status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'Complete'])
+:Order is complete and all items were returned;
+:v5: Next step ({Packed, Stored}); <<objectSignal>>
+if () then ([v5 = 'Stored'])
+:Alternatively, if the 'Items are stored for future orders,' we also continue the process.;
+else ([v5 = 'Packed'])
+:If the 'Items are packed for an existing order,';
+endif
+case ([v2 = 'Incomplete'])
+:Order is incomplete and items are missing;
+:we still continue the process.;
+:In case of missing items and replacement charges, we email the customer to inform them.;
+:If the 'Customer returns the missing items,';
+:v3: Missing items return ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Customer returns the missing items;
+:when the process is complete, it ends.;
+else ([v3 = 'No'])
+:Customer does not return the missing items;
+:customer is then emailed with replacement charges;
+endif
+:it ends.;
+stop
+case ([v2 = 'Damaged'])
+:Order is complete but items are damaged;
+:email the customer to inform them of the damage and additional charges;
+:temporarily take them out of inventory;
+:If the 'Items are repaired and added into inventory,' we continue the process. On the other hand, if the 'Items can't be repaired and are discarded,';
+:v4: Repair status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v4 = 'Repaired'])
+:Items are repaired and added into inventory;
+else ([v4 = 'Discarded'])
+:Items can't be repaired and are discarded;
+:email the customer with replacement charges;
+endif
+endswitch
+@enduml

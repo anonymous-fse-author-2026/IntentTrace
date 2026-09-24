@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Trigger Resupply Cycle;
+:Check Inventory Level;
+:v1: Inventory greater than Minimum Level? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:End Process;
+stop
+else ([v1 = 'No'])
+:Create Purchase Order;
+repeat :;
+:Review Purchase Order;
+:Purchase Order accepted?;
+:v2: Purchase Order accepted? ({Rejected, Accepted}); <<objectSignal>>
+backward:Rework Purchase Order;
+repeat while () is ([v2 = 'Rejected']) not ([v2 = 'Accepted'])
+:Reserve funds for payment;
+:Send Purchase Order to Supplier;
+split
+:Receive Packing Slip;
+:Record Packing Slip;
+split again
+:Receive Invoice;
+:Record Invoice;
+end split
+:Release funds for payment;
+:Issue payment to Supplier;
+stop
+endif
+@enduml

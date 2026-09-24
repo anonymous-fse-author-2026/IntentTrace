@@ -1,0 +1,8 @@
+
+
+- `defines(v2,...)`, `defines(v3,...)`, `defines(v4,...)`, `defines(v6,...)`, `defines(v7,...)`, `defines(v8,...)`, `defines(v9,...)`: Ranges are restricted to `{"No"}`, omitting affirmative values or numeric intervals required to evaluate source conditions like `"less than 500"` or `"greater than 2000"` (SMC6).
+- `defines(v5,...)`, `defines(v10,...)`: Ranges are empty `{}`, contradicting source specifications `"between 500 and 999"` which require valid value domains (SMC6).
+- `action(n9,...)`, `action(n11,...)`, `action(n16,...)`: Lack outgoing `precedence` edges, creating dead-end paths that halt prematurely instead of progressing to the final billing step as described (SMC1, SMC5).
+- `branch(b5,XOR)`: Lacks `guard` statements for both outgoing edges (`b5,n11` and `b5,n12`), leaving the exclusive choice undefined despite the source explicitly linking `"continue with the process"` and `"compute a discount of 2%"` to specific sum ranges (SMC4).
+- `guard(b2,n6,v2 = 'No')`, `guard(b3,n8,v3 = 'No')`, `guard(b4,n10,v4 = 'No')`, `guard(b6,n15,v6 = 'No')`, `guard(b7,n17,v7 = 'No')`, `guard(b8,n19,v8 = 'No')`, `guard(b9,n21,v9 = 'No')`: Rely on equality to `'No'` to route toward subsequent checks, but combined with the single-value variable definitions, these guards are tautological and cannot distinguish affirmative cases, breaking conditional discount logic (SMC4, SMC6).
+- `action(n24,"process end")`: Adds an undocumented terminal action before `end(e2)`, whereas the source states `"Finally, create the bill and the process will come to an end"` without an intermediate step (SMC1).

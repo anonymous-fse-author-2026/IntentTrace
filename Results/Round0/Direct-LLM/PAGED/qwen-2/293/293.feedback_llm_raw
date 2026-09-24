@@ -1,0 +1,11 @@
+
+
+- actor(a_default, "Default", [...]): Assigns every node to a single default actor, failing to reflect the distinct responsibilities named in the source ("recruitment manager", "next level manager", "client HR", "TS HR coordinator", "HR representative", "candidate").
+- action(n5, "end process"), action(n15, "end process"), action(n18, "end process"), action(n34, "end process"), action(n45, "end process"), action(n46, "end process"), action(n47, "end process") & end(e1)-end(e7): Hallucinates multiple premature terminations; the source only states "Finally, the process ends." at the conclusion, while intermediate paths specify "the process continues" or cycling to other candidates.
+- guard(b10, n47, v10 = 'No'): Terminates at n47/e7 when the rate is not 40%, contradicting the source: "Otherwise, if the candidate accepts, the process continues."
+- guard(b11, n46, v11 = 'Yes'): Terminates at n46/e6 upon successful renegotiation, contradicting the source: "If the renegotiation is successful, the process continues."
+- guard(b11, n44, v11 = 'No'): Terminates at n45/e5 upon failed renegotiation, contradicting the source: "the next candidate on the shortlist should be identified" (implies process continuation/looping, not termination).
+- guard(b8, n33, v8 = 'No'): Terminates at n34/e4 upon unsatisfactory assessment, contradicting the source: "the next candidate on the shortlist should be contacted" (implies continuation/looping, not termination).
+- action(n9, "proceed with recruitment process"), action(n10, "proceed with recruitment process"), action(n24, "continue process"), action(n38, "continue process"): Hallucinates discrete steps; the source merely notes implicit progression ("the process continues") without defining separate actions.
+- guard(b1, n4, v1 = 'Yes'): Routes to re-advertising followed by immediate termination (n5/e1), misrepresenting the source ("position should be re-advertised") which implies restarting the recruitment cycle, not concluding it.
+- precedence(c4, n40): Merges the verbal-offer-decline path and document-sending path directly into document receipt, breaking source chronology where verbal offer acceptance must be resolved before proceeding to document-related rate checks.

@@ -1,0 +1,552 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "Bill for Purchased Goods/Services"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "b_complete",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "If the invoice is incomplete"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "it is returned"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "if the invoice is complete"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "the process continues."
+    },
+    {
+      "id": "b_compliant",
+      "type": "branch",
+      "gateway": "OR"
+    },
+    {
+      "id": "c_compliant",
+      "type": "converge"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "If the invoice is non-compliant"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "further checks are conducted"
+    },
+    {
+      "id": "b_phone",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "If the issue can be resolved with a phone call"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "non-compliance is resolved"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "if the issue requires mail back"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "the invoice is returned"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "the invoice is paid"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "Simultaneously"
+    },
+    {
+      "id": "b_simul",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "Bill Client"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "a period of 10 days is given"
+    },
+    {
+      "id": "i19",
+      "type": "action",
+      "content": "a reminder is sent"
+    },
+    {
+      "id": "c_simul",
+      "type": "converge"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "the client is notified of the payment."
+    },
+    {
+      "id": "b_sat",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i21",
+      "type": "action",
+      "content": "If the client is unsatisfied"
+    },
+    {
+      "id": "i22",
+      "type": "action",
+      "content": "payment discrepancy is resolved"
+    },
+    {
+      "id": "i23",
+      "type": "action",
+      "content": "if the client is satisfied"
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "the process ends."
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is Invoice Complete?",
+      "R_X": [
+        "Incomplete",
+        "Complete"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is Invoice Compliant?",
+      "R_X": [
+        "Compliant",
+        "Non-Compliant"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Resolution Method",
+      "R_X": [
+        "Phone Call",
+        "Mail Back"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Check Client Satisfaction",
+      "R_X": [
+        "Unsatisfied",
+        "Satisfied"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "i2",
+        "i3",
+        "b_complete",
+        "i4",
+        "i5",
+        "e1",
+        "i6",
+        "i7",
+        "b_compliant",
+        "c_compliant",
+        "i8",
+        "i9",
+        "b_phone",
+        "i10",
+        "i11",
+        "i12",
+        "i13",
+        "i14",
+        "i15",
+        "b_simul",
+        "i16",
+        "i17",
+        "i19",
+        "c_simul",
+        "i18",
+        "b_sat",
+        "i21",
+        "i22",
+        "i23",
+        "i20",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b_complete"
+    },
+    {
+      "type": "precedence",
+      "A": "b_complete",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_complete",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "b_compliant"
+    },
+    {
+      "type": "precedence",
+      "A": "b_compliant",
+      "B": "c_compliant"
+    },
+    {
+      "type": "precedence",
+      "A": "b_compliant",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "b_phone"
+    },
+    {
+      "type": "precedence",
+      "A": "b_phone",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "c_compliant"
+    },
+    {
+      "type": "precedence",
+      "A": "b_phone",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "c_compliant"
+    },
+    {
+      "type": "precedence",
+      "A": "c_compliant",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "b_simul"
+    },
+    {
+      "type": "precedence",
+      "A": "b_simul",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "i19"
+    },
+    {
+      "type": "precedence",
+      "A": "i19",
+      "B": "c_simul"
+    },
+    {
+      "type": "precedence",
+      "A": "b_simul",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "b_sat"
+    },
+    {
+      "type": "precedence",
+      "A": "b_sat",
+      "B": "i21"
+    },
+    {
+      "type": "precedence",
+      "A": "i21",
+      "B": "i22"
+    },
+    {
+      "type": "precedence",
+      "A": "i22",
+      "B": "c_simul"
+    },
+    {
+      "type": "precedence",
+      "A": "b_sat",
+      "B": "i23"
+    },
+    {
+      "type": "precedence",
+      "A": "i23",
+      "B": "c_simul"
+    },
+    {
+      "type": "precedence",
+      "A": "c_simul",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b_complete",
+      "B": "i4",
+      "condition": "v1 = 'Incomplete'"
+    },
+    {
+      "type": "guard",
+      "A": "b_complete",
+      "B": "i6",
+      "condition": "v1 = 'Complete'"
+    },
+    {
+      "type": "guard",
+      "A": "b_compliant",
+      "B": "c_compliant",
+      "condition": "v2 = 'Compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b_compliant",
+      "B": "i8",
+      "condition": "v2 = 'Non-Compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b_phone",
+      "B": "i10",
+      "condition": "v3 = 'Phone Call'"
+    },
+    {
+      "type": "guard",
+      "A": "b_phone",
+      "B": "i12",
+      "condition": "v3 = 'Mail Back'"
+    },
+    {
+      "type": "guard",
+      "A": "b_sat",
+      "B": "i21",
+      "condition": "v4 = 'Unsatisfied'"
+    },
+    {
+      "type": "guard",
+      "A": "b_sat",
+      "B": "i23",
+      "condition": "v4 = 'Satisfied'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the process starts"
+    },
+    {
+      "id": "i2",
+      "content": "Bill for Purchased Goods/Services"
+    },
+    {
+      "id": "i3",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "i4",
+      "content": "If the invoice is incomplete"
+    },
+    {
+      "id": "i5",
+      "content": "it is returned"
+    },
+    {
+      "id": "i6",
+      "content": "if the invoice is complete"
+    },
+    {
+      "id": "i7",
+      "content": "the process continues."
+    },
+    {
+      "id": "i8",
+      "content": "If the invoice is non-compliant"
+    },
+    {
+      "id": "i9",
+      "content": "further checks are conducted"
+    },
+    {
+      "id": "i10",
+      "content": "If the issue can be resolved with a phone call"
+    },
+    {
+      "id": "i11",
+      "content": "non-compliance is resolved"
+    },
+    {
+      "id": "i12",
+      "content": "if the issue requires mail back"
+    },
+    {
+      "id": "i13",
+      "content": "the invoice is returned"
+    },
+    {
+      "id": "i14",
+      "content": "the invoice is paid"
+    },
+    {
+      "id": "i15",
+      "content": "Simultaneously"
+    },
+    {
+      "id": "i16",
+      "content": "Bill Client"
+    },
+    {
+      "id": "i17",
+      "content": "a period of 10 days is given"
+    },
+    {
+      "id": "i18",
+      "content": "the client is notified of the payment."
+    },
+    {
+      "id": "i19",
+      "content": "a reminder is sent"
+    },
+    {
+      "id": "i20",
+      "content": "the process ends."
+    },
+    {
+      "id": "i21",
+      "content": "If the client is unsatisfied"
+    },
+    {
+      "id": "i22",
+      "content": "payment discrepancy is resolved"
+    },
+    {
+      "id": "i23",
+      "content": "if the client is satisfied"
+    }
+  ]
+}

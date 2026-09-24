@@ -1,0 +1,8 @@
+- `action(n1, "start")`: Hallucinates a distinct operational step; the source text ("At the start, we receive a form") indicates that receiving the form is the first actual step of the process.
+- `branch(b1, XOR)` and precedences to `n5`, `n6`, `n7`: Incorrectly models checking income, deductibles, and house as mutually exclusive choices directly out of an XOR gateway. The source text specifies these should happen "At the same time," requiring an AND gateway for concurrency.
+- `action(n4, "end process: form needs to be sent back")` and `action(n9, "end process: check declaration")`: Incorrectly embeds control-flow outcomes ("end process") directly into the action payloads rather than using purely descriptive action names leading to end nodes.
+- `guard`: The model completely omits guard conditions for the XOR branches (`b1` and `b2`), failing to capture explicit source text conditions such as "If it needs to be sent back" or "If we need to check the declaration".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

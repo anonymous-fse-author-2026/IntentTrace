@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i3:If it needs to be sent back, the process ends. (reason: The conditional trigger 'needs to be sent back' lacks a faithful implementation; the only covering element is a mutated guard.)
+- [N2] Node-level omission: i4:However, if we need to check the income, we continue with the process. (reason: The explicit income-check condition is not faithfully reproduced; reliance on a mutated guard leaves the source unit uncovered.)
+- [N3] Node-level omission: i5:if we need to check the income (reason: The explicit income-check condition is not faithfully reproduced; reliance on a mutated guard leaves the source unit uncovered.)
+- [N4] Node-level omission: i9:If we need to check the declaration, the process ends. (reason: No element faithfully implements the declaration-check condition; the associated guard is mutated.)
+- [N5] Node-level omission: i10:Otherwise, if we need to invite the declarant, the process also ends. (reason: The invitation condition is absent from the model's guards; the substituted variable label constitutes an unfaithful implementation.)
+- [N6] Within matched traces (1->1) omitted: i7:At the same time
+- [N7] Within matched traces (2->2) omitted: i7:At the same time
+
+Addition
+- [N8] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,AND) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n8,"End process as declaration check needed") -> end(e2)
+- [N9] Added trace (model 4): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,AND) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n9,"End process as invitation needed") -> end(e3)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n3,"v2 = 'No'"); source=i3:If it needs to be sent back, the process ends.; reason=Guard content 'v2 = "No"' replaces the explicit source condition 'needs to be sent back' with an abstract variable assignment, distorting the payload.
+- [N11] Node-level mutation: element=guard(b1,n4,"v2 = 'Yes'"); source=i4:However, if we need to check the income, we continue with the process. -> i5:if we need to check the income; reason=Guard content 'v2 = "Yes"' substitutes the source condition about checking income with a generic boolean variable, losing the specific business logic.
+- [N12] Node-level mutation: element=guard(b3,n8,"v3 = 'Declaration'"); source=i9:If we need to check the declaration, the process ends.; reason=Guard content 'v3 = "Declaration"' fails to reproduce the source condition text, introducing an unsourced abstract label.
+- [N13] Node-level mutation: element=guard(b3,n9,"v3 = 'Invitation'"); source=i10:Otherwise, if we need to invite the declarant, the process also ends.; reason=Guard content 'v3 = "Invitation"' alters the source condition by mapping it to an abstract variable rather than preserving the original phrasing.

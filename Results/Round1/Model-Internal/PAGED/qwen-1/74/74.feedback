@@ -1,0 +1,33 @@
+Omission
+- [N1] Within matched traces (0->3) omitted: i3:proceed to the IN-Patient step.
+- [N2] Within matched traces (0->3) omitted: i6:Once the data is sent to suppliers,
+
+Addition
+- [N3] Node-level addition: label(b3,n3,"Yes") (reason: All three labels contain the text 'Yes', which is never mentioned or implied in the source text.)
+- [N4] Node-level addition: label(b3,n4,"Yes") (reason: All three labels contain the text 'Yes', which is never mentioned or implied in the source text.)
+- [N5] Node-level addition: label(b3,n5,"Yes") (reason: All three labels contain the text 'Yes', which is never mentioned or implied in the source text.)
+- [N6] Node-level addition: guard(b1,n8,"v1 = 'Confirmed'") (reason: These guards invent variable v1 and boolean/string conditions ('Confirmed'/'Not Confirmed') that have no basis in the source description.)
+- [N7] Node-level addition: guard(b1,n9,"v1 = 'Not Confirmed'") (reason: These guards invent variable v1 and boolean/string conditions ('Confirmed'/'Not Confirmed') that have no basis in the source description.)
+- [N8] Node-level addition: guard(b2,n13,"v2 = 'Entered'") (reason: These guards invent variable v2 and conditions ('Entered'/'Not Entered') that are completely absent from the source text.)
+- [N9] Node-level addition: guard(b2,n16,"v2 = 'Not Entered'") (reason: These guards invent variable v2 and conditions ('Entered'/'Not Entered') that are completely absent from the source text.)
+- [N10] Node-level addition: action(n16,"End Process: Data Entry Failed") (reason: The action describes a failure exit path ('End Process: Data Entry Failed') with absolutely no supporting text or implication in the source.)
+- [N11] Added trace (model 0): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n3,"IN-Patient Step") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n3,"IN-Patient Step") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> branch(b2,XOR) -> action(n16,"End Process: Data Entry Failed") -> end(e3)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> branch(b2,XOR) -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N14] Added trace (model 5): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> branch(b2,XOR) -> action(n16,"End Process: Data Entry Failed") -> end(e3)
+- [N15] Added trace (model 6): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N16] Added trace (model 7): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> branch(b2,XOR) -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N17] Added trace (model 8): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,XOR) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> branch(b2,XOR) -> action(n16,"End Process: Data Entry Failed") -> end(e3)
+- [N18] Within matched traces (0->3) added: branch(b1,XOR)
+- [N19] Within matched traces (1->1) added: converge(c1)
+- [N20] Within matched traces (1->1) added: action(n6,"Extract and Transfer Data from Suppliers to Doctor")
+- [N21] Within matched traces (1->1) added: action(n7,"Confirm GOP")
+- [N22] Within matched traces (1->1) added: branch(b1,XOR)
+
+Mutation
+- [N23] Node-level mutation: element=action(n8,"End Process: GOP Confirmed"); source=i9:the process will come to an end.; reason=The element appends the ungrounded qualifier ': GOP Confirmed', which violates the strict requirement to reproduce the source unit without invented details.
+- [N24] Node-level mutation: element=action(n11,"Extract Data from Suppliers Again"); source=i11:Extract the data from the suppliers; reason=The element adds the qualifier 'Again', altering the granularity and introducing information not present in the source unit.
+
+Permutation
+- [N25] Within matched traces (1->1) reordered: expected [i4:At the same time, complete the following steps:] but observed [branch(b3,AND)] elsewhere; in its place the model has [action(n3,"IN-Patient Step")]
+- [N26] Within matched traces (1->1) reordered: expected [i14:send the data back to the suppliers.] but observed [action(n13,"Send Data Back to Suppliers")] elsewhere; in its place the model has [action(n14,"Receive Payment")]

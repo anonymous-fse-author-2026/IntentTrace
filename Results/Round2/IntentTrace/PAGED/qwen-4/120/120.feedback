@@ -1,0 +1,13 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i5:ask the developer for assistance.
+- [N2] Within matched traces (1->0) omitted: i6:check the result again.
+
+Addition
+- [N3] Added trace (model 1): init(start) -> action(i1,"ask the 1st Level Support if there is an issue") -> branch(b1,XOR) -> action(i4,"If it is a 1st Level issue") -> action(i5,"ask the developer for assistance") -> action(i6,"check the result again") -> branch(b2,XOR) -> action(i2_2,"If the issue is resolved") -> action(i3_2,"provide feedback for the account manager") -> end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `i2` has in=0 and out=1. | Node `i2_2` has in=0 and out=1. | Node `i4` has in=0 and out=1. | Node `i7` has in=0 and out=1. | DSL: action(i2,"If the issue is resolved"); action(i2_2,"If the issue is resolved"); action(i4,"If it is a 1st Level issue"); action(i7,"If it is still a 1st Level issue")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=0. | Node `b2` has in=1 and out=0. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S3] STC13 failed: Every guard must be attached to an existing precedence edge. | Guard `v1 = 'Resolved'` is attached to `b1 -> i2` without a precedence edge. | Guard `v1 = '1st_Level_Issue'` is attached to `b1 -> i4` without a precedence edge. | Guard `v1 = 'Resolved'` is attached to `b2 -> i2_2` without a precedence edge. | Guard `v1 = '1st_Level_Issue'` is attached to `b2 -> i7` without a precedence edge. | DSL: guard(b1,i2,"v1 = 'Resolved'"); guard(b1,i4,"v1 = '1st_Level_Issue'"); guard(b2,i2_2,"v1 = 'Resolved'"); guard(b2,i7,"v1 = '1st_Level_Issue'")
+- [S4] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b2, e1, e2, e3, i10, i11, i2, i2_2, i3, i3_2, i4, i5, i6, i7, i8, i9 | DSL: branch(b2,XOR); end(e1); end(e2); end(e3); action(i10,"Ask the developer and then provide feedback for the 1st Level support"); action(i11,"Finally, provide feedback for the 1st Level support and then provide feedback for the account manager"); action(i2,"If the issue is resolved"); action(i2_2,"If the issue is resolved") (+8 more)
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, b2, i1, i4, i5, i6, start | DSL: branch(b1,XOR); branch(b2,XOR); action(i1,"ask the 1st Level Support if there is an issue"); action(i4,"If it is a 1st Level issue"); action(i5,"ask the developer for assistance"); action(i6,"check the result again"); init(start)

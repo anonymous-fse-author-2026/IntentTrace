@@ -1,0 +1,9 @@
+- action(n1, "start flight booking process for Flight Centre"): Hallucinated action; the text explicitly states that "the process begins with the availability of the departing flight".
+- branch(b1, XOR), branch(b2, XOR), action(n6, "Wait for departing flight availability"), action(n7, "Is departing flight available"): The model introduces hallucinated choices and a polling loop for checking availability. The source text describes a strictly linear progression ("Once the departing flight is available, the next step is to select the return flight").
+- defines(v1, "Is departing flight available", {}) and defines(v2, "Is departing flight available", {}): Hallucinated decision variables not supported by the text.
+- action(n5, "End process"): Hallucinated action; the text simply states "the process comes to an end", which should map directly to the `end(e1)` node.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | Node `n6` has in=2 and out=1. | DSL: action(n2,"Is departing flight available"); action(n6,"Wait for departing flight availability")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n2` has 0 guards; exactly one is required.

@@ -1,0 +1,147 @@
+{
+  "elements": [
+    {
+      "id": "s",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "Obtain raw material from received list"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "Select a supplier"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "Send material purchase order"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "Check raw material and conclude the process"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is raw material available in stock?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "s",
+        "i1",
+        "b1",
+        "i5",
+        "i8",
+        "c1",
+        "i7",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "s",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i5",
+      "condition": "v1 = \"No\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c1",
+      "condition": "v1 = \"Yes\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process for Metal Works, start by obtaining the raw material from the received list."
+    },
+    {
+      "id": "i2",
+      "content": "If the raw material is not available in stock"
+    },
+    {
+      "id": "i5",
+      "content": "select a supplier"
+    },
+    {
+      "id": "i6",
+      "content": "if the raw material is available in stock"
+    },
+    {
+      "id": "i7",
+      "content": "proceed to check the raw material and conclude the process"
+    },
+    {
+      "id": "i8",
+      "content": "send the material purchase order"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+Addition
+- [N1] Node-level addition: action(n1,"start") (reason: Content 'start' has no supporting source span; process initiation is implicitly handled by the initial condition check and structural init node.)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> action(n5,"acquire pricing") -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N4] Within matched traces (0->0) added: action(n1,"start")
+- [N5] Within matched traces (1->1) added: action(n1,"start")
+- [N6] Within matched traces (1->1) added: converge(c1)
+- [N7] Within matched traces (1->1) added: action(n4,"second answer is no")
+- [N8] Within matched traces (2->0) added: action(n1,"start")
+- [N9] Within matched traces (2->0) added: action(n2,"answer is no")
+- [N10] Within matched traces (3->1) added: action(n1,"start")
+- [N11] Within matched traces (3->1) added: action(n2,"answer is no")
+- [N12] Within matched traces (3->1) added: action(n4,"second answer is no")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i1:Initially, if the answer is "no" -> i2:if the answer is "no", then proceed with the acquisition; reason=Source specifies that 'no' triggers acquisition, but the guard uses 'Yes' to route to the acquire pricing action, reversing the conditional logic.
+- [N14] Node-level mutation: element=guard(b1,c1,"v1 = 'No'"); source=i4:if the answer is "yes", then continue; reason=Source specifies that 'yes' allows continuation, but the guard uses 'No' to route to the convergence path, reversing the conditional logic.
+- [N15] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'"); source=i5:If the answer is "no" again, -> i6:If the answer is "no" again, then acquire the pricing; reason=Source specifies that 'no' triggers acquisition, but the guard uses 'Yes' to route to the acquire pricing action, reversing the conditional logic.
+- [N16] Node-level mutation: element=guard(b2,c2,"v2 = 'No'"); source=i8:if the answer is "yes" once more, then continue; reason=Source specifies that 'yes' allows continuation, but the guard uses 'No' to route to the convergence path, reversing the conditional logic.

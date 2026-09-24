@@ -1,0 +1,282 @@
+{
+  "trace_matches": [
+    {
+      "input_trace_idx": 0,
+      "gen_trace_idx": 0,
+      "similarity": 0.923076923076923,
+      "matched_input_ids": [
+        "i1",
+        "i2",
+        "i3"
+      ],
+      "matched_gen_ids": [
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "e1"
+      ],
+      "input_len": 3,
+      "gen_len": 7,
+      "input_trace": {
+        "ids": [
+          "i1",
+          "i2",
+          "i3"
+        ],
+        "content": [
+          "To begin the process, trigger the resupply cycle.",
+          "After that, check the current inventory level.",
+          "If the inventory level is above the minimum, then the process ends."
+        ]
+      },
+      "gen_trace": {
+        "ids": [
+          "i1",
+          "n1",
+          "n2",
+          "n3",
+          "b1",
+          "n4",
+          "e1"
+        ],
+        "content": [
+          "i1",
+          "start",
+          "trigger: resupply cycle",
+          "check: inventory level",
+          "b1",
+          "end process: above minimum",
+          "e1"
+        ]
+      },
+      "divergences": [
+        {
+          "type": "addition",
+          "description": "Extra step in the model trace",
+          "actual": {
+            "ids": [
+              "i1"
+            ],
+            "content": [
+              "i1"
+            ],
+            "types": [
+              "init"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "input_trace_idx": 2,
+      "gen_trace_idx": 1,
+      "similarity": 0.8780487804878048,
+      "matched_input_ids": [
+        "i1",
+        "i2",
+        "i4",
+        "i7",
+        "i10",
+        "i11"
+      ],
+      "matched_gen_ids": [
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "c1",
+        "n9",
+        "n10",
+        "n11",
+        "e2"
+      ],
+      "input_len": 7,
+      "gen_len": 10,
+      "input_trace": {
+        "ids": [
+          "i1",
+          "i2",
+          "i4",
+          "i5",
+          "i7",
+          "i10",
+          "i11"
+        ],
+        "content": [
+          "To begin the process, trigger the resupply cycle.",
+          "After that, check the current inventory level.",
+          "However, if the inventory level is below the minimum, create a purchase order.",
+          "Once the purchase order is created, review it.",
+          "But if the purchase order is accepted, continue the process.",
+          "At the same time, complete the following steps: reserve funds for the purchase and send the purchase order to the supplier.",
+          "Once the packing slip is received, release the reserved funds and then the process ends."
+        ]
+      },
+      "gen_trace": {
+        "ids": [
+          "i1",
+          "n1",
+          "n2",
+          "n3",
+          "b1",
+          "c1",
+          "n9",
+          "n10",
+          "n11",
+          "e2"
+        ],
+        "content": [
+          "i1",
+          "start",
+          "trigger: resupply cycle",
+          "check: inventory level",
+          "b1",
+          "c1",
+          "reserve funds and send PO",
+          "receive packing slip and release funds",
+          "end process: completed",
+          "e2"
+        ]
+      },
+      "divergences": [
+        {
+          "type": "omission",
+          "description": "Step missing from the model trace",
+          "expected": {
+            "ids": [
+              "i5"
+            ],
+            "content": [
+              "Once the purchase order is created, review it."
+            ]
+          }
+        },
+        {
+          "type": "addition",
+          "description": "Extra step in the model trace",
+          "actual": {
+            "ids": [
+              "i1"
+            ],
+            "content": [
+              "i1"
+            ],
+            "types": [
+              "init"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "counter_examples": [
+    {
+      "type": "partial_mismatch",
+      "input_trace_idx": 0,
+      "gen_trace_idx": 0,
+      "similarity": 0.923076923076923,
+      "divergences": [
+        {
+          "type": "addition",
+          "description": "Extra step in the model trace",
+          "actual": {
+            "ids": [
+              "i1"
+            ],
+            "content": [
+              "i1"
+            ],
+            "types": [
+              "init"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "partial_mismatch",
+      "input_trace_idx": 2,
+      "gen_trace_idx": 1,
+      "similarity": 0.8780487804878048,
+      "divergences": [
+        {
+          "type": "omission",
+          "description": "Step missing from the model trace",
+          "expected": {
+            "ids": [
+              "i5"
+            ],
+            "content": [
+              "Once the purchase order is created, review it."
+            ]
+          }
+        },
+        {
+          "type": "addition",
+          "description": "Extra step in the model trace",
+          "actual": {
+            "ids": [
+              "i1"
+            ],
+            "content": [
+              "i1"
+            ],
+            "types": [
+              "init"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "missing_trace",
+      "input_trace_idx": 1,
+      "expected_trace": {
+        "ids": [
+          "i1",
+          "i2",
+          "i4",
+          "i5",
+          "i6",
+          "i9",
+          "i5"
+        ],
+        "content": [
+          "To begin the process, trigger the resupply cycle.",
+          "After that, check the current inventory level.",
+          "However, if the inventory level is below the minimum, create a purchase order.",
+          "Once the purchase order is created, review it.",
+          "If the purchase order is rejected, rework the purchase order.",
+          "After reworking the purchase order, review it again.",
+          "Once the purchase order is created, review it."
+        ]
+      }
+    },
+    {
+      "type": "missing_trace",
+      "input_trace_idx": 3,
+      "expected_trace": {
+        "ids": [
+          "i1",
+          "i2",
+          "i4",
+          "i5",
+          "i8",
+          "i10",
+          "i11"
+        ],
+        "content": [
+          "To begin the process, trigger the resupply cycle.",
+          "After that, check the current inventory level.",
+          "However, if the inventory level is below the minimum, create a purchase order.",
+          "Once the purchase order is created, review it.",
+          "However, if the purchase order is accepted, continue the process.",
+          "At the same time, complete the following steps: reserve funds for the purchase and send the purchase order to the supplier.",
+          "Once the packing slip is received, release the reserved funds and then the process ends."
+        ]
+      }
+    }
+  ]
+}

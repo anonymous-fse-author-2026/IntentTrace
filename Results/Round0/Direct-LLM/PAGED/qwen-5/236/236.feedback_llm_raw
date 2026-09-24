@@ -1,0 +1,9 @@
+
+
+- `action(n1, "Start process")`: Hallucinates an initial step not present in the source text, which begins directly with prioritizing orders. (SMC1)
+- `defines(v2, "Is payment history good?", {"No"})`, `defines(v4, "Are products available?", {"No"})`: Variable ranges incorrectly omit the `"Yes"` value, failing to capture the positive conditions explicitly stated in the source ("If the payment history is good...", "If the products are available..."). (SMC6)
+- `guard(b2, n8, v2 = 'No')`: Introduces a decline-and-termination path for a bad payment history, whereas the source text only specifies continuing if good and provides no documented behavior for a bad history. (SMC1)
+- `action(n9, "End")`, `action(n12, "End")`, `action(n18, "End")`, `action(n27, "End")`, `action(n31, "End")`: Adds artificial terminal actions not mentioned in the source; process completion should be handled directly by the declared `end()` nodes. (SMC1)
+- `defines(v6, "Reminders less than three?", {"Yes", "No"})`, `guard(b6, n30, v6 = 'No')`: Alters the source's decision boundary; the text distinguishes "less than three" from "more than three" (implicitly excluding exactly three), while the model's boolean evaluation classifies exactly three as `No` (≥3), routing it to the donning process. (SMC2)
+- `precedence(n24, b5)`, `precedence(n25, n26)`: Violates exact source chronology by reversing the stated sequence "Once the order is closed, we deliver the goods and invoice to the customer. If payment has been received, we close the order."; the model checks payment before closing and delivering. (SMC3)
+- `precedence(c1, n19)`: Misrepresents the trigger for sending an order confirmation; the source explicitly ties it to the "wholesaler/products available" progression, while the model generalizes it to all paths converging at `c1` (including existing customers with good payment history). (SMC1)

@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i5:if they already have the availability information (reason: This conditional pathway is entirely missing from the model's logic and guards.)
+- [N2] Node-level omission: i6:proceed with the process (reason: This explicit step is not implemented as an action node in the model.)
+- [N3] Node-level omission: i7:If the parts are supplied to the customer (reason: This specific conditional path is omitted from the model.)
+- [N4] Omitted trace (input 2): i1:the first step -> i2:identify the parts -> i5:if they already have the availability information -> i6:proceed with the process -> i7:If the parts are supplied to the customer -> i16:After all the necessary parts are collected -> i17:proceed with the payment -> i18:Once the payment is made, the process comes to an end.
+- [N5] Omitted trace (input 3): i1:the first step -> i2:identify the parts -> i5:if they already have the availability information -> i6:proceed with the process -> i9:However, if they need to record the customer's details -> i12:record the customer's details -> i13:order -> i14:receive the part from Disuki -> i15:Once the part is received, the team can then contract the customer -> i16:After all the necessary parts are collected -> i17:proceed with the payment -> i18:Once the payment is made, the process comes to an end.
+- [N6] Within matched traces (1->0) omitted: i9:However, if they need to record the customer's details
+- [N7] Within matched traces (1->0) omitted: i12:record the customer's details
+- [N8] Within matched traces (1->0) omitted: i14:receive the part from Disuki
+- [N9] Within matched traces (1->1) omitted: i9:However, if they need to record the customer's details
+- [N10] Within matched traces (1->1) omitted: i13:order
+- [N11] Within matched traces (0->2) omitted: i4:check the availability of the parts
+- [N12] Within matched traces (0->2) omitted: i7:If the parts are supplied to the customer
+
+Addition
+- [N13] Node-level addition: action(n1,"start") (reason: Invented 'start' action step without source support.)
+- [N14] Node-level addition: action(n5,"do the parts need to be ordered and received from Disuki?") (reason: Invented action and label questioning if parts need ordering, which is not present in the source text.)
+- [N15] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Invented action and label questioning if parts need ordering, which is not present in the source text.)
+- [N16] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: Invented transitional labels merging distinct paths without source justification.)
+- [N17] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: Invented transitional labels merging distinct paths without source justification.)
+- [N18] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: Invented transitional labels merging distinct paths without source justification.)
+- [N19] Node-level addition: guard(b1,n4,"v1 = 'Need to check availability'") (reason: Invented guard conditions with arbitrary variable equations not derived from the source text.)
+- [N20] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: Invented guard conditions with arbitrary variable equations not derived from the source text.)
+- [N21] Node-level addition: guard(b2,n7,"v2 = 'Order and receive the part'") (reason: Invented guard conditions with arbitrary variable equations not derived from the source text.)
+- [N22] Node-level addition: guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'") (reason: Invented guard conditions with arbitrary variable equations not derived from the source text.)
+- [N23] Within matched traces (1->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N24] Within matched traces (1->0) added: branch(b2,XOR)
+- [N25] Within matched traces (1->1) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N26] Within matched traces (1->1) added: branch(b2,XOR)
+- [N27] Within matched traces (0->2) added: branch(b1,XOR)
+- [N28] Within matched traces (0->2) added: converge(c2)
+
+Mutation
+- [N29] Node-level mutation: element=action(n9,"contact the customer"); source=i15:Once the part is received, the team can then contract the customer; reason=The source specifies to 'contract' the customer, whereas the element changes this to 'contact' the customer, altering the core action.
+- [N30] Node-level mutation: element=action(n10,"collect all necessary parts"); source=i16:After all the necessary parts are collected; reason=The source describes a passive temporal condition/state, but the model implements it as an active action step to 'collect all necessary parts'.
+
+Permutation
+- [N31] Within matched traces (1->1) reordered: expected [i14:receive the part from Disuki] but observed [action(n7,"receive part from Disuki")] elsewhere; in its place the model has [action(n8,"record customer details")]

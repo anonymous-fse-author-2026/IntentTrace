@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i5:they can proceed with the process. (reason: This explicit continuation instruction lacks a dedicated model element or faithful representation, as surrounding guards mutate the intended flow.)
+- [N2] Node-level omission: i6:If the parts are supplied to the customer, the team can also continue with the process. (reason: This distinct conditional path and its continuation instruction are completely absent from the generated model.)
+- [N3] Within matched traces (0->0) omitted: i5:they can proceed with the process.
+- [N4] Within matched traces (0->0) omitted: i6:If the parts are supplied to the customer, the team can also continue with the process.
+- [N5] Within matched traces (0->0) omitted: i8:record the customer's details
+- [N6] Within matched traces (1->0) omitted: i5:they can proceed with the process.
+- [N7] Within matched traces (1->0) omitted: i6:If the parts are supplied to the customer, the team can also continue with the process.
+- [N8] Within matched traces (1->0) omitted: i8:record the customer's details
+
+Addition
+- [N9] Node-level addition: action(n1,"start") (reason: The source begins directly with identifying parts; no explicit 'start' action precedes it.)
+- [N10] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: The guard condition 'Order not needed proceed' is invented and has no supporting source text or logical counterpart.)
+- [N11] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: The label 'Check if parts are available or need ordering' invents a verification step not described in the source.)
+- [N12] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: The label text 'Contact the customer or after receiving parts' mixes unrelated concepts and adds temporal/ordering logic not present in the source.)
+- [N13] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: The label text 'Contact the customer or after receiving parts' mixes unrelated concepts and adds temporal/ordering logic not present in the source.)
+- [N14] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: The label 'Proceed with process or after contacting customer' introduces a transitional condition and sequencing that contradicts the source's explicit flow.)
+- [N15] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> action(n4,"check availability of the parts") -> action(n5,"does the team need to record the customer's details?") -> branch(b2,XOR) -> action(n7,"receive part from Disuki") -> action(n8,"record customer details") -> converge(c1) -> action(n9,"contact the customer") -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N16] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N17] Within matched traces (0->0) added: init(i1)
+- [N18] Within matched traces (0->0) added: converge(c2)
+- [N19] Within matched traces (1->0) added: init(i1)
+- [N20] Within matched traces (1->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N21] Within matched traces (1->0) added: action(n4,"check availability of the parts")
+
+Mutation
+- [N22] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer; reason=The guard condition specifies 'Need to check availability', which alters the original trigger 'needs to elicit information'. The decision subject and logic are distorted.
+- [N23] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information, they can proceed with the process.; reason=The guard replaces the source condition ('already have availability information') with 'Proceed with process or after contacting customer', changing the decision criteria and outcome entirely.
+- [N24] Node-level mutation: element=guard(b2,n7,"v2 = 'Order and receive the part'"); source=i7:However, if they need to record the customer's details, they should order and receive the part from Disuki. -> i9:order and receive the part from Disuki; reason=The guard uses action-oriented text ('Order and receive the part') as a boolean condition, misrepresenting the source's conditional logic regarding recording customer details and conflating guard semantics with action steps.

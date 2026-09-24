@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:If the parts are supplied to the customer, the team can also continue with the process. (reason: The model completely omits this alternate condition and its outcome.)
+- [N2] Omitted trace (input 2): i1:the first step is to identify the parts. -> i4:if they already have the availability information -> i5:If the parts are supplied to the customer, the team can also continue with the process. -> i9:After all the necessary parts are collected -> i10:the team can proceed with the payment. -> i11:Once the payment is made -> i12:the process comes to an end.
+- [N3] Omitted trace (input 3): i1:the first step is to identify the parts. -> i4:if they already have the availability information -> i6:if they need to record the customer's details -> i7:they should order and receive the part from Disuki. -> i8:the team can then contract the customer. -> i9:After all the necessary parts are collected -> i10:the team can proceed with the payment. -> i11:Once the payment is made -> i12:the process comes to an end.
+- [N4] Within matched traces (1->0) omitted: i6:if they need to record the customer's details
+- [N5] Within matched traces (0->2) omitted: i3:they should then check the availability of the parts.
+- [N6] Within matched traces (0->2) omitted: i5:If the parts are supplied to the customer, the team can also continue with the process.
+
+Addition
+- [N7] Node-level addition: action(n5,"do the parts need to be ordered and received from Disuki?") (reason: The text does not include an explicit decision/check step about whether parts need to be ordered and received from Disuki.)
+- [N8] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: The text does not include an explicit decision/check step about whether parts need to be ordered and received from Disuki.)
+- [N9] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: These guards contain invented logic strings not found in or supported by the text.)
+- [N10] Node-level addition: guard(b2,n7,"v2 = 'Order and receive the part'") (reason: These guards contain invented logic strings not found in or supported by the text.)
+- [N11] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: These labels are entirely fabricated and have no supporting text.)
+- [N12] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: These labels are entirely fabricated and have no supporting text.)
+- [N13] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: These labels are entirely fabricated and have no supporting text.)
+- [N14] Within matched traces (1->0) added: init(i1)
+- [N15] Within matched traces (1->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N16] Within matched traces (1->0) added: branch(b2,XOR)
+- [N17] Within matched traces (1->1) added: init(i1)
+- [N18] Within matched traces (1->1) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N19] Within matched traces (1->1) added: branch(b2,XOR)
+- [N20] Within matched traces (0->2) added: init(i1)
+
+Mutation
+- [N21] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer; reason=The guard checks for 'Need to check availability' but the text describes needing to 'elicit information from the customer'.
+- [N22] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information; reason=The guard logic uses a completely different condition ('Proceed with process or after contacting customer') instead of having availability information.
+
+Permutation
+- [N23] Within matched traces (1->1) reordered: expected [i7:they should order and receive the part from Disuki.] but observed [action(n7,"receive part from Disuki")] elsewhere; in its place the model has [action(n8,"record customer details")]

@@ -1,0 +1,233 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "provide userdata for flickr"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "login successful"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "login fails"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "try again"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "abort"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "still want to try again"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "decide to abort"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "login_status",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "retry_choice",
+      "R_X": [
+        "Try Again",
+        "Abort",
+        "Still Try Again",
+        "Decide to Abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "b1",
+        "i2",
+        "e1",
+        "i3",
+        "b2",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i4",
+      "condition": "v2 = 'Try Again'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i5",
+      "condition": "v2 = 'Abort'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i6",
+      "condition": "v2 = 'Still Try Again'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i7",
+      "condition": "v2 = 'Decide to Abort'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i2",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "i4",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if you choose to abort, the process will end."
+    },
+    {
+      "id": "i6",
+      "content": "If you still want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i7",
+      "content": "Alternatively, if you decide to abort, the process will end."
+    }
+  ]
+}

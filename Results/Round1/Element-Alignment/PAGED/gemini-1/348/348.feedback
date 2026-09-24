@@ -1,0 +1,59 @@
+Omission
+- [N1] Node-level omission: i5:it is returned. (reason: The return step is only implemented as a mutation with an invented qualifier, so it lacks a faithful exact implementation.)
+- [N2] Node-level omission: i8:If the invoice is non-compliant (reason: The condition is only implemented as a mutated checking action and lacks a faithful branch or guard.)
+- [N3] Node-level omission: i13:the invoice is returned. (reason: This return step is only implemented as a mutation with an invented qualifier, so it is not faithfully covered.)
+- [N4] Node-level omission: i16:a period of 10 days is given (reason: The step is only represented as a mutation that alters the instruction, lacking a faithful exact implementation.)
+- [N5] Omitted trace (input 2): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i14:the invoice is paid -> i17:the client is notified of the payment. -> i19:If the client is unsatisfied -> i20:payment discrepancy is resolved.
+- [N6] Omitted trace (input 4): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i15:Bill Client -> i16:a period of 10 days is given -> i18:a reminder is sent
+- [N7] Within matched traces (3->2) omitted: i7:the process continues.
+- [N8] Within matched traces (3->2) omitted: i17:the client is notified of the payment.
+- [N9] Within matched traces (3->2) omitted: i21:if the client is satisfied
+- [N10] Within matched traces (1->3) omitted: i7:the process continues.
+- [N11] Within matched traces (7->4) omitted: i6:if the invoice is complete
+- [N12] Within matched traces (7->4) omitted: i7:the process continues.
+- [N13] Within matched traces (5->5) omitted: i6:if the invoice is complete
+- [N14] Within matched traces (5->5) omitted: i7:the process continues.
+- [N15] Within matched traces (5->5) omitted: i14:the invoice is paid
+- [N16] Within matched traces (6->6) omitted: i6:if the invoice is complete
+- [N17] Within matched traces (6->6) omitted: i14:the invoice is paid
+
+Addition
+- [N18] Node-level addition: action(n18,"Check Client Satisfaction") (reason: The element is an invented generic checking step ('Check Client Satisfaction') that does not correspond strictly to any single condition in the source.)
+- [N19] Added trace (model 0): init(i1) -> action(n1,"Bill for Purchased Goods/Services") -> action(n2,"Bill Client") -> branch(b4,AND) -> end(e4)
+- [N20] Within matched traces (0->1) added: action(n2,"Bill Client")
+- [N21] Within matched traces (0->1) added: branch(b4,AND)
+- [N22] Within matched traces (0->1) added: branch(b5,AND)
+- [N23] Within matched traces (0->1) added: action(n4,"Is Invoice Complete?")
+- [N24] Within matched traces (3->2) added: action(n2,"Bill Client")
+- [N25] Within matched traces (3->2) added: branch(b4,AND)
+- [N26] Within matched traces (3->2) added: branch(b5,AND)
+- [N27] Within matched traces (1->3) added: action(n2,"Bill Client")
+- [N28] Within matched traces (1->3) added: branch(b4,AND)
+- [N29] Within matched traces (1->3) added: branch(b5,AND)
+- [N30] Within matched traces (7->4) added: action(n16,"Client Notified of Payment")
+- [N31] Within matched traces (7->4) added: branch(b6,AND)
+- [N32] Within matched traces (7->4) added: end(e5)
+- [N33] Within matched traces (5->5) added: action(n2,"Bill Client")
+- [N34] Within matched traces (5->5) added: branch(b4,AND)
+- [N35] Within matched traces (5->5) added: branch(b5,AND)
+- [N36] Within matched traces (5->5) added: action(n14,"Wait for 10 Days")
+- [N37] Within matched traces (5->5) added: action(n15,"Send Reminder")
+- [N38] Within matched traces (5->5) added: branch(b6,AND)
+- [N39] Within matched traces (5->5) added: action(n18,"Check Client Satisfaction")
+- [N40] Within matched traces (6->6) added: action(n2,"Bill Client")
+- [N41] Within matched traces (6->6) added: branch(b4,AND)
+- [N42] Within matched traces (6->6) added: branch(b5,AND)
+- [N43] Within matched traces (6->6) added: action(n14,"Wait for 10 Days")
+- [N44] Within matched traces (6->6) added: action(n15,"Send Reminder")
+- [N45] Within matched traces (6->6) added: branch(b6,AND)
+- [N46] Within matched traces (6->6) added: action(n18,"Check Client Satisfaction")
+
+Mutation
+- [N47] Node-level mutation: element=action(n5,"Return Invoice: Incomplete"); source=i5:it is returned.; reason=The model adds the invented qualifier ': Incomplete' which is not present in the source span.
+- [N48] Node-level mutation: element=action(n6,"Is Invoice Compliant?"); source=i8:If the invoice is non-compliant; reason=The action corresponds to the condition but reverses the term to 'Compliant', altering the explicit phrasing of the source.
+- [N49] Node-level mutation: element=action(n7,"Resolve Non-Compliance via Phone"); source=i11:non-compliance is resolved.; reason=The model adds the invented qualifier 'via Phone' which is not explicitly in the source text for this step.
+- [N50] Node-level mutation: element=action(n8,"Return Invoice via Mail"); source=i13:the invoice is returned.; reason=The model adds the invented qualifier 'via Mail' not found in the exact source phrase for this step.
+- [N51] Node-level mutation: element=action(n14,"Wait for 10 Days"); source=i16:a period of 10 days is given; reason=The model changes the instruction from granting a period to actively waiting.
+
+Permutation
+- [N52] Within matched traces (7->4) reordered: expected [i15:Bill Client] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n3,"Receive Invoice")]

@@ -1,0 +1,15 @@
+- actor(a_default, "Default", [i1, n1, ...]): Assigns every node to a single default participant, omitting the explicit role assignments for "Miranda" (who receives the books) and "Charles" (who handles the letter and register entries) described in the source text.
+- branch(b5, XOR), guard(b5, n15, v5 = 'Yes'), defines(v5, "applicant becomes member", {"Yes"}): Hallucinates an exclusive choice split and a conditional guard that requires checking v5='Yes'; the source text directly transitions from the "becomes a member" outcome to "stamp 'new Member' on the letter..." without any intermediate decision variable or Yes/No check.
+- action(n14, "applicant becomes member"), action(n23, "applicant cannot become member"): Models conditional outcomes as executable action steps rather than decision criteria; the source presents these as results of an implicit evaluation after taking the books, not as tasks to be actively performed.
+- defines(v4, "every wednesday evening: take books to miranda", {}), defines(v6, "applicant cannot become member", {}): Declares variables with empty value ranges `{}` and leaves them entirely unused in any guard or label, introducing structural artifacts that do not reflect the source description.
+- precedence(n21, n22), action(n20, "add new member to register"), action(n21, "prepare invoice for new members"), end(e3): Places three sequential actions after sending the membership card before terminating the process, violating the explicit source chronology that states "Print the membership card with all the data and send it to the new member. The process ends." at that exact point.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | Node `b6` has in=1 and out=1. | DSL: branch(b5,XOR); branch(b6,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `['Yes']`. | Variable `v6` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v5 = 'Yes'` on `b5 -> n15` uses undefined variable `v5`. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n23` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n24` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v5 = 'Yes'` on `b5 -> n15` cannot be evaluated: `v5` has no declared range. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` cannot be evaluated: `v5` has no declared range.

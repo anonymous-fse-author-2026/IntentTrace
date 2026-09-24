@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i16:review it again (reason: The model fails to include the action to review the purchase order again after it has been reworked.)
+- [N2] Omitted trace (input 1): i1:To begin the process for ACME Company -> i2:receiving the customer request -> i3:check the current inventory level -> i4:If the inventory level is at or below the minimum -> i5:is at or below the minimum -> i6:accept the customer request -> i9:create a purchase order -> i11:is rejected -> i12:rework the purchase order -> i16:review it again -> i11:is rejected
+
+Addition
+- [N3] Node-level addition: action(n9,"review purchase order") (reason: The action 'review purchase order' lacks a supporting text segment in the provided input elements. The corresponding text was missing from the source segmentation.)
+- [N4] Within matched traces (2->0) added: converge(c2)
+- [N5] Within matched traces (2->0) added: action(n9,"review purchase order")
+- [N6] Within matched traces (3->1) added: converge(c2)
+- [N7] Within matched traces (3->1) added: action(n9,"review purchase order")
+- [N8] Within matched traces (0->2) added: action(n4,"is inventory at or below minimum level?")
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i5:is at or below the minimum; reason=The text specifies a comparison 'at or below the minimum', but the guard discards this logic and replaces it with an abstract boolean 'v1 = \'Yes\''.
+- [N10] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i7:is above the minimum; reason=The text specifies a comparison 'above the minimum', but the guard discards this logic and replaces it with an abstract boolean 'v1 = \'No\''.
+- [N11] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i14:is approved; reason=The text checks for the specific status 'is approved', but the guard alters it to an abstract boolean 'v2 = \'Yes\''.
+- [N12] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i11:is rejected; reason=The text checks for the specific status 'is rejected', but the guard alters it to an abstract boolean 'v2 = \'No\''.

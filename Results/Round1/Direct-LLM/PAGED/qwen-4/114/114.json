@@ -1,0 +1,159 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start selling cars"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "No check paycheck"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "pay the bill"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "did you get a bonus",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "did you get a paycheck",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b1",
+        "n4",
+        "b2",
+        "n8",
+        "e2",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c1",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning, you sell cars."
+    },
+    {
+      "id": "i2",
+      "content": "If you \"get a bonus\", then you continue the process."
+    },
+    {
+      "id": "i3",
+      "content": "If you \"get a paycheck\", then you also continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "Once you pay the bill, the process ends."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+
+
+- `defines(v1, "decide whether to send a negative email or invite candidate", {})`: Range is empty `{}`; fails to capture the documented decision alternatives required for routing, contradicting "If the decision is to send a negative email... However, if the decision is to invite..."
+- `branch(b1, XOR)` & missing `guard(...)` statements: Lacks boolean conditions on outgoing edges to `n3` and `n4`, leaving the exclusive choice undefined and failing to formally link the source routing logic.
+- `precedence(n3, c1)`, `precedence(c1, n6)`, `action(n6, "Process ends after interview")`: Forces the negative email path through a converge point and subsequently through `n6`, directly contradicting "If the decision is to send a negative email, then the process ends."
+- `action(n3, "send negative email and end process")`: Payload asserts the process terminates at this step, but the actual control flow continues to `c1` and `n6`, misrepresenting the step's documented outcome.
+- `converge(c1)`: Prematurely joins two mutually exclusive outcome paths, incorrectly implying a shared subsequent activity (`n6`) that only belongs to the interview progression described in "proceed with scheduling an interview... Once the interview is conducted, the process comes to an end."

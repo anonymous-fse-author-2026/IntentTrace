@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+-> Identify the parts;
+:identify parts;
+-> Check if information needs to be elicited;
+:does the team need to elicit information from the customer?;
+:v1: does the team need to elicit information from the customer? ({Need to elicit information, Already have information or supplied}); <<objectSignal>>
+switch ()
+case ([v1 = 'Need to elicit information'])
+:check availability of the parts;
+:do the parts need to be ordered and received from Disuki?;
+:record customer details;
+:v2: do the parts need to be ordered and received from Disuki? ({Order and receive the part, Proceed}); <<objectSignal>>
+if () then ([v2 = 'Order and receive the part'])
+:order part from Disuki;
+else ([v2 = 'Proceed'])
+:receive part from Disuki;
+endif
+:contract the customer;
+case ([v1 = 'Already have information or supplied'])
+case (else)
+endswitch
+:collect all necessary parts;
+-> Proceed to payment step;
+:proceed with payment;
+-> Payment completed;
+:end of process;
+stop
+@enduml

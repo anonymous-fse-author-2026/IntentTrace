@@ -1,0 +1,127 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n_user",
+      "type": "action",
+      "content": "User Task"
+    },
+    {
+      "id": "b_choice",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_cont",
+      "type": "action",
+      "content": "Continue Process"
+    },
+    {
+      "id": "b_manual",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "e_end",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_task",
+      "name": "Task Selection",
+      "R_X": [
+        "Service Task 1",
+        "Service Task 2",
+        "Service Task 3"
+      ]
+    },
+    {
+      "X": "v_manual",
+      "name": "Manual Task Exists",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n_user",
+        "b_choice",
+        "n_cont",
+        "b_manual",
+        "e_end"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n_user"
+    },
+    {
+      "type": "precedence",
+      "A": "n_user",
+      "B": "b_choice"
+    },
+    {
+      "type": "precedence",
+      "A": "b_choice",
+      "B": "n_cont"
+    },
+    {
+      "type": "precedence",
+      "A": "b_choice",
+      "B": "e_end"
+    },
+    {
+      "type": "precedence",
+      "A": "n_cont",
+      "B": "b_manual"
+    },
+    {
+      "type": "precedence",
+      "A": "b_manual",
+      "B": "e_end"
+    },
+    {
+      "type": "precedence",
+      "A": "b_manual",
+      "B": "e_end"
+    },
+    {
+      "type": "guard",
+      "A": "b_choice",
+      "B": "n_cont",
+      "condition": "\"v_task = 'Service Task 1' or v_task = 'Service Task 2'\""
+    },
+    {
+      "type": "guard",
+      "A": "b_choice",
+      "B": "e_end",
+      "condition": "\"v_task = 'Service Task 3'\""
+    },
+    {
+      "type": "guard",
+      "A": "b_manual",
+      "B": "e_end",
+      "condition": "\"v_manual = true\""
+    },
+    {
+      "type": "guard",
+      "A": "b_manual",
+      "B": "e_end",
+      "condition": "\"v_manual = false\""
+    }
+  ],
+  "input_elements": []
+}

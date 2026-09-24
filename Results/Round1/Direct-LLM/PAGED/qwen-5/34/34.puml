@@ -1,0 +1,47 @@
+@startuml
+!theme plain
+|a_talent| Talent Seeker
+|a_panel| Selection Panel
+|a_hr| HR Specialist
+|a_tp| Third Party
+|a_talent|
+start
+:start;
+:check referee reports;
+:v1: are referee reports completed? ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:flag and send reminder;
+:re-check referee reports status;
+:v2: are referee reports completed after re-check? ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+:flag again and send another reminder;
+else ([v2 = true])
+->;
+endif
+else ([v1 = true])
+:proceed with the process;
+endif
+|a_panel|
+:organize interviews for selection panel with top candidates;
+:receive feedback from interview candidates;
+|a_talent|
+:v3: is psychometric test required? ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+|a_hr|
+:v4: check if hr specialist is required ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+|a_tp|
+:schedule psychometric test with third party;
+|a_hr|
+else ([v4 = false])
+:complete psychometric test;
+endif
+|a_talent|
+else ([v3 = false])
+->;
+endif
+:coordinate second round of selection;
+:request final candidate ranking and continue process;
+:end;
+stop
+@enduml

@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum -> i3:create a purchase order. -> i5:After creating the purchase order, review it. -> i6:If the purchase status is rejected -> i7:rework the purchase order. -> i10:Rework the purchase order and then review it. -> i5:After creating the purchase order, review it.
+
+Addition
+- [N2] Within matched traces (2->0) added: init(i1)
+- [N3] Within matched traces (3->1) added: init(i1)
+- [N4] Within matched traces (0->2) added: init(i1)
+- [N5] Within matched traces (0->2) added: action(n3,"inventory at or below minimum")
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = true"); source=i2:If the inventory level is at or below the minimum; reason=Guard uses abstract boolean 'v1 = true' instead of the explicit threshold condition stated in the source.
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 = false"); source=i4:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Guard uses abstract boolean 'v1 = false' instead of the explicit condition 'above the minimum'.
+- [N8] Node-level mutation: element=guard(b2,n8,"v2 = false"); source=i6:If the purchase status is rejected; reason=Guard uses abstract boolean 'v2 = false' instead of the explicit condition 'rejected'.
+- [N9] Node-level mutation: element=guard(b2,n9,"v2 = true"); source=i8:However, if the purchase status is approved; reason=Guard uses abstract boolean 'v2 = true' instead of the explicit condition 'approved'.

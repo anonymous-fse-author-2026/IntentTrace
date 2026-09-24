@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i18:If it is less than 500, continue with the process. If the sum of the order falls between 1000 and 1500, compute a discount of 3%. Likewise, if the sum of the order falls between 500 and 999, compute a discount of 2%. (reason: The model completely skipped these final repeated conditions and their associated actions.)
+- [N2] Within matched traces (0->4) omitted: i2:If the sum of the order is less than 500
+- [N3] Within matched traces (0->4) omitted: i18:If it is less than 500, continue with the process. If the sum of the order falls between 1000 and 1500, compute a discount of 3%. Likewise, if the sum of the order falls between 500 and 999, compute a discount of 2%.
+- [N4] Within matched traces (1->5) omitted: i5:if the sum of the order is greater than 2000
+- [N5] Within matched traces (1->5) omitted: i18:If it is less than 500, continue with the process. If the sum of the order falls between 1000 and 1500, compute a discount of 3%. Likewise, if the sum of the order falls between 500 and 999, compute a discount of 2%.
+- [N6] Within matched traces (2->2) omitted: i18:If it is less than 500, continue with the process. If the sum of the order falls between 1000 and 1500, compute a discount of 3%. Likewise, if the sum of the order falls between 500 and 999, compute a discount of 2%.
+- [N7] Within matched traces (3->3) omitted: i18:If it is less than 500, continue with the process. If the sum of the order falls between 1000 and 1500, compute a discount of 3%. Likewise, if the sum of the order falls between 500 and 999, compute a discount of 2%.
+
+Addition
+- [N8] Added trace (model 0): init(i1) -> action(i2,"checking if the order has been received") -> branch(b1,XOR) -> action(i3,"If the sum of the order is less than 500") -> converge(c2) -> action(i4,"continue with the process") -> converge(c1) -> action(i14,"create the bill") -> action(i15,"and the process will come to an end.") -> end(e1)
+- [N9] Added trace (model 1): init(i1) -> action(i2,"checking if the order has been received") -> branch(b1,XOR) -> action(i5,"if the sum of the order is greater than 2000") -> converge(c3) -> action(i6,"compute a discount of 4%") -> converge(c1) -> action(i14,"create the bill") -> action(i15,"and the process will come to an end.") -> end(e1)
+- [N10] Added trace (model 6): init(i1) -> action(i2,"checking if the order has been received") -> branch(b1,XOR) -> action(i13,"Once again, check the sum of the order.") -> converge(c1) -> action(i14,"create the bill") -> action(i15,"and the process will come to an end.") -> end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,i12,"v1 = 'still greater than 2000'"); source=i6:is greater than 2000; reason=The source simply says 'is greater than 2000', but the model added 'still' to the logic (v1 = 'still greater than 2000').
+- [N12] Node-level mutation: element=guard(b1,i13,"v1 = 'once again'"); source=i17:Once again, check the sum of the order.; reason=The text describes an action ('Once again, check...'), not a conditional value. Modeling 'once again' as the logic of a guard is incorrect.
+
+Permutation
+- [N13] Within matched traces (0->4) reordered: expected [i14:if it is still less than 500] but observed [action(i11,"if it is still less than 500")] elsewhere; in its place the model has [action(i4,"continue with the process")]
+- [N14] Within matched traces (1->5) reordered: expected [i17:Once again, check the sum of the order.] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(i6,"compute a discount of 4%")]
+- [N15] Within matched traces (2->2) reordered: expected [i17:Once again, check the sum of the order.] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(i8,"compute a discount of 3%")]
+- [N16] Within matched traces (3->3) reordered: expected [i17:Once again, check the sum of the order.] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(i10,"compute a discount of 2%")]

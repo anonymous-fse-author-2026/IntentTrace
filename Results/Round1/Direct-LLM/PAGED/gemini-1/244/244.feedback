@@ -1,0 +1,11 @@
+Addition
+- [N1] Node-level addition: guard(b2,e2,"v2 = 'No'") (reason: There is no source text specifying a 'No' condition or an alternative outcome when special terms are not agreed upon.)
+- [N2] Added trace (model 1): init(i1) -> action(n2,"check loan application") -> action(n3,"is application rejected") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon") -> branch(b2,XOR) -> end(e2)
+- [N3] Within matched traces (1->2) added: action(n3,"is application rejected")
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,e1,"v1 = 'No'"); source=i3:If the application is rejected; reason=The model reverses the logic of the source text. It routes 'v1 = No' (application not rejected) to the end event and 'v1 = Yes' to the special terms check, contradicting the text which states the process ends if the application is rejected.
+- [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i4:the process ends; reason=The model reverses the logic of the source text. It routes 'v1 = No' (application not rejected) to the end event and 'v1 = Yes' to the special terms check, contradicting the text which states the process ends if the application is rejected.
+
+Permutation
+- [N6] Within matched traces (1->2) reordered: expected [i4:the process ends] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n7,"disburse funds")]

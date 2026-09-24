@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:For TS recruitment;
+:advise unsuccessful candidates;
+:check if there are more candidates;
+:v1: are there more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:re-advertise position;
+else ([v1 = 'Yes'])
+:check if the candidate has accepted a voluntary redundancy;
+:v2: has candidate accepted voluntary redundancy? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:further investigation required; recruitment manager sends an Appointment Approval form;
+:check if the manager is an external resource or existing employee;
+:v3: is the approver an external resource? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:approver is existing employee, process continues;
+else ([v3 = 'Yes'])
+:manager is external resource, may not authorize form;
+:check external approver authorization;
+:HR department scans completed form and records position in GovSource;
+endif
+else ([v2 = 'No'])
+:If the candidate has not accepted, the process continues;
+endif
+:check if there are any variations;
+:v5: are there any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:create complete business case;
+else ([v5 = 'No'])
+:no variations, process continues;
+:check if position requires medical assessment (12% rate);
+:v6: is medical assessment required (12% rate)? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:arrange and complete medical assessment (up to 21 days);
+:TS HR coordinator informs recruitment manager and liaises with HR representative to confirm offer;
+:check if assessment is satisfactory;
+:v7: is assessment satisfactory? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'No'])
+:contact next candidate on shortlist;
+else ([v7 = 'Yes'])
+:assessment is fine, process continues;
+:recruitment manager makes formal verbal offer of employment;
+:check if candidate accepts offer;
+:v8: does candidate accept offer? ({Yes, No}); <<objectSignal>>
+if () then ([v8 = 'Yes'])
+:recruitment manager creates formal written offer;
+else ([v8 = 'No'])
+:candidate declines, process continues;
+endif
+:send commencement pack and letter of appointment to candidate;
+:check if there is a 40% rate;
+:v9: is there a 40% rate? ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+:renegotiation required;
+:check if renegotiation is successful;
+:v10: are renegotiations successful? ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'No'])
+:identify next candidate on shortlist;
+else ([v10 = 'Yes'])
+:renegotiation successful, process continues;
+endif
+else ([v9 = 'No'])
+->;
+endif
+:Finally, the process ends;
+endif
+stop
+else ([v6 = 'No'])
+->;
+endif
+endif
+endif
+@enduml

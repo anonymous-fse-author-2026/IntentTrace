@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i3:is greater than 2 (reason: No element faithfully implements this numeric threshold and operator; the corresponding guards mutate it to a boolean check.)
+- [N2] Node-level omission: i5:is less than 2 (reason: No element faithfully implements this numeric threshold and operator; the corresponding guards mutate it to a boolean check.)
+- [N3] Omitted trace (input 0): i1:For testing purposes, the process should be continued from the beginning. -> i2:If the value of "x" is greater than 2 -> i4:the process should be continued.
+- [N4] Omitted trace (input 1): i1:For testing purposes, the process should be continued from the beginning. -> i5:is less than 2 -> i6:the process should still be continued.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: The content 'start' is invented and lacks any supporting source text.)
+- [N6] Node-level addition: action(n9,"end procedure") (reason: The content 'end procedure' is invented and lacks any supporting source text.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"restart process for testing") -> action(n3,"is x greater than 2") -> branch(b1,XOR) -> action(n4,"continue process") -> converge(c1) -> action(n6,"is x greater than 2") -> branch(b2,XOR) -> action(n7,"continue process") -> converge(c2) -> action(n9,"end procedure") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"restart process for testing") -> action(n3,"is x greater than 2") -> branch(b1,XOR) -> action(n4,"continue process") -> converge(c1) -> action(n6,"is x greater than 2") -> branch(b2,XOR) -> action(n8,"continue process") -> converge(c2) -> action(n9,"end procedure") -> end(e1)
+- [N9] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"restart process for testing") -> action(n3,"is x greater than 2") -> branch(b1,XOR) -> action(n5,"continue process") -> converge(c1) -> action(n6,"is x greater than 2") -> branch(b2,XOR) -> action(n7,"continue process") -> converge(c2) -> action(n9,"end procedure") -> end(e1)
+- [N10] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"restart process for testing") -> action(n3,"is x greater than 2") -> branch(b1,XOR) -> action(n5,"continue process") -> converge(c1) -> action(n6,"is x greater than 2") -> branch(b2,XOR) -> action(n8,"continue process") -> converge(c2) -> action(n9,"end procedure") -> end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'") -> guard(b2,n7,"v2 = 'Yes'"); source=i3:is greater than 2; reason=The guards replace the explicit numeric comparison (> 2) with a generic boolean equality check (v1/v2 = 'Yes'), distorting the operator and threshold.
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'No'") -> guard(b2,n8,"v2 = 'No'"); source=i5:is less than 2; reason=The guards replace the explicit numeric comparison (< 2) with a generic boolean equality check (v1/v2 = 'No'), distorting the operator and threshold.

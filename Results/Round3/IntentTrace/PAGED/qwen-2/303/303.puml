@@ -1,0 +1,81 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the process, begin by supplying the requirement and then documenting it.;
+:supply the requirement;
+:then documenting it;
+:check order reception channel;
+:v1: order_reception_channel ({fax, mail_or_phone}); <<objectSignal>>
+if () then ([v1 = 'fax'])
+:If the order is received via fax, input the order into an Excel file.;
+else ([v1 = 'mail_or_phone'])
+:If the order is received via mail or phone, also input the order into an Excel file.;
+endif
+:Once the Excel list is complete after a week;
+:send it to the student;
+:Upon receiving the Excel list, type the orders into the MS-Access database.;
+:After typing the orders into the database, ensure that it is completed.;
+split
+:Once the database is completed, control the incoming order.;
+split again
+:At the same time, continue to do the check.;
+end split
+:If the order is correct, release it.;
+:v2: is order correct ({correct, incorrect}); <<objectSignal>>
+if () then ([v2 = 'correct'])
+:release it;
+:Send the Excel list to the student and upon receiving it, continue with the process.;
+else ([v2 = 'incorrect'])
+:However, if the order is incorrect, contact the selling agency.;
+:If the order is worth less than 5.000 €;
+:v3: order_value ({[0-999999]}); <<objectSignal>>
+if () then ([v3 < 5000])
+:release it;
+else ([v3 >= 5000])
+:If the order is worth more than 5.000 €, send it for sign off and continue with the check.;
+split
+:send it for sign off;
+split again
+:continue with the check;
+end split
+:merge sign off and check;
+:Contact the selling agency and upon receiving the actual issue, send the order for sign off.;
+:Once the order is signed off, contact the client and release the order.;
+endif
+endif
+:Once the order is received by PPC, they will initiate production.;
+:If the issue cannot be solved, cancel the order.;
+:v4: can issue be solved ({no, yes}); <<objectSignal>>
+if () then ([v4 = 'no'])
+:cancel the order;
+stop
+else ([v4 = 'yes'])
+:If the issue can be solved, release the order.;
+:After PPC initiates production, the goods will be produced.;
+:If the order needs to be cancelled, the process ends.;
+:v5: does order need to be cancelled ({yes, no}); <<objectSignal>>
+if () then ([v5 = 'yes'])
+stop
+else ([v5 = 'no'])
+:If not, check the quality of the goods.;
+:Once the quality is checked, create and send a quality report to the finance department.;
+split
+:Release the order via memo and ensure that the memo is achieved in the warehouse.;
+:ensure that the memo is achieved in the warehouse;
+split again
+:Send the invoice and once it is sent, report the achievement to the finance department.;
+:report the achievement to the finance department;
+split again
+:At the same time, commission the goods and sign and send the memo.;
+:sign and send the memo;
+split again
+:Also, send the goods and ensure that the signed memo is achieved in the logistic department.;
+:ensure that the signed memo is achieved in the logistic department;
+end split
+:Finally, archive the memo and close the order.;
+stop
+endif
+endif
+@enduml

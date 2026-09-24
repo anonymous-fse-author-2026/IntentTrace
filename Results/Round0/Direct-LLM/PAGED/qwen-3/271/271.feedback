@@ -1,0 +1,9 @@
+- `action(n1, "start process")`: Hallucinates a preliminary step; the description states the process begins directly with `"the arrival of the customer order"`.
+- `action(n8, "end process")`: Hallucinates a terminal action node; the text simply instructs to `"conclude the process"`, which maps directly to `end(e1)`.
+- `defines(v1, "payment received", {"Yes", "No"})`: Introduces an undocumented decision variable and value space; the source describes a strictly linear workflow with no conditional variables.
+- `branch(b1, XOR)`, `guard(b1, n7, v1 = 'Yes')`, `guard(b1, n5, v1 = 'No')`: Fabricates exclusive choice logic and edge conditions not present in the sequential narrative.
+- `precedence(b1, n5)`: Creates a control-flow cycle back to awaiting payment; the description specifies a linear progression that concludes immediately after payment is processed.
+- Interposing `branch(b1)` between `action(n6)` and `action(n7)`: Fractures the direct chronological sequence `"Upon receipt of the payment, mark it as received"` by inserting an unwarranted decision point.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"await payment")

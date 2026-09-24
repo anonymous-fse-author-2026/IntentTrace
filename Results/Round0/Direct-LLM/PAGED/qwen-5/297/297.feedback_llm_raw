@@ -1,0 +1,8 @@
+
+
+- action(n1, "start the process"): Omits the explicit temporal constraint "at 8:00 am" stated in the source text. (SMC2)
+- branch(b5, XOR) and branch(b6, XOR): Both declare exclusive-choice gateways but only have a single outgoing precedence edge (`precedence(b5, n15)` and `precedence(b6, n24)`), failing to model conditional branching. (SMC4)
+- action(n14, "applicant becomes member") and action(n23, "applicant cannot become member"): Incorrectly structured as intermediate action nodes feeding into branches, whereas the source describes a direct conditional split: "If the applicant becomes a member... If the applicant cannot become a member..." (SMC1, SMC4)
+- defines(v4, ..., {}), defines(v5, ..., {"Yes"}), defines(v6, ..., {}): Variables v4 and v6 have empty ranges and are never referenced in any guard; v5 restricts to a single value and guards a single-path branch. These hallucinated constructs do not correspond to actual source decisions. (SMC1, SMC6)
+- guard(b5, n15, v5 = 'Yes'): Placed on the sole outgoing edge of an XOR branch, rendering the condition logically vacuous and distorting the intended binary decision flow. (SMC4)
+- actor(a_default, "Default", [...]): Assigns every process node to a generic actor, entirely ignoring explicit participant responsibilities allocated to "Miranda" ("take the letter book and member register to Miranda") and "Charles" ("hand the letter to Charles") in the source text. (SMC7)

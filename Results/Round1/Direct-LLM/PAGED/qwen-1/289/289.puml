@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start ExpenseReport process by clicking Start then selecting Edit Report;
+:v1: ExpenseAmount ({[-]}); <<objectSignal>>
+if () then ([v1 > 1000])
+:review the report;
+else ([v1 <= 1000])
+:v2: TranslationNeed ({Required, Not Required}); <<objectSignal>>
+if () then ([v2 = 'Required'])
+:translate the receipts;
+else ([v2 = 'Not Required'])
+:confirm the receipts;
+endif
+endif
+repeat :;
+:evaluate review decision;
+:v3: ReviewDecision ({Rejected, Approved}); <<objectSignal>>
+backward:edit the report;
+repeat while () is ([v3 = 'Rejected']) not ([v3 = 'Approved'])
+:check if translation is needed;
+:v3: ReviewDecision ({Rejected, Approved}); <<objectSignal>>
+if () then ([v3 = 'Rejected'])
+:edit the report;
+else ([v3 = 'Approved'])
+:translate the receipts;
+:confirm receipts;
+:evaluate receipts decision;
+:v4: ReceiptsDecision ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v4 = 'Accepted'])
+:process the expense;
+stop
+else ([v4 = 'Rejected'])
+:edit the report;
+endif
+endif
+@enduml

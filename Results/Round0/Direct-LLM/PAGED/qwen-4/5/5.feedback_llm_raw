@@ -1,0 +1,8 @@
+
+
+- `branch(b3, AND)` with `precedence(n5, b3)`, `precedence(b3, n6)`, `precedence(b3, n12)`: Introduces parallel execution after shipping, contradicting the strictly sequential source chronology ("followed by...", "At this point..."), violating SMC3/SMC4.
+- Missing `guard(...)` declarations for `branch(b1, XOR)` and `branch(b2, XOR)`: Fails to enforce the conditional routing explicitly stated in the source ("If it is, then proceed to Send Payment. However, if there are any problems..."), violating SMC4.
+- `defines(v1, "is shipment okay first check", {})` and `defines(v2, "is shipment okay second check", {})`: Assigns empty value ranges `{}`, failing to capture the binary decision space ("okay" vs. "problems") required to evaluate the source's checks, violating SMC6.
+- `action(n11, "communicate shipment problems second time")` and `action(n12, "communicate shipment problems before shipment")`: Lack outgoing `precedence` links, creating dead-end paths that never reach `end(e1)`, contrary to the source stating "the process comes to an end", violating SMC1/SMC5.
+- `converge(c1)`: Only merges `action(n7, ...)` and `action(n10, ...)`, excluding `action(n11, ...)` from rejoining the termination flow, which breaks control-flow integrity for the second exception branch, violating SMC4/SMC5.
+- `precedence(b3, n12)` positioning `action(n12, ...)` after `action(n5, "proceed to Ship Material")`: Directly contradicts the explicit source constraint "make sure to communicate them before proceeding to Ship Material", violating SMC3.

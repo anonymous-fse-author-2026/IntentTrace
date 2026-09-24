@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i8: After the Goods are sent, we mark them as sent. (reason: No model element implements this required post-send status update step.)
+- [N2] Node-level omission: i9: Similarly, after the Invoice is sent, we mark it as sent. (reason: No model element implements this required post-send status update step.)
+- [N3] Omitted trace (input 0): i1:The process starts with the Request for Quotation -> i2:followed by the Customer submitting the RFQ. -> i3:After the RFQ is submitted, the Quotation is also submitted. -> i4:Once the Quotation is submitted, we receive it. -> i5:Upon receiving the Quotation, we then submit the Purchase Order. -> i6:Simultaneously -> i7:sending the Goods and sending the Invoice. -> i8:After the Goods are sent, we mark them as sent. -> i10:The process ends when the Goods are sent or when the Invoice is sent.
+- [N4] Omitted trace (input 1): i1:The process starts with the Request for Quotation -> i2:followed by the Customer submitting the RFQ. -> i3:After the RFQ is submitted, the Quotation is also submitted. -> i4:Once the Quotation is submitted, we receive it. -> i5:Upon receiving the Quotation, we then submit the Purchase Order. -> i6:Simultaneously -> i7:sending the Goods and sending the Invoice. -> i9:Similarly, after the Invoice is sent, we mark it as sent. -> i10:The process ends when the Goods are sent or when the Invoice is sent.
+
+Addition
+- [N5] Node-level addition: guard(b1,n6,"v_path = 'Goods'") (reason: The guards introduce abstract routing variables ('v_path') and conditional branching logic that are completely absent from the source text, which specifies simultaneous execution rather than a conditional choice between paths.)
+- [N6] Node-level addition: guard(b1,n7,"v_path = 'Invoice'") (reason: The guards introduce abstract routing variables ('v_path') and conditional branching logic that are completely absent from the source text, which specifies simultaneous execution rather than a conditional choice between paths.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"Request for Quotation") -> action(n2,"Submit RFQ") -> action(n3,"Submit Quotation") -> action(n4,"Receive Quotation") -> action(n5,"Submit Purchase Order") -> branch(b1,OR) -> action(n6,"Send Goods") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"Request for Quotation") -> action(n2,"Submit RFQ") -> action(n3,"Submit Quotation") -> action(n4,"Receive Quotation") -> action(n5,"Submit Purchase Order") -> branch(b1,OR) -> action(n7,"Send Invoice") -> end(e2)
+
+Mutation
+- [N9] Node-level mutation: element=action(n2,"Submit RFQ"); source=i2: followed by the Customer submitting the RFQ.; reason=Drops the explicit actor 'Customer', altering the responsibility and granularity defined in the source unit.

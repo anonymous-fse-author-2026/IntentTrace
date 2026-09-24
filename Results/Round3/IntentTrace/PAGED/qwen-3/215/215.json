@@ -1,0 +1,343 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start with Resupply Cycle Triggered"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check Inventory Level"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Create Purchase Order"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Reviewing the Purchase Order"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Reserve funds for purchase"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Rework the order"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Send Order to Suppliers"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "review the Purchase Order again"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Supplier sends packing slip"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Supplier sends invoice"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "record packing slip"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "record invoice"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Release reserved funds and issue payment to supplier"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Inventory level",
+      "R_X": [
+        "Inventory level is at or below the minimum",
+        "Inventory Level is above the minimum"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Purchase Order status",
+      "R_X": [
+        "approved",
+        "rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n6",
+        "b2",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "e2",
+        "c1",
+        "b3",
+        "c2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Inventory level is at or below the minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v1 = 'Inventory Level is above the minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'rejected'"
+    },
+    {
+      "type": "label",
+      "A": "n6",
+      "B": "b2",
+      "str": "approved;rejected"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start with the Resupply Cycle Triggered step, followed by checking the Inventory Level."
+    },
+    {
+      "id": "i2",
+      "content": "If the \"Inventory level is at or below the minimum\", then proceed to Create Purchase Order."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the \"Inventory Level is above the minimum\", then the process ends."
+    },
+    {
+      "id": "i4",
+      "content": "After creating the Purchase Order, move on to Reviewing the Purchase Order."
+    },
+    {
+      "id": "i5",
+      "content": "If the Purchase Order is approved, then reserve the funds for the purchase."
+    },
+    {
+      "id": "i7",
+      "content": "On the other hand, if the Purchase Order is rejected, then rework the order."
+    },
+    {
+      "id": "i9",
+      "content": "Once the funds are reserved, send the Order to Suppliers."
+    },
+    {
+      "id": "i10",
+      "content": "In case the order needs to be reworked, review the Purchase Order again."
+    },
+    {
+      "id": "i11",
+      "content": "Simultaneously, complete the following steps: the Supplier sends a packing slip and an invoice."
+    },
+    {
+      "id": "i12",
+      "content": "Once the packing slip is received, record it. Similarly, when the invoice is received, record it as well."
+    },
+    {
+      "id": "i13",
+      "content": "After recording the packing slip and invoice, release the reserved funds and issue the payment to the supplier."
+    },
+    {
+      "id": "i14",
+      "content": "Finally, the process ends after the payment is issued to the supplier."
+    }
+  ]
+}

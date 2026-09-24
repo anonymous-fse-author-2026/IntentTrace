@@ -1,0 +1,57 @@
+{
+  "ok": false,
+  "accepted_count": 32,
+  "rejected_count": 4,
+  "accepted": [
+    "init(i1)",
+    "action(n1, \"start\")",
+    "action(n_reg, \"Register your participation for the event\")",
+    "action(n2, \"Is there a fee?\")",
+    "branch(b1, XOR)",
+    "action(n3, \"Register post-seminar request\")",
+    "action(n4, \"Create purchase request\")",
+    "action(n5, \"Check purchase request approval status\")",
+    "branch(b2, XOR)",
+    "action(n6, \"Approved notification received\")",
+    "end(e1)",
+    "action(n7, \"Rejected notification received\")",
+    "end(e2)",
+    "action(n8, \"Register post-seminar request\")",
+    "end(e3)",
+    "defines(v1, \"Is there a fee?\", {\"yes\", \"no\"})",
+    "defines(v2, \"Check purchase request approval status\", {\"approved\", \"rejected\"})",
+    "actor(a_default, \"Default\", [i1, n1, n_reg, n2, b1, n3, n4, n5, b2, n6, e1, n7, e2, n8, e3])",
+    "precedence(i1, n1)",
+    "precedence(n1, n_reg)",
+    "precedence(n_reg, n2)",
+    "precedence(n2, b1)",
+    "precedence(n5, b2)",
+    "precedence(n7, e2)",
+    "precedence(b1, n3)",
+    "precedence(b1, n4)",
+    "precedence(n4, n5)",
+    "precedence(b2, n6)",
+    "precedence(b2, n7)",
+    "precedence(n6, n8)",
+    "precedence(n8, e1)",
+    "precedence(n3, e3)"
+  ],
+  "rejected": [
+    {
+      "statement": "guard(b1, n3, v1==\"no\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b1, n4, v1==\"yes\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, n6, v2==\"approved\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, n7, v2==\"rejected\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    }
+  ]
+}

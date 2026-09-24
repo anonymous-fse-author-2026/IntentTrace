@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum -> i3:is at or below the minimum, create a purchase order -> i5:After creating the purchase order, review it. -> i6:If the purchase status is rejected, rework the purchase order. -> i8:Rework the purchase order and then review it. -> i5:After creating the purchase order, review it.
+
+Addition
+- [N2] Within matched traces (0->0) added: init(i1)
+- [N3] Within matched traces (2->1) added: init(i1)
+- [N4] Within matched traces (2->1) added: action(n7,"Is purchase status rejected")
+- [N5] Within matched traces (3->2) added: init(i1)
+- [N6] Within matched traces (3->2) added: action(n7,"Is purchase status rejected")
+
+Mutation
+- [N7] Node-level mutation: element=action(n4,"End process due to sufficient inventory"); source=i4:Otherwise, if the inventory level is above the minimum, the process ends; reason=Invents the qualifier 'due to sufficient inventory' which does not appear in the source text.
+- [N8] Node-level mutation: element=action(n23,"Reserve funds after first approval"); source=i7:However, if the purchase status is approved, reserve the funds.; reason=Invents the temporal/contextual qualifier 'after first approval' not present in the source.
+- [N9] Node-level mutation: element=action(n9,"Review purchase order again after rework"); source=i8:Rework the purchase order and then review it.; reason=Invents the qualifier 'again after rework', altering the precise granularity of the source instruction.
+- [N10] Node-level mutation: element=action(n24,"Send order to supplier after first approval"); source=i9:Reserve the funds and send the order to the supplier.; reason=Invents the qualifier 'after first approval' not present in the source text.
+- [N11] Node-level mutation: element=action(n20,"End after recording packing slip"); source=i13:Record the packing slip and the process ends.; reason=Rephrases the conjunctive instruction into 'End after recording...', changing the structural emphasis and adding an implicit condition.
+- [N12] Node-level mutation: element=action(n21,"End after recording invoice"); source=i14:Record the invoice and the process ends.; reason=Rephrases the conjunctive instruction into 'End after recording...', changing the structural emphasis and adding an implicit condition.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"Is purchase status rejected")

@@ -1,0 +1,61 @@
+@startuml
+!theme plain
+|a_cw| Customer and Web Design Team
+|a_wd| Web Design Team
+|a_ctrl| Process Control
+|a_ctrl|
+start
+|a_cw|
+:Informational meeting;
+|a_ctrl|
+:v1: Meeting outcome ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process;
+stop
+else ([v1 = 'Yes'])
+|a_cw|
+:Create storyboard;
+|a_ctrl|
+:vs: Storyboard result ({Fail, Pass}); <<objectSignal>>
+if () then ([vs = 'Fail'])
+stop
+else ([vs = 'Pass'])
+split
+|a_wd|
+:Prepare content;
+-> Site ready;
+split again
+:Design site;
+-> Site ready;
+end split
+:Develop site;
+|a_ctrl|
+repeat :;
+|a_wd|
+:Review site;
+:v2: Review site ({Not successful, Successful}); <<objectSignal>>
+backward:Revise site;
+repeat while () is ([v2 = 'Not successful']) not ([v2 = 'Successful'])
+:Approve site;
+|a_ctrl|
+:v3: Approve site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Approved'])
+:End process;
+else ([v3 = 'Rejected'])
+|a_wd|
+:Rebuild site;
+|a_ctrl|
+:v_rb: Rebuild outcome ({Complete, Rejected}); <<objectSignal>>
+if () then ([v_rb = 'Complete'])
+->;
+else ([v_rb = 'Rejected'])
+|a_wd|
+:Rebuild site again;
+|a_ctrl|
+stop
+endif
+endif
+stop
+endif
+endif
+@enduml

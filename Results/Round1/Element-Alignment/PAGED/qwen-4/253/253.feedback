@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i7:On the other hand, if the Purchase Order is rejected, then rework the order. -> i9:In case the order needs to be reworked, review the Purchase Order again. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order.; reason=Replaces the explicit operational threshold ('at or below the minimum') with a generic boolean variable ('v1 = Yes'), dropping the specific data criteria.
+- [N3] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:However, if the "Inventory Level is above the minimum", then the process ends.; reason=Replaces the explicit operational threshold ('above the minimum') with a generic boolean variable ('v1 = No'), dropping the specific data criteria.
+- [N4] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i6:If the Purchase Order is approved, then reserve the funds for the purchase.; reason=Replaces the explicit status condition ('approved') with a generic boolean variable ('v2 = Yes'), losing the specific business state.
+- [N5] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:On the other hand, if the Purchase Order is rejected, then rework the order.; reason=Replaces the explicit status condition ('rejected') with a generic boolean variable ('v2 = No'), losing the specific business state.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=2 and out=2. | DSL: branch(b2,XOR)

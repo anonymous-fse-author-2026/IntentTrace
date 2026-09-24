@@ -1,0 +1,63 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:empty the mailbox;
+:check if mailbox is empty?;
+:v1: check if mailbox is empty? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v1 = 'Mailbox is empty'])
+->;
+else ([v1 = 'Mailbox is not empty'])
+:continue the process;
+:v8: what after continue? ({Check again, Verify}); <<objectSignal>>
+if () then ([v8 = 'Check again'])
+:check if mailbox is empty again?;
+:v2: check if mailbox is empty again? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v2 = 'Mailbox is empty'])
+->;
+endif
+else ([v8 = 'Verify'])
+:verify if information is complete?;
+:v3: verify if information is complete? ({Information is complete, Information is not complete}); <<objectSignal>>
+if () then ([v3 = 'Information is complete'])
+:add incoming mail number  date and record in letter book;
+else ([v3 = 'Information is not complete'])
+:make a telephone call to sender;
+-> After telephone call;
+:complete data by adding incoming mail number  date and record in letter book;
+endif
+:every wednesday evening: take books to miranda;
+:v4: applicant becomes member? ({applicant becomes a member, applicant cannot become a member}); <<objectSignal>>
+if () then ([v4 = 'applicant becomes a member'])
+:applicant becomes member;
+:stamp 'new Member' on the letter and write the date on it;
+-> After stamping "new Member" on the letter and writing the date on it;
+:write the data;
+:v5: membership path? ({Simultaneously, Hand letter}); <<objectSignal>>
+if () then ([v5 = 'Simultaneously'])
+:calculate the fee;
+:hand the letter to Charles.;
+:Ask Charles to write the amount in the register.;
+:print membership card with all data and send to new member;
+:end the process;
+stop
+else ([v5 = 'Hand letter'])
+:Hand the letter to Charles;
+:add the new member to the register;
+:prepare invoice for new members;
+:continue the process;
+:Ask Charles to write the amount in the register and write the fee amount to the register.;
+stop
+endif
+else ([v4 = 'applicant cannot become a member'])
+:applicant cannot become member;
+:write to applicant and inform decision;
+stop
+endif
+endif
+endif
+:end the process;
+stop
+@enduml

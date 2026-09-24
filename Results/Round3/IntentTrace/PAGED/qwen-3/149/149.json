@@ -1,0 +1,308 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Request to Purchase Motorcycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Continue Process if Production Order Received"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Order Materials from Supplier"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Place Manufacturing Order"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Issue Goods and Produce Motorcycles"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Update Stock and Dispatch Motorcycles"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Simultaneously Update Stock"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Update Sales Information"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Proceed to Order Dispatch"
+    },
+    {
+      "id": "b_ord",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c_ord",
+      "type": "converge"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Material Status",
+      "R_X": [
+        "Unavailable",
+        "Available"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Dispatch Option",
+      "R_X": [
+        "Stock Dispatch",
+        "End Process",
+        "Sales Update"
+      ]
+    },
+    {
+      "X": "v_ord",
+      "name": "Order Status",
+      "R_X": [
+        "Production",
+        "Dispatch"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b_ord",
+        "n2",
+        "n10",
+        "c_ord",
+        "b1",
+        "n3",
+        "n4",
+        "c1",
+        "n5",
+        "b3",
+        "n6",
+        "n8",
+        "n9",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b_ord"
+    },
+    {
+      "type": "precedence",
+      "A": "b_ord",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_ord",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "c_ord"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c_ord"
+    },
+    {
+      "type": "precedence",
+      "A": "c_ord",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b_ord",
+      "B": "n2",
+      "condition": "v_ord = 'Production'"
+    },
+    {
+      "type": "guard",
+      "A": "b_ord",
+      "B": "n10",
+      "condition": "v_ord = 'Dispatch'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Unavailable'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Available'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n6",
+      "condition": "v2 = 'Stock Dispatch'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "e1",
+      "condition": "v2 = 'End Process'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n8",
+      "condition": "v2 = 'Sales Update'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the process begins with a request to purchase a motorcycle."
+    },
+    {
+      "id": "i2",
+      "content": "continue the process if a production order is received"
+    },
+    {
+      "id": "i3",
+      "content": "proceed to order dispatch"
+    },
+    {
+      "id": "i4",
+      "content": "If there are unavailable materials, they are ordered from the supplier."
+    },
+    {
+      "id": "i5",
+      "content": "if there are available goods for production, a manufacturing order is placed."
+    },
+    {
+      "id": "i6",
+      "content": "the goods are issued and the motorcycles are produced."
+    },
+    {
+      "id": "i7",
+      "content": "At the same time, the stock is updated and the motorcycles are dispatched."
+    },
+    {
+      "id": "i8",
+      "content": "the process ends."
+    },
+    {
+      "id": "i9",
+      "content": "Simultaneously, the stock is updated and the sales information is updated."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+Omission
+- [N1] Within matched traces (2->0) omitted: i4:In the case of an Outstanding Balance, a new order is placed and the process ends at the Warehouse.
+- [N2] Within matched traces (3->1) omitted: i4:In the case of an Outstanding Balance, a new order is placed and the process ends at the Warehouse.
+- [N3] Within matched traces (4->4) omitted: i5:If a new order is placed, it will be recorded in the Accounts Receivable.
+- [N4] Within matched traces (4->4) omitted: i7:However, if no payments are received, the order is dropped.
+
+Addition
+- [N5] Added trace (model 2): init(i1) -> action(n2,"Orders Required") -> action(n3,"place Bulk order") -> branch(b1,XOR) -> action(n5,"process order for delivery") -> action(n8,"record in Accounts Receivable") -> branch(b2,XOR) -> action(n11,"drop order") -> converge(c1) -> action(n13,"identify order for installation") -> branch(b3,XOR) -> action(n15,"assign Installer") -> end(e2)
+- [N6] Added trace (model 3): init(i1) -> action(n2,"Orders Required") -> action(n3,"place Bulk order") -> branch(b1,XOR) -> action(n5,"process order for delivery") -> action(n8,"record in Accounts Receivable") -> branch(b2,XOR) -> action(n11,"drop order") -> converge(c1) -> action(n13,"identify order for installation") -> branch(b3,XOR) -> action(n16,"pack for delivery") -> end(e3)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n8,"record in Accounts Receivable")
+- [N9] Within matched traces (0->0) added: branch(b2,XOR)
+- [N10] Within matched traces (0->0) added: action(n10,"continue process")
+- [N11] Within matched traces (0->0) added: converge(c1)
+- [N12] Within matched traces (1->1) added: init(i1)
+- [N13] Within matched traces (1->1) added: action(n8,"record in Accounts Receivable")
+- [N14] Within matched traces (1->1) added: branch(b2,XOR)
+- [N15] Within matched traces (1->1) added: action(n10,"continue process")
+- [N16] Within matched traces (1->1) added: converge(c1)
+- [N17] Within matched traces (2->0) added: init(i1)
+- [N18] Within matched traces (2->0) added: action(n5,"process order for delivery")
+- [N19] Within matched traces (3->1) added: init(i1)
+- [N20] Within matched traces (3->1) added: action(n5,"process order for delivery")
+- [N21] Within matched traces (4->4) added: init(i1)
+
+Mutation
+- [N22] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.; reason=Guards replace the explicit business conditions with abstract boolean assignments (v1 = true / v1 = false), dropping the specific credit allowance qualifiers required for accurate decision logic.
+- [N23] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i3:However, if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance.; reason=Guards replace the explicit business conditions with abstract boolean assignments (v1 = true / v1 = false), dropping the specific credit allowance qualifiers required for accurate decision logic.
+- [N24] Node-level mutation: element=guard(b2,n10,"v2 = true"); source=i6:If Payments are Received, the process continues.; reason=Guards replace explicit payment status checks with abstract boolean assignments (v2 = true / v2 = false), losing the concrete 'Payments are Received' vs 'no payments' distinction.
+- [N25] Node-level mutation: element=guard(b2,n11,"v2 = false"); source=i7:However, if no payments are received, the order is dropped.; reason=Guards replace explicit payment status checks with abstract boolean assignments (v2 = true / v2 = false), losing the concrete 'Payments are Received' vs 'no payments' distinction.
+- [N26] Node-level mutation: element=guard(b3,n15,"v3 = true"); source=i9:If the installation needs to be scheduled, an Installer will be assigned.; reason=Guards replace explicit installation requirements with abstract boolean assignments (v3 = true / v3 = false), omitting the necessary scheduling qualifiers.
+- [N27] Node-level mutation: element=guard(b3,n16,"v3 = false"); source=i10:On the other hand, if the order does not require installation, it will be packed for delivery.; reason=Guards replace explicit installation requirements with abstract boolean assignments (v3 = true / v3 = false), omitting the necessary scheduling qualifiers.

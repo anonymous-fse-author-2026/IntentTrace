@@ -1,0 +1,44 @@
+Omission
+- [N1] Node-level omission: i4:On the other hand, if they already have the availability information, (reason: The source unit's explicit condition was distorted into a generic negative guard, leaving its actual logic unmodeled.)
+- [N2] Node-level omission: i7:the team can also continue with the process. (reason: There is no corresponding element modeled for continuing the process on this specific conditional path.)
+- [N3] Node-level omission: i11:Once the part is received, (reason: The synchronization or temporal wait for receiving the part is completely missing from the model.)
+- [N4] Node-level omission: i13:After all the necessary parts are collected, (reason: The synchronization step waiting for all parts to be collected is not implemented.)
+- [N5] Omitted trace (input 1): i1:the first step is to identify the parts. -> i4:On the other hand, if they already have the availability information, -> i5:proceed with the process. -> i13:After all the necessary parts are collected, -> i14:proceed with the payment. -> i15:the process comes to an end.
+- [N6] Within matched traces (0->0) omitted: i13:After all the necessary parts are collected,
+- [N7] Within matched traces (2->0) omitted: i7:the team can also continue with the process.
+- [N8] Within matched traces (2->0) omitted: i13:After all the necessary parts are collected,
+- [N9] Within matched traces (3->1) omitted: i9:if they need to record the customer's details,
+- [N10] Within matched traces (3->1) omitted: i11:Once the part is received,
+- [N11] Within matched traces (3->1) omitted: i13:After all the necessary parts are collected,
+
+Addition
+- [N12] Node-level addition: action(n1,"start") (reason: This 'start' action has no supporting source text; the first described step is identifying parts, not an explicit 'start' action.)
+- [N13] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Identify parts") -> action(n3,"Need to elicit information from customer") -> branch(b1,XOR) -> action(n5,"Proceed with process") -> converge(c1) -> action(n6,"Are parts supplied to customer") -> branch(b2,XOR) -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N14] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Identify parts") -> action(n3,"Need to elicit information from customer") -> branch(b1,XOR) -> action(n5,"Proceed with process") -> converge(c1) -> action(n6,"Are parts supplied to customer") -> branch(b2,XOR) -> action(n8,"Record customer details") -> action(n9,"Order and receive part from Disuki") -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N15] Within matched traces (0->0) added: init(i1)
+- [N16] Within matched traces (0->0) added: action(n1,"start")
+- [N17] Within matched traces (0->0) added: converge(c1)
+- [N18] Within matched traces (0->0) added: action(n6,"Are parts supplied to customer")
+- [N19] Within matched traces (0->0) added: branch(b2,XOR)
+- [N20] Within matched traces (0->0) added: converge(c2)
+- [N21] Within matched traces (0->0) added: action(n7,"Contract customer")
+- [N22] Within matched traces (2->0) added: init(i1)
+- [N23] Within matched traces (2->0) added: action(n1,"start")
+- [N24] Within matched traces (2->0) added: action(n3,"Need to elicit information from customer")
+- [N25] Within matched traces (2->0) added: branch(b1,XOR)
+- [N26] Within matched traces (2->0) added: action(n4,"Check availability of parts")
+- [N27] Within matched traces (2->0) added: converge(c1)
+- [N28] Within matched traces (2->0) added: action(n7,"Contract customer")
+- [N29] Within matched traces (3->1) added: init(i1)
+- [N30] Within matched traces (3->1) added: action(n1,"start")
+- [N31] Within matched traces (3->1) added: action(n3,"Need to elicit information from customer")
+- [N32] Within matched traces (3->1) added: branch(b1,XOR)
+- [N33] Within matched traces (3->1) added: action(n4,"Check availability of parts")
+- [N34] Within matched traces (3->1) added: converge(c1)
+- [N35] Within matched traces (3->1) added: action(n6,"Are parts supplied to customer")
+
+Mutation
+- [N36] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the team needs to elicit information from the customer,; reason=The explicit condition is dropped and replaced with a generic boolean check 'v1 = Yes'.
+- [N37] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:On the other hand, if they already have the availability information,; reason=The explicit condition about having availability information is dropped and replaced with a generic boolean check 'v1 = No'.
+- [N38] Node-level mutation: element=guard(b2,c2,"v2 = 'Yes'"); source=i6:If the parts are supplied to the customer,; reason=The explicit condition is dropped and replaced with a generic boolean check 'v2 = Yes'.
+- [N39] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i8:However, if they need to record the customer's details,; reason=The explicit condition is dropped and replaced with a generic boolean check 'v2 = No'.

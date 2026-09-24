@@ -1,0 +1,54 @@
+{
+  "ok": false,
+  "accepted_count": 33,
+  "rejected_count": 3,
+  "accepted": [
+    "init(i1)",
+    "action(n2, \"Examine Order\")",
+    "action(n3, \"Is Order Rejected?\")",
+    "branch(b_parallel, AND)",
+    "action(n6, \"Prepare Assembling Order\")",
+    "converge(c_avail)",
+    "action(n7, \"Check Availability\")",
+    "action(n8, \"Is Backorder Required?\")",
+    "branch(b2, XOR)",
+    "action(n_recheck, \"availability needs to be checked again\")",
+    "converge(c1)",
+    "action(n10, \"Assemble Bike\")",
+    "action(n11, \"Ship Product\")",
+    "end(e2)",
+    "end(e3)",
+    "defines(v2, \"Is Backorder Required?\", {'No', 'Yes_Retry', 'Yes_End'})",
+    "actor(a_default, \"Default\", [i1, n2, n3, b_parallel, n6, c_avail, n7, n8, b2, n_recheck, c1, n10, n11, e2, e3])",
+    "precedence(i1, n2)",
+    "precedence(n2, n3)",
+    "precedence(n3, b_parallel)",
+    "precedence(b_parallel, n6)",
+    "precedence(b_parallel, c_avail)",
+    "precedence(n6, c1)",
+    "precedence(c_avail, n7)",
+    "precedence(n7, n8)",
+    "precedence(n8, b2)",
+    "precedence(b2, c1)",
+    "precedence(b2, n_recheck)",
+    "precedence(b2, e2)",
+    "precedence(n_recheck, c_avail)",
+    "precedence(c1, n10)",
+    "precedence(n10, n11)",
+    "precedence(n11, e3)"
+  ],
+  "rejected": [
+    {
+      "statement": "guard(b2, c1, v2 == 'No')",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, n_recheck, v2 == 'Yes_Retry')",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, e2, v2 == 'Yes_End')",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    }
+  ]
+}

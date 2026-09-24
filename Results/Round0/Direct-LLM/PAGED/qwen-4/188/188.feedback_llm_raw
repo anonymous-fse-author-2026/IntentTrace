@@ -1,0 +1,7 @@
+
+
+- `action(n4, "Construct Error Response from Banking Privilege Status")`: Omits the explicit step "check the Banking Privilege Status" and conflates it with the response action, violating SMC1/SMC2.
+- `action(n7, "Construct Error Response from loan conditions")`: Omits the explicit step "check the fulfillment of loan conditions" and conflates it with the response action, violating SMC1/SMC2.
+- `precedence(n12, n13)`, `branch(b4)`, `action(n15, "Construct Reject Response")`: Sequences "Construct Approve Response" (`n13`) before the approval/rejection split, whereas the source presents them as mutually exclusive alternatives ("If there is a 'Construct Approve Response'... Otherwise, if there is a 'Construct Reject Response'..."), violating SMC3/SMC4.
+- `branch(b5)`, `action(n17, "End of procedure")`, `end(e5)`: Hallucinates an additional decision branch and termination node after the rejection path; the source specifies the process simply ends with a "Reject Message", violating SMC1/SMC5.
+- `defines(v3, "Check Creditworthiness", {"Yes"})`, `defines(v4, "Construct Approve Response", {"Yes"})`: Restrict XOR branch variables to a single-value range `{"Yes"}`, which cannot represent the implicit alternative choices required by the branching guards, violating SMC6.

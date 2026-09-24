@@ -1,0 +1,10 @@
+- action(n1, "start"): Hallucinated behavior; the text states the process begins with the customer requesting information, not a separate "start" action.
+- actor(a_default, "Default", [...]): Fails to faithfully reflect the source text, which explicitly assigns responsibilities (e.g., "customer should first request information", "schedule an appointment", "revisit") to the "customer".
+- defines(v1, "Is the customer in Intake stage?", {}): The range is empty {} and fails to capture the customer stages explicitly mentioned in the text ("Intake", "Potential client").
+- defines(v2, "Has target been reached?", {}): The range is empty {} and fails to capture the outcomes described in the text ("target has been reached", "dissatisfied or for any other reason").
+- branch(b1, XOR): Missing guards on the outgoing edges (to n5 and n6) to evaluate the conditions "If the customer is in the 'Intake' stage" and "if the customer is a 'Potential client'".
+- branch(b2, XOR): Missing guards on the outgoing edges (to n9 and n10) to evaluate the conditions "If the target has been reached" and "if the customer is dissatisfied or for any other reason".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

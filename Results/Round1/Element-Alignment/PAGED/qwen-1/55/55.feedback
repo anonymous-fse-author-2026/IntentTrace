@@ -1,0 +1,11 @@
+Addition
+- [N1] Node-level addition: guard(b1,n9,"v1 = 'No'") (reason: Invents a negative branching path (v1 = No) and an early termination step that do not exist in the linear source description.)
+- [N2] Node-level addition: action(n9,"End process") (reason: Invents a negative branching path (v1 = No) and an early termination step that do not exist in the linear source description.)
+- [N3] Node-level addition: guard(b2,n10,"v2 = 'No'") (reason: Invents a second negative branching path (v2 = No) and an early termination step unsupported by the source.)
+- [N4] Node-level addition: action(n10,"End process") (reason: Invents a second negative branching path (v2 = No) and an early termination step unsupported by the source.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start receiving the invoice") -> action(n2,"ask client to confirm the invoice") -> action(n3,"check if client confirmed the invoice") -> branch(b1,XOR) -> action(n4,"confirm service information with client") -> action(n5,"check if client confirmed the service information") -> branch(b2,XOR) -> action(n10,"End process") -> end(e3)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"start receiving the invoice") -> action(n2,"ask client to confirm the invoice") -> action(n3,"check if client confirmed the invoice") -> branch(b1,XOR) -> action(n9,"End process") -> end(e2)
+
+Mutation
+- [N7] Node-level mutation: element=action(n3,"check if client confirmed the invoice") -> guard(b1,n4,"v1 = 'Yes'"); source=i3:Once the invoice is confirmed by the client; reason=Distorts the passive confirmation trigger into an active verification step ('check if') and replaces the natural language condition with an undefined variable assignment ('v1 = Yes').
+- [N8] Node-level mutation: element=action(n5,"check if client confirmed the service information") -> guard(b2,n6,"v2 = 'Yes'"); source=i5:Once the client has confirmed the service information; reason=Distorts the passive trigger into an active check and substitutes the source condition with an undefined variable assignment ('v2 = Yes').

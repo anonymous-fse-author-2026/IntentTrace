@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce the source conditions `"If the article is available..."` and `"Once the customer accepts the offer..."`, breaking exclusive choice logic (SMC4).
+- `defines(v1, "is the article in stock", {})` and `defines(v2, "has the customer accepted the offer", {})`: Ranges are empty `{}` instead of specifying valid values, failing to capture the decision space implied by `"check if the article is in stock"` and `"wait for the customer to accept it"` (SMC6).
+- `action(n11, "abort the enquiry and end process")` & `precedence(b2, n11)`: Hallucinates a rejection path; the source text states `"Once the customer accepts the offer, we dispatch the article"` and provides no documented behavior for non-acceptance (SMC1).
+- `action(n12, "end process")`: Incorrectly models termination as a discrete step; the source phrase `"the process comes to an end"` corresponds directly to the `end(e3)` node, making this action redundant and semantically inaccurate (SMC1/SMC2).
+- `action(n3, "continue with the process")`: Misrepresents a conditional flow transition as an actionable step; the text `"If the article is available, we continue with the process"` implies immediate progression to reservation, requiring direct precedence rather than an intermediate node (SMC2).

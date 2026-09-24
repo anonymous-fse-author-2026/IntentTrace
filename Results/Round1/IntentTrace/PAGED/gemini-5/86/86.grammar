@@ -1,0 +1,48 @@
+{
+  "ok": false,
+  "accepted_count": 27,
+  "rejected_count": 3,
+  "accepted": [
+    "init(i1)",
+    "action(n1, \"Start\")",
+    "action(n2, \"Obtain raw material from received list\")",
+    "action(n3, \"Is raw material available in stock?\")",
+    "branch(b1, XOR)",
+    "action(n4, \"Check raw material and conclude process (If Available)\")",
+    "action(n6, \"Select a supplier\")",
+    "action(n7, \"Send material purchase order\")",
+    "action(n8, \"Check raw material and conclude process (After PO)\")",
+    "action(n9, \"End\")",
+    "end(e2)",
+    "action(n10, \"check the raw material and end the process\")",
+    "defines(v1, \"Is raw material available in stock?\", {\"Yes1\", \"Yes2\", \"No\"})",
+    "actor(a_default, \"Default\", [i1, n1, n2, n3, b1, n4, n6, n7, n8, n9, e2, n10])",
+    "precedence(i1, n1)",
+    "precedence(n1, n2)",
+    "precedence(n2, n3)",
+    "precedence(n3, b1)",
+    "precedence(b1, n4)",
+    "precedence(b1, n10)",
+    "precedence(b1, n6)",
+    "precedence(n4, e2)",
+    "precedence(n10, e2)",
+    "precedence(n6, n7)",
+    "precedence(n7, n8)",
+    "precedence(n8, n9)",
+    "precedence(n9, e2)"
+  ],
+  "rejected": [
+    {
+      "statement": "guard(b1, n4, v1 == \"Yes1\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b1, n10, v1 == \"Yes2\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b1, n6, v1 == \"No\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    }
+  ]
+}

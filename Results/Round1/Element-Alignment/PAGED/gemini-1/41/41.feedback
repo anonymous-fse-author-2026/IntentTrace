@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i4:undergo a check using biometrics (reason: No element faithfully implements this step without inventing additional context not present in the source segment.)
+- [N2] Node-level omission: i5:undergo checks using identity documents (reason: No element faithfully reproduces this step without inventing additional context and abbreviating terms.)
+- [N3] Node-level omission: i11:continue to the next step (reason: No element faithfully implements the specific instruction to continue 'to the next step', providing only a generalized 'continue process' step instead.)
+
+Addition
+- [N4] Node-level addition: guard(b1,n9,"v1 = \"Yes\"") (reason: These guards represent the 'Yes' outcome for permission granted, a condition whose supporting text is missing from the provided input segments.)
+- [N5] Node-level addition: guard(b2,n11,"v2 = \"Yes\"") (reason: These guards represent the 'Yes' outcome for permission granted, a condition whose supporting text is missing from the provided input segments.)
+- [N6] Node-level addition: guard(b3,n15,"v3 = \"Yes\"") (reason: These guards represent the 'Yes' outcome for a successful check, a condition whose supporting text is missing from the provided input segments.)
+- [N7] Node-level addition: guard(b4,n17,"v4 = \"Yes\"") (reason: These guards represent the 'Yes' outcome for a successful check, a condition whose supporting text is missing from the provided input segments.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"undergo immigration checks") -> action(n3,"select method for exit control checks") -> branch(b5,AND) -> action(n4,"use biometrics for exit control checks") -> action(n6,"is permission granted after exit control checks") -> branch(b1,XOR) -> action(n8,"leave the area") -> action(n22,"process ends") -> end(e5)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"undergo immigration checks") -> action(n3,"select method for exit control checks") -> branch(b5,AND) -> action(n5,"use ID documents for exit control checks") -> action(n7,"is permission granted after exit control checks") -> branch(b2,XOR) -> action(n10,"leave the area") -> action(n23,"process ends") -> end(e6)
+- [N10] Within matched traces (0->1) added: action(n9,"proceed to the next step")
+- [N11] Within matched traces (1->2) added: action(n6,"is permission granted after exit control checks")
+- [N12] Within matched traces (1->2) added: branch(b1,XOR)
+- [N13] Within matched traces (1->2) added: action(n12,"is the exit control check outcome successful")
+- [N14] Within matched traces (1->2) added: branch(b3,XOR)
+- [N15] Within matched traces (2->4) added: action(n11,"proceed to the next step")
+- [N16] Within matched traces (3->5) added: action(n7,"is permission granted after exit control checks")
+- [N17] Within matched traces (3->5) added: branch(b2,XOR)
+- [N18] Within matched traces (3->5) added: action(n13,"is the exit control check outcome successful")
+- [N19] Within matched traces (3->5) added: branch(b4,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=action(n4,"use biometrics for exit control checks"); source=i4:undergo a check using biometrics; reason=The element adds the invented qualifier 'for exit control checks' which is absent from this specific source segment.
+- [N21] Node-level mutation: element=action(n5,"use ID documents for exit control checks"); source=i5:undergo checks using identity documents; reason=The element adds the invented qualifier 'for exit control checks' and abbreviates 'identity documents' to 'ID documents', failing to strictly mirror the source.
+- [N22] Node-level mutation: element=action(n6,"is permission granted after exit control checks") -> action(n7,"is permission granted after exit control checks"); source=i6:if the passenger is denied permission; reason=The source asks if permission is 'denied', but the model reverses the condition to ask if permission is 'granted' and adds 'after exit control checks'.
+- [N23] Node-level mutation: element=action(n12,"is the exit control check outcome successful") -> action(n13,"is the exit control check outcome successful"); source=i9:If the exit control check outcome is unsuccessful; reason=The source asks if the outcome is 'unsuccessful', but the model reverses this to ask if the outcome is 'successful'.
+- [N24] Node-level mutation: element=action(n15,"continue process") -> action(n17,"continue process"); source=i11:continue to the next step; reason=The element drops the specific instruction 'to the next step', generalizing it to just 'continue process'.

@@ -1,0 +1,10 @@
+Omission
+- [N1] Omitted trace (input 0): i1:At the start -> i2:the loan application is checked -> i3:If the application is rejected -> i4:the process ends
+- [N2] Omitted trace (input 1): i1:At the start -> i2:the loan application is checked -> i6:if special terms are agreed upon -> i7:Once the funds are disbursed -> i5:the process ends.
+
+Addition
+- [N3] Node-level addition: guard(b1,n5,"v1 = \"No\"") (reason: The model invents a negative 'No' guard for the application rejection check, which is not explicitly described in the provided source elements.)
+- [N4] Node-level addition: guard(b2,e3,"v2 = \"No\"") (reason: The model invents a negative 'No' guard indicating what happens if special terms are not agreed upon, which lacks source text support.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"check loan application") -> action(n3,"is application rejected?") -> branch(b1,XOR) -> action(n4,"end process: application rejected") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"check loan application") -> action(n3,"is application rejected?") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon?") -> branch(b2,XOR) -> action(n6,"disburse funds") -> action(n7,"end process: funds disbursed") -> end(e2)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"check loan application") -> action(n3,"is application rejected?") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon?") -> branch(b2,XOR) -> end(e3)

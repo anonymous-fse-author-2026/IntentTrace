@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i3:If the order is to be accepted (reason: Source explicitly describes an alternative acceptance path that continues the process, but no element models this condition or branch.)
+- [N2] Node-level omission: i7:availability needs to be checked again (reason: Source mandates a retry/check step for availability in the backorder scenario, which is completely missing from the model.)
+- [N3] Omitted trace (input 1): i1:For the company, the first step is to look at the order. -> i2:If the order is to be rejected -> i4:At the same time, two steps need to be completed: -> i5:preparing the assembling order and checking availability -> i9:If the item can be reserved -> i10:assemble the bike and then ship the product
+- [N4] Omitted trace (input 2): i1:For the company, the first step is to look at the order. -> i3:If the order is to be accepted -> i4:At the same time, two steps need to be completed: -> i5:preparing the assembling order and checking availability -> i6:If there is a backorder -> i7:availability needs to be checked again -> i8:the process ends
+- [N5] Omitted trace (input 3): i1:For the company, the first step is to look at the order. -> i3:If the order is to be accepted -> i4:At the same time, two steps need to be completed: -> i5:preparing the assembling order and checking availability -> i9:If the item can be reserved -> i10:assemble the bike and then ship the product
+- [N6] Within matched traces (0->0) omitted: i7:availability needs to be checked again
+- [N7] Within matched traces (0->1) omitted: i7:availability needs to be checked again
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Explicit 'start' action step has no corresponding source unit; process initiation is already handled by the init node and the first descriptive sentence.)
+- [N9] Node-level addition: label(n10,n11,"12") (reason: Label containing arbitrary numbering ('12') introduces textual content not present in the source description.)
+- [N10] Within matched traces (0->0) added: init(i1)
+- [N11] Within matched traces (0->0) added: action(n1,"start")
+- [N12] Within matched traces (0->0) added: action(n10,"Assemble Bike")
+- [N13] Within matched traces (0->0) added: action(n11,"Ship Product")
+- [N14] Within matched traces (0->1) added: init(i1)
+- [N15] Within matched traces (0->1) added: action(n1,"start")
+- [N16] Within matched traces (0->1) added: action(n10,"Assemble Bike")
+- [N17] Within matched traces (0->1) added: action(n11,"Ship Product")
+
+Mutation
+- [N18] Node-level mutation: element=guard(b2,c2,"v2 = \"Backorder\""); source=i6:If there is a backorder; reason=Replaces the source's natural language condition with a variable assignment ("v2 = \"Backorder\""), inventing a variable and altering the payload format.
+- [N19] Node-level mutation: element=guard(b2,n10,"v2 = \"Reserved\""); source=i9:If the item can be reserved; reason=Replaces the source's natural language condition with a variable assignment ("v2 = \"Reserved\""), inventing a variable and altering the payload format.

@@ -1,0 +1,67 @@
+@startuml
+!theme plain
+|a_cust_web| Customer and Web design team
+|a_web| Web design team
+|a_default| Default
+|a_default|
+start
+|a_cust_web|
+:Informational meeting (half a day);
+:Is the informational meeting successful?;
+:v1: Is the informational meeting successful? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "Yes"])
+:Work on storyboard (full day);
+:v_sb: Is the storyboard successful? ({Yes, No}); <<objectSignal>>
+if () then ([v_sb = "No"])
+|a_default|
+:End Process;
+stop
+|a_cust_web|
+else ([v_sb = "Yes"])
+|a_default|
+split
+|a_web|
+:Site design (10 days);
+split again
+|a_default|
+:Content preparation;
+end split
+:Merge: Site design and content preparation completed;
+|a_web|
+:Site development (2 days);
+|a_default|
+:Review process (1 day);
+:Is the review successful?;
+:v2: Is the review successful? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = "No"])
+:End Process;
+stop
+else ([v2 = "Yes"])
+:Approval stage (half a day);
+:v_app: Is the approval complete? ({Yes, No}); <<objectSignal>>
+if () then ([v_app = "Yes"])
+:End Process;
+stop
+else ([v_app = "No"])
+:Rebuild site (3 days);
+:Is the rebuild approved?;
+:v3: Is the rebuild approved? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "Yes"])
+:End Process;
+stop
+else ([v3 = "No"])
+:Rebuild site again (3 days);
+:End Process;
+stop
+endif
+endif
+endif
+|a_cust_web|
+endif
+else ([v1 = "No"])
+|a_default|
+:End Process;
+stop
+|a_cust_web|
+endif
+@enduml

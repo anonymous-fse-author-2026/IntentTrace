@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i2:an informational meeting that lasts half a day (reason: The initial meeting step is clearly described in the source but has no corresponding action element in the model.)
+- [N2] Node-level omission: i8:If the storyboard is successful (reason: The conditional check required before proceeding to site design and content preparation is entirely missing from the model.)
+
+Addition
+- [N3] Node-level addition: guard(b2,n9,"v2 = 'Not successful'") (reason: The source text does not describe a failure path or process termination if the review is unsuccessful; these elements lack textual support.)
+- [N4] Node-level addition: action(n9,"End process") (reason: The source text does not describe a failure path or process termination if the review is unsuccessful; these elements lack textual support.)
+- [N5] Node-level addition: action(n15,"Approve rebuilt site") (reason: Approval of the rebuilt site is not mentioned in the source text, which only describes rebuilding again upon rejection.)
+- [N6] Node-level addition: guard(b5,n16,"v5 = 'Approved'") (reason: The decision gates and end-process action following the second rebuild are not described in the source text.)
+- [N7] Node-level addition: guard(b5,n17,"v5 = 'Rejected'") (reason: The decision gates and end-process action following the second rebuild are not described in the source text.)
+- [N8] Node-level addition: action(n16,"End process") (reason: The decision gates and end-process action following the second rebuild are not described in the source text.)
+- [N9] Node-level addition: label(n5,c1,"Site ready") (reason: The label content 'Site ready' does not appear in the source text and adds unsupported state information to the connections.)
+- [N10] Node-level addition: label(n6,c1,"Site ready") (reason: The label content 'Site ready' does not appear in the source text and adds unsupported state information to the connections.)
+- [N11] Node-level addition: action(n13,"Review rebuilt site") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: action(n14,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N13] Node-level mutation: element=guard(b4,n14,"v4 = 'Not successful'") -> guard(b4,n15,"v4 = 'Successful'"); source=i21:If the rebuild is complete, the process ends. If the rebuild is rejected again, the site needs to be rebuilt again; reason=The guard logic is reversed compared to the source. The model routes 'Not successful' to ending the process and 'Successful' to further steps, whereas the text explicitly states that completion ends the process and rejection triggers another rebuild.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Rebuild site again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n17 | DSL: action(n17,"Rebuild site again")

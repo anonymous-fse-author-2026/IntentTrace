@@ -1,0 +1,10 @@
+
+
+- `defines(v2, "Is Invoice Compliant?", {"Non-Compliant", "No"})`: Range incorrectly substitutes `"No"` for `"Compliant"`, contradicting the source condition `"if the invoice is compliant"`.
+- `guard(b2, n7, v2 = 'Non-Compliant')` and `guard(b2, n8, v2 = 'No')`: Incorrectly route based on invoice compliance status rather than resolution method; source dictates the split depends on whether `"the issue can be resolved with a phone call"` or `"requires mail back"`, requiring a separate decision variable and guards.
+- `branch(b2, XOR)` outgoing edges: Omits the path for when the invoice is compliant, violating the source statement `"if the invoice is compliant, the process continues"`.
+- `branch(b4, AND)`, `branch(b5, AND)`, `branch(b6, AND)`: Three disjoint AND splits are declared without any corresponding `converge()` nodes, breaking control-flow logic and failing to model the stated concurrency `"Simultaneously, the following steps are completed: Bill Client..."`.
+- `action(n16, "Client Notified of Payment")` placement: Chronologically misaligned; source ties notification directly to payment (`"The invoice is paid and the client is notified of the payment"`), but the model places it sequentially after `"Send Reminder"` on a detached parallel path (`n15 → n16`).
+- `action(n2, "Bill Client")`: Payload misrepresents the source step `"Bill for Purchased Goods/Services"`.
+- `action(n1, "start")`, `action(n13, "After Receiving Invoice")`, `action(n11, "Invoice Process Complete")`, `action(n12, "Bill Client Process Complete")`, `action(n17, "End Billing Process")`, `action(n20, "Continue Process")`, `action(n21, "Payment Process Complete")`, `action(n22, "Finalize Payment Process")`: These are hallucinated filler steps with no documentation in the source text.
+- `precedence(i1, n1)`: Introduces an undocumented initial step; source explicitly begins with `"Bill for Purchased Goods/Services"`, not a generic `"start"` action.

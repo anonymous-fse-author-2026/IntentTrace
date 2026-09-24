@@ -1,0 +1,6 @@
+
+
+- `action(n1, "start")`: Hallucinates a step. Source text states "the process begins by entering expenses," with no preceding activity.
+- `defines(v1, "Approval Check 1", {})` and `defines(v2, "Approval Check 2", {})`: Ranges are empty, failing to represent the source's binary decision space ("approved or disapproved").
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements on all outgoing edges. The source explicitly defines conditional routing ("If the request is not approved...", "...if the request is approved..."), which requires guards to faithfully implement the control-flow logic.
+- `precedence(b2, n7)`: Skips a required payout step. Source text specifies that after the second check, "if it is approved, the expenses can be paid out. Finally, after the expenses are paid out, the process comes to an end," but the model routes directly from the branch to the end action.

@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:less than or equal to 1000 (reason: The source explicitly defines the lower threshold condition, but the model relies on a generic boolean branch without retaining this specific value.)
+- [N2] Node-level omission: i15:Once again, evaluate the review decision. (reason: The source mandates a repeated review evaluation after approval, which is completely absent from the generated model.)
+- [N3] Omitted trace (input 0): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i3:greater than 1000 -> i4:the report should be reviewed. -> i11:evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N4] Omitted trace (input 1): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i3:greater than 1000 -> i4:the report should be reviewed. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N5] Omitted trace (input 2): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i3:greater than 1000 -> i4:the report should be reviewed. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i16:translate the receipts and then confirm them. -> i17:evaluate the receipts decision. -> i20:If they are rejected -> i13:edit the report.
+- [N6] Omitted trace (input 4): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i7:translation is required -> i8:proceed to translate the receipts. -> i11:evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N7] Omitted trace (input 5): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i7:translation is required -> i8:proceed to translate the receipts. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N8] Omitted trace (input 6): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i7:translation is required -> i8:proceed to translate the receipts. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i16:translate the receipts and then confirm them. -> i17:evaluate the receipts decision. -> i20:If they are rejected -> i13:edit the report.
+- [N9] Omitted trace (input 8): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i9:If not -> i10:confirm the receipts. -> i11:evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N10] Omitted trace (input 9): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i9:If not -> i10:confirm the receipts. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i12:If the report is rejected -> i13:edit the report.
+- [N11] Omitted trace (input 10): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, -> i5:less than or equal to 1000 -> i6:proceed to check if there is a need for translation. -> i9:If not -> i10:confirm the receipts. -> i11:evaluate the review decision. -> i14:If it is approved -> i15:Once again, evaluate the review decision. -> i16:translate the receipts and then confirm them. -> i17:evaluate the receipts decision. -> i20:If they are rejected -> i13:edit the report.
+- [N12] Within matched traces (3->0) omitted: i15:Once again, evaluate the review decision.
+- [N13] Within matched traces (7->1) omitted: i5:less than or equal to 1000
+- [N14] Within matched traces (7->1) omitted: i15:Once again, evaluate the review decision.
+- [N15] Within matched traces (11->2) omitted: i5:less than or equal to 1000
+- [N16] Within matched traces (11->2) omitted: i15:Once again, evaluate the review decision.
+
+Addition
+- [N17] Node-level addition: action(n17,"edit report") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N18] Within matched traces (3->0) added: init(i1)
+- [N19] Within matched traces (7->1) added: init(i1)
+- [N20] Within matched traces (11->2) added: init(i1)
+
+Permutation
+- [N21] Within matched traces (3->0) reordered: expected [i3:greater than 1000] but observed [action(n4,"expense greater than 1000?")] elsewhere; in its place the model has [branch(b1,XOR)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=2 and out=1. | DSL: action(n1,"Start ExpenseReport process")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n13` has 0 guards; exactly one is required.

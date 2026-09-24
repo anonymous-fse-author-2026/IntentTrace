@@ -1,0 +1,22 @@
+Root Cause Analysis
+
+Root Cause 1: The model hallucinates an extra initial action "Start the application process" that is not present in the source text.
+- Includes:
+    - [N2] Node-level addition: action(n1,"Start the application process") (reason: The specific action 'Start the application process' is not explicitly mentioned in the source text; the text only states that writing a letter is the first step.)
+    - [N5] Within matched traces (0->0) added: action(n1,"Start the application process")
+    - [N9] Within matched traces (1->0) added: action(n1,"Start the application process")
+    - [N11] Within matched traces (2->1) added: action(n1,"Start the application process")
+
+Root Cause 2: The model incorrectly reuses the source text identifier "i1" for its structural init node, causing it to be recognized as an unmapped addition across traces.
+- Includes:
+    - [N4] Within matched traces (0->0) added: init(i1)
+    - [N8] Within matched traces (1->0) added: init(i1)
+    - [N10] Within matched traces (2->1) added: init(i1)
+
+Root Cause 3: The model incorrectly places the second membership check ("check again...") exclusively on the "yes" path of the first check, distorting the intended control flow and resulting in mismatched traces, omitted end states, and improperly added branches.
+- Includes:
+    - [N1] Within matched traces (1->0) omitted: i7:the process ends
+    - [N3] Added trace (model 2): init(i1) -> action(n1,"Start the application process") -> action(n2,"write a letter") -> action(n3,"obtain the written letter") -> action(n4,"check if the applicant is a member") -> branch(b1,XOR) -> action(n6,"End the process") -> end(e1)
+    - [N6] Within matched traces (0->0) added: action(n7,"check again if the applicant is a member")
+    - [N7] Within matched traces (0->0) added: branch(b2,XOR)
+    - [N12] Within matched traces (2->1) added: action(n5,"obtain a second letter")

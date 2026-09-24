@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Misused node type for process initiation. Should be declared as `init(id)` to faithfully represent "To start the SSP process...", but is incorrectly modeled as a standard task.
+- `branch(b1)` / `precedence(b1, n9)`: Broken iterative control flow. Only an exit edge exists (`guard(b1, n9, v1 = 'No')`), with no precedence edge returning to `n7` for the alternative outcome, omitting the requirement that processing "should be repeated until all invoices are processed."
+- `branch(b2)` / `precedence(b2, n12)`: Broken iterative control flow. Only an exit edge exists (`guard(b2, n12, v2 = 'Yes')`), with no precedence edge returning to `n10` for the alternative outcome, omitting the requirement that clearing is "done every hour until the outbox is completely cleared".
+- `defines(v1, ...)` / `defines(v2, ...)`: Restrictive decision ranges. Ranges `{"No"}` and `{"Yes"}` contain only a single value, preventing valid XOR branching and contradicting the binary repetition conditions implied in "repeated until all invoices are processed" and "until the outbox is completely cleared".
+- `actor(a_default, "Default", [...])`: Faithless responsibility assignment. All nodes are assigned to a generic `"Default"` actor instead of the `"Data Entry Officer"` explicitly named in the source for allocation, processing, and outbox management.
+- `label(n1, n2, "Yes")` through `label(n5, n6, "Yes")`: Hallucinated edge labels. Imposes conditional "Yes" transitions on sequential steps, contradicting the source's unambiguous chronological sequence ("After that, check... Once confirmed, proceed... Once checked, move on...").

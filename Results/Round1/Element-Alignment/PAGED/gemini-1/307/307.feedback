@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i1:To begin the validation process, start by checking the received invoice for any errors. (reason: The specific action of checking the received invoice is not faithfully implemented.)
+- [N2] Node-level omission: i2:If any errors are found (reason: The specific condition text is not faithfully implemented by any guard.)
+- [N3] Node-level omission: i4:If no errors are found (reason: The specific condition text is not faithfully implemented by any guard.)
+- [N4] Node-level omission: i5:mark the "invoice entered correctly" box. (reason: The exact instruction to mark the specific box is not faithfully implemented.)
+- [N5] Node-level omission: i6:Simultaneously (reason: No parallel branch is modeled to handle concurrent execution.)
+- [N6] Node-level omission: i7:highlight any errors on the invoice entry form and keep a record of the DEO's performance. (reason: The precise action including the invoice entry form is not faithfully implemented.)
+- [N7] Node-level omission: i8:Once the "invoice entered correctly" box is ticked (reason: This temporal/conditional dependency is entirely missing from the model.)
+- [N8] Node-level omission: i9:the invoice is checked (reason: There is no action element capturing this step.)
+- [N9] Omitted trace (input 0): i1:To begin the validation process, start by checking the received invoice for any errors. -> i2:If any errors are found -> i6:Simultaneously -> i3:continue with the process. -> i10:the process ends.
+- [N10] Omitted trace (input 2): i1:To begin the validation process, start by checking the received invoice for any errors. -> i4:If no errors are found -> i5:mark the "invoice entered correctly" box. -> i8:Once the "invoice entered correctly" box is ticked -> i9:the invoice is checked -> i10:the process ends.
+- [N11] Within matched traces (1->0) omitted: i6:Simultaneously
+- [N12] Within matched traces (1->1) omitted: i6:Simultaneously
+
+Addition
+- [N13] Node-level addition: action(n1,"start") (reason: The action 'start' has no standalone source support and represents an unneeded split from the checking step.)
+- [N14] Within matched traces (1->0) added: action(n1,"start")
+- [N15] Within matched traces (1->1) added: action(n1,"start")
+- [N16] Within matched traces (1->1) added: action(n4,"mark invoice entered correctly")
+- [N17] Within matched traces (1->1) added: converge(c1)
+
+Mutation
+- [N18] Node-level mutation: element=action(n2,"check for errors"); source=i1:To begin the validation process, start by checking the received invoice for any errors.; reason=The action 'check for errors' drops the crucial object 'received invoice', altering the precision and target of the instruction.
+- [N19] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:If any errors are found; reason=The guard replaces the specific source condition with a generic variable 'v1 = \'Yes\''.
+- [N20] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:If no errors are found; reason=The guard replaces the specific source condition with a generic variable 'v1 = \'No\''.
+- [N21] Node-level mutation: element=action(n4,"mark invoice entered correctly"); source=i5:mark the "invoice entered correctly" box.; reason=The element drops the word 'box', altering the specific target of the action.
+- [N22] Node-level mutation: element=action(n5,"highlight errors on form and record DEO performance"); source=i7:highlight any errors on the invoice entry form and keep a record of the DEO's performance.; reason=The element drops 'invoice entry', reducing the precision of where the errors must be highlighted.

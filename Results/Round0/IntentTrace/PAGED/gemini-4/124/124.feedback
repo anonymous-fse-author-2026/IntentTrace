@@ -1,0 +1,43 @@
+Omission
+- [N1] Node-level omission: i6:At the same time (reason: The text requires a parallel split (AND gateway) for the two concurrent steps, but none is modeled.)
+- [N2] Node-level omission: i4:If the order is to be rejected, the process should continue. (reason: Although the model checks if the order is rejected, it provides no subsequent path or outcome for the rejected case.)
+- [N3] Omitted trace (input 1): i1:the first step is -> i2:look at the order -> i3:If the order is to be rejected -> i4:If the order is to be rejected, the process should continue. -> i6:At the same time -> i8:checking availability -> i9:If there is a backorder -> i10:availability needs to be checked again -> i11:and the process ends
+- [N4] Omitted trace (input 3): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted -> i6:At the same time -> i7:preparing the assembling order -> i13:assemble the bike -> i14:ship the product
+- [N5] Omitted trace (input 5): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted -> i6:At the same time -> i8:checking availability -> i12:If the item can be reserved -> i13:assemble the bike -> i14:ship the product
+- [N6] Within matched traces (4->0) omitted: i6:At the same time
+- [N7] Within matched traces (4->0) omitted: i8:checking availability
+- [N8] Within matched traces (0->1) omitted: i4:If the order is to be rejected, the process should continue.
+- [N9] Within matched traces (0->1) omitted: i6:At the same time
+- [N10] Within matched traces (4->2) omitted: i6:At the same time
+- [N11] Within matched traces (2->3) omitted: i4:If the order is to be rejected, the process should continue.
+- [N12] Within matched traces (2->3) omitted: i6:At the same time
+
+Addition
+- [N13] Node-level addition: action(n1,"start process") (reason: The model introduces an explicit 'start process' action step that is not described in the text.)
+- [N14] Node-level addition: action(n11,"end") (reason: The model introduces an explicit 'end' action step for the main flow, which is not supported by the source text.)
+- [N15] Within matched traces (4->0) added: action(n1,"start process")
+- [N16] Within matched traces (4->0) added: action(n3,"order rejected?")
+- [N17] Within matched traces (4->0) added: converge(c1)
+- [N18] Within matched traces (0->1) added: action(n1,"start process")
+- [N19] Within matched traces (0->1) added: converge(c1)
+- [N20] Within matched traces (0->1) added: action(n6,"backorder?")
+- [N21] Within matched traces (0->1) added: branch(b2,XOR)
+- [N22] Within matched traces (0->1) added: action(n11,"end")
+- [N23] Within matched traces (0->1) added: end(e2)
+- [N24] Within matched traces (4->2) added: action(n1,"start process")
+- [N25] Within matched traces (4->2) added: action(n3,"order rejected?")
+- [N26] Within matched traces (4->2) added: converge(c1)
+- [N27] Within matched traces (2->3) added: action(n1,"start process")
+- [N28] Within matched traces (2->3) added: converge(c1)
+- [N29] Within matched traces (2->3) added: action(n6,"backorder?")
+- [N30] Within matched traces (2->3) added: action(n11,"end")
+- [N31] Within matched traces (2->3) added: end(e2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Accepted']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Accepted'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'Accepted'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Accepted'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Accepted'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

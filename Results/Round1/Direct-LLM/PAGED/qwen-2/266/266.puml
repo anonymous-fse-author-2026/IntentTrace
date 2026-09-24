@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_cust_web| Customer and Web Design Team
+|a_web_team| Web Design Team
+|a_content| Content Team
+|a_sys| System
+|a_sys|
+start
+|a_cust_web|
+:Informational meeting that lasts half a day;
+|a_sys|
+:v1: Is meeting successful? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+|a_cust_web|
+:Create storyboard;
+|a_sys|
+:v_sb: Storyboard result ({Successful, Not successful}); <<objectSignal>>
+if () then ([v_sb = 'Successful'])
+split
+|a_content|
+:Prepare content;
+-> Site ready;
+split again
+|a_web_team|
+:Design site;
+-> Site ready;
+end split
+:Develop site;
+:Review site;
+:Approve site;
+:v3: Approve site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Rejected'])
+:Rebuild site;
+:v_rb: Rebuild status ({Complete, Rejected again}); <<objectSignal>>
+if () then ([v_rb = 'Rejected again'])
+:Rebuild site again;
+|a_sys|
+stop
+|a_web_team|
+else ([v_rb = 'Complete'])
+|a_sys|
+stop
+|a_web_team|
+endif
+else ([v3 = 'Approved'])
+|a_sys|
+stop
+|a_web_team|
+endif
+|a_sys|
+else ([v_sb = 'Not successful'])
+stop
+endif
+else ([v1 = 'No'])
+stop
+endif
+@enduml

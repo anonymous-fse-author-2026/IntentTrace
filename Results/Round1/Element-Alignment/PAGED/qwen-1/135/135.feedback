@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i11:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material. (reason: Although action:n5 attempts to address this unit, it severely mutates the instruction. No element in the model faithfully implements the required pre-shipping communication step.)
+- [N2] Within matched traces (1->0) omitted: i8:After checking the shipment status again, if it is okay,
+
+Addition
+- [N3] Added trace (model 2): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n13,"Communicate shipment problems") -> action(n16,"End") -> end(e3)
+- [N4] Added trace (model 4): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> action(n15,"End") -> end(e2)
+- [N5] Added trace (model 5): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n13,"Communicate shipment problems") -> action(n16,"End") -> end(e3)
+- [N6] Within matched traces (0->3) added: action(n5,"Any previous shipment problems")
+- [N7] Within matched traces (0->3) added: branch(b1,XOR)
+- [N8] Within matched traces (0->3) added: converge(c1)
+- [N9] Within matched traces (1->0) added: action(n5,"Any previous shipment problems")
+- [N10] Within matched traces (2->1) added: action(n15,"End")
+- [N11] Within matched traces (2->1) added: end(e2)
+
+Mutation
+- [N12] Node-level mutation: element=action(n5,"Any previous shipment problems"); source=i11:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.; reason=The source explicitly instructs to 'communicate them', but the model reduces this to a static noun phrase 'Any previous shipment problems', dropping the required action verb and fundamentally altering the step's intent.
+
+Permutation
+- [N13] Within matched traces (2->1) reordered: expected [i11:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.] but observed [action(n5,"Any previous shipment problems")] elsewhere; in its place the model has [branch(b3,XOR)]

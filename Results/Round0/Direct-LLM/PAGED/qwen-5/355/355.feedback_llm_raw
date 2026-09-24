@@ -1,0 +1,5 @@
+
+
+- `branch(b3, XOR)`: Defined as an exclusive choice but has three outgoing edges (`c1`, `c2`, `c3`) with duplicate guards (`v3 = 'No'` applied to both `c2` and `c3`), violating XOR semantics and misrepresenting the decision logic (SMC4).
+- `converge(c2)` & `converge(c3)`: Require synchronous completion of `b7` (from `n10`) and `b3` (from the status check). Since `b3` only executes for *new* customers, registered customers deadlock at these nodes instead of proceeding to "enter their data" and "check availability", breaking the intended process flow (SMC4, SMC5).
+- `converge(c1)`: Joins mutually exclusive paths (`b2` from morale check and `b3` from status check) using a standard converge node, implying an AND-synchronization. This contradicts the source's logical OR condition ("payment morale is bad or if they are an end customer") and will deadlock any case where only one condition is met (SMC4).

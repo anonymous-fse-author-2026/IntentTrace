@@ -1,0 +1,187 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Request information about organization"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Schedule an appointment"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Proceed with Control and measurement"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Revisit after two weeks"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is the customer in Intake stage?",
+      "R_X": [
+        "Intake",
+        "Potential client"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Has target been reached?",
+      "R_X": [
+        "Target reached",
+        "Dissatisfied"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_customer",
+      "name": "Customer",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "b1",
+        "n5",
+        "e1",
+        "n7",
+        "b2",
+        "e2",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"Intake\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v1 = \"Potential client\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e2",
+      "condition": "v2 = \"Target reached\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e3",
+      "condition": "v2 = \"Dissatisfied\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, the customer should first request information about the organization and then schedule an appointment."
+    },
+    {
+      "id": "i2",
+      "content": "If the customer is in the \"Intake\" stage,"
+    },
+    {
+      "id": "i3",
+      "content": "they should proceed with \"Control and measurement\"."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the customer is a \"Potential client\", the process will come to an end."
+    },
+    {
+      "id": "i5",
+      "content": "After the \"Control and measurement\" stage, the customer should revisit after two weeks."
+    },
+    {
+      "id": "i6",
+      "content": "If the target has been reached, the process will come to an end."
+    },
+    {
+      "id": "i7",
+      "content": "However, if the customer is dissatisfied or for any other reason, the process will also come to an end."
+    }
+  ]
+}

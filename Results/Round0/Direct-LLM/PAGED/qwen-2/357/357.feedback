@@ -1,0 +1,10 @@
+- `action(n1, "start the process")`: Hallucinated step violating SMC1; the source explicitly states the first step is to "visit the Amazon.com Marketplace" with no preceding action.
+- `action(n3, "did you find the book?")`: Omits the documented behavior "search for a book" (SMC1) and misrepresents the narrative flow by framing a sequential task as an interrogative state (SMC2).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Violates SMC4; the source describes a mandatory linear sequence ("After finding... they can add...", "Once the used copy is added, they can proceed...") with no choices or splits, yet the model introduces two exclusive gateways.
+- `defines(v1, "did you find the book?", {})` and `defines(v2, "can you proceed with purchase?", {})`: Violates SMC6; hallucinated decision variables with empty value ranges, contradicting a source text that contains no conditional logic or decision parameters.
+- `action(n5, "can you proceed with purchase?")`: Violates SMC2; distorts the source directive "they can proceed to complete the purchase" by converting a direct procedural step into a decision checkpoint feeding an unnecessary branch.
+- `action(n8, "end of process")`, `action(n9, "contact support or end process")`, `end(e2)`, `end(e3)`: Violates SMC1 & SMC5; hallucinates alternative termination paths and a "contact support" step, whereas the source specifies a single, unbranching conclusion: "Finally, the process ends."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

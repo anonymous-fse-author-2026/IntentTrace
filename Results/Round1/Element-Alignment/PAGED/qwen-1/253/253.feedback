@@ -1,0 +1,12 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. However, if the "Inventory Level is above the minimum", then the process ends. -> i4:"Inventory level is at or below the minimum" -> i5:proceed to Create Purchase Order -> i8:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i10:If the Purchase Order is approved, then reserve the funds for the purchase. On the other hand, if the Purchase Order is rejected, then rework the order. -> i13:Purchase Order is rejected -> i14:rework the order -> i16:In case the order needs to be reworked, review the Purchase Order again. -> i10:If the Purchase Order is approved, then reserve the funds for the purchase. On the other hand, if the Purchase Order is rejected, then rework the order.
+
+Mutation
+- [N2] Node-level mutation: element=action(n2,"Inventory level at or below the minimum?"); source=i2:followed by checking the Inventory Level.; reason=Element replaces the generic instruction 'checking the Inventory Level' with a specific conditional question format ('Inventory level at or below the minimum?'), introducing qualifiers absent from this source unit.
+- [N3] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i4:"Inventory level is at or below the minimum"; reason=Guard uses an abstract boolean check 'v1 = "Yes"' instead of preserving the explicit threshold condition 'at or below the minimum'.
+- [N4] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i6:"Inventory Level is above the minimum"; reason=Guard uses an abstract boolean check 'v1 = "No"' instead of preserving the explicit condition 'above the minimum'.
+- [N5] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i11:Purchase Order is approved; reason=Guard uses an abstract boolean check 'v2 = "Yes"' instead of the explicit 'approved' status.
+- [N6] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i13:Purchase Order is rejected; reason=Guard uses an abstract boolean check 'v2 = "No"' instead of the explicit 'rejected' status.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Purchase Order approved?")

@@ -1,0 +1,32 @@
+Omission
+- [N1] Node-level omission: i3:we should continue the process (reason: The explicit continuation instruction following the FMA condition is not faithfully implemented; it is replaced by a mutated action that invents an unrequested capture step.)
+
+Addition
+- [N2] Node-level addition: label(n3,c1,"No  continue") (reason: Contains a garbled label ('No  continue') with no corresponding source text or implied semantic value.)
+- [N3] Node-level addition: action(n1,"start the process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N4] Node-level addition: action(n5,"capture: data from Jamendo") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Node-level addition: action(n15,"end: process completed") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n4,"can we capture data from Jamendo?") -> branch(b2,XOR) -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n13,"download: the sample") -> action(n15,"end: process completed") -> end(e2)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n4,"can we capture data from Jamendo?") -> branch(b2,XOR) -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n14,"end: no additional samples") -> end(e1)
+- [N8] Within matched traces (0->0) added: action(n1,"start the process")
+- [N9] Within matched traces (0->0) added: action(n15,"end: process completed")
+- [N10] Within matched traces (0->0) added: end(e2)
+- [N11] Within matched traces (1->1) added: action(n1,"start the process")
+- [N12] Within matched traces (2->2) added: action(n1,"start the process")
+- [N13] Within matched traces (2->2) added: action(n2,"can we capture data from FMA?")
+- [N14] Within matched traces (2->2) added: branch(b1,XOR)
+- [N15] Within matched traces (2->2) added: action(n15,"end: process completed")
+- [N16] Within matched traces (2->2) added: end(e2)
+- [N17] Within matched traces (3->3) added: action(n1,"start the process")
+- [N18] Within matched traces (3->3) added: action(n2,"can we capture data from FMA?")
+- [N19] Within matched traces (3->3) added: branch(b1,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'") -> guard(b1,n4,"v1 = 'No'"); source=i2:if we can capture data from FMA; reason=Replaces the explicit textual condition with abstract variable placeholders (v1 = 'Yes'/'No'), completely dropping the actual decision criteria.
+- [N21] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'") -> guard(b2,c1,"v2 = 'No  continue'"); source=i4:Otherwise, if we can capture data from Jamendo; reason=Replaces the explicit condition with abstract variables and a malformed string ('No  continue'), distorting the decision logic.
+- [N22] Node-level mutation: element=guard(b3,n8,"v3 = 'Yes'") -> guard(b3,n9,"v3 = 'No  check next'"); source=i6:If the genre is missing, we should continue the process.; reason=Drops the explicit condition text in favor of generic variable checks (v3), altering the payload.
+- [N23] Node-level mutation: element=guard(b4,n10,"v4 = 'Yes'") -> guard(b4,n11,"v4 = 'No'"); source=i7:if there are no additional genres, we should continue the process.; reason=Substitutes the source condition with abstract variable assignments, losing the original decision context.
+- [N24] Node-level mutation: element=guard(b5,n13,"v5 = 'Yes'"); source=i8:If the sample is missing, we should continue the process.; reason=Abstracts the explicit condition into a generic variable check (v5), failing to preserve the source logic.
+- [N25] Node-level mutation: element=guard(b5,n14,"v5 = 'No'"); source=i10:if there are no additional samples, the process ends.; reason=Abstracts the explicit termination condition into a generic variable check (v5), dropping the actual criterion.
+- [N26] Node-level mutation: element=action(n3,"capture: data from FMA"); source=i3:we should continue the process; reason=Distorts the expected positive outcome by inventing a specific 'capture: data from FMA' step instead of executing the instructed continuation.
+- [N27] Node-level mutation: element=action(n10,"get: music ids for the next genre"); source=i7:if there are no additional genres, we should continue the process.; reason=Alters the positive branch outcome by inventing a 'get: music ids for the next genre' step that contradicts the source's simple continuation instruction.

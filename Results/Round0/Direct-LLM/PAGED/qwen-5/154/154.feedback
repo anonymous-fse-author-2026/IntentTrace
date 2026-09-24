@@ -1,0 +1,9 @@
+- `converge(c1)` and `precedence(c1, n11)`: Incorrectly routes the high-inventory path to `n11` ("received the order"). The source explicitly ties ordering and receiving to the low-inventory scenario: "if the inventory level is low... Once Mac counts each item individually... places the order(s). After receiving the order, the process comes to an end." The high-inventory path should not merge before order reception.
+- `branch(b1, XOR)`: Lacks `guard` statements to enforce the explicit decision criteria stated in the source: "If the inventory level is high... However, if the inventory level is low...".
+- `defines(v1, "is inventory level high", {})`: Specifies an empty value range `{}`, failing to capture the conditional state space (high/low or true/false) required by the source description.
+- `actor(a_default, "Default", [i1, n1, n2, n3, n4, b1, n5, n6, n7, n8, n9, n10, n11, n12, e1, c1])`: Maps all nodes to a generic actor, contradicting the source which explicitly assigns responsibilities to "Mac": "Mac compares the inventory levels...", "Mac doesn't need to manually count...", "Mac needs to manually count...", and "Mac selects suppliers... and places the order(s)".
+- `action(n1, "start inventory check process")`: Introduces a step not documented in the source, which begins directly with "To begin the process, the inventory needs to be checked."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

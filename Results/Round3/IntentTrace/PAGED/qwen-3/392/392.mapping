@@ -1,0 +1,255 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n_user"
+      ],
+      "verbatim_texts": [
+        "Initially, there is a User Task."
+      ],
+      "justification": "Captures the implicit process start and the first defined step."
+    },
+    {
+      "refs": [
+        "branch:b_choice"
+      ],
+      "verbatim_texts": [
+        "If the task is \"Service Task 1\", then the process should continue.",
+        "If it is \"Service Task 2\", the process should also continue."
+      ],
+      "justification": "One structural decision node supports both conditional branches described in the source."
+    },
+    {
+      "refs": [
+        "guard:b_choice->n_cont",
+        "action:n_cont"
+      ],
+      "verbatim_texts": [
+        "If the task is \"Service Task 1\", then the process should continue."
+      ],
+      "justification": "Many-to-one mapping: the merged guard and continuation action faithfully cover the first continuing condition."
+    },
+    {
+      "refs": [
+        "guard:b_choice->n_cont",
+        "action:n_cont"
+      ],
+      "verbatim_texts": [
+        "If it is \"Service Task 2\", the process should also continue."
+      ],
+      "justification": "Many-to-one mapping: the same merged guard and action also cover the second continuing condition without altering behaviour."
+    },
+    {
+      "refs": [
+        "guard:b_choice->e_end"
+      ],
+      "verbatim_texts": [
+        "However, if it is \"Service Task 3\", then the process will come to an end."
+      ],
+      "justification": "Correctly captures the third condition and routes directly to a termination point."
+    },
+    {
+      "refs": [
+        "guard:b_manual->e_end",
+        "guard:b_manual->e_end_2"
+      ],
+      "verbatim_texts": [
+        "After that, if there is a Manual Task, the process will end."
+      ],
+      "justification": "Models the final conditional check. The added false branch leading to the same end state is harmless structural plumbing that preserves the described behaviour."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n_user",
+      "kind": "action",
+      "node_id": "n_user",
+      "gateway": "",
+      "string_value": "User Task",
+      "aliases": [
+        "action:n_user",
+        "n_user"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_user: User Task"
+    },
+    {
+      "ref_id": "branch:b_choice",
+      "kind": "branch",
+      "node_id": "b_choice",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_choice",
+        "b_choice"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_choice (XOR)"
+    },
+    {
+      "ref_id": "action:n_cont",
+      "kind": "action",
+      "node_id": "n_cont",
+      "gateway": "",
+      "string_value": "Continue Process",
+      "aliases": [
+        "action:n_cont",
+        "n_cont"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_cont: Continue Process"
+    },
+    {
+      "ref_id": "branch:b_manual",
+      "kind": "branch",
+      "node_id": "b_manual",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_manual",
+        "b_manual"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_manual (XOR)"
+    },
+    {
+      "ref_id": "end:e_end",
+      "kind": "end",
+      "node_id": "e_end",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_end",
+        "e_end"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_end"
+    },
+    {
+      "ref_id": "end:e_end_2",
+      "kind": "end",
+      "node_id": "e_end_2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_end_2",
+        "e_end_2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_end_2"
+    },
+    {
+      "ref_id": "guard:b_choice->n_cont",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v_task = 'Service Task 1' or v_task = 'Service Task 2'\"",
+      "aliases": [
+        "guard:b_choice->n_cont"
+      ],
+      "from": "b_choice",
+      "to": "n_cont",
+      "source_line": "guard b_choice->n_cont: \"v_task = 'Service Task 1' or v_task = 'Service Task 2'\"",
+      "guard": {
+        "from": "b_choice",
+        "to": "n_cont",
+        "condition": "\"v_task = 'Service Task 1' or v_task = 'Service Task 2'\""
+      }
+    },
+    {
+      "ref_id": "guard:b_choice->e_end",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v_task = 'Service Task 3'\"",
+      "aliases": [
+        "guard:b_choice->e_end"
+      ],
+      "from": "b_choice",
+      "to": "e_end",
+      "source_line": "guard b_choice->e_end: \"v_task = 'Service Task 3'\"",
+      "guard": {
+        "from": "b_choice",
+        "to": "e_end",
+        "condition": "\"v_task = 'Service Task 3'\""
+      }
+    },
+    {
+      "ref_id": "guard:b_manual->e_end",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v_manual = true\"",
+      "aliases": [
+        "guard:b_manual->e_end"
+      ],
+      "from": "b_manual",
+      "to": "e_end",
+      "source_line": "guard b_manual->e_end: \"v_manual = true\"",
+      "guard": {
+        "from": "b_manual",
+        "to": "e_end",
+        "condition": "\"v_manual = true\""
+      }
+    },
+    {
+      "ref_id": "guard:b_manual->e_end_2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v_manual = false\"",
+      "aliases": [
+        "guard:b_manual->e_end_2"
+      ],
+      "from": "b_manual",
+      "to": "e_end_2",
+      "source_line": "guard b_manual->e_end_2: \"v_manual = false\"",
+      "guard": {
+        "from": "b_manual",
+        "to": "e_end_2",
+        "condition": "\"v_manual = false\""
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 6,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 10,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 7,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 7,
+    "total_mappable_targets": 11,
+    "input_text_length": 307,
+    "element_count": 11
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

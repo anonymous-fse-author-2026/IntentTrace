@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:items returned to store;
+:v1: items returned to store ({Yes, No}); <<objectSignal>>
+if () then (["v1 = 'Yes'"])
+:customer returns items to store;
+else (["v1 = 'No'"])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to the original contract;
+:v2: order is complete and all items were returned ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case (["v2 = 'Complete'"])
+:order is complete and all items were returned;
+:end process;
+stop
+case (["v2 = 'Incomplete'"])
+:order is incomplete and items are missing;
+:email customer to inform them;
+:v7: customer returns missing items ({Yes, No}); <<objectSignal>>
+if () then (["v7 = 'Yes'"])
+:customer returns missing items;
+else (["v7 = 'No'"])
+:customer does not return missing items;
+endif
+case (["v2 = 'Damaged'"])
+:email customer to inform of damage and additional charges;
+:temporarily take damaged items out of inventory;
+:v4: items packed for existing order ({Packed, Stored}); <<objectSignal>>
+if () then (["v4 = 'Packed'"])
+:items packed for existing order;
+else (["v4 = 'Stored'"])
+:items stored for future orders;
+endif
+:email customer with replacement charges;
+:v6: items are repaired and added into inventory ({Yes, No}); <<objectSignal>>
+if () then (["v6 = 'Yes'"])
+:items are repaired and added into inventory;
+else (["v6 = 'No'"])
+:items can't be repaired and are discarded;
+:email customer with replacement charges;
+endif
+split
+:items packed for existing order;
+split again
+:items stored for future orders;
+end split
+:end process;
+stop
+endswitch
+@enduml

@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends. (reason: The entire second mailbox verification loop is completely absent from the model.)
+- [N2] Node-level omission: i26:Hand the letter to Charles and add the new member to the register. (reason: No action element implements the dual task of handing the letter to Charles while simultaneously adding the member to the register.)
+- [N3] Node-level omission: i27:Prepare an invoice for the new members and continue the process. (reason: Invoice preparation and the explicit instruction to continue the process are missing.)
+- [N4] Node-level omission: i28:Ask Charles to write the amount in the register and write the fee amount to the register. (reason: While the request to Charles is partially captured elsewhere, the specific second action 'write the fee amount to the register' is not implemented.)
+- [N5] Within matched traces (1->1) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N6] Within matched traces (1->1) omitted: i20:Simultaneously
+- [N7] Within matched traces (1->1) omitted: i21:calculate the fee
+- [N8] Within matched traces (2->3) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N9] Within matched traces (2->3) omitted: i19:After stamping "new Member" on the letter and writing the date on it, write the data.
+- [N10] Within matched traces (2->3) omitted: i20:Simultaneously
+- [N11] Within matched traces (3->5) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N12] Within matched traces (3->5) omitted: i20:Simultaneously
+- [N13] Within matched traces (3->5) omitted: i21:calculate the fee
+- [N14] Within matched traces (4->7) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N15] Within matched traces (4->7) omitted: i19:After stamping "new Member" on the letter and writing the date on it, write the data.
+- [N16] Within matched traces (4->7) omitted: i20:Simultaneously
+- [N17] Within matched traces (5->4) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N18] Within matched traces (6->8) omitted: i7:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+
+Addition
+- [N19] Node-level addition: action(n13,"calculate fee") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N20] Node-level addition: action(n18,"end process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N21] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n6,"add incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n13,"calculate fee") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N22] Added trace (model 6): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n7,"make telephone call to sender") -> action(n8,"complete data by adding incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n13,"calculate fee") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N23] Within matched traces (5->4) added: action(n10,"check if applicant becomes a member")
+- [N24] Within matched traces (5->4) added: action(n18,"end process")
+- [N25] Within matched traces (5->4) added: end(e3)
+- [N26] Within matched traces (6->8) added: action(n10,"check if applicant becomes a member")
+- [N27] Within matched traces (6->8) added: action(n18,"end process")
+- [N28] Within matched traces (6->8) added: end(e3)
+
+Mutation
+- [N29] Node-level mutation: element=action(n1,"start the process"); source=i1:To become a member, start the process at 8:00 am; reason=Drops the target context ('To become a member') and the mandatory start time ('at 8:00 am'), fundamentally altering the step's qualification.
+- [N30] Node-level mutation: element=action(n12,"write data"); source=i19:After stamping "new Member" on the letter and writing the date on it, write the data.; reason=Condenses the source step by stripping the explicit temporal precondition ('After stamping... on it'), violating the strict granularity requirement and losing sequencing context.
+- [N31] Node-level mutation: element=action(n14,"hand letter to Charles and ask to write amount in register"); source=i22:hand the letter to Charles -> i23:Ask Charles to write the amount in the register.; reason=Merges two distinct input units into a single action node, distorting the original step granularity and separating the physical hand-off from the subsequent instruction.

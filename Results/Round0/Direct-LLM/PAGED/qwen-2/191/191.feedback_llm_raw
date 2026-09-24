@@ -1,0 +1,5 @@
+
+
+- `guard(b1, n3, ...), guard(b1, n4, ...), guard(b2, n7, ...), guard(b2, n8, ...)`: Missing guard statements for branches `b1` and `b2`. The source explicitly dictates conditional routing (“If there is no fee.../if there is a fee...”, “If it is approved.../if rejected...”), but the model omits the required guards to constrain the XOR splits, violating SMC1 and SMC4.
+- `defines(v1, ...) & defines(v2, ...)`: Variable value ranges are declared as empty `{}`. The source describes binary decision contexts (fee/no fee, approved/rejected), so the ranges must specify corresponding discrete values to faithfully represent the decision space, violating SMC6.
+- `action(n5, "End process after post-seminar request registration") & action(n10, "End process after rejection notification or post-seminar registration")`: These nodes incorrectly model termination as explicit task steps. The source states the process simply “will come to an end” immediately after certain activities, making these intermediate actions hallucinated and semantically unfaithful to the described flow, violating SMC1 and SMC2.

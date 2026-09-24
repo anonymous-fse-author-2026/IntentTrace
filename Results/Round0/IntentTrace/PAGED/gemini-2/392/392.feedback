@@ -1,0 +1,15 @@
+Addition
+- [N1] Node-level addition: action(n10,"Continue Process if no Manual Task") (reason: The source text does not describe an explicit step to continue if there is no manual task, nor a subsequent generic end step.)
+- [N2] Node-level addition: action(n11,"End Process") (reason: The source text does not describe an explicit step to continue if there is no manual task, nor a subsequent generic end step.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N5] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N6] Within matched traces (1->2) added: branch(b1,XOR)
+- [N7] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N8] Within matched traces (2->4) added: branch(b1,XOR)
+- [N9] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+- [N10] Within matched traces (2->4) added: branch(b2,XOR)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n10` has 0 guards; exactly one is required.

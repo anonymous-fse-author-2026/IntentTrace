@@ -1,0 +1,7 @@
+- `action(n6, "Confirm shipping address")`: Lacks any outgoing `precedence` statement, creating a dead-end that prevents the "New shipping address" path from reaching subsequent steps, contradicting "...if a 'New shipping address' has been entered, also continue with the process."
+- `action(n5, "Confirm shipping address")` and `action(n6, "Confirm shipping address")`: Incorrectly duplicate the confirmation step across both branches. The source specifies confirmation occurs after the branch decision ("Once that is done, confirm the shipping address..."), indicating a single post-convergence step rather than two branch-specific actions.
+- `branch(b1, XOR)` with `precedence(b1, n5)` and `precedence(b1, n6)`: Omits a `converge` node or joining precedences to merge both paths before `action(n7, "Select shipping speed")`, violating the intended control flow where both address selections proceed identically to the next stage.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"Confirm shipping address")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"Confirm shipping address")

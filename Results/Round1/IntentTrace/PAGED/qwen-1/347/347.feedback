@@ -1,0 +1,29 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i18:If the PO is created, it needs to be reviewed. If the PO is rejected, it needs to be reworked. If the PO is approved, it is printed and released in the system. If the PO needs to be reworked, it needs to be created again.
+
+Addition
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> branch(b1,XOR) -> action(n6,"generate Above Minimum Report") -> converge(c_pre_n7) -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> converge(c1) -> action(n8,"create Purchase Orders POs") -> action(n17,"PO needs to be reviewed") -> branch(b3,XOR) -> action(n13,"print and release PO in system") -> branch(b4,AND) -> action(n18,"Simultaneously reserve funds for released POs") -> action(n24,"Receive Packing Slip") -> converge(c2) -> action(n28,"Receive Invoice") -> action(n32,"Proceed to Three way match") -> action(n43,"Release funds") -> action(n44,"Issue payment") -> action(n45,"Resupply Cycle is complete process ends") -> end(e2)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> branch(b1,XOR) -> action(n6,"generate Above Minimum Report") -> converge(c_pre_n7) -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> converge(c1) -> action(n8,"create Purchase Orders POs") -> action(n17,"PO needs to be reviewed") -> branch(b3,XOR) -> action(n13,"print and release PO in system") -> branch(b4,AND) -> action(n19,"Mail POs to supplier") -> action(n36,"Receive Inventory") -> action(n39,"Receive Packing Slip") -> converge(c2) -> action(n28,"Receive Invoice") -> action(n32,"Proceed to Three way match") -> action(n43,"Release funds") -> action(n44,"Issue payment") -> action(n45,"Resupply Cycle is complete process ends") -> end(e2)
+- [N4] Added trace (model 5): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> branch(b1,XOR) -> action(n6,"generate Above Minimum Report") -> converge(c_pre_n7) -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> action(n9,"process ends") -> end(e1)
+- [N5] Within matched traces (0->2) added: init(i1)
+- [N6] Within matched traces (0->2) added: converge(c_pre_n7)
+- [N7] Within matched traces (0->2) added: action(n7,"Does report indicate inventory equal or below minimum")
+- [N8] Within matched traces (1->2) added: init(i1)
+- [N9] Within matched traces (2->0) added: init(i1)
+- [N10] Within matched traces (2->0) added: branch(b3,XOR)
+- [N11] Within matched traces (3->1) added: init(i1)
+- [N12] Within matched traces (3->1) added: branch(b3,XOR)
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:is below or equal to the minimum; reason=The source specifies a quantitative comparison against a minimum threshold, but the model replaces it with a generic boolean assignment 'v1 = "Yes"'.
+- [N14] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:is greater than the minimum; reason=The source specifies a quantitative comparison against a minimum threshold, but the model replaces it with a generic boolean assignment 'v1 = "No"'.
+- [N15] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:indicates that the inventory is equal to or below the minimum; reason=The source condition is replaced by a generic 'v2 = "Yes"', losing the actual inventory state check.
+- [N16] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i8:indicates that the inventory is above the minimum; reason=The source condition is replaced by a generic 'v2 = "No"', losing the actual inventory state check.
+- [N17] Node-level mutation: element=guard(b3,n11,"v3 = 'Yes'"); source=i9:If the PO is rejected; reason=The explicit rejection status is replaced by a generic 'v3 = "Yes"'.
+- [N18] Node-level mutation: element=guard(b3,n13,"v3 = 'No'"); source=i10:If the PO is approved; reason=The explicit approval status is replaced by a generic 'v3 = "No"'.
+
+Permutation
+- [N19] Within matched traces (0->2) reordered: expected [i4:is greater than the minimum] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"generate Equal to or below minimum Report")]
+- [N20] Within matched traces (1->2) reordered: expected [i3:is below or equal to the minimum] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"generate Equal to or below minimum Report")]
+- [N21] Within matched traces (2->0) reordered: expected [i3:is below or equal to the minimum] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"generate Equal to or below minimum Report")]
+- [N22] Within matched traces (3->1) reordered: expected [i3:is below or equal to the minimum] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n5,"generate Equal to or below minimum Report")]

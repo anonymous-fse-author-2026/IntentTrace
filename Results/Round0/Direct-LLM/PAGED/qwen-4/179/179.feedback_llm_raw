@@ -1,0 +1,9 @@
+
+
+- `branch(b1)` through `branch(b6)`: Missing `guard()` statements for explicit source conditions like `"If the process model is 'NOT OK'"`, `"If there are any issues"`, and `"If the project is accepted"`, leaving the XOR decision logic semantically undefined.
+- `branch(b7, AND)`: Introduces a parallel split after `action(n9)`, but the source description outlines a strictly sequential workflow with no concurrent or parallel activities.
+- `defines(v1,...)` through `defines(v6,...)`: Specify empty ranges `{}` rather than capturing the source's implied binary/nominal choices (e.g., OK/NOT OK, accepted/not), failing to faithfully represent the decision space.
+- `action(n7, "continue with the process")`, `action(n8, "continue with the process")`, `action(n9, "continue with the process")`: Three identical actions hallucinate structure; the source only mentions `"continue with it"` once as a single progression step per condition.
+- `action(n15, "continue with the process according to assigned roles")` and `action(n16, "continue with the process according to assigned roles")`: Unnecessary duplication from `branch(b4)` contradicts the source's singular instruction to `"continue with the process and perform work according to your assigned role."`
+- Paths through `branch(b5)`, `action(n21)`, `branch(b6)`, and `action(n24)`: Incorrectly linearize an iterative cycle; the source states `"If not, continue working according to your role. If the project is accepted, present it again"`, implying repeated checks until success, but the model forces a direct merge into `converge(c3)`.
+- `converge(c1)`, `converge(c2)`, and `converge(c3)`: Arbitrarily synchronize divergent paths (e.g., `converge(c1)` merges outputs from `branch(b7)` and `action(n10)`), distorting the exact chronological sequence described in the source.

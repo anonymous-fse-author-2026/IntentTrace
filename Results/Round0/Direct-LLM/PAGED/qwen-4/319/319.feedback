@@ -1,0 +1,10 @@
+- `action(n1, "start procedure")`: Hallucinates an initial step; the description explicitly states "the process begins by choosing a book."
+- `action(n7, "end procedure")` and `action(n11, "end procedure")`: Hallucinates redundant steps; the source describes proceeding directly to "end the process" or "complete the process" after selection, without explicit procedural end actions.
+- `branch(b2, AND)`: Incorrectly represents control flow as concurrent; the source describes a mutually exclusive or inclusive choice ("either... or... Alternatively...") among three options.
+- `precedence(b2, n4)` and `precedence(b2, n9)`: Omits the documented immediate option to "see a list of new copies" after choosing a book; `b2` only routes to book details and used copies.
+- `action(n8, "view: new copies")` → `converge(c1)`: Incorrectly restricts viewing new copies to a post-details path and merges it with the used-copies flow, forcing execution of `n10`; the source treats new copies as an independent initial alternative and does not mandate evaluation/selection afterward.
+- `action(n3, "do you want to view book details")` and `action(n5, "do you want to select a copy or view new copies?")`: Misrepresents decision prompts as executable process steps rather than routing logic or branch conditions, distorting the intended chronological flow.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

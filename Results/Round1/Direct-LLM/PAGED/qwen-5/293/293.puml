@@ -1,0 +1,89 @@
+@startuml
+!theme plain
+|a_RM| Recruitment Manager
+|a_NLM| Next Level Manager
+|a_CHR| Client HR
+|a_TSHRC| TS HR Coordinator
+|a_Candidate| Candidate
+|a_RM|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:no more candidates?;
+:v1: no more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:re-advertise position;
+:resume recruitment cycle;
+else ([v1 = 'No'])
+:terms and conditions need sorting?;
+:v2: terms and conditions need sorting? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+|a_Candidate|
+:candidate accepted voluntary redundancy?;
+:v3: candidate accepted voluntary redundancy? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:conduct further investigation;
+else ([v3 = 'No'])
+:proceed with recruitment process;
+endif
+|a_RM|
+else ([v2 = 'No'])
+:proceed with recruitment process;
+endif
+:send Appointment Approval form;
+|a_NLM|
+:receive Appointment Approval form by next level manager;
+:approver is existing client employee?;
+:v4: approver is existing client employee? ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:form not authorized by external resource;
+:end process;
+stop
+else ([v4 = 'Yes'])
+:form approved?;
+:v5: form approved? ({No, Yes}); <<objectSignal>>
+if () then ([v5 = 'No'])
+:form not approved by approver;
+:end process;
+stop
+else ([v5 = 'Yes'])
+|a_CHR|
+:recruitment manager sends form and other documentation;
+:client HR receives form and documentation;
+:HR scans and records position in GovSource;
+:any variations?;
+:v6: any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:prepare complete business case;
+else ([v6 = 'No'])
+:continue process;
+endif
+|a_RM|
+:carry forward Appointment Approval;
+:position requires medical assessment?;
+:v7: position requires medical assessment? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:medical assessment applicable at 12 percent rate;
+:arrange and complete medical assessment within 21 days;
+else ([v7 = 'No'])
+:medical assessment not necessary;
+endif
+|a_TSHRC|
+:TS HR coordinator informs recruitment manager;
+|a_RM|
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+:medical assessment satisfactory?;
+:v8: medical assessment satisfactory? ({No, Yes}); <<objectSignal>>
+if () then ([v8 = 'No'])
+:contact next candidate on shortlist;
+:end process;
+stop
+else ([v8 = 'Yes'])
+:recruitment manager makes formal verbal offer of employment to candidate;
+endif
+|a_NLM|
+endif
+endif
+|a_RM|
+endif
+@enduml

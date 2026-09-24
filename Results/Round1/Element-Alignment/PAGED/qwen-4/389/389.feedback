@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i3:they need to extend BPMN/mocks (reason: No element faithfully implements this step; the sole candidate (n4) introduces unsourced context, leaving the unit uncovered.)
+- [N2] Node-level omission: i7:If not, they should continue the process (reason: No element faithfully implements this step; the sole candidate (n9) introduces unsourced context, leaving the unit uncovered.)
+- [N3] Node-level omission: i9:they need to check if the level satisfies the project requirements again (reason: No element faithfully implements this step; both candidates (n11, n12) drop the required qualifier 'again', leaving the unit uncovered.)
+- [N4] Omitted trace (input 1): i1:the first step is to understand the BPMN Model -> i2:they should write a failing test -> i3:they need to extend BPMN/mocks -> i4:Once the test is green -> i5:they should check if the level satisfies the project requirements -> i7:If not, they should continue the process
+- [N5] Omitted trace (input 2): i1:the first step is to understand the BPMN Model -> i2:they should write a failing test -> i3:they need to extend BPMN/mocks -> i8:If the test is not green, they should upgrade the test level -> i9:they need to check if the level satisfies the project requirements again -> i6:If it does, the process ends
+
+Addition
+- [N6] Node-level addition: guard(b2,n9,"v2 = false") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N7] Within matched traces (3->1) added: action(n5,"is the test green")
+- [N8] Within matched traces (3->1) added: branch(b1,XOR)
+- [N9] Within matched traces (3->2) added: action(n5,"is the test green")
+- [N10] Within matched traces (3->2) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=action(n4,"extend BPMN mocks to make the test pass"); source=i3:they need to extend BPMN/mocks; reason=Invents the qualifier 'to make the test pass', which is not present in the input element and alters the instruction's granularity.
+- [N12] Node-level mutation: element=action(n9,"continue the process (loop back to write a failing test)"); source=i7:If not, they should continue the process; reason=Invents the explanatory qualifier '(loop back to write a failing test)', which is not supported by the source unit.
+- [N13] Node-level mutation: element=action(n11,"check if the level satisfies the project requirements") -> action(n12,"does the level satisfy the project requirements"); source=i9:they need to check if the level satisfies the project requirements again; reason=Both candidates drop the temporal qualifier 'again', failing to reproduce the source instruction faithfully.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"write a failing test")

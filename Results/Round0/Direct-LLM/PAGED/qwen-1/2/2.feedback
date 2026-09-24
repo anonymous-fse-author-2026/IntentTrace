@@ -1,0 +1,12 @@
+- actor(a_default, "Default", [...] ): Assigns every process node to a single generic participant. Source explicitly distinguishes responsibilities among the recruitment manager, next level manager, client HR, TS HR coordinator, and HR representative (violates SMC7).
+- branch(b8, XOR) combined with guard(b8, n31, v8 = 'Yes'), guard(b8, n32, v8 = 'Yes'), guard(b8, n33, v8 = 'Yes'): Uses an exclusive-choice gateway to route three parallel document-sending actions under the same condition. Source states the commencement pack and letter are sent "Simultaneously", which requires an AND gateway or concurrent precedence, not an XOR split (violates SMC4).
+- guard(b9, n38, v9 = 'No') leading to action(n38, "end TS recruitment") and end(e4): Terminates the process immediately when the rate is not 40%. Source states "Otherwise, if the candidate accepts, the process continues", completely omitting the candidate acceptance check and creating a premature termination path (violates SMC1, SMC5).
+- guard(b8, c4, v8 = 'No') routing to converge(c4) -> action(n28, "contact next candidate on shortlist"): Redirects declined verbal offers to shortlist the next candidate. Source explicitly states "If the candidate declines, the process continues", altering the intended progression into an unintended loop (violates SMC1).
+- guard(b3, n12, v3 = 'No') terminating at action(n12, "end TS recruitment") and end(e2): Treats an external approver as a definitive stop condition. Source states "they may not authorize the form", indicating a probabilistic/conditional risk rather than a deterministic process end (violates SMC2, SMC4).
+- Omitted timing constraint across the medical assessment branch (b6, n23, n24): The model contains no variable, label, or node capturing duration. Source explicitly notes that medical assessments "can take up to 21 days to arrange and complete" (violates SMC1).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"advise unsuccessful candidates")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b8` has overlapping guards at state [v8=Yes].

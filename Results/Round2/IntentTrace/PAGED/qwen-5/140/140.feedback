@@ -1,0 +1,25 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i6:However, if the purchase status is approved, reserve the funds. -> i8:Reserve the funds and send the order to the supplier. -> i9:At the same time, complete the following steps: receive the packing slip and receive the invoice. -> i10:Receive the packing slip and then record it. -> i12:Record the packing slip and the process ends.
+- [N2] Omitted trace (input 3): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i6:However, if the purchase status is approved, reserve the funds. -> i8:Reserve the funds and send the order to the supplier. -> i9:At the same time, complete the following steps: receive the packing slip and receive the invoice. -> i11:Receive the invoice and then record it. -> i13:Record the invoice and the process ends.
+- [N3] Within matched traces (1->1) omitted: i7:Rework the purchase order and then review it.
+- [N4] Within matched traces (1->2) omitted: i7:Rework the purchase order and then review it.
+
+Addition
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (1->1) added: init(i1)
+- [N7] Within matched traces (1->1) added: action(n_reserve,"Reserve funds")
+- [N8] Within matched traces (1->1) added: action(n_send,"Send order to supplier")
+- [N9] Within matched traces (1->1) added: branch(b_par,AND)
+- [N10] Within matched traces (1->1) added: action(n_recv_ps,"Receive packing slip")
+- [N11] Within matched traces (1->1) added: action(n_rec_ps,"Record packing slip")
+- [N12] Within matched traces (1->1) added: end(e_ps)
+- [N13] Within matched traces (1->2) added: init(i1)
+- [N14] Within matched traces (1->2) added: action(n_reserve,"Reserve funds")
+- [N15] Within matched traces (1->2) added: action(n_send,"Send order to supplier")
+- [N16] Within matched traces (1->2) added: branch(b_par,AND)
+- [N17] Within matched traces (1->2) added: action(n_recv_inv,"Receive invoice")
+- [N18] Within matched traces (1->2) added: action(n_rec_inv,"Record invoice")
+- [N19] Within matched traces (1->2) added: end(e_inv)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Review purchase order")

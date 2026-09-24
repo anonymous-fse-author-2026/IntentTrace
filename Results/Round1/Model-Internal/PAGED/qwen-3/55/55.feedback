@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i3:Once the invoice is confirmed by the client (reason: The source condition is not faithfully implemented; the model attempts to cover it with a mutated guard and an added check action, leaving the original specification uncovered per strict standards.)
+- [N2] Node-level omission: i5:Once the client has confirmed the service information (reason: The source condition is not faithfully implemented; replaced by a mutated guard and added check action, leaving the original specification uncovered.)
+
+Addition
+- [N3] Node-level addition: action(n3,"check if client confirmed the invoice") (reason: Invents an explicit verification step not present in the source, which only specifies a temporal/conditional trigger rather than an active check task.)
+- [N4] Node-level addition: action(n5,"check if client confirmed the service information") (reason: Invents an explicit verification step for service information confirmation, adding procedural granularity absent from the text.)
+- [N5] Node-level addition: guard(b1,n9,"v1 = 'No'") (reason: Introduces a negative branch condition and an early termination path that completely lack any supporting text in the source description.)
+- [N6] Node-level addition: action(n9,"End process") (reason: Introduces a negative branch condition and an early termination path that completely lack any supporting text in the source description.)
+- [N7] Node-level addition: guard(b2,n10,"v2 = 'No'") (reason: Introduces a second negative branch condition and early termination path with no basis in the provided description.)
+- [N8] Node-level addition: action(n10,"End process") (reason: Introduces a second negative branch condition and early termination path with no basis in the provided description.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start receiving the invoice") -> action(n2,"ask client to confirm the invoice") -> action(n3,"check if client confirmed the invoice") -> branch(b1,XOR) -> action(n4,"confirm service information with client") -> action(n5,"check if client confirmed the service information") -> branch(b2,XOR) -> action(n10,"End process") -> end(e3)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start receiving the invoice") -> action(n2,"ask client to confirm the invoice") -> action(n3,"check if client confirmed the invoice") -> branch(b1,XOR) -> action(n9,"End process") -> end(e2)
+- [N11] Within matched traces (0->0) added: action(n3,"check if client confirmed the invoice")
+- [N12] Within matched traces (0->0) added: action(n5,"check if client confirmed the service information")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:Once the invoice is confirmed by the client; reason=Replaces the explicit natural-language condition with an abstract variable assignment (v1 = 'Yes'), dropping the specific subject and contextual requirement from the source.
+- [N14] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i5:Once the client has confirmed the service information; reason=Substitutes the detailed conditional phrasing with a generic boolean variable check (v2 = 'Yes'), distorting the original specification and losing domain-specific context.

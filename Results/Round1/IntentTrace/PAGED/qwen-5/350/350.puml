@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start, please provide the userdata for flickr.;
+:v_login: login result ({success, fail}); <<objectSignal>>
+if () then ([v_login = 'success'])
+:the process will end.;
+stop
+else ([v_login = 'fail'])
+:if the login fails, we will continue with the process;
+:v_opt1: first retry option ({try, abort}); <<objectSignal>>
+if () then ([v_opt1 = 'try'])
+:please provide the userdata for flickr.;
+:v_dec1: after first retry decision ({end, continue}); <<objectSignal>>
+if () then ([v_dec1 = 'continue'])
+:v_opt2: second retry option ({try, abort}); <<objectSignal>>
+if () then ([v_opt2 = 'try'])
+:please provide the userdata for flickr.;
+stop
+else ([v_opt2 = 'abort'])
+:if you decide to abort, the process will end.;
+stop
+endif
+else ([v_dec1 = 'end'])
+stop
+endif
+else ([v_opt1 = 'abort'])
+:if you choose to abort, the process will end.;
+stop
+endif
+endif
+@enduml

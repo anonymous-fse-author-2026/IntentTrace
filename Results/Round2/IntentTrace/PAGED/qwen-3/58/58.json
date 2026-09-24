@@ -1,0 +1,572 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Prioritize orders based on when received"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check customer information"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Check payment history"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Continue with the process"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Verify customer status"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Send declining message to private customer"
+    },
+    {
+      "id": "e_private",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Create new customer"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Check product availability"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Produce missing goods and send decline message, thus ending the process"
+    },
+    {
+      "id": "e_no_prod",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Continue with the process and send order confirmation"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Inform stock department"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Inform accounting department"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Pack goods and write invoice"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Goods ready for delivery and invoice sent"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Deliver goods and invoice to customer"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Close order"
+    },
+    {
+      "id": "e_paid",
+      "type": "end"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "Check quantity of reminders"
+    },
+    {
+      "id": "b7",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Continue with the process"
+    },
+    {
+      "id": "e_cont",
+      "type": "end"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Activate donning process"
+    },
+    {
+      "id": "e_donning",
+      "type": "end"
+    },
+    {
+      "id": "e_bad_payment",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_cust_exist",
+      "name": "Customer exists",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v_pay_good",
+      "name": "Payment history good",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v_cust_type",
+      "name": "Customer type",
+      "R_X": [
+        "private",
+        "wholesaler"
+      ]
+    },
+    {
+      "X": "v_prod_avail",
+      "name": "Products available",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v_pay_received",
+      "name": "Payment received",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v_reminders",
+      "name": "Number of reminders",
+      "R_X": [
+        "[0-10]"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "b2",
+        "n4",
+        "n5",
+        "b3",
+        "n6",
+        "e_private",
+        "n7",
+        "n8",
+        "b4",
+        "n9",
+        "e_no_prod",
+        "n10",
+        "b5",
+        "n11",
+        "n12",
+        "c1",
+        "n13",
+        "n14",
+        "n15",
+        "b6",
+        "n16",
+        "e_paid",
+        "n17",
+        "b7",
+        "n18",
+        "e_cont",
+        "n19",
+        "e_donning",
+        "e_bad_payment"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e_bad_payment"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e_private"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e_no_prod"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "e_paid"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "b7"
+    },
+    {
+      "type": "precedence",
+      "A": "b7",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "b7",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "e_cont"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "e_donning"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v_cust_exist = true"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v_cust_exist = false"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n4",
+      "condition": "v_pay_good = true"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e_bad_payment",
+      "condition": "v_pay_good = false"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n6",
+      "condition": "v_cust_type = \"private\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n7",
+      "condition": "v_cust_type = \"wholesaler\""
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n9",
+      "condition": "v_prod_avail = false"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n10",
+      "condition": "v_prod_avail = true"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "n16",
+      "condition": "v_pay_received = true"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "n17",
+      "condition": "v_pay_received = false"
+    },
+    {
+      "type": "guard",
+      "A": "b7",
+      "B": "n18",
+      "condition": "v_reminders < 3"
+    },
+    {
+      "type": "guard",
+      "A": "b7",
+      "B": "n19",
+      "condition": "v_reminders >= 3"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process, we first prioritize orders based on when they were received."
+    },
+    {
+      "id": "i2",
+      "content": "Then, we proceed to check the customer's information."
+    },
+    {
+      "id": "i3",
+      "content": "If the customer exists, we move on to checking their payment history."
+    },
+    {
+      "id": "i4",
+      "content": "On the other hand, if the customer does not exist, we need to verify their customer status."
+    },
+    {
+      "id": "i5",
+      "content": "If the payment history is good, we can continue with the process."
+    },
+    {
+      "id": "i7",
+      "content": "However, if the customer is a private customer, we send them a declining message."
+    },
+    {
+      "id": "i8",
+      "content": "In the case of a wholesaler, we create a new customer and check for product availability."
+    },
+    {
+      "id": "i9",
+      "content": "If the products are not available, we produce the missing goods and send a decline message, thus ending the process."
+    },
+    {
+      "id": "i11",
+      "content": "If the products are available, we continue with the process and send an order confirmation."
+    },
+    {
+      "id": "i12",
+      "content": "Simultaneously, we inform the stock and accounting departments."
+    },
+    {
+      "id": "i13",
+      "content": "After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent."
+    },
+    {
+      "id": "i14",
+      "content": "Once the order is closed, we deliver the goods and invoice to the customer."
+    },
+    {
+      "id": "i15",
+      "content": "If payment has been received, we close the order."
+    },
+    {
+      "id": "i16",
+      "content": "However, if there is an outstanding payment, we check the quantity of reminders."
+    },
+    {
+      "id": "i17",
+      "content": "If there are less than three reminders, we continue with the process."
+    },
+    {
+      "id": "i18",
+      "content": "On the other hand, if there are more than three reminders, we activate the donning process, thus ending the process."
+    }
+  ]
+}

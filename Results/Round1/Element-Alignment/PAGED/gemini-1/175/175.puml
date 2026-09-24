@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({Customer, Delivery}); <<objectSignal>>
+if () then ([v1 == "Customer"])
+:customer returns items to store;
+else ([v1 == "Delivery"])
+:delivery crew picks up items at event site;
+endif
+:items are counted and compared to the original contract;
+:order is complete and all items were returned;
+:v2: order is complete and all items were returned ({No, Damaged}); <<objectSignal>>
+if () then ([v2 == "No"])
+:order is incomplete and items are missing;
+:v3: order is incomplete and items are missing ({Continue, Returns Missing, Does Not Return}); <<objectSignal>>
+switch ()
+case ([v3 == "Continue"])
+case ([v3 == "Returns Missing"])
+:customer returns missing items;
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+split again
+:items stored for future orders;
+end split
+:end process;
+stop
+case ([v3 == "Does Not Return"])
+:customer does not return missing items;
+endswitch
+else ([v2 == "Damaged"])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+split again
+:items stored for future orders;
+end split
+endif
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: items are repaired and added into inventory ({Discarded, Email}); <<objectSignal>>
+if () then ([v6 == "Discarded"])
+:items can't be repaired and are discarded;
+stop
+else ([v6 == "Email"])
+:email customer with replacement charges;
+:end process;
+stop
+endif
+@enduml

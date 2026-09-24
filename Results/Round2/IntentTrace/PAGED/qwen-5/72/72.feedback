@@ -1,0 +1,24 @@
+Omission
+- [N1] Within matched traces (4->6) omitted: i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice.
+
+Addition
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n6,"Proceed with compliant or non-compliant check") -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> action(n8,"Resolve non-compliance via phone call") -> action(n11,"Pay the invoice and notify client of payment") -> action(n16,"Resolve payment discrepancy if client is unsatisfied") -> branch(b4,XOR) -> end(e4)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n6,"Proceed with compliant or non-compliant check") -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> action(n11,"Pay the invoice and notify client of payment") -> action(n16,"Resolve payment discrepancy if client is unsatisfied") -> branch(b4,XOR) -> action(n17,"Continue process if client is satisfied") -> action(n18,"End of process: Payment completed and client notified") -> end(e4)
+- [N4] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n6,"Proceed with compliant or non-compliant check") -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> action(n11,"Pay the invoice and notify client of payment") -> action(n16,"Resolve payment discrepancy if client is unsatisfied") -> branch(b4,XOR) -> end(e4)
+- [N5] Added trace (model 7): init(i1) -> action(n12,"Bill Client") -> action(n13,"Is there no response from client?") -> branch(b3,XOR) -> end(e3)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (1->1) added: init(i1)
+- [N8] Within matched traces (1->1) added: action(n3,"Is the invoice incomplete?")
+- [N9] Within matched traces (1->1) added: branch(b1,XOR)
+- [N10] Within matched traces (2->1) added: init(i1)
+- [N11] Within matched traces (2->1) added: action(n3,"Is the invoice incomplete?")
+- [N12] Within matched traces (2->1) added: branch(b1,XOR)
+- [N13] Within matched traces (3->3) added: init(i1)
+- [N14] Within matched traces (3->3) added: action(n3,"Is the invoice incomplete?")
+- [N15] Within matched traces (3->3) added: branch(b1,XOR)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=2 and out=1. | DSL: action(n11,"Pay the invoice and notify client of payment")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=No].

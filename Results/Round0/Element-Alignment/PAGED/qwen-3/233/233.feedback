@@ -1,0 +1,13 @@
+Addition
+- [N1] Node-level addition: action(n1,"start") (reason: Content 'start' has no corresponding phrasing in the source text; the process begins directly with the conditional check.)
+- [N2] Node-level addition: label(n1,n2,"Yes No") (reason: Label content 'Yes No' is not present in the source text and adds unsupported transition annotations.)
+- [N3] Node-level addition: label(n3,n4,"Yes No") (reason: Label content 'Yes No' is not present in the source text and adds unsupported transition annotations.)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

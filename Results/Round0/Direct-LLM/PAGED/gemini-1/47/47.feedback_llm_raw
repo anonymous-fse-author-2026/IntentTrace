@@ -1,0 +1,7 @@
+- action(n11, "Return invoice"): lacks any outgoing precedence edge, causing a process deadlock.
+- action(n23, "Resolve non-compliance"): lacks any outgoing precedence edge, causing a process deadlock.
+- action(n28, "Resolve payment discrepancy"): lacks any outgoing precedence edge, causing a process deadlock.
+- action(n29, "Continue process"): lacks any outgoing precedence edge, causing a process deadlock.
+- precedence(n6, c2): routes a compliant invoice directly to converge(c2), completely bypassing "Pay invoice" (n18), which contradicts the text stating the process continues and the invoice is paid.
+- guard(b7, n18, v7 = 'No'): restricts "Pay invoice" (n18) to execute only when the issue does not require mail back, contradicting the text "After that, the invoice is paid" which applies as a subsequent step.
+- guard(b8, n23, v8 = 'Yes'): incorrectly routes a positive response from "Did client respond" to "Resolve non-compliance" (n23), hallucinating behavior instead of representing the text "If the invoice is returned, non-compliance is resolved".

@@ -1,0 +1,41 @@
+Omission
+- [N1] Node-level omission: i20:Hand the letter to Charles and add the new member to the register. (reason: Described post-termination transfer and registration steps are absent from the model.)
+- [N2] Node-level omission: i21:Prepare an invoice for the new members and continue the process. (reason: Invoicing and process resumption steps are missing.)
+- [N3] Node-level omission: i22:write the fee amount to the register. (reason: Final instruction to log the fee is not captured in any element.)
+- [N4] Omitted trace (input 0): i1:start the process at 8:00 am -> i2:empty the mailbox -> i3:Check if the mailbox is empty, -> i5:If it is empty, the process ends.
+- [N5] Within matched traces (4->0) omitted: i20:Hand the letter to Charles and add the new member to the register.
+- [N6] Within matched traces (4->0) omitted: i21:Prepare an invoice for the new members and continue the process.
+- [N7] Within matched traces (4->0) omitted: i22:write the fee amount to the register.
+- [N8] Within matched traces (5->4) omitted: i20:Hand the letter to Charles and add the new member to the register.
+- [N9] Within matched traces (5->4) omitted: i21:Prepare an invoice for the new members and continue the process.
+- [N10] Within matched traces (5->4) omitted: i22:write the fee amount to the register.
+
+Addition
+- [N11] Node-level addition: guard(b4,c1,"v4 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n10,"add incoming mail number date and record it in letter book") -> converge(c2) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> converge(c1) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n17,"stamp new Member on letter and write date on letter") -> action(n20,"write the data") -> action(n21,"calculate fee") -> action(n22,"hand letter to Charles") -> action(n23,"ask Charles to write amount in register") -> action(n24,"print membership card and send to new member") -> action(n25,"end process") -> end(e3)
+- [N13] Added trace (model 6): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n11,"make a telephone call to the sender") -> action(n12,"add incoming mail number date and record it in letter book") -> converge(c2) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> converge(c1) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n17,"stamp new Member on letter and write date on letter") -> action(n20,"write the data") -> action(n21,"calculate fee") -> action(n22,"hand letter to Charles") -> action(n23,"ask Charles to write amount in register") -> action(n24,"print membership card and send to new member") -> action(n25,"end process") -> end(e3)
+- [N14] Added trace (model 7): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"is the mailbox empty?") -> branch(b1,XOR) -> action(n4,"continue the process") -> action(n6,"is the mailbox empty?") -> branch(b2,XOR) -> action(n7,"continue the process") -> action(n9,"is the information complete?") -> branch(b3,XOR) -> action(n11,"make a telephone call to the sender") -> action(n12,"add incoming mail number date and record it in letter book") -> converge(c2) -> action(n13,"is it Wednesday evening?") -> branch(b4,XOR) -> converge(c1) -> action(n16,"has applicant become a member?") -> branch(b5,XOR) -> action(n18,"write to applicant and inform decision") -> end(e5)
+- [N15] Within matched traces (1->3) added: action(n9,"is the information complete?")
+- [N16] Within matched traces (1->3) added: branch(b3,XOR)
+- [N17] Within matched traces (1->3) added: action(n10,"add incoming mail number date and record it in letter book")
+- [N18] Within matched traces (1->3) added: converge(c2)
+- [N19] Within matched traces (1->3) added: action(n13,"is it Wednesday evening?")
+- [N20] Within matched traces (1->3) added: branch(b4,XOR)
+- [N21] Within matched traces (1->3) added: converge(c1)
+- [N22] Within matched traces (1->3) added: action(n16,"has applicant become a member?")
+- [N23] Within matched traces (1->3) added: branch(b5,XOR)
+- [N24] Within matched traces (1->3) added: action(n18,"write to applicant and inform decision")
+- [N25] Within matched traces (1->3) added: end(e5)
+- [N26] Within matched traces (2->1) added: converge(c2)
+- [N27] Within matched traces (2->1) added: converge(c1)
+- [N28] Within matched traces (3->5) added: converge(c2)
+- [N29] Within matched traces (3->5) added: converge(c1)
+- [N30] Within matched traces (4->0) added: converge(c2)
+- [N31] Within matched traces (4->0) added: converge(c1)
+- [N32] Within matched traces (5->4) added: converge(c2)
+- [N33] Within matched traces (5->4) added: converge(c1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"end process"); action(n8,"end process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1, e2 | DSL: end(e1); end(e2)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"end process"); action(n8,"end process")

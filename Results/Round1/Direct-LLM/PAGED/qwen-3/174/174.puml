@@ -1,0 +1,52 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Bill for Purchased Goods/Services;
+repeat :;
+:Receive Invoice;
+:v1: Invoice Complete? ({No, Yes}); <<objectSignal>>
+backward:Return Invoice;
+repeat while () is ([v1 = 'No']) not ([v1 = 'Yes'])
+:v2: Invoice Compliant? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Conduct Further Checks;
+:Issue Can Be Resolved With Phone Call?;
+:v3: Issue Can Be Resolved With Phone Call? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Resolve Non-Compliance;
+-> Yes;
+else ([v3 = 'No'])
+:Return Invoice;
+endif
+else ([v2 = 'Yes'])
+->;
+endif
+:Pay Invoice;
+split
+:v4: Invoice Returned After Payment? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Resolve Non-Compliance;
+-> Non compliance resolved;
+else ([v4 = 'No'])
+->;
+endif
+split again
+:Bill Client;
+:v5: Client Responded? ({No, Yes}); <<objectSignal>>
+if () then ([v5 = 'No'])
+:Wait 10 Days;
+:Send Reminder;
+else ([v5 = 'Yes'])
+:v6: Client Satisfied? ({No, Yes}); <<objectSignal>>
+if () then ([v6 = 'No'])
+:Resolve Payment Discrepancy;
+else ([v6 = 'Yes'])
+->;
+endif
+endif
+end split
+:Notify Client Of Payment;
+stop
+@enduml

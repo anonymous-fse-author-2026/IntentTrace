@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and missing `guard` statements: The model splits control flow without any `guard(b1, <target>, <condition>)` declarations. The source explicitly dictates routing based on test outcomes ("If the test results indicate that everything is functioning properly... However, if the test results indicate that there are still issues..."), requiring guards to faithfully capture the conditional logic.
+- `defines(v1, "Is system functioning properly after test", {})`: Specifies an empty value range `{}`. The range must enumerate the valid decision outcomes (e.g., `{true, false}` or `{"Pass", "Fail"}`) to align with the binary test result condition described in the source.
+- `action(n5, "Is system functioning properly after test")`: Incorrectly formalizes a decision criterion as a procedural step rather than a branch condition. Evaluating the test result should directly govern the routing at `b1` via a guard, not appear as a distinct action node interleaved between `n4` and `b1`.
+- `precedence(b1, n6)` and `precedence(b1, n7)`: Lack `guard` or `label` definitions linking the source phrases ("functioning properly" vs. "still issues") to their respective targets (`n6`/`e1` vs. `n7`/`n8`/`e2`), omitting the documented conditional branching behavior.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

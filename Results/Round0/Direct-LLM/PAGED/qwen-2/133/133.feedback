@@ -1,0 +1,7 @@
+- `defines(v1, "Is the report accepted", {})`: The value range is empty `{}`, violating SMC6. The source text explicitly establishes a binary outcome ("If the report is accepted... if the report is rejected"), requiring a populated range such as `{true, false}` or `{'Accepted', 'Rejected'}`.
+- `label(n3, n4, "Rejected")`: The label is incorrectly attached to the sequential edge preceding the decision point. Per SMC2/SMC4, it must annotate the outgoing edge of `branch(b1)` leading to the rejection path (`n8`), as the source ties the "rejected" outcome directly to the branching condition, not to the flow between review and decision.
+- Missing `guard` statements for `branch(b1)`: The model omits `guard` constraints for the XOR branch's outgoing edges. Per SMC4, the source's conditional routing ("If the report is accepted... if the report is rejected") necessitates explicit guards linking `b1` to its successor nodes based on the state of variable `v1`.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

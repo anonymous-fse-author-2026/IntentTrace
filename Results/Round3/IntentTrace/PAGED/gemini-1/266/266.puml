@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_customer_web_design| Customer and Web Design Team
+|a_web_design| Web Design Team
+|a_default|
+start
+|a_customer_web_design|
+:Start with an informational meeting that lasts half a day, involving the customer and the web design team.;
+|a_default|
+:v1: informational meeting ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process;
+stop
+else ([v1 = 'Yes'])
+|a_customer_web_design|
+:Work on the storyboard which takes a full day and involves the customer and the web design team.;
+|a_default|
+split
+:Prepare the content;
+split again
+|a_web_design|
+:Site design which takes 10 days and is done by the web design team;
+end split
+:Site development which takes 2 days and is also done by the web design team.;
+|a_default|
+:Go through a review process that lasts 1 day.;
+:Approval stage which takes half a day.;
+:v3: approval complete ({Complete, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Complete'])
+:The process ends.;
+stop
+else ([v3 = 'Rejected'])
+:Rebuild the site which takes 3 days.;
+:v5: rebuild complete ({Complete, Rejected again}); <<objectSignal>>
+if () then ([v5 = 'Complete'])
+:The process ends.;
+else ([v5 = 'Rejected again'])
+:Rebuild the site again which also takes 3 days.;
+endif
+stop
+endif
+endif
+@enduml

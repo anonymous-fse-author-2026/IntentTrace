@@ -1,0 +1,8 @@
+- `defines(v1, "Is shipping address saved or new", {})` and `defines(v2, "Is shipping address correct", {})`: Violates SMC6; empty value ranges `{}` fail to capture the explicit options implied by the source text ("Saved shipping address", "New shipping address", and correct/incorrect status).
+- `branch(b2, XOR)` and `precedence(b2, n10)`: Violates SMC1 and SMC4; hallucinates an exclusive split and alternative termination path not present in the description, which specifies a linear flow: "proceed to select the desired shipping speed. Finally, once the shipping speed has been chosen, the process comes to an end."
+- `action(n9, "End")`, `action(n10, "End")`, `end(e1)`, and `end(e2)`: Violates SMC1 and SMC5; models two distinct endpoints and redundant "End" actions, contradicting the source's single stated conclusion ("the process comes to an end").
+- `branch(b1, XOR)`: Violates SMC4; lacks `guard` constraints to enforce the explicit routing conditions stated in the source ("If a 'Saved shipping address' has been selected... if a 'New shipping address' has been entered...").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

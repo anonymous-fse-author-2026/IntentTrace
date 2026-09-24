@@ -1,0 +1,6 @@
+
+
+- `branch(b1)` and `branch(b2)`: Missing `guard` statements to enforce decision logic. The source explicitly specifies conditions ("If the inventory level is at or below the minimum...", "If the purchase status is rejected/approved..."), but the model leaves both XOR splits unguarded.
+- `action(n3, "inventory at or below minimum")` and `action(n7, "purchase status approved")`: Incorrectly modeled as actionable steps. The source treats these as conditional evaluations directing control flow, not discrete tasks; they should be encoded as edge guards on the outgoing branches.
+- `defines(v1, ...)` and `defines(v2, ...)`: Both declare empty ranges `{}`. The source implies binary or comparative outcomes for inventory and status checks; the ranges must specify valid values (e.g., `{true, false}`) to faithfully reflect the decision value space.
+- `action(n5, "process ends")`, `action(n16, "process ends")`, and `action(n17, "process ends")`: Semantically redundant. The source describes termination as a concluding state ("the process ends"), not a performable operational step that precedes `end` nodes.

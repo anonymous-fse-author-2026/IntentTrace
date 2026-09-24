@@ -1,0 +1,19 @@
+Addition
+- [N1] Node-level addition: label(n2,n3,"Abort") (reason: The label 'Abort' on this connection lacks any supporting text in the source; abort decisions are explicitly placed later in the flow.)
+- [N2] Node-level addition: action(n1,"Start process for flickr login") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n5,"v1 = 'Abort'"); source=i4:However, if the login fails, we will continue with the process. -> i6:If you want to try again; reason=The guard value is set to 'Abort', but the source indicates this path follows a failed login and offers a retry option rather than aborting.
+- [N4] Node-level mutation: element=guard(b2,n7,"v2 = 'Provide userdata'"); source=i8:if you choose to abort; reason=The guard payload incorrectly specifies 'Provide userdata' instead of reflecting the abort condition stated in the source.
+- [N5] Node-level mutation: element=guard(b3,n9,"v3 = 'Abort'"); source=i10:If you still want to try again; reason=The guard payload incorrectly specifies 'Abort' instead of reflecting the retry condition stated in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Abort']`. | Variable `v2` has an invalid range `['Provide userdata']`. | Variable `v3` has an invalid range `['Abort']`. | Variable `v4` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Abort'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'Abort'` on `b3 -> n9` uses undefined variable `v3`. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n6 | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Abort'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'Abort'` on `b3 -> n9` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

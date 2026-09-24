@@ -1,0 +1,7 @@
+
+
+- `actor(a_default, "Default", [...])`: Assigns all nodes to "Default", contradicting the source which explicitly states "For the Admin Office". (SMC7)
+- `action(n1, "start")`, `action(n6, "end process")`: Hallucinates steps not documented in the source; the text explicitly says "the first step is to check the SLA" and concludes immediately after "This marks the end of the process." (SMC1)
+- Missing `guard(...)` declarations: Omits conditions for the outgoing edges of `branch(b1, XOR)`, failing to capture the source's explicit routing rules: "If the SLA details are not known from memory, then it is necessary to look them up" and "if the SLA details are known from memory, the process can continue without interruption". (SMC4)
+- `defines(v1, "are SLA details known from memory", {})`: Declares an empty range `{}`, while the source implies a binary decision (known vs. not known) that requires a populated value space per SMC6.
+- `action(n3, "are SLA details known from memory")`: Misrepresents a conditional check as a sequential action step preceding the branch, rather than modeling it as the logical condition driving the split. (SMC2)

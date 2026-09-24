@@ -1,0 +1,64 @@
+Omission
+- [N1] Node-level omission: i9:further checks are conducted (reason: Not faithfully implemented; the closest element mutated the meaning to resolving rather than checking.)
+- [N2] Node-level omission: i10:If the issue can be resolved with a phone call (reason: The specific branching condition for resolving via phone call was entirely omitted.)
+- [N3] Node-level omission: i11:non-compliance is resolved. (reason: Not faithfully implemented; the model's closest action improperly absorbed an unmodeled condition into its name.)
+- [N4] Node-level omission: i12:if the issue requires mail back (reason: Not faithfully implemented; the model replaced this condition with a generic compliance check.)
+- [N5] Node-level omission: i13:the invoice is returned. (reason: Not faithfully implemented; the model's closest action improperly absorbed an unmodeled condition.)
+- [N6] Omitted trace (input 2): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i14:the invoice is paid -> i17:the client is notified of the payment. -> i19:If the client is unsatisfied -> i20:payment discrepancy is resolved.
+- [N7] Omitted trace (input 4): i1:the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues. -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved. -> i15:Bill Client -> i16:a period of 10 days is given -> i18:a reminder is sent
+- [N8] Within matched traces (3->1) omitted: i7:the process continues.
+- [N9] Within matched traces (3->1) omitted: i10:If the issue can be resolved with a phone call
+- [N10] Within matched traces (3->1) omitted: i17:the client is notified of the payment.
+- [N11] Within matched traces (3->1) omitted: i21:if the client is satisfied
+- [N12] Within matched traces (1->2) omitted: i7:the process continues.
+- [N13] Within matched traces (1->2) omitted: i9:further checks are conducted
+- [N14] Within matched traces (7->3) omitted: i6:if the invoice is complete
+- [N15] Within matched traces (7->3) omitted: i7:the process continues.
+- [N16] Within matched traces (5->4) omitted: i6:if the invoice is complete
+- [N17] Within matched traces (5->4) omitted: i7:the process continues.
+- [N18] Within matched traces (5->4) omitted: i14:the invoice is paid
+- [N19] Within matched traces (6->5) omitted: i6:if the invoice is complete
+- [N20] Within matched traces (6->5) omitted: i7:the process continues.
+- [N21] Within matched traces (6->5) omitted: i14:the invoice is paid
+
+Addition
+- [N22] Node-level addition: action(n20,"Continue Process") (reason: The action 'Continue Process' at the end of the flow has no supporting source unit provided in the segmented input at this location.)
+- [N23] Added trace (model 6): init(i1) -> action(n1,"Bill for Purchased Goods/Services") -> action(n2,"Bill Client") -> branch(b4,AND) -> end(e4)
+- [N24] Within matched traces (0->0) added: action(n2,"Bill Client")
+- [N25] Within matched traces (0->0) added: branch(b4,AND)
+- [N26] Within matched traces (0->0) added: branch(b5,AND)
+- [N27] Within matched traces (3->1) added: action(n2,"Bill Client")
+- [N28] Within matched traces (3->1) added: branch(b4,AND)
+- [N29] Within matched traces (3->1) added: branch(b5,AND)
+- [N30] Within matched traces (3->1) added: action(n4,"Is Invoice Complete?")
+- [N31] Within matched traces (1->2) added: action(n2,"Bill Client")
+- [N32] Within matched traces (1->2) added: branch(b4,AND)
+- [N33] Within matched traces (1->2) added: branch(b5,AND)
+- [N34] Within matched traces (1->2) added: action(n4,"Is Invoice Complete?")
+- [N35] Within matched traces (7->3) added: action(n16,"Client Notified of Payment")
+- [N36] Within matched traces (7->3) added: branch(b6,AND)
+- [N37] Within matched traces (7->3) added: end(e5)
+- [N38] Within matched traces (5->4) added: action(n2,"Bill Client")
+- [N39] Within matched traces (5->4) added: branch(b4,AND)
+- [N40] Within matched traces (5->4) added: branch(b5,AND)
+- [N41] Within matched traces (5->4) added: action(n14,"Wait for 10 Days")
+- [N42] Within matched traces (5->4) added: action(n15,"Send Reminder")
+- [N43] Within matched traces (5->4) added: branch(b6,AND)
+- [N44] Within matched traces (6->5) added: action(n2,"Bill Client")
+- [N45] Within matched traces (6->5) added: branch(b4,AND)
+- [N46] Within matched traces (6->5) added: branch(b5,AND)
+- [N47] Within matched traces (6->5) added: action(n14,"Wait for 10 Days")
+- [N48] Within matched traces (6->5) added: action(n15,"Send Reminder")
+- [N49] Within matched traces (6->5) added: branch(b6,AND)
+- [N50] Within matched traces (6->5) added: action(n18,"Check Client Satisfaction")
+
+Mutation
+- [N51] Node-level mutation: element=guard(b2,n7,"v2 = 'Non-Compliant'"); source=i8:If the invoice is non-compliant; reason=The condition is correctly extracted but leads to the wrong target step (skipping straight to phone resolution), bypassing the intermediate checks described in the text.
+- [N52] Node-level mutation: element=action(n9,"Resolve Compliance Issue"); source=i9:further checks are conducted; reason=The model altered the core meaning of the step from conducting checks (investigation) to resolving the compliance issue (resolution).
+- [N53] Node-level mutation: element=action(n7,"Resolve Non-Compliance via Phone"); source=i11:non-compliance is resolved.; reason=The action improperly absorbed the omitted 'phone call' condition into its name, baking the logic into the step itself.
+- [N54] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i12:if the issue requires mail back; reason=The specific condition for requiring mail back was changed to a generic 'No' compliance outcome.
+- [N55] Node-level mutation: element=action(n8,"Return Invoice via Mail"); source=i13:the invoice is returned.; reason=The action improperly absorbed the omitted 'mail back' condition into its name, altering its granularity.
+
+Permutation
+- [N56] Within matched traces (3->1) reordered: expected [i11:non-compliance is resolved.] but observed [action(n7,"Resolve Non-Compliance via Phone")] elsewhere; in its place the model has [action(n9,"Resolve Compliance Issue")]
+- [N57] Within matched traces (7->3) reordered: expected [i15:Bill Client] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n3,"Receive Invoice")]

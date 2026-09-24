@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start to acquire a new client")`, `action(n5, "check if all preliminary tasks are completed")`, `action(n6, "wait until preliminary tasks are completed")`, `action(n17, "end - process completed")`: Hallucinated steps not found in the source, which begins directly with "identify the need for a new client", moves straight to "send an offer to the potential client" once tasks finish, and terminates after signing without intermediate checking, waiting, or explicit start/end actions.
+- `branch(b1, XOR)` and its outgoing precedences: Incorrectly inserts an undocumented exclusive choice after `n5`, contradicting the linear instruction "Once these steps are done, the next step is to send an offer to the potential client."
+- `action(n13, "is the client's response positive?")`: Misclassifies a routing decision as an action node preceding `branch(b2, XOR)`, violating SMC2/SMC3 since the source frames the evaluation as a control-flow condition, not a separate process step.
+- `branch(b2, XOR)`: Lacks `guard()` statements to enforce the explicit conditions detailed in the source ("If the response is positive...", "if the response is negative..."), leaving the exclusive choice logically incomplete.
+- `defines(v1, "check if all preliminary tasks are completed", {})` and `defines(v2, "is the client's response positive?", {})`: Declare empty value ranges `{}`, failing to faithfully capture the binary option sets (positive/negative, yes/no) inherently required by the documented decisions.

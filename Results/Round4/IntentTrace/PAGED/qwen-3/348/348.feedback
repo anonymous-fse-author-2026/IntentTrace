@@ -1,0 +1,42 @@
+Omission
+- [N1] Omitted trace (input 0): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:and then Receive Invoice. -> i5:If the invoice is incomplete, it is returned.
+- [N2] Omitted trace (input 1): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:and then Receive Invoice. -> i6:However, if the invoice is complete, the process continues. -> i9:If the invoice is non-compliant, further checks are conducted. -> i13:If the issue can be resolved with a phone call, non-compliance is resolved. -> i17:Simultaneously, the following steps are completed: Bill Client. -> i18:If there is no response, a period of 10 days is given. -> i20:After 10 days, a reminder is sent and the process ends.
+- [N3] Omitted trace (input 2): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:and then Receive Invoice. -> i6:However, if the invoice is complete, the process continues. -> i9:If the invoice is non-compliant, further checks are conducted. -> i13:If the issue can be resolved with a phone call, non-compliance is resolved. -> i17:Simultaneously, the following steps are completed: Bill Client. -> i19:The invoice is paid and the client is notified of the payment. -> i22:If the client is unsatisfied, payment discrepancy is resolved.
+- [N4] Omitted trace (input 3): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:and then Receive Invoice. -> i6:However, if the invoice is complete, the process continues. -> i9:If the invoice is non-compliant, further checks are conducted. -> i13:If the issue can be resolved with a phone call, non-compliance is resolved. -> i17:Simultaneously, the following steps are completed: Bill Client. -> i19:The invoice is paid and the client is notified of the payment. -> i23:However, if the client is satisfied, the process continues. -> i20:After 10 days, a reminder is sent and the process ends.
+- [N5] Omitted trace (input 5): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:and then Receive Invoice. -> i6:However, if the invoice is complete, the process continues. -> i10:On the other hand, if the invoice is compliant, the process continues. -> i17:Simultaneously, the following steps are completed: Bill Client. -> i18:If there is no response, a period of 10 days is given. -> i20:After 10 days, a reminder is sent and the process ends.
+- [N6] Within matched traces (4->4) omitted: i2:Bill for Purchased Goods/Services
+- [N7] Within matched traces (4->4) omitted: i3:and then Receive Invoice.
+- [N8] Within matched traces (6->6) omitted: i2:Bill for Purchased Goods/Services
+- [N9] Within matched traces (6->6) omitted: i3:and then Receive Invoice.
+- [N10] Within matched traces (6->6) omitted: i17:Simultaneously, the following steps are completed: Bill Client.
+- [N11] Within matched traces (7->6) omitted: i2:Bill for Purchased Goods/Services
+- [N12] Within matched traces (7->6) omitted: i3:and then Receive Invoice.
+- [N13] Within matched traces (7->6) omitted: i17:Simultaneously, the following steps are completed: Bill Client.
+- [N14] Within matched traces (7->6) omitted: i20:After 10 days, a reminder is sent and the process ends.
+
+Addition
+- [N15] Added trace (model 0): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> action(n_ret_inc,"Return Invoice") -> end(e1)
+- [N16] Added trace (model 1): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> branch(b2,XOR) -> action(n_checks,"Further Checks Conducted") -> branch(b3,XOR) -> action(n_phone,"Resolve Non-Compliance via Phone") -> converge(c1) -> action(n_pay,"Pay Invoice") -> action(n_bill_cli,"Bill Client") -> branch(b4,XOR) -> action(n_wait,"Wait for 10 Days") -> action(n_remind,"Send Reminder") -> end(e3)
+- [N17] Added trace (model 2): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> branch(b2,XOR) -> action(n_checks,"Further Checks Conducted") -> branch(b3,XOR) -> action(n_phone,"Resolve Non-Compliance via Phone") -> converge(c1) -> action(n_pay,"Pay Invoice") -> action(n_bill_cli,"Bill Client") -> branch(b4,XOR) -> action(n_notify,"Notify Client of Payment") -> branch(b5,XOR) -> action(n_unsat,"Resolve Payment Discrepancy") -> end(e4)
+- [N18] Added trace (model 3): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> branch(b2,XOR) -> action(n_checks,"Further Checks Conducted") -> branch(b3,XOR) -> action(n_phone,"Resolve Non-Compliance via Phone") -> converge(c1) -> action(n_pay,"Pay Invoice") -> action(n_bill_cli,"Bill Client") -> branch(b4,XOR) -> action(n_notify,"Notify Client of Payment") -> branch(b5,XOR) -> action(n_sat,"Continue Process") -> end(e5)
+- [N19] Added trace (model 5): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> branch(b2,XOR) -> converge(c1) -> action(n_pay,"Pay Invoice") -> action(n_bill_cli,"Bill Client") -> branch(b4,XOR) -> action(n_wait,"Wait for 10 Days") -> action(n_remind,"Send Reminder") -> end(e3)
+- [N20] Added trace (model 7): init(i1) -> action(n_bill,"Bill for Purchased Goods/Services") -> action(n_rec,"Receive Invoice") -> branch(b1,XOR) -> branch(b2,XOR) -> converge(c1) -> action(n_pay,"Pay Invoice") -> action(n_bill_cli,"Bill Client") -> branch(b4,XOR) -> action(n_notify,"Notify Client of Payment") -> branch(b5,XOR) -> action(n_sat,"Continue Process") -> end(e5)
+- [N21] Within matched traces (4->4) added: action(n_bill,"Bill for Purchased Goods/Services")
+- [N22] Within matched traces (4->4) added: action(n_rec,"Receive Invoice")
+- [N23] Within matched traces (4->4) added: action(n_checks,"Further Checks Conducted")
+- [N24] Within matched traces (4->4) added: action(n_mail,"Return Invoice via Mail")
+- [N25] Within matched traces (4->4) added: end(e2)
+- [N26] Within matched traces (6->6) added: action(n_bill,"Bill for Purchased Goods/Services")
+- [N27] Within matched traces (6->6) added: action(n_rec,"Receive Invoice")
+- [N28] Within matched traces (6->6) added: action(n_pay,"Pay Invoice")
+- [N29] Within matched traces (6->6) added: action(n_bill_cli,"Bill Client")
+- [N30] Within matched traces (6->6) added: action(n_notify,"Notify Client of Payment")
+- [N31] Within matched traces (6->6) added: action(n_unsat,"Resolve Payment Discrepancy")
+- [N32] Within matched traces (6->6) added: end(e4)
+- [N33] Within matched traces (7->6) added: action(n_bill,"Bill for Purchased Goods/Services")
+- [N34] Within matched traces (7->6) added: action(n_rec,"Receive Invoice")
+- [N35] Within matched traces (7->6) added: action(n_pay,"Pay Invoice")
+- [N36] Within matched traces (7->6) added: action(n_bill_cli,"Bill Client")
+- [N37] Within matched traces (7->6) added: action(n_notify,"Notify Client of Payment")
+- [N38] Within matched traces (7->6) added: action(n_unsat,"Resolve Payment Discrepancy")
+- [N39] Within matched traces (7->6) added: end(e4)

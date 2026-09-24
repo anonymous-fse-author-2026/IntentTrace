@@ -1,0 +1,9 @@
+- `action(n1, "Start")`: Hallucinated action; the source text explicitly states to "start by obtaining the raw material", making obtaining the material the initial process step.
+- `action(n3, "Is raw material available in stock?")`: Hallucinated action; stock availability is described solely as a conditional state ("If the raw material is available in stock..."), not as an explicit action step.
+- `action(n5, "End")` and `action(n9, "End")`: Hallucinated actions; concluding the process is a state transition that should be modeled by the `end(e1)` and `end(e2)` nodes rather than as distinct tasks.
+- `branch(b1, XOR)`: Missing `guard` statements on the outgoing flows to `n4` and `n6` to evaluate the documented conditions "if the raw material is available in stock" and "If the raw material is not available in stock".
+- `defines(v1, "Is raw material available in stock?", {})`: The decision variable has an empty range, failing to represent the discrete values (e.g., {true, false}) implied by the source conditions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

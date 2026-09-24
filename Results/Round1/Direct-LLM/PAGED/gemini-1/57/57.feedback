@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i8:they should continue with the process (reason: The instruction to continue with the process was mutated into an unsupported action and thus not faithfully implemented.)
+- [N2] Omitted trace (input 0): i1:To begin the process -> i2:make a purchase and then connect to the website -> i3:search for an item -> i6:if they select "Continue Shopping" -> i7:select "Continue Shopping" -> i8:they should continue with the process -> i3:search for an item
+
+Addition
+- [N3] Node-level addition: guard(b3,n16,"v3 = 'No'") (reason: The guard 'v3 = No' lacks source justification, as the corresponding negative condition is completely absent from the provided source text segments.)
+- [N4] Added trace (model 1): init(i1) -> action(n2,"make a purchase") -> action(n18,"connect to the website") -> converge(c2) -> action(n3,"search for item") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> branch(b3,XOR) -> action(n16,"transaction ended") -> converge(c3) -> action(n11,"display order confirmation number") -> action(n12,"show final order to customer") -> action(n13,"confirm the order") -> action(n14,"send confirmation notice via email") -> action(n15,"order entry complete") -> end(e1)
+- [N5] Within matched traces (1->0) added: converge(c1)
+- [N6] Within matched traces (1->0) added: branch(b3,XOR)
+- [N7] Within matched traces (3->3) added: converge(c1)
+- [N8] Within matched traces (3->3) added: branch(b3,XOR)
+- [N9] Within matched traces (3->3) added: converge(c3)
+- [N10] Within matched traces (3->3) added: action(n11,"display order confirmation number")
+- [N11] Within matched traces (3->3) added: action(n12,"show final order to customer")
+- [N12] Within matched traces (3->3) added: action(n13,"confirm the order")
+- [N13] Within matched traces (3->3) added: action(n14,"send confirmation notice via email")
+- [N14] Within matched traces (3->3) added: action(n15,"order entry complete")
+- [N15] Within matched traces (3->3) added: end(e1)
+
+Mutation
+- [N16] Node-level mutation: element=action(n6,"continue shopping"); source=i8:they should continue with the process; reason=The source specifies a general instruction to 'continue with the process', but the model alters this to a specific 'continue shopping' action.
+- [N17] Node-level mutation: element=guard(b3,c3,"v3 = 'Yes'"); source=i12:If the credit card is approved and there is inventory in stock; reason=The source defines a complex condition checking credit card approval and inventory, which the model improperly abstracts into an arbitrary 'v3 = Yes' value.

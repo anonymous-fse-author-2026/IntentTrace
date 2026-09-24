@@ -1,0 +1,9 @@
+
+
+- `branch(b2, XOR)`: Has three outgoing `precedence` edges (`b2` to `n7`, `n9`, `n12`), violating exclusive choice semantics. The source describes a single binary decision ("If the purchase order is rejected... But if the purchase order is accepted..."), where the accepted path should trigger a separate parallel split, not all three options competing directly under the same XOR.
+- Missing `guard` declarations: No `guard` statements are provided for `b1`, `b2`, or `b3`, omitting the explicit routing conditions documented in the source ("If the inventory level is above/below the minimum", "If the purchase order is rejected/accepted").
+- `branch(b3, XOR)`: Has no outgoing `precedence` relations, creating a dead end. The source states "After reworking the purchase order, review it again," implying a control-flow loop back to the decision point, not termination.
+- Missing `converge` synchronization: The parallel steps ("At the same time, complete the following steps: reserve funds... and send...") diverge from `b2` but never rejoin, terminating at separate `end(e2)` and `end(e3)`. The source implies a unified progression toward "Once the packing slip is received... and then the process ends."
+- `action(n9, "reserve funds and send PO")`: Payload text incorrectly merges two distinct steps that the model structurally separates into parallel branches (`n9` and `n12`), contradicting the source's enumeration of concurrent tasks.
+- `defines(v1,...)`, `defines(v2,...)`, `defines(v3,...)`: All declare empty ranges `{}`, failing to capture the documented decision values/value spaces ("above/below minimum", "rejected/accepted").
+- `action(n10,...)` and `action(n13,...)`: Duplicate actions with identical labels ("receive packing slip and release funds") placed on disjoint paths that end separately, whereas the source describes a single sequential step following the parallel tasks.

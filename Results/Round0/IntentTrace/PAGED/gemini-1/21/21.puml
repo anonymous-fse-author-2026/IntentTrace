@@ -1,0 +1,73 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:supply the requirement;
+:document the requirement;
+:How was the order received?;
+:v1: How was the order received? ({via mail or phone}); <<objectSignal>>
+if () then ([v1 = 'via mail or phone'])
+:input the order into Excel file;
+:Excel list;
+:send the Excel list to the student;
+:type the orders into the MS-Access database;
+:MS-Access database;
+:ensure that database input is completed;
+split
+:control the incoming order;
+split again
+:continue to do the check;
+end split
+:is the order correct?;
+:v2: is the order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:release the order;
+:send the Excel list to the student;
+:continue with the process;
+else ([v2 = 'No'])
+:contact the selling agency;
+:upon receiving the actual issue;
+:is the order worth less than 5.000 €?;
+:v3: is the order worth less than 5.000 €? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:release the order;
+else ([v3 = 'No'])
+:send the order for sign off and continue with the check;
+:order signed off;
+:contact the client;
+:release the order;
+endif
+endif
+:order received by PPC;
+:PPC initiate production;
+:is the issue solvable?;
+:v4: is the issue solvable? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:release the order;
+:goods will be produced;
+:check the quality of the goods;
+:create and send quality report to the finance department;
+:release the order via memo;
+:ensure that the memo is achieved in the warehouse;
+:send the invoice;
+:report the achievement to the finance department;
+split
+:commission the goods;
+split again
+:sign and send the memo;
+:send the goods;
+:ensure that the signed memo is achieved in the logistic department;
+:archive the memo;
+end split
+:close the order;
+:end;
+stop
+else ([v4 = 'No'])
+:cancel the order;
+:end;
+stop
+endif
+endif
+@enduml

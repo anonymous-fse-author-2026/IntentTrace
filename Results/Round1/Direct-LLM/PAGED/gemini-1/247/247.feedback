@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i5:If the input is a "URL" (reason: Its only candidate was recorded as a mutation (generic 'No' instead of explicit 'URL'), leaving the exact condition faithfully unmodeled.)
+- [N2] Node-level omission: i7:we send a DNS query (reason: Its only candidate was recorded as a mutation (due to an invented qualifier), meaning the step without the qualifier is unmodeled.)
+
+Addition
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n3,"Resolve URN to domain-name") -> converge(c1) -> action(n12,"Check if the input is a URN or a URL") -> branch(b2,XOR) -> converge(c2) -> action(n6,"Link to designated DS") -> action(n7,"End of process") -> end(e1)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> converge(c1) -> action(n12,"Check if the input is a URN or a URL") -> branch(b2,XOR) -> action(n4,"Send DNS query for the domain-name") -> action(n5,"Get list of URLs from DNS query") -> converge(c2) -> action(n6,"Link to designated DS") -> action(n7,"End of process") -> end(e1)
+- [N5] Within matched traces (0->0) added: converge(c1)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,c1,"v1 = 'No'"); source=i5:If the input is a "URL"; reason=The source explicitly states to check if the input is a 'URL', but the model alters this into a generic 'No' condition.
+- [N7] Node-level mutation: element=action(n4,"Send DNS query for the domain-name"); source=i7:we send a DNS query; reason=The element invents and adds the qualifier 'for the domain-name', which is not present in the provided source segment.

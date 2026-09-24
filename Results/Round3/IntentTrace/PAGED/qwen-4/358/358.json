@@ -1,0 +1,318 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "b1",
+      "type": "action",
+      "content": "initial check"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "second decision"
+    },
+    {
+      "id": "b2",
+      "type": "action",
+      "content": "second check"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "give priority"
+    },
+    {
+      "id": "c1",
+      "type": "action",
+      "content": "flow merge"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "lookup vendor on SAP"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "need vendor master record"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "end due to missing vendor master"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "enter invoice in SAP"
+    },
+    {
+      "id": "b4",
+      "type": "action",
+      "content": "invoice decision"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "give priority"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "priority decision again"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "enter invoice in SAP"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "place invoices in normal Outbox"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "initial decision",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "second decision",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "vendor exists in SAP",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "invoice entry decision",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "priority decision again",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b1",
+        "n4",
+        "b2",
+        "n5",
+        "c1",
+        "n6",
+        "b3",
+        "n8",
+        "n9",
+        "e1",
+        "n10",
+        "b4",
+        "n14",
+        "n15",
+        "n16",
+        "n18",
+        "n19",
+        "e4"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "e4"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n8",
+      "condition": "v3 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n10",
+      "condition": "v3 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning,"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\", then we continue the process."
+    },
+    {
+      "id": "i3",
+      "content": "If the answer is \"No\" again, we continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "i5",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "i6",
+      "content": "If the answer is \"No\", then we need a Vendor master record and the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "But if the answer is \"Yes\", then we enter the invoice in SAP."
+    },
+    {
+      "id": "i8",
+      "content": "And if the answer is \"Yes\" again, then we enter the invoice in SAP."
+    },
+    {
+      "id": "i9",
+      "content": "Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends."
+    }
+  ]
+}

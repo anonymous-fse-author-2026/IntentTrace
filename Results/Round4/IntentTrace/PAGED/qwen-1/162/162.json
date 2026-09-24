@@ -1,0 +1,198 @@
+{
+  "elements": [
+    {
+      "id": "s",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "To start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "please provide the userdata for flickr."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_login",
+      "name": "Login Status",
+      "R_X": [
+        "success",
+        "fail"
+      ]
+    },
+    {
+      "X": "v_choice",
+      "name": "User Choice",
+      "R_X": [
+        "try_again",
+        "abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "s",
+        "n1",
+        "n2",
+        "b1",
+        "b2",
+        "c1",
+        "e1",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "s",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v_login = 'success'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "b2",
+      "condition": "v_login = 'fail'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v_choice = 'try_again'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e2",
+      "condition": "v_choice = 'abort'"
+    },
+    {
+      "type": "label",
+      "A": "b1",
+      "B": "e1",
+      "str": "If the login is successful, the process will end."
+    },
+    {
+      "type": "label",
+      "A": "b1",
+      "B": "b2",
+      "str": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "type": "label",
+      "A": "b2",
+      "B": "c1",
+      "str": "If you want to try again"
+    },
+    {
+      "type": "label",
+      "A": "b2",
+      "B": "e2",
+      "str": "Alternatively, if you decide to abort, the process will end."
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start"
+    },
+    {
+      "id": "i2",
+      "content": "please provide the userdata for flickr."
+    },
+    {
+      "id": "i3",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "i5",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "i7",
+      "content": "If you want to try again"
+    },
+    {
+      "id": "i8",
+      "content": "if you choose to abort, the process will end."
+    },
+    {
+      "id": "i10",
+      "content": "If you still want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i12",
+      "content": "Alternatively, if you decide to abort, the process will end."
+    }
+  ]
+}

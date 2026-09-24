@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| review clerk
+|a_default|
+start
+:review received application;
+:load case data;
+:review case;
+:check if there are any new findings;
+:v1: check if there are any new findings ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:recalculate refund;
+else ([v1 = 'No'])
+:send letter of denial;
+endif
+:check again if there are any new findings;
+:v2: check again if there are any new findings ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:recalculate refund;
+else ([v2 = 'No'])
+:send another letter of denial;
+endif
+:write back case data;
+stop
+@enduml

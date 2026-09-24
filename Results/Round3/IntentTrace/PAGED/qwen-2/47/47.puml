@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Bill for Purchased Goods or Services;
+:Receive Invoice;
+:v1: Is the invoice complete ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Return invoice;
+else ([v1 = 'Yes'])
+:Is the invoice compliant;
+:v2: Is the invoice compliant ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Continue process with compliant invoice;
+else ([v2 = 'No'])
+:Conduct further checks on non-compliant invoice;
+:v3: Can issue be resolved with phone call ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Resolve non-compliance by phone call;
+else ([v3 = 'No'])
+:Return invoice;
+endif
+endif
+:Bill client;
+:v8: Did client respond ({No, Yes}); <<objectSignal>>
+if () then ([v8 = 'No'])
+:Wait period of 10 days;
+else ([v8 = 'Yes'])
+:Resolve non-compliance;
+endif
+:Pay invoice;
+:Notify client of payment;
+:Send reminder after 10 days;
+:v9: Is client satisfied ({No, Yes}); <<objectSignal>>
+if () then ([v9 = 'No'])
+:Resolve payment discrepancy;
+else ([v9 = 'Yes'])
+:Continue process;
+endif
+:End process;
+endif
+stop
+@enduml

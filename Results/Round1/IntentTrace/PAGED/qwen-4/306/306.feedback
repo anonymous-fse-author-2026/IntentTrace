@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i5:If the purchase status is rejected, rework the purchase order. -> i7:Rework the purchase order and then review it. -> i4:After creating the purchase order, review it.
+
+Addition
+- [N2] Within matched traces (2->0) added: init(i1)
+- [N3] Within matched traces (3->1) added: init(i1)
+- [N4] Within matched traces (0->2) added: init(i1)
+- [N5] Within matched traces (0->2) added: action(n3,"inventory at or below minimum")
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'at_or_below_minimum'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'above_minimum'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v2 = 'rejected'` on `b2 -> n8` uses undefined variable `v2`. | Guard `v2 = 'approved'` on `b2 -> n9` uses undefined variable `v2`. | DSL: guard(b1,n4,"v1 = 'at_or_below_minimum'"); guard(b1,n5,"v1 = 'above_minimum'"); guard(b2,n8,"v2 = 'rejected'"); guard(b2,n9,"v2 = 'approved'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'at_or_below_minimum'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'above_minimum'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'rejected'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'approved'` on `b2 -> n9` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n4,"v1 = 'at_or_below_minimum'"); guard(b1,n5,"v1 = 'above_minimum'"); guard(b2,n8,"v2 = 'rejected'"); guard(b2,n9,"v2 = 'approved'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

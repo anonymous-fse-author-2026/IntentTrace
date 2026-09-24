@@ -1,0 +1,7 @@
+
+
+- defines(v1, ..., {}), defines(v2, ..., {}), defines(v3, ...) & missing guard() statements: Variable ranges are empty `{}` and never referenced in guard conditions, leaving XOR branches b1, b2, b3 unconditioned despite the source explicitly routing flow based on "If an exception is needed", "If it was not the last homework", and "If the exam is passed/failed".
+- precedence(b3, n21) → c6 → n22 → e2: Models exam failure as a terminal path. Source states "if the exam is failed, another sign-up for the exam is required", which mandates a control-flow cycle back to n16 or n17, not progression to end(e2).
+- precedence(b2, n12) → c2 → n13: Proceeds linearly past the "not last homework" branch. Source implies iteration ("another homework assignment will be given"), requiring a feedback precedence edge back to n8 ("Homework assignment started") to close the homework loop.
+- precedence(n1, b4) → c3/c4 → n14/n15: Triggers "granting accreditation" and "announcing the date of the exam" concurrently with process initialization. Source places them chronologically after homework completion: "If it was the last homework, the process can continue. At the same time, two additional steps should be completed...".
+- action(n13, "Course enrollment continued"): Payload mislabels the continuation step; source text states "the process can continue", not a resumption or continuation of course enrollment.

@@ -1,0 +1,10 @@
+- branch(b3, AND): Hallucinates concurrent logic; the source describes a strictly sequential process: “If you are not hungry... Otherwise... If you are still not hungry... Otherwise... After that, get on the bus.”
+- guard statements: Entirely missing for b1 and b2; fails to model the explicit conditional transitions in the source (“If you are not hungry, take a shower. Otherwise, have breakfast.” and “If you are still not hungry, take a shower. Otherwise, have breakfast.”).
+- defines(v1, ...) and defines(v2, ...): Value ranges are set to {}, incorrectly representing the implicit binary/boolean decision space required by the source conditions.
+- action(n6, "are you still hungry after breakfast?"): Payload inaccurately restricts the condition to “after breakfast”; the source applies the check unconditionally after the first phase: “If you are still not hungry”.
+- action(n5, "get on the bus") and action(n9, "get on the bus"): Unnecessary duplication; the source specifies this step exactly once: “After that, get on the bus and the process will be complete.”
+- precedence(b3, c1) and precedence(b3, n6): Routing through an AND-split causes the flow toward completion (c1 → n5) to execute concurrently with the second hunger check (n6), violating the strict source chronology where boarding occurs only after all prior checks and actions are resolved.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

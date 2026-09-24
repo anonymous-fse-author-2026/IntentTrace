@@ -1,0 +1,12 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start selling cars") -> branch(b3,XOR) -> action(n3,"get a paycheck") -> converge(c1) -> action(n4,"continue process") -> action(n6,"pay the bill") -> end(e1)
+- [N2] Within matched traces (0->0) added: action(n2,"get a bonus")
+- [N3] Within matched traces (1->0) added: action(n2,"get a bonus")
+
+Mutation
+- [N4] Node-level mutation: element=guard(b3,n2,"v1 = 'yes'"); source=i3:If you "get a bonus"; reason=The guard replaces the explicit condition 'get a bonus' with a generic variable assignment 'v1 = yes', altering the semantic payload and losing the original term and operator context.
+- [N5] Node-level mutation: element=guard(b3,n3,"v2 = 'yes'"); source=i5:If you "get a paycheck"; reason=The guard replaces the explicit condition 'get a paycheck' with a generic variable assignment 'v2 = yes', altering the semantic payload and losing the original term and operator context.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b3` has overlapping guards at state [v1=yes, v2=yes].
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` has no enabled outgoing guard at state [v1=no, v2=no].

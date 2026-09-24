@@ -1,0 +1,6 @@
+
+
+- `actor(a_default, [...])`: Source explicitly distinguishes participant responsibilities ("Customer submitting the RFQ" versus "we receive/submit/send/mark"), but the model assigns all nodes to a single default actor, failing to reflect documented responsibilities.
+- `action(n10, "End")`, `action(n11, "End")`: These steps are hallucinated; the source describes a natural process conclusion without defining explicit "End" actions as executable process steps.
+- `precedence(n8, n10)`, `precedence(n9, n11)`, `precedence(n10, e1)`, `precedence(n11, e2)`: The source states "The process ends when the Goods are sent or when the Invoice is sent," but the model delays termination until after the marking steps (`n8`, `n9`) and through undocumented intermediate actions, misrepresenting the source chronology and intended progression.
+- `branch(b1, AND)` with dual `end(e1)`, `end(e2)`: The model enforces a synchronous AND-split that implicitly requires both parallel paths to complete their full sequences, contradicting the source's explicit alternative termination condition ("ends when the Goods are sent or when the Invoice is sent").

@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "check inventory level", {})` and `guard(b1, ...)`: Variable `v1` has an empty range `{}` and lacks `guard` statements on `b1`, failing to represent the source condition that the choice depends on inventory being "at or below the minimum" versus "above the minimum".
+- `defines(v2, "review purchase order", {})` and `guard(b2, ...)`: Variable `v2` has an empty range `{}` and lacks `guard` statements on `b2`, failing to represent the source condition that the choice depends on the purchase order being "rejected" versus "approved".
+- `action(n7, "rework purchase order")` and `precedence(...)`: Missing outgoing precedence edge from `n7`. The source explicitly requires a control-flow cycle ("In case the purchase order needs to be reworked, review it again"), but `n7` is a terminal dead-end in the model.
+- `action(n4, "accept request and create PO")`: Inaccurately merges two distinct sequential steps described separately in the source ("accept the customer request. After accepting the customer request, create a purchase order."), violating precise chronology preservation.

@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i1:To initiate the process for the election of a rector, it is necessary to begin with the rector's final year in their current position. (reason: Not faithfully implemented due to the mutation in action:n1 which strips the location/context qualifier, leaving no element that captures the full instruction.)
+- [N2] Node-level omission: i9:The public meeting should then commence, ensuring that all members are able to vote for a new rector (reason: Not faithfully implemented due to the mutation in action:n12 which removes the mandatory voting guarantee, leaving no element that captures the full instruction.)
+- [N3] Omitted trace (input 1): i1:To initiate the process for the election of a rector, it is necessary to begin with the rector's final year in their current position. -> i2:the acceptance of proposals for candidates for the rector position should be launched -> i3:the rector can nominate themselves as a candidate for the position -> i4:the acceptance of proposals should be stopped -> i5:If a candidate meets the required criteria, they should be included in the list of candidates -> i7:Once the list of candidates has been formed, it should be made public -> i9:The public meeting should then commence, ensuring that all members are able to vote for a new rector -> i10:an election should be conducted and the votes should be counted -> i11:If the voting fails, another election should be conducted -> i10:an election should be conducted and the votes should be counted
+- [N4] Omitted trace (input 3): i1:To initiate the process for the election of a rector, it is necessary to begin with the rector's final year in their current position. -> i2:the acceptance of proposals for candidates for the rector position should be launched -> i3:the rector can nominate themselves as a candidate for the position -> i4:the acceptance of proposals should be stopped -> i5:If a candidate meets the required criteria, they should be included in the list of candidates -> i8:Simultaneously, the candidates should promote their ideas to the public and organize a public meeting of the Academic Senate -> i9:The public meeting should then commence, ensuring that all members are able to vote for a new rector -> i10:an election should be conducted and the votes should be counted -> i11:If the voting fails, another election should be conducted -> i10:an election should be conducted and the votes should be counted
+
+Addition
+- [N5] Node-level addition: action(n8,"form public list of candidates") (reason: Invents a 'form public list' step. The source uses 'Once the list... has been formed' strictly as a temporal precondition for publication, not a discrete action to be performed here.)
+- [N6] Node-level addition: label(n9,c1,"All actions completed") (reason: Generic synchronization labels 'All actions completed' lack any direct source support and are not functional announcers defined in the text.)
+- [N7] Node-level addition: label(n10,c1,"All actions completed") (reason: Generic synchronization labels 'All actions completed' lack any direct source support and are not functional announcers defined in the text.)
+- [N8] Node-level addition: label(n11,c1,"All actions completed") (reason: Generic synchronization labels 'All actions completed' lack any direct source support and are not functional announcers defined in the text.)
+- [N9] Within matched traces (2->0) added: action(n8,"form public list of candidates")
+- [N10] Within matched traces (2->0) added: branch(b3,AND)
+- [N11] Within matched traces (2->0) added: action(n15,"check if voting successful")
+- [N12] Within matched traces (4->1) added: action(n8,"form public list of candidates")
+- [N13] Within matched traces (4->1) added: branch(b3,AND)
+- [N14] Within matched traces (4->1) added: action(n15,"check if voting successful")
+- [N15] Within matched traces (4->2) added: action(n8,"form public list of candidates")
+- [N16] Within matched traces (4->2) added: branch(b3,AND)
+- [N17] Within matched traces (4->2) added: action(n15,"check if voting successful")
+- [N18] Within matched traces (0->3) added: action(n5,"check if candidate meets criteria")
+
+Mutation
+- [N19] Node-level mutation: element=action(n1,"initiate rector's final year"); source=i1:To initiate the process for the election of a rector, it is necessary to begin with the rector's final year in their current position.; reason=Drops the critical contextual qualifier 'in their current position', altering the precise timing condition stated in the source.
+- [N20] Node-level mutation: element=action(n12,"conduct public meeting of Academic Senate"); source=i9:The public meeting should then commence, ensuring that all members are able to vote for a new rector; reason=Omits the essential constraint 'ensuring that all members are able to vote for a new rector', changing the step's required outcome and purpose.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=2 and out=1. | DSL: action(n13,"conduct election")

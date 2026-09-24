@@ -1,0 +1,24 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n4,"Check completeness of the invoices") -> branch(b3,AND) -> action(n9,"Continue the process") -> converge(c1) -> action(n7,"Receive completed invoices") -> action(n8,"Mark relevant box on invoice entry form") -> action(n10,"Check if the process has been completed") -> branch(b2,XOR) -> action(n11,"End process") -> end(e2)
+- [N3] Within matched traces (0->1) added: branch(b3,AND)
+- [N4] Within matched traces (0->1) added: action(n5,"Return invoices to client through postal mail")
+- [N5] Within matched traces (0->1) added: action(n7,"Receive completed invoices")
+- [N6] Within matched traces (1->1) added: branch(b3,AND)
+- [N7] Within matched traces (1->1) added: action(n5,"Return invoices to client through postal mail")
+- [N8] Within matched traces (1->1) added: action(n11,"End process")
+- [N9] Within matched traces (2->1) added: action(n8,"Mark relevant box on invoice entry form")
+- [N10] Within matched traces (2->1) added: action(n10,"Check if the process has been completed")
+- [N11] Within matched traces (2->1) added: action(n11,"End process")
+- [N12] Within matched traces (2->1) added: end(e2)
+
+Mutation
+- [N13] Node-level mutation: element=action(n11,"End process"); source=i6:if they are marked as "Completed", the process should be continued.; reason=The element content states 'End process', but the source explicitly directs that the process should be continued when invoices are marked as Completed. The core logic/outcome is reversed.
+
+Permutation
+- [N14] Within matched traces (0->1) reordered: expected [i6:if they are marked as "Completed", the process should be continued.] but observed [action(n11,"End process")] elsewhere; in its place the model has [action(n10,"Check if the process has been completed")]
+- [N15] Within matched traces (1->1) reordered: expected [i4:If they are marked as "Uncompleted", they should be returned to the client through postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]
+- [N16] Within matched traces (2->1) reordered: expected [i4:If they are marked as "Uncompleted", they should be returned to the client through postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Return invoices to client through postal mail")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"Receive completed invoices")

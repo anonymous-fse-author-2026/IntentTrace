@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce routing conditions explicitly stated in the source ("If the evaluation result is 'NOK'... if the evaluation result is 'ok'" and "If the installation is not successful... if the installation is successful"), violating SMC4 and SMC1.
+- `defines(v1, "is evaluation result ok", {})` and `defines(v2, "is installation successful", {})`: Specify empty value ranges `{}` while the source implies discrete outcomes ('ok'/'NOK' and 'successful'/'not successful'), and these variables are never referenced in `guard` conditions, violating SMC6.
+- `precedence(n9, n10)`: Connects "check installation" directly to "prepare billing", omitting the verification step explicitly required by the source ("Once the installation is verified, the billing is prepared."), violating SMC1 and SMC3.
+- `precedence(n10, n11)`: Connects "prepare billing" directly to "mark order as ok and complete process", omitting the final condition stated in the source ("Finally, if everything is in order, the order is marked as 'ok'..."), violating SMC1 and SMC3.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` / missing `guard` statements: The source explicitly defines conditional routing ("If the account is not verified... if the account is verified..."), but the model declares an XOR split without `guard` statements to enforce these conditions on the outgoing edges.
+- `defines(v1, "Verify Personal Account", {})`: The range `{}` is empty and fails to represent the binary verification outcome ("verified"/"not verified") required by the source text to evaluate the decision.
+- `action(n2, "Create Account")`: Payload mismatches the source text "User Create Account" by omitting the "User" prefix.
+- `action(n7, "Account Creation Confirmed")` / `end(e1)`: Omits the explicitly described final milestone "Account Successfully Created" for the confirmation path, incorrectly collapsing it into the preceding confirmation step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

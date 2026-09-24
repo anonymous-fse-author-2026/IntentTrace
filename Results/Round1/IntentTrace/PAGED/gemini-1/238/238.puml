@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start WIGGO process;
+:Place Order;
+:Check Customers Credit Limit;
+:Credit Limit Okay;
+:v1: Credit Limit Okay ({No, Okay}); <<objectSignal>>
+if () then ([v1 = 'No'])
+->;
+else ([v1 = 'Okay'])
+:Check Availability Of Article;
+:v2: Article Available ({Okay, No, Not available, Available}); <<objectSignal>>
+switch ()
+case ([v2 = 'No'])
+case ([v2 = 'Not available'])
+:Produce the Goods;
+:Send Order Confirmation;
+split
+:Ship the Goods;
+split again
+:Send Invoice;
+end split
+:Check Payment Status;
+:Payment Received;
+:v3: Payment Received ({Received, Not received}); <<objectSignal>>
+if () then ([v3 = 'Received'])
+:Close the Order;
+:End;
+stop
+else ([v3 = 'Not received'])
+:Check if the Reminder count is greater than or equal to 3;
+:v4: Reminder Count Ge 3 ({>= 3, < 3}); <<objectSignal>>
+if () then ([v4 = '>= 3'])
+:Write Off the Order;
+:Close the Order;
+:End;
+stop
+else ([v4 = '< 3'])
+:Send Reminder;
+endif
+endif
+case ([v2 = 'Available'])
+:Collect the Goods;
+endswitch
+endif
+:Send Denial To Customer;
+stop
+@enduml

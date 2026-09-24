@@ -1,0 +1,9 @@
+
+
+- branch(b1, XOR), branch(b2, XOR), branch(b3, XOR): The source describes a strictly sequential, mandatory workflow ("After that...", "Once... verify...", "After... verify..."). Introducing XOR branches hallucinates conditional choices and alternative paths not present in the description.
+- precedence(n3, b1) / precedence(b1, n5): Breaks the direct chronological sequence "Once the prerequisites have been checked, verify if the student is in good standing" by inserting a split point instead of a direct control-flow edge.
+- precedence(n8, b3) / precedence(b3, n9): Breaks the direct chronological sequence "Once the fee payment has been verified, record the student as registered" by inserting a split point instead of a direct control-flow edge.
+- action(n4, "end"), action(n6, "end"), action(n10, "end") / end(e1), end(e2), end(e3), end(e4): The source specifies exactly one conclusion ("This is where the process ends."). Modeling multiple intermediate action steps and four distinct termination nodes creates hallucinated early termination flows.
+- action(n11, "contact support") / precedence(b3, n11): Completely hallucinated behavior; the source text contains no mention of contacting support or exception-handling paths.
+- defines(v1, "check: prerequisites", {}), defines(v2, "verify: student standing", {}), defines(v3, "verify: fee payment", {}): The source outlines a linear procedural workflow with no decision variables or evaluation criteria. Defining variables with empty ranges misrepresents these mandatory verification steps as parameterized decisions.
+- guard(b1, ...) / guard(b2, ...) / guard(b3, ...) [absent]: All introduced XOR branches lack routing conditions, leaving the control flow undefined and contradicting the deterministic, step-by-step progression specified in the source.

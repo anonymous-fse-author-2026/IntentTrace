@@ -1,0 +1,489 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1",
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin the process, trigger the resupply cycle and then check the inventory level."
+      ],
+      "justification": "Start node and first two sequential actions align with the opening unit."
+    },
+    {
+      "refs": [
+        "guard:b1->n4",
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "If the inventory level is at or below the minimum, create a purchase order."
+      ],
+      "justification": "XOR decision gateway, low-inventory condition guard, and purchase order creation step."
+    },
+    {
+      "refs": [
+        "guard:b1->e1"
+      ],
+      "verbatim_texts": [
+        "Otherwise, if the inventory level is above the minimum, the process ends."
+      ],
+      "justification": "Complementary high-inventory guard and immediate termination point."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "After creating the purchase order, review it."
+      ],
+      "justification": "Flow rejoins from branches and executes the review action."
+    },
+    {
+      "refs": [
+        "guard:b2->n8"
+      ],
+      "verbatim_texts": [
+        "If the purchase status is rejected, rework the purchase order."
+      ],
+      "justification": "Secondary XOR gateway and rejection condition guard."
+    },
+    {
+      "refs": [
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "If the purchase status is rejected, rework the purchase order.",
+        "Rework the purchase order and then review it."
+      ],
+      "justification": "Rework action covers both textual mentions; the implied loop-back is structural plumbing preserved by the step itself."
+    },
+    {
+      "refs": [
+        "guard:b2->n9",
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "However, if the purchase status is approved, reserve the funds."
+      ],
+      "justification": "Approval condition guard and subsequent fund reservation step."
+    },
+    {
+      "refs": [
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "Reserve the funds and send the order to the supplier."
+      ],
+      "justification": "Second half of the combined instruction, captured as a distinct shipping action."
+    },
+    {
+      "refs": [
+        "action:n12",
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "At the same time, complete the following steps: receive the packing slip and receive the invoice."
+      ],
+      "justification": "AND split gateway initiating parallel document reception steps."
+    },
+    {
+      "refs": [
+        "action:n14"
+      ],
+      "verbatim_texts": [
+        "Receive the packing slip and then record it.",
+        "Record the packing slip and the process ends."
+      ],
+      "justification": "Packing slip recording action spans the sequential description across both units."
+    },
+    {
+      "refs": [
+        "end:e2"
+      ],
+      "verbatim_texts": [
+        "Record the packing slip and the process ends."
+      ],
+      "justification": "Termination point for the packing slip processing branch."
+    },
+    {
+      "refs": [
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "Receive the invoice and then record it.",
+        "Record the invoice and the process ends."
+      ],
+      "justification": "Invoice recording action spans the sequential description across both units."
+    },
+    {
+      "refs": [
+        "end:e3"
+      ],
+      "verbatim_texts": [
+        "Record the invoice and the process ends."
+      ],
+      "justification": "Termination point for the invoice processing branch."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:s",
+      "kind": "init",
+      "node_id": "s",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:s",
+        "s"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init s"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "trigger resupply cycle",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: trigger resupply cycle"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "check inventory level",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: check inventory level"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "create purchase order",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: create purchase order"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "review purchase order",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: review purchase order"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "rework purchase order",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: rework purchase order"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "reserve funds",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: reserve funds"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "send order to supplier",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: send order to supplier"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (AND)"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "receive packing slip",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: receive packing slip"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "receive invoice",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: receive invoice"
+    },
+    {
+      "ref_id": "action:n14",
+      "kind": "action",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "record packing slip",
+      "aliases": [
+        "action:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n14: record packing slip"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "record invoice",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: record invoice"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'at_or_below_minimum'",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = 'at_or_below_minimum'",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = 'at_or_below_minimum'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->e1",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'above_minimum'",
+      "aliases": [
+        "guard:b1->e1"
+      ],
+      "from": "b1",
+      "to": "e1",
+      "source_line": "guard b1->e1: v1 = 'above_minimum'",
+      "guard": {
+        "from": "b1",
+        "to": "e1",
+        "condition": "v1 = 'above_minimum'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'rejected'",
+      "aliases": [
+        "guard:b2->n8"
+      ],
+      "from": "b2",
+      "to": "n8",
+      "source_line": "guard b2->n8: v2 = 'rejected'",
+      "guard": {
+        "from": "b2",
+        "to": "n8",
+        "condition": "v2 = 'rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n9",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'approved'",
+      "aliases": [
+        "guard:b2->n9"
+      ],
+      "from": "b2",
+      "to": "n9",
+      "source_line": "guard b2->n9: v2 = 'approved'",
+      "guard": {
+        "from": "b2",
+        "to": "n9",
+        "condition": "v2 = 'approved'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 13,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 20,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 17,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 17,
+    "total_mappable_targets": 23,
+    "input_text_length": 1056,
+    "element_count": 23
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

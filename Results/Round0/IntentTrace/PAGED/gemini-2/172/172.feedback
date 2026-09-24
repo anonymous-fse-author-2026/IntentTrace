@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i7:then book a flight (reason: The process step to actually book the flight on the 'yes' path is completely missing from the model.)
+- [N2] Omitted trace (input 1): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i11:if 24 hours have passed -> i12:you should call a travel agency -> i9:If a code is available -> i13:the process will end along with the hotel reservation
+- [N3] Omitted trace (input 2): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i11:if 24 hours have passed -> i12:you should call a travel agency -> i14:if a code is not available -> i15:you should cancel your journey -> i16:the process will end as well
+- [N4] Omitted trace (input 3): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i6:if the answer is "yes" -> i7:then book a flight -> i8:If a code is available within 24 hours -> i10:the process will end
+- [N5] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours
+- [N6] Within matched traces (0->0) omitted: i10:the process will end
+- [N7] Within matched traces (0->1) omitted: i5:proceed to book a train
+- [N8] Within matched traces (4->2) omitted: i7:then book a flight
+- [N9] Within matched traces (5->3) omitted: i7:then book a flight
+
+Addition
+- [N10] Node-level addition: action(n1,"start") (reason: The 'start' action node has no explicit backing in the source text; an init node suffices.)
+- [N11] Node-level addition: action(n5,"end with train booked") (reason: The model includes an action 'end with train booked', but the source never describes the process ending after proceeding to book a train.)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N14] Within matched traces (0->0) added: end(e1)
+- [N15] Within matched traces (0->1) added: action(n1,"start")
+- [N16] Within matched traces (4->2) added: action(n1,"start")
+- [N17] Within matched traces (5->3) added: action(n1,"start")
+- [N18] Within matched traces (5->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N19] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i10:the process will end; reason=The source simply states 'the process will end', but the model alters this to 'end with hotel reservation', introducing a condition from a completely different sentence.

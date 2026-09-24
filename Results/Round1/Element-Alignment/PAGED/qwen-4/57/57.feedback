@@ -1,0 +1,53 @@
+Omission
+- [N1] Omitted trace (input 4): i1:To begin the process -> i2:make a purchase and then connect to the website. -> i3:After that, they should search for an item. -> i7:However, if they select "Continue Shopping" -> i8:"Continue Shopping" -> i9:continue with the process -> i6:proceed to checkout -> i10:enter their address, shipping method, and payment information. -> i12:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer. -> i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer. -> i18:Once the order entry is complete, the process will end.
+- [N2] Omitted trace (input 5): i1:To begin the process -> i2:make a purchase and then connect to the website. -> i3:After that, they should search for an item. -> i7:However, if they select "Continue Shopping" -> i8:"Continue Shopping" -> i9:continue with the process -> i6:proceed to checkout -> i10:enter their address, shipping method, and payment information. -> i13:However, if the credit card is denied or there is no inventory in stock, -> i14:credit card is denied or there is no inventory in stock -> i15:the transaction will end. -> i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer. -> i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer. -> i18:Once the order entry is complete, the process will end.
+- [N3] Omitted trace (input 6): i1:To begin the process -> i2:make a purchase and then connect to the website. -> i3:After that, they should search for an item. -> i7:However, if they select "Continue Shopping" -> i8:"Continue Shopping" -> i9:continue with the process -> i6:proceed to checkout -> i11:authorize the credit card and check the inventory levels. -> i12:If the credit card is approved and there is inventory in stock, they can continue with the process. -> i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer. -> i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer. -> i18:Once the order entry is complete, the process will end.
+- [N4] Omitted trace (input 7): i1:To begin the process -> i2:make a purchase and then connect to the website. -> i3:After that, they should search for an item. -> i7:However, if they select "Continue Shopping" -> i8:"Continue Shopping" -> i9:continue with the process -> i6:proceed to checkout -> i11:authorize the credit card and check the inventory levels. -> i13:However, if the credit card is denied or there is no inventory in stock, -> i14:credit card is denied or there is no inventory in stock -> i15:the transaction will end. -> i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer. -> i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer. -> i18:Once the order entry is complete, the process will end.
+- [N5] Within matched traces (0->1) omitted: i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer.
+- [N6] Within matched traces (0->1) omitted: i18:Once the order entry is complete, the process will end.
+- [N7] Within matched traces (1->2) omitted: i15:the transaction will end.
+- [N8] Within matched traces (1->2) omitted: i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer.
+- [N9] Within matched traces (1->2) omitted: i18:Once the order entry is complete, the process will end.
+- [N10] Within matched traces (2->4) omitted: i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer.
+- [N11] Within matched traces (2->4) omitted: i18:Once the order entry is complete, the process will end.
+- [N12] Within matched traces (3->5) omitted: i15:the transaction will end.
+- [N13] Within matched traces (3->5) omitted: i17:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer.
+- [N14] Within matched traces (3->5) omitted: i18:Once the order entry is complete, the process will end.
+
+Addition
+- [N15] Node-level addition: action(n1,"start") (reason: No source text supports a distinct 'start' action step separate from the implicit process initiation.)
+- [N16] Node-level addition: action(n4,"add item to cart / continue shopping") (reason: Artificially combines the two mutually exclusive choice options into a single action step not described in the source.)
+- [N17] Node-level addition: action(n9,"checkout tasks completed?") (reason: Invents an intermediate verification/query step ('checkout tasks completed?') with no basis in the source text.)
+- [N18] Node-level addition: action(n17,"checkout tasks not completed") (reason: Invents an intermediate failure state step ('checkout tasks not completed') that does not appear in the source description.)
+- [N19] Within matched traces (0->0) added: action(n1,"start")
+- [N20] Within matched traces (0->0) added: action(n4,"add item to cart / continue shopping")
+- [N21] Within matched traces (0->0) added: action(n9,"checkout tasks completed?")
+- [N22] Within matched traces (0->1) added: action(n1,"start")
+- [N23] Within matched traces (0->1) added: action(n4,"add item to cart / continue shopping")
+- [N24] Within matched traces (0->1) added: action(n9,"checkout tasks completed?")
+- [N25] Within matched traces (0->1) added: action(n16,"transaction ended")
+- [N26] Within matched traces (0->1) added: end(e2)
+- [N27] Within matched traces (1->2) added: action(n1,"start")
+- [N28] Within matched traces (1->2) added: action(n4,"add item to cart / continue shopping")
+- [N29] Within matched traces (1->2) added: action(n9,"checkout tasks completed?")
+- [N30] Within matched traces (2->3) added: action(n1,"start")
+- [N31] Within matched traces (2->3) added: action(n4,"add item to cart / continue shopping")
+- [N32] Within matched traces (2->3) added: action(n9,"checkout tasks completed?")
+- [N33] Within matched traces (2->4) added: action(n1,"start")
+- [N34] Within matched traces (2->4) added: action(n4,"add item to cart / continue shopping")
+- [N35] Within matched traces (2->4) added: action(n9,"checkout tasks completed?")
+- [N36] Within matched traces (2->4) added: action(n16,"transaction ended")
+- [N37] Within matched traces (2->4) added: end(e2)
+- [N38] Within matched traces (3->5) added: action(n1,"start")
+- [N39] Within matched traces (3->5) added: action(n4,"add item to cart / continue shopping")
+- [N40] Within matched traces (3->5) added: action(n9,"checkout tasks completed?")
+
+Mutation
+- [N41] Node-level mutation: element=guard(b3,n11,"v3 = 'Proceed'"); source=i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer.; reason=The source explicitly states these steps occur unconditionally ('In either case') after the credit/inventory check. The model incorrectly places them behind a new XOR branch and a conditional 'Proceed' guard, altering the unconditional flow logic.
+
+Permutation
+- [N42] Within matched traces (1->2) reordered: expected [i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer.] but observed [converge(c1)] elsewhere; in its place the model has [action(n17,"checkout tasks not completed")]
+- [N43] Within matched traces (3->5) reordered: expected [i16:In either case, the order confirmation number should be displayed, followed by the final order being shown to the customer.] but observed [converge(c1)] elsewhere; in its place the model has [action(n17,"checkout tasks not completed")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"search for item")

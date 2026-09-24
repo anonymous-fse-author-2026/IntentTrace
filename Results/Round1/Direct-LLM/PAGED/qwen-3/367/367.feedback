@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i11:If the PO is created, it needs to be reviewed (reason: The conditional review step is not faithfully implemented; the only candidate element mutates it by removing the trigger condition.)
+- [N2] Node-level omission: i13:reserve funds for the released POs (reason: The target-specific fund reservation step is not faithfully implemented; the only candidate element mutates it by omitting the recipient scope.)
+- [N3] Omitted trace (input 1): i1:To start the process for ACME -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory -> i4:If the inventory is below or equal to the minimum -> i5:generate an Equal to or below minimum Report -> i7:create Purchase Orders (POs) -> i11:If the PO is created, it needs to be reviewed -> i9:If the PO is rejected, it needs to be reworked -> i12:If the PO needs to be reworked, it needs to be created again -> i7:create Purchase Orders (POs)
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Vague 'start' step lacks direct source support; process initiation is already fully covered by init:i1 and action:n2.)
+- [N5] Within matched traces (0->0) added: action(n1,"start")
+- [N6] Within matched traces (0->0) added: action(n4,"is inventory below or equal to minimum?")
+- [N7] Within matched traces (0->0) added: branch(b1,XOR)
+- [N8] Within matched traces (2->1) added: action(n1,"start")
+- [N9] Within matched traces (3->2) added: action(n1,"start")
+
+Mutation
+- [N10] Node-level mutation: element=action(n9,"review PO"); source=i11:If the PO is created, it needs to be reviewed; reason=Drops the critical conditional premise 'If the PO is created', altering a conditional step into an unconditional one.
+- [N11] Node-level mutation: element=action(n11,"reserve funds"); source=i13:reserve funds for the released POs; reason=Drops the specific target qualifier 'for the released POs', changing the scope of the action.

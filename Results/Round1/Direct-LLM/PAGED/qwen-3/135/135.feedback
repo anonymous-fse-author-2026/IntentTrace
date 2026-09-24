@@ -1,0 +1,17 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i9:proceed to Send Payment.
+- [N2] Within matched traces (1->3) omitted: i8:then proceed to Send Payment.
+- [N3] Within matched traces (2->3) omitted: i14:communicate any shipment problems.
+
+Addition
+- [N4] Added trace (model 0): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> end(e1)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> end(e1)
+- [N6] Within matched traces (0->2) added: action(n5,"Any previous shipment problems")
+- [N7] Within matched traces (0->2) added: branch(b1,XOR)
+- [N8] Within matched traces (0->2) added: converge(c1)
+- [N9] Within matched traces (1->3) added: action(n5,"Any previous shipment problems")
+- [N10] Within matched traces (1->3) added: branch(b1,XOR)
+- [N11] Within matched traces (1->3) added: converge(c1)
+
+Permutation
+- [N12] Within matched traces (2->3) reordered: expected [i16:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.] but observed [branch(b1,XOR) -> converge(c1) -> action(n5,"Any previous shipment problems")] elsewhere; in its place the model has [branch(b3,XOR)]

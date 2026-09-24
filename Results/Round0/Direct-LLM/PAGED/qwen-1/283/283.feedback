@@ -1,0 +1,8 @@
+- `action(n9, "You have completed this procedure")`: Hallucinates an undocumented step; the source states "get on the bus and the process will be complete," meaning `n8` should connect directly to `end(e1)`.
+- `defines(v1, "are you hungry", {})` and `defines(v2, "are you hungry again", {})`: Ranges are empty `{}` instead of specifying valid values (e.g., `{true, false}`) that reflect the implied binary states from the source text.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements for outgoing edges; the source explicitly defines conditional logic ("If you are not hungry", "Otherwise", "If you are still not hungry") that must be modeled to constrain the split paths.
+- `action(n6, "take shower again")` and `action(n7, "have breakfast again")`: Payloads append "again," deviating from the exact source text "take a shower" and "have breakfast."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

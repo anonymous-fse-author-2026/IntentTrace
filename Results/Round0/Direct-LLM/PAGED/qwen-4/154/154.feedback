@@ -1,0 +1,8 @@
+- `actor(a_default, "Default", [...])`: Incorrectly assigns all nodes to "Default" instead of "Mac"; source explicitly states "Mac compares...", "Mac needs to manually count...", "they make a list...", and "Mac selects suppliers... places the order(s)".
+- `defines(v1, "is inventory level high", {})`: Declares an empty value range `{}`; source implies a binary state ("high" vs. "low") requiring a defined finite set like `{"high", "low"}` or `{true, false}`.
+- `branch(b1, XOR)`: Lacks `guard(...)` statements for outgoing edges to `n5` and `n6`; source specifies explicit branching conditions: "If the inventory level is high... However, if the inventory level is low...".
+- `precedence(n5, c1)` and `precedence(c1, n11)`: Routes the high-inventory path (`n5`) into order receipt (`n11`); source indicates that when inventory is high, manual counting and subsequent ordering steps are skipped, implying the process should bypass order fulfillment and proceed directly to completion.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

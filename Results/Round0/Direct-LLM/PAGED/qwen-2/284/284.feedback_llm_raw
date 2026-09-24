@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step; the description begins directly with "In the beginning, you sell cars."
+- `branch(b3, AND)`: Incorrectly models the bonus and paycheck checks as concurrent tasks. The source presents them as two independent conditional statements ("If you 'get a bonus', then you continue... If you 'get a paycheck', then you also continue...") with no indication of mandatory parallelism.
+- `guard(b1, n5, v1 = 'No')` and `guard(b2, n6, v2 = 'No')`: Hallucinates termination paths for negative outcomes. The source only specifies that receiving a bonus or paycheck allows continuation, omitting any instruction to stop otherwise.
+- `action(n5, "process ends")`, `action(n6, "process ends")`, `action(n8, "process ends")`: Misrepresents termination as explicit workflow tasks. The source treats "the process ends" as a concluding state reached after paying the bill, not as actionable steps.
+- `precedence(b1, n5)` and `precedence(b2, n6)` routing to `end(e1)`/`end(e2)`: Violates the explicit termination rule "Once you pay the bill, the process ends." by creating valid paths that complete prematurely without this step.
+- `precedence(i1, n1)` → `precedence(n1, n2)`: Disrupts source chronology by inserting an artificial "start" action before the first documented activity "you sell cars."

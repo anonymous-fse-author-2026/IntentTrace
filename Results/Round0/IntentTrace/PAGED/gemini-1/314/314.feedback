@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i5:continue with the process. (reason: The text specifies to 'continue with the process' if a candidate is available initially, which has no corresponding action in the model.)
+- [N2] Node-level omission: i9:Once the candidate is appointed, (reason: The step/state of the candidate being appointed before the process ends is missing.)
+- [N3] Omitted trace (input 0): i1:To begin the process, -> i2:start by identifying the vacancy. -> i5:continue with the process. -> i8:selecting the appropriate applicant. -> i9:Once the candidate is appointed, -> i10:the process comes to an end.
+- [N4] Omitted trace (input 1): i1:To begin the process, -> i2:start by identifying the vacancy. -> i3:If there is no suitable candidate available, -> i4:advertise the vacancy. -> i6:If there is still no suitable candidate available, -> i7:advertise the vacancy again. -> i6:If there is still no suitable candidate available,
+- [N5] Within matched traces (2->0) omitted: i4:advertise the vacancy.
+- [N6] Within matched traces (2->0) omitted: i9:Once the candidate is appointed,
+
+Addition
+- [N7] Node-level addition: action(n7,"Final check: Any candidates after second advertisement?") (reason: The source text does not describe a third 'final check' after the second advertisement.)
+- [N8] Node-level addition: label(n3,n8,"7") (reason: The label content '7' has no source justification.)
+
+Mutation
+- [N9] Node-level mutation: element=action(n1,"Start"); source=i2:start by identifying the vacancy.; reason=The model's action merely says 'Start', completely dropping the core activity of 'identifying the vacancy' described in the text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b3` has in=1 and out=0. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b2, b3, n4, n5, n6, n7 | DSL: branch(b2,XOR); branch(b3,XOR); action(n4,"Advertise Vacancy"); action(n5,"After advertising  any candidates?"); action(n6,"Advertise Again"); action(n7,"Final check: Any candidates after second advertisement?")

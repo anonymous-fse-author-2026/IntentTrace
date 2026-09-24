@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i3:However, if the login fails, we will continue with the process. (reason: The source explicitly instructs to continue the process upon login failure, but the model provides no faithful implementation of this transition or condition; its only candidate guard is mutated, leaving the directive unimplemented.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: Models the introductory announcer phrase 'To start' as a standalone action node. Since this phrasing merely introduces the procedure rather than defining a substantive step, it lacks operational source justification.)
+- [N3] Node-level addition: action(n11,"end process") (reason: No source text supports this additional terminal action. It is an extraneous duplication of the end-process behavior already fully covered by other action and end nodes.)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"start")
+- [N6] Within matched traces (1->3) added: init(i1)
+- [N7] Within matched traces (1->3) added: action(n1,"start")
+- [N8] Within matched traces (1->3) added: action(n3,"is login successful")
+- [N9] Within matched traces (2->2) added: init(i1)
+- [N10] Within matched traces (2->2) added: action(n1,"start")
+- [N11] Within matched traces (2->2) added: action(n3,"is login successful")
+- [N12] Within matched traces (2->2) added: action(n8,"do you still want to try again")
+- [N13] Within matched traces (3->1) added: init(i1)
+- [N14] Within matched traces (3->1) added: action(n1,"start")
+- [N15] Within matched traces (3->1) added: action(n3,"is login successful")
+- [N16] Within matched traces (3->1) added: action(n11,"end process")
+- [N17] Within matched traces (3->1) added: end(e4)
+
+Mutation
+- [N18] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the login is successful, the process will end.; reason=Replaces the explicit domain condition 'login is successful' with a generic variable equality `v1 = 'Yes'`, stripping the original semantic context and relying on an undefined variable mapping.
+- [N19] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:However, if the login fails, we will continue with the process.; reason=Substitutes the clear failure condition 'login fails' with `v1 = 'No'`, losing the explicit outcome description and converting natural language logic into an opaque variable check.
+- [N20] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i4:If you want to try again, please provide the userdata for flickr.; reason=Changes the explicit user intent 'want to try again' to `v2 = 'Yes'`, altering the conditional payload to a non-descriptive boolean assignment.
+- [N21] Node-level mutation: element=guard(b2,n7,"v2 = 'No'"); source=i5:On the other hand, if you choose to abort, the process will end.; reason=Converts the explicit decision 'choose to abort' into `v2 = 'No'`, failing to preserve the source's direct mapping between user choice and process flow.
+- [N22] Node-level mutation: element=guard(b3,n9,"v3 = 'Yes'"); source=i6:If you still want to try again, please provide the userdata for flickr.; reason=Replaces 'still want to try again' with `v3 = 'Yes'`, distorting the natural language condition into a generic variable check that drops the contextual qualifier 'still'.
+- [N23] Node-level mutation: element=guard(b3,n10,"v3 = 'No'"); source=i7:Alternatively, if you decide to abort, the process will end.; reason=Translates the explicit condition 'decide to abort' into `v3 = 'No'`, obscuring the actual decision trigger with an unexplained variable state.

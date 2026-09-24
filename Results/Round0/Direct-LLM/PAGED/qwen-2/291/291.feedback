@@ -1,0 +1,12 @@
+- `branch(b3, AND)` with `precedence(b3, n9)` and `precedence(b3, n10)`: Models "register the case and handle the claim." as concurrent tasks, violating source chronology which implies a sequential workflow ("Next, register the case and handle the claim.").
+- `action(n12, "Enter data on patient record or confirm IN-Patient status")`: Fails to represent a decision point; the node payload merges mutually exclusive alternatives into a single mandatory action, contradicting the source's explicit choice structure ("enter it on the patient's record or confirm the IN-Patient status").
+- `branch(b4, AND)`, `branch(b5, AND)`, `converge(c1)`, `converge(c2)`: Introduces undocumented synchronization logic that routes both XOR outcomes (`n13`, `n14`) to both convergence points, nullifying exclusive choice semantics and adding irrelevant concurrency not present in the source.
+- `action(n15, "Register the case")` and `action(n16, "Handle the claim")`: Hallucinates a second execution of these steps downstream of the XOR branch; the source text only specifies registering and handling the claim once within the process flow.
+- `action(n17, "Receive the payment")` and `action(n19, "Receive the payment")`: Duplicates the payment receipt step without textual justification, breaking the single intended termination progression ("Finally, receive the payment and conclude the process.").
+- `defines(v1, "Enter data on patient record or confirm IN-Patient status", {})`: Declares a decision variable with an invalid empty range `{}` and provides no accompanying `guard` conditions for `branch(b1, XOR)`, failing to operationalize the required choice logic per the source description.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=1 and out=0. | DSL: action(n9,"Register the case")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n14` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n9 | DSL: action(n9,"Register the case")

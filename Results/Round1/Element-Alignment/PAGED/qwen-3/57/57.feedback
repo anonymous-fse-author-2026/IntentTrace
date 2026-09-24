@@ -1,0 +1,35 @@
+Omission
+- [N1] Omitted trace (input 4): i1:To begin the process -> i2:make a purchase and then connect to the website -> i3:search for an item -> i6:if they select "Continue Shopping" -> i7:select "Continue Shopping", they should continue with the process -> i3:search for an item
+- [N2] Within matched traces (1->1) omitted: i14:the order confirmation number should be displayed
+- [N3] Within matched traces (1->1) omitted: i15:followed by the final order being shown to the customer
+- [N4] Within matched traces (1->1) omitted: i16:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer
+- [N5] Within matched traces (1->1) omitted: i17:Once the order entry is complete, the process will end
+- [N6] Within matched traces (3->3) omitted: i14:the order confirmation number should be displayed
+- [N7] Within matched traces (3->3) omitted: i15:followed by the final order being shown to the customer
+- [N8] Within matched traces (3->3) omitted: i16:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer
+- [N9] Within matched traces (3->3) omitted: i17:Once the order entry is complete, the process will end
+
+Addition
+- [N10] Node-level addition: action(n1,"start") (reason: Content 'start' is not supported by any input element; process initiation is already structurally covered by init:i1 and i1.)
+- [N11] Node-level addition: action(n4,"add item to cart / continue shopping") (reason: Content 'add item to cart / continue shopping' is an invented summary label for the decision point, not present in the source units.)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (0->0) added: action(n4,"add item to cart / continue shopping")
+- [N14] Within matched traces (1->1) added: action(n1,"start")
+- [N15] Within matched traces (1->1) added: action(n4,"add item to cart / continue shopping")
+- [N16] Within matched traces (2->2) added: action(n1,"start")
+- [N17] Within matched traces (2->2) added: action(n4,"add item to cart / continue shopping")
+- [N18] Within matched traces (3->3) added: action(n1,"start")
+- [N19] Within matched traces (3->3) added: action(n4,"add item to cart / continue shopping")
+
+Mutation
+- [N20] Node-level mutation: element=guard(b2,n10,"v3 = 'Approved'"); source=i11:If the credit card is approved and there is inventory in stock; reason=Guard expression 'v3 = Approved' only checks credit card status, completely omitting the conjunctive requirement 'and there is inventory in stock' mandated by the source.
+- [N21] Node-level mutation: element=guard(b2,n16,"v3 = 'Denied'"); source=i12:if the credit card is denied or there is no inventory in stock, the transaction will end; reason=Guard expression 'v3 = Denied' only checks credit card denial, completely omitting the disjunctive condition 'or there is no inventory in stock' mandated by the source.
+
+Permutation
+- [N22] Within matched traces (0->0) reordered: expected [i11:If the credit card is approved and there is inventory in stock] but observed [branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?")] elsewhere; in its place the model has [converge(c1)]
+- [N23] Within matched traces (1->1) reordered: expected [i12:if the credit card is denied or there is no inventory in stock, the transaction will end] but observed [action(n16,"transaction ended") -> branch(b2,XOR)] elsewhere; in its place the model has [converge(c1)]
+- [N24] Within matched traces (2->2) reordered: expected [i11:If the credit card is approved and there is inventory in stock] but observed [branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?")] elsewhere; in its place the model has [converge(c1)]
+- [N25] Within matched traces (3->3) reordered: expected [i12:if the credit card is denied or there is no inventory in stock, the transaction will end] but observed [action(n16,"transaction ended") -> branch(b2,XOR)] elsewhere; in its place the model has [converge(c1)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"search for item")

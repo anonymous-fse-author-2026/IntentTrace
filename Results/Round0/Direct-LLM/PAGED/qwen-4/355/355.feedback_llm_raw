@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start process")`: Hallucinates an introductory step; the source begins directly with "checking the customer's order."
+- `action(n9, "end process")`, `action(n23, "end process")`, `action(n25, "end process")`, `action(n27, "end process")`: Redundant/hallucinated actions; process termination is already explicitly handled by the corresponding `end()` nodes (`e1`–`e4`), making these duplicates semantically overlapping and unfaithful to standard modeling practice.
+- `branch(b3, XOR)` with `guard(b3, c2, v3 = 'No')` and `guard(b3, c3, v3 = 'No')`: Violates exclusive choice semantics (SMC4) by assigning the identical condition to two outgoing edges, incorrectly routing the wholesaler path to two simultaneous flows instead of enforcing a single exclusive option.
+- `action(n19, "send invoice and deliver product")`: Incorrectly scoped to the production-only path (`n17 → b8 → n19`); the source places this step after order confirmation generally ("Once the availability is checked, send the order confirmation... Simultaneously, send the invoice and deliver the product"), not exclusively following the production branch.
+- `defines(v3, "is end customer", {"Yes", "No"})`: Fails to faithfully reflect the source's explicit status distinction; the text specifies both "end customer" and "wholesaler" outcomes, but the range collapses "wholesaler" into a negated `"No"` value instead of defining the actual documented options (SMC6).

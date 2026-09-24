@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "accepted_count": 25,
+  "rejected_count": 0,
+  "accepted": [
+    "init(start)",
+    "action(i1, \"Passengers should start the process by undergoing immigration checks\")",
+    "action(i2, \"they should select the method for exit control checks\")",
+    "action(i3, \"If the passenger chooses to use biometrics, they should undergo a check using biometrics. However, if the passenger prefers to use ID documents, they should undergo checks using identity documents.\")",
+    "branch(b1, XOR)",
+    "action(i4, \"After the exit control checks, if the passenger is denied permission, they should leave the area.\")",
+    "action(i6, \"If the exit control check outcome is unsuccessful, the passenger should leave the area and the process ends.\")",
+    "action(i5, \"if the passenger is allowed to continue, they should proceed to the next step.\")",
+    "action(i7, \"if the outcome is successful, the passenger should continue to the next step and the process ends.\")",
+    "end(e_denied)",
+    "end(e_allowed)",
+    "defines(v_permission, \"permission outcome\", {'denied','allowed'})",
+    "actor(a_default, \"Default\", [start, i1, i2, i3, b1, i4, i6, i5, i7, e_denied, e_allowed])",
+    "precedence(start, i1)",
+    "precedence(i1, i2)",
+    "precedence(i2, i3)",
+    "precedence(i3, b1)",
+    "precedence(b1, i4)",
+    "precedence(i4, i6)",
+    "precedence(i6, e_denied)",
+    "precedence(b1, i5)",
+    "precedence(i5, i7)",
+    "precedence(i7, e_allowed)",
+    "guard(b1, i4, v_permission = 'denied')",
+    "guard(b1, i5, v_permission = 'allowed')"
+  ],
+  "rejected": []
+}

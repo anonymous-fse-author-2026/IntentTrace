@@ -1,0 +1,7 @@
+
+
+- action(n1, "Start WIGGO process"): Hallucinated step; the source text states to "start by placing an Order" with no preceding initialization or metadata action. (SMC1, SMC2)
+- action(n4, "Credit response okay"), action(n8, "Availability okay first check"), action(n12, "Article available second check"), action(n19, "Payment received"), action(n22, "Reminder count greater than or equal to 3"): Modeled as executable tasks rather than conditional evaluations; the source describes these as decision triggers (e.g., "If the response is...", "Check the Payment status"), not distinct process steps. (SMC2)
+- action(n6, "End process") / end(e1) and action(n11, "End process") / end(e2): The source only instructs to "send a Denial to the Customer" in these branches and does not state to terminate the process; explicit ending is hallucinated. (SMC1, SMC5)
+- guard(b5, n27, v5 = 'No') leading to action(n27, "End process"): The source provides no instruction when the Reminder count is less than 3; the model incorrectly assumes immediate termination rather than leaving the progression undefined or looping as contextually implied. (SMC1, SMC5)
+- defines(v1, "Credit response okay", {"No", "Yes"}) and guard(b1, n7, v1 = 'Yes'): Ranges and guard conditions use "Yes"/"No", whereas the source explicitly specifies the literal responses "Okay" and "No" for credit and availability checks. (SMC6)

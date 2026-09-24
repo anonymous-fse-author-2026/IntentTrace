@@ -1,0 +1,365 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "To begin the process,"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "start with Orders Required"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "place a Bulk order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "processing the order for delivery"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "there will be an Outstanding Balance"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b_out",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "the process ends at the Warehouse"
+    },
+    {
+      "id": "e_wh",
+      "type": "end"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "a new order is placed"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "recorded in the Accounts Receivable"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "the process continues"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "the order is dropped"
+    },
+    {
+      "id": "e_drop",
+      "type": "end"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "identify the order for installation"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "an Installer will be assigned"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "packed for delivery"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "credit",
+      "R_X": [
+        "Order with prior internal credit allowance",
+        "if the order exceeds the purchaser's credit allowance"
+      ]
+    },
+    {
+      "X": "v_out",
+      "name": "new order",
+      "R_X": [
+        "ends at warehouse",
+        "If a new order is placed,"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "payment",
+      "R_X": [
+        "If Payments are Received",
+        "if no payments are received"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "install",
+      "R_X": [
+        "If the installation needs to be scheduled",
+        "if the order does not require installation"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "i2",
+        "i3",
+        "b1",
+        "i5",
+        "i7",
+        "c1",
+        "b_out",
+        "i9",
+        "e_wh",
+        "i8",
+        "i11",
+        "b2",
+        "i13",
+        "i15",
+        "e_drop",
+        "i16",
+        "b3",
+        "i18",
+        "e1",
+        "i20",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "b_out"
+    },
+    {
+      "type": "precedence",
+      "A": "b_out",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "b_out",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "e_wh"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "e_drop"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "e2"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process,"
+    },
+    {
+      "id": "i2",
+      "content": "start with Orders Required"
+    },
+    {
+      "id": "i3",
+      "content": "place a Bulk order"
+    },
+    {
+      "id": "i4",
+      "content": "If the condition is \"Order with prior internal credit allowance\""
+    },
+    {
+      "id": "i5",
+      "content": "processing the order for delivery"
+    },
+    {
+      "id": "i6",
+      "content": "there will be an Outstanding Balance"
+    },
+    {
+      "id": "i7",
+      "content": "a new order is placed"
+    },
+    {
+      "id": "i8",
+      "content": "the process ends at the Warehouse"
+    },
+    {
+      "id": "i9",
+      "content": "If a new order is placed"
+    },
+    {
+      "id": "i10",
+      "content": "recorded in the Accounts Receivable"
+    },
+    {
+      "id": "i11",
+      "content": "If Payments are Received"
+    },
+    {
+      "id": "i12",
+      "content": "the process continues"
+    },
+    {
+      "id": "i13",
+      "content": "the order is dropped"
+    },
+    {
+      "id": "i14",
+      "content": "identify the order for installation"
+    },
+    {
+      "id": "i15",
+      "content": "If the installation needs to be scheduled"
+    },
+    {
+      "id": "i16",
+      "content": "an Installer will be assigned"
+    },
+    {
+      "id": "i17",
+      "content": "packed for delivery"
+    }
+  ]
+}

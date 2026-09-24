@@ -1,0 +1,14 @@
+- action(n10,...), branch(b3,...), action(n11,...), action(n12,...), end(e2), defines(v3,...), guard(b3,...), and associated precedences: Hallucinated behaviors. The source states that after the second reminder, "Once the Referee Reports have been completed, you can move on to organizing interviews...", but the model introduces an unmentioned third check, "Contact support for further assistance", and an early process termination path.
+- "coordinate the second round of selection": Omitted documented behavior. The source specifies that if an HR Specialist is not required, you should "continue with the process and coordinate the second round of selection," which is entirely absent from the model.
+- defines(v4, "Is Psychometric Test required?", {"Yes"}): Incorrect value range. The source frames this as a conditional evaluation ("check if a Psychometric Test is required"), implying both possible outcomes, but the model restricts the range exclusively to "Yes".
+- action(n21, "End of process"), end(e3): Misrepresents the process conclusion. The source explicitly instructs to "request the final candidate ranking and continue with the process," whereas the model terminates execution here.
+- precedence chain following action(n9,...): Disrupts intended chronology and progression. The source implies that after sending another reminder, the workflow should eventually proceed to organizing interviews (action(n13,...)) once reports are finalized, but the model incorrectly diverts to the hallucinated b3/e2 termination branch instead of converging to the interview phase.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b4` has in=1 and out=1. | DSL: branch(b4,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v4 = 'Yes'` on `b4 -> n16` uses undefined variable `v4`. | DSL: guard(b4,n16,"v4 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v4 = 'Yes'` on `b4 -> n16` cannot be evaluated: `v4` has no declared range. | DSL: guard(b4,n16,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` cannot be evaluated: `v4` has no declared range.

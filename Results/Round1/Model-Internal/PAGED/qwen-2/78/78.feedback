@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i2:begin by checking if the order has been received. (reason: No element correctly implements the initial receipt verification; action:n2 mutates it instead of preserving it.)
+- [N2] Node-level omission: i10:create the bill (reason: Absorbed into the mutated action:n6. Not preserved as a distinct, correctly sequenced final action as specified in the source.)
+- [N3] Omitted trace (input 1): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i5:if the sum of the order is greater than 2000, compute a discount of 4%. -> i8:Once again, check the sum of the order. -> i9:check the sum of the order -> i10:create the bill -> i11:the process will come to an end.
+- [N4] Omitted trace (input 2): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i6:If the sum of the order falls between 1000 and 1500, compute a discount of 3%. -> i8:Once again, check the sum of the order. -> i9:check the sum of the order -> i10:create the bill -> i11:the process will come to an end.
+- [N5] Omitted trace (input 3): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i7:if the sum of the order falls between 500 and 999, compute a discount of 2%. -> i8:Once again, check the sum of the order. -> i9:check the sum of the order -> i10:create the bill -> i11:the process will come to an end.
+- [N6] Within matched traces (0->0) omitted: i9:check the sum of the order
+
+Addition
+- [N7] Node-level addition: action(n7,"end") (reason: Contains content 'end'. Process termination is structural and already covered by end:e1/i11. An explicit action node named 'end' invents a step with no supporting source span.)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n7,"end")
+
+Mutation
+- [N10] Node-level mutation: element=action(n2,"check sum of order"); source=i2:begin by checking if the order has been received.; reason=Source specifies verifying order receipt, but the model replaces it with 'check sum of order', fundamentally altering the initial validation step's target and meaning.
+- [N11] Node-level mutation: element=action(n6,"continue process and create bill"); source=i4:less than 500, then continue with the process. -> i10:create the bill; reason=Merges two distinct source steps into one. Attaches bill creation directly to the <500 branch outcome, distorting the sequential flow where bill creation is a separate, final unified step executed after all checks complete.

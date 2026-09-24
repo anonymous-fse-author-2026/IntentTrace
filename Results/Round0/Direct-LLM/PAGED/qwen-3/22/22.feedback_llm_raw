@@ -1,0 +1,6 @@
+
+
+- `action(n1, "start")`: Hallucinates a step not documented in the description, which begins directly with "receiving an order request".
+- `precedence(n6, n7)` and `precedence(n7, b2)`: Violates source chronology and control-flow logic. The description states "If the installation is not successful... ends. However, if the installation is successful, the next step is to check the installation," meaning the XOR branch must follow the installation immediately and the check must only appear on the successful path. The model incorrectly sequences the check before the branch, forcing it for failed installations.
+- `defines(v2, "Installation Check", {"unsuccessful", "successful"})` and `guard(b2, ...)`: Misattributes the decision scope. The source conditions the branch on the installation outcome ("If the installation is not successful"), not on the result of a subsequent "Installation Check".
+- `action(n5, "End: Evaluation Failed")` and `action(n8, "End: Installation Failed")`: Introduces undocumented intermediate actions. The description explicitly states that upon failure the order is "considered as 'NOK' and the process comes to an end" without specifying discrete pre-termination tasks.

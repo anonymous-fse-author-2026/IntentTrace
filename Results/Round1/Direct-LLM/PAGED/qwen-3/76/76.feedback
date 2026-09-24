@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 0): i1:At the beginning -> i2:if someone "Knows SLA" -> i3:they should "continue the process" -> i6:After that, they should enter the date. -> i7:If the task is "Urgent" -> i8:they should "Red Stamp" -> i12:Finally, the process ends.
+- [N2] Omitted trace (input 1): i1:At the beginning -> i2:if someone "Knows SLA" -> i3:they should "continue the process" -> i6:After that, they should enter the date. -> i9:If it is "Non Urgent", they should "continue the process" -> i12:Finally, the process ends.
+- [N3] Omitted trace (input 2): i1:At the beginning -> i4:If they don't "Know SLA", they should "Look up" -> i6:After that, they should enter the date. -> i7:If the task is "Urgent" -> i8:they should "Red Stamp" -> i12:Finally, the process ends.
+- [N4] Omitted trace (input 3): i1:At the beginning -> i4:If they don't "Know SLA", they should "Look up" -> i6:After that, they should enter the date. -> i9:If it is "Non Urgent", they should "continue the process" -> i12:Finally, the process ends.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: The model inserts a discrete 'start' action step, but the source only provides a temporal marker ('At the beginning') without prescribing an executable start action.)
+- [N6] Node-level addition: action(n4,"Urgency check") (reason: The model inserts an 'Urgency check' action step, but the source only poses a conditional evaluation ('If the task is Urgent') without defining a corresponding check action.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"SLA check") -> branch(b1,XOR) -> converge(c1) -> action(n3,"enter date") -> action(n4,"Urgency check") -> branch(b2,XOR) -> action(n5,"red stamp") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"SLA check") -> branch(b1,XOR) -> converge(c1) -> action(n3,"enter date") -> action(n4,"Urgency check") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N9] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"SLA check") -> branch(b1,XOR) -> action(n7,"look up") -> converge(c1) -> action(n3,"enter date") -> action(n4,"Urgency check") -> branch(b2,XOR) -> action(n5,"red stamp") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N10] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"SLA check") -> branch(b1,XOR) -> action(n7,"look up") -> converge(c1) -> action(n3,"enter date") -> action(n4,"Urgency check") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,c1,"v1 = \"Yes\""); source=i2: if someone "Knows SLA"; reason=The source explicitly requires knowing the SLA, but the guard substitutes a generic boolean 'Yes', altering the condition's meaning.
+- [N12] Node-level mutation: element=guard(b1,n7,"v1 = \"No\""); source=i4: If they don't "Know SLA", they should "Look up" -> i5: If they don't "Know SLA", they should "Look up".; reason=The source specifies not knowing the SLA, but the guard substitutes a generic boolean 'No', distorting the negative condition.
+- [N13] Node-level mutation: element=action(n2,"SLA check"); source=i2: if someone "Knows SLA"; reason=The source describes a knowledge state ('Knows SLA'), but the element invents a procedural 'SLA check' action, changing the instruction and dropping the original qualifier.

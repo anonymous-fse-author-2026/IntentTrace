@@ -1,0 +1,26 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, start with -> i2:Orders Required and then place a Bulk order. -> i3:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i8:if no payments are received, the order is dropped.
+- [N2] Within matched traces (0->0) omitted: i7:If Payments are Received, the process continues.
+- [N3] Within matched traces (1->1) omitted: i7:If Payments are Received, the process continues.
+
+Addition
+- [N4] Within matched traces (0->0) added: action(n17,"end process")
+- [N5] Within matched traces (0->0) added: end(e2)
+- [N6] Within matched traces (1->1) added: action(n14,"installation required")
+- [N7] Within matched traces (1->1) added: branch(b3,XOR)
+- [N8] Within matched traces (3->2) added: action(n4,"Order with prior internal credit allowance")
+- [N9] Within matched traces (3->2) added: branch(b1,XOR)
+- [N10] Within matched traces (3->2) added: action(n17,"end process")
+- [N11] Within matched traces (3->2) added: end(e2)
+- [N12] Within matched traces (4->3) added: action(n4,"Order with prior internal credit allowance")
+- [N13] Within matched traces (4->3) added: branch(b1,XOR)
+- [N14] Within matched traces (4->3) added: action(n14,"installation required")
+- [N15] Within matched traces (4->3) added: branch(b3,XOR)
+- [N16] Within matched traces (5->4) added: action(n4,"Order with prior internal credit allowance")
+- [N17] Within matched traces (5->4) added: branch(b1,XOR)
+- [N18] Within matched traces (5->4) added: action(n9,"Payments Received")
+- [N19] Within matched traces (5->4) added: branch(b2,XOR)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.

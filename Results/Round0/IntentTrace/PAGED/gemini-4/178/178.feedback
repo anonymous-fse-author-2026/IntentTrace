@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 3): i1:Initially, -> i3:if the answer is "no", then proceed with the acquisition of the pricing. However, if the answer is "yes", then continue with the process. -> i5:continue with the process -> i7:If the answer is "no" again, then acquire the pricing. On the other hand, if the answer is "yes" once more, then continue with the process. -> i5:continue with the process
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> action(n3,"acquire pricing") -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> action(n5,"acquire pricing") -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N5] Within matched traces (1->0) added: action(n4,"second answer is no")
+- [N6] Within matched traces (2->0) added: action(n2,"answer is no")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'") -> guard(b1,c1,"v1 = 'No'"); source=i3:if the answer is "no", then proceed with the acquisition of the pricing. However, if the answer is "yes", then continue with the process.; reason=The model reverses the logic: it assigns 'Yes' to acquiring pricing and 'No' to converging/continuing, whereas the text says to acquire pricing if 'no' and continue if 'yes'.
+- [N8] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'") -> guard(b2,c2,"v2 = 'No'"); source=i7:If the answer is "no" again, then acquire the pricing. On the other hand, if the answer is "yes" once more, then continue with the process.; reason=The model reverses the logic for the second decision: it assigns 'Yes' to acquiring pricing and 'No' to converging/continuing, whereas the text says to acquire pricing if 'no' and continue if 'yes'.
+
+Permutation
+- [N9] Within matched traces (0->0) reordered: expected [i3:if the answer is "no", then proceed with the acquisition of the pricing. However, if the answer is "yes", then continue with the process.] but observed [branch(b1,XOR) -> converge(c1)] elsewhere; in its place the model has [action(n2,"answer is no")]
+- [N10] Within matched traces (0->0) reordered: expected [i7:If the answer is "no" again, then acquire the pricing. On the other hand, if the answer is "yes" once more, then continue with the process.] but observed [branch(b2,XOR) -> converge(c2)] elsewhere; in its place the model has [action(n4,"second answer is no")]
+- [N11] Within matched traces (1->0) reordered: expected [i3:if the answer is "no", then proceed with the acquisition of the pricing. However, if the answer is "yes", then continue with the process.] but observed [branch(b1,XOR) -> converge(c1)] elsewhere; in its place the model has [action(n2,"answer is no")]
+- [N12] Within matched traces (2->0) reordered: expected [i7:If the answer is "no" again, then acquire the pricing. On the other hand, if the answer is "yes" once more, then continue with the process.] but observed [branch(b2,XOR) -> converge(c2)] elsewhere; in its place the model has [action(n4,"second answer is no")]

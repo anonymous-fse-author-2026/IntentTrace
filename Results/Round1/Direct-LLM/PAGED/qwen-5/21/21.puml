@@ -1,0 +1,95 @@
+@startuml
+!theme plain
+|student| Student
+|selling_agency| Selling Agency
+|ppc| PPC
+|finance| Finance Department
+|warehouse| Warehouse
+|logistics| Logistic Department
+|a_default| Default
+|a_default|
+start
+:start the process;
+:supply the requirement;
+:document the requirement;
+:How was the order received?;
+:v1: How was the order received? ({via fax, via mail or phone}); <<objectSignal>>
+if () then ([v1 = 'via fax'] [v1 = 'via mail or phone'])
+->;
+else ([v1 = 'via fax'] [v1 = 'via mail or phone'])
+->;
+endif
+:input the order into Excel file;
+|student|
+:Excel list;
+:send the Excel list to the student;
+:type the orders into the MS-Access database;
+|a_default|
+:MS-Access database;
+:ensure that database input is completed;
+:control the incoming order;
+:continue to do the check;
+:is the order correct?;
+:v2: is the order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:release the order;
+|student|
+:send the Excel list to the student;
+|a_default|
+:continue with the process;
+else ([v2 = 'No'])
+|selling_agency|
+:contact the selling agency;
+:upon receiving the actual issue;
+|a_default|
+:is the order worth less than 5.000 €?;
+:v3: Order value ({< 5.000 €, > 5.000 €}); <<objectSignal>>
+if () then ([v3 = '< 5.000 €'])
+:release the order;
+else ([v3 = '> 5.000 €'])
+:send the order for sign off and continue with the check;
+:order signed off;
+:contact the client;
+:release the order;
+endif
+endif
+|ppc|
+:order received by PPC;
+:PPC initiate production;
+|a_default|
+:is the issue solvable?;
+:v4: is the issue solvable? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:release the order;
+:goods will be produced;
+:check the quality of the goods;
+|finance|
+:create and send quality report to the finance department;
+|a_default|
+:release the order via memo;
+|warehouse|
+:ensure that the memo is achieved in the warehouse;
+|a_default|
+:send the invoice;
+|finance|
+:report the achievement to the finance department;
+|a_default|
+split
+:commission the goods;
+split again
+:sign and send the memo;
+:send the goods;
+|logistics|
+:ensure that the signed memo is achieved in the logistic department;
+|a_default|
+:archive the memo;
+end split
+:close the order;
+:end;
+stop
+else ([v4 = 'No'])
+:cancel the order;
+:end;
+stop
+endif
+@enduml

@@ -1,0 +1,9 @@
+- `action(n4, "Both assessments complete")`: Hallucinates a step; source only states "After that, the eligibility of the applicant is assessed" without describing a separate completion checkpoint action.
+- `action(n6, "Is applicant eligible")`: Hallucinates a step; the source directly links the assessment to the conditional choice ("After that, the eligibility of the applicant is assessed. If the applicant is eligible..."), making this action redundant and structurally misplaced before `branch(b1, XOR)`.
+- `branch(b1, XOR)` lacking `guard` statements: Omits the documented conditions "If the applicant is eligible" and "If the applicant is not eligible", leaving the exclusive routing logic unspecified and incomplete.
+- `defines(v1, "Is applicant eligible", {})`: Specifies an empty value range `{}` instead of a meaningful domain (e.g., `{true, false}`), failing to faithfully represent the decision variable's value space.
+- `precedence(n5, n6)` and `precedence(n6, b1)`: Enforces an unnecessary sequential chain between assessment and branching, breaking the direct chronological flow described ("After that, the eligibility of the applicant is assessed. If the applicant is eligible...").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i2:begin by checking if the order has been received. (reason: No element faithfully implements this initial verification step; the only corresponding model element mutates its target and purpose.)
+- [N2] Node-level omission: i4:If the sum of the order is less than 500, then continue with the process. (reason: Dissolved into a merged composite step, losing its distinct conditional branch and standalone action boundary as specified in the source.)
+- [N3] Node-level omission: i10:Finally, create the bill (reason: Absorbed into a prior merged step rather than implemented as a discrete final action following the evaluation loop.)
+
+Mutation
+- [N4] Node-level mutation: element=action(n2,"check sum of order"); source=i2:begin by checking if the order has been received.; reason=The element's content specifies checking the 'sum of order', which fundamentally alters the explicit source instruction to verify receipt status. The target and nature of the verification are distorted.
+- [N5] Node-level mutation: element=action(n6,"continue process and create bill"); source=i4:If the sum of the order is less than 500, then continue with the process. -> i10:Finally, create the bill; reason=The action merges two distinct source instructions into a single step. This collapses the intentional granularity and sequencing, incorrectly binding the conditional continuation directly to the final billing step rather than keeping them as separate, sequentially ordered actions.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=1 and out=0. | DSL: action(n2,"check sum of order")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=0 and out=4. | DSL: branch(b1,XOR)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, e1, n3, n4, n5, n6, n7 | DSL: branch(b1,XOR); end(e1); action(n3,"compute 4% discount"); action(n4,"compute 3% discount"); action(n5,"compute 2% discount"); action(n6,"continue process and create bill"); action(n7,"end")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: c1, i1, n1, n2, n3, n4, n5 | DSL: converge(c1); init(i1); action(n1,"start"); action(n2,"check sum of order"); action(n3,"compute 4% discount"); action(n4,"compute 3% discount"); action(n5,"compute 2% discount")

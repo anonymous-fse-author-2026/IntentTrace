@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Buyers
+|a_default|
+start
+:choose a book;
+:choose a book;
+:choose what to do after selecting book;
+:v1: choose what to do after selecting book ({view the book details, see a list of new copies, view a list of used copies}); <<objectSignal>>
+switch ()
+case ([v1 = "view the book details"])
+:view book details;
+:choose what to do after viewing book details;
+:v2: choose what to do after viewing book details ({view a list of new copies, proceed to select a copy}); <<objectSignal>>
+if () then ([v2 = "view a list of new copies"])
+:view list of new copies from book details;
+-> view list of new copies from book details;
+else ([v2 = "proceed to select a copy"])
+:select a copy and complete process;
+-> After selecting preferred copy;
+endif
+case ([v1 = "see a list of new copies"])
+:view list of new copies;
+-> view list of new copies;
+case ([v1 = "view a list of used copies"])
+:view list of used copies;
+:evaluate list of used copies;
+:select preferred copy and complete process;
+-> After selecting preferred copy;
+endswitch
+:End;
+stop
+@enduml

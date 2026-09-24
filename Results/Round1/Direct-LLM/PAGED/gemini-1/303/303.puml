@@ -1,0 +1,108 @@
+@startuml
+!theme plain
+|a_student| student
+|a_selling_agency| selling agency
+|a_client| client
+|a_ppc| PPC
+|a_finance_department| finance department
+|a_warehouse| warehouse
+|a_logistic_department| logistic department
+|a_default| Default
+|a_default|
+start
+:start process;
+:supply requirement;
+:document requirement;
+:is order received via fax;
+:v1: order received via ({mail or phone, fax}); <<objectSignal>>
+if () then ([v1 = 'mail or phone'])
+:input order into Excel file;
+else ([v1 = 'fax'])
+:input order into Excel file;
+endif
+:send Excel list to student;
+|a_student|
+:type orders into MS-Access database;
+:ensure database typing is completed;
+|a_default|
+split
+|a_student|
+:control incoming order;
+split again
+:continue check;
+end split
+:is order correct;
+|a_default|
+:v2: is order correct ({correct, incorrect}); <<objectSignal>>
+if () then ([v2 = 'correct'])
+:release order;
+:send Excel list to student;
+else ([v2 = 'incorrect'])
+|a_selling_agency|
+:contact selling agency;
+|a_default|
+:is order worth less than 5000;
+:v3: is order worth less than 5000 ({yes, no}); <<objectSignal>>
+if () then ([v3 = 'yes'])
+:release order;
+else ([v3 = 'no'])
+split
+:send order for sign off;
+split again
+:continue check;
+end split
+|a_selling_agency|
+:contact selling agency and upon receiving actual issue send order for sign off;
+|a_client|
+:contact client and release order;
+|a_default|
+endif
+endif
+|a_ppc|
+:PPC initiates production upon receiving order;
+|a_default|
+:can issue be solved;
+:v4: can issue be solved ({no, yes}); <<objectSignal>>
+if () then ([v4 = 'no'])
+:cancel order;
+:end process;
+stop
+else ([v4 = 'yes'])
+:release order;
+|a_ppc|
+:goods will be produced;
+|a_default|
+:does order need to be cancelled;
+:v5: does order need to be cancelled ({yes, no}); <<objectSignal>>
+if () then ([v5 = 'yes'])
+:end process;
+stop
+else ([v5 = 'no'])
+:check quality of goods;
+|a_finance_department|
+:create and send quality report to finance department;
+|a_default|
+split
+:release order via memo;
+|a_warehouse|
+:ensure memo achieved in warehouse;
+|a_default|
+:send invoice;
+|a_finance_department|
+:report achievement to finance department;
+split again
+|a_default|
+:commission goods;
+:send goods;
+|a_logistic_department|
+:ensure signed memo achieved in logistic department;
+split again
+|a_default|
+:sign and send memo;
+end split
+:archive memo and close order;
+:end process;
+stop
+endif
+endif
+@enduml

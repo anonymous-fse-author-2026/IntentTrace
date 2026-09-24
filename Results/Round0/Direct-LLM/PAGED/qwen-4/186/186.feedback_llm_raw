@@ -1,0 +1,6 @@
+
+
+- `precedence(n3, c1)` & `precedence(n5, c1)`: Routes both "Acquire pricing" paths directly to the convergence and end points, omitting the mandatory downstream steps described in the source: "After the margin calculation, the next step is the preparation of the offer. Once the offer is prepared, the transport rate is calculated, and the process comes to an end."
+- `action(n2, "Is initial answer yes")` & `action(n4, "Is second answer yes")`: Models conditional decision checkpoints as `action` nodes rather than `branch` gateways or edge `guard`s, violating SMC2 by misrepresenting the control-flow nature of the text: "if the answer is 'no'... if the answer is 'yes'...".
+- `defines(v1, "Is initial answer yes", {})` & `defines(v2, "Is second answer yes", {})`: Declares empty value ranges `{}` for the decision variables, failing to faithfully reflect the documented binary value space (`{"yes", "no"}`) required to drive the branching logic.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing corresponding `guard()` statements to bind variables `v1` and `v2` to specific outgoing edges, leaving the routing conditions for the documented choices formally unspecified and breaking SMC4/SMC6 compliance.

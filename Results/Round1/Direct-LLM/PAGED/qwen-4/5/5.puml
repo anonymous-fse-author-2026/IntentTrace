@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process with Low Inventory;
+:proceed to Create PR first time;
+:proceed to Create PR second time;
+:proceed to Submit PO;
+:communicate shipment problems before shipment;
+:proceed to Ship Material;
+:is shipment okay first check;
+:v1: is shipment okay first check ({okay, problems}); <<objectSignal>>
+if () then ([v1 = 'okay'])
+:proceed to Send Payment;
+else ([v1 = 'problems'])
+:communicate shipment problems first time;
+:is shipment okay second check;
+:v2: is shipment okay second check ({okay, problems}); <<objectSignal>>
+if () then ([v2 = 'okay'])
+:proceed to Send Payment;
+else ([v2 = 'problems'])
+:communicate shipment problems second time;
+endif
+endif
+:end process after payment sent;
+stop
+@enduml

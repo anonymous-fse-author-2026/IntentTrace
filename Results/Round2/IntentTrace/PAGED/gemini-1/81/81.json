@@ -1,0 +1,263 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Receive and Categorize Invoice"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Sort Invoice"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Reject Invoice"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "End Process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Return Invoice to Client for Completion"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Process Invoice for SAP Entry"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Forward Invoice for Validation"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Validate Invoice"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "End Process"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is the instruction to Forward Reject Return or Process for SAP?",
+      "R_X": [
+        "Forward Invoice to Admin Officer",
+        "Reject invoice",
+        "Return invoice to client for completion",
+        "Process Invoice for SAP Entry"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "c1",
+        "n2",
+        "b1",
+        "n4",
+        "n6",
+        "n7",
+        "e2",
+        "n8",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Forward Invoice to Admin Officer'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'Reject invoice'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v1 = 'Return invoice to client for completion'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n10",
+      "condition": "v1 = 'Process Invoice for SAP Entry'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "The first step is to receive and categorize the invoice."
+    },
+    {
+      "id": "i3",
+      "content": "If the instruction is to \"Forward Invoice to Admin Officer\""
+    },
+    {
+      "id": "i4",
+      "content": "sort the invoice"
+    },
+    {
+      "id": "i5",
+      "content": "if the instruction is to \"Reject invoice\""
+    },
+    {
+      "id": "i6",
+      "content": "Reject invoice"
+    },
+    {
+      "id": "i7",
+      "content": "then the process ends there"
+    },
+    {
+      "id": "i8",
+      "content": "if the instruction is to \"Return invoice to client for completion\""
+    },
+    {
+      "id": "i9",
+      "content": "Return invoice to client for completion"
+    },
+    {
+      "id": "i10",
+      "content": "received and categorized again"
+    },
+    {
+      "id": "i11",
+      "content": "if the instruction is to \"Process Invoice for SAP Entry\""
+    },
+    {
+      "id": "i12",
+      "content": "Process Invoice for SAP Entry"
+    },
+    {
+      "id": "i13",
+      "content": "forwarded for validation"
+    },
+    {
+      "id": "i14",
+      "content": "it is then validated"
+    },
+    {
+      "id": "i15",
+      "content": "and the process ends"
+    }
+  ]
+}

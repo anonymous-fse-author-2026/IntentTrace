@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i9:planned orders, and dependent requirements. (reason: Explicitly listed final outputs are completely absent from the model.)
+- [N2] Node-level omission: i6:Following PIR, we address any changes to MRP elements (reason: Not faithfully implemented; existing candidates distort the action or invent non-existent conditionality.)
+- [N3] Node-level omission: i8:Finally, the process concludes with purchase requisitions, (reason: Not faithfully implemented; existing candidate truncates the output list and corrupts punctuation.)
+- [N4] Within matched traces (0->0) omitted: i9:planned orders, and dependent requirements.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Generic 'start' placeholder adds no substantive step or condition found in the source units.)
+- [N6] Node-level addition: guard(b1,n8,"v1 = 'Yes'") (reason: Boolean guard 'v1 = Yes' introduces a decision variable and logic entirely absent from the sequential source description.)
+- [N7] Node-level addition: guard(b1,c1,"v1 = 'No'") (reason: Boolean guard 'v1 = No' mirrors the invented decision logic above, lacking any textual basis.)
+- [N8] Node-level addition: label(n8,c1,"No") (reason: Path label 'No' describes a branching outcome that the source text never establishes.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"periodic planning needs and events") -> action(n3,"sales and operation plan") -> action(n4,"operations plan") -> action(n5,"disaggregation") -> action(n6,"planned independent requirements (PIR)") -> action(n7,"changes to MRP elements") -> branch(b1,XOR) -> converge(c1) -> action(n9,"material requirements planning (MRP)") -> action(n10,"purchase requisitions'") -> end(e1)
+- [N10] Within matched traces (0->0) added: action(n1,"start")
+
+Mutation
+- [N11] Node-level mutation: element=action(n2,"periodic planning needs and events"); source=i1:The process begins with periodic planning needs and events that impact demand.; reason=Drops the defining qualifier 'that impact demand', reducing granularity and altering the precise scope of the initial trigger.
+- [N12] Node-level mutation: element=action(n7,"changes to MRP elements"); source=i6:Following PIR, we address any changes to MRP elements; reason=Converts an active instruction ('address any changes') into a passive noun phrase, losing the required action verb and altering semantic execution.
+- [N13] Node-level mutation: element=action(n8,"address changes to MRP elements if applicable"); source=i6:Following PIR, we address any changes to MRP elements; reason=Invents the conditional qualifier 'if applicable', contradicting the unconditional, sequential flow described in the source.
+- [N14] Node-level mutation: element=action(n10,"purchase requisitions'"); source=i8:Finally, the process concludes with purchase requisitions,; reason=Truncates the complete list of concluding outputs and introduces erroneous trailing punctuation, failing to capture the full step specification.
+
+Structural Check
+- [S1] STC22 failed: Every node must be assigned to exactly one actor. | Node `e1` is not assigned to any actor. | DSL: end(e1)

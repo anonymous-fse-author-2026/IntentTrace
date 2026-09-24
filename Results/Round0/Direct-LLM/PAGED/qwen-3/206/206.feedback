@@ -1,0 +1,8 @@
+- `defines(v1, "decide whether to send a negative email or invite candidate", {})`: The range `{}` is empty and omits the source's explicit decision options ("send a negative email" or "invite the candidate"), violating SMC6.
+- `action(n6, "Process ends after interview")` & `precedence(c1, n6)`: Hallucinates a mandatory intermediate step. The source states "Once the interview is conducted, the process comes to an end" and "if the decision is to send a negative email, then the process ends"; forcing both paths through `n6` before `end(e1)` violates SMC1.
+- `precedence(n3, c1)` & `precedence(n5, c1)`: Incorrectly merges divergent flows. The source specifies that the negative email path terminates immediately ("if the decision is to send a negative email, then the process ends"), but the model routes it through `converge(c1)` and `action(n6)`, distorting the intended chronology and progression (SMC3, SMC5).
+- `branch(b1, XOR)`: Lacks `guard` statements to explicitly model the source's conditional routing logic ("If the decision is to send a negative email... However, if the decision is to invite..."), violating SMC4.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

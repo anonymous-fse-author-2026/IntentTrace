@@ -1,0 +1,43 @@
+Omission
+- [N1] Within matched traces (3->1) omitted: i18:If the Reminder count is greater than or equal to 3, Write off the Order
+- [N2] Within matched traces (3->1) omitted: i19:Additionally, send a Reminder
+- [N3] Within matched traces (3->1) omitted: i20:After writing off the Order, close the Order and end the process
+- [N4] Within matched traces (5->3) omitted: i18:If the Reminder count is greater than or equal to 3, Write off the Order
+- [N5] Within matched traces (5->3) omitted: i19:Additionally, send a Reminder
+- [N6] Within matched traces (5->3) omitted: i20:After writing off the Order, close the Order and end the process
+
+Addition
+- [N7] Node-level addition: action(n7,"Send a Denial to the Customer due to Article Unavailability") (reason: The model introduces a denial step attributed to article unavailability, but no provided input element supports this specific condition or outcome. The only denial instruction in the segmented source (i6) applies exclusively to credit limits.)
+- [N8] Node-level addition: guard(b2,n7,"v2 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Added trace (model 2): init(i1) -> action(n1,"start process for WIGGO by placing an Order") -> action(n2,"Check the Customers Credit Limit") -> action(n3,"Is Credit Limit Okay") -> branch(b1,XOR) -> action(n4,"Check the Availability of the Article first time") -> action(n6,"Is Article Available first time") -> branch(b2,XOR) -> action(n8,"Check the Availability of the Article second time") -> action(n9,"Is Article Available second time") -> branch(b3,XOR) -> action(n10,"Produce the Goods") -> converge(c1) -> action(n12,"Send an Order Confirmation") -> branch(b6,AND) -> action(n14,"Send the Invoice") -> converge(c2) -> action(n15,"Check the Payment status") -> action(n16,"Has Payment been received") -> branch(b4,XOR) -> action(n17,"Close the Order due to Payment received") -> action(n18,"End process") -> end(e1)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"start process for WIGGO by placing an Order") -> action(n2,"Check the Customers Credit Limit") -> action(n3,"Is Credit Limit Okay") -> branch(b1,XOR) -> action(n4,"Check the Availability of the Article first time") -> action(n6,"Is Article Available first time") -> branch(b2,XOR) -> action(n8,"Check the Availability of the Article second time") -> action(n9,"Is Article Available second time") -> branch(b3,XOR) -> action(n11,"Collect the Goods") -> converge(c1) -> action(n12,"Send an Order Confirmation") -> branch(b6,AND) -> action(n14,"Send the Invoice") -> converge(c2) -> action(n15,"Check the Payment status") -> action(n16,"Has Payment been received") -> branch(b4,XOR) -> action(n17,"Close the Order due to Payment received") -> action(n18,"End process") -> end(e1)
+- [N11] Within matched traces (0->5) added: action(n3,"Is Credit Limit Okay")
+- [N12] Within matched traces (1->0) added: action(n7,"Send a Denial to the Customer due to Article Unavailability")
+- [N13] Within matched traces (1->0) added: end(e4)
+- [N14] Within matched traces (2->1) added: branch(b2,XOR)
+- [N15] Within matched traces (2->1) added: action(n8,"Check the Availability of the Article second time")
+- [N16] Within matched traces (3->1) added: branch(b2,XOR)
+- [N17] Within matched traces (3->1) added: action(n8,"Check the Availability of the Article second time")
+- [N18] Within matched traces (3->1) added: action(n16,"Has Payment been received")
+- [N19] Within matched traces (3->1) added: action(n17,"Close the Order due to Payment received")
+- [N20] Within matched traces (3->1) added: action(n18,"End process")
+- [N21] Within matched traces (3->1) added: end(e1)
+- [N22] Within matched traces (4->3) added: branch(b2,XOR)
+- [N23] Within matched traces (4->3) added: action(n8,"Check the Availability of the Article second time")
+- [N24] Within matched traces (4->3) added: action(n9,"Is Article Available second time")
+- [N25] Within matched traces (5->3) added: branch(b2,XOR)
+- [N26] Within matched traces (5->3) added: action(n8,"Check the Availability of the Article second time")
+- [N27] Within matched traces (5->3) added: action(n9,"Is Article Available second time")
+- [N28] Within matched traces (5->3) added: action(n16,"Has Payment been received")
+- [N29] Within matched traces (5->3) added: action(n17,"Close the Order due to Payment received")
+- [N30] Within matched traces (5->3) added: action(n18,"End process")
+- [N31] Within matched traces (5->3) added: end(e1)
+
+Permutation
+- [N32] Within matched traces (1->0) reordered: expected [i4:"Okay", proceed to Check the Availability of the Article] but observed [branch(b1,XOR)] elsewhere; in its place the model has [branch(b2,XOR)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n20` has in=1 and out=0. | Node `n22` has in=1 and out=0. | DSL: action(n20,"Send a Reminder"); action(n22,"Close the Order after Write off")
+- [S2] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c3` has in=0 and out=1. | DSL: converge(c3)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: c3, e2, n23 | DSL: converge(c3); end(e2); action(n23,"End process after Closing Order")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b5, n19, n20, n21, n22 | DSL: branch(b5,XOR); action(n19,"Is Reminder count greater or equal to 3"); action(n20,"Send a Reminder"); action(n21,"Write off the Order"); action(n22,"Close the Order after Write off")

@@ -1,0 +1,11 @@
+- action(n1, "start DMS Parts Provision Process"): Hallucinated action; the source text states that "the first step is to gather information".
+- action(n4, "is part available locally"): Hallucinated action; evaluating if the part is available locally is a branching condition for the XOR gateway, not a distinct process action.
+- action(n6, "end process after retrieving part"): Hallucinated action; the text simply indicates "the process comes to an end", which is represented by the end node `e1`.
+- action(n9, "end process after ordering part"): Hallucinated action; the text simply indicates "the process comes to an end", which is represented by the end node `e2`.
+- branch(b1, XOR): Missing `guard` declarations on the outgoing edges to `n5` and `n7` to evaluate the conditions "If the part is found to be available locally" and "if the part is not available locally".
+- defines(v1, "is part available locally", {}): The variable has an empty range, failing to reflect the possible outcomes (e.g., true/false or yes/no) of the availability check.
+- actor(a_default, "Default", [...]): The actor assignment fails to reflect the "DMS Parts Provision Team" explicitly identified in the source text as performing these steps.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process -> i2:start with the Resupply Cycle Triggered step -> i3:checking the Inventory Level -> i4:If the "Inventory level is at or below the minimum" -> i5:proceed to Create Purchase Order. -> i7:Reviewing the Purchase Order. -> i10:rework the order. -> i12:review the Purchase Order again. -> i7:Reviewing the Purchase Order.
+
+Addition
+- [N2] Node-level addition: guard(b1,n5,"v1 = false") (reason: These guards ('v1 = false' and 'v2 = false') govern negative flow outcomes, but the specific text clauses that justify their logic ('However, if the Inventory Level is above the minimum' and 'On the other hand, if the Purchase Order is rejected') were completely omitted from the provided Input Elements.)
+- [N3] Node-level addition: guard(b2,n9,"v2 = false") (reason: These guards ('v1 = false' and 'v2 = false') govern negative flow outcomes, but the specific text clauses that justify their logic ('However, if the Inventory Level is above the minimum' and 'On the other hand, if the Purchase Order is rejected') were completely omitted from the provided Input Elements.)
+- [N4] Within matched traces (0->2) added: action(n3,"Inventory Level at or below minimum")
+- [N5] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = true"); source=i4:If the "Inventory level is at or below the minimum"; reason=The guard abstractly uses 'v1 = true', completely dropping the operator and threshold described in the text condition.
+- [N7] Node-level mutation: element=guard(b2,n8,"v2 = true"); source=i8:If the Purchase Order is approved; reason=The guard abstracts the condition to 'v2 = true' rather than explicitly capturing the approval state stated in the text.
+
+Permutation
+- [N8] Within matched traces (2->0) reordered: expected [i18:After recording the packing slip and invoice,] but observed [converge(c2)] elsewhere; in its place the model has [action(n14,"Record packing slip")]
+- [N9] Within matched traces (3->1) reordered: expected [i18:After recording the packing slip and invoice,] but observed [converge(c2)] elsewhere; in its place the model has [action(n15,"Record invoice")]

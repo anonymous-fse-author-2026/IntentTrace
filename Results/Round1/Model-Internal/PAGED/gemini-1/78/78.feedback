@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i2:begin by checking if the order has been received. (reason: The initial step to verify the receipt of the order is entirely missing from the model.)
+- [N2] Node-level omission: i5:continue with the process (reason: This step was unfaithfully implemented by being merged into a compound action with bill creation.)
+- [N3] Node-level omission: i15:create the bill (reason: This distinct step was unfaithfully implemented by being merged into a compound action with process continuation.)
+- [N4] Omitted trace (input 1): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i6:is greater than 2000 -> i7:compute a discount of 4% -> i15:create the bill -> i16:the process will come to an end
+- [N5] Omitted trace (input 2): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i8:falls between 1000 and 1500 -> i9:compute a discount of 3% -> i15:create the bill -> i16:the process will come to an end
+- [N6] Omitted trace (input 3): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i10:falls between 500 and 999 -> i11:compute a discount of 2% -> i15:create the bill -> i16:the process will come to an end
+- [N7] Within matched traces (0->0) omitted: i2:begin by checking if the order has been received.
+
+Addition
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n2,"check sum of order")
+
+Mutation
+- [N10] Node-level mutation: element=action(n6,"continue process and create bill"); source=i5:continue with the process -> i15:create the bill; reason=The model improperly merges two distinct process outcomes (continuing the process sequence and the final creation of the bill) into a single action step.

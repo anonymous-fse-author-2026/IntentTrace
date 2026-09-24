@@ -1,0 +1,17 @@
+Addition
+- [N1] Node-level addition: action(n1,"start process") (reason: Generic 'start process' action has no corresponding source unit; process initiation is already structurally handled by init:i1 and textually by i1.)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"start process")
+- [N5] Within matched traces (1->1) added: init(i1)
+- [N6] Within matched traces (1->1) added: action(n1,"start process")
+- [N7] Within matched traces (1->1) added: action(n5,"is stock rejected?")
+- [N8] Within matched traces (1->1) added: converge(c1)
+- [N9] Within matched traces (2->2) added: init(i1)
+- [N10] Within matched traces (2->2) added: action(n1,"start process")
+- [N11] Within matched traces (2->2) added: action(n5,"is stock rejected?")
+- [N12] Within matched traces (2->2) added: converge(c1)
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i4:If the stock is rejected, then the process ends.; reason=Guard payload 'v1 = Yes' replaces the explicit semantic condition 'stock is rejected' with an abstract variable, distorting the documented logic.
+- [N14] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i5:Otherwise, the supplier should request shipping details.; reason=Guard payload 'v1 = No' replaces the explicit alternative condition 'Otherwise' (implied stock accepted) with an abstract variable, distorting the documented logic.

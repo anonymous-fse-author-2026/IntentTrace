@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:check referee reports status;
+:are referee reports completed?;
+:v1: are referee reports completed? ({completed, not completed}); <<objectSignal>>
+if () then ([v1 = 'not completed'])
+:flag and send reminder;
+-> Referee Reports still not completed;
+:check again if referee reports are completed;
+-> Referee Reports still not completed after second check;
+:are referee reports completed after reminder?;
+:v2: are referee reports completed after reminder? ({completed, not completed}); <<objectSignal>>
+if () then ([v2 = 'completed'])
+->;
+endif
+else ([v1 = 'completed'])
+->;
+endif
+:proceed with process;
+:organize interviews for selection panel with top candidates;
+:receive feedback from interview candidates;
+:is psychometric test required?;
+:v3: is psychometric test required? ({Psychometric Test not required, HR Specialist required, Psychometric Test required}); <<objectSignal>>
+switch ()
+case ([v3 = 'Psychometric Test not required'])
+:coordinate second round of selection;
+-> Finalize process;
+case ([v3 = 'HR Specialist required'])
+:schedule psychometric test with third party;
+-> Finalize process;
+case ([v3 = 'Psychometric Test required'])
+:complete psychometric test;
+-> Finalize process;
+endswitch
+:request final candidate ranking and continue process;
+:end;
+stop
+@enduml

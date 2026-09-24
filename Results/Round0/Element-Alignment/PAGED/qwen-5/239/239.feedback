@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i3:If the order is to be accepted, the process should also continue. (reason: The source explicitly defines an acceptance condition and continuation path, but the model only includes a branch for rejection with no corresponding acceptance branch or flow.)
+- [N2] Node-level omission: i6:availability needs to be checked again (reason: A retry loop/repeat action triggered by a backorder is specified in the text but entirely missing from the generated elements.)
+- [N3] Node-level omission: i8:If the item can be reserved, the process should continue. (reason: A distinct reservation condition and its resulting continuation are described in the source but have no matching branch, guard, or action in the model.)
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Contains the literal text 'start', which lacks any explicit supporting span in the source text; process initiation is already fully covered by init:i1 and the first examination step.)
+- [N5] Node-level addition: action(n4,"Reject Order") (reason: The source states that both rejected and accepted orders should cause the process to 'continue,' yet the model introduces a 'Reject Order' action and an early 'End' step that contradict the described flow.)
+- [N6] Node-level addition: action(n5,"End") (reason: The source states that both rejected and accepted orders should cause the process to 'continue,' yet the model introduces a 'Reject Order' action and an early 'End' step that contradict the described flow.)
+- [N7] Node-level addition: label(n10,n11,"12") (reason: Carries the numeric label '12', which has no basis or reference in the source text description of the assembly and shipping sequence.)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

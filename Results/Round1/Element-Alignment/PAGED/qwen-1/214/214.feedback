@@ -1,0 +1,54 @@
+Omission
+- [N1] Node-level omission: i2:if we can capture data from FMA, we should continue the process. (reason: The explicit instruction to 'continue the process' after the FMA check is absent from the model, replaced by a contradictory label.)
+- [N2] Node-level omission: i3:Otherwise, if we can capture data from Jamendo, we should continue the process. (reason: The explicit instruction to 'continue the process' after the Jamendo check is missing, routed instead through a mutated guard.)
+- [N3] Node-level omission: i7:If the sample is missing, we should continue the process. We should download the sample. (reason: The directive to 'continue the process' alongside downloading the sample is completely dropped; the model only retains the download step.)
+- [N4] Omitted trace (input 0): i1:At the beginning -> i2:if we can capture data from FMA, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i8:On the other hand, if there are no additional samples, the process ends.
+- [N5] Omitted trace (input 1): i1:At the beginning -> i2:if we can capture data from FMA, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i9:Otherwise, if there are no additional samples, the process ends.
+- [N6] Omitted trace (input 4): i1:At the beginning -> i3:Otherwise, if we can capture data from Jamendo, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i8:On the other hand, if there are no additional samples, the process ends.
+- [N7] Omitted trace (input 5): i1:At the beginning -> i3:Otherwise, if we can capture data from Jamendo, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i9:Otherwise, if there are no additional samples, the process ends.
+
+Addition
+- [N8] Node-level addition: action(n1,"start the process") (reason: Invents a generic 'start the process' step with no corresponding source unit beyond the implicit initiation already handled by init:i1.)
+- [N9] Node-level addition: action(n3,"capture: data from FMA") (reason: Transforms the source's conditional capability checks ('if we can capture') into explicit execution actions ('capture: data'), adding unsupported operational steps.)
+- [N10] Node-level addition: action(n5,"capture: data from Jamendo") (reason: Transforms the source's conditional capability checks ('if we can capture') into explicit execution actions ('capture: data'), adding unsupported operational steps.)
+- [N11] Node-level addition: guard(b3,n9,"v3 = 'No  check next'") (reason: Injects a 'No check next' routing condition that has no basis in the source text for the genre-missing branch.)
+- [N12] Node-level addition: guard(b4,n10,"v4 = 'Yes'") (reason: Fabricates a positive path to retrieve IDs for a 'next genre', whereas the source only defines behavior for when no additional genres exist.)
+- [N13] Node-level addition: action(n10,"get: music ids for the next genre") (reason: Fabricates a positive path to retrieve IDs for a 'next genre', whereas the source only defines behavior for when no additional genres exist.)
+- [N14] Node-level addition: action(n14,"end: no additional samples") (reason: Redundant terminal actions describing process completion that duplicate the function of the structural end nodes and lack distinct source backing.)
+- [N15] Node-level addition: action(n15,"end: process completed") (reason: Redundant terminal actions describing process completion that duplicate the function of the structural end nodes and lack distinct source backing.)
+- [N16] Node-level addition: guard(b1,n4,"v1 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N17] Within matched traces (3->0) added: action(n1,"start the process")
+- [N18] Within matched traces (3->0) added: action(n7,"is the genre missing?")
+- [N19] Within matched traces (3->0) added: branch(b3,XOR)
+- [N20] Within matched traces (3->0) added: action(n15,"end: process completed")
+- [N21] Within matched traces (2->1) added: action(n1,"start the process")
+- [N22] Within matched traces (2->1) added: action(n7,"is the genre missing?")
+- [N23] Within matched traces (2->1) added: branch(b3,XOR)
+- [N24] Within matched traces (7->2) added: action(n1,"start the process")
+- [N25] Within matched traces (7->2) added: action(n2,"can we capture data from FMA?")
+- [N26] Within matched traces (7->2) added: branch(b1,XOR)
+- [N27] Within matched traces (7->2) added: action(n7,"is the genre missing?")
+- [N28] Within matched traces (7->2) added: branch(b3,XOR)
+- [N29] Within matched traces (7->2) added: action(n15,"end: process completed")
+- [N30] Within matched traces (6->3) added: action(n1,"start the process")
+- [N31] Within matched traces (6->3) added: action(n2,"can we capture data from FMA?")
+- [N32] Within matched traces (6->3) added: branch(b1,XOR)
+- [N33] Within matched traces (6->3) added: action(n7,"is the genre missing?")
+- [N34] Within matched traces (6->3) added: branch(b3,XOR)
+- [N35] Within matched traces (3->4) added: action(n1,"start the process")
+- [N36] Within matched traces (3->4) added: action(n4,"can we capture data from Jamendo?")
+- [N37] Within matched traces (3->4) added: branch(b2,XOR)
+- [N38] Within matched traces (3->4) added: action(n7,"is the genre missing?")
+- [N39] Within matched traces (3->4) added: branch(b3,XOR)
+- [N40] Within matched traces (3->4) added: action(n15,"end: process completed")
+- [N41] Within matched traces (2->5) added: action(n1,"start the process")
+- [N42] Within matched traces (2->5) added: action(n4,"can we capture data from Jamendo?")
+- [N43] Within matched traces (2->5) added: branch(b2,XOR)
+- [N44] Within matched traces (2->5) added: action(n7,"is the genre missing?")
+- [N45] Within matched traces (2->5) added: branch(b3,XOR)
+
+Mutation
+- [N46] Node-level mutation: element=label(n3,c1,"No  continue"); source=i2:if we can capture data from FMA, we should continue the process.; reason=Contains 'No continue', which directly contradicts the source instruction to 'continue the process' on this path.
+- [N47] Node-level mutation: element=guard(b2,c1,"v2 = 'No  continue'"); source=i3:Otherwise, if we can capture data from Jamendo, we should continue the process.; reason=Contains 'No continue', reversing the intended flow and contradicting the source directive to proceed.
+- [N48] Node-level mutation: element=action(n9,"is there an additional genre?"); source=i6:However, if there are no additional genres, we should continue the process.; reason=Flips the logical polarity by asking 'is there an additional genre?' instead of evaluating the absence of additional genres as specified.
+- [N49] Node-level mutation: element=guard(b5,n14,"v5 = 'No'"); source=i7:If the sample is missing, we should continue the process. We should download the sample.; reason=Routes the negative sample path to an end state, distorting the source which mandates continuation and download when the sample is missing.

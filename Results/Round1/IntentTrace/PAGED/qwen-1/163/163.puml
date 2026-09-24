@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process and enter the metadata;
+:v_route: route ({route_A, route_BC}); <<objectSignal>>
+if () then ([v_route = 'route_BC'])
+:proceed to IN-Patient step;
+:handle the claim;
+:create a claim within handling;
+:handle the claim accordingly;
+:v_choice: choice ({choice_1, choice_2}); <<objectSignal>>
+if () then ([v_choice = 'choice_1'])
+:extract data from suppliers after claim handling;
+:enter data on patient's record or confirm IN-Patient status from extraction;
+:parallel start: register the case after patient record entry;
+:handle the claim after case registration;
+:receive the payment after handling claim post registration;
+else ([v_choice = 'choice_2'])
+:enter data on patient's record or confirm IN-Patient status directly after handling claim;
+:send data to suppliers after patient record entry;
+endif
+:receive the payment after handling claim;
+stop
+else ([v_route = 'route_A'])
+:parallel start: send data to suppliers;
+:extract data from suppliers;
+:transfer data to doctor's phone;
+:confirm the GOP;
+:end after confirming GOP;
+stop
+endif
+@enduml

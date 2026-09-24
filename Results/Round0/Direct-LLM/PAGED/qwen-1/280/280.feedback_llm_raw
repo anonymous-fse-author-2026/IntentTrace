@@ -1,0 +1,6 @@
+
+
+- `action(n9, "Rework PO")`: Dead-ends without looping back to creation. Source states: "If the PO needs to be reworked, it needs to be created again." Model lacks `precedence(n9, n6)`.
+- `precedence(n15, n17)`: Breaks source chronology by linking "Proceed to Receive Packing Slip" directly to "Three-way Match", skipping the Invoice step. Source states: "If the Packing Slip is received, proceed to receive the Invoice. If the Invoice is received, proceed to the Three-way match."
+- `branch(b3, XOR)`, `branch(b4, XOR)`, `guard(b3,...)`, `guard(b4,...)`: Misrepresents deterministic sequential steps as exclusive choice points. Source describes unconditional progressions ("If the Packing Slip is received, proceed to receive the Invoice"; "If the inventory is received, proceed to receive the Packing Slip"), which should be direct `precedence` edges rather than `XOR` branches with conditional guards.
+- `branch(b6, AND)` and `precedence(n13, b4)`: Fails to synchronize parallel workflows as described. Source routes the inventory path back to the packing slip step ("If the inventory is received, proceed to receive the Packing Slip"), but the model isolates the two paths into separate `XOR` branches (`b3`, `b4`) without a `converge` node or shared flow to `action(n12, "Receive Packing Slip")`.

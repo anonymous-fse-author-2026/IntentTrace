@@ -1,0 +1,8 @@
+
+
+- `action(n14, "Start homework assignment")`: Lacks outgoing precedence, breaking the documented iterative workflow where additional homework loops back to execution and submission ("If it was not the last homework, another homework assignment will be given... After working on the homework, it should be turned in").
+- `action(n7, "Request exception again")`: Lacks outgoing precedence, leaving the unapproved exception path incomplete and halting progression despite the source requiring the exception route to resolve before enrollment ("After the exception is approved, the next step is course enrollment").
+- `precedence(n25, n27)` and `end(e2)`: Routes exam failure directly to termination instead of looping back to exam registration/attendance as explicitly mandated ("if the exam is failed, another sign-up for the exam is required").
+- `defines(v2, "Is the exception approved", {"Continue"})`: The value space `{"Continue"}` does not represent a binary approval decision, contradicting the source's implicit yes/no approval condition for exceptions.
+- `guard(b2, c1, v2 = 'Continue')`: Incorrectly binds the `v2` variable to the exception-approved path; the condition `v2 = 'Continue'` conflates the descriptive label on the non-exception path (`label(n4, c1, "Continue")`) with the exception approval gateway logic.
+- `action(n18, "Merge accreditation and exam date announcement")`: Hallucinates a post-convergence reconciliation step not present in the source; `converge(c2)` already synchronizes the parallel tasks ("granting accreditation and announcing the date of the exam").

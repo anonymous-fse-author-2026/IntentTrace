@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i12:Once again, check the sum of the order. (reason: The source explicitly mandates a repeated evaluation step. The model contains no corresponding action or loop-back edge, collapsing the instructed repetition into a single linear evaluation.)
+- [N2] Omitted trace (input 1): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i6:is greater than 2000 -> i7:compute a discount of 4% -> i12:Once again, check the sum of the order. -> i13:create the bill -> i14:the process will come to an end.
+- [N3] Omitted trace (input 2): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i8:falls between 1000 and 1500 -> i9:compute a discount of 3% -> i12:Once again, check the sum of the order. -> i13:create the bill -> i14:the process will come to an end.
+- [N4] Omitted trace (input 3): i1:To start the process -> i2:begin by checking if the order has been received. -> i3:If the sum of the order -> i10:falls between 500 and 999 -> i11:compute a discount of 2% -> i12:Once again, check the sum of the order. -> i13:create the bill -> i14:the process will come to an end.
+- [N5] Within matched traces (0->0) omitted: i12:Once again, check the sum of the order.
+
+Addition
+- [N6] Node-level addition: label(n1,n2,"Start") (reason: All five connection labels ('Start', 'Bill', 'Recheck', 'Continue') contain descriptive text that does not appear anywhere in the provided source segments. They are invented annotations without textual support.)
+- [N7] Node-level addition: label(n3,n6,"Bill") (reason: All five connection labels ('Start', 'Bill', 'Recheck', 'Continue') contain descriptive text that does not appear anywhere in the provided source segments. They are invented annotations without textual support.)
+- [N8] Node-level addition: label(n4,c1,"Recheck") (reason: All five connection labels ('Start', 'Bill', 'Recheck', 'Continue') contain descriptive text that does not appear anywhere in the provided source segments. They are invented annotations without textual support.)
+- [N9] Node-level addition: label(n5,c1,"Recheck") (reason: All five connection labels ('Start', 'Bill', 'Recheck', 'Continue') contain descriptive text that does not appear anywhere in the provided source segments. They are invented annotations without textual support.)
+- [N10] Node-level addition: label(b1,c1,"Continue") (reason: All five connection labels ('Start', 'Bill', 'Recheck', 'Continue') contain descriptive text that does not appear anywhere in the provided source segments. They are invented annotations without textual support.)
+- [N11] Within matched traces (0->0) added: action(n3,"compute 4% discount")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 >= 500 and v1 < 1000"); source=i10:falls between 500 and 999; reason=The guard uses '< 1000' instead of the source's explicit upper bound of '999'. For monetary sums, this alters the defined range by including fractional values (e.g., 999.50) that the text explicitly excludes.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"check sum of order")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=1501.0].

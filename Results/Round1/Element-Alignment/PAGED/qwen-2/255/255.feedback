@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i2:check if the stock levels are below the threshold. (reason: No element faithfully implements this verification step; the closest candidate (n2) mutates it into a passive state rather than an actionable check, leaving the source unit uncovered.)
+- [N2] Within matched traces (0->0) omitted: i5:Once the stock has been replenished, the process comes to an end.
+
+Addition
+- [N3] Node-level addition: action(n1,"Start process") (reason: Invents a 'Start process' action step; the source only contains an introductory announcer phrase that implicitly triggers the init node.)
+- [N4] Node-level addition: action(n4,"End process") (reason: Invents explicit 'End process' action tasks; the source describes natural termination rather than executable manual or system steps.)
+- [N5] Node-level addition: action(n5,"End process") (reason: Invents explicit 'End process' action tasks; the source describes natural termination rather than executable manual or system steps.)
+- [N6] Node-level addition: guard(b1,n3,"v1 = 'Yes'") (reason: Introduces abstract variable assignments ('v1 = Yes/No') with no grounding in the source text, replacing the explicit contextual condition entirely.)
+- [N7] Node-level addition: guard(b1,n5,"v1 = 'No'") (reason: Introduces abstract variable assignments ('v1 = Yes/No') with no grounding in the source text, replacing the explicit contextual condition entirely.)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"Start process") -> action(n2,"Stock levels below threshold") -> branch(b1,XOR) -> action(n5,"End process") -> end(e2)
+- [N9] Within matched traces (0->0) added: action(n1,"Start process")
+- [N10] Within matched traces (0->0) added: action(n4,"End process")
+- [N11] Within matched traces (0->0) added: end(e1)
+
+Mutation
+- [N12] Node-level mutation: element=action(n2,"Stock levels below threshold"); source=i2:check if the stock levels are below the threshold.; reason=Drops the imperative verification instruction ('check if'), reducing a procedural decision step to a static noun phrase/state description.

@@ -1,0 +1,9 @@
+
+
+- `defines(v1, ...)`: The range `{"Inventory Level is above the minimum"}` contradicts the variable’s declared description `"Inventory level is at or below the minimum"` and omits the alternative value required for the source decision.
+- `defines(v2, ...)`: The range `{}` is empty, failing to capture the "approved"/"rejected" decision space explicitly described in the text.
+- `guard(b2, ...)`: Branch `b2` lacks explicit guard conditions to route flow based on whether the "Purchase Order is approved" or "rejected", omitting documented conditional logic.
+- `precedence(n11, ...)`: Node `n11` ("Review Purchase Order" following rework) has no outgoing precedence edge, breaking the described feedback cycle ("review the Purchase Order again") and creating a dead-end path.
+- `label(n2, n3, ...)`: Decision labels are incorrectly attached to the sequential edge `n2→n3` instead of the outgoing edges of branch `b1`, misplacing the control-flow semantics for the inventory check.
+- `label(n6, n7, ...)`: Decision labels are incorrectly attached to the sequential edge `n6→n7` instead of the outgoing edges of branch `b2`, misplacing the control-flow semantics for the approval check.
+- `actor(a_default, [..., n12, n13, ...])`: Nodes `n12` and `n13` are assigned to the "Default" actor, contradicting the source which explicitly states "the Supplier sends a packing slip and an invoice", requiring a Supplier actor assignment.

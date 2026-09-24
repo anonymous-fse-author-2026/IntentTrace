@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start by receiving the invoice;
+:Check the invoice for any mismatches;
+:v1: Check the invoice for any mismatches ({Proceed to re-send check, Proceed to post check, Proceed to block check}); <<objectSignal>>
+switch ()
+case ([v1 = 'Proceed to re-send check'])
+:Is re-send the invoice to the customer needed;
+:v2: Is re-send the invoice to the customer needed ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Continue process after re-sending invoice;
+else ([v2 = 'No'])
+endif
+:Park the invoice;
+:End process;
+stop
+case ([v1 = 'Proceed to post check'])
+:Is option to post the invoice;
+:v3: Is option to post the invoice ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Continue process after posting invoice;
+else ([v3 = 'No'])
+endif
+case ([v1 = 'Proceed to block check'])
+:Is option to block the invoice;
+:v4: Is option to block the invoice ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Continue process after blocking invoice;
+else ([v4 = 'No'])
+endif
+endswitch
+@enduml

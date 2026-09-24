@@ -1,0 +1,17 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i11:if the option to submit is set to "true"
+
+Addition
+- [N2] Node-level addition: guard(b3,c1,"v3 = 'false'") (reason: Defines a 'false' branch (v3 = 'false') that has no corresponding condition or instruction in the source text. The source only specifies behavior for the 'true' case.)
+- [N3] Node-level addition: guard(b2,c1,"v2 = 'yes'") (reason: Defines a 'yes' branch (v2 = 'yes') that is not supported by any of the provided input elements. The source units only explicitly describe the check and the negative branch ('If not').)
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (0->0) added: action(n7,"Is there another filter to apply")
+- [N6] Within matched traces (0->0) added: branch(b2,XOR)
+- [N7] Within matched traces (0->0) added: action(n8,"Is submit option true")
+- [N8] Within matched traces (0->0) added: branch(b3,XOR)
+- [N9] Within matched traces (0->0) added: action(n9,"End")
+- [N10] Within matched traces (0->0) added: end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b3,n9,"v3 = 'true'"); source=i10:Finally, if the option to submit is set to "true", continue with the process.; reason=The guard correctly identifies the 'true' condition but routes it directly to the 'End' action. The source explicitly states to 'continue with the process', reversing the intended outcome/target.
+- [N12] Node-level mutation: element=action(n9,"End"); source=i12:The process ends when all steps have been completed.; reason=The element drops the critical qualifying clause 'when all steps have been completed'. This alters the termination logic from a completion-dependent state to an unconditional immediate stop.

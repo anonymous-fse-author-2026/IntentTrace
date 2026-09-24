@@ -1,0 +1,23 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i12:rework the purchase order
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start process for ACME Company") -> action(n2,"receive customer request") -> action(n3,"check current inventory level") -> branch(b1,XOR) -> action(n5,"accept customer request") -> action(n8,"create purchase order") -> converge(c2) -> action(n9,"review purchase order") -> branch(b2,XOR) -> action(n11,"reserve funds") -> action(n13,"send purchase order") -> branch(b3,AND) -> action(n15,"receive invoice") -> action(n17,"record invoice") -> converge(c1) -> action(n18,"release reserved funds and issue payment") -> action(n19,"end process") -> end(e2)
+- [N3] Within matched traces (0->2) added: init(i1)
+- [N4] Within matched traces (1->0) added: init(i1)
+- [N5] Within matched traces (1->0) added: action(n11,"reserve funds")
+- [N6] Within matched traces (1->0) added: action(n13,"send purchase order")
+- [N7] Within matched traces (1->0) added: branch(b3,AND)
+- [N8] Within matched traces (1->0) added: action(n14,"receive packing slip")
+- [N9] Within matched traces (1->0) added: action(n16,"record packing slip")
+- [N10] Within matched traces (1->0) added: converge(c1)
+- [N11] Within matched traces (1->0) added: action(n18,"release reserved funds and issue payment")
+- [N12] Within matched traces (1->0) added: action(n19,"end process")
+- [N13] Within matched traces (1->0) added: end(e2)
+- [N14] Within matched traces (2->0) added: init(i1)
+
+Mutation
+- [N15] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the inventory level is at or below the minimum; reason=The guard uses a generic variable assignment (v1 = 'Yes') instead of preserving the explicit inventory level condition from the source.
+- [N16] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i5:if the inventory level is above the minimum; reason=The guard uses a generic variable assignment (v1 = 'No') instead of preserving the explicit inventory level condition from the source.
+- [N17] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i13:if the purchase order is approved; reason=The guard uses a generic variable assignment (v2 = 'Yes') instead of preserving the explicit approval condition from the source.
+- [N18] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i11:If the purchase order is rejected; reason=The guard uses a generic variable assignment (v2 = 'No') instead of preserving the explicit rejection condition from the source.

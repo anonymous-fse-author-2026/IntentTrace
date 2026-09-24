@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start order processing by prioritizing orders based on when received;
+:Check if customer exists;
+:v1: Check if customer exists ({Exists, New}); <<objectSignal>>
+if () then ([v1 = 'Exists'])
+:Check customer's payment history;
+else ([v1 = 'New'])
+:Verify customer status;
+:v3: Is customer a private customer ({Private, Wholesaler}); <<objectSignal>>
+if () then ([v3 = 'Private'])
+:Send customer declining message;
+stop
+else ([v3 = 'Wholesaler'])
+:Create new customer;
+:Check product availability;
+:v4: Are products available ({Available, Unavailable}); <<objectSignal>>
+if () then ([v4 = 'Unavailable'])
+:Produce missing goods and send declining message;
+:End process due to no products and decline message;
+stop
+else ([v4 = 'Available'])
+:Continue process and send order confirmation;
+endif
+endif
+endif
+:Inform stock and accounting departments;
+:Packing goods;
+:Write invoice;
+:Goods ready for delivery and invoice sent;
+:v5: Has payment been received ({Received, Outstanding}); <<objectSignal>>
+if () then ([v5 = 'Received'])
+:Close order;
+else ([v5 = 'Outstanding'])
+:Check quantity of reminders for payment;
+:v6: Are reminders less than three ({<3, >3}); <<objectSignal>>
+if () then ([v6 = '<3'])
+:Continue process;
+else ([v6 = '>3'])
+:Activate donning process;
+:End process after activating donning process;
+stop
+endif
+endif
+:Deliver goods and invoice to customer;
+stop
+@enduml

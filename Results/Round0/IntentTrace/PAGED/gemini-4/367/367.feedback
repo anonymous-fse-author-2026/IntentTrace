@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i7:create Purchase Orders (POs) (reason: The action to create POs is missing from the model.)
+- [N2] Node-level omission: i11:If the PO is created, it needs to be reviewed. (reason: The review action is missing from the model.)
+- [N3] Node-level omission: i9:If the PO is rejected, it needs to be reworked. (reason: The rejection branch and rework action are missing.)
+- [N4] Node-level omission: i10:If the PO is approved, it is printed and released in the system. (reason: The approval branch and associated actions are missing.)
+- [N5] Node-level omission: i12:If the PO needs to be reworked, it needs to be created again. (reason: The loop back to creating the PO is missing.)
+- [N6] Node-level omission: i13:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. (reason: The parallel split and the actions to reserve funds and mail POs are missing.)
+- [N7] Node-level omission: i14:If funds are reserved for the released POs, receive the Packing Slip. (reason: The action to receive the packing slip is missing.)
+- [N8] Node-level omission: i15:If the POs are mailed to the supplier, receive the inventory. (reason: The action to receive inventory is missing.)
+- [N9] Node-level omission: i16:proceed to receive the Invoice. (reason: The action to receive the invoice is missing.)
+- [N10] Node-level omission: i17:proceed to the Three-way match. (reason: The three-way match action is missing.)
+- [N11] Node-level omission: i18:release the funds. (reason: The action to release funds is missing.)
+- [N12] Node-level omission: i19:issue the payment. (reason: The payment issuance action is missing.)
+- [N13] Omitted trace (input 1): i1:To start the process for ACME -> i2:begin with the New Resupply Cycle -> i3:Check Levels of Inventory -> i4:If the inventory is below or equal to the minimum -> i5:generate an Equal to or below minimum Report -> i7:create Purchase Orders (POs) -> i11:If the PO is created, it needs to be reviewed. -> i9:If the PO is rejected, it needs to be reworked. -> i12:If the PO needs to be reworked, it needs to be created again. -> i7:create Purchase Orders (POs)
+- [N14] Omitted trace (input 2): i1:To start the process for ACME -> i2:begin with the New Resupply Cycle -> i3:Check Levels of Inventory -> i4:If the inventory is below or equal to the minimum -> i5:generate an Equal to or below minimum Report -> i7:create Purchase Orders (POs) -> i11:If the PO is created, it needs to be reviewed. -> i10:If the PO is approved, it is printed and released in the system. -> i13:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. -> i14:If funds are reserved for the released POs, receive the Packing Slip. -> i16:proceed to receive the Invoice. -> i17:proceed to the Three-way match. -> i18:release the funds. -> i19:issue the payment. -> i8:the process ends
+- [N15] Omitted trace (input 3): i1:To start the process for ACME -> i2:begin with the New Resupply Cycle -> i3:Check Levels of Inventory -> i4:If the inventory is below or equal to the minimum -> i5:generate an Equal to or below minimum Report -> i7:create Purchase Orders (POs) -> i11:If the PO is created, it needs to be reviewed. -> i10:If the PO is approved, it is printed and released in the system. -> i13:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. -> i15:If the POs are mailed to the supplier, receive the inventory. -> i14:If funds are reserved for the released POs, receive the Packing Slip. -> i16:proceed to receive the Invoice. -> i17:proceed to the Three-way match. -> i18:release the funds. -> i19:issue the payment. -> i8:the process ends
+
+Addition
+- [N16] Within matched traces (0->0) added: action(n4,"is inventory below or equal to minimum?")
+- [N17] Within matched traces (0->0) added: branch(b1,XOR)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"generate equal to or below minimum report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"generate equal to or below minimum report")

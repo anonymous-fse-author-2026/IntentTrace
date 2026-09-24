@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i3:If the invoice amount is greater than $5000, (reason: No element faithfully preserves the specific threshold value ($5000) and operator (>) from the source; the only corresponding guard mutates it into a placeholder boolean, leaving the actual condition uncovered.)
+
+Addition
+- [N2] Node-level addition: action(n1,"Start") (reason: The step labeled 'Start' lacks any supporting instruction in the source text; the source combines starting and initiating the phase into a single action already mapped to n2.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> end(e1)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"Start")
+- [N6] Within matched traces (1->0) added: init(i1)
+- [N7] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i3:If the invoice amount is greater than $5000,; reason=The guard payload 'v1 = true' replaces the explicit threshold comparison '> $5000' with a generic boolean placeholder, losing the critical monetary condition and operator.

@@ -1,0 +1,10 @@
+- `defines(v1, "Sort by Vendor or Amount?", {})`: Range is empty `{}`, failing to define the valid choice values explicitly stated in the source ("Sort Invoice by vendor" vs. "Sort invoice by invoice amount").
+- Edges from `branch(b1, XOR)` to `n4` and `n5`: Missing `guard` statements to conditionally route flow based on `v1`, leaving the XOR branch untriggered by any documented decision variable.
+- `action(n6, "Process Invoices (Vendor)")` and `action(n7, "Process Invoices (Amount)")`: Hallucinated steps; the source only describes sorting and then continuing/proceeding, with no distinct post-sort processing actions.
+- `action(n8, "Note Time per 100 Invoices")`: Misinterprets the informational statement "It takes approximately 20 minutes for every 100 invoices" as a mandatory manual recording action rather than contextual timing data.
+- Precedence chain `n10 -> n11 -> n12 -> e1`: Models collection as a single linear step followed by termination, omitting the required iterative behavior described as "The collection process will continue every hour until the end of the overall process."
+- `action(n3, "Sort by Vendor or Amount?")`: Artificially inserts a non-existent action node before `branch(b1)`, distorting the source's immediate conditional choice into a separate procedural step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.

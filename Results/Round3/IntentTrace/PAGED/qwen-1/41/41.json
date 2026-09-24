@@ -1,0 +1,179 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "Passengers should start the process by undergoing immigration checks"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "they should select the method for exit control checks"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "If the passenger chooses to use biometrics, they should undergo a check using biometrics. However, if the passenger prefers to use ID documents, they should undergo checks using identity documents."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "After the exit control checks, if the passenger is denied permission, they should leave the area."
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "If the exit control check outcome is unsuccessful, the passenger should leave the area and the process ends."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "if the passenger is allowed to continue, they should proceed to the next step."
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "if the outcome is successful, the passenger should continue to the next step and the process ends."
+    },
+    {
+      "id": "e_denied",
+      "type": "end"
+    },
+    {
+      "id": "e_allowed",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_permission",
+      "name": "permission outcome",
+      "R_X": [
+        "denied",
+        "allowed"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "i2",
+        "i3",
+        "b1",
+        "i4",
+        "i6",
+        "i5",
+        "i7",
+        "e_denied",
+        "e_allowed"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "e_denied"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "e_allowed"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i4",
+      "condition": "v_permission = 'denied'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i5",
+      "condition": "v_permission = 'allowed'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "Passengers should start the process by undergoing immigration checks"
+    },
+    {
+      "id": "i2",
+      "content": "they should select the method for exit control checks"
+    },
+    {
+      "id": "i3",
+      "content": "If the passenger chooses to use biometrics, they should undergo a check using biometrics. However, if the passenger prefers to use ID documents, they should undergo checks using identity documents."
+    },
+    {
+      "id": "i4",
+      "content": "After the exit control checks, if the passenger is denied permission, they should leave the area."
+    },
+    {
+      "id": "i5",
+      "content": "if the passenger is allowed to continue, they should proceed to the next step."
+    },
+    {
+      "id": "i6",
+      "content": "If the exit control check outcome is unsuccessful, the passenger should leave the area and the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "if the outcome is successful, the passenger should continue to the next step and the process ends."
+    }
+  ]
+}

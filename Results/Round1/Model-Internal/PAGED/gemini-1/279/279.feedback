@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i3:they should "continue the process" (reason: The only implementing element is a mutation (adds 'after knowing SLA'), leaving the exact unadorned step omitted.)
+- [N2] Node-level omission: i4:they should "Look up" (reason: The only implementing element is a mutation (adds 'SLA'), leaving the exact unadorned instruction omitted.)
+- [N3] Node-level omission: i8:they should "Red Stamp" (reason: The only implementing element is a mutation (adds 'task'), leaving the exact instruction omitted.)
+- [N4] Node-level omission: i9:If it is "Non Urgent", they should "continue the process" (reason: Both candidate elements are mutations, leaving the exact condition and action omitted.)
+- [N5] Within matched traces (0->0) omitted: i5:After that
+- [N6] Within matched traces (1->1) omitted: i5:After that
+- [N7] Within matched traces (2->2) omitted: i5:After that
+- [N8] Within matched traces (3->3) omitted: i5:After that
+
+Addition
+- [N9] Node-level addition: action(n1,"Start process") (reason: The action 'Start process' is an invented explicit step; the source only indicates a structural start ('At the beginning') without prescribing a specific start action.)
+- [N10] Node-level addition: guard(b1,n4,"v1 == \"No\"") (reason: This guard represents a negative branch condition ('v1 == No') which does not correspond to any provided source input element, as the text for the negative path was excluded from the segmented inputs.)
+- [N11] Within matched traces (0->0) added: action(n1,"Start process")
+- [N12] Within matched traces (1->1) added: action(n1,"Start process")
+- [N13] Within matched traces (1->1) added: action(n6,"Task is Urgent")
+- [N14] Within matched traces (2->2) added: action(n1,"Start process")
+- [N15] Within matched traces (3->3) added: action(n1,"Start process")
+- [N16] Within matched traces (3->3) added: action(n6,"Task is Urgent")
+
+Mutation
+- [N17] Node-level mutation: element=action(n2,"Knows SLA") -> guard(b1,n3,"v1 == \"Yes\""); source=i2:if someone "Knows SLA"; reason=action:n2 drops the conditional 'if someone', changing a condition to a definitive action. guard:b1->n3 replaces the specific condition with a generic boolean 'v1 == Yes'.
+- [N18] Node-level mutation: element=action(n3,"Continue the process after knowing SLA"); source=i3:they should "continue the process"; reason=The model added the invented qualifier 'after knowing SLA' which alters the step by adding information not in this source span.
+- [N19] Node-level mutation: element=action(n4,"Look up SLA"); source=i4:they should "Look up"; reason=The model added the invented qualifier 'SLA' which is not in the verbatim source span.
+- [N20] Node-level mutation: element=action(n6,"Task is Urgent") -> guard(b2,n7,"v2 == \"Yes\""); source=i7:If the task is "Urgent"; reason=action:n6 drops the conditional 'If the', turning a condition into a definitive action. guard:b2->n7 replaces the explicit 'Urgent' check with a generic boolean 'v2 == Yes'.
+- [N21] Node-level mutation: element=action(n7,"Red Stamp task"); source=i8:they should "Red Stamp"; reason=The model added the invented qualifier 'task' which is not in the verbatim source text.
+- [N22] Node-level mutation: element=action(n8,"Continue process with Non Urgent task") -> guard(b2,n8,"v2 == \"No\""); source=i9:If it is "Non Urgent", they should "continue the process"; reason=action:n8 adds the invented qualifier 'with Non Urgent task'. guard:b2->n8 replaces the explicit 'Non Urgent' condition with a generic boolean 'v2 == No'.

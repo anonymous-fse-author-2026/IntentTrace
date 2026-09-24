@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start by placing an order;
+:check customer eligibility;
+:v1: customer eligibility ({not eligible to order, eligible to order}); <<objectSignal>>
+if () then (["v1 = 'not eligible to order'"])
+:inform customer not eligible;
+stop
+else (["v1 = 'eligible to order'"])
+:open new order in ERP system;
+:perform availability check;
+:v2: product availability ({available, not available}); <<objectSignal>>
+if () then (["v2 = 'not available'"])
+:start producing missing parts;
+else (["v2 = 'available'"])
+->;
+endif
+:prepare products for shipment;
+split
+:ship the products;
+split again
+:send the invoice;
+split again
+:check for payment;
+end split
+:v3: payment status ({received, not received}); <<objectSignal>>
+if () then (["v3 = 'received'"])
+:close order;
+stop
+else (["v3 = 'not received'"])
+:send payment reminder;
+:v4: number of reminders ({[1-3]}); <<objectSignal>>
+if () then (["v4 < 3"])
+:continue the process;
+else (["v4 = 3"])
+:inform lawyer;
+:end the process;
+stop
+endif
+endif
+endif
+@enduml

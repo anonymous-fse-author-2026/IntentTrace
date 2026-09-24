@@ -1,0 +1,552 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin with, you should choose your destination and calculate the distance."
+      ],
+      "justification": "The opening clause implicitly triggers the process start (init) and directly specifies the first two actions (choose destination, calculate distance)."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "check if you need to book a train or a flight."
+      ],
+      "justification": "The checking step maps to the action node, while the binary choice inherently creates the XOR branch structure."
+    },
+    {
+      "refs": [
+        "guard:b1->n4"
+      ],
+      "verbatim_texts": [
+        "If the answer is \"no\""
+      ],
+      "justification": "Exact alignment with the negative condition guarding the train booking path."
+    },
+    {
+      "refs": [
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "proceed to book a train."
+      ],
+      "justification": "Direct paraphrase preserving the exact target action."
+    },
+    {
+      "refs": [
+        "guard:b1->n5"
+      ],
+      "verbatim_texts": [
+        "if the answer is \"yes\""
+      ],
+      "justification": "Exact alignment with the positive condition guarding the flight booking path."
+    },
+    {
+      "refs": [
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "book a flight."
+      ],
+      "justification": "Direct match to the positive arm action."
+    }
+  ],
+  "mutations": [
+    {
+      "refs": [
+        "action:n6",
+        "guard:b2->n7",
+        "action:n10",
+        "guard:b3->n11"
+      ],
+      "verbatim_texts": [
+        "If a code is available within 24 hours"
+      ],
+      "reason": "The guards drop the explicit temporal constraint ('within 24 hours') and replace it with a generic boolean 'Yes'. The action nodes inject invented path-specific qualifiers ('(train)', '(flight)') not present in the source."
+    },
+    {
+      "refs": [
+        "action:n7",
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "a code is available within 24 hours"
+      ],
+      "reason": "Both nodes add fabricated contextual tags ('(train)', '(flight)') to the state description, altering the original unqualified instruction."
+    },
+    {
+      "refs": [
+        "action:n8",
+        "guard:b2->n8",
+        "action:n12",
+        "guard:b3->n12"
+      ],
+      "verbatim_texts": [
+        "you should call a travel agency."
+      ],
+      "reason": "The action nodes incorrectly append '(train)' or '(flight)' qualifiers. The guards leading to them discard the original negative/temporal condition and substitute a generic boolean 'No', losing the required decision logic."
+    }
+  ],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "the process will end along with the hotel reservation.",
+        "along with the hotel reservation."
+      ],
+      "reason": "The model completely ignores the hotel reservation context and fails to implement the associated process termination step described in the source."
+    },
+    {
+      "verbatim_texts": [
+        "if a code is not available, you should cancel your journey.",
+        "the process will end as well."
+      ],
+      "reason": "No element implements the cancellation action triggered by unavailable codes or its explicit consequence of ending the process."
+    }
+  ],
+  "additions": [
+    {
+      "refs": [
+        "action:n1"
+      ],
+      "reason": "The 'start' action duplicates the implicit process initiation already handled by init:i1 and lacks any independent source text."
+    },
+    {
+      "refs": [
+        "action:n9"
+      ],
+      "reason": "Invents an explicit termination step for the train path after calling the agency, which contradicts the source flow and has no textual backing."
+    },
+    {
+      "refs": [
+        "action:n13"
+      ],
+      "reason": "Mirrors n9 for the flight path, adding an unsupported intermediate termination node not described in the text."
+    }
+  ],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "choose destination and calculate distance",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: choose destination and calculate distance"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "check if need to book train or flight",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: check if need to book train or flight"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "book a train",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: book a train"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "book a flight",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: book a flight"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "check if code is available within 24 hours (train)",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: check if code is available within 24 hours (train)"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "code available within 24 hours (train)",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: code available within 24 hours (train)"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "call travel agency (train)",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: call travel agency (train)"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "end of process after calling travel agency (train)",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: end of process after calling travel agency (train)"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "check if code is available within 24 hours (flight)",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: check if code is available within 24 hours (flight)"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "code available within 24 hours (flight)",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: code available within 24 hours (flight)"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "call travel agency (flight)",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: call travel agency (flight)"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "end of process after calling travel agency (flight)",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: end of process after calling travel agency (flight)"
+    },
+    {
+      "ref_id": "end:e4",
+      "kind": "end",
+      "node_id": "e4",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e4",
+        "e4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e4"
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'No'",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = 'No'",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Yes'",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: v1 = 'Yes'",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "v1 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n7",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Yes'",
+      "aliases": [
+        "guard:b2->n7"
+      ],
+      "from": "b2",
+      "to": "n7",
+      "source_line": "guard b2->n7: v2 = 'Yes'",
+      "guard": {
+        "from": "b2",
+        "to": "n7",
+        "condition": "v2 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'No'",
+      "aliases": [
+        "guard:b2->n8"
+      ],
+      "from": "b2",
+      "to": "n8",
+      "source_line": "guard b2->n8: v2 = 'No'",
+      "guard": {
+        "from": "b2",
+        "to": "n8",
+        "condition": "v2 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b3->n11"
+      ],
+      "from": "b3",
+      "to": "n11",
+      "source_line": "guard b3->n11: v3 = 'Yes'",
+      "guard": {
+        "from": "b3",
+        "to": "n11",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n12",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b3->n12"
+      ],
+      "from": "b3",
+      "to": "n12",
+      "source_line": "guard b3->n12: v3 = 'No'",
+      "guard": {
+        "from": "b3",
+        "to": "n12",
+        "condition": "v3 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 6,
+    "mutation_count": 3,
+    "omission_count": 2,
+    "addition_count": 3,
+    "match_relation_count": 6,
+    "mutation_relation_count": 10,
+    "omission_relation_count": 4,
+    "unique_refs_in_matches": 6,
+    "unique_refs_in_mutations": 10,
+    "unique_refs_in_additions": 3,
+    "unique_refs_covered": 19,
+    "total_mappable_targets": 27,
+    "input_text_length": 591,
+    "element_count": 27
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

@@ -1,0 +1,9 @@
+
+
+- `precedence(n1, n2)`, `precedence(n2, b4)`, `precedence(b4, n3)`: Sequentially forces "Bill Client" (`n2`) to execute before "Receive Invoice" (`n3`), contradicting the source which states the process begins with billing/purchasing, then receives the invoice, and specifies "Bill Client" occurs "Simultaneously" as a concurrent downstream activity.
+- `guard(b2, n8, v2 = 'No')`: Routes compliant invoices to `action(n8, "Return Invoice via Mail")`, directly violating the source statement: "if the invoice is compliant, the process continues."
+- `branch(b2, XOR)` and its guards: Omits the described resolution-method decision. The source states "If the issue can be resolved with a phone call... But if the issue requires mail back...", whereas the model incorrectly hardcodes non-compliance to phone resolution (`n7`) and compliance to mail return (`n8`), collapsing two distinct choices into one miswired gateway.
+- `precedence(b5, n13)` and `precedence(n13, n14)`: Attach the 10-day wait sequence (`n13`→`n14`) to the "Receive Invoice" (`n3`) path via an AND split. The source explicitly ties the wait to the concurrent billing thread: "Simultaneously... Bill Client. If there is no response, a period of 10 days is given."
+- `defines(v2, "Is Invoice Compliant?", {"Non-Compliant", "No"})`: Uses `'No'` to denote a compliant state, which ambiguously maps the source terminology ("compliant") and directly enables the inverted routing logic in `guard(b2, n8, ...)`.
+- `label(n13, n14, "Yes")`: Applies a "Yes" label to the edge preceding the 10-day wait, contradicting the source condition: "If there is no response, a period of 10 days is given."
+- `precedence(n8, e2)`: Forces immediate process termination when an invoice is returned via mail. The source implies returned invoices loop back to resolution or continuation steps, and incorrectly terminating here also cuts short the compliant path that erroneously reaches `n8`.

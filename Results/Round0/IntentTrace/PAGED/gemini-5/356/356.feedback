@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i4:At the same time -> i5:deliver the freight -> i8:If it has been 5 days -> i9:invoice the customer -> i16:the process ends with the customer being invoiced
+- [N2] Omitted trace (input 1): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i4:At the same time -> i5:deliver the freight -> i14:If a loss claim report is lodged -> i15:approve the loss claim and the process ends
+- [N3] Omitted trace (input 6): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i4:At the same time -> i6:notify the delivery -> i7:If the request for merchandise return is lodged -> i10:If the return is accepted -> i11:proceed with accepting the merchandise return -> i17:proceed with returning the merchandise -> i19:the process ends with the merchandise being returned
+- [N4] Omitted trace (input 7): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i4:At the same time -> i6:notify the delivery -> i7:If the request for merchandise return is lodged -> i12:If the return is rejected -> i13:reject the merchandise return -> i18:the process ends with the merchandise return request being rejected
+- [N5] Within matched traces (2->2) omitted: i5:deliver the freight
+- [N6] Within matched traces (3->3) omitted: i5:deliver the freight
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes (Return Requested)'"); source=i10:If the return is accepted; reason=The source specifies checking if the return is 'accepted', but the model guard checks if a return is 'requested', which is a different condition.
+- [N8] Node-level mutation: element=guard(b1,n8,"v1 = 'No (No Return Request)'"); source=i12:If the return is rejected; reason=The source specifies checking if the return is 'rejected', but the model guard checks if there is 'no return request', which alters the logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"Deliver Freight")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"Deliver Freight")

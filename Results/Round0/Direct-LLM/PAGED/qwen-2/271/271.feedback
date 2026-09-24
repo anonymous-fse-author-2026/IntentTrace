@@ -1,0 +1,6 @@
+- `branch(b1, XOR)`, `precedence(b1, n5)`, `guard(b1, n5, v1 = 'No')`: The model introduces an exclusive choice and a cyclic return to `n5`, but the source specifies a strictly linear flow: "Once the bill has been sent, await the payment. Upon receipt of the payment, mark it as received, and conclude the process." There are no conditional checks or retries documented.
+- `defines(v1, "payment received", {"Yes", "No"})`: The declaration fabricates a decision variable and binary range, whereas the source text contains no variables, status flags, or yes/no evaluations: "Upon receipt of the payment, mark it as received".
+- `guard(b1, n7, v1 = 'Yes')`, `precedence(n6, b1)`: These insert a conditional evaluation between payment receipt and marking it, contradicting the source's immediate, unconditional progression: "Upon receipt of the payment, mark it as received, and conclude the process." This disrupts the exact chronological sequence and hallucinates decision logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"await payment")

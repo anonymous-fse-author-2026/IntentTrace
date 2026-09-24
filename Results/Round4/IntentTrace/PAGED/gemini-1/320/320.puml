@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:For EC-Lille: Initially;
+:v1: research schedule directly selected ({Yes, No}); <<objectSignal>>
+if () then ([v1='Yes'])
+:if the option "research schedule directly" is selected;
+:then the action to be taken is "Research schedule;
+else ([v1='No'])
+:then "provide indications;
+:provide indications;
+:proceed with the research schedule;
+endif
+:After validating the schedule;
+:check if the schedule is satisfactory;
+:v2: is the schedule satisfactory ({Yes, Alternatively Yes, No}); <<objectSignal>>
+switch ()
+case ([v2='No'])
+:perform the action "Research schedule;
+:If the schedule is not satisfactory, perform the action "Research schedule;
+:If it is still not satisfactory;
+:provide indications;
+:proceed with the research schedule;
+:After validating the schedule;
+:check if the schedule is satisfactory;
+:v2_2: is the schedule satisfactory 2 ({Yes, Alternatively Yes, No}); <<objectSignal>>
+switch ()
+case ([v2_2='Yes'])
+:proceed with writing a ticket order to SNCF;
+case ([v2_2='Alternatively Yes'])
+:Alternatively, if the schedule is satisfactory, write a ticket order to SNCF.;
+case ([v2_2='No'])
+stop
+endswitch
+case ([v2='Yes'])
+case ([v2='Alternatively Yes'])
+endswitch
+:After writing the ticket order, validate it.;
+:Check if the ticket order is approved.;
+:v4: is the ticket order approved ({Yes, No}); <<objectSignal>>
+if () then ([v4='No'])
+->;
+else ([v4='Yes'])
+:If it is approved, then validate the ticket order.;
+:Check again if the ticket order is approved.;
+:v5: is the ticket order approved again ({Yes, No}); <<objectSignal>>
+if () then ([v5='No'])
+->;
+else ([v5='Yes'])
+:If it is approved, then validate the ticket order.;
+:Check once more if the ticket order is approved.;
+:v6: is the ticket order approved once more ({Yes, No}); <<objectSignal>>
+if () then ([v6='No'])
+->;
+else ([v6='Yes'])
+:If it is, then the process ends.;
+stop
+endif
+endif
+endif
+:If it is not, then the process ends.;
+stop
+@enduml

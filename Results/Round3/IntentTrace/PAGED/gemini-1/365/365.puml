@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Passengers undergo immigration checks;
+:Select method for exit control checks: Biometrics or ID documents?;
+:v1: Select method for exit control checks  Biometrics or ID documents? ({Biometrics, ID documents}); <<objectSignal>>
+if () then ([v1 = 'Biometrics'])
+:Undergo biometric check;
+:v2: Is permission denied after biometric check? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:If the passenger is denied permission, they should leave the area and end process;
+else ([v2 = 'No'])
+:Proceed to next step;
+:v4: Biometric check outcome ({Unsuccessful, Successful}); <<objectSignal>>
+if () then ([v4 = 'Unsuccessful'])
+:the passenger should leave the area and the process ends;
+else ([v4 = 'Successful'])
+:the passenger should continue to the next step;
+:End of successful process;
+stop
+endif
+endif
+stop
+else ([v1 = 'ID documents'])
+:undergo checks using identity documents;
+:v5: ID permission status ({Denied, Allowed}); <<objectSignal>>
+if () then ([v5 = 'Denied'])
+:After the exit control checks, if the passenger is denied permission;
+:they should leave the area;
+stop
+else ([v5 = 'Allowed'])
+:they should proceed to the next step;
+:v3: Is permission denied after ID document check? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:If the exit control check outcome is unsuccessful, the passenger should leave the area and end process;
+stop
+else ([v3 = 'No'])
+:if the outcome is successful;
+:Proceed to next step;
+:End of successful process;
+stop
+endif
+endif
+endif
+@enduml

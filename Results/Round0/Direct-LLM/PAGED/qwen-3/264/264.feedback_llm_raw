@@ -1,0 +1,7 @@
+
+
+- `branch(b6, AND)` / `precedence(b6, n3)` / `precedence(b6, n4)`: Enforces parallel execution of contacting TS (`n3`) and checking approval (`n4`), contradicting the source's explicit sequential order: "Following the approval, there is a contact with TS to clarify the timing. Once the approval is received, it is checked." (SMC3)
+- `branch(b1, XOR)` / `branch(b2, XOR)` / `branch(b3, XOR)` / `branch(b4, XOR)` / `branch(b5, XOR)`: All XOR gateways lack `guard()` statements, failing to implement the explicit conditional logic required by the source (e.g., "If the resource is internal...", "If there are no variations..."). (SMC4)
+- `action(n5, ...)`, `action(n12, ...)`, `action(n13, ...)`, `action(n14, ...)`, `action(n17, ...)`: Incorrectly declares decision criteria and conditional outcomes as executable process steps, whereas the source treats them as control-flow conditions ("If the resource is internal...", "If there are no variations..."). (SMC2)
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`, `defines(v4, ..., {})`, `defines(v5, ..., {})`: Specifies empty value ranges `{}` for all decision variables, omitting the concrete finite domains implied by the source (e.g., `{internal, external}`, `{variations, no variations}`). (SMC6)
+- `precedence(n2, b6)`: Inserts a concurrency split immediately after receiving the approval, violating the source's strictly linear progression where contacting TS and checking the approval follow sequentially rather than concurrently. (SMC3)

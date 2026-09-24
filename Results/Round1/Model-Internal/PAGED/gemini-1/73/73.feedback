@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process for Wiggo Company -> i2:check the authority to make a purchase -> i3:If the response is "okay" -> i4:verify the availability -> i7:check if the item is in stock -> i8:If it is -> i9:the process ends
+- [N2] Omitted trace (input 1): i1:To begin the process for Wiggo Company -> i2:check the authority to make a purchase -> i5:if the response is "no" -> i6:refuse to fulfill the order and end the process
+
+Addition
+- [N3] Node-level addition: action(n3,"Is purchase authority granted?") (reason: This is an invented question step that is not described in the source text; the source only instructs to check the authority, which is already handled.)
+- [N4] Node-level addition: action(n8,"End process (item not in stock)") (reason: The source text does not describe an alternative path or ending condition for when the item is not in stock.)
+- [N5] Node-level addition: guard(b2,n8,"v2 = 'no'") (reason: The source text does not describe an alternative path or ending condition for when the item is not in stock.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"Begin process for Wiggo Company") -> action(n2,"Check authority to make a purchase") -> action(n3,"Is purchase authority granted?") -> branch(b1,XOR) -> action(n4,"Refuse to fulfill the order and end the process") -> end(e1)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"Begin process for Wiggo Company") -> action(n2,"Check authority to make a purchase") -> action(n3,"Is purchase authority granted?") -> branch(b1,XOR) -> action(n5,"Verify availability") -> action(n6,"Is item in stock?") -> branch(b2,XOR) -> action(n7,"End process") -> end(e2)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"Begin process for Wiggo Company") -> action(n2,"Check authority to make a purchase") -> action(n3,"Is purchase authority granted?") -> branch(b1,XOR) -> action(n5,"Verify availability") -> action(n6,"Is item in stock?") -> branch(b2,XOR) -> action(n8,"End process (item not in stock)") -> end(e3)

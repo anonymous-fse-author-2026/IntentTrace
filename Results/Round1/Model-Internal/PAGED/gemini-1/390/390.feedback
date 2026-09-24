@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: i6:if the order exceeds the purchaser's credit allowance (reason: The explicit credit condition is not faithfully captured; it only exists as a mutated generic boolean guard, resulting in a loss of the actual condition.)
+- [N2] Node-level omission: i10:If a new order is placed, (reason: This condition check before accounts receivable is entirely missed; there is no branch, guard, or action representing it.)
+- [N3] Node-level omission: i14:if no payments are received (reason: The explicit no payments condition is only represented by a generic boolean guard (a mutation) and lacks a faithful implementation.)
+- [N4] Node-level omission: i19:if the order does not require installation (reason: The explicit condition is only represented by a generic boolean guard (a mutation) and lacks a faithful implementation.)
+- [N5] Omitted trace (input 1): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i4:If the condition is "Order with prior internal credit allowance" -> i5:processing the order for delivery -> i16:identify the order for installation -> i19:if the order does not require installation -> i20:packed for delivery
+- [N6] Omitted trace (input 2): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i6:if the order exceeds the purchaser's credit allowance -> i7:there will be an Outstanding Balance -> i9:the process ends at the Warehouse
+- [N7] Omitted trace (input 5): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i6:if the order exceeds the purchaser's credit allowance -> i7:there will be an Outstanding Balance -> i8:a new order is placed -> i10:If a new order is placed, -> i11:recorded in the Accounts Receivable -> i12:If Payments are Received -> i13:the process continues -> i16:identify the order for installation -> i19:if the order does not require installation -> i20:packed for delivery
+- [N8] Within matched traces (0->1) omitted: i18:an Installer will be assigned
+- [N9] Within matched traces (4->2) omitted: i10:If a new order is placed,
+- [N10] Within matched traces (4->3) omitted: i10:If a new order is placed,
+- [N11] Within matched traces (4->3) omitted: i18:an Installer will be assigned
+- [N12] Within matched traces (3->4) omitted: i10:If a new order is placed,
+
+Addition
+- [N13] Node-level addition: action(n17,"end process") (reason: These explicit 'end process' actions lack source text justification. The text concludes with functional tasks, without declaring formal process ends at these endpoints.)
+- [N14] Node-level addition: action(n18,"end process") (reason: These explicit 'end process' actions lack source text justification. The text concludes with functional tasks, without declaring formal process ends at these endpoints.)
+- [N15] Within matched traces (0->0) added: action(n17,"end process")
+- [N16] Within matched traces (0->0) added: end(e2)
+- [N17] Within matched traces (0->1) added: action(n16,"pack for delivery")
+- [N18] Within matched traces (0->1) added: action(n18,"end process")
+- [N19] Within matched traces (0->1) added: end(e3)
+- [N20] Within matched traces (4->2) added: action(n4,"Order with prior internal credit allowance")
+- [N21] Within matched traces (4->2) added: action(n17,"end process")
+- [N22] Within matched traces (4->2) added: end(e2)
+- [N23] Within matched traces (4->3) added: action(n4,"Order with prior internal credit allowance")
+- [N24] Within matched traces (4->3) added: action(n16,"pack for delivery")
+- [N25] Within matched traces (4->3) added: action(n18,"end process")
+- [N26] Within matched traces (4->3) added: end(e3)
+- [N27] Within matched traces (3->4) added: action(n4,"Order with prior internal credit allowance")
+- [N28] Within matched traces (3->4) added: action(n9,"Payments Received")
+- [N29] Within matched traces (3->4) added: action(n12,"end process")
+- [N30] Within matched traces (3->4) added: end(e1)
+
+Mutation
+- [N31] Node-level mutation: element=action(n12,"end process"); source=i9:the process ends at the Warehouse; reason=Drops the specific location constraint 'at the Warehouse', replacing it with a generic 'end process'.
+- [N32] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i4:If the condition is "Order with prior internal credit allowance"; reason=Replaces the explicit textual condition with an invented generic logic 'v1 = true'.
+- [N33] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i6:if the order exceeds the purchaser's credit allowance; reason=Replaces the specific credit check condition with a generic boolean 'v1 = false'.
+- [N34] Node-level mutation: element=guard(b2,n10,"v2 = true"); source=i12:If Payments are Received; reason=Replaces the explicit payment received condition with an invented generic 'v2 = true'.
+- [N35] Node-level mutation: element=guard(b2,n11,"v2 = false"); source=i14:if no payments are received; reason=Replaces the explicit no-payment condition with an invented generic boolean 'v2 = false'.
+- [N36] Node-level mutation: element=guard(b3,n15,"v3 = true"); source=i17:If the installation needs to be scheduled; reason=Replaces the explicit installation schedule condition with an invented generic logic 'v3 = true'.
+- [N37] Node-level mutation: element=guard(b3,n16,"v3 = false"); source=i19:if the order does not require installation; reason=Replaces the explicit lack of installation requirement condition with an invented generic 'v3 = false'.

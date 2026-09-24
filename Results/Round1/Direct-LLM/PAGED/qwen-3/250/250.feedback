@@ -1,0 +1,10 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i7:At the same time, the supplier should also send the goods and send the invoice.
+
+Addition
+- [N2] Added trace (model 2): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n9,"send goods") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'"); source=i4:If the stock is rejected, then the process ends.; reason=The guard payload uses an abstract boolean assignment (v1 = 'Yes') instead of preserving the explicit textual condition regarding stock rejection.
+- [N5] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i5:Otherwise, the supplier should request shipping details.; reason=The guard payload uses an abstract boolean assignment (v1 = 'No') instead of preserving the textual fallback/default path indicator.

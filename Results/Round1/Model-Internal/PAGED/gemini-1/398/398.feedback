@@ -1,0 +1,24 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"provide userdata for flickr") -> action(n3,"is login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr") -> action(n7,"is login successful") -> branch(b3,XOR) -> action(n8,"end process") -> end(e2)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"provide userdata for flickr") -> action(n3,"is login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr") -> action(n7,"is login successful") -> branch(b3,XOR) -> action(n9,"do you still want to try again") -> branch(b4,XOR) -> action(n11,"provide userdata for flickr") -> action(n12,"is login successful") -> branch(b5,XOR) -> action(n13,"end process") -> end(e4)
+- [N3] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"provide userdata for flickr") -> action(n3,"is login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n10,"end process") -> end(e3)
+- [N4] Within matched traces (1->3) added: action(n3,"is login successful")
+- [N5] Within matched traces (1->3) added: action(n7,"is login successful")
+- [N6] Within matched traces (1->3) added: action(n12,"is login successful")
+- [N7] Within matched traces (2->4) added: action(n3,"is login successful")
+- [N8] Within matched traces (2->4) added: action(n7,"is login successful")
+- [N9] Within matched traces (3->3) added: action(n3,"is login successful")
+- [N10] Within matched traces (3->3) added: branch(b2,XOR)
+- [N11] Within matched traces (3->3) added: action(n7,"is login successful")
+- [N12] Within matched traces (3->3) added: action(n12,"is login successful")
+- [N13] Within matched traces (4->4) added: action(n3,"is login successful")
+- [N14] Within matched traces (4->4) added: branch(b2,XOR)
+- [N15] Within matched traces (4->4) added: action(n7,"is login successful")
+
+Mutation
+- [N16] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'") -> guard(b3,n8,"v3 = 'Yes'") -> guard(b5,n13,"v5 = 'Yes'"); source=i3:If the login is successful,; reason=The guards abstract the qualitative condition 'login is successful' into an exact equality check against an invented variable and value ('Yes').
+- [N17] Node-level mutation: element=guard(b1,n5,"v1 = 'No'") -> guard(b3,n9,"v3 = 'No'") -> guard(b5,n15,"v5 = 'No'"); source=i5:However, if the login fails,; reason=The guards distort the 'login fails' condition into an exact equality check against an invented value ('No').
+- [N18] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i6:If you want to try again,; reason=The guard distorts the retry condition by converting it into a variable equality check ('Yes').
+- [N19] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:On the other hand, if you choose to abort,; reason=The guard distorts the abort condition by converting it into a variable equality check ('No').
+- [N20] Node-level mutation: element=guard(b4,n11,"v4 = 'Yes'"); source=i8:If you still want to try again,; reason=The guard distorts the subsequent retry condition into a variable equality check ('Yes').
+- [N21] Node-level mutation: element=guard(b4,n14,"v4 = 'No'"); source=i9:Alternatively, if you decide to abort,; reason=The guard distorts the subsequent abort condition into a variable equality check ('No').

@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates an initial step. The source begins directly with "clicking on 'Start'", making `n1` an undocumented behavior (violates SMC1).
+- `branch(b4, XOR)`, `defines(v4, "check translation need again", ...)`, `guard(b4, ...)`, `action(n12, "translate receipts again")`, `action(n13, "confirm receipts again")`: The source states that after checking translation need the second time, the process proceeds directly to "evaluate the review decision". Inserting a conditional split (`b4`) and associated actions here invents a decision branch not present in the description (violates SMC1, SMC4).
+- `converge(c1)` with `precedence(c1, n9)` and `precedence(c1, n14)`: The node is incorrectly reused to merge two disjoint process stages (first and second translation/confirmation phases) and then serve as the predecessor for two different subsequent actions. This corrupts the join structure and conflates sequential progressions (violates SMC4).
+- `action(n16, "edit report")` → `action(n18, "end")` → `end(e2)`: The source specifies that rejected receipts lead to editing the report, while the process exclusively terminates after "processing the expense". Routing the rejection path to a second end node (`e2`) falsely terminates a corrective step and adds an unauthorized termination path (violates SMC1, SMC5).
+- `action(n17, "end")`, `action(n18, "end")`: Misuse the `action` element to represent process termination. According to the DSL semantics and source, termination should be captured solely by `end(id)` nodes, rendering these action payloads semantically inaccurate (violates SMC2).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"edit report")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10 | DSL: action(n10,"edit report")

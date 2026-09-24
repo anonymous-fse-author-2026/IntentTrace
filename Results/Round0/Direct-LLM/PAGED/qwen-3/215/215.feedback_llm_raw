@@ -1,0 +1,6 @@
+
+
+- `n11` / missing outgoing `precedence`: Dangling node breaks the rework loop. The source states "In case the order needs to be reworked, review the Purchase Order again," requiring a return path to the review/approval stage, but `n11` has no succeeding precedence statement.
+- `action(n3, "Inventory level is at or below the minimum")` & `action(n7, "Purchase Order is approved")`: Misclassifies decision predicates as executable steps. The source treats these as conditional checkpoints directing `branch(b1)` and `branch(b2)`, not as standalone process activities.
+- `label(n2, n3, "Inventory Level is at or below the minimum;Inventory Level is above the minimum")`: Attaches branching conditions to a linear sequential edge instead of the outgoing edges of `branch(b1)`, misrepresenting the exclusive choice structure.
+- `defines(v2, "Purchase Order is approved", {})`: Specifies an empty value space `{}` for a decision variable that must support at least two states (approved vs. rejected) to resolve `branch(b2)` as described in the source.

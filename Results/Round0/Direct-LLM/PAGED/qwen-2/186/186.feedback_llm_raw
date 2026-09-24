@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "Is initial answer yes", {})` & `defines(v2, "Is second answer yes", {})`: Ranges are empty `{}`, contradicting the explicit binary `"yes"`/`"no"` choices stated in the source. (SMC6)
+- `branch(b1, XOR)` & `branch(b2, XOR)`: No `guard` statements are provided to define the conditions on outgoing edges, failing to represent the documented `"if the answer is 'yes'/'no'"` decision logic. (SMC4)
+- `precedence(b1, n3)` & `precedence(n3, c1)`: The first `"no"` path acquires pricing and jumps directly to convergence, bypassing the second decision checkpoint (`n4`, `b2`). This violates the sequential chronology implied by `"If the answer is 'no' again..."`. (SMC3, SMC5)
+- `precedence(n5, c1)` & `precedence(n3, c1)`: Both `"Acquire pricing"` paths route directly to `converge(c1)`, skipping `action(n6, "Calculate margin")`, `action(n7, "Prepare offer")`, and `action(n8, "Calculate transport rate")`. This omits the mandatory downstream steps described as `"After the margin calculation... the process comes to an end."` (SMC1, SMC3)

@@ -1,0 +1,4 @@
+- action(n1, "start"): Hallucinates an undocumented step; the source explicitly states "the process begins by filling in their information", so no preceding action node should exist.
+- action(n5, "end of process"): Hallucinates an undocumented step; the source states "After completing the payment, the process comes to an end", meaning control must flow directly from `action(n4, ...)` to `end(e1)`.
+- actor(a_default, "Default", [i1, n1, n2, n3, n4, n5, e1]): Misassigns documented responsibilities; the source identifies "passengers" as the participants executing the workflow, but the model delegates all nodes to a generic "Default" actor.
+- precedence(i1, n1) and precedence(n5, e1): Violates exact source chronology by threading control flow through hallucinated nodes, preventing the init-to-end path from faithfully mirroring the intended "fill in information -> proceed to payment page -> complete payment -> end" progression.

@@ -1,0 +1,10 @@
+- `actor(a_default, ...)`: The model assigns all tasks to a single default actor, completely omitting the specific roles described in the text (recruitment manager, next level manager, client HR, HR department, TS HR coordinator, HR representative, and candidate).
+- `action(n5, "check if terms and conditions need to be sorted out")`: The model omits the subsequent logic checking "if the candidate has accepted a voluntary redundancy", continuing if not, and requiring "further investigation" if they have.
+- `action(n6, "send appointment approval form")`: The model omits that this form is "received by the next level manager".
+- `branch(b4, XOR)`: The model omits the required step where "the recruitment manager sends the form and other documentation, which is received by the client HR" upon approval.
+- `action(n12, "contact external approver for clarification")`: This action is hallucinated; the text does not mention contacting the external approver for clarification.
+- `branch(b5, XOR)` / `action(n17, "continue process")`: The model omits the explicitly stated step "The Appointment Approval is carried forward".
+- `branch(b11, AND)`: The model incorrectly introduces a parallel split after `n17` routing to `n18` and `c4` (which goes to the end), contradicting the sequential progression described in the text.
+- `action(n28, "send commencement pack and letter of appointment")`: Placed sequentially after the `c3` convergence instead of in a parallel branch, failing to model the concurrency explicitly stated by "Simultaneously, the commencement pack and letter of appointment are sent".
+- `branch(b9, XOR)`: The model omits the alternative condition "Otherwise, if the candidate accepts, the process continues" prior to renegotiation.
+- `branch(b1, XOR)` to `branch(b10, XOR)`: The model completely lacks `guard` declarations to define the conditions for any of its XOR outgoing edges.

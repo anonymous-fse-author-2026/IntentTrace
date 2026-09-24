@@ -1,0 +1,9 @@
+
+
+- `defines(v1, ...)` and `defines(v2, ...)`: Ranges only list negative outcomes (`"Referee Reports not completed"`), omitting the positive `"completed"` values required to evaluate the alternative branches, contradicting the source's explicit check `"if they have been completed"`.
+- `guard(b1, ...)` and `guard(b2, ...)`: Only define conditions for the reminder paths. The source states `"If they have been completed, you can proceed"`, but no guards are provided for the `b1->c1` and `b2->c1` edges representing completion.
+- `precedence(b2, n4)`: Creates a feedback loop to the first reminder action. The source describes a distinct step `"flag it again and send another reminder"` rather than cycling back to the initial `n4` action.
+- `action(n10, ...)` and `branch(b3, ...)`: Collapse two sequential decisions from the source (`"check if a Psychometric Test is required"` and then `"check if an HR Specialist is required"`) into a single branching point.
+- `branch(b3, ...)`: Splits into three paths (`n11`, `n12`, `n13`), but only two `guard` statements exist. The edge to `n13` lacks a condition, and `defines(v3, ...)` only provides two values, failing to cover the three-way split or the nested decision logic in the text.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a generic `"Default"` actor, ignoring explicit responsibilities in the source such as `"Selection Panel"`, `"HR Specialist"`, and `"third party"`.
+- `guard(b3, n11, ...)`: Maps `"Psychometric Test not required"` directly to `"coordinate second round of selection"`, but the source positions coordination as a follow-up step within the testing workflow (`"continue with the process and coordinate the second round of selection"`), misaligning the conditional routing.

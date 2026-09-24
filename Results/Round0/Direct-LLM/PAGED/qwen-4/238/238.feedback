@@ -1,0 +1,11 @@
+- `action(n1, "start WIGGO process")`: Hallucinates an initial step; description states `"start by placing an Order"` with no intermediate action. (SMC1)
+- `action(n4, "Credit Limit Okay")`, `action(n7, "Article Available")`, `action(n14, "Payment Received")`, `action(n17, "Reminder Count Ge 3")`: Models decision responses/outcomes as distinct executable steps rather than branch guards, distorting chronology and node payload meaning; description frames these directly as conditional checks (`"If the response is..."`). (SMC2, SMC3)
+- `precedence(b1, n5)` with no outgoing precedence from `action(n5, "Send Denial To Customer")`: Leaves the denial branch dangling without reaching an `end` node, failing to represent a complete init-to-end progression. (SMC3, SMC5)
+- `defines(v1, "Credit Limit Okay", {"No", "Yes"})` and `guard(b1, n6, v1 = 'Yes')`: Uses `"Yes"` in the value space and guard, but description explicitly specifies the positive response as `"Okay"`. (SMC6)
+- `defines(v2, "Article Available", {"No", "Yes"})`: Defines a binary Yes/No range, whereas description explicitly evaluates availability using `"Available"` / `"not available"`. (SMC6)
+- `guard(b4, n19, v4 = 'No')` routing to `action(n19, "End")` → `end(e2)`: Hallucinates an immediate process termination when the reminder count is < 3; description only defines behavior for counts ≥ 3 (`"Write off the Order... close the Order and end the process"`) and specifies no exit for the alternative case. (SMC1, SMC5)
+- `action(n16, "End")`, `action(n19, "End")`, `action(n22, "End")`: Redundantly models process termination as named actions preceding DSL `end()` declarations, contradicting faithful representation of `"end the process"` which is handled natively by `end(e1/e2/e3)`. (SMC2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")

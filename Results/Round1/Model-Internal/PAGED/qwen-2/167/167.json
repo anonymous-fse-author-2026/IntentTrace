@@ -1,0 +1,226 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Receive purchase order"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Product available in stock?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Retrieve product from warehouse"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Acquire raw materials"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Manufacture product"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Order confirmed"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Ship and invoice order"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Archive order"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Order fulfilled"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Product available in stock?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "e1",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "The process starts with receiving a purchase order,"
+    },
+    {
+      "id": "i2",
+      "content": "followed by checking the availability of stock."
+    },
+    {
+      "id": "i3",
+      "content": "If the product is not in stock,"
+    },
+    {
+      "id": "i4",
+      "content": "raw materials are acquired."
+    },
+    {
+      "id": "i5",
+      "content": "If the product is in stock,"
+    },
+    {
+      "id": "i6",
+      "content": "the product is retrieved from the warehouse."
+    },
+    {
+      "id": "i7",
+      "content": "and the product is manufactured."
+    },
+    {
+      "id": "i8",
+      "content": "The product is retrieved from the warehouse, and the order is confirmed."
+    },
+    {
+      "id": "i9",
+      "content": "The product is manufactured, and the order is confirmed."
+    },
+    {
+      "id": "i10",
+      "content": "The order is then shipped and invoiced."
+    },
+    {
+      "id": "i11",
+      "content": "The order is archived,"
+    },
+    {
+      "id": "i12",
+      "content": "and the process ends with the order being fulfilled."
+    }
+  ]
+}

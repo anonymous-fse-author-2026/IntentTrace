@@ -1,0 +1,14 @@
+Addition
+- [N1] Node-level addition: action(n6,"Process Invoices (Vendor)") (reason: The source text only instructs to 'proceed with the process' and 'continue with the process' after sorting, without specifying distinct processing tasks for each path. These elements invent specific 'Process Invoices' steps that lack direct textual support.)
+- [N2] Node-level addition: action(n7,"Process Invoices (Amount)") (reason: The source text only instructs to 'proceed with the process' and 'continue with the process' after sorting, without specifying distinct processing tasks for each path. These elements invent specific 'Process Invoices' steps that lack direct textual support.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Note Vendor Number on Invoice Entry Form") -> action(n3,"Sort by Vendor or Amount?") -> branch(b1,XOR) -> action(n5,"Sort Invoices by Amount") -> action(n7,"Process Invoices (Amount)") -> converge(c1) -> action(n8,"Note Time per 100 Invoices") -> action(n9,"Tick 'Invoice Entered' on Form") -> action(n10,"Place Invoice Batch in Urgent Outbox") -> action(n11,"Set Up Hourly Collection") -> action(n12,"End of Process") -> end(e1)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n6,"Process Invoices (Vendor)")
+- [N6] Within matched traces (0->0) added: converge(c1)
+
+Mutation
+- [N7] Node-level mutation: element=action(n8,"Note Time per 100 Invoices"); source=i3:It takes approximately 20 minutes for every 100 invoices,; reason=The element content 'Note Time per 100 Invoices' drops the specific quantitative value ('approximately 20 minutes') provided in the source, altering the precise data/measurement captured by the step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.

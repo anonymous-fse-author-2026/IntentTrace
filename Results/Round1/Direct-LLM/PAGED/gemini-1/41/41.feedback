@@ -1,0 +1,34 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i9:If the exit control check outcome is unsuccessful
+- [N2] Within matched traces (0->0) omitted: i10:the process ends
+- [N3] Within matched traces (1->2) omitted: i10:the process ends
+- [N4] Within matched traces (2->3) omitted: i9:If the exit control check outcome is unsuccessful
+- [N5] Within matched traces (2->3) omitted: i10:the process ends
+- [N6] Within matched traces (3->5) omitted: i10:the process ends
+
+Addition
+- [N7] Node-level addition: guard(b5,n4,"v5 == \"biometrics\"") (reason: The specific conditional clauses for choosing either biometrics or ID documents are not present in the provided input elements.)
+- [N8] Node-level addition: guard(b5,n5,"v5 == \"ID documents\"") (reason: The specific conditional clauses for choosing either biometrics or ID documents are not present in the provided input elements.)
+- [N9] Node-level addition: guard(b1,n9,"v1 == true") (reason: The positive condition for when the passenger is allowed to continue is not present in the provided input elements.)
+- [N10] Node-level addition: guard(b3,n15,"v3 == true") (reason: The positive condition for a successful exit control check outcome is not present in the provided input elements.)
+- [N11] Added trace (model 1): init(i1) -> action(n2,"undergo immigration checks") -> action(n3,"select method for exit control checks") -> branch(b5,XOR) -> action(n4,"use biometrics for exit control checks") -> converge(c1) -> action(n6,"is permission granted after exit control checks") -> branch(b1,XOR) -> action(n9,"proceed to the next step") -> action(n12,"is the exit control check outcome successful") -> branch(b3,XOR) -> action(n14,"leave the area") -> end(e1)
+- [N12] Added trace (model 4): init(i1) -> action(n2,"undergo immigration checks") -> action(n3,"select method for exit control checks") -> branch(b5,XOR) -> action(n5,"use ID documents for exit control checks") -> converge(c1) -> action(n6,"is permission granted after exit control checks") -> branch(b1,XOR) -> action(n9,"proceed to the next step") -> action(n12,"is the exit control check outcome successful") -> branch(b3,XOR) -> action(n14,"leave the area") -> end(e1)
+- [N13] Within matched traces (0->0) added: converge(c1)
+- [N14] Within matched traces (1->2) added: converge(c1)
+- [N15] Within matched traces (1->2) added: action(n6,"is permission granted after exit control checks")
+- [N16] Within matched traces (1->2) added: branch(b1,XOR)
+- [N17] Within matched traces (1->2) added: action(n12,"is the exit control check outcome successful")
+- [N18] Within matched traces (1->2) added: branch(b3,XOR)
+- [N19] Within matched traces (2->3) added: converge(c1)
+- [N20] Within matched traces (3->5) added: converge(c1)
+- [N21] Within matched traces (3->5) added: action(n6,"is permission granted after exit control checks")
+- [N22] Within matched traces (3->5) added: branch(b1,XOR)
+- [N23] Within matched traces (3->5) added: action(n12,"is the exit control check outcome successful")
+- [N24] Within matched traces (3->5) added: branch(b3,XOR)
+
+Mutation
+- [N25] Node-level mutation: element=action(n4,"use biometrics for exit control checks"); source=i4:undergo a check using biometrics; reason=The element adds the invented qualifier 'for exit control checks' and alters the core instruction from undergoing a check to 'using biometrics'.
+- [N26] Node-level mutation: element=action(n5,"use ID documents for exit control checks"); source=i5:undergo checks using identity documents; reason=The element adds the invented qualifier 'for exit control checks' and alters the core instruction from undergoing a check to 'using ID documents'.
+- [N27] Node-level mutation: element=action(n6,"is permission granted after exit control checks"); source=i6:if the passenger is denied permission; reason=The element reverses the condition's polarity from 'denied' to 'is permission granted' and adds the qualifier 'after exit control checks'.
+- [N28] Node-level mutation: element=action(n12,"is the exit control check outcome successful"); source=i9:If the exit control check outcome is unsuccessful; reason=The element reverses the condition's polarity from 'unsuccessful' to 'successful'.
+- [N29] Node-level mutation: element=action(n15,"continue process"); source=i11:continue to the next step; reason=The element drops 'to the next step' and replaces it with 'process', changing the granularity and exact target.

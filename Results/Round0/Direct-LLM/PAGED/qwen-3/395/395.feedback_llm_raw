@@ -1,0 +1,7 @@
+
+
+- `branch(b3)`, `action(n10)`: Incorrectly flattens a sequential two-step decision into a single three-way XOR split, omitting the intermediate verification step described in the source text: "If it is, you should then check if an HR Specialist is required." Violates SMC1 and SMC4.
+- `defines(v3, "is psychometric test required?", {"Psychometric Test not required", "HR Specialist required"})`: Omitted range value for the scenario where the test is required but an HR specialist is not, contradicting the source text: "Otherwise, you can proceed to complete the Psychometric Test." Violates SMC6.
+- `guard(b3, n11, ...)`, `guard(b3, n12, ...)`: Missing guard condition for the third outgoing edge of `branch(b3)` leading to `action(n13)`, leaving the routing logic for completing the test undefined despite it being an explicit process path. Violates SMC4.
+- `defines(v1, ...)`, `defines(v2, ...)`: Ranges only specify the negative outcomes (`"Referee Reports not completed"` / `"Referee Reports still not completed after second check"`), omitting the positive `"Completed"` option required by the source's binary evaluations ("If they have been completed... if they have not been completed"). Violates SMC6.
+- `branch(b1)`, `branch(b2)`: Missing guard conditions for the alternative outgoing edges to `converge(c1)`, failing to formally define the positive/"completed" continuation paths explicitly described in the source for both the initial and follow-up checks. Violates SMC4.

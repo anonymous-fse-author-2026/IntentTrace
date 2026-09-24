@@ -1,0 +1,11 @@
+
+
+- `action(n1, "start")`: Payload mismatches source text "start by placing an order"; should reflect the actual ordering step rather than a generic start label.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`: Missing `guard` statements for explicitly described decision conditions ("not eligible"/"eligible", "available"/"not", "payment received"/"not received", "reminders < 3"/"= 3").
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`, `defines(v4, ...)`: Value ranges are empty `{}`, failing to faithfully capture source-specified domains like `"not eligible"`, `"eligible"`, `"< 3"`, `"= 3"`.
+- `precedence(n3, b5)`, `precedence(b5, n4)`: Violates source chronology "After informing the customer, the process ends"; model unnecessarily routes through AND branch `b5` and action `n4` instead of flowing directly to `end(e1)`.
+- `action(n8, "prepare products for shipment")` & `action(n9, "prepare products for shipment")`: Hallucinates duplicate preparation steps across mutually exclusive paths; source describes a single "Prepare the products for shipment" step occurring after availability handling.
+- `branch(b6, AND)`, `branch(b7, AND)`, `converge(c1)`, `converge(c2)`, `converge(c3)`: Misrepresents concurrency logic; source states "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment," requiring a direct AND split after preparation and an AND join before payment evaluation, not synchronizing two exclusive upstream paths via fragmented converges.
+- `action(n13, "payment received?")` & `action(n16, "reminders sent count < 3?")`: Incorrectly models conditional evaluations as actionable steps rather than branching decision points controlled by guards.
+- `precedence(b4, c5)`, `precedence(b4, c6)`, `precedence(n17, c6)`: Breaks iterative progression; source states "If the number of reminders is less than 3, continue the process," but the model dead-ends at converges `c5`/`c6` without looping back to payment validation or reminder generation.
+- `action(n4, "end process")`: Redundant operational step; process termination should be expressed exclusively via the `end` node constructor, not as a distinct action preceding it.

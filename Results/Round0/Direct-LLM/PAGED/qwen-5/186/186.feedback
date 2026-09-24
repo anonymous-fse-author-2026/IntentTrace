@@ -1,0 +1,8 @@
+- `action(n2, "Is initial answer yes")`, `action(n4, "Is second answer yes")`: Incorrectly declared as process actions instead of decision/branch nodes, misrepresenting the source's conditional structure ("if the answer is..."). (SMC2)
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Lack `guard` statements to specify the documented routing conditions ("if the answer is 'no'", "if the answer is 'yes'"), leaving the exclusive splits semantically unconditioned. (SMC4)
+- `defines(v1, "Is initial answer yes", {})`, `defines(v2, "Is second answer yes", {})`: Value ranges are declared as empty `{}`, omitting the valid decision values `"yes"` and `"no"` explicitly stated in the description. (SMC6)
+- `precedence(n3, c1)`, `precedence(n5, c1)`: Directs both "Acquire pricing" paths straight to convergence and the final `end` node, skipping the required downstream steps ("After the margin calculation... preparation of the offer... transport rate is calculated... process comes to an end"), thereby violating documented chronology and complete init-to-end paths. (SMC1, SMC3, SMC5)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.

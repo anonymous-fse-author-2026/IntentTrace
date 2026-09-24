@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i4:If the stock is rejected (reason: While the branch is modeled, the actual condition content 'the stock is rejected' is not faithfully implemented on any guard.)
+- [N2] Node-level omission: i7:Otherwise (reason: The alternative path's condition is not faithfully represented in the model, having been substituted with a generic variable.)
+- [N3] Within matched traces (1->2) omitted: i9:receive the shipping details
+- [N4] Within matched traces (2->3) omitted: i9:receive the shipping details
+
+Addition
+- [N5] Added trace (model 1): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n8,"receive shipping details") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'"); source=i4:If the stock is rejected; reason=The model replaces the specific condition 'stock is rejected' with an arbitrary generic variable assignment 'v1 = \'Yes\''.
+- [N7] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i7:Otherwise; reason=The model replaces the alternative logical path condition with an arbitrary generic variable assignment 'v1 = \'No\''.

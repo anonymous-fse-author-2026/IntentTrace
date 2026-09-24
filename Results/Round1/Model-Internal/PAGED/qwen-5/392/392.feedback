@@ -1,0 +1,23 @@
+Addition
+- [N1] Node-level addition: guard(b1,n4,"v1 = \"No\"") (reason: These elements introduce control-flow structures and steps entirely absent from the source: chaining checks via 'No' guards, explicit merging of parallel continue paths, and assumed continuation/termination branches for the manual task negative case. None are supported by any input element.)
+- [N2] Node-level addition: action(n7,"Merge Continue Process after Service Task 1 and 2") (reason: These elements introduce control-flow structures and steps entirely absent from the source: chaining checks via 'No' guards, explicit merging of parallel continue paths, and assumed continuation/termination branches for the manual task negative case. None are supported by any input element.)
+- [N3] Node-level addition: guard(b3,n10,"v3 = \"No\"") (reason: These elements introduce control-flow structures and steps entirely absent from the source: chaining checks via 'No' guards, explicit merging of parallel continue paths, and assumed continuation/termination branches for the manual task negative case. None are supported by any input element.)
+- [N4] Node-level addition: action(n10,"Continue Process if no Manual Task") (reason: These elements introduce control-flow structures and steps entirely absent from the source: chaining checks via 'No' guards, explicit merging of parallel continue paths, and assumed continuation/termination branches for the manual task negative case. None are supported by any input element.)
+- [N5] Node-level addition: action(n11,"End Process") (reason: These elements introduce control-flow structures and steps entirely absent from the source: chaining checks via 'No' guards, explicit merging of parallel continue paths, and assumed continuation/termination branches for the manual task negative case. None are supported by any input element.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N10] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N11] Within matched traces (1->2) added: branch(b1,XOR)
+- [N12] Within matched traces (1->2) added: converge(c1)
+- [N13] Within matched traces (1->2) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N14] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N15] Within matched traces (2->4) added: branch(b1,XOR)
+- [N16] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+
+Mutation
+- [N17] Node-level mutation: element=guard(b1,n3,"v1 = \"Yes\""); source=i2:If the task is "Service Task 1", then the process should continue.; reason=Replaces the specific condition '"Service Task 1"' with a generic boolean flag 'v1 = "Yes"', altering the semantic payload of the guard.
+- [N18] Node-level mutation: element=guard(b2,n5,"v2 = \"Yes\""); source=i4:If it is "Service Task 2", the process should also continue.; reason=Distorts the source condition by substituting '"Service Task 2"' with 'v2 = "Yes"'.
+- [N19] Node-level mutation: element=guard(b2,n6,"v2 = \"No\""); source=i6:However, if it is "Service Task 3", then the process will come to an end.; reason=Uses 'v2 = "No"' to trigger the Service Task 3 path, incorrectly mapping a negative boolean result to a distinct positive condition stated in the text.
+- [N20] Node-level mutation: element=guard(b3,n9,"v3 = \"Yes\""); source=i7:After that, if there is a Manual Task, the process will end.; reason=Substitutes the explicit check 'if there is a Manual Task' with a generic 'v3 = "Yes"' flag, losing the original condition's meaning.

@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:check customer order;
+:v7: customer type ({Registered, New, Wholesaler}); <<objectSignal>>
+switch ()
+case ([v7 = 'Registered'])
+:check payment morale;
+:v2: is payment morale good ({Bad, Good}); <<objectSignal>>
+if () then ([v2 = 'Good'])
+:check item availability;
+:are items in stock;
+:v4: are items in stock ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:send the order confirmation;
+else ([v4 = 'No'])
+:start production;
+:produce article;
+split
+:send order confirmation;
+:send order confirmation;
+split again
+:send invoice and deliver product;
+end split
+:check payment status;
+:v5: is payment received ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:close order;
+stop
+else ([v5 = 'No'])
+:are reminders more than 3;
+:v6: are reminders more than 3 ({More than 3, 3 or fewer}); <<objectSignal>>
+if () then ([v6 = 'More than 3'])
+:engage lawyer;
+stop
+else ([v6 = '3 or fewer'])
+:send reminder;
+stop
+endif
+endif
+endif
+else ([v2 = 'Bad'])
+:reject order;
+:end process;
+stop
+endif
+case ([v7 = 'New'])
+:check customer status;
+case ([v7 = 'Wholesaler'])
+:enter data and take order;
+endswitch
+@enduml

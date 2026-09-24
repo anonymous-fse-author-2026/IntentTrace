@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i3:After sending the Design to Faculty, the Faculty will choose the design. (reason: The model completely omits the explicit step where the Faculty selects/choses the design after receiving it.)
+- [N2] Within matched traces (0->0) omitted: i3:After sending the Design to Faculty, the Faculty will choose the design.
+- [N3] Within matched traces (1->2) omitted: i3:After sending the Design to Faculty, the Faculty will choose the design.
+- [N4] Within matched traces (2->1) omitted: i3:After sending the Design to Faculty, the Faculty will choose the design.
+
+Addition
+- [N5] Node-level addition: label(n4,n5,"Yes No") (reason: The 'Yes No' labels are synthetic modeling annotations with no corresponding text or implied logic in the source description.)
+- [N6] Node-level addition: label(n8,n9,"Yes No") (reason: The 'Yes No' labels are synthetic modeling annotations with no corresponding text or implied logic in the source description.)
+- [N7] Node-level addition: guard(b1,n6,"v1 = true") (reason: These guards contain generic boolean assignments ('v1 = true', 'v2 = false', etc.) that invent variable references not present in the source. The actual textual conditions are already captured within the action nodes, making these guards unsupported additions.)
+- [N8] Node-level addition: guard(b1,n7,"v1 = false") (reason: These guards contain generic boolean assignments ('v1 = true', 'v2 = false', etc.) that invent variable references not present in the source. The actual textual conditions are already captured within the action nodes, making these guards unsupported additions.)
+- [N9] Node-level addition: guard(b2,n10,"v2 = true") (reason: These guards contain generic boolean assignments ('v1 = true', 'v2 = false', etc.) that invent variable references not present in the source. The actual textual conditions are already captured within the action nodes, making these guards unsupported additions.)
+- [N10] Node-level addition: guard(b2,n12,"v2 = false") (reason: These guards contain generic boolean assignments ('v1 = true', 'v2 = false', etc.) that invent variable references not present in the source. The actual textual conditions are already captured within the action nodes, making these guards unsupported additions.)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (1->2) added: init(i1)
+- [N13] Within matched traces (1->2) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N14] Within matched traces (1->2) added: branch(b1,XOR)
+- [N15] Within matched traces (1->2) added: branch(b2,XOR)
+- [N16] Within matched traces (1->2) added: action(n12,"reconsider content to decrease price")
+- [N17] Within matched traces (2->1) added: init(i1)
+- [N18] Within matched traces (2->1) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N19] Within matched traces (2->1) added: branch(b1,XOR)
+- [N20] Within matched traces (2->1) added: action(n9,"condition: if Price of the Course Packet is finalized")
+- [N21] Within matched traces (2->1) added: branch(b2,XOR)
+
+Mutation
+- [N22] Node-level mutation: element=action(n13,"end: Reconsider Content"); source=i8:If the Faculty needs to reconsider the course packet content to decrease the price, then the process should be continued. Alternatively, if the Price of the Course Packet is finalized, -> i9:If the Faculty needs to reconsider the course packet content to decrease the price, then the process should be continued.; reason=The source explicitly states the process should be 'continued' when reconsideration occurs, implying a loop or return path. The model incorrectly terminates this branch with an end node labeled 'Reconsider Content', reversing the intended control flow.

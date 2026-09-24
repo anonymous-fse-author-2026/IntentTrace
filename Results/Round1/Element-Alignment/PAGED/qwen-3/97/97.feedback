@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: The behavioral instruction to verify the amount lacks a faithful implementation; the only candidate (n1) mutates the target, leaving the original step uncovered.)
+
+Addition
+- [N2] Node-level addition: guard(b2,n8,"v2 = 'other'") (reason: The condition 'v2 = other' introduces an unsupported third outcome not described in the source text, which only specifies acceptable or not satisfactory paths.)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start verifying account") -> action(n2,"Is the amount less than 200 euros") -> branch(b1,XOR) -> action(n4,"Evaluate the expense report") -> action(n5,"Is the expense report acceptable") -> branch(b2,XOR) -> converge(c1) -> action(n7,"End process") -> end(e1)
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (0->0) added: action(n7,"End process")
+- [N6] Within matched traces (0->0) added: end(e1)
+- [N7] Within matched traces (1->1) added: action(n2,"Is the amount less than 200 euros")
+- [N8] Within matched traces (2->3) added: action(n2,"Is the amount less than 200 euros")
+- [N9] Within matched traces (2->3) added: action(n5,"Is the expense report acceptable")
+
+Mutation
+- [N10] Node-level mutation: element=action(n1,"start verifying account"); source=i1:To check the account, we start by verifying the amount.; reason=Alters the action object from 'verifying the amount' to 'start verifying account', changing the core step definition.

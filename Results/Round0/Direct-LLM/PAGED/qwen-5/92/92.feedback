@@ -1,0 +1,13 @@
+- `defines(v1, "Is there a fee?", {})` and `defines(v2, "Check purchase request approval status", {})`: Empty ranges `{}` fail to capture the source's binary decision values, omitting the explicit options implied by "If there is no fee... However, if there is a fee..." and "If it is approved... On the other hand, if the purchase request is rejected...".
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard` statements to route flows according to the source conditions, leaving the exclusive choices undefined despite the text specifying outcomes for each branch condition.
+- `precedence(n6, e1)`: Prematurely terminates the approved path, contradicting the source requirement "If you receive an approved notification, you should then register a post-seminar request."
+- `precedence(e1, n8)`: Invalidly extends control flow past an `end` node, breaking process termination semantics and misrepresenting the sequence where `n8` should directly follow `n6`.
+- `action(n3, "Register post-seminar request")`: Dangling node with no outgoing edge, omitting the source directive "Once you have registered a post-seminar request, the process will come to an end."
+- `action(n8, "Register post-seminar request")`: Lacks a terminal connection, failing to represent the process conclusion after this final registration step as implied by the overall workflow progression.
+
+Structural Check
+- [S1] STC6 failed: End nodes must not have outgoing precedence edges. | Violations: e1 | DSL: end(e1)
+- [S2] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n3,"Register post-seminar request"); action(n8,"Register post-seminar request")
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n3, n8 | DSL: action(n3,"Register post-seminar request"); action(n8,"Register post-seminar request")

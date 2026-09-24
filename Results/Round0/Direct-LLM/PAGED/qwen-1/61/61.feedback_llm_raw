@@ -1,0 +1,11 @@
+
+
+- `action(n1, "Start the buying process")`: Hallucinated step; source explicitly begins with payment ("begin the process by making a payment").
+- `action(n4, "Have you received the invoice")`, `action(n5, "Wait until invoice is received")`, `action(n6, "Have you received the invoice")`, `action(n11, "Have you left feedback")`, `action(n12, "Wait to leave feedback")`: Hallucinated verification and wait steps; source outlines a direct sequential flow without explicit checks or hold states.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, AND)`, `converge(c1)`: Hallucinated routing structures; source describes a strictly linear progression with no choices, concurrency, or join points.
+- `precedence(b2, n5)`, `precedence(b4, n11)`, `precedence(b4, n12)`: Introduce cyclic/backward transitions contradicting the source's strictly forward chronology ("Once the invoice is received, they can proceed...").
+- `defines(v1, "Have you received the invoice", {})`, `defines(v2, "Have you received the invoice", {})`, `defines(v3, "Have you left feedback", {})`: Hallucinated variables with empty ranges `{}`; source mentions no decision variables or value domains. `v1` and `v2` also redundantly define the same variable name.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Lack corresponding `guard(...)` statements to evaluate the defined variables, breaking control-flow logic consistency.
+- `action(n9, "Consider the Amazon user record before leaving feedback")`: Incorrectly splits a contextual note into a separate sequential step; source states this consideration applies specifically "for the step 'Leave Seller a feedback'".
+- `actor(a_default, "Default", [...])`: Incorrect responsibility assignment; source explicitly designates "Buyers" as the responsible party for all steps.
+- `action(n13, "Process concludes")`: Redundant terminal action; source simply states "The process concludes after the feedback is given," which maps directly to an `end` node without an intervening action.

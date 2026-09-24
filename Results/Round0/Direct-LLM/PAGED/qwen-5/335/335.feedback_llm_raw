@@ -1,0 +1,7 @@
+
+
+- `action(n3, "invoice amount greater than $5000")`: Incorrectly models a decision condition as an executable task. The source states "If the invoice amount is greater than $5000", which dictates a branching condition/guard, not a sequential process step.
+- `defines(v1, "invoice amount greater than $5000", {"Yes", "No"})` with `guard(b1, n4, v1 = 'Yes')` and `guard(b1, n5, v1 = 'No')`: Misrepresents the decision variable and threshold. The source specifies a numeric comparison ("greater than $5000"), but the model uses a categorical Yes/No range instead of defining a numeric variable with an inequality condition (e.g., `amount > 5000`).
+- `action(n5, "continue with the process")`: Hallucinates a distinct process step. The source phrase "Otherwise, continue with the process" indicates the alternative control-flow path leading to payment, not a separate activity to perform.
+- `action(n7, "process ends")`: Introduces a redundant, ungrounded step before termination. The source states "Once the payment is triggered, the process comes to an end", implying an immediate transition to `end(e1)` after `action(n6, "trigger payment")`.
+- `precedence(n2, n3)` and `precedence(n3, b1)`: Distorts source chronology and control flow. Inserting an action node between the review step and the decision split incorrectly sequences condition evaluation as a post-review task rather than an inline decision gate.

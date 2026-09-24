@@ -1,0 +1,8 @@
+Addition
+- [N1] Node-level addition: guard(b2,e2,"v2 = 'No'") (reason: The source text provides no logic, fallback, or termination path for the scenario where the customer does not accept the offer. This guard invents an unsupported negative branch.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"customer makes an enquiry") -> action(n2,"is the article in stock") -> branch(b1,XOR) -> action(n5,"reserve the article") -> action(n6,"calculate the price") -> action(n7,"send the offer") -> action(n8,"wait for the customer to accept the offer") -> action(n9,"has the customer accepted the offer") -> branch(b2,XOR) -> end(e2)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the article is available, we continue with the process.; reason=The guard replaces the specific business condition ('article is available') with a generic variable assignment ('v1 = Yes'), dropping essential domain context and violating the strict fidelity requirement.
+- [N4] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:However, if the article is not available, we abort the enquiry and end the process.; reason=The guard substitutes the explicit negative condition ('article is not available') with a generic placeholder ('v1 = No'), altering the data granularity and losing the original qualifier.
+- [N5] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i7:Once the customer accepts the offer; reason=The guard content ('v2 = Yes') abstracts away the concrete trigger event ('customer accepts the offer'), failing to preserve the same data and instruction specified in the source.

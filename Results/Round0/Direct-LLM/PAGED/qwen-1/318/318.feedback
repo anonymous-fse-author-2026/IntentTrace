@@ -1,0 +1,14 @@
+- `defines(v1, "is order okay", {"No"})`: SMC6 violation. The value range omits "Yes", failing to faithfully reflect the binary decision space required by the source condition "If the order is okay...".
+- `action(n14, "continue with the process")`: SMC1/SMC2 violation. The source text uses "Otherwise, continue with the process" as a flow instruction for the alternative branch, not as a distinct operational step; modeling it as an action hallucinates a behavioral task.
+- `action(n4, "is order okay"), action(n7, "is customer permitted"), action(n12, "is worth greater than 10000 Euro"), action(n30, "is payment received"), action(n32, "is reminder sent more than three times")`: SMC2 violation. These node payloads represent decision predicates/questions rather than executable actions, misaligning with their role as branching conditions governed by the subsequent guards and variables in the source (e.g., "If the customer is permitted...", "check if a reminder has been sent more than three times").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n16` has in=1 and out=0. | Node `n17` has in=1 and out=0. | Node `n18` has in=1 and out=0. | DSL: action(n16,"check the product quality"); action(n17,"start production"); action(n18,"produce the product")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n16, n17, n18 | DSL: action(n16,"check the product quality"); action(n17,"start production"); action(n18,"produce the product")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

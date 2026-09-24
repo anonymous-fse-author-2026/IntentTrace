@@ -1,0 +1,181 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "receive sealed shipment"
+    },
+    {
+      "id": "b_reg",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_reg",
+      "type": "action",
+      "content": "register spare parts"
+    },
+    {
+      "id": "a_scan",
+      "type": "action",
+      "content": "use barcode scanners"
+    },
+    {
+      "id": "c_reg",
+      "type": "converge"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "clear customs"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "enter information into IT system"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "end"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_reg",
+      "name": "registration_method",
+      "R_X": [
+        "standard",
+        "barcode"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b_reg",
+        "a_reg",
+        "a_scan",
+        "c_reg",
+        "n4",
+        "n5",
+        "n6",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b_reg"
+    },
+    {
+      "type": "precedence",
+      "A": "b_reg",
+      "B": "a_reg"
+    },
+    {
+      "type": "precedence",
+      "A": "b_reg",
+      "B": "a_scan"
+    },
+    {
+      "type": "precedence",
+      "A": "a_reg",
+      "B": "c_reg"
+    },
+    {
+      "type": "precedence",
+      "A": "a_scan",
+      "B": "c_reg"
+    },
+    {
+      "type": "precedence",
+      "A": "c_reg",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b_reg",
+      "B": "a_reg",
+      "condition": "v_reg = 'standard'"
+    },
+    {
+      "type": "guard",
+      "A": "b_reg",
+      "B": "a_scan",
+      "condition": "v_reg = 'barcode'"
+    },
+    {
+      "type": "label",
+      "A": "b_reg",
+      "B": "a_reg",
+      "str": "standard registration"
+    },
+    {
+      "type": "label",
+      "A": "b_reg",
+      "B": "a_scan",
+      "str": "with barcode scanners"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "Initially, we receive a sealed shipment."
+    },
+    {
+      "id": "i2",
+      "content": "we proceed to register the spare parts."
+    },
+    {
+      "id": "i3",
+      "content": "we can then clear customs."
+    },
+    {
+      "id": "i4",
+      "content": "during the registration of spare parts, barcode scanners should be used."
+    },
+    {
+      "id": "i5",
+      "content": "we enter the information into the IT system"
+    },
+    {
+      "id": "i6",
+      "content": "and the process is completed."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i7:extract the data from the suppliers and transfer it to the doctor's phone (reason: No element faithfully implements this action without dropping the specific target qualifier (doctor's phone).)
+- [N2] Node-level omission: i12:Extract the data from the suppliers (reason: No element faithfully implements this extraction step without adding invented qualifiers (Again).)
+- [N3] Within matched traces (0->0) omitted: i5:send data to suppliers
+- [N4] Within matched traces (1->1) omitted: i6:create a claim
+
+Addition
+- [N5] Node-level addition: action(n8,"End Process: GOP Confirmed") (reason: This specific action step ('End Process: GOP Confirmed') is invented; the text only states the process ends, which is handled by the structural end node.)
+- [N6] Node-level addition: action(n15,"End Process: Payment Received") (reason: This specific action step ('End Process: Payment Received') is invented; the text only states to conclude the process, which is handled by the structural end node.)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,AND) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N8] Added trace (model 3): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n4,"Send Data to Suppliers") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,AND) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N9] Added trace (model 4): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,AND) -> action(n8,"End Process: GOP Confirmed") -> end(e1)
+- [N10] Added trace (model 5): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> converge(c1) -> action(n6,"Extract and Transfer Data from Suppliers to Doctor") -> action(n7,"Confirm GOP") -> branch(b1,AND) -> action(n9,"Register Case") -> action(n10,"Handle Claim") -> action(n11,"Extract Data from Suppliers Again") -> action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status") -> action(n13,"Send Data Back to Suppliers") -> action(n14,"Receive Payment") -> action(n15,"End Process: Payment Received") -> end(e2)
+- [N11] Within matched traces (0->0) added: action(n8,"End Process: GOP Confirmed")
+- [N12] Within matched traces (1->1) added: converge(c1)
+- [N13] Within matched traces (1->1) added: action(n6,"Extract and Transfer Data from Suppliers to Doctor")
+- [N14] Within matched traces (1->1) added: action(n7,"Confirm GOP")
+- [N15] Within matched traces (1->1) added: action(n15,"End Process: Payment Received")
+
+Mutation
+- [N16] Node-level mutation: element=action(n6,"Extract and Transfer Data from Suppliers to Doctor"); source=i7:extract the data from the suppliers and transfer it to the doctor's phone; reason=The element changes the transfer target from 'doctor's phone' to just 'Doctor', dropping a specific qualifier.
+- [N17] Node-level mutation: element=action(n11,"Extract Data from Suppliers Again"); source=i12:Extract the data from the suppliers; reason=The element adds the invented qualifier 'Again' which is not present in the source text.
+
+Permutation
+- [N18] Within matched traces (0->0) reordered: expected [i4:At the same time, complete the following steps:] but observed [branch(b1,AND)] elsewhere; in its place the model has [action(n6,"Extract and Transfer Data from Suppliers to Doctor")]

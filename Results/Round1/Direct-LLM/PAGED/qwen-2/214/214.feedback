@@ -1,0 +1,39 @@
+Omission
+- [N1] Node-level omission: i2:if we can capture data from FMA, we should continue the process. (reason: The explicit directive 'we should continue the process' for the FMA success path is absent; it was replaced by a mutated capture step.)
+- [N2] Node-level omission: i3:Otherwise, if we can capture data from Jamendo, we should continue the process. (reason: The explicit directive 'we should continue the process' for the Jamendo success path is absent; it was replaced by a mutated capture step.)
+- [N3] Node-level omission: i7:If the sample is missing, we should continue the process. We should download the sample. (reason: The instruction to 'continue the process' when the sample is missing has no corresponding action node in the model; execution skips directly to the download step.)
+
+Addition
+- [N4] Node-level addition: action(n1,"start the process") (reason: Invents a 'start the process' action step that has no counterpart in the source text.)
+- [N5] Node-level addition: action(n11,"continue: to sample handling") (reason: Introduces 'continue: to sample handling' for a fallback branch that the source does not describe or imply.)
+- [N6] Node-level addition: action(n15,"end: process completed") (reason: Adds a redundant 'end: process completed' action beyond the explicit termination condition already captured.)
+- [N7] Node-level addition: label(n3,c1,"No  continue") (reason: Attaches a label 'No  continue' to a connection that carries no such annotation in the source material.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n3,"capture: data from FMA") -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n13,"download: the sample") -> action(n14,"end: no additional samples") -> end(e1)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"can we capture data from FMA?") -> branch(b1,XOR) -> action(n3,"capture: data from FMA") -> converge(c1) -> action(n6,"get: music ids for the genre") -> action(n7,"is the genre missing?") -> branch(b3,XOR) -> action(n9,"is there an additional genre?") -> branch(b4,XOR) -> action(n11,"continue: to sample handling") -> action(n12,"is the sample missing?") -> branch(b5,XOR) -> action(n14,"end: no additional samples") -> end(e1)
+- [N10] Within matched traces (0->2) added: action(n1,"start the process")
+- [N11] Within matched traces (1->3) added: action(n1,"start the process")
+- [N12] Within matched traces (1->3) added: action(n12,"is the sample missing?")
+- [N13] Within matched traces (1->3) added: branch(b5,XOR)
+- [N14] Within matched traces (2->2) added: action(n1,"start the process")
+- [N15] Within matched traces (2->2) added: action(n2,"can we capture data from FMA?")
+- [N16] Within matched traces (2->2) added: branch(b1,XOR)
+- [N17] Within matched traces (3->3) added: action(n1,"start the process")
+- [N18] Within matched traces (3->3) added: action(n2,"can we capture data from FMA?")
+- [N19] Within matched traces (3->3) added: branch(b1,XOR)
+- [N20] Within matched traces (3->3) added: action(n12,"is the sample missing?")
+- [N21] Within matched traces (3->3) added: branch(b5,XOR)
+
+Mutation
+- [N22] Node-level mutation: element=action(n3,"capture: data from FMA"); source=i2:if we can capture data from FMA, we should continue the process.; reason=The source explicitly instructs to 'continue the process' on the positive path, but the model replaces this with 'capture: data from FMA', altering the intended action.
+- [N23] Node-level mutation: element=action(n5,"capture: data from Jamendo"); source=i3:Otherwise, if we can capture data from Jamendo, we should continue the process.; reason=The source instructs to 'continue the process' on the positive path, but the model substitutes it with 'capture: data from Jamendo', distorting the payload.
+- [N24] Node-level mutation: element=action(n9,"is there an additional genre?"); source=i6:However, if there are no additional genres, we should continue the process.; reason=The source uses a negative condition ('no additional genres'), but the model inverts it to a positive interrogative ('is there an additional genre?'), changing the phrasing and logical setup.
+- [N25] Node-level mutation: element=action(n13,"download: the sample"); source=i7:If the sample is missing, we should continue the process. We should download the sample.; reason=The source presents 'download the sample' as an independent sequential step, but the model incorrectly binds it to the positive branch of the 'sample missing' condition, confluencing two separate instructions.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n14` has in=2 and out=1. | Node `n15` has in=0 and out=1. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"continue: with the process"); action(n14,"end: no additional samples"); action(n15,"end: process completed"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e2, n15 | DSL: end(e2); action(n15,"end: process completed")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"continue: with the process"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b5` has overlapping guards at state [v5=Yes, v6=No].
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` has no enabled outgoing guard at state [v5=No, v6=Yes].

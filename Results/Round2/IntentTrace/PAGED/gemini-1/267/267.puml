@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start EC-Lille procedure;
+:Is 'research schedule directly' option selected;
+:v1: Is 'research schedule directly' option selected ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Research schedule;
+else ([v1 = 'No'])
+:Provide indications;
+:Proceed with research schedule;
+endif
+repeat :;
+:Validate schedule;
+:Is schedule satisfactory;
+:v2: Is schedule satisfactory ({No, No_alt, Yes, Yes_alt}); <<objectSignal>>
+backward:Research schedule;
+repeat while () is ([v2 = 'No']) not ([v2 = 'No_alt'])
+:If the schedule is not satisfactory, perform the action 'Research schedule';
+:If it is still not satisfactory;
+stop
+@enduml

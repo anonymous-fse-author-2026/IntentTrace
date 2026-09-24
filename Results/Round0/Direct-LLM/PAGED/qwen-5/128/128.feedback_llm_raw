@@ -1,0 +1,11 @@
+
+
+- `defines(v1, ...)`: Range only lists `"Delivery Crew picks-up items at the event site"`, omitting the `"Customer returns the items to the store"` option explicitly stated in the source.
+- `guard(b1, n3, ...)`: Specifies a condition only for the delivery crew; missing a guard for the `"Customer returns the items to the store"` alternative, violating the described two-path choice.
+- `guard(b2, ...)`: Defines guards for missing and damaged statuses but omits a guard for `"Order is complete and all items were returned"`, leaving the third branch option unconditioned despite `precedence(b2, c1)`.
+- `defines(v3, ...)`: Range only lists `"Customer does not return the missing items"`, omitting `"Customer returns the missing items"` as stated in the source.
+- `branch(b3)`: Lacks any `guard` statements for its outgoing edges, failing to model the conditional continuation for both returning and not returning missing items.
+- `guard(b4, n10, ...)`: Only guards the repaired path; missing a guard for the `"Items can't be repaired and are discarded"` condition on the `b4` → `n11` edge.
+- `defines(v5, ...)`: Range only lists `"Items are stored for future orders"`, omitting `"Items are packed for an existing order"` as stated in the source.
+- `precedence(b5, n14)` & `branch(b5)`: Defines only one outgoing edge, forcing all converged flows into `action(n14)` and ignoring the alternative storage path; incorrectly mandates `"Email customer with replacement charges"` after the packing/storing decision, whereas the source ties this email to item damage/discards or serves as a final concluding step.
+- `action(n6, "Customer returns the missing items?")`, `action(n9, "Items repair status?")`, `action(n13, "Items packed for an existing order?")`: Modeled as executable steps rather than decision queries, and their immediate successor branches (`b3`, `b4`, `b5`) lack the required guards to faithfully capture the conditional routing described in the text.

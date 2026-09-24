@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i2:begin by checking if the order has been received. (reason: The initial reception check is not faithfully implemented; the model substitutes a different check instead.)
+- [N2] Node-level omission: i9:Once again, check the sum of the order. (reason: Explicit instruction to re-evaluate the order sum is completely absent from the model flow.)
+- [N3] Omitted trace (input 1): i1:To start the process -> i2:begin by checking if the order has been received. -> i5:However, if the sum of the order is greater than 2000, compute a discount of 4%. -> i8:After checking the sum of the order, -> i9:Once again, check the sum of the order. -> i10:Finally, create the bill -> i11:the process will come to an end.
+- [N4] Omitted trace (input 2): i1:To start the process -> i2:begin by checking if the order has been received. -> i6:If the sum of the order falls between 1000 and 1500, compute a discount of 3%. -> i8:After checking the sum of the order, -> i9:Once again, check the sum of the order. -> i10:Finally, create the bill -> i11:the process will come to an end.
+- [N5] Omitted trace (input 3): i1:To start the process -> i2:begin by checking if the order has been received. -> i7:Similarly, if the sum of the order falls between 500 and 999, compute a discount of 2%. -> i8:After checking the sum of the order, -> i9:Once again, check the sum of the order. -> i10:Finally, create the bill -> i11:the process will come to an end.
+- [N6] Within matched traces (0->0) omitted: i8:After checking the sum of the order,
+- [N7] Within matched traces (0->0) omitted: i9:Once again, check the sum of the order.
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Step 'start' is redundant with the init node and lacks independent source support.)
+- [N9] Node-level addition: action(n7,"end") (reason: Step 'end' duplicates the terminal node and has no corresponding source instruction.)
+- [N10] Node-level addition: label(n1,c1,"Start") (reason: Labels 'Start' and 'Recheck' are structural annotations not present in the source text.)
+- [N11] Node-level addition: label(n3,c1,"Recheck") (reason: Labels 'Start' and 'Recheck' are structural annotations not present in the source text.)
+- [N12] Node-level addition: label(n4,c1,"Recheck") (reason: Labels 'Start' and 'Recheck' are structural annotations not present in the source text.)
+- [N13] Node-level addition: label(n5,c1,"Recheck") (reason: Labels 'Start' and 'Recheck' are structural annotations not present in the source text.)
+- [N14] Within matched traces (0->0) added: action(n1,"start")
+- [N15] Within matched traces (0->0) added: converge(c1)
+- [N16] Within matched traces (0->0) added: action(n7,"end")
+
+Mutation
+- [N17] Node-level mutation: element=action(n2,"check sum of order"); source=i2:begin by checking if the order has been received.; reason=Model alters the verification target from checking order receipt to checking the order sum, changing the step's purpose.

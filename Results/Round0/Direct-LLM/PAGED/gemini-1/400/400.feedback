@@ -1,0 +1,16 @@
+- `guard(b2, n18, v2 = 'Yes')`: Routes a 'Yes' answer to a "Continue process" action (`n18`), contradicting the text's explicit instruction that "if the answer is 'Yes', then we give it priority".
+- `action(n20, "Give it priority after first No answers")`: Unconditionally applies priority in the "No" path flow, contradicting the text which states priority is only given "if the answer is 'Yes'".
+- Process duplication (`action(n21, "Look up the Vendor on SAP")` through `end(e6)`): Hallucinates a complete duplication of the downstream process instead of converging the initial paths before the vendor lookup, which contradicts the text's unified "After that, we look up the Vendor on SAP."
+- `action(n10, "Is the invoice entry confirmed?")` and `action(n26, "Is invoice entry confirmed?")`: Hallucinates specific questions about invoice entry confirmation; the text only states "If the answer is 'No'" without specifying this condition.
+- `defines(v5, "Is the answer Yes again after priority?", {"Yes"})` and `defines(v8, "Is answer Yes again?", {"Yes"})`: Artificially restrict the variable ranges to a single value, completely omitting the possibility of any other answer.
+- `branch(b5, XOR)` and `branch(b8, XOR)`: Omit the alternative control-flow paths for when the condition is not 'Yes'.
+- `label(n1, n2, "No")` and `label(n13, n14, "Yes")`: Add descriptive labels on unconditional sequence flows, which is hallucinated and not supported by the source text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | Node `b8` has in=1 and out=1. | DSL: branch(b5,XOR); branch(b8,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v5` has an invalid range `['Yes']`. | Variable `v8` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v5 = 'Yes'` on `b5 -> n15` uses undefined variable `v5`. | Guard `v8 = 'Yes'` on `b8 -> n31` uses undefined variable `v8`. | DSL: guard(b5,n15,"v5 = 'Yes'"); guard(b8,n31,"v8 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v5 = 'Yes'` on `b5 -> n15` cannot be evaluated: `v5` has no declared range. | Guard `v8 = 'Yes'` on `b8 -> n31` cannot be evaluated: `v8` has no declared range. | DSL: guard(b5,n15,"v5 = 'Yes'"); guard(b8,n31,"v8 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` cannot be evaluated: `v5` has no declared range. | Branch `b8` cannot be evaluated: `v8` has no declared range.

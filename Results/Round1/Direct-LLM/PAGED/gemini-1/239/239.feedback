@@ -1,0 +1,37 @@
+Omission
+- [N1] Node-level omission: i3:If the order is to be rejected (reason: The decision split (branch) and the alternative paths for the order acceptance/rejection logic are completely missing from the model.)
+- [N2] Node-level omission: i4:the process should continue (reason: The decision split (branch) and the alternative paths for the order acceptance/rejection logic are completely missing from the model.)
+- [N3] Node-level omission: i5:If the order is to be accepted, the process should also continue. (reason: The decision split (branch) and the alternative paths for the order acceptance/rejection logic are completely missing from the model.)
+- [N4] Node-level omission: i12:If the item can be reserved, the process should continue. (reason: Because its only corresponding element is a mutation, this condition and its continuation are not faithfully implemented and remain uncovered.)
+- [N5] Omitted trace (input 3): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i7:preparing the assembling order -> i13:The next steps are to assemble the bike -> i14:ship the product
+- [N6] Omitted trace (input 4): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i8:checking availability -> i9:If there is a backorder -> i10:availability needs to be checked again -> i11:the process ends
+- [N7] Omitted trace (input 5): i1:the first step is -> i2:look at the order -> i5:If the order is to be accepted, the process should also continue. -> i6:At the same time -> i8:checking availability -> i12:If the item can be reserved, the process should continue. -> i13:The next steps are to assemble the bike -> i14:ship the product
+- [N8] Within matched traces (1->0) omitted: i4:the process should continue
+- [N9] Within matched traces (1->0) omitted: i8:checking availability
+- [N10] Within matched traces (0->1) omitted: i4:the process should continue
+- [N11] Within matched traces (1->2) omitted: i4:the process should continue
+- [N12] Within matched traces (2->3) omitted: i4:the process should continue
+
+Addition
+- [N13] Node-level addition: action(n1,"start") (reason: Adds an explicit "start" action that does not correspond to any specific step described in the text.)
+- [N14] Node-level addition: action(n12,"End") (reason: Adds an explicit "End" action step at the end of the process with no supporting source text describing such an action.)
+- [N15] Within matched traces (1->0) added: action(n1,"start")
+- [N16] Within matched traces (1->0) added: action(n6,"Prepare Assembling Order")
+- [N17] Within matched traces (1->0) added: converge(c1)
+- [N18] Within matched traces (0->1) added: action(n1,"start")
+- [N19] Within matched traces (0->1) added: converge(c1)
+- [N20] Within matched traces (0->1) added: action(n8,"Is Backorder Required?")
+- [N21] Within matched traces (0->1) added: branch(b2,XOR)
+- [N22] Within matched traces (0->1) added: action(n12,"End")
+- [N23] Within matched traces (0->1) added: end(e3)
+- [N24] Within matched traces (1->2) added: action(n1,"start")
+- [N25] Within matched traces (1->2) added: converge(c1)
+- [N26] Within matched traces (2->3) added: action(n1,"start")
+- [N27] Within matched traces (2->3) added: converge(c1)
+- [N28] Within matched traces (2->3) added: action(n8,"Is Backorder Required?")
+- [N29] Within matched traces (2->3) added: action(n12,"End")
+- [N30] Within matched traces (2->3) added: end(e3)
+
+Mutation
+- [N31] Node-level mutation: element=action(n8,"Is Backorder Required?") -> guard(b2,n13,"v2 == \"Yes\""); source=i9:If there is a backorder; reason=Changes the condition by adding an invented qualifier ("Required") and substitutes the actual check with a generic "v2 == Yes" guard.
+- [N32] Node-level mutation: element=guard(b2,n10,"v2 == \"No\""); source=i12:If the item can be reserved, the process should continue.; reason=Distorts the specific reservation condition into a generic "v2 == No" guard.

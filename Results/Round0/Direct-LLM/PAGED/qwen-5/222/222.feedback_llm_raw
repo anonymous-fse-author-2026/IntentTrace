@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Omits the required `init` node declaration for the process entry point, misusing `action` for what the source describes as "To start the SSP process...".
+- `precedence(b1, n9)` and missing return edge to `n7`: Breaks the iterative control flow by omitting the loop back to `n7`, failing to reflect "this should be repeated until all invoices are processed".
+- `precedence(b2, n12)` and missing return edge to `n10`: Breaks the iterative control flow by omitting the loop back to `n10`, failing to reflect "This process of clearing the outbox is done every hour until the outbox is completely cleared".
+- `defines(v1, "More batches to process?", {"No"})` and `defines(v2, "Outbox completely cleared?", {"Yes"})`: Value domains are truncated; they exclude the continuation states needed to evaluate the XOR branches for the described repetition cycles.
+- `guard(b1, n9, v1 = 'No')` and `guard(b2, n12, v2 = 'Yes')`: Only constrain the termination edges; lack complementary guards for the looping branches (`v1 = 'Yes'` to `n7`, `v2 = 'No'` to `n10`), leaving cycle re-entry undefined.
+- `label(n1, n2, "Yes")`, `label(n2, n3, "Yes")`, `label(n3, n4, "Yes")`, `label(n4, n5, "Yes")`, `label(n5, n6, "Yes")`, `label(n6, n7, "Yes")`, `label(n9, n10, "Yes")`: Attach decision labels to unconditional sequential transitions, hallucinating choice points not present in the linear workflow segments described.

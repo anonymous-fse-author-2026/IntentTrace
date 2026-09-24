@@ -1,0 +1,22 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i7:If the request for merchandise return is lodged, continue with the process.
+- [N2] Within matched traces (0->0) omitted: i14:the process ends with the customer being invoiced.
+- [N3] Within matched traces (1->4) omitted: i5:complete the following steps: deliver the freight and notify the delivery.
+- [N4] Within matched traces (1->4) omitted: i6:deliver the freight and notify the delivery.
+- [N5] Within matched traces (1->4) omitted: i17:the process ends with the merchandise being returned.
+- [N6] Within matched traces (2->5) omitted: i5:complete the following steps: deliver the freight and notify the delivery.
+- [N7] Within matched traces (2->5) omitted: i6:deliver the freight and notify the delivery.
+- [N8] Within matched traces (2->5) omitted: i16:the process ends with the merchandise return request being rejected.
+- [N9] Within matched traces (3->1) omitted: i7:If the request for merchandise return is lodged, continue with the process.
+
+Addition
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> converge(c1) -> branch(b3,AND) -> action(n10,"Invoice the Customer") -> end(e3)
+- [N11] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> converge(c1) -> branch(b3,AND) -> action(n11,"Approve Loss Claim and End Process") -> end(e4)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes (Return Requested)'"); source=i9:If the return is accepted; reason=The guard condition evaluates 'Return Requested' whereas the source text specifies 'return is accepted'. The target value/logic does not match the source condition.
+- [N13] Node-level mutation: element=guard(b1,n8,"v1 = 'No (No Return Request)'"); source=i11:If the return is rejected; reason=The guard condition evaluates 'No Return Request' whereas the source text specifies 'return is rejected'. The target value/logic does not match the source condition.
+
+Permutation
+- [N14] Within matched traces (0->0) reordered: expected [i6:deliver the freight and notify the delivery.] but observed [action(n4,"Deliver Freight")] elsewhere; in its place the model has [converge(c1)]
+- [N15] Within matched traces (3->1) reordered: expected [i6:deliver the freight and notify the delivery.] but observed [action(n4,"Deliver Freight")] elsewhere; in its place the model has [converge(c1)]

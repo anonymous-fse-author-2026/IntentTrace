@@ -1,0 +1,10 @@
+- `defines(v1, "Is there a suitable candidate available initially", {})`, `defines(v2, "Is there a suitable candidate available after advertising", {})`: Ranges are empty `{}` but must capture the binary decision values implied by the source ("no suitable candidate available" vs. "suitable candidate available"), violating SMC6.
+- `action(n2, "Is there a suitable candidate available initially")`, `action(n4, "Is there a suitable candidate available after advertising")`: Decision checkpoints are incorrectly typed as executable tasks; the source frames them as conditional gates ("If there is..."), not process steps, violating SMC2.
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Outgoing edges lack `guard(...)` statements to associate paths with the documented conditions ("no suitable candidate available" / "suitable candidate available"), omitting critical control-flow logic (SMC1, SMC4).
+- `precedence(n5, n4)`: Introduces an unsupported control-flow cycle; the source describes a linear fallback ("advertise the vacancy again") without indicating iterative re-evaluation or returning to a check node, violating SMC1/SMC3.
+- `action(n8, "Process ends after candidate appointment")`: Hallucinates an extra task; the source explicitly ties appointment directly to termination ("Once the candidate is appointed, the process comes to an end"), making `n7` logically sufficient before `end(e1)`, violating SMC1.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"Is there a suitable candidate available after advertising")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.

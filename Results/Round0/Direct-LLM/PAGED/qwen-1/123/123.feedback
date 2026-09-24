@@ -1,0 +1,8 @@
+- action(n1)/action(n2): Omits the documented initial step "obtaining the raw material from the received list", jumping directly to the stock availability check.
+- branch(b1): Lacks guard definitions for outgoing edges (to n3 and n6), failing to encode the explicit conditional routing stated in the text ("If the raw material is not available... if the raw material is available...").
+- defines(v1, "Is raw material available in stock?", {}): Declares variable v1 with an empty value range {}; the range must specify valid decision values, and v1 is never referenced in a guard statement to control the XOR branch.
+- action(n4)/action(n5) & action(n9)/action(n10): Splits the single documented termination step "conclude the process" / "end the process" into two sequential actions per path, introducing undocumented granularity not supported by the source.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

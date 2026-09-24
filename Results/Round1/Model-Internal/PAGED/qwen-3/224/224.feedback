@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i1:For nursing or medical clinicians, the first step is to assess the potential for seizure, significant hemorrhage, or acute respiratory distress. (reason: No element faithfully implements the complete assessment criteria with all specified qualifiers; the closest candidate (n2) is mutated, leaving the exact source unit uncovered.)
+
+Addition
+- [N2] Node-level addition: action(n1,"Start Assessment Process") (reason: Invented preparatory step 'Start Assessment Process' with no corresponding source span.)
+- [N3] Node-level addition: action(n3,"Administer midazolam?") (reason: Invented decision step 'Administer midazolam?' not described in the source text.)
+- [N4] Node-level addition: guard(b1,n4,"v1 = 'Yes'") (reason: Invented binary guards ('v1 = Yes/No') that artificially split a simple 'as needed' directive into unsupported exclusive paths.)
+- [N5] Node-level addition: guard(b1,n6,"v1 = 'No'") (reason: Invented binary guards ('v1 = Yes/No') that artificially split a simple 'as needed' directive into unsupported exclusive paths.)
+- [N6] Node-level addition: action(n6,"End of procedure without administration") (reason: Invented termination path 'without administration' contradicting the single linear completion described in the source.)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"Start Assessment Process") -> action(n2,"Assess for seizure  hemorrhage  or respiratory distress") -> action(n3,"Administer midazolam?") -> branch(b1,XOR) -> action(n6,"End of procedure without administration") -> end(e2)
+- [N8] Within matched traces (0->0) added: action(n1,"Start Assessment Process")
+- [N9] Within matched traces (0->0) added: action(n3,"Administer midazolam?")
+- [N10] Within matched traces (0->0) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=action(n2,"Assess for seizure  hemorrhage  or respiratory distress"); source=i1:For nursing or medical clinicians, the first step is to assess the potential for seizure, significant hemorrhage, or acute respiratory distress.; reason=Drops critical clinical qualifiers ('potential for', 'significant', 'acute') present in the source, altering medical precision and granularity.

@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start;
+:Note Vendor Number on Invoice Entry Form;
+:Sort by Vendor or Amount?;
+:v1: Sort by Vendor or Amount? ({By Vendor, By Amount}); <<objectSignal>>
+if () then ([v1 = "By Vendor"])
+:Sort Invoices by Vendor;
+:Process Invoices (Vendor);
+else ([v1 = "By Amount"])
+:Sort Invoices by Amount;
+:Process Invoices (Amount);
+endif
+:Note Time per 100 Invoices;
+:Tick 'Invoice Entered' on Form;
+-> After ticking the box, you can proceed with the process.;
+:Place Invoice Batch in Urgent Outbox;
+:Set Up Hourly Collection;
+:End of Process;
+stop
+@enduml

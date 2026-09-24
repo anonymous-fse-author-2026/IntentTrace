@@ -1,0 +1,7 @@
+- `guard` declarations for `b1`: Missing `guard(...)` statements for the outgoing edges of `branch(b1, XOR)` to `n7` and `n8`. The source explicitly defines the split criteria (“If the test results indicate that everything is functioning properly...” vs “if the test results indicate that there are still issues...”), leaving the XOR choice semantically undefined (violates SMC4).
+- `defines(v1, "Is system functioning properly", {})`: The variable range is empty `{}`. The source describes a binary evaluation of test outcomes, requiring a populated range (e.g., `{true, false}` or `{"Functional", "Issues"}`) to faithfully represent the decision space (violates SMC6).
+- `action(n6, "Is system functioning properly")`: Incorrectly modeled as a sequential action node rather than being integrated into the gateway logic. The source presents this as an immediate conditional check following the test, not a distinct procedural step (violates SMC2).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

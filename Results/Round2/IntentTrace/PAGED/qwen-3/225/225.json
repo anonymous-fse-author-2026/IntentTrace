@@ -1,0 +1,413 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start acme process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "receive customer request"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "check inventory level"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "accept request and create PO"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "reject request - end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n_rej",
+      "type": "action",
+      "content": "is rejected"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "review purchase order"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "rework purchase order"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "review it again"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "approve purchase order and reserve funds"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "send purchase order"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "receive packing slip"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "record packing slip"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "release reserved funds and issue payment"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "receive invoice"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "record invoice"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check inventory level",
+      "R_X": [
+        "at_or_below",
+        "above"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "review purchase order",
+      "R_X": [
+        "approved",
+        "rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "n5",
+        "n_rej",
+        "e1",
+        "n6",
+        "b2",
+        "n7",
+        "n16",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "e2",
+        "c1",
+        "c2",
+        "b3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_rej",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'at_or_below'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'above'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'approved'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process for ACME Company, start by receiving the customer request"
+    },
+    {
+      "id": "i2",
+      "content": "check the current inventory level."
+    },
+    {
+      "id": "i3",
+      "content": "If the inventory level is at or below the minimum"
+    },
+    {
+      "id": "i5",
+      "content": "accept the customer request."
+    },
+    {
+      "id": "i6",
+      "content": "if the inventory level is above the minimum"
+    },
+    {
+      "id": "i8",
+      "content": "reject the customer request."
+    },
+    {
+      "id": "i9",
+      "content": "create a purchase order."
+    },
+    {
+      "id": "i11",
+      "content": "the process ends."
+    },
+    {
+      "id": "i12",
+      "content": "review it."
+    },
+    {
+      "id": "i13",
+      "content": "If the purchase order is rejected"
+    },
+    {
+      "id": "i14",
+      "content": "rework the purchase order."
+    },
+    {
+      "id": "i15",
+      "content": "if the purchase order is approved"
+    },
+    {
+      "id": "i17",
+      "content": "reserve the funds."
+    },
+    {
+      "id": "i18",
+      "content": "In case the purchase order needs to be reworked, review it again."
+    },
+    {
+      "id": "i19",
+      "content": "send the purchase order."
+    },
+    {
+      "id": "i20",
+      "content": "Simultaneously, complete the following steps: receive the packing slip and receive the invoice."
+    },
+    {
+      "id": "i21",
+      "content": "Upon receiving the packing slip, record it."
+    },
+    {
+      "id": "i22",
+      "content": "upon receiving the invoice, record it as well."
+    },
+    {
+      "id": "i23",
+      "content": "Release the reserved funds and issue the payment."
+    },
+    {
+      "id": "i24",
+      "content": "Finally, issue the payment and the process ends."
+    }
+  ]
+}

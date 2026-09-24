@@ -1,0 +1,12 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", -> i4:then proceed to Create Purchase Order. -> i6:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i9:On the other hand, if the Purchase Order is rejected, then rework the order. -> i11:In case the order needs to be reworked, review the Purchase Order again. -> i6:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Addition
+- [N2] Within matched traces (0->2) added: action(n3,"Inventory Level at or below minimum")
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum",; reason=Replaces the explicit quantitative condition with an opaque boolean check ('v1 = Yes'), dropping the specific threshold and comparison logic required by the source.
+- [N4] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:However, if the "Inventory Level is above the minimum", then the process ends.; reason=Replaces the explicit quantitative condition with an opaque boolean check ('v1 = No'), dropping the specific threshold and comparison logic required by the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Reviewing Purchase Order")

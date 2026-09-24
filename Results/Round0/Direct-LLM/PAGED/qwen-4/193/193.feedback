@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements. The source explicitly defines the decision logic ("If the answer is 'no,' continue the process. If the answer is 'yes,' proceed with Digitalization."), but the model provides no guards to determine which outgoing edge is taken, violating SMC4.
+- `defines(v1, ...)` and `defines(v2, ...)`: Variable ranges are declared as empty sets `{}`, while the source clearly states the decision answers are "yes" or "no". The ranges must faithfully capture these values (e.g., `{"Yes", "No"}`), violating SMC6.
+- `precedence(n2, n3)`: Incorrectly sequences the barcode creation after the registration step. The source instructs to "create a barcode scan at the start" of the registration step, meaning n3 should precede or occur concurrently with n2, violating SMC3.
+- `action(n26, "You have completed this procedure")`: Hallucinated step. The source description concludes with delivering the report and completing post-report processing; no completion message or equivalent action is documented, violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n16` has 0 guards; exactly one is required.

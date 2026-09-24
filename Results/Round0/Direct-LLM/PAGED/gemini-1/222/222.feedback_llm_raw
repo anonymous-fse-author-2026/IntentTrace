@@ -1,0 +1,6 @@
+- `action(n1, "start")`: The model uses a regular action for the start of the process instead of declaring an `init` node, failing to correctly represent the process start logic (SMC4).
+- `branch(b1, XOR)`: Missing a backward control-flow edge (precedence) from `b1` to `action(n7, "Process invoice batch")` to represent the cycle described as "repeated until all invoices are processed" (SMC4).
+- `defines(v1, "More batches to process?", {"No"})`: The variable range only contains "No" and omits a value (e.g., "Yes") needed to trigger the loop for unprocessed invoices (SMC6).
+- `branch(b2, XOR)`: Missing a backward control-flow edge from `b2` to `action(n10, "Clear outbox every hour until completely cleared")` to represent the cycle "done every hour until the outbox is completely cleared" (SMC4).
+- `defines(v2, "Outbox completely cleared?", {"Yes"})`: The variable range only contains "Yes" and omits a value (e.g., "No") needed to trigger the loop for an uncleared outbox (SMC6).
+- `actor(a_default, "Default", [...])`: The model assigns all nodes to a generic "Default" actor, failing to capture the "Data Entry Officer" explicitly mentioned in the source for invoice allocation and outbox clearing (SMC7).

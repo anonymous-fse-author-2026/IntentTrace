@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i13:If the claim rejection is accepted, (reason: The model fails to include a guard element for the positive outcome ('Yes') of the claim rejection branch, only providing one for the 'No' path.)
+- [N2] Omitted trace (input 0): i1:To start the process -> i2:begin by receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected -> i6:reject it -> i9:review the claim rejection -> i12:If the claim rejection is accepted -> i13:If the claim rejection is accepted, -> i14:continue the process -> i17:At the same time -> i18:operate outgoing payment -> i16:Finally, the process ends
+- [N3] Omitted trace (input 1): i1:To start the process -> i2:begin by receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected -> i6:reject it -> i9:review the claim rejection -> i12:If the claim rejection is accepted -> i13:If the claim rejection is accepted, -> i14:continue the process -> i17:At the same time -> i19:close the claim -> i16:Finally, the process ends
+
+Addition
+- [N4] Node-level addition: action(n11,"Merge after benefit recording and rejection continue") (reason: This action describes a merge operation but is modeled as an explicitly required action step with no corresponding action or text described in the source.)
+- [N5] Within matched traces (2->0) added: action(n7,"Is claim rejection accepted")
+- [N6] Within matched traces (2->0) added: converge(c1)
+- [N7] Within matched traces (2->0) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N8] Within matched traces (3->1) added: action(n7,"Is claim rejection accepted")
+- [N9] Within matched traces (3->1) added: converge(c1)
+- [N10] Within matched traces (3->1) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N11] Within matched traces (4->2) added: converge(c1)
+- [N12] Within matched traces (4->2) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N13] Within matched traces (5->3) added: converge(c1)
+- [N14] Within matched traces (5->3) added: action(n11,"Merge after benefit recording and rejection continue")
+
+Mutation
+- [N15] Node-level mutation: element=action(n5,"Accept the claim"); source=i8:offer the benefit; reason=The source specifies the action 'offer the benefit', but the model replaces this completely with 'Accept the claim', altering the actual operational step described.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | DSL: branch(b2,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n8` uses undefined variable `v2`. | DSL: guard(b2,n8,"v2 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n8,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

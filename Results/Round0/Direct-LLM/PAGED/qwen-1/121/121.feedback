@@ -1,0 +1,8 @@
+- `action(n1, "start passenger process")`: Hallucinated step; the source states the process "begins by filling in their information" directly, with no prior initialization action.
+- `action(n4, "Payment successful?"), branch(b1, XOR), action(n6, "Contact support"), action(n7, "End of process with support contact"), end(e2)`: Hallucinated control-flow structure; the source describes a single linear progression where "After completing the payment, the process comes to an end", containing no conditional checks, branching, or support fallback paths.
+- `defines(v1, "Payment successful?", {})`: Hallucinated variable with an empty range `{}`; the source specifies no decision variables or value spaces.
+- `action(n4, "Payment successful?")`: Payload misrepresents source semantics; "completing the payment" is described as a sequential task, not a decision question that warrants an XOR gateway.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

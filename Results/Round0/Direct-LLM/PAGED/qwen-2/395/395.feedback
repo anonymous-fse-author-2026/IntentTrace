@@ -1,0 +1,15 @@
+- `defines(v3, "is psychometric test required?", {...})`: Range incorrectly includes `'HR Specialist required'`, conflating two distinct decision questions from the source text.
+- `branch(b3, XOR)` and associated guards: Omits the explicit intermediate decision "check if an HR Specialist is required" and incorrectly flattens the nested conditional logic into a single split, violating the source's sequential branching structure.
+- `defines(v1, ...)` and `defines(v2, ...)`: Ranges only specify negative outcomes (`"Referee Reports not completed"`, `"Referee Reports still not completed after second check"`), omitting the affirmative/completed values required to faithfully represent the alternative paths.
+- `precedence(b2, n4)`: Loops control flow directly back to `n4` ("flag and send reminder") when the second check fails, skipping `n5` ("check again..."). This breaks the source chronology, which requires re-evaluating completion status after each reminder before deciding to proceed or cycle.
+- Edge from `b3` to `n13` ("complete psychometric test"): Lacks a guard condition. The source explicitly ties this action to the absence of an HR Specialist requirement ("Otherwise, you can proceed to complete the Psychometric Test"), which is unmodeled.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"flag and send reminder")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Referee Reports not completed']`. | Variable `v2` has an invalid range `['Referee Reports still not completed after second check']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Referee Reports not completed'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'Referee Reports still not completed after second check'` on `b2 -> n4` uses undefined variable `v2`. | DSL: guard(b1,n4,"v1 = 'Referee Reports not completed'"); guard(b2,n4,"v2 = 'Referee Reports still not completed after second check'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Referee Reports not completed'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Referee Reports still not completed after second check'` on `b2 -> n4` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n4,"v1 = 'Referee Reports not completed'"); guard(b2,n4,"v2 = 'Referee Reports still not completed after second check'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

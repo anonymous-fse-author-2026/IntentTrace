@@ -1,0 +1,33 @@
+Omission
+- [N1] Node-level omission: i2:checking the Inventory Level (reason: The explicit action step of checking the inventory level is missing and not faithfully implemented by any element.)
+- [N2] Node-level omission: i5:if the "Inventory Level is above the minimum" (reason: The explicit condition is not faithfully implemented by any element, as its only candidate was recorded as a mutation for replacing the logic with a generic variable.)
+- [N3] Node-level omission: i10:if the Purchase Order is rejected (reason: The explicit condition is not faithfully implemented by any element, as its only candidate was recorded as a mutation for replacing the logic with a generic variable.)
+- [N4] Node-level omission: i13:review the Purchase Order again (reason: The step is not faithfully covered, as its only candidate mutates the instruction by dropping the 'again' qualifier.)
+- [N5] Node-level omission: i17:record it (reason: The step is not faithfully covered, as its only candidate mutates the instruction by injecting the invented 'Receive and' qualifier.)
+- [N6] Node-level omission: i19:record it as well (reason: The step is not faithfully covered, as its only candidate mutates the instruction by injecting the invented 'Receive and' qualifier.)
+- [N7] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:checking the Inventory Level -> i3:If the "Inventory level is at or below the minimum" -> i4:Create Purchase Order -> i7:Reviewing the Purchase Order -> i10:if the Purchase Order is rejected -> i11:rework the order -> i13:review the Purchase Order again -> i7:Reviewing the Purchase Order
+- [N8] Within matched traces (2->0) omitted: i2:checking the Inventory Level
+- [N9] Within matched traces (3->1) omitted: i2:checking the Inventory Level
+- [N10] Within matched traces (0->2) omitted: i2:checking the Inventory Level
+
+Addition
+- [N11] Node-level addition: action(n2,"Inventory level at or below the minimum?") (reason: This element invents a question step ('Inventory level at or below the minimum?') that does not correspond to any explicit action instruction in the source text; it improperly fabricates content to represent a gateway decision.)
+- [N12] Node-level addition: action(n6,"Purchase Order approved?") (reason: This element invents a question step ('Purchase Order approved?') that does not correspond to any explicit action instruction in the source text; it improperly fabricates content to represent a gateway decision.)
+- [N13] Within matched traces (2->0) added: action(n2,"Inventory level at or below the minimum?")
+- [N14] Within matched traces (2->0) added: action(n6,"Purchase Order approved?")
+- [N15] Within matched traces (3->1) added: action(n2,"Inventory level at or below the minimum?")
+- [N16] Within matched traces (3->1) added: action(n6,"Purchase Order approved?")
+- [N17] Within matched traces (0->2) added: action(n2,"Inventory level at or below the minimum?")
+
+Mutation
+- [N18] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum"; reason=The guard improperly drops the specific inventory level logic and replaces it with a generic 'v1 = Yes' expression.
+- [N19] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i5:if the "Inventory Level is above the minimum"; reason=The guard improperly drops the specific inventory level logic and replaces it with a generic 'v1 = No' expression.
+- [N20] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i8:If the Purchase Order is approved; reason=The guard improperly drops the specific approval condition and replaces it with a generic 'v2 = Yes' expression.
+- [N21] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i10:if the Purchase Order is rejected; reason=The guard improperly drops the specific rejection condition and replaces it with a generic 'v2 = No' expression.
+- [N22] Node-level mutation: element=action(n10,"Review Purchase Order"); source=i13:review the Purchase Order again; reason=The element mutates the specific instruction by dropping the 'again' qualifier.
+- [N23] Node-level mutation: element=action(n12,"Receive and record packing slip"); source=i17:record it; reason=The element mutates the explicit recording instruction by injecting the invented qualifier 'Receive and'.
+- [N24] Node-level mutation: element=action(n13,"Receive and record invoice"); source=i19:record it as well; reason=The element mutates the explicit recording instruction by injecting the invented qualifier 'Receive and'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"Review Purchase Order")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n8 | DSL: action(n10,"Review Purchase Order"); action(n8,"Rework the order")

@@ -1,0 +1,8 @@
+
+
+- `branch(b3, AND)`: Models the invoice completeness decision as a parallel split. The source specifies an exclusive choice: "If they are marked as 'Uncompleted'... However, if they are marked as 'Completed'...", requiring an XOR gateway. (SMC4)
+- `guard` (for outgoing edges of `b3`): Omits boolean conditions linking the split to the invoice states. Without guards, the model fails to explicitly enforce the "Uncompleted"/"Completed" decision criteria stated in the text. (SMC4)
+- `guard(b1, n3, v1 = 'No')`, `precedence(n3, e1)`: Hallucinates an immediate termination when the process hasn't started. The source instructs to "first check if it has started. After that, verify the completeness...", indicating a preparatory verification step, not a stopping condition. (SMC1, SMC3)
+- `precedence(b2, n12)`, `precedence(n12, n13)`, `precedence(n13, n14)`, `precedence(n14, n8)`: Creates a feedback loop that returns flow to the form-marking step when the final completion check fails. The source clearly states "proceed with checking if the process has been completed. Finally, the process ends.", prescribing a linear termination without retry or additional processing. (SMC1, SMC4, SMC5)
+- `defines(v1, "Has the process started", {"No"})`, `defines(v2, "Check if the process has been completed", {"Completed"})`: Both ranges only define a single negative/terminal value, omitting the complementary states ("Yes"/"Started" and "Uncompleted"/"Not completed") necessary to faithfully represent the binary checks in the description. (SMC6)
+- `actor(a_default, "Default", [...])`: Assigns a generic "Default" actor to all nodes instead of reflecting the "Admin Office" responsibility explicitly established at the beginning of the process description. (SMC7)

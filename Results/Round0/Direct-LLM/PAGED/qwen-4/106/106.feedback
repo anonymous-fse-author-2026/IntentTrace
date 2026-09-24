@@ -1,0 +1,8 @@
+- `defines(v1, "Know SLA?", {})`: Range is empty `{}`, but the source describes a binary decision ("if someone 'Knows SLA'", "If they don't"), requiring explicit finite values per SMC6.
+- `defines(v2, "Is task Urgent?", {})`: Range is empty `{}`, but the source describes a binary decision ("If the task is 'Urgent'", "If it is 'Non Urgent'"), requiring explicit finite values per SMC6.
+- Missing `guard` statements for `branch(b1)` and `branch(b2)`: The model lacks edge conditions, omitting the source's explicit routing rules ("if someone 'Knows SLA'... If they don't", "If the task is 'Urgent'... If it is 'Non Urgent'"), violating SMC1 and SMC4.
+- `action(n9, "End")`: Represents a hallucinated process step; the source simply states "Finally, the process ends," which maps directly to `end(e1)` without an intervening action, violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

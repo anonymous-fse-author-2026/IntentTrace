@@ -1,0 +1,84 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the process;
+:supplying the requirement;
+:documenting it;
+:v1: Order received via ({fax, mail or phone}); <<objectSignal>>
+if () then ([v1 = 'fax'])
+:If the order is received via fax;
+else ([v1 = 'mail or phone'])
+:If the order is received via mail or phone;
+endif
+:input the order into an Excel file;
+:Once the Excel list is complete;
+:send it to the student;
+:type the orders into the MS-Access database;
+:ensure that it is completed;
+:At the same time, continue to do the check;
+:control the incoming order;
+:v2: Is order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:If the order is correct;
+:If the order is correct, release it;
+else ([v2 = 'No'])
+:if the order is incorrect, contact the selling agency;
+:v3: Order worth less than 5000? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:If the order is worth less than 5.000 €;
+:release it;
+:v2: Is order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Send the Excel list to the student;
+:continue with the process;
+else ([v2 = 'No'])
+->;
+endif
+else ([v3 = 'No'])
+:If the order is worth more than 5.000 €, send it for sign off and continue with the check.;
+:upon receiving the actual issue;
+:v4: Issue outcome ({Signed off, Cannot be solved, Can be solved}); <<objectSignal>>
+switch ()
+case ([v4 = 'Signed off'])
+:Once the order is signed off;
+:contact the client;
+:release the order;
+:Once the order is received by PPC;
+:they will initiate production;
+:the goods will be produced;
+:v_cancel: Needs to be cancelled? ({Yes, No}); <<objectSignal>>
+if () then ([v_cancel = 'Yes'])
+:If the order needs to be cancelled;
+:If the order needs to be cancelled, the process ends;
+else ([v_cancel = 'No'])
+:If the order needs to be cancelled, the process ends. If not,;
+:If not, check the quality of the goods;
+:create and send a quality report to the finance department;
+:Release the order via memo;
+:ensure that the memo is achieved in the warehouse;
+:Send the invoice;
+split
+:report the achievement to the finance department;
+split again
+:At the same time, commission the goods;
+:sign and send the memo;
+:send the goods;
+:ensure that the signed memo is achieved in the logistic department;
+end split
+:archive the memo;
+:close the order;
+endif
+:This marks the end of the process.;
+stop
+case ([v4 = 'Cannot be solved'])
+:If the issue cannot be solved;
+:If the issue cannot be solved, cancel the order;
+case ([v4 = 'Can be solved'])
+:If the issue can be solved;
+:If the issue can be solved, release the order;
+endswitch
+endif
+endif
+@enduml

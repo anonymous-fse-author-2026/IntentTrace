@@ -1,0 +1,32 @@
+Omission
+- [N1] Node-level omission: i3:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends. (reason: A second validation loop explicitly described in the text is completely absent from the model.)
+- [N2] Node-level omission: i15:Hand the letter to Charles and add the new member to the register. (reason: Required post-approval administrative step is missing from the flow.)
+- [N3] Node-level omission: i16:Prepare an invoice for the new members and continue the process. (reason: Invoice preparation and continuation instruction are not modeled.)
+- [N4] Node-level omission: i17:Ask Charles to write the amount in the register and write the fee amount to the register. (reason: Final registration instructions for Charles are omitted despite being explicitly stated.)
+- [N5] Within matched traces (0->1) omitted: i3:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N6] Within matched traces (0->1) omitted: i12:Simultaneously, calculate the fee and hand the letter to Charles. Ask Charles to write the amount in the register.
+- [N7] Within matched traces (1->5) omitted: i3:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N8] Within matched traces (1->5) omitted: i12:Simultaneously, calculate the fee and hand the letter to Charles. Ask Charles to write the amount in the register.
+- [N9] Within matched traces (2->4) omitted: i3:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+- [N10] Within matched traces (3->8) omitted: i3:Check if the mailbox is empty again, if not, continue the process. If it is empty, the process ends.
+
+Addition
+- [N11] Node-level addition: action(n18,"end process") (reason: Unjustified termination step on the rejection branch; the source text provides no instruction to end the process at this point.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n4,"end process") -> end(e1)
+- [N13] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n6,"add incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n13,"calculate fee") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N14] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n6,"add incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n14,"hand letter to Charles and ask to write amount in register") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N15] Added trace (model 6): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n7,"make telephone call to sender") -> action(n8,"complete data by adding incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n13,"calculate fee") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N16] Added trace (model 7): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty") -> branch(b1,XOR) -> action(n5,"verify information completeness") -> branch(b2,XOR) -> action(n7,"make telephone call to sender") -> action(n8,"complete data by adding incoming mail number  date  and record in letter book") -> converge(c1) -> action(n9,"take letter book and member register to Miranda every Wednesday evening") -> action(n10,"check if applicant becomes a member") -> branch(b3,XOR) -> action(n11,"stamp 'new Member' on the letter and write date") -> branch(b4,AND) -> action(n14,"hand letter to Charles and ask to write amount in register") -> converge(c2) -> action(n15,"print membership card with all data and send to new member") -> action(n16,"end process") -> end(e2)
+- [N17] Within matched traces (0->1) added: init(i1)
+- [N18] Within matched traces (1->5) added: init(i1)
+- [N19] Within matched traces (2->4) added: init(i1)
+- [N20] Within matched traces (2->4) added: action(n10,"check if applicant becomes a member")
+- [N21] Within matched traces (2->4) added: action(n18,"end process")
+- [N22] Within matched traces (2->4) added: end(e3)
+- [N23] Within matched traces (3->8) added: init(i1)
+- [N24] Within matched traces (3->8) added: action(n10,"check if applicant becomes a member")
+- [N25] Within matched traces (3->8) added: action(n18,"end process")
+- [N26] Within matched traces (3->8) added: end(e3)
+
+Mutation
+- [N27] Node-level mutation: element=action(n1,"start the process"); source=i1:To become a member, start the process at 8:00 am and then empty the mailbox.; reason=Drops the explicit time constraint 'at 8:00 am' required by the source text, altering the initiation conditions.

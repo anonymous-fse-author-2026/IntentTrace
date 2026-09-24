@@ -1,0 +1,6 @@
+
+
+- `defines(v2, "check answer again", {"Yes"})`: The defined value space omits "No", directly contradicting the source text "If the answer is 'No' again" (violates SMC6).
+- `guard(b1, n3, v1 = 'Yes')` & `action(n3, "give it priority")`: Misplaces conditional behavior; the source assigns "give it priority" to the second decision point ("If the answer is 'No' again... However, if the answer is 'Yes', then we give it priority"), while the model incorrectly binds it to the initial check's "Yes" outcome (violates SMC2/SMC4).
+- `action(n17, "end")`: Introduces a hallucinated step; the source states "we place the entered invoices in the normal Outbox and the process ends", implying a direct transition from the outbox action to a terminal node, not an intermediate action named "end" (violates SMC1).
+- `guard(b5, n14, v5 = 'No')`, `action(n14, "need Vendor master record")`, & `end(e3)`: Constructs an undocumented control-flow path; the source only defines the "Yes" progression for the final check ("And if the answer is 'Yes' again, then we enter the invoice in SAP") and contains no instruction or behavior for a "No" response at this stage (violates SMC1).

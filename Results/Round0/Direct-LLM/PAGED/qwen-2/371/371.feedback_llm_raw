@@ -1,0 +1,7 @@
+
+
+- `action(n1, "Start ExpenseReport process")`: Hallucinates a step not in the source. The description only states to "begin by clicking on 'Start' and then selecting 'Edit Report'", making `n1` an undocumented initialization action.
+- `branch(b2, XOR)` and `precedence(n6, b2)`: Violates source chronology (SMC3). The text specifies "After this, evaluate the review decision" as a unified step following both the >1000 and ≤1000 branches. The model incorrectly places the review decision split (`b2`) exclusively inside the >1000 path, before the flows converge.
+- `guard(b4, n13, v4 = 'Approved')` and `precedence(b4, n13)`: Omits a documented decision point. The source states "If it is approved, continue to check if there is a need for translation," but the model bypasses the check and jumps directly to `action(n13, "translate receipts")`.
+- `precedence(n14, n15)`: Omits a documented behavior (SMC1). The text explicitly requires "Once again, evaluate the review decision" after the translation check. The model skips this evaluation entirely, routing `action(n14, "confirm receipts")` straight to `action(n15, "evaluate receipts decision")`.
+- `end(e2)` and `action(n19, "End")`: Hallucinates a secondary termination path. The description states "The process ends by processing the expense and then ending it," implying a single completion point. Routing rejected reports through `c3` to `e2` creates an undocumented alternative exit that contradicts the intended process closure.

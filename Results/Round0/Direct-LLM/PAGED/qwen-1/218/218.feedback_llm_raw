@@ -1,0 +1,10 @@
+
+
+- `action(n1, "start the expenses process for MyCorp")`: Hallucinates an introductory step; source states the process "begins by entering expenses".
+- `action(n10, "end the expenses process")`: Hallucinates a terminal action; source indicates the process simply "comes to an end" immediately after payout.
+- `defines(v1, "is the request approved", {})` and `defines(v2, "is the request approved", {})`: Variable ranges are empty `{}` despite the source requiring a binary decision ("approved or disapproved"); additionally, two identical variables are defined unnecessarily.
+- Missing `guard(...)` declarations for `b1` and `b2`: Source explicitly conditions flows on approval status ("If the request is not approved...", "if the request is approved"), but the model lacks guards to represent these transitions.
+- `branch(b3, AND)` and its precedences: Introduces a parallel split/join pattern absent from the source, which describes only a linear progression with simple feedback loops.
+- `label(n3, n4, "Not Approved")` and `label(n5, n7, "Not Approved")`: Misplaces rejection labels on sequential task-to-decision edges rather than on the conditional outgoing edges of the XOR branches.
+- `action(n6, "enter expenses")` and `action(n9, "enter expenses")`: Unnecessarily duplicates the entry step; source indicates a single return point when the process "goes back to entering expenses".
+- Precedence routing via `c1` and `b3` for disapproval paths: Distorts the source's direct chronological feedback loop by routing disapproved requests through redundant converge/AND-split nodes instead of immediately returning to expense entry.

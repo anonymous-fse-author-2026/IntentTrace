@@ -1,0 +1,9 @@
+
+
+- `action(n13, "contact selling agency (incorrect)")`: Lacks outgoing precedence edges, creating a dead-end; contradicts source "Contact the selling agency and upon receiving the actual issue, send the order for sign off."
+- `branch(b6, AND)` with `precedence(b6, n8)` and `precedence(b6, n9)`: Incorrectly models database input and order control as concurrent; source mandates strict sequence: "type the orders into the MS-Access database... Once the database is completed, control the incoming order."
+- `precedence(n15, e1)`: Prematurely terminates the process; source states "If the order is worth less than 5.000 €, release it." and continues to subsequent steps rather than ending.
+- `branch(b7, AND)` splitting `n12` to `n14` and `c3`: Introduces unfounded parallelism; source describes value checking linearly following the correctness decision, not as a concurrent bypass.
+- `actor(a_default, "Default", [...])`: Assigns all steps to a single generic actor; source explicitly distributes responsibilities across the "student", "selling agency", "client", "PPC", "finance department", "warehouse", and "logistic department".
+- `precedence(n9, c2)` feeding into `n10`: Reverses source chronology; source requires verifying database completion ("ensure that it is completed") immediately after typing orders, prior to controlling/checking the incoming order.
+- `guard(b3, n15, v3 = '<= 5000 €')`: Range fidelity error; source specifies strict inequality ("less than 5.000 €"), while the model includes equality.

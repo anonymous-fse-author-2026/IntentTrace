@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:For Talent Seek: Initially;
+:v_start: Initial choice ({Check, Monitor}); <<objectSignal>>
+if () then ([v_start = 'Check'])
+:Check the Referee Reports;
+else ([v_start = 'Monitor'])
+:Monitor if the Referee Reports have been completed;
+endif
+:v1: Have Referee Reports been completed? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Proceed with the process;
+else ([v1 = 'No'])
+:Flag it and send a reminder;
+repeat :Check again if the Referee Reports have been completed;
+:v2: Check again if the Referee Reports have been completed ({Yes, No}); <<objectSignal>>
+backward:Flag it again and send another reminder;
+repeat while () is ([v2 = 'No']) not ([v2 = 'Yes'])
+:Continue with the process;
+endif
+:Organize interviews for the Selection Panel with the top candidates;
+:Receive feedback from the interview candidates;
+:Check if a Psychometric Test is required;
+:v4: Check if a Psychometric Test is required ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Check if an HR Specialist is required;
+:v5: Check if an HR Specialist is required ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Schedule the test with a third party;
+else ([v5 = 'No'])
+:Proceed to complete the Psychometric Test;
+endif
+else ([v4 = 'No'])
+:Continue with the process and coordinate the second round of selection;
+endif
+:Request the final candidate ranking and continue with the process;
+stop
+@enduml

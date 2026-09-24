@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start of process;
+:v1: is research schedule directly selected ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Research schedule;
+repeat :;
+:Validate schedule;
+:is schedule satisfactory first check;
+:v2: is schedule satisfactory first check ({No, Yes, Still not satisfactory}); <<objectSignal>>
+backward:Research schedule;
+repeat while () is ([v2 = 'No']) not ([v2 = 'Yes'])
+:Write ticket order to SNCF;
+:Validate ticket order;
+:is ticket order approved first check;
+:v4: is ticket order approved first check ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:End;
+stop
+else ([v4 = 'Yes'])
+:Validate ticket order;
+:is ticket order approved second check;
+:v5: is ticket order approved second check ({No, Yes}); <<objectSignal>>
+if () then ([v5 = 'No'])
+:End;
+stop
+else ([v5 = 'Yes'])
+:Validate ticket order;
+stop
+endif
+endif
+else ([v1 = 'No'])
+->;
+endif
+:Provide indications;
+:Proceed with the research schedule;
+@enduml

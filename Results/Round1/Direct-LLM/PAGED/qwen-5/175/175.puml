@@ -1,0 +1,83 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:items are counted and compared to the original contract;
+:v1: items returned to store ({Customer returns the items to the store, Delivery Crew picks-up items at the event site}); <<objectSignal>>
+if () then ([v1 = "Customer returns the items to the store"])
+:customer returns items to store;
+else ([v1 = "Delivery Crew picks-up items at the event site"])
+:delivery crew picks up items at event site;
+endif
+:v2: order is complete and all items were returned ({Order is complete and all items were returned, Order is incomplete and items are missing}); <<objectSignal>>
+if () then ([v2 = "Order is complete and all items were returned"])
+:v2: order is complete and all items were returned ({Order is complete and all items were returned, Order is incomplete and items are missing}); <<objectSignal>>
+if () then ([v2 = "Order is incomplete and items are missing"])
+:v3: order is incomplete and items are missing ({Order is incomplete and items are missing, Order is complete but items are damaged}); <<objectSignal>>
+if () then ([v3 = "Order is incomplete and items are missing"])
+:v7: customer returns missing items ({Customer returns the missing items, Customer does not return the missing items})
+v8: customer does not return missing items ({Customer does not return the missing items, Customer returns the missing items}); <<objectSignal>>
+if () then ([v7 = "Customer returns the missing items"])
+:v7: customer returns missing items ({Customer returns the missing items, Customer does not return the missing items}); <<objectSignal>>
+if () then ([v7 = "Customer returns the missing items"])
+:v7: customer returns missing items ({Customer returns the missing items, Customer does not return the missing items}); <<objectSignal>>
+if () then ([v7 = "Customer does not return the missing items"])
+->;
+else ([v7 = "Customer returns the missing items"])
+endif
+stop
+else ([v7 = "Customer does not return the missing items"])
+->;
+endif
+else ([v8 = "Customer does not return the missing items"])
+:v8: customer does not return missing items ({Customer does not return the missing items, Customer returns the missing items}); <<objectSignal>>
+if () then ([v8 = "Customer does not return the missing items"])
+:v8: customer does not return missing items ({Customer does not return the missing items, Customer returns the missing items}); <<objectSignal>>
+if () then ([v8 = "Customer returns the missing items"])
+->;
+else ([v8 = "Customer does not return the missing items"])
+endif
+else ([v8 = "Customer returns the missing items"])
+->;
+endif
+endif
+else ([v3 = "Order is complete but items are damaged"])
+:email customer with replacement charges;
+:temporarily take damaged items out of inventory;
+:v6: items are repaired and added into inventory ({Items are repaired and added into inventory, Items can't be repaired and are discarded}); <<objectSignal>>
+switch ()
+case ([v6 = "Items are repaired and added into inventory"])
+:items are repaired and added into inventory;
+:end process;
+case ([v6 = "Items can't be repaired and are discarded"])
+:items can't be repaired and are discarded;
+stop
+case ([v6 = "Items are repaired and added into inventory"])
+:email customer with replacement charges;
+endswitch
+endif
+else ([v2 = "Order is complete but items are damaged"])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: items packed for existing order ({Items are packed for an existing order, Items are stored for future orders}); <<objectSignal>>
+if () then ([v4 = "Items are stored for future orders"])
+->;
+else ([v4 = "Items are packed for an existing order"])
+endif
+split again
+:items stored for future orders;
+:v5: items stored for future orders ({Items are stored for future orders, Items are packed for an existing order}); <<objectSignal>>
+if () then ([v5 = "Items are packed for an existing order"])
+->;
+else ([v5 = "Items are stored for future orders"])
+endif
+end split
+endif
+else ([v2 = "Order is incomplete and items are missing"])
+->;
+endif
+@enduml

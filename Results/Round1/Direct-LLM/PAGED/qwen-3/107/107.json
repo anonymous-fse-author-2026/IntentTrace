@@ -1,0 +1,221 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start parts provision process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "request authorisation for extra Parts"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "obtain requested Parts from stock"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "stop work and wait for parts"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "resume work"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "authorisation given",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "have parts arrived",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Parts Provision Team",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "b2",
+        "n7",
+        "n8",
+        "c1",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n5",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "The Parts Provision Team starts by requesting authorisation for extra Part(s)."
+    },
+    {
+      "id": "i2",
+      "content": "If the authorisation is given,"
+    },
+    {
+      "id": "i3",
+      "content": "is given"
+    },
+    {
+      "id": "i4",
+      "content": "the requested Part(s) are obtained from stock"
+    },
+    {
+      "id": "i5",
+      "content": "and the process ends."
+    },
+    {
+      "id": "i6",
+      "content": "is not given"
+    },
+    {
+      "id": "i7",
+      "content": "work is stopped until the parts arrive."
+    },
+    {
+      "id": "i8",
+      "content": "until the parts arrive."
+    },
+    {
+      "id": "i9",
+      "content": "Once the parts arrive,"
+    },
+    {
+      "id": "i10",
+      "content": "work resumes and the process ends."
+    }
+  ]
+}

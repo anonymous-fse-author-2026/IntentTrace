@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process, -> i2:adding the image description and uploading the image -> i5:if the message indicates an unsuccessful upload -> i6:try again. -> i7:If the option to try again is selected -> i2:adding the image description and uploading the image
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: The standalone action 'start' is invented; the source text only uses 'To start the process' as an introductory clause without describing it as a separate actionable step.)
+- [N3] Within matched traces (0->0) added: action(n1,"start")
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (2->1) added: action(n1,"start")
+- [N6] Within matched traces (2->1) added: converge(c1)
+- [N7] Within matched traces (2->1) added: action(n3,"Was image upload successful?")
+
+Mutation
+- [N8] Node-level mutation: element=action(n3,"Was image upload successful?") -> guard(b1,n4,"v1 = 'Yes'"); source=i3:If the message "Image upload successful" appears; reason=The model distorts the specific event of a message appearing by replacing it with a generic question ('Was image upload successful?') and a boolean variable guard ('v1 = \'Yes\'').
+- [N9] Node-level mutation: element=action(n4,"End process (success)"); source=i4:then the process will end.; reason=The action alters the source text by appending an invented '(success)' label to the process end.
+- [N10] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:if the message indicates an unsuccessful upload; reason=Replaces the specific message condition with a generic boolean guard ('v1 = \'No\'').
+- [N11] Node-level mutation: element=action(n5,"Try again?"); source=i6:try again.; reason=Alters the clear instruction to 'try again' into a decision gateway question ('Try again?').
+- [N12] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i7:If the option to try again is selected; reason=Replaces the explicit selection condition with a generic boolean guard ('v2 = \'Yes\'').
+- [N13] Node-level mutation: element=guard(b2,n6,"v2 = 'No'"); source=i8:If the option to try again is not selected; reason=Replaces the explicit non-selection condition with a generic boolean guard ('v2 = \'No\'').
+- [N14] Node-level mutation: element=action(n6,"End process with error"); source=i9:then an error will occur and the process will end.; reason=Merges the error occurrence and process termination into a single action ('End process with error'), dropping the distinct granularity of an error occurring.

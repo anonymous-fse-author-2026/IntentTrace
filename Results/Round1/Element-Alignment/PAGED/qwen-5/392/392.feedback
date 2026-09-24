@@ -1,0 +1,17 @@
+Addition
+- [N1] Node-level addition: guard(b3,e3,"v3 = false") (reason: The source text only defines the outcome when a Manual Task exists. The guard 'v3 = false' introduces a negative branch and termination path that lacks any supporting description in the text.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e3)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e3)
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N6] Within matched traces (1->2) added: branch(b1,XOR)
+- [N7] Within matched traces (1->2) added: converge(c1)
+- [N8] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N9] Within matched traces (2->4) added: branch(b1,XOR)
+- [N10] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+- [N11] Within matched traces (2->4) added: branch(b2,XOR)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n3,"v1 = true") -> guard(b1,n4,"v1 = false"); source=i2:If the task is "Service Task 1", then the process should continue.; reason=The guards replace the explicit condition value 'Service Task 1' with abstract boolean assignments ('v1 = true', 'v1 = false'). This drops the specific data required by the source and alters the core logic representation.
+- [N13] Node-level mutation: element=guard(b2,n5,"v2 = true") -> guard(b2,n6,"v2 = false"); source=i4:If it is "Service Task 2", the process should also continue.; reason=The guards substitute the explicit condition 'Service Task 2' with generic booleans ('v2 = true', 'v2 = false'), failing to preserve the source's specific value/data.
+- [N14] Node-level mutation: element=guard(b3,n9,"v3 = true"); source=i7:After that, if there is a Manual Task, the process will end.; reason=The guard discards the explicit condition 'is a Manual Task' and replaces it with 'v3 = true', losing the concrete data specified in the text.

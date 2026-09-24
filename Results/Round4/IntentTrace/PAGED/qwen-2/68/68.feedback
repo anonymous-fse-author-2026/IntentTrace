@@ -1,0 +1,10 @@
+Omission
+- [N1] Node-level omission: i9:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. (reason: The model omits the alternative branch where unrepaired items are discarded and the customer is emailed with replacement charges. While the repair path is captured, leaving out this mutually exclusive outcome changes the process behaviour.)
+- [N2] Within matched traces (0->1) omitted: i7:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process.
+
+Addition
+- [N3] Added trace (model 2): init(i1) -> action(n2,"Customer returns the items to the store or Delivery Crew picks-up items at the event site") -> action(n3,"Count and compare items to contract") -> branch(b4,XOR) -> action(n6,"Email customer missing items and replacement charges") -> branch(b_miss,XOR) -> action(n_noRet,"Customer does not return the missing items") -> converge(c_miss) -> end(e1)
+- [N4] Within matched traces (0->1) added: branch(b_miss,XOR)
+- [N5] Within matched traces (0->1) added: action(n_ret,"Customer returns the missing items")
+- [N6] Within matched traces (0->1) added: converge(c_miss)
+- [N7] Within matched traces (0->1) added: end(e1)

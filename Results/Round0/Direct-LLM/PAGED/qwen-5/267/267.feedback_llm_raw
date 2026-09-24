@@ -1,0 +1,7 @@
+
+
+- `action(n1, "Start EC-Lille procedure")`: Hallucinated step violating SMC1; the source begins directly with `"Initially, if the option 'research schedule directly' is selected..."`, containing no generic startup action.
+- `action(n11, "Provide indications")`: Dangling path violating SMC5; the source states `"If it is still not satisfactory, then 'provide indications'. Alternatively, if the schedule is satisfactory, write a ticket order..."`, implying continuation toward ticket processing, but the model provides zero outgoing precedence from `n11`.
+- `branch(b1)` through `branch(b6)`: Undefined control-flow violating SMC4; no `guard` statements connect the declared variables (`v1`–`v6`) to branch exits, despite the source explicitly defining conditional routing (e.g., `"If it is not... If it is..."`).
+- `defines(v1, ...)` through `defines(v6, ...)`: Fails SMC6; all decision variables specify an empty range `{}`, whereas the source clearly implies binary value spaces (e.g., selected/not selected, satisfactory/not, approved/not).
+- `action(n2, ...)`, `action(n7, ...)`, `action(n10, ...)`, `action(n14, ...)`, `action(n17, ...)`, `action(n20, ...)`: Violates SMC2; these payloads encode evaluation questions (e.g., `"Is schedule satisfactory"`) but are incorrectly typed as executable `action` nodes instead of serving as decision triggers routed via branch guards.

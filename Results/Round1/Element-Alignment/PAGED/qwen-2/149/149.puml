@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Request to Purchase Motorcycle;
+:Production Order Received?;
+:v1: Production Order Received? ({Yes, No}); <<objectSignal>>
+if () then (["v1 = 'Yes'"])
+:Continue with Production Order;
+else (["v1 = 'No'"])
+:Update Sales Information and Proceed to Dispatch;
+endif
+:Check Material Availability;
+:v2: Check Material Availability ({Available, Unavailable}); <<objectSignal>>
+if () then (["v2 = 'Unavailable'"])
+:Order Materials from Supplier;
+:Receive Materials from Supplier;
+else (["v2 = 'Available'"])
+:Place Manufacturing Order;
+endif
+:Issue Goods and Produce Motorcycles;
+:Update Stock Information;
+:Update Sales Information;
+:Dispatch Motorcycles;
+:End of Process;
+stop
+@enduml

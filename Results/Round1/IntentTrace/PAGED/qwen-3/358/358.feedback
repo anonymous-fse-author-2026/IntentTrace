@@ -1,0 +1,19 @@
+Addition
+- [N1] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N2] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N3] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N4] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N5] Added trace (model 8): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N6] Within matched traces (3->0) added: action(n2,"initial decision")
+- [N7] Within matched traces (4->1) added: action(n2,"initial decision")
+- [N8] Within matched traces (5->1) added: action(n2,"initial decision")
+- [N9] Within matched traces (5->1) added: action(n12,"need vendor master record")
+- [N10] Within matched traces (5->1) added: action(n13,"end due to missing vendor master")
+- [N11] Within matched traces (5->1) added: end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n16` has in=2 and out=1. | DSL: action(n16,"enter invoice in SAP")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b5 -> n16` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n16` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b5` has overlapping guards at state [v5=Yes].

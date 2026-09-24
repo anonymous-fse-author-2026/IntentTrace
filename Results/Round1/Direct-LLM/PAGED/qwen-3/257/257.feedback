@@ -1,0 +1,13 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"start providing requested shipping information") -> action(n2,"determine shipping details") -> branch(b1,XOR) -> converge(c1) -> action(n8,"confirm shipping address is correct") -> action(n9,"select desired shipping speed") -> action(n10,"process ends after selecting shipping speed") -> end(e2)
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,c1,"v1 = true"); source=i3:If a "Saved shipping address" has been selected, then continue with the process. -> i4:However, if a "New shipping address" has been entered, also continue with the process.; reason=The guards use abstract placeholder logic ('v1 = true/false', 'v2 = true/false') instead of faithfully reproducing the explicit address-selection conditions specified in the source text.
+- [N3] Node-level mutation: element=guard(b1,b2,"v1 = false"); source=i3:If a "Saved shipping address" has been selected, then continue with the process. -> i4:However, if a "New shipping address" has been entered, also continue with the process.; reason=The guards use abstract placeholder logic ('v1 = true/false', 'v2 = true/false') instead of faithfully reproducing the explicit address-selection conditions specified in the source text.
+- [N4] Node-level mutation: element=guard(b2,c1,"v2 = false"); source=i3:If a "Saved shipping address" has been selected, then continue with the process. -> i4:However, if a "New shipping address" has been entered, also continue with the process.; reason=The guards use abstract placeholder logic ('v1 = true/false', 'v2 = true/false') instead of faithfully reproducing the explicit address-selection conditions specified in the source text.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=True].

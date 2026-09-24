@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates an initial step not documented in the source, which states the process begins directly when "the customer should first request information about the organization".
+- `defines(v1, "Is the customer in Intake stage?", {})` and `defines(v2, "Has target been reached?", {})`: Specify empty value ranges `{}` instead of the expected decision domains (e.g., stage types or yes/no outcomes), failing to capture the value spaces implied by the source text.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack corresponding `guard(...)` statements to link the declared variables (`v1`, `v2`) to the outgoing edges, leaving the exclusive routing semantically undefined despite the source specifying explicit conditions ("If the customer is in the "Intake" stage...", "If the target has been reached...").
+- `actor(a_default, "Default", [...])`: Incorrectly assigns every node to a generic "Default" participant, contradicting the source text which explicitly identifies "the customer" as the responsible actor performing the steps.
+- `action(n6, "End process - Potential client")`, `action(n9, "End process - Target reached")`, and `action(n10, "End process - Dissatisfied or other reason")`: Model termination scenarios as discrete action steps preceding `end` nodes, whereas the source text indicates the process simply "will come to an end" immediately upon those conditions being met.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step, followed by checking the Inventory Level. -> i3:"Inventory level is at or below the minimum" -> i2:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i6:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i10:Purchase Order is rejected -> i9:On the other hand, if the Purchase Order is rejected, then rework the order. -> i12:In case the order needs to be reworked, review the Purchase Order again. -> i6:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Addition
+- [N2] Within matched traces (2->0) added: init(i1)
+- [N3] Within matched traces (2->0) added: converge(c1)
+- [N4] Within matched traces (3->1) added: init(i1)
+- [N5] Within matched traces (3->1) added: converge(c1)
+- [N6] Within matched traces (0->2) added: init(i1)
+- [N7] Within matched traces (0->2) added: action(n3,"Inventory Level at or below minimum")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:"Inventory level is at or below the minimum"; reason=The guard uses a generic boolean placeholder (v1 = 'Yes') instead of the explicit inventory condition stated in the source text.
+- [N9] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:"Inventory Level is above the minimum"; reason=The guard uses a generic boolean placeholder (v1 = 'No') instead of the explicit inventory condition stated in the source text.
+- [N10] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i8:Purchase Order is approved; reason=The guard uses a generic boolean placeholder (v2 = 'Yes') instead of the explicit approval status stated in the source text.
+- [N11] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i10:Purchase Order is rejected; reason=The guard uses a generic boolean placeholder (v2 = 'No') instead of the explicit rejection status stated in the source text.

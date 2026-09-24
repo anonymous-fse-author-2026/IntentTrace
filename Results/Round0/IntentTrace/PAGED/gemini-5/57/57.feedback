@@ -1,0 +1,43 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i7:continue with the process
+- [N2] Within matched traces (3->3) omitted: i13:the transaction will end
+
+Addition
+- [N3] Node-level addition: action(n9,"checkout tasks completed?") (reason: The source text does not mention an explicit check for whether checkout tasks are completed, nor does it specify paths or outcomes for checkout tasks not being completed.)
+- [N4] Node-level addition: action(n17,"checkout tasks not completed") (reason: The source text does not mention an explicit check for whether checkout tasks are completed, nor does it specify paths or outcomes for checkout tasks not being completed.)
+- [N5] Node-level addition: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'") (reason: The source text does not mention an explicit check for whether checkout tasks are completed, nor does it specify paths or outcomes for checkout tasks not being completed.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n7,"enter address shipping method and payment information") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N7] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n10,"credit card approved and inventory in stock?") -> branch(b3,XOR) -> action(n16,"transaction ended") -> end(e2)
+- [N8] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"make purchase and connect to website") -> action(n3,"search for item") -> action(n4,"add item to cart / continue shopping") -> branch(b1,XOR) -> action(n5,"proceed to checkout") -> branch(b4,AND) -> action(n8,"authorize credit card and check inventory levels") -> converge(c1) -> action(n9,"checkout tasks completed?") -> branch(b2,XOR) -> action(n17,"checkout tasks not completed") -> end(e3)
+- [N9] Within matched traces (0->2) added: branch(b1,XOR)
+- [N10] Within matched traces (0->2) added: action(n5,"proceed to checkout")
+- [N11] Within matched traces (0->2) added: branch(b4,AND)
+- [N12] Within matched traces (0->2) added: action(n7,"enter address shipping method and payment information")
+- [N13] Within matched traces (0->2) added: converge(c1)
+- [N14] Within matched traces (0->2) added: action(n9,"checkout tasks completed?")
+- [N15] Within matched traces (0->2) added: branch(b2,XOR)
+- [N16] Within matched traces (0->2) added: action(n17,"checkout tasks not completed")
+- [N17] Within matched traces (0->2) added: end(e3)
+- [N18] Within matched traces (1->0) added: action(n9,"checkout tasks completed?")
+- [N19] Within matched traces (1->0) added: branch(b2,XOR)
+- [N20] Within matched traces (1->0) added: action(n10,"credit card approved and inventory in stock?")
+- [N21] Within matched traces (1->0) added: branch(b3,XOR)
+- [N22] Within matched traces (2->3) added: action(n9,"checkout tasks completed?")
+- [N23] Within matched traces (2->3) added: branch(b2,XOR)
+- [N24] Within matched traces (3->3) added: action(n9,"checkout tasks completed?")
+- [N25] Within matched traces (3->3) added: branch(b2,XOR)
+
+Permutation
+- [N26] Within matched traces (2->3) reordered: expected [i14:In either case] but observed [converge(c1)] elsewhere; in its place the model has [action(n10,"credit card approved and inventory in stock?")]
+- [N27] Within matched traces (3->3) reordered: expected [i14:In either case] but observed [converge(c1)] elsewhere; in its place the model has [action(n10,"credit card approved and inventory in stock?")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"continue shopping")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Checkout Tasks Not Completed']`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` uses undefined variable `v2`. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"continue shopping")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

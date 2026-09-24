@@ -1,0 +1,26 @@
+Omission
+- [N1] Omitted trace (input 1): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i5:On the other hand, if they already have the availability information, they can proceed with the process. -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N2] Omitted trace (input 2): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i6:If the parts are supplied to the customer, the team can also continue with the process. -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N3] Within matched traces (0->2) omitted: i4:check the availability of the parts
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Invents a discrete 'start' action step not present in the source text; process commencement is only implicit.)
+- [N5] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: Guard value 'v2 = Order not needed  proceed' is fabricated; the source text does not define a condition or outcome for this negative branch.)
+- [N6] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Label 'Check if parts are available or need ordering' introduces a verification step absent from the source description.)
+- [N7] Within matched traces (3->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N8] Within matched traces (3->0) added: branch(b1,XOR)
+- [N9] Within matched traces (3->0) added: action(n4,"check availability of the parts")
+- [N10] Within matched traces (3->1) added: action(n3,"does the team need to elicit information from the customer?")
+- [N11] Within matched traces (3->1) added: branch(b1,XOR)
+- [N12] Within matched traces (3->1) added: action(n4,"check availability of the parts")
+- [N13] Within matched traces (0->2) added: init(i1)
+- [N14] Within matched traces (0->2) added: converge(c2)
+
+Mutation
+- [N15] Node-level mutation: element=action(n9,"contact the customer"); source=i8:Once the part is received, the team can then contract the customer.; reason=The model substitutes 'contact' for 'contract', fundamentally changing the intended business action.
+- [N16] Node-level mutation: element=action(n5,"do the parts need to be ordered and received from Disuki?"); source=i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=The model frames the decision around whether parts need ordering/receiving, whereas the source explicitly ties the branch to whether customer details need recording.
+- [N17] Node-level mutation: element=label(n6,c1,"Contact the customer or after receiving parts") -> label(n8,c1,"Contact the customer or after receiving parts") -> label(n9,c2,"Proceed with process or after contacting customer"); source=i8:Once the part is received, the team can then contract the customer.; reason=Label content incorrectly uses 'Contact'/'contacting' instead of 'contract', propagating the semantic drift from the action node.
+
+Permutation
+- [N18] Within matched traces (3->0) reordered: expected [i2:identify the parts] but observed [action(n1,"start")] elsewhere; in its place the model has [action(n2,"identify parts")]
+- [N19] Within matched traces (3->1) reordered: expected [i2:identify the parts] but observed [action(n1,"start")] elsewhere; in its place the model has [action(n2,"identify parts")]

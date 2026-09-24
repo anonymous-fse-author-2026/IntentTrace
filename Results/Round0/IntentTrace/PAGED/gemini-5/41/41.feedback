@@ -1,0 +1,33 @@
+Omission
+- [N1] Omitted trace (input 1): i1:start the process -> i2:undergoing immigration checks -> i3:select the method for exit control checks -> i4:If the passenger chooses to use biometrics -> i5:undergo a check using biometrics -> i10:proceed to the next step
+- [N2] Omitted trace (input 5): i1:start the process -> i2:undergoing immigration checks -> i3:select the method for exit control checks -> i6:if the passenger prefers to use ID documents -> i7:undergo checks using identity documents -> i10:proceed to the next step
+
+Addition
+- [N3] Within matched traces (0->0) added: action(n22,"process ends")
+- [N4] Within matched traces (0->0) added: end(e5)
+- [N5] Within matched traces (2->1) added: action(n6,"is permission granted after exit control checks")
+- [N6] Within matched traces (2->1) added: action(n9,"proceed to the next step")
+- [N7] Within matched traces (3->2) added: action(n6,"is permission granted after exit control checks")
+- [N8] Within matched traces (3->2) added: action(n9,"proceed to the next step")
+- [N9] Within matched traces (3->2) added: action(n12,"is the exit control check outcome successful")
+- [N10] Within matched traces (3->2) added: branch(b3,XOR)
+- [N11] Within matched traces (4->3) added: action(n23,"process ends")
+- [N12] Within matched traces (4->3) added: end(e6)
+- [N13] Within matched traces (6->4) added: action(n7,"is permission granted after exit control checks")
+- [N14] Within matched traces (6->4) added: action(n11,"proceed to the next step")
+- [N15] Within matched traces (7->5) added: action(n7,"is permission granted after exit control checks")
+- [N16] Within matched traces (7->5) added: action(n11,"proceed to the next step")
+- [N17] Within matched traces (7->5) added: action(n13,"is the exit control check outcome successful")
+- [N18] Within matched traces (7->5) added: branch(b4,XOR)
+
+Permutation
+- [N19] Within matched traces (0->0) reordered: expected [i4:If the passenger chooses to use biometrics] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n4,"use biometrics for exit control checks")]
+- [N20] Within matched traces (2->1) reordered: expected [i5:undergo a check using biometrics] but observed [action(n4,"use biometrics for exit control checks")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N21] Within matched traces (3->2) reordered: expected [i5:undergo a check using biometrics] but observed [action(n4,"use biometrics for exit control checks")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N22] Within matched traces (4->3) reordered: expected [i6:if the passenger prefers to use ID documents] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"use ID documents for exit control checks")]
+- [N23] Within matched traces (6->4) reordered: expected [i7:undergo checks using identity documents] but observed [action(n5,"use ID documents for exit control checks")] elsewhere; in its place the model has [branch(b2,XOR)]
+- [N24] Within matched traces (7->5) reordered: expected [i7:undergo checks using identity documents] but observed [action(n5,"use ID documents for exit control checks")] elsewhere; in its place the model has [branch(b2,XOR)]
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n16` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n17` has 0 guards; exactly one is required.

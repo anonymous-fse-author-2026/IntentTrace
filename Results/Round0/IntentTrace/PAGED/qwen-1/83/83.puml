@@ -1,0 +1,84 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Rental Items Return Process;
+split
+:Are items returned by Customer to Store;
+if () then ( )
+:Continue process after Customer returns items;
+endif
+split again
+:Are items picked up by Delivery Crew at Event Site;
+if () then ( )
+:Continue process after Delivery Crew picks up items;
+endif
+end split
+:Count items and compare to original contract;
+:Is Order complete and all items returned;
+if () then ( )
+:Proceed with process for complete order;
+else ( )
+:Is the Order incomplete and items missing;
+if () then ( )
+:Proceed with process for incomplete order;
+else ( )
+:Is Order complete but items damaged;
+if () then ( )
+:Email customer informing about damage and additional charges;
+else ( )
+->;
+endif
+endif
+endif
+:Do items get packed for existing order;
+switch ()
+case (case 1)
+:Continue process for items packed for existing order;
+case (case 2)
+:Do items get stored for future orders;
+if () then ( )
+:Continue process for items stored for future orders;
+endif
+case (case 3)
+:Are there missing items and replacement charges;
+if () then ( )
+:Email customer for missing items and replacement charges;
+:Did customer return missing items;
+if () then ( )
+:Continue process after customer returns missing items;
+else ( )
+:Continue process when customer does not return missing items;
+endif
+:Do items get packed for existing order (final);
+if () then ( )
+:Continue process for items packed for existing order (final);
+else ( )
+:Do items get stored for future orders (final);
+if () then ( )
+:Continue process for items stored for future orders (final);
+endif
+endif
+:Email customer with replacement charges (final);
+:End of Rental Items Return Process;
+stop
+endif
+case (else)
+:Are there damaged items and additional charges;
+if () then ( )
+:Temporarily remove damaged items from inventory;
+split
+:Is items repaired and added into inventory;
+if () then ( )
+:Continue process after items repaired and added into inventory;
+endif
+split again
+:Are items can't be repaired and are discarded;
+if () then ( )
+:Email customer with replacement charges for discarded items;
+endif
+end split
+endif
+endswitch
+@enduml

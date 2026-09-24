@@ -1,0 +1,27 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start the buying process") (reason: The source combines starting and payment in one instruction. A standalone 'Start' action duplicates the implicit initiation and lacks a distinct source step.)
+- [N2] Node-level addition: action(n4,"Have you received the invoice") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N3] Node-level addition: action(n5,"Wait until invoice is received") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N4] Node-level addition: action(n6,"Have you received the invoice") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N5] Node-level addition: guard(b1,n5,"v1 = true") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N6] Node-level addition: guard(b1,c1,"v1 = false") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N7] Node-level addition: guard(b2,c1,"v2 = true") (reason: The text describes a straightforward sequence without explicit polling, waiting actions, or boolean variable guards for invoice handling. These invent control flow and conditions not supported by the source.)
+- [N8] Node-level addition: action(n11,"Have you left feedback") (reason: The source does not describe checking whether feedback was left or waiting to leave it, nor does it use boolean variables for these paths. These are invented control flow elements.)
+- [N9] Node-level addition: action(n12,"Wait to leave feedback") (reason: The source does not describe checking whether feedback was left or waiting to leave it, nor does it use boolean variables for these paths. These are invented control flow elements.)
+- [N10] Node-level addition: guard(b3,n12,"v3 = true") (reason: The source does not describe checking whether feedback was left or waiting to leave it, nor does it use boolean variables for these paths. These are invented control flow elements.)
+- [N11] Node-level addition: guard(b3,n13,"v3 = false") (reason: The source does not describe checking whether feedback was left or waiting to leave it, nor does it use boolean variables for these paths. These are invented control flow elements.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"Start the buying process") -> action(n2,"Make payment through the L2 bpmn process") -> action(n3,"Receive invoice") -> action(n4,"Have you received the invoice") -> branch(b1,XOR) -> action(n5,"Wait until invoice is received") -> action(n6,"Have you received the invoice") -> branch(b2,XOR) -> converge(c1) -> action(n7,"Proceed with the rest of the process") -> action(n8,"Receive the book") -> action(n9,"Consider the Amazon user record before leaving feedback") -> action(n10,"Leave seller a feedback") -> action(n11,"Have you left feedback") -> branch(b3,XOR) -> action(n13,"Process concludes") -> end(e1)
+- [N13] Within matched traces (0->1) added: init(i1)
+- [N14] Within matched traces (0->1) added: action(n1,"Start the buying process")
+- [N15] Within matched traces (0->1) added: action(n4,"Have you received the invoice")
+- [N16] Within matched traces (0->1) added: branch(b1,XOR)
+- [N17] Within matched traces (0->1) added: converge(c1)
+- [N18] Within matched traces (0->1) added: action(n11,"Have you left feedback")
+- [N19] Within matched traces (0->1) added: branch(b3,XOR)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b4` has in=1 and out=0. | DSL: branch(b2,XOR); branch(b4,AND)
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b4, n12 | DSL: branch(b4,AND); action(n12,"Wait to leave feedback")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v2=False].

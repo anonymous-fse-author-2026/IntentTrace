@@ -1,0 +1,60 @@
+@startuml
+!theme plain
+|a_clerk| Invoice Clerk
+|a_staff| Experienced Staff
+|a_rep| Client Representative
+|a_deo| DEO
+|a_clerk|
+start
+:start SSP process by receiving the invoice;
+:sort invoice per client;
+:sort invoice per vendor;
+:attach invoice entry form to invoice;
+:enter required information onto form;
+:check completeness of the invoice;
+:v1: invoice_completeness ({complete, incomplete}); <<objectSignal>>
+if () then ([v1 = "complete"])
+:invoice complete;
+:enter information for SLA;
+:enter date for completion;
+:check priority;
+:v2: priority_level ({high, low}); <<objectSignal>>
+if () then ([v2 = "high"])
+:priority is high;
+:place red stamp on entry invoice;
+else ([v2 = "low"])
+:priority is low;
+endif
+:check invoice compliance;
+:v3: compliance_status ({complete, incomplete}); <<objectSignal>>
+if () then ([v3 = "complete"])
+:invoice compliance complete;
+else ([v3 = "incomplete"])
+:invoice compliance not complete - continue checking or act;
+endif
+:check if invoice needs to be sent to experienced staff;
+:v5: routing_decision ({experienced, normal, none}); <<objectSignal>>
+switch ()
+case ([v5 = "experienced"])
+|a_staff|
+:invoice needs sending to experienced staff;
+:non-compliance invoice processed;
+case ([v5 = "normal"])
+|a_clerk|
+:normal case invoice;
+:call client;
+case ([v5 = "none"])
+:unknown or none of above conditions apply;
+:send postal mail requesting complete information and end process;
+endswitch
+|a_rep|
+:call client and request information;
+|a_deo|
+:batch invoice and allocate to DEO;
+stop
+|a_clerk|
+else ([v1 = "incomplete"])
+:invoice incomplete - end process;
+stop
+endif
+@enduml

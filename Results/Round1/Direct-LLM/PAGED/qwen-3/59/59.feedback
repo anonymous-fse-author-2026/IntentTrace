@@ -1,0 +1,32 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.
+
+Addition
+- [N2] Added trace (model 0): init(i1) -> action(n1,"Orders Required") -> action(n2,"place Bulk order") -> action(n3,"Order with prior internal credit allowance") -> branch(b1,XOR) -> action(n4,"process order for delivery") -> converge(c1) -> action(n12,"identify order for installation") -> action(n13,"installation needs to be scheduled") -> branch(b3,XOR) -> action(n14,"assign Installer") -> action(n15,"Installer assigned") -> end(e3)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Orders Required") -> action(n2,"place Bulk order") -> action(n3,"Order with prior internal credit allowance") -> branch(b1,XOR) -> action(n4,"process order for delivery") -> converge(c1) -> action(n12,"identify order for installation") -> action(n13,"installation needs to be scheduled") -> branch(b3,XOR) -> action(n16,"pack for delivery") -> action(n17,"Packed for delivery") -> end(e4)
+- [N4] Within matched traces (1->3) added: init(i1)
+- [N5] Within matched traces (1->3) added: action(n3,"Order with prior internal credit allowance")
+- [N6] Within matched traces (1->3) added: branch(b1,XOR)
+- [N7] Within matched traces (1->3) added: branch(b2,XOR)
+- [N8] Within matched traces (1->3) added: converge(c1)
+- [N9] Within matched traces (1->3) added: branch(b3,XOR)
+- [N10] Within matched traces (2->4) added: init(i1)
+- [N11] Within matched traces (2->4) added: action(n3,"Order with prior internal credit allowance")
+- [N12] Within matched traces (2->4) added: branch(b1,XOR)
+- [N13] Within matched traces (2->4) added: branch(b2,XOR)
+- [N14] Within matched traces (2->4) added: converge(c1)
+- [N15] Within matched traces (2->4) added: action(n13,"installation needs to be scheduled")
+- [N16] Within matched traces (2->4) added: branch(b3,XOR)
+- [N17] Within matched traces (3->2) added: init(i1)
+- [N18] Within matched traces (3->2) added: action(n3,"Order with prior internal credit allowance")
+- [N19] Within matched traces (3->2) added: branch(b1,XOR)
+- [N20] Within matched traces (3->2) added: action(n9,"Payments are Received")
+- [N21] Within matched traces (3->2) added: branch(b2,XOR)
+
+Mutation
+- [N22] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=If the condition is "Order with prior internal credit allowance"; reason=The guard replaces the specific textual condition with a generic boolean variable (v1 = 'Yes'), dropping the original qualifier.
+- [N23] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=if the order exceeds the purchaser's credit allowance; reason=The guard replaces the explicit credit allowance exceedance condition with a generic boolean variable (v1 = 'No').
+- [N24] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=If Payments are Received; reason=The guard substitutes the payment receipt condition with a generic boolean variable (v2 = 'Yes').
+- [N25] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=if no payments are received; reason=The guard substitutes the missing payment condition with a generic boolean variable (v2 = 'No').
+- [N26] Node-level mutation: element=guard(b3,n14,"v3 = 'Yes'"); source=If the installation needs to be scheduled; reason=The guard replaces the installation scheduling condition with a generic boolean variable (v3 = 'Yes').
+- [N27] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=if the order does not require installation; reason=The guard replaces the non-installation condition with a generic boolean variable (v3 = 'No').

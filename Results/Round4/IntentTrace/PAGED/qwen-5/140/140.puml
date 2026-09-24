@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To begin the process, trigger the resupply cycle and then check the inventory level.;
+:v1: Is inventory level at or below minimum ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Otherwise, if the inventory level is above the minimum, the process ends.;
+stop
+else ([v1 = 'Yes'])
+:create a purchase order;
+repeat :;
+:review it;
+:v2: Is purchase status rejected ({Yes, No}); <<objectSignal>>
+backward:Rework the purchase order and then review it.;
+repeat while () is ([v2 = 'Yes']) not ([v2 = 'No'])
+:Reserve the funds and send the order to the supplier.;
+split
+:Receive the packing slip and then record it.;
+:Record the packing slip and the process ends.;
+stop
+split again
+:Receive the invoice and then record it.;
+:Record the invoice and the process ends.;
+stop
+end split
+endif
+@enduml

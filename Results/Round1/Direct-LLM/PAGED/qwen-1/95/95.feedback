@@ -1,0 +1,34 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process for WIGGO -> i2:placing an Order -> i3:Check the Customer's Credit Limit -> i5:if the response is "No", send a Denial to the Customer.
+- [N2] Omitted trace (input 1): i1:To begin the process for WIGGO -> i2:placing an Order -> i3:Check the Customer's Credit Limit -> i4:If the response is "Okay", proceed to Check the Availability of the Article. -> i7:If the response is "No", send a Denial to the Customer.
+
+Addition
+- [N3] Added trace (model 2): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n13,"Collect Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> action(n20,"Close Order") -> action(n21,"End process") -> end(e3)
+- [N4] Added trace (model 3): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n13,"Collect Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> action(n23,"Write off Order") -> action(n24,"Send Reminder") -> action(n25,"Close Order") -> action(n26,"End process") -> end(e4)
+- [N5] Added trace (model 6): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n14,"Produce Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> action(n20,"Close Order") -> action(n21,"End process") -> end(e3)
+- [N6] Added trace (model 7): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n14,"Produce Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> action(n23,"Write off Order") -> action(n24,"Send Reminder") -> action(n25,"Close Order") -> action(n26,"End process") -> end(e4)
+- [N7] Within matched traces (4->5) added: action(n24,"Send Reminder")
+- [N8] Within matched traces (5->1) added: action(n24,"Send Reminder")
+- [N9] Within matched traces (6->5) added: action(n23,"Write off Order")
+- [N10] Within matched traces (6->5) added: action(n25,"Close Order")
+- [N11] Within matched traces (6->5) added: action(n26,"End process")
+- [N12] Within matched traces (6->5) added: end(e4)
+- [N13] Within matched traces (7->1) added: action(n23,"Write off Order")
+- [N14] Within matched traces (7->1) added: action(n25,"Close Order")
+- [N15] Within matched traces (7->1) added: action(n26,"End process")
+- [N16] Within matched traces (7->1) added: end(e4)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b2,n9,"v2 = 'Yes'"); source=i6:if the response is "Okay", proceed to Check the Availability of the Article again.; reason=Guard condition uses 'Yes' instead of the source value 'Okay', altering the specified trigger value.
+- [N18] Node-level mutation: element=guard(b3,n13,"v3 = 'Yes'"); source=i9:if the Article is available, proceed to Collect the Goods.; reason=Guard condition uses 'Yes' instead of the explicit source state 'available'.
+- [N19] Node-level mutation: element=guard(b3,n14,"v3 = 'No'"); source=i8:If the Article is not available, proceed to Produce the Goods.; reason=Guard condition uses 'No' instead of the explicit source state 'not available'.
+- [N20] Node-level mutation: element=guard(b4,n20,"v4 = 'Yes'"); source=i13:If the payment has been received, close the Order and end the process.; reason=Guard condition uses 'Yes' instead of the explicit source state 'payment has been received'.
+- [N21] Node-level mutation: element=guard(b5,n23,"v5 = 'Yes'"); source=i15:If the Reminder count is greater than or equal to 3, Write off the Order.; reason=Guard condition simplifies to 'Yes', dropping the critical threshold and operator 'greater than or equal to 3' from the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | DSL: action(n10,"Send Denial to Customer"); action(n5,"Send Denial to Customer")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | DSL: branch(b5,XOR)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5 | DSL: action(n10,"Send Denial to Customer"); action(n5,"Send Denial to Customer")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` has no enabled outgoing guard at state [v5=No].

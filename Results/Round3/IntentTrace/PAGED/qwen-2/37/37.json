@@ -1,0 +1,329 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process for WIGGO by placing an Order"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check the Customers Credit Limit"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Check the Availability of the Article first time"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Send a Denial to the Customer due to Credit Limit"
+    },
+    {
+      "id": "b_art",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Produce the Goods"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Collect the Goods"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Send an Order Confirmation"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Ship the Goods"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Send the Invoice"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Check the Payment status"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "Close the Order due to Payment received"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "End process"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is Credit Limit Okay",
+      "R_X": [
+        "Okay",
+        "No"
+      ]
+    },
+    {
+      "X": "v_art",
+      "name": "Article Availability",
+      "R_X": [
+        "Available",
+        "Unavailable"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "e1",
+        "b_art",
+        "n10",
+        "n11",
+        "c1",
+        "n12",
+        "b6",
+        "n13",
+        "n14",
+        "c2",
+        "n15",
+        "n17",
+        "n18"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b_art"
+    },
+    {
+      "type": "precedence",
+      "A": "b_art",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b_art",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Okay'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_art",
+      "B": "n10",
+      "condition": "v_art = 'Unavailable'"
+    },
+    {
+      "type": "guard",
+      "A": "b_art",
+      "B": "n11",
+      "condition": "v_art = 'Available'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process for WIGGO, start by placing an Order"
+    },
+    {
+      "id": "i2",
+      "content": "then proceed to Check the Customer's Credit Limit."
+    },
+    {
+      "id": "i4",
+      "content": "If the response is \"Okay\", proceed to Check the Availability of the Article."
+    },
+    {
+      "id": "i5",
+      "content": "if the response is \"No\", send a Denial to the Customer."
+    },
+    {
+      "id": "i8",
+      "content": "If the Article is not available, proceed to Produce the Goods."
+    },
+    {
+      "id": "i9",
+      "content": "However, if the Article is available, proceed to Collect the Goods."
+    },
+    {
+      "id": "i10",
+      "content": "After checking the availability of the Article, send an Order Confirmation."
+    },
+    {
+      "id": "i11",
+      "content": "Simultaneously, complete the following steps: Ship the Goods and Send the Invoice."
+    },
+    {
+      "id": "i12",
+      "content": "Check the Payment status."
+    },
+    {
+      "id": "i14",
+      "content": "close the Order and end the process."
+    },
+    {
+      "id": "i16",
+      "content": "check if the Reminder count is greater than or equal to 3."
+    },
+    {
+      "id": "i17",
+      "content": "If the Reminder count is greater than or equal to 3, Write off the Order."
+    },
+    {
+      "id": "i18",
+      "content": "Additionally, send a Reminder."
+    },
+    {
+      "id": "i19",
+      "content": "After writing off the Order, close the Order and end the process."
+    }
+  ]
+}

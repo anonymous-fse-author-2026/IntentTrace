@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 0): i1:the first step is to pick up the order -> i2:request a stock check -> i3:the inventory should be checked -> i4:If the stock is rejected -> i5:then the process ends
+- [N2] Omitted trace (input 1): i1:the first step is to pick up the order -> i2:request a stock check -> i3:the inventory should be checked -> i7:Otherwise -> i8:request shipping details -> i9:receive the shipping details -> i10:At the same time -> i11:send the goods -> i13:Once the payment is received -> i6:the process ends.
+- [N3] Omitted trace (input 2): i1:the first step is to pick up the order -> i2:request a stock check -> i3:the inventory should be checked -> i7:Otherwise -> i8:request shipping details -> i9:receive the shipping details -> i10:At the same time -> i12:send the invoice -> i13:Once the payment is received -> i6:the process ends.
+
+Addition
+- [N4] Node-level addition: action(n1,"start process") (reason: The action 'start process' lacks supporting source text; the source begins immediately with picking up the order.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start process") -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n6,"end process - stock rejected") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n8,"receive shipping details") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n9,"send goods") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+- [N8] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> action(n12,"end process") -> end(e2)
+
+Mutation
+- [N9] Node-level mutation: element=action(n6,"end process - stock rejected"); source=i5: then the process ends; reason=The action element includes the invented qualifier '- stock rejected', which alters the literal instruction given in the source text.

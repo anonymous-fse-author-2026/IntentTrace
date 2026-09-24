@@ -1,0 +1,9 @@
+Omission
+- [N1] Node-level omission: i2:followed by checking the Inventory Level. (reason: No element faithfully implements this explicit checking step; the only candidate (n2) mutates it into a conditional query, leaving the original instruction uncovered.)
+- [N2] Omitted trace (input 3): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i7:On the other hand, if the Purchase Order is rejected, then rework the order. -> i9:In case the order needs to be reworked, review the Purchase Order again. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Mutation
+- [N3] Node-level mutation: element=action(n2,"Inventory level at or below the minimum?"); source=i2:followed by checking the Inventory Level.; reason=The source describes a straightforward data-verification task ('checking the Inventory Level'), but the model distorts it into a polar decision question ('Inventory level at or below the minimum?'), altering the step's function and granularity.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Purchase Order approved?")

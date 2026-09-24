@@ -1,0 +1,15 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i3:If it needs to be sent back
+
+Addition
+- [N2] Node-level addition: guard(b3,n10,"v3 = 'Other'") (reason: These elements introduce a fallback 'Other' decision path and a step to 'proceed to next process', neither of which are described anywhere in the source text.)
+- [N3] Node-level addition: action(n10,"Proceed to next process or end") (reason: These elements introduce a fallback 'Other' decision path and a step to 'proceed to next process', neither of which are described anywhere in the source text.)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n5,"Complete check deductibles") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+- [N5] Added trace (model 6): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'") -> guard(b2,n6,"v2 = 'No'"); source=i6:At the same time; reason=The source explicitly requires parallel/simultaneous execution, but the model implements an XOR gateway with exclusive 'Yes'/'No' guards, fundamentally altering the concurrency logic.
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = 'No'"); source=i4:If it needs to be sent back, the process ends.; reason=The guard replaces the explicit natural-language condition with an abstract variable assignment ('v1 = No'), failing to faithfully reproduce the source condition's data.
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i5:if we need to check the income; reason=The guard replaces the explicit natural-language condition with an abstract variable assignment ('v1 = Yes'), failing to faithfully reproduce the source condition's data.
+- [N9] Node-level mutation: element=guard(b3,n8,"v3 = 'Declaration'"); source=i10:If we need to check the declaration, the process ends.; reason=The guard replaces the explicit textual condition with an abstract variable assignment ('v3 = Declaration'), distorting the original specification.
+- [N10] Node-level mutation: element=guard(b3,n9,"v3 = 'Invitation'"); source=i11:Otherwise, if we need to invite the declarant, the process also ends.; reason=The guard replaces the explicit textual condition with an abstract variable assignment ('v3 = Invitation'), distorting the original specification.

@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_agent| Agent
+|a_agent|
+start
+|a_customer|
+:inform customer about canceling the order;
+|a_agent|
+:has the order already been fulfilled;
+:v1: has the order already been fulfilled ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:mark bag as returned in IS;
+:script bag is returned;
+else ([v1 = 'No'])
+|a_customer|
+:mark script(s) as declined by the customer in IS;
+|a_agent|
+:script order is declined;
+endif
+:process customer notification;
+stop
+@enduml

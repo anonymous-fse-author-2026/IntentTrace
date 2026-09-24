@@ -1,0 +1,66 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Rental Items Return Process;
+:Are items returned by Customer to Store;
+:Are items picked up by Delivery Crew at Event Site;
+:v1: Are items returned by Customer to Store ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Continue process after Customer returns items;
+else ([v1 = 'No'])
+:Continue process after Delivery Crew picks up items;
+endif
+:Count items and compare to original contract;
+:Is Order complete and all items returned;
+:Is the Order incomplete and items missing;
+:Is Order complete but items damaged;
+:v3: Is Order complete and all items returned ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v3 = 'Complete'])
+:Proceed with process for complete order;
+:Do items get packed for existing order;
+:Do items get stored for future orders;
+:v6: Do items get packed for existing order ({Packed, Stored}); <<objectSignal>>
+if () then ([v6 = 'Packed'])
+:Continue process for items packed for existing order;
+else ([v6 = 'Stored'])
+:Continue process for items stored for future orders;
+endif
+case ([v3 = 'Incomplete'])
+:Proceed with process for incomplete order;
+:Are there missing items and replacement charges;
+:Email customer for missing items and replacement charges;
+:Did customer return missing items;
+:v10: Did customer return missing items ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:Continue process after customer returns missing items;
+else ([v10 = 'No'])
+:Continue process when customer does not return missing items;
+endif
+case ([v3 = 'Damaged'])
+:Email customer informing about damage and additional charges;
+:Are there damaged items and additional charges;
+:Temporarily remove damaged items from inventory;
+:Is items repaired and added into inventory;
+:Are items can't be repaired and are discarded;
+:v11: Is items repaired and added into inventory ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v11 = 'Repaired'])
+:Continue process after items repaired and added into inventory;
+:Do items get packed for existing order (final);
+:Do items get stored for future orders (final);
+:v13: Do items get packed for existing order (final) ({Packed, Stored}); <<objectSignal>>
+if () then ([v13 = 'Packed'])
+:Continue process for items packed for existing order (final);
+else ([v13 = 'Stored'])
+:Continue process for items stored for future orders (final);
+endif
+else ([v11 = 'Discarded'])
+:Email customer with replacement charges for discarded items;
+:Email customer with replacement charges (final);
+endif
+endswitch
+:End of Rental Items Return Process;
+stop
+@enduml

@@ -1,0 +1,26 @@
+Addition
+- [N1] Node-level addition: action(n14,"handle disapproval") (reason: 'handle disapproval' and its guarding condition are not described in the source text, which only specifies rework for rejected POs and printing/releasing for approved ones.)
+- [N2] Node-level addition: guard(b4,n14,"v4 = 'NotApproved'") (reason: 'handle disapproval' and its guarding condition are not described in the source text, which only specifies rework for rejected POs and printing/releasing for approved ones.)
+- [N3] Node-level addition: action(n27,"Handle mismatch") (reason: 'Handle mismatch' and its 'Failed' guard describe an error path that the source text does not define; the text only specifies behavior for a successful three-way match.)
+- [N4] Node-level addition: guard(b_match,n27,"v5 = 'Failed'") (reason: 'Handle mismatch' and its 'Failed' guard describe an error path that the source text does not define; the text only specifies behavior for a successful three-way match.)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n5,"generate Equal to or below minimum Report") -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> converge(c_loop) -> action(n8,"create Purchase Orders POs") -> action(n10,"Is PO rejected") -> branch(b3,XOR) -> action(n12,"Is PO approved") -> branch(b4,XOR) -> action(n13,"print and release PO in system") -> action(n17,"PO needs to be reviewed") -> branch(b_sync,AND) -> action(n21,"Mail POs to supplier") -> converge(c1) -> action(n22,"Receive Packing Slip") -> action(n23,"Receive Inventory") -> action(n24,"Receive Invoice") -> action(n25,"Proceed to Three way match") -> branch(b_match,XOR) -> action(n26,"Release funds") -> action(n28,"Issue payment") -> action(n29,"Resupply Cycle is complete process ends") -> end(e2)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n5,"generate Equal to or below minimum Report") -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> converge(c_loop) -> action(n8,"create Purchase Orders POs") -> action(n10,"Is PO rejected") -> branch(b3,XOR) -> action(n12,"Is PO approved") -> branch(b4,XOR) -> action(n13,"print and release PO in system") -> action(n17,"PO needs to be reviewed") -> branch(b_sync,AND) -> action(n21,"Mail POs to supplier") -> converge(c1) -> action(n22,"Receive Packing Slip") -> action(n23,"Receive Inventory") -> action(n24,"Receive Invoice") -> action(n25,"Proceed to Three way match") -> branch(b_match,XOR) -> action(n27,"Handle mismatch") -> end(e2)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n6,"generate Above Minimum Report") -> converge(c_end_path) -> action(n9,"process ends") -> end(e1)
+- [N8] Within matched traces (0->4) added: init(i1)
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: branch(b_sync,AND)
+- [N11] Within matched traces (1->1) added: action(n20,"reserve funds for released POs")
+- [N12] Within matched traces (1->1) added: converge(c1)
+- [N13] Within matched traces (1->1) added: action(n22,"Receive Packing Slip")
+- [N14] Within matched traces (1->1) added: action(n23,"Receive Inventory")
+- [N15] Within matched traces (1->1) added: action(n24,"Receive Invoice")
+- [N16] Within matched traces (1->1) added: action(n25,"Proceed to Three way match")
+- [N17] Within matched traces (1->1) added: branch(b_match,XOR)
+- [N18] Within matched traces (1->1) added: action(n27,"Handle mismatch")
+- [N19] Within matched traces (1->1) added: end(e2)
+- [N20] Within matched traces (2->0) added: init(i1)
+- [N21] Within matched traces (2->0) added: converge(c1)
+- [N22] Within matched traces (2->0) added: branch(b_match,XOR)
+
+Permutation
+- [N23] Within matched traces (2->0) reordered: expected [i4:If the PO is rejected, it needs to be reworked. If the PO is approved, it is printed and released in the system.] but observed [action(n13,"print and release PO in system") -> branch(b4,XOR) -> action(n12,"Is PO approved") -> branch(b3,XOR) -> action(n10,"Is PO rejected")] elsewhere; in its place the model has [action(n17,"PO needs to be reviewed")]

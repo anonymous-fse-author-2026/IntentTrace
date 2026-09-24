@@ -1,0 +1,39 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i16:Ask Charles to write the amount in the register.
+- [N2] Within matched traces (2->3) omitted: i15:Simultaneously, calculate the fee and hand the letter to Charles.
+- [N3] Within matched traces (3->5) omitted: i16:Ask Charles to write the amount in the register.
+- [N4] Within matched traces (4->6) omitted: i15:Simultaneously, calculate the fee and hand the letter to Charles.
+
+Addition
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty?") -> branch(b1,XOR) -> action(n4,"end the process") -> end(e1)
+- [N6] Within matched traces (1->2) added: branch(b4,XOR)
+- [N7] Within matched traces (1->2) added: action(n20,"add new member to register")
+- [N8] Within matched traces (1->2) added: action(n21,"prepare invoice for new members")
+- [N9] Within matched traces (2->3) added: branch(b4,XOR)
+- [N10] Within matched traces (2->3) added: action(n22,"end the process")
+- [N11] Within matched traces (2->3) added: end(e3)
+- [N12] Within matched traces (3->5) added: branch(b4,XOR)
+- [N13] Within matched traces (3->5) added: action(n20,"add new member to register")
+- [N14] Within matched traces (3->5) added: action(n21,"prepare invoice for new members")
+- [N15] Within matched traces (4->6) added: branch(b4,XOR)
+- [N16] Within matched traces (4->6) added: action(n22,"end the process")
+- [N17] Within matched traces (4->6) added: end(e3)
+- [N18] Within matched traces (5->4) added: branch(b4,XOR)
+- [N19] Within matched traces (5->4) added: action(n25,"end the process")
+- [N20] Within matched traces (5->4) added: end(e4)
+- [N21] Within matched traces (6->7) added: branch(b4,XOR)
+- [N22] Within matched traces (6->7) added: action(n25,"end the process")
+- [N23] Within matched traces (6->7) added: end(e4)
+
+Mutation
+- [N24] Node-level mutation: element=action(n1,"start the process"); source=i2:start the process at 8:00 am; reason=The model action 'start the process' omits the explicit time constraint 'at 8:00 am' specified in the source text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | Node `b6` has in=1 and out=1. | DSL: branch(b5,XOR); branch(b6,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `['Yes']`. | Variable `v6` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v5 = 'Yes'` on `b5 -> n15` uses undefined variable `v5`. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n23` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n24` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v5 = 'Yes'` on `b5 -> n15` cannot be evaluated: `v5` has no declared range. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` cannot be evaluated: `v5` has no declared range.

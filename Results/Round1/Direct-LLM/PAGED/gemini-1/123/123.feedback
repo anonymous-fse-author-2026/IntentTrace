@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i5:if the raw material is available in stock (reason: The model altered this condition into a generic 'Yes' guard, leaving the specific source condition without a faithful implementation.)
+- [N2] Within matched traces (0->0) omitted: i4:select a supplier
+- [N3] Within matched traces (0->0) omitted: i10:send the material purchase order
+- [N4] Within matched traces (0->0) omitted: i8:conclude the process
+- [N5] Within matched traces (1->0) omitted: i8:conclude the process
+
+Addition
+- [N6] Node-level addition: action(n2,"Is raw material available in stock?") (reason: The model invents an action posing the condition as a question ('Is raw material available in stock?') without source support as an independent action step.)
+- [N7] Node-level addition: action(n8,"Check raw material after PO") (reason: The action 'Check raw material after PO' adds the qualifier 'after PO', which is not supported by any of the provided source segments.)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"obtaining the raw material from the received list") -> action(n2,"Is raw material available in stock?") -> branch(b1,XOR) -> action(n6,"Select supplier") -> action(n7,"Send material purchase order") -> action(n8,"Check raw material after PO") -> end(e2)
+- [N9] Within matched traces (0->0) added: action(n2,"Is raw material available in stock?")
+- [N10] Within matched traces (1->0) added: action(n2,"Is raw material available in stock?")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n6,"v1 = \"No\""); source=i3:If the raw material is not available in stock; reason=The guard uses a generic 'v1 = "No"' instead of retaining the exact explicit stock condition from the text.
+- [N12] Node-level mutation: element=guard(b1,n3,"v1 = \"Yes\""); source=i5:if the raw material is available in stock; reason=The guard uses a generic 'v1 = "Yes"' instead of retaining the exact explicit stock condition from the text.

@@ -1,0 +1,61 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process at 8:00 am;
+:empty the mailbox;
+:Check if the mailbox is empty;
+:v1: is the mailbox empty? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "No"])
+:continue the process;
+:Check if the mailbox is empty again;
+:v2: is the mailbox empty? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = "No"])
+:continue the process;
+:Verify if the information is complete;
+:v3: is the information complete? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "Yes"])
+:add the incoming mail number, date, and record it in the letter book;
+else ([v3 = "No"])
+:make a telephone call to the sender;
+:After the telephone call,;
+:complete the data by adding the incoming mail number, date, and record it in the letter book;
+endif
+:Every Wednesday evening;
+:take the letter book and member register to Miranda;
+:has applicant become a member?;
+:v5: has applicant become a member? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = "Yes"])
+:stamp "new Member" on the letter and write the date on it;
+:After stamping "new Member" on the letter and writing the date on it;
+:write the data;
+:Simultaneously,;
+:v4: Simultaneously, ({Path1, Path2}); <<objectSignal>>
+if () then ([v4 = "Path1"])
+:calculate the fee;
+:Prepare an invoice for the new members;
+:continue the process;
+:write the fee amount to the register;
+else ([v4 = "Path2"])
+:hand the letter to Charles;
+:Hand the letter to Charles;
+:add the new member to the register;
+:Ask Charles to write the amount in the register;
+:Print the membership card with all the data and send it to the new member;
+endif
+:The process ends.;
+stop
+else ([v5 = "No"])
+:write to them and inform them of the decision;
+stop
+endif
+else ([v2 = "Yes"])
+:the process ends;
+stop
+endif
+else ([v1 = "Yes"])
+:the process ends;
+stop
+endif
+@enduml

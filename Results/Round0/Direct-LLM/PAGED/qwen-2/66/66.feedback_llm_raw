@@ -1,0 +1,10 @@
+
+
+- `branch(b1, XOR)`: Placed before `action(n3, "Proceed to verify completeness of invoices")`, violating the source chronology "verify the completeness of the invoices. If they are marked as...". The decision point must follow the verification step, not precede it.
+- `precedence(b1, n4)` & `action(n4, "End")`: Hallucinates an immediate termination path. The source states that if invoices are "Completed", "the process should be continued", not terminated.
+- `precedence(n3, n5)` & `action(n5, "Return uncompleted invoices to client via postal mail")`: Makes the return step unconditional after verification. The source strictly limits this to "If they are marked as 'Uncompleted'", requiring a conditional branch path rather than a direct sequential edge.
+- missing `guard` declarations for `b1` and `b2`: Fails to encode the explicit decision criteria stated in the source ("marked as 'Uncompleted'", "marked as 'Completed'", "checking if the process has been completed"), leaving the XOR branches semantically undefined per SMC4.
+- `defines(v1, "Check if process has started in Admin Office", {})` & `defines(v2, "Check if process has been completed", {})`: Declare variables with empty ranges `{}`, omitting the documented value spaces (e.g., {"Uncompleted", "Completed"} or boolean/status indicators).
+- `action(n10, "Proceed to verify completeness of invoices")`: Hallucinates a secondary verification step. The source concludes with "Finally, the process ends," providing no textual basis for looping back or repeating verification.
+- `action(n4, "End")` & `action(n9, "End")`: Misuses `action` nodes to model process termination instead of exclusively using `end` nodes, contradicting both DSL semantics and the source phrase "the process ends".
+- missing `converge` node & incorrect path merging: The model routes both the "Uncompleted" and "Completed" scenarios through disjoint or linear paths without a join point before `action(n6, "Receive completed invoices from client")`, failing to mirror the source intent that both statuses ultimately progress to receiving and processing completed invoices.

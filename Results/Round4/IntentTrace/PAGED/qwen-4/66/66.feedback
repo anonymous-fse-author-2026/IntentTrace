@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i10:Once the invoices are returned to the client, receive the completed ones. (reason: A clear, behaviour-relevant step describing the receipt of completed invoices after return is completely absent from the model.)
+- [N2] Node-level omission: i11:Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed. (reason: A clear, behaviour-relevant step describing marking a form and checking process completion is completely absent from the model.)
+- [N3] Omitted trace (input 0): i1:To begin the process in the Admin Office, first check if it has started. -> i2:After that, verify the completeness of the invoices. -> i10:Once the invoices are returned to the client, receive the completed ones. -> i11:Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed. -> i12:Finally, the process ends.
+
+Addition
+- [N4] Within matched traces (1->0) added: action(n5,"Return uncompleted invoices to client via postal mail")
+- [N5] Within matched traces (1->0) added: branch(b2,XOR)
+- [N6] Within matched traces (1->0) added: end(e1)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b2,n10,"v2 = 'Uncompleted'") -> guard(b2,e1,"v2 = 'Completed'"); source=i4:If they are marked as "Uncompleted", they should be returned to the client through postal mail. However, if they are marked as "Completed", the process should be continued.; reason=Wrong branch targets that reverse the intended logic: the source requires 'Uncompleted' invoices to be returned to the client and 'Completed' ones to continue the process, but the model routes 'Uncompleted' to a verification step and 'Completed' directly to the end.

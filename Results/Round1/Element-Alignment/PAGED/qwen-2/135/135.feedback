@@ -1,0 +1,27 @@
+Addition
+- [N1] Node-level addition: action(n5,"Any previous shipment problems") (reason: Content 'Any previous shipment problems' does not appear in the source text and introduces unsupported detail.)
+- [N2] Node-level addition: guard(b1,n6,"v1 = 'Yes'") (reason: Guards invent variable checks `v1 = 'Yes'` and `v1 = 'No'` that lack any source justification.)
+- [N3] Node-level addition: guard(b1,c1,"v1 = 'No'") (reason: Guards invent variable checks `v1 = 'Yes'` and `v1 = 'No'` that lack any source justification.)
+- [N4] Added trace (model 0): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> action(n14,"End") -> end(e1)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> action(n15,"End") -> end(e2)
+- [N6] Added trace (model 5): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n13,"Communicate shipment problems") -> action(n16,"End") -> end(e3)
+- [N7] Within matched traces (0->3) added: action(n5,"Any previous shipment problems")
+- [N8] Within matched traces (0->3) added: branch(b1,XOR)
+- [N9] Within matched traces (0->3) added: converge(c1)
+- [N10] Within matched traces (1->4) added: action(n5,"Any previous shipment problems")
+- [N11] Within matched traces (1->4) added: branch(b1,XOR)
+- [N12] Within matched traces (1->4) added: converge(c1)
+- [N13] Within matched traces (2->2) added: action(n5,"Any previous shipment problems")
+- [N14] Within matched traces (2->2) added: branch(b1,XOR)
+- [N15] Within matched traces (2->2) added: action(n11,"Shipment okay")
+- [N16] Within matched traces (2->2) added: action(n16,"End")
+- [N17] Within matched traces (2->2) added: end(e3)
+
+Mutation
+- [N18] Node-level mutation: element=guard(b2,n9,"v2 = 'Yes'"); source=i6:If it is, then proceed to Send Payment.; reason=Guard replaces the source condition with an arbitrary variable assignment `v2 = 'Yes'` instead of reflecting the original 'if it is [okay]' wording.
+- [N19] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:However, if there are any problems with the shipment, communicate them accordingly.; reason=Guard replaces the source condition with `v2 = 'No'` instead of reflecting 'problems with the shipment'.
+- [N20] Node-level mutation: element=guard(b3,n12,"v3 = 'Yes'"); source=i8:After checking the shipment status again, if it is okay, proceed to Send Payment.; reason=Guard replaces the source condition with `v3 = 'Yes'` instead of reflecting 'if it is okay'.
+- [N21] Node-level mutation: element=guard(b3,n13,"v3 = 'No'"); source=i9:Otherwise, communicate any shipment problems.; reason=Guard replaces the source condition with `v3 = 'No'` instead of reflecting 'otherwise/problems'.
+
+Permutation
+- [N22] Within matched traces (2->2) reordered: expected [i11:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.] but observed [action(n6,"Communicate shipment problems")] elsewhere; in its place the model has [action(n13,"Communicate shipment problems")]

@@ -1,0 +1,20 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i4:the process will end.
+- [N2] Within matched traces (1->0) omitted: i6:If you want to try again
+- [N3] Within matched traces (2->4) omitted: i4:the process will end.
+- [N4] Within matched traces (4->1) omitted: i4:the process will end.
+
+Addition
+- [N5] Node-level addition: guard(b4,n10,"v4 = 'Try again'") (reason: These guards represent a third retry/abort decision point that alters process behaviour, but the source text only contains two such decisions.)
+- [N6] Node-level addition: guard(b4,e3,"v4 = 'Abort'") (reason: These guards represent a third retry/abort decision point that alters process behaviour, but the source text only contains two such decisions.)
+- [N7] Added trace (model 3): init(i1) -> action(n2,"Provide userdata for flickr login") -> action(n3,"Is login successful") -> branch(b1,XOR) -> action(n5,"Choose to try login again") -> branch(b2,XOR) -> action(n6,"Provide userdata for flickr login") -> branch(b3,XOR) -> action(n9,"Choose to try again after aborted retry") -> branch(b4,XOR) -> end(e3)
+- [N8] Within matched traces (1->0) added: action(n3,"Is login successful")
+- [N9] Within matched traces (2->4) added: action(n3,"Is login successful")
+- [N10] Within matched traces (3->2) added: action(n3,"Is login successful")
+- [N11] Within matched traces (3->2) added: branch(b2,XOR)
+- [N12] Within matched traces (4->1) added: action(n3,"Is login successful")
+- [N13] Within matched traces (4->1) added: branch(b2,XOR)
+
+Mutation
+- [N14] Node-level mutation: element=action(n7,"Choose to abort after retry option"); source=i7:if you choose to abort; reason=The element adds the invented qualifier 'after retry option', which distorts the original condition by inappropriately reframing the sequence.
+- [N15] Node-level mutation: element=action(n9,"Choose to try again after aborted retry"); source=i8:If you still want to try again; reason=The element adds the invented qualifier 'after aborted retry', which logically contradicts the source text (one cannot try again after aborting).

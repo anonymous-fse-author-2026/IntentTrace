@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i2:If the team needs to elicit information from the customer (reason: The conditional clause lacks faithful implementation; its only candidate mapping is a mutated guard.)
+- [N2] Node-level omission: i5:If the parts are supplied to the customer, the team can also continue with the process. (reason: This entire conditional branch and its associated continuation action are completely absent from the model.)
+- [N3] Node-level omission: i6:However, if they need to record the customer's details (reason: The conditional premise is not faithfully implemented; all associated elements mutate or misrepresent the source logic.)
+- [N4] Within matched traces (2->0) omitted: i5:If the parts are supplied to the customer, the team can also continue with the process.
+
+Addition
+- [N5] Added trace (model 3): init(i1) -> action(n2,"Identify parts") -> branch(b1,XOR) -> action(n5,"Proceed with process") -> converge(c1) -> branch(b2,XOR) -> action(n8,"Record customer details") -> action(n9,"Order and receive part from Disuki") -> converge(c2) -> action(n7,"Contract customer") -> action(n12,"Collect necessary parts") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N6] Within matched traces (0->0) added: converge(c1)
+- [N7] Within matched traces (0->0) added: branch(b2,XOR)
+- [N8] Within matched traces (0->0) added: converge(c2)
+- [N9] Within matched traces (1->2) added: converge(c1)
+- [N10] Within matched traces (1->2) added: branch(b2,XOR)
+- [N11] Within matched traces (1->2) added: converge(c2)
+- [N12] Within matched traces (2->0) added: branch(b1,XOR)
+- [N13] Within matched traces (2->0) added: action(n4,"Check availability of parts")
+- [N14] Within matched traces (2->0) added: converge(c1)
+- [N15] Within matched traces (2->0) added: branch(b2,XOR)
+- [N16] Within matched traces (2->0) added: converge(c2)
+- [N17] Within matched traces (3->1) added: branch(b1,XOR)
+- [N18] Within matched traces (3->1) added: action(n4,"Check availability of parts")
+- [N19] Within matched traces (3->1) added: converge(c1)
+
+Mutation
+- [N20] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the team needs to elicit information from the customer; reason=Replaces the explicit conditional text with a generic boolean placeholder (v1 = 'Yes'), losing the specific business logic.
+- [N21] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:On the other hand, if they already have the availability information, they can proceed with the process.; reason=Uses a generic boolean placeholder instead of encoding the actual availability condition from the source.
+- [N22] Node-level mutation: element=action(n8,"Record customer details"); source=i6:However, if they need to record the customer's details; reason=Distorts the source logic by converting a conditional premise ('if they need to...') into a standalone action step.
+- [N23] Node-level mutation: element=guard(b2,n8,"v2 = 'No'") -> guard(b2,c2,"v2 = 'Yes'"); source=i6:However, if they need to record the customer's details; reason=Both outgoing guards rely on abstract boolean checks rather than faithfully representing the specific recording condition.
+- [N24] Node-level mutation: element=action(n11,"End"); source=i10:Once the payment is made, the process comes to an end.; reason=Content 'End' is excessively terse and omits the explicit trigger and closure phrasing required for faithful reproduction.

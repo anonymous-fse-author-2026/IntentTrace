@@ -1,0 +1,14 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i4:we continue with the process.
+
+Addition
+- [N2] Node-level addition: action(b2,"await acceptance decision") (reason: Invents a generic 'await acceptance decision' step that redundantly duplicates the waiting phase without matching the source's specific instruction or granularity.)
+- [N3] Within matched traces (1->0) added: action(b2,"await acceptance decision")
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'available'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v1 = 'unavailable'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'available'"); guard(b1,n4,"v1 = 'unavailable'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'available'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'unavailable'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'available'"); guard(b1,n4,"v1 = 'unavailable'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

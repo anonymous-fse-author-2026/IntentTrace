@@ -1,0 +1,7 @@
+
+
+- `branch(b1,...)`, `branch(b2,...)`, `branch(b3,...)`: Missing `guard` statements to route flows according to explicit source conditions such as `"If the answer is \"no\""`, `"within 24 hours"`, or `"if a code is available"`. (SMC4)
+- `defines(v1,...,{})`, `defines(v2,...,{})`, `defines(v3,...,{})`: Value ranges are declared as empty `{}`, which does not faithfully reflect the discrete decision values implied by the source (e.g., `"yes"`/`"no"`, available/unavailable). (SMC6)
+- Process flow: The description explicitly mentions executing `"hotel reservation"` and `"cancel your journey"` as required steps before certain terminations, but these documented behaviors are completely omitted from the model. (SMC1)
+- `precedence(n1, n2)`, `precedence(n2, n3)`: The source instructs `"While doing so [choose destination and calculate distance], continue to check if you need to book a train or a flight"`, indicating concurrent execution, yet the model enforces a strict sequential order. (SMC3, SMC4)
+- `action(n6, "check if code is available within 24 hours (train)")`, `action(n10, "check if code is available within 24 hours (flight)")`: The source frames time availability as a direct conditional split (`"If a code is available within 24 hours..."` / `"Otherwise, if 24 hours have passed..."`), but the model incorrectly represents these as linear actions preceding unguarded XOR branches. (SMC2, SMC4)

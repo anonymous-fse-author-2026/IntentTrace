@@ -1,0 +1,307 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Trigger resupply cycle and check inventory level"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End process due to sufficient inventory"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Create purchase order"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Review purchase order"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Rework purchase order"
+    },
+    {
+      "id": "n23",
+      "type": "action",
+      "content": "Reserve funds and send order to supplier"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Receive packing slip"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Record packing slip"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "Receive invoice"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Record invoice"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is inventory level at or below minimum",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is purchase status rejected",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "c1",
+        "n6",
+        "b2",
+        "n8",
+        "n23",
+        "b6",
+        "n16",
+        "n18",
+        "e2",
+        "n17",
+        "n19",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n23"
+    },
+    {
+      "type": "precedence",
+      "A": "n23",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n23",
+      "condition": "v2 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, trigger the resupply cycle and then check the inventory level."
+    },
+    {
+      "id": "i2",
+      "content": "If the inventory level is at or below the minimum"
+    },
+    {
+      "id": "i3",
+      "content": "at or below the minimum, create a purchase order."
+    },
+    {
+      "id": "i4",
+      "content": "Otherwise, if the inventory level is above the minimum, the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "After creating the purchase order, review it."
+    },
+    {
+      "id": "i6",
+      "content": "If the purchase status is rejected"
+    },
+    {
+      "id": "i7",
+      "content": "is rejected, rework the purchase order."
+    },
+    {
+      "id": "i8",
+      "content": "if the purchase status is approved"
+    },
+    {
+      "id": "i9",
+      "content": "Reserve the funds and send the order to the supplier."
+    },
+    {
+      "id": "i11",
+      "content": "complete the following steps: receive the packing slip and receive the invoice."
+    },
+    {
+      "id": "i12",
+      "content": "Receive the packing slip and then record it."
+    },
+    {
+      "id": "i13",
+      "content": "Receive the invoice and then record it."
+    },
+    {
+      "id": "i14",
+      "content": "Record the packing slip and the process ends."
+    },
+    {
+      "id": "i15",
+      "content": "Record the invoice and the process ends."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinated action. The text specifies "To initiate the process for ACME Company, the Resupply Cycle is triggered", meaning the initiation is the triggering action (`n2`), not a distinct "start" step.
+- `action(n4, "Inventory greater than Minimum Level?")`: Hallucinated action. The text describes this as a conditional evaluation ("If the Inventory is greater than the Minimum Level"), not an independent action step.
+- `action(n5, "End Process")` and `action(n18, "End Process")`: Hallucinated actions. The source text describes the process terminating ("the process ends" and "ends with the issuance of payment"), meaning the flow should proceed directly to `end(e1)` and `end(e2)` without executing distinct "End Process" actions.
+- `action(n8, "Purchase Order accepted?")`: Hallucinated action. The text describes this as a condition ("If the Purchase Order is accepted"), not an independent action step executed after reviewing the purchase order.
+- `action(n16, "Release funds for payment")` and `precedence(c1, n16)`: Misrepresented behavior and chronology. The text states "Once the funds are released for payment," indicating a condition or event preceding payment issuance, not an active sequential task rigidly executed by the actor immediately after converging the document recording steps (`c1`).
+- `actor(a_default, "Default", [...])`: Omitted documented participant. The model fails to include the actor "ACME Company", which is explicitly identified in the source text ("To initiate the process for ACME Company...").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"Review Purchase Order")

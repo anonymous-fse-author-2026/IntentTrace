@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i5:If the report indicates that the inventory is equal to or below the minimum (reason: The model completely misses this condition and branch.)
+- [N2] Node-level omission: i7:If the report indicates that the inventory is above the minimum, the process ends. (reason: While the end action is modelled, the conditional split/guard for this specific check is omitted.)
+- [N3] Node-level omission: i10:If the PO is created, it needs to be reviewed. (reason: While the review action is modelled, the condition 'If the PO is created' is omitted from the flow logic.)
+- [N4] Node-level omission: i11:If the PO needs to be reworked, it needs to be created again. (reason: This entire step and its condition are missing from the model; no rework-to-create path exists.)
+- [N5] Node-level omission: i15:If the Packing Slip is received, proceed to receive the Invoice. (reason: The condition 'If the Packing Slip is received' is omitted from the flow logic.)
+- [N6] Node-level omission: i16:If the inventory is received, proceed to receive the Packing Slip. (reason: The condition 'If the inventory is received' is omitted from the flow logic.)
+- [N7] Node-level omission: i18:If the Three-way match is successful, release the funds. (reason: The condition 'If the Three-way match is successful' is omitted from the flow logic.)
+- [N8] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum, generate an Equal to or below minimum Report. -> i5:If the report indicates that the inventory is equal to or below the minimum -> i6:create Purchase Orders (POs) -> i10:If the PO is created, it needs to be reviewed. -> i8:If the PO is rejected, it needs to be reworked. -> i11:If the PO needs to be reworked, it needs to be created again. -> i6:create Purchase Orders (POs)
+- [N9] Within matched traces (2->0) omitted: i5:If the report indicates that the inventory is equal to or below the minimum
+- [N10] Within matched traces (3->1) omitted: i5:If the report indicates that the inventory is equal to or below the minimum
+
+Addition
+- [N11] Within matched traces (3->1) added: converge(c1)
+- [N12] Within matched traces (3->1) added: action(n12,"Receive Packing Slip")

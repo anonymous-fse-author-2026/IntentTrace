@@ -1,0 +1,10 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start") (reason: Isolates the introductory announcer phrase "To start" as a standalone step without substantive instructional content.)
+- [N2] Node-level addition: action(n3,"Sort by Vendor or Amount?") (reason: Redundantly models the decision gateway itself as an action step, duplicating the branching logic already captured by branch:b1.)
+- [N3] Node-level addition: action(n6,"Process Invoices (Vendor)") (reason: Invents specific "Process Invoices" steps not present in the source, which only generically instructs to "proceed/continue with the process.")
+- [N4] Node-level addition: action(n7,"Process Invoices (Amount)") (reason: Invents specific "Process Invoices" steps not present in the source, which only generically instructs to "proceed/continue with the process.")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=2 and out=1. | Node `n12` has in=0 and out=1. | DSL: action(n10,"Place Invoice Batch in Urgent Outbox"); action(n12,"End of Process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1, n12 | DSL: end(e1); action(n12,"End of Process")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, c1, i1, n1, n10, n11, n13, n2, n3, n4, n5, n6, n7, n9 | DSL: branch(b1,XOR); converge(c1); init(i1); action(n1,"Start"); action(n10,"Place Invoice Batch in Urgent Outbox"); action(n11,"Set Up Hourly Collection"); action(n13,"Enter Invoice Data"); action(n2,"Note Vendor Number on Invoice Entry Form") (+6 more)

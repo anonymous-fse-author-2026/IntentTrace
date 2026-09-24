@@ -1,0 +1,6 @@
+
+
+- `branch(b2, XOR)`: Models exclusive choice instead of concurrent execution. The source explicitly states "At the same time, we complete the following steps: checking deductibles and checking the house", which requires an AND gateway per SMC4.
+- `action(n10, "Proceed to next process or end")`, `end(e4)`, `precedence(b3, n10)`: Hallucinates a third post-decision path. The description only defines two terminating conditions after the decision ("If we need to check the declaration, the process ends. Otherwise, if we need to invite the declarant, the process also ends."), violating SMC1.
+- `guard(b1, n4, v1 = 'Yes')` & `defines(v2, "Is income check needed", {})`: Misbinds the branching condition. The source specifies continuation depends on income verification ("if we need to check the income, we continue"), but the guard incorrectly evaluates `v1` instead of `v2`, leaving `v2` unused and misrepresenting the decision logic per SMC2/SMC4.
+- `defines(v1, "Is form complete", {"Yes"})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Incomplete or empty value ranges. Decision variables in the source imply categorical or binary outcomes (e.g., complete/incomplete, needed/not needed), but the declared ranges either omit expected alternatives or are empty, failing to faithfully reflect the decision domains per SMC6.

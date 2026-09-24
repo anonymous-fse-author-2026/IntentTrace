@@ -1,0 +1,12 @@
+Omission
+- [N1] Omitted trace (input 1): i1:In the beginning -> i2:if the answer is "No", then we continue the process. -> i3:If the answer is "No" again, we continue the process. -> i4:However, if the answer is "Yes", then we give it priority. -> i5:After that, we look up the Vendor on SAP. -> i7:But if the answer is "Yes", then we enter the invoice in SAP. -> i8:And if the answer is "Yes" again, then we enter the invoice in SAP. -> i9:Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends.
+- [N2] Within matched traces (0->1) omitted: i3:If the answer is "No" again, we continue the process.
+- [N3] Within matched traces (0->1) omitted: i5:After that, we look up the Vendor on SAP.
+
+Addition
+- [N4] Added trace (model 0): init(i1) -> branch(b1,XOR) -> action(n_cont,"continue process") -> end(e0)
+- [N5] Added trace (model 2): init(i1) -> branch(b1,XOR) -> action(n_pri1,"give priority") -> action(n_lookup,"lookup Vendor on SAP") -> branch(b2,XOR) -> action(n_inv1,"enter invoice in SAP") -> action(n_pri2,"give priority") -> action(n_inv2,"enter invoice in SAP") -> action(n_out,"place entered invoices in normal Outbox") -> end(e2)
+- [N6] Within matched traces (0->1) added: action(n_pri1,"give priority")
+- [N7] Within matched traces (0->1) added: action(n_lookup,"lookup Vendor on SAP")
+- [N8] Within matched traces (0->1) added: action(n_master,"need Vendor master record")
+- [N9] Within matched traces (0->1) added: end(e1)

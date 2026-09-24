@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To begin the process,;
+:start with Orders Required;
+:place a Bulk order;
+:v1: credit ({Order with prior internal credit allowance, if the order exceeds the purchaser's credit allowance}); <<objectSignal>>
+if () then ([v1 = "Order with prior internal credit allowance"])
+:processing the order for delivery;
+else ([v1 = "if the order exceeds the purchaser's credit allowance"])
+:there will be an Outstanding Balance;
+split
+:the process ends at the Warehouse;
+stop
+split again
+:a new order is placed;
+:If a new order is placed;
+:recorded in the Accounts Receivable;
+:v2: payment ({If Payments are Received, if no payments are received}); <<objectSignal>>
+if () then ([v2 = "If Payments are Received"])
+:the process continues;
+:identify the order for installation;
+:v3: install ({If the installation needs to be scheduled, if the order does not require installation}); <<objectSignal>>
+if () then ([v3 = "If the installation needs to be scheduled"])
+:an Installer will be assigned;
+stop
+else ([v3 = "if the order does not require installation"])
+:packed for delivery;
+stop
+endif
+else ([v2 = "if no payments are received"])
+:the order is dropped;
+stop
+endif
+end split
+endif
+@enduml

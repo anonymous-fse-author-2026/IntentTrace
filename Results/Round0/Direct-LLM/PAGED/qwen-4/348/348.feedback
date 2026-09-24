@@ -1,0 +1,7 @@
+- action(n2, "Bill Client"): Omission and mislabeling; the source states it "starts with Bill for Purchased Goods/Services", which is entirely missing and incorrectly replaced by "Bill Client".
+- precedence(n1, n2): Violates source chronology; the source positions "Bill Client" as a concurrent task occurring later ("Simultaneously, the following steps are completed: Bill Client."), but the model sequences it immediately after initialization before n3.
+- defines(v2, "Is Invoice Compliant?", {"Non-Compliant", "No"}): Range does not faithfully reflect source terminology; uses `"No"` instead of `"Compliant"` for the decision variable's value space.
+- guard(b2, n8, v2 = 'No'): Semantically incorrect routing; links `v2 = 'No'` to n8 ("Return Invoice via Mail"), contradicting the source which states "if the invoice is compliant, the process continues".
+- [Transition from n6 to b2]: Omits documented behavior; the source explicitly requires that "If the invoice is non-compliant, further checks are conducted" prior to resolution or return, but this step is absent.
+- branch(b4, AND), branch(b5, AND), branch(b6, AND): Distorts control-flow logic; the source describes a single concurrent execution stream, yet the model artificially nests three AND branches, creating an unsupported unstructured mesh.
+- action(n15, "Send Reminder"): Breaks intended progression; the source dictates that "a reminder is sent and the process ends", but the model continues the flow through b6 and n18 instead of terminating.

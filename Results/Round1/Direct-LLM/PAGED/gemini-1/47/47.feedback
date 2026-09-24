@@ -1,0 +1,152 @@
+Omission
+- [N1] Node-level omission: i15:if it is returned (reason: The model completely omits this condition, instead executing the subsequent non-compliance resolution step unconditionally.)
+- [N2] Within matched traces (1->11) omitted: i22:the process ends
+- [N3] Within matched traces (2->8) omitted: i6:the process continues
+- [N4] Within matched traces (3->8) omitted: i6:the process continues
+- [N5] Within matched traces (3->8) omitted: i23:If the client is unsatisfied
+- [N6] Within matched traces (3->8) omitted: i24:payment discrepancy is resolved
+- [N7] Within matched traces (4->11) omitted: i17:Bill Client
+- [N8] Within matched traces (4->11) omitted: i22:the process ends
+- [N9] Within matched traces (5->15) omitted: i15:if it is returned
+- [N10] Within matched traces (5->15) omitted: i22:the process ends
+- [N11] Within matched traces (6->12) omitted: i6:the process continues
+- [N12] Within matched traces (6->12) omitted: i15:if it is returned
+- [N13] Within matched traces (7->12) omitted: i6:the process continues
+- [N14] Within matched traces (7->12) omitted: i15:if it is returned
+- [N15] Within matched traces (7->12) omitted: i23:If the client is unsatisfied
+- [N16] Within matched traces (7->12) omitted: i24:payment discrepancy is resolved
+- [N17] Within matched traces (8->15) omitted: i15:if it is returned
+- [N18] Within matched traces (8->15) omitted: i17:Bill Client
+- [N19] Within matched traces (8->15) omitted: i22:the process ends
+- [N20] Within matched traces (9->7) omitted: i22:the process ends
+- [N21] Within matched traces (10->4) omitted: i6:the process continues
+- [N22] Within matched traces (11->4) omitted: i6:the process continues
+- [N23] Within matched traces (11->4) omitted: i23:If the client is unsatisfied
+- [N24] Within matched traces (11->4) omitted: i24:payment discrepancy is resolved
+- [N25] Within matched traces (12->7) omitted: i17:Bill Client
+- [N26] Within matched traces (12->7) omitted: i22:the process ends
+
+Addition
+- [N27] Node-level addition: guard(b3,n10,"v3 = 'No'") (reason: These negative fallback guards invent an explicit else-if execution flow between sequential, independent checks that is not strictly supported by the segmented source text.)
+- [N28] Node-level addition: guard(b4,n12,"v4 = 'No'") (reason: These negative fallback guards invent an explicit else-if execution flow between sequential, independent checks that is not strictly supported by the segmented source text.)
+- [N29] Node-level addition: guard(b5,n14,"v5 = 'No'") (reason: These negative fallback guards invent an explicit else-if execution flow between sequential, independent checks that is not strictly supported by the segmented source text.)
+- [N30] Node-level addition: guard(b6,n16,"v6 = 'No'") (reason: These negative fallback guards invent an explicit else-if execution flow between sequential, independent checks that is not strictly supported by the segmented source text.)
+- [N31] Node-level addition: guard(b7,c2,"v7 = 'No'") (reason: These negative fallback guards invent an explicit else-if execution flow between sequential, independent checks that is not strictly supported by the segmented source text.)
+- [N32] Node-level addition: guard(b8,e1,"v8 = 'Yes'") (reason: The source text does not specify what happens (or that the process ends) if the client DOES respond, making this conditional branch an addition.)
+- [N33] Added trace (model 0): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n4,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> action(n22,"Wait period of 10 days") -> action(n25,"Send reminder after 10 days") -> action(n26,"End process") -> end(e1)
+- [N34] Added trace (model 1): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n4,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N35] Added trace (model 2): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n4,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N36] Added trace (model 3): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n4,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n29,"Continue process") -> end(e1)
+- [N37] Added trace (model 5): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n6,"Continue process with compliant invoice") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N38] Added trace (model 6): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n6,"Continue process with compliant invoice") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N39] Added trace (model 9): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n9,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N40] Added trace (model 10): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n9,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N41] Added trace (model 13): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n11,"Return invoice") -> action(n23,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N42] Added trace (model 14): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n11,"Return invoice") -> action(n23,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N43] Added trace (model 16): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n13,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> action(n22,"Wait period of 10 days") -> action(n25,"Send reminder after 10 days") -> action(n26,"End process") -> end(e1)
+- [N44] Added trace (model 18): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n13,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N45] Added trace (model 19): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n13,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n29,"Continue process") -> end(e1)
+- [N46] Added trace (model 20): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n15,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> action(n22,"Wait period of 10 days") -> action(n25,"Send reminder after 10 days") -> action(n26,"End process") -> end(e1)
+- [N47] Added trace (model 21): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n15,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N48] Added trace (model 22): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n15,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N49] Added trace (model 23): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n15,"Resolve non-compliance by phone call") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n29,"Continue process") -> end(e1)
+- [N50] Added trace (model 24): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> action(n17,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> action(n22,"Wait period of 10 days") -> action(n25,"Send reminder after 10 days") -> action(n26,"End process") -> end(e1)
+- [N51] Added trace (model 25): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> action(n17,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N52] Added trace (model 26): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> action(n17,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N53] Added trace (model 27): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> action(n17,"Return invoice") -> converge(c1) -> action(n19,"Resolve non-compliance") -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n29,"Continue process") -> end(e1)
+- [N54] Added trace (model 28): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> action(n22,"Wait period of 10 days") -> action(n25,"Send reminder after 10 days") -> action(n26,"End process") -> end(e1)
+- [N55] Added trace (model 29): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n20,"Bill client") -> action(n21,"Did client respond") -> branch(b8,XOR) -> end(e1)
+- [N56] Added trace (model 30): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n28,"Resolve payment discrepancy") -> end(e1)
+- [N57] Added trace (model 31): init(i1) -> action(n1,"Start Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> action(n3,"Is the invoice complete") -> branch(b1,XOR) -> action(n5,"Is the invoice compliant") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non-compliant invoice") -> action(n8,"Can issue be resolved with phone call") -> branch(b3,XOR) -> action(n10,"Issue requires mail back") -> branch(b4,XOR) -> action(n12,"Is invoice incomplete") -> branch(b5,XOR) -> action(n14,"Can issue be resolved with phone call") -> branch(b6,XOR) -> action(n16,"Issue requires mail back") -> branch(b7,XOR) -> converge(c2) -> action(n18,"Pay invoice") -> branch(b10,AND) -> action(n24,"Notify client of payment") -> action(n27,"Is client satisfied") -> branch(b9,XOR) -> action(n29,"Continue process") -> end(e1)
+- [N58] Within matched traces (0->17) added: action(n5,"Is the invoice compliant")
+- [N59] Within matched traces (0->17) added: branch(b2,XOR)
+- [N60] Within matched traces (0->17) added: action(n7,"Conduct further checks on non-compliant invoice")
+- [N61] Within matched traces (0->17) added: action(n8,"Can issue be resolved with phone call")
+- [N62] Within matched traces (0->17) added: branch(b3,XOR)
+- [N63] Within matched traces (0->17) added: action(n10,"Issue requires mail back")
+- [N64] Within matched traces (0->17) added: branch(b4,XOR)
+- [N65] Within matched traces (0->17) added: converge(c1)
+- [N66] Within matched traces (0->17) added: action(n19,"Resolve non-compliance")
+- [N67] Within matched traces (0->17) added: converge(c2)
+- [N68] Within matched traces (0->17) added: action(n18,"Pay invoice")
+- [N69] Within matched traces (0->17) added: branch(b10,AND)
+- [N70] Within matched traces (0->17) added: action(n20,"Bill client")
+- [N71] Within matched traces (0->17) added: action(n21,"Did client respond")
+- [N72] Within matched traces (0->17) added: branch(b8,XOR)
+- [N73] Within matched traces (0->17) added: end(e1)
+- [N74] Within matched traces (1->11) added: action(n3,"Is the invoice complete")
+- [N75] Within matched traces (1->11) added: action(n27,"Is client satisfied")
+- [N76] Within matched traces (1->11) added: branch(b9,XOR)
+- [N77] Within matched traces (2->8) added: action(n3,"Is the invoice complete")
+- [N78] Within matched traces (2->8) added: converge(c2)
+- [N79] Within matched traces (2->8) added: action(n18,"Pay invoice")
+- [N80] Within matched traces (3->8) added: action(n3,"Is the invoice complete")
+- [N81] Within matched traces (3->8) added: converge(c2)
+- [N82] Within matched traces (3->8) added: action(n18,"Pay invoice")
+- [N83] Within matched traces (3->8) added: action(n21,"Did client respond")
+- [N84] Within matched traces (3->8) added: branch(b8,XOR)
+- [N85] Within matched traces (3->8) added: action(n22,"Wait period of 10 days")
+- [N86] Within matched traces (3->8) added: action(n25,"Send reminder after 10 days")
+- [N87] Within matched traces (4->11) added: action(n3,"Is the invoice complete")
+- [N88] Within matched traces (4->11) added: converge(c2)
+- [N89] Within matched traces (4->11) added: action(n18,"Pay invoice")
+- [N90] Within matched traces (4->11) added: action(n24,"Notify client of payment")
+- [N91] Within matched traces (4->11) added: action(n27,"Is client satisfied")
+- [N92] Within matched traces (5->15) added: action(n3,"Is the invoice complete")
+- [N93] Within matched traces (5->15) added: action(n8,"Can issue be resolved with phone call")
+- [N94] Within matched traces (5->15) added: branch(b3,XOR)
+- [N95] Within matched traces (5->15) added: action(n27,"Is client satisfied")
+- [N96] Within matched traces (5->15) added: branch(b9,XOR)
+- [N97] Within matched traces (6->12) added: action(n3,"Is the invoice complete")
+- [N98] Within matched traces (6->12) added: action(n8,"Can issue be resolved with phone call")
+- [N99] Within matched traces (6->12) added: branch(b3,XOR)
+- [N100] Within matched traces (6->12) added: converge(c2)
+- [N101] Within matched traces (6->12) added: action(n18,"Pay invoice")
+- [N102] Within matched traces (7->12) added: action(n3,"Is the invoice complete")
+- [N103] Within matched traces (7->12) added: action(n8,"Can issue be resolved with phone call")
+- [N104] Within matched traces (7->12) added: branch(b3,XOR)
+- [N105] Within matched traces (7->12) added: converge(c2)
+- [N106] Within matched traces (7->12) added: action(n18,"Pay invoice")
+- [N107] Within matched traces (7->12) added: action(n21,"Did client respond")
+- [N108] Within matched traces (7->12) added: branch(b8,XOR)
+- [N109] Within matched traces (7->12) added: action(n22,"Wait period of 10 days")
+- [N110] Within matched traces (7->12) added: action(n25,"Send reminder after 10 days")
+- [N111] Within matched traces (8->15) added: action(n3,"Is the invoice complete")
+- [N112] Within matched traces (8->15) added: action(n8,"Can issue be resolved with phone call")
+- [N113] Within matched traces (8->15) added: branch(b3,XOR)
+- [N114] Within matched traces (8->15) added: converge(c2)
+- [N115] Within matched traces (8->15) added: action(n18,"Pay invoice")
+- [N116] Within matched traces (8->15) added: action(n24,"Notify client of payment")
+- [N117] Within matched traces (8->15) added: action(n27,"Is client satisfied")
+- [N118] Within matched traces (9->7) added: action(n3,"Is the invoice complete")
+- [N119] Within matched traces (9->7) added: action(n27,"Is client satisfied")
+- [N120] Within matched traces (9->7) added: branch(b9,XOR)
+- [N121] Within matched traces (10->4) added: action(n3,"Is the invoice complete")
+- [N122] Within matched traces (10->4) added: converge(c2)
+- [N123] Within matched traces (10->4) added: action(n18,"Pay invoice")
+- [N124] Within matched traces (11->4) added: action(n3,"Is the invoice complete")
+- [N125] Within matched traces (11->4) added: converge(c2)
+- [N126] Within matched traces (11->4) added: action(n18,"Pay invoice")
+- [N127] Within matched traces (11->4) added: action(n21,"Did client respond")
+- [N128] Within matched traces (11->4) added: branch(b8,XOR)
+- [N129] Within matched traces (11->4) added: action(n22,"Wait period of 10 days")
+- [N130] Within matched traces (11->4) added: action(n25,"Send reminder after 10 days")
+- [N131] Within matched traces (12->7) added: action(n3,"Is the invoice complete")
+- [N132] Within matched traces (12->7) added: converge(c2)
+- [N133] Within matched traces (12->7) added: action(n18,"Pay invoice")
+- [N134] Within matched traces (12->7) added: action(n24,"Notify client of payment")
+- [N135] Within matched traces (12->7) added: action(n27,"Is client satisfied")
+
+Mutation
+- [N136] Node-level mutation: element=action(n3,"Is the invoice complete") -> guard(b1,n4,"v1 = 'No'"); source=i3:If the invoice is incomplete; reason=The source explicitly checks if the invoice is incomplete, but the model reverses the framing to ask if it is complete and swaps the target logic (v1='No').
+- [N137] Node-level mutation: element=action(n5,"Is the invoice compliant") -> guard(b2,n7,"v2 = 'No'"); source=i7:If the invoice is non-compliant; reason=The source checks if the invoice is non-compliant, but the model reverses this framing to ask if it is compliant and swaps the target logic (v2='No').
+- [N138] Node-level mutation: element=action(n21,"Did client respond") -> guard(b8,n22,"v8 = 'No'"); source=i18:If there is no response; reason=The source checks for 'no response', but the model reverses the condition to ask 'Did client respond' and targets the negative outcome.
+- [N139] Node-level mutation: element=action(n27,"Is client satisfied") -> guard(b9,n28,"v9 = 'No'"); source=i23:If the client is unsatisfied; reason=The source checks if the client is unsatisfied, but the model reverses the condition to ask if they are satisfied.
+
+Permutation
+- [N140] Within matched traces (1->11) reordered: expected [i6:the process continues] but observed [action(n29,"Continue process")] elsewhere; in its place the model has [branch(b2,XOR)]
+- [N141] Within matched traces (1->11) reordered: expected [i14:the invoice is paid] but observed [action(n18,"Pay invoice")] elsewhere; in its place the model has [branch(b10,AND)]
+- [N142] Within matched traces (5->15) reordered: expected [i6:the process continues] but observed [action(n29,"Continue process")] elsewhere; in its place the model has [branch(b2,XOR)]
+- [N143] Within matched traces (5->15) reordered: expected [i14:the invoice is paid] but observed [action(n18,"Pay invoice")] elsewhere; in its place the model has [branch(b10,AND)]
+- [N144] Within matched traces (9->7) reordered: expected [i6:the process continues] but observed [action(n29,"Continue process")] elsewhere; in its place the model has [action(n6,"Continue process with compliant invoice")]
+- [N145] Within matched traces (9->7) reordered: expected [i14:the invoice is paid] but observed [action(n18,"Pay invoice")] elsewhere; in its place the model has [branch(b10,AND)]

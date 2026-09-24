@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:register participation for the event;
+:is there a fee?;
+:v1: is there a fee? ({No fee, Fee}); <<objectSignal>>
+if () then ([v1 = 'No fee'])
+:register a post-seminar request;
+:end;
+stop
+else ([v1 = 'Fee'])
+:create purchase request;
+:is purchase request approved?;
+:v2: is purchase request approved? ({Approved, Rejected}); <<objectSignal>>
+if () then ([v2 = 'Approved'])
+:receive approved notification;
+:register a post-seminar request;
+:Once you have registered a post-seminar request, the process will come to an end.;
+stop
+else ([v2 = 'Rejected'])
+:receive rejection notification;
+:end;
+stop
+endif
+endif
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Loan Application;
+:Receive Loan Application;
+:Check Banking Privilege Status;
+:Construct Error Response from Banking Privilege Status;
+:v1: Construct Error Response from Banking Privilege Status ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Error Message;
+else ([v1 = 'No'])
+:Retrieve Customer Information;
+:Check fulfillment of loan conditions;
+:Construct Error Response from loan conditions;
+:v2: Construct Error Response from loan conditions ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Error Message;
+else ([v2 = 'No'])
+:Calculate threshold amount;
+:Check Creditworthiness;
+:v3: Check Creditworthiness ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'No'])
+stop
+else ([v3 = 'Yes'])
+:Designate Status;
+:Initialize Loan Form;
+:Construct Approve Response;
+:v4: Construct Approve Response ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Approved Message;
+stop
+else ([v4 = 'No'])
+:Reject Message;
+stop
+endif
+endif
+endif
+endif
+@enduml

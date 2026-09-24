@@ -1,0 +1,49 @@
+@startuml
+!theme plain
+|a_sys| System
+|a_sys|
+start
+:Initially, if the option "research schedule directly" is selected;
+:v_opt: research schedule directly ({Yes, No}); <<objectSignal>>
+if () then ([v_opt = 'Yes'])
+:the action to be taken is "Research schedule;
+:After validating the schedule;
+:check if the schedule is satisfactory;
+:v_sat: schedule satisfactory ({No, Yes, StillNo, AltYes}); <<objectSignal>>
+switch ()
+case ([v_sat = 'StillNo'])
+:If it is still not satisfactory;
+case ([v_sat = 'AltYes'])
+:Alternatively, if the schedule is satisfactory;
+:write a ticket order to SNCF;
+:After writing the ticket order, validate it;
+:Check if the ticket order is approved;
+:v_app1: ticket approved 1 ({No, Yes}); <<objectSignal>>
+if () then ([v_app1 = 'Yes'])
+:If it is approved;
+:validate the ticket order;
+:Check again if the ticket order is approved;
+:v_app2: ticket approved 2 ({No, Yes}); <<objectSignal>>
+if () then ([v_app2 = 'Yes'])
+:Check once more if the ticket order is approved;
+else ([v_app2 = 'No'])
+->;
+endif
+else ([v_app1 = 'No'])
+->;
+endif
+:then the process ends;
+stop
+case ([v_sat = 'No'])
+:If it is not;
+:perform the action "Research schedule;
+case ([v_sat = 'Yes'])
+:If it is;
+:proceed with writing a ticket order to SNCF;
+endswitch
+else ([v_opt = 'No'])
+:If the option is not selected;
+endif
+:then "provide indications;
+:proceed with the research schedule;
+@enduml

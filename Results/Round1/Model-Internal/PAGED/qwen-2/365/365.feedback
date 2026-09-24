@@ -1,0 +1,30 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i8:If the exit control check outcome is unsuccessful
+- [N2] Within matched traces (0->0) omitted: i9:the passenger should leave the area and the process ends.
+- [N3] Within matched traces (1->3) omitted: i7:if the passenger is allowed to continue, they should proceed to the next step.
+- [N4] Within matched traces (2->0) omitted: i8:If the exit control check outcome is unsuccessful
+- [N5] Within matched traces (2->0) omitted: i9:the passenger should leave the area and the process ends.
+- [N6] Within matched traces (3->3) omitted: i7:if the passenger is allowed to continue, they should proceed to the next step.
+
+Addition
+- [N7] Node-level addition: label(n4,n6,"Yes") (reason: Both labels carry the text 'Yes', which does not appear anywhere in the source text. They introduce explicit edge annotations that lack any supporting source span.)
+- [N8] Node-level addition: label(n5,n10,"Yes") (reason: Both labels carry the text 'Yes', which does not appear anywhere in the source text. They introduce explicit edge annotations that lack any supporting source span.)
+- [N9] Node-level addition: action(n9,"End of successful process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Passengers undergo immigration checks") -> action(n3,"Select method for exit control checks: Biometrics or ID documents?") -> branch(b1,XOR) -> action(n4,"Undergo biometric check") -> action(n6,"Is permission denied after biometric check?") -> branch(b2,XOR) -> action(n8,"Proceed to next step") -> action(n9,"End of successful process") -> end(e2)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Passengers undergo immigration checks") -> action(n3,"Select method for exit control checks: Biometrics or ID documents?") -> branch(b1,XOR) -> action(n5,"Check using identity documents") -> action(n10,"Is permission denied after ID document check?") -> branch(b3,XOR) -> action(n11,"Leave the area and end process") -> end(e3)
+- [N12] Within matched traces (0->0) added: init(i1)
+- [N13] Within matched traces (1->3) added: init(i1)
+- [N14] Within matched traces (1->3) added: action(n5,"Check using identity documents")
+- [N15] Within matched traces (1->3) added: action(n10,"Is permission denied after ID document check?")
+- [N16] Within matched traces (2->0) added: init(i1)
+- [N17] Within matched traces (2->0) added: action(n4,"Undergo biometric check")
+- [N18] Within matched traces (3->3) added: init(i1)
+- [N19] Within matched traces (3->3) added: action(n10,"Is permission denied after ID document check?")
+
+Mutation
+- [N20] Node-level mutation: element=guard(b2,n7,"v2 = 'No'"); source=i4:After the exit control checks, if the passenger is denied permission -> i5:if the passenger is denied permission; reason=Guard content 'v2 = 'No'' replaces the explicit semantic condition 'denied permission' with an abstract boolean variable assignment, altering the logical clarity and data representation.
+- [N21] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i7:if the passenger is allowed to continue, they should proceed to the next step.; reason=Guard content 'v2 = 'Yes'' substitutes the natural language condition 'allowed to continue' with an unqualified boolean value, drifting from source semantics.
+- [N22] Node-level mutation: element=guard(b3,n11,"v3 = 'No'"); source=i8:If the exit control check outcome is unsuccessful; reason=Guard content 'v3 = 'No'' substitutes 'outcome is unsuccessful' with an abstract boolean state, losing the explicit failure descriptor from the source.
+- [N23] Node-level mutation: element=guard(b3,n12,"v3 = 'Yes'"); source=i10:if the outcome is successful, the passenger should continue to the next step and the process ends.; reason=Guard content 'v3 = 'Yes'' substitutes 'outcome is successful' with a bare boolean, failing to preserve the explicit success condition.
+- [N24] Node-level mutation: element=action(n6,"Is permission denied after biometric check?"); source=i4:After the exit control checks, if the passenger is denied permission -> i5:if the passenger is denied permission; reason=Content 'Is permission denied after biometric check?' injects a path-specific qualifier ('after biometric check') not present in the generic source clause, and reformulates a declarative condition as an interrogative action.
+- [N25] Node-level mutation: element=action(n10,"Is permission denied after ID document check?"); source=i8:If the exit control check outcome is unsuccessful; reason=Content 'Is permission denied after ID document check?' invents the qualifier 'after ID document check' and changes the source's 'outcome is unsuccessful' into a reversed/question format, deviating from faithful reproduction.

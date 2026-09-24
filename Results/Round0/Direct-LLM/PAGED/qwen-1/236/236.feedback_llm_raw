@@ -1,0 +1,8 @@
+
+
+- defines(v2, "Is payment history good?", {"No"}) and defines(v4, "Are products available?", {"No"}): Value ranges only include "No" while the source implies binary conditions (good/not good, available/unavailable), violating SMC6.
+- guard(b2, n8, v2 = 'No') and guard(b4, n16, v4 = 'No'): Only negative outcomes have guards. The positive branches leading to converge(c1) lack guards, leaving the XOR gateway logic undefined, violating SMC4.
+- action(n8, "Send decline message"): Executed when payment history is not good. The source states "If the payment history is good, we can continue with the process" but omits any procedure for bad history, making this a hallucinated behavior, violating SMC1.
+- action(n9, "End"), action(n12, "End"), action(n18, "End"), action(n27, "End"), action(n31, "End"): Explicit "End" actions are inserted before each terminal end node. The source describes direct termination (e.g., "thus ending the process") without intermediate steps, violating SMC1 and SMC2.
+- precedence(n29, n24): Routes "Continue with process" back to n24 ("Payment received?"). The source simply states "we continue with the process" without specifying a feedback loop to payment verification, altering the documented chronology, violating SMC3 and SMC5.
+- action(n4, "Does customer exist?"), action(n7, "Is payment history good?"), action(n10, "Is customer a private customer?"), action(n15, "Are products available?"), action(n24, "Payment received?"), action(n28, "Reminders less than three?"): Decision checkpoints are declared as action nodes with interrogative payloads. This contradicts the action element's semantic meaning of performing a tangible process step, violating SMC2.

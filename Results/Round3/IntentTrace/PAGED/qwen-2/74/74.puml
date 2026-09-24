@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Enter Metadata;
+:IN-Patient Step;
+:Send Data to Suppliers;
+:Create Claim;
+:Extract and Transfer Data from Suppliers to Doctor;
+:v1: Branch1_Decision ({GOP, Claim}); <<objectSignal>>
+if () then ([v1 = 'GOP'])
+:Confirm GOP;
+:End Process: GOP Confirmed;
+stop
+else ([v1 = 'Claim'])
+:Register Case;
+:Handle Claim;
+:Extract Data from Suppliers Again;
+:Enter Data on Patient Record or Confirm IN-Patient Status;
+:v2: Branch2_Decision ({Confirm, Skip}); <<objectSignal>>
+if () then ([v2 = 'Skip'])
+->;
+else ([v2 = 'Confirm'])
+:Confirm IN-Patient Status;
+endif
+:Send Data Back to Suppliers;
+:Receive Payment;
+:End Process: Payment Received;
+stop
+endif
+@enduml

@@ -1,0 +1,273 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Receive Order Request"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Register Order"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Evaluate Order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "End: Evaluation Failed"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Install Order"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Installation Check"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "End: Installation Failed"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Prepare Billing"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Mark as Ok"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Evaluate Order",
+      "R_X": [
+        "NOK",
+        "ok"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Installation Check",
+      "R_X": [
+        "unsuccessful",
+        "successful"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "b1",
+        "n5",
+        "e1",
+        "n6",
+        "n7",
+        "b2",
+        "n8",
+        "e2",
+        "n9",
+        "n10",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'NOK'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'ok'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'unsuccessful'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'successful'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the process begins with receiving an order request."
+    },
+    {
+      "id": "i2",
+      "content": "the order is registered and evaluated."
+    },
+    {
+      "id": "i3",
+      "content": "If the evaluation result is \"NOK\""
+    },
+    {
+      "id": "i4",
+      "content": "then the order is considered as \"NOK\" and the process comes to an end."
+    },
+    {
+      "id": "i5",
+      "content": "if the evaluation result is \"ok\""
+    },
+    {
+      "id": "i6",
+      "content": "then the installation process takes place."
+    },
+    {
+      "id": "i7",
+      "content": "If the installation is not successful"
+    },
+    {
+      "id": "i8",
+      "content": "the order is considered as \"NOK\" and the process ends."
+    },
+    {
+      "id": "i9",
+      "content": "if the installation is successful"
+    },
+    {
+      "id": "i10",
+      "content": "the next step is to check the installation."
+    },
+    {
+      "id": "i11",
+      "content": "the billing is prepared."
+    },
+    {
+      "id": "i12",
+      "content": "the order is marked as \"ok\" and the process is completed."
+    }
+  ]
+}

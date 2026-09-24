@@ -1,0 +1,839 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n_check_order"
+      ],
+      "verbatim_texts": [
+        "To begin the process, start by checking the customer's order."
+      ],
+      "justification": "Initializes the process and executes the first explicit step."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_check_morale",
+        "action:n_check_morale"
+      ],
+      "verbatim_texts": [
+        "If the customer is a registered customer, then check their payment morale."
+      ],
+      "justification": "Models the registered customer branch, its condition guard, and the corresponding action."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_check_status",
+        "action:n_check_status",
+        "guard:b_status->c_continue"
+      ],
+      "verbatim_texts": [
+        "If they are a new customer, then check their status."
+      ],
+      "justification": "Captures the new customer path, status check action, and implicit continuation branch/guard for non-rejection outcomes."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_whole_data"
+      ],
+      "verbatim_texts": [
+        "If the customer is a wholesaler,"
+      ],
+      "justification": "Guard condition for the wholesaler branch."
+    },
+    {
+      "refs": [
+        "action:n_whole_data"
+      ],
+      "verbatim_texts": [
+        "enter their data and take the order."
+      ],
+      "justification": "Action following the wholesaler condition."
+    },
+    {
+      "refs": [
+        "guard:b_morale->c_continue"
+      ],
+      "verbatim_texts": [
+        "If their payment morale is good, continue with the process."
+      ],
+      "justification": "Models the positive morale decision and flow convergence back to the main process."
+    },
+    {
+      "refs": [
+        "guard:b_morale->c_reject",
+        "guard:b_status->c_reject",
+        "action:n_reject"
+      ],
+      "verbatim_texts": [
+        "If their payment morale is bad or if they are an end customer, reject the order and end the process."
+      ],
+      "justification": "Covers both negative conditions (bad morale or end customer), merges them, executes rejection, and terminates that path."
+    },
+    {
+      "refs": [
+        "action:n_check_avail"
+      ],
+      "verbatim_texts": [
+        "check the availability of the items."
+      ],
+      "justification": "Performs availability check and opens the subsequent stock decision point."
+    },
+    {
+      "refs": [
+        "guard:b_avail->n_out_stock",
+        "action:n_out_stock"
+      ],
+      "verbatim_texts": [
+        "If the items are out of stock, start production."
+      ],
+      "justification": "Guard and action for the out-of-stock scenario."
+    },
+    {
+      "refs": [
+        "guard:b_avail->c_product_ready"
+      ],
+      "verbatim_texts": [
+        "If they are in stock, continue with the process."
+      ],
+      "justification": "Guard and convergence for the in-stock path leading to product readiness."
+    },
+    {
+      "refs": [
+        "action:n_conf"
+      ],
+      "verbatim_texts": [
+        "Once the availability is checked, send the order confirmation."
+      ],
+      "justification": "Direct mapping to the confirmation step."
+    },
+    {
+      "refs": [
+        "action:n_produce"
+      ],
+      "verbatim_texts": [
+        "produce the article and send the order confirmation."
+      ],
+      "justification": "Extracts the production action; confirmation re-statement is harmless redundancy handled elsewhere."
+    },
+    {
+      "refs": [
+        "action:n_inv_del"
+      ],
+      "verbatim_texts": [
+        "send the invoice and deliver the product."
+      ],
+      "justification": "Combines invoicing and delivery into a single action node as described."
+    },
+    {
+      "refs": [
+        "action:n_check_pay"
+      ],
+      "verbatim_texts": [
+        "Check the payment status."
+      ],
+      "justification": "Executes payment status check and initiates the payment decision gateway."
+    },
+    {
+      "refs": [
+        "guard:b_pay->n_close",
+        "action:n_close"
+      ],
+      "verbatim_texts": [
+        "If payment is received, close the order."
+      ],
+      "justification": "Positive payment branch, closing action, and successful termination."
+    },
+    {
+      "refs": [
+        "guard:b_pay->n_check_rem",
+        "action:n_check_rem"
+      ],
+      "verbatim_texts": [
+        "If no payment is received, check the number of reminders."
+      ],
+      "justification": "Negative payment branch leading to reminder count evaluation."
+    },
+    {
+      "refs": [
+        "guard:b_rem->n_engage_lawyer",
+        "action:n_engage_lawyer"
+      ],
+      "verbatim_texts": [
+        "If there are more than three reminders, engage a lawyer."
+      ],
+      "justification": "Models the threshold branch (>3), lawyer engagement action, and terminal endpoint."
+    },
+    {
+      "refs": [
+        "guard:b_rem->n_send_reminder",
+        "action:n_send_reminder"
+      ],
+      "verbatim_texts": [
+        "If there are three or fewer reminders, send a reminder."
+      ],
+      "justification": "Models the complementary threshold (<=3), reminder action, and terminal endpoint."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:start",
+      "kind": "init",
+      "node_id": "start",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:start",
+        "start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init start"
+    },
+    {
+      "ref_id": "action:n_check_order",
+      "kind": "action",
+      "node_id": "n_check_order",
+      "gateway": "",
+      "string_value": "check customer order",
+      "aliases": [
+        "action:n_check_order",
+        "n_check_order"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_order: check customer order"
+    },
+    {
+      "ref_id": "action:n_check_morale",
+      "kind": "action",
+      "node_id": "n_check_morale",
+      "gateway": "",
+      "string_value": "check payment morale",
+      "aliases": [
+        "action:n_check_morale",
+        "n_check_morale"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_morale: check payment morale"
+    },
+    {
+      "ref_id": "action:n_check_status",
+      "kind": "action",
+      "node_id": "n_check_status",
+      "gateway": "",
+      "string_value": "check customer status",
+      "aliases": [
+        "action:n_check_status",
+        "n_check_status"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_status: check customer status"
+    },
+    {
+      "ref_id": "action:n_whole_data",
+      "kind": "action",
+      "node_id": "n_whole_data",
+      "gateway": "",
+      "string_value": "enter data and take order",
+      "aliases": [
+        "action:n_whole_data",
+        "n_whole_data"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_whole_data: enter data and take order"
+    },
+    {
+      "ref_id": "action:n_check_avail",
+      "kind": "action",
+      "node_id": "n_check_avail",
+      "gateway": "",
+      "string_value": "check item availability",
+      "aliases": [
+        "action:n_check_avail",
+        "n_check_avail"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_avail: check item availability"
+    },
+    {
+      "ref_id": "action:n_out_stock",
+      "kind": "action",
+      "node_id": "n_out_stock",
+      "gateway": "",
+      "string_value": "start production",
+      "aliases": [
+        "action:n_out_stock",
+        "n_out_stock"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_out_stock: start production"
+    },
+    {
+      "ref_id": "action:n_produce",
+      "kind": "action",
+      "node_id": "n_produce",
+      "gateway": "",
+      "string_value": "produce article",
+      "aliases": [
+        "action:n_produce",
+        "n_produce"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_produce: produce article"
+    },
+    {
+      "ref_id": "action:n_conf",
+      "kind": "action",
+      "node_id": "n_conf",
+      "gateway": "",
+      "string_value": "send order confirmation",
+      "aliases": [
+        "action:n_conf",
+        "n_conf"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_conf: send order confirmation"
+    },
+    {
+      "ref_id": "action:n_inv_del",
+      "kind": "action",
+      "node_id": "n_inv_del",
+      "gateway": "",
+      "string_value": "send invoice and deliver product",
+      "aliases": [
+        "action:n_inv_del",
+        "n_inv_del"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_inv_del: send invoice and deliver product"
+    },
+    {
+      "ref_id": "action:n_check_pay",
+      "kind": "action",
+      "node_id": "n_check_pay",
+      "gateway": "",
+      "string_value": "check payment status",
+      "aliases": [
+        "action:n_check_pay",
+        "n_check_pay"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_pay: check payment status"
+    },
+    {
+      "ref_id": "action:n_close",
+      "kind": "action",
+      "node_id": "n_close",
+      "gateway": "",
+      "string_value": "close order",
+      "aliases": [
+        "action:n_close",
+        "n_close"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_close: close order"
+    },
+    {
+      "ref_id": "action:n_check_rem",
+      "kind": "action",
+      "node_id": "n_check_rem",
+      "gateway": "",
+      "string_value": "check number of reminders",
+      "aliases": [
+        "action:n_check_rem",
+        "n_check_rem"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_rem: check number of reminders"
+    },
+    {
+      "ref_id": "action:n_engage_lawyer",
+      "kind": "action",
+      "node_id": "n_engage_lawyer",
+      "gateway": "",
+      "string_value": "engage lawyer",
+      "aliases": [
+        "action:n_engage_lawyer",
+        "n_engage_lawyer"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_engage_lawyer: engage lawyer"
+    },
+    {
+      "ref_id": "action:n_send_reminder",
+      "kind": "action",
+      "node_id": "n_send_reminder",
+      "gateway": "",
+      "string_value": "send reminder",
+      "aliases": [
+        "action:n_send_reminder",
+        "n_send_reminder"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_send_reminder: send reminder"
+    },
+    {
+      "ref_id": "action:n_reject",
+      "kind": "action",
+      "node_id": "n_reject",
+      "gateway": "",
+      "string_value": "reject order",
+      "aliases": [
+        "action:n_reject",
+        "n_reject"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_reject: reject order"
+    },
+    {
+      "ref_id": "branch:b_cust",
+      "kind": "branch",
+      "node_id": "b_cust",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_cust",
+        "b_cust"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_cust (XOR)"
+    },
+    {
+      "ref_id": "branch:b_morale",
+      "kind": "branch",
+      "node_id": "b_morale",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_morale",
+        "b_morale"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_morale (XOR)"
+    },
+    {
+      "ref_id": "branch:b_status",
+      "kind": "branch",
+      "node_id": "b_status",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_status",
+        "b_status"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_status (XOR)"
+    },
+    {
+      "ref_id": "branch:b_avail",
+      "kind": "branch",
+      "node_id": "b_avail",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_avail",
+        "b_avail"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_avail (XOR)"
+    },
+    {
+      "ref_id": "branch:b_pay",
+      "kind": "branch",
+      "node_id": "b_pay",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_pay",
+        "b_pay"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_pay (XOR)"
+    },
+    {
+      "ref_id": "branch:b_rem",
+      "kind": "branch",
+      "node_id": "b_rem",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_rem",
+        "b_rem"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_rem (XOR)"
+    },
+    {
+      "ref_id": "converge:c_continue",
+      "kind": "converge",
+      "node_id": "c_continue",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_continue",
+        "c_continue"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_continue"
+    },
+    {
+      "ref_id": "converge:c_product_ready",
+      "kind": "converge",
+      "node_id": "c_product_ready",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_product_ready",
+        "c_product_ready"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_product_ready"
+    },
+    {
+      "ref_id": "converge:c_reject",
+      "kind": "converge",
+      "node_id": "c_reject",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_reject",
+        "c_reject"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_reject"
+    },
+    {
+      "ref_id": "end:e_ok",
+      "kind": "end",
+      "node_id": "e_ok",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_ok",
+        "e_ok"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_ok"
+    },
+    {
+      "ref_id": "end:e_rejected",
+      "kind": "end",
+      "node_id": "e_rejected",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_rejected",
+        "e_rejected"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_rejected"
+    },
+    {
+      "ref_id": "end:e_lawyer",
+      "kind": "end",
+      "node_id": "e_lawyer",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_lawyer",
+        "e_lawyer"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_lawyer"
+    },
+    {
+      "ref_id": "end:e_reminder",
+      "kind": "end",
+      "node_id": "e_reminder",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_reminder",
+        "e_reminder"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_reminder"
+    },
+    {
+      "ref_id": "guard:b_cust->n_check_morale",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'Registered'",
+      "aliases": [
+        "guard:b_cust->n_check_morale"
+      ],
+      "from": "b_cust",
+      "to": "n_check_morale",
+      "source_line": "guard b_cust->n_check_morale: v_cust = 'Registered'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_check_morale",
+        "condition": "v_cust = 'Registered'"
+      }
+    },
+    {
+      "ref_id": "guard:b_cust->n_check_status",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'New'",
+      "aliases": [
+        "guard:b_cust->n_check_status"
+      ],
+      "from": "b_cust",
+      "to": "n_check_status",
+      "source_line": "guard b_cust->n_check_status: v_cust = 'New'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_check_status",
+        "condition": "v_cust = 'New'"
+      }
+    },
+    {
+      "ref_id": "guard:b_cust->n_whole_data",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'Wholesaler'",
+      "aliases": [
+        "guard:b_cust->n_whole_data"
+      ],
+      "from": "b_cust",
+      "to": "n_whole_data",
+      "source_line": "guard b_cust->n_whole_data: v_cust = 'Wholesaler'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_whole_data",
+        "condition": "v_cust = 'Wholesaler'"
+      }
+    },
+    {
+      "ref_id": "guard:b_morale->c_continue",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_morale = 'Good'",
+      "aliases": [
+        "guard:b_morale->c_continue"
+      ],
+      "from": "b_morale",
+      "to": "c_continue",
+      "source_line": "guard b_morale->c_continue: v_morale = 'Good'",
+      "guard": {
+        "from": "b_morale",
+        "to": "c_continue",
+        "condition": "v_morale = 'Good'"
+      }
+    },
+    {
+      "ref_id": "guard:b_morale->c_reject",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_morale = 'Bad'",
+      "aliases": [
+        "guard:b_morale->c_reject"
+      ],
+      "from": "b_morale",
+      "to": "c_reject",
+      "source_line": "guard b_morale->c_reject: v_morale = 'Bad'",
+      "guard": {
+        "from": "b_morale",
+        "to": "c_reject",
+        "condition": "v_morale = 'Bad'"
+      }
+    },
+    {
+      "ref_id": "guard:b_status->c_continue",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_status = 'Other'",
+      "aliases": [
+        "guard:b_status->c_continue"
+      ],
+      "from": "b_status",
+      "to": "c_continue",
+      "source_line": "guard b_status->c_continue: v_status = 'Other'",
+      "guard": {
+        "from": "b_status",
+        "to": "c_continue",
+        "condition": "v_status = 'Other'"
+      }
+    },
+    {
+      "ref_id": "guard:b_status->c_reject",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_status = 'EndCustomer'",
+      "aliases": [
+        "guard:b_status->c_reject"
+      ],
+      "from": "b_status",
+      "to": "c_reject",
+      "source_line": "guard b_status->c_reject: v_status = 'EndCustomer'",
+      "guard": {
+        "from": "b_status",
+        "to": "c_reject",
+        "condition": "v_status = 'EndCustomer'"
+      }
+    },
+    {
+      "ref_id": "guard:b_avail->c_product_ready",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_avail = 'InStock'",
+      "aliases": [
+        "guard:b_avail->c_product_ready"
+      ],
+      "from": "b_avail",
+      "to": "c_product_ready",
+      "source_line": "guard b_avail->c_product_ready: v_avail = 'InStock'",
+      "guard": {
+        "from": "b_avail",
+        "to": "c_product_ready",
+        "condition": "v_avail = 'InStock'"
+      }
+    },
+    {
+      "ref_id": "guard:b_avail->n_out_stock",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_avail = 'OutOfStock'",
+      "aliases": [
+        "guard:b_avail->n_out_stock"
+      ],
+      "from": "b_avail",
+      "to": "n_out_stock",
+      "source_line": "guard b_avail->n_out_stock: v_avail = 'OutOfStock'",
+      "guard": {
+        "from": "b_avail",
+        "to": "n_out_stock",
+        "condition": "v_avail = 'OutOfStock'"
+      }
+    },
+    {
+      "ref_id": "guard:b_pay->n_close",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pay = 'Yes'",
+      "aliases": [
+        "guard:b_pay->n_close"
+      ],
+      "from": "b_pay",
+      "to": "n_close",
+      "source_line": "guard b_pay->n_close: v_pay = 'Yes'",
+      "guard": {
+        "from": "b_pay",
+        "to": "n_close",
+        "condition": "v_pay = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_pay->n_check_rem",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pay = 'No'",
+      "aliases": [
+        "guard:b_pay->n_check_rem"
+      ],
+      "from": "b_pay",
+      "to": "n_check_rem",
+      "source_line": "guard b_pay->n_check_rem: v_pay = 'No'",
+      "guard": {
+        "from": "b_pay",
+        "to": "n_check_rem",
+        "condition": "v_pay = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rem->n_engage_lawyer",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rem = '>3'",
+      "aliases": [
+        "guard:b_rem->n_engage_lawyer"
+      ],
+      "from": "b_rem",
+      "to": "n_engage_lawyer",
+      "source_line": "guard b_rem->n_engage_lawyer: v_rem = '>3'",
+      "guard": {
+        "from": "b_rem",
+        "to": "n_engage_lawyer",
+        "condition": "v_rem = '>3'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rem->n_send_reminder",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rem = '<=3'",
+      "aliases": [
+        "guard:b_rem->n_send_reminder"
+      ],
+      "from": "b_rem",
+      "to": "n_send_reminder",
+      "source_line": "guard b_rem->n_send_reminder: v_rem = '<=3'",
+      "guard": {
+        "from": "b_rem",
+        "to": "n_send_reminder",
+        "condition": "v_rem = '<=3'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 18,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 28,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 28,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 28,
+    "total_mappable_targets": 42,
+    "input_text_length": 1011,
+    "element_count": 42
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 2): i1:the process should be continued from the beginning -> i5:is less than 2 -> i6:the process should still be continued -> i8:Similarly, if the value of "x" is greater than 2 -> i2:the process should be continued
+- [N2] Omitted trace (input 3): i1:the process should be continued from the beginning -> i5:is less than 2 -> i6:the process should still be continued -> i5:is less than 2
+
+Addition
+- [N3] Node-level addition: action(n6,"Check x again") (reason: The source does not explicitly mention an action to 'Check x again'; it only states 'Similarly, if the value...' which directly introduces another condition.)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n6,"Check x again") -> branch(b2,XOR) -> action(n7,"Continue the process") -> converge(c2) -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n6,"Check x again") -> branch(b2,XOR) -> action(n8,"Continue the process") -> converge(c2) -> end(e1)
+- [N6] Within matched traces (0->0) added: converge(c1)
+- [N7] Within matched traces (0->0) added: action(n6,"Check x again")
+- [N8] Within matched traces (0->0) added: converge(c2)
+- [N9] Within matched traces (0->0) added: end(e1)
+- [N10] Within matched traces (1->1) added: converge(c1)
+- [N11] Within matched traces (1->1) added: action(n6,"Check x again")
+- [N12] Within matched traces (1->1) added: converge(c2)
+- [N13] Within matched traces (1->1) added: end(e1)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n3,"v1 = 'greater'") -> guard(b2,n7,"v1 = 'greater'"); source=i4:is greater than 2; reason=The source specifies a numerical comparison (> 2), but the model uses a string equality ('greater').
+- [N15] Node-level mutation: element=guard(b1,n4,"v1 = 'less'") -> guard(b2,n8,"v1 = 'less'"); source=i5:is less than 2; reason=The source specifies a numerical comparison (< 2), but the model uses a string equality ('less').

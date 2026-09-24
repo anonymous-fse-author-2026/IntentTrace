@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Enter Metadata;
+:flow_choice: Process Flow Selection ({Supplier_Integration, In_Patient_Case}); <<objectSignal>>
+if () then ([flow_choice = 'In_Patient_Case'])
+:IN-Patient Step;
+:Register Case;
+:Handle Claim;
+:Extract Data from Suppliers Again;
+:Enter Data on Patient Record or Confirm IN-Patient Status;
+:Receive Payment;
+:Send Data Back to Suppliers;
+:End Process: Payment Received;
+stop
+else ([flow_choice = 'Supplier_Integration'])
+split
+:Send Data to Suppliers;
+split again
+:Create Claim;
+end split
+:Extract and Transfer Data from Suppliers to Doctor;
+:Confirm GOP;
+:End Process: GOP Confirmed;
+stop
+endif
+@enduml

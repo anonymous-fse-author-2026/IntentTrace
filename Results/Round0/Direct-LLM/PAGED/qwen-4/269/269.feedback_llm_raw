@@ -1,0 +1,5 @@
+
+
+- `action(n18, "repeat election process")` & `precedence(n18, n19)`: The source states "If the voting fails, another election should be conducted," which requires a control-flow cycle back to the election/counting phase (`n13`/`n14`). The model instead routes linearly to `n19` and `e3`, omitting the necessary loop (SMC3, SMC4).
+- `action(n19, "conclude public meeting and inform candidate")` & `end(e3)`: Hallucinates behavior for the failure path. The source explicitly ties concluding the meeting and informing the candidate to the success path ("if the voting is successful... After announcing the result, the public meeting should be concluded..."), not to a failed vote (SMC1, SMC2).
+- `guard(b2, n18, v2 = 'Failed')` routing: Terminating at `e3` on a failed vote contradicts the source's directive to run another election, breaking the intended iterative progression and path mirroring (SMC4, SMC5).

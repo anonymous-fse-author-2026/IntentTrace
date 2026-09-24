@@ -1,0 +1,9 @@
+- `action(n1, "start DMS Parts Provision Process")`: Hallucinates an undocumented step; the description explicitly states "the first step is to gather information about the part".
+- `actor(a_default, "Default", [...])`: Assigns responsibilities to "Default" instead of the documented "DMS Parts Provision Team".
+- `defines(v1, "is part available locally", {})`: Uses an empty range `{}` that fails to capture the binary decision space implied by "If the part is found to be available locally" and "not available locally".
+- `branch(b1, XOR)` / missing guards: Omits `guard` statements on the outgoing edges, failing to encode the explicit routing conditions "If the part is found to be available locally" and "if the part is not available locally".
+- `action(n4, "is part available locally")`: Incorrectly models the decision criterion as a discrete procedural task rather than a control-flow condition, contradicting the seamless source phrasing "check the availability... If the part is found...".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

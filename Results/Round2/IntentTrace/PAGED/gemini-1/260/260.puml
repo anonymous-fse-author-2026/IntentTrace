@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:the process begins;
+:receiving the invoice;
+:it is sorted per client;
+:it is then sorted per vendor;
+:attach the invoice entry form to the invoice;
+:the required information is entered onto the form;
+:the completeness of the invoice is checked;
+:v1: check completeness of invoice ({Complete, Incomplete}); <<objectSignal>>
+if () then ([v1 = "Incomplete"])
+:If the invoice is not complete;
+:the process ends;
+stop
+else ([v1 = "Complete"])
+:the information for the SLA is entered. The date for completion is also entered and the priority is checked.;
+:the priority is checked;
+:v2: check priority level ({High, Low}); <<objectSignal>>
+if () then ([v2 = "High"])
+:If the priority is high;
+:a red stamp is placed on the entry invoice;
+else ([v2 = "Low"])
+->;
+endif
+repeat :;
+:The invoice compliance is then checked;
+:v3: check compliance status ({Complete, Incomplete}); <<objectSignal>>
+backward:If it is not complete, the check continues.;
+repeat while () is ([v3 = "Incomplete"]) not ([v3 = "Complete"])
+:If it is complete, the process continues.;
+:v4: case type ({Experienced, Normal, Other}); <<objectSignal>>
+switch ()
+case ([v4 = "Experienced"])
+:If the invoice needs to be sent to experienced staff;
+:the non-compliance invoice is processed;
+:Finally, the client is called and information is requested.;
+:The invoice is then batched and allocated to DEO;
+:and the process ends;
+stop
+case ([v4 = "Normal"])
+:the client is called;
+case ([v4 = "Other"])
+:a postal mail is sent requesting complete information and the process ends.;
+stop
+endswitch
+endif
+@enduml

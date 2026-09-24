@@ -1,0 +1,9 @@
+- action(n1, "start"): hallucinated action; the text states "start by booking a bus", indicating that booking a bus is the initial step, rather than a distinct "start" action.
+- The model omits the behavior "receive the necessary information", which the text explicitly states occurs "After checking the availability".
+- action(n4, "end - nok") and action(n6, "end - ok"): hallucinated actions; the text specifies that "the process of booking the bus will end", which corresponds directly to end nodes, not additional action steps.
+- defines(v1, "check availability", {}): the variable range is empty, but the source text specifies the explicit values "nok" and "ok".
+- branch(b1, XOR): the outgoing control-flow edges from the decision gateway (precedence(b1, n4) and precedence(b1, n5)) lack `guard` statements to evaluate the conditional text "If the availability is 'nok'" and "if the availability is 'ok'".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.

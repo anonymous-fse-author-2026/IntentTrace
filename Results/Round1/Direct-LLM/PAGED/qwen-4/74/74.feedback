@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i7:Once the data is sent to suppliers (reason: This temporal/ordering condition is clearly stated in the source but has no corresponding guard, label, or sequencing logic in the model.)
+- [N2] Within matched traces (0->1) omitted: i3:proceed to the IN-Patient step
+- [N3] Within matched traces (0->1) omitted: i7:Once the data is sent to suppliers
+- [N4] Within matched traces (1->1) omitted: i3:proceed to the IN-Patient step
+- [N5] Within matched traces (1->1) omitted: i6:create a claim
+
+Addition
+- [N6] Node-level addition: label(b3,n3,"Yes") (reason: The labels carry the text 'Yes', which implies conditional routing. The source describes a simultaneous (AND) split with no 'Yes' conditions or choices.)
+- [N7] Node-level addition: label(b3,n4,"Yes") (reason: The labels carry the text 'Yes', which implies conditional routing. The source describes a simultaneous (AND) split with no 'Yes' conditions or choices.)
+- [N8] Node-level addition: label(b3,n5,"Yes") (reason: The labels carry the text 'Yes', which implies conditional routing. The source describes a simultaneous (AND) split with no 'Yes' conditions or choices.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n3,"IN-Patient Step") -> end(e4)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"Start Process") -> action(n2,"Enter Metadata") -> branch(b3,AND) -> action(n5,"Create Claim") -> end(e4)
+- [N11] Within matched traces (0->1) added: action(n9,"Register Case")
+- [N12] Within matched traces (0->1) added: action(n10,"Handle Claim")
+- [N13] Within matched traces (0->1) added: action(n12,"Enter Data on Patient Record or Confirm IN-Patient Status")
+- [N14] Within matched traces (0->1) added: action(n13,"Send Data Back to Suppliers")
+- [N15] Within matched traces (0->1) added: action(n14,"Receive Payment")
+- [N16] Within matched traces (0->1) added: action(n15,"End Process: Payment Received")
+- [N17] Within matched traces (1->1) added: action(n4,"Send Data to Suppliers")
+- [N18] Within matched traces (1->1) added: action(n7,"Confirm GOP")
+
+Mutation
+- [N19] Node-level mutation: element=action(n15,"End Process: Payment Received"); source=i19:conclude the process; reason=The element content 'End Process: Payment Received' invents the qualifier 'Payment Received', which is not present in the source unit. This drifts from the strict source text.
+
+Permutation
+- [N20] Within matched traces (1->1) reordered: expected [i14:Extract the data from the suppliers] but observed [action(n6,"Extract and Transfer Data from Suppliers to Doctor")] elsewhere; in its place the model has [action(n10,"Handle Claim")]
+- [N21] Within matched traces (1->1) reordered: expected [i18:send the data back to the suppliers] but observed [action(n13,"Send Data Back to Suppliers")] elsewhere; in its place the model has [action(n14,"Receive Payment")]

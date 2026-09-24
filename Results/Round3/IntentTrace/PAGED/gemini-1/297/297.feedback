@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 2): i1:start the process -> i2:empty the mailbox -> i3:Check if the mailbox is empty -> i4:if not -> i5:continue the process -> i8:Check if the mailbox is empty again -> i4:if not
+
+Addition
+- [N2] Node-level addition: guard(b8,n6,"v8 = 'Check again'") (reason: The model introduces an XOR decision branching between 'Check again' and 'Verify', but the source text describes these as sequential steps without any such decision point.)
+- [N3] Node-level addition: guard(b8,n9,"v8 = 'Verify'") (reason: The model introduces an XOR decision branching between 'Check again' and 'Verify', but the source text describes these as sequential steps without any such decision point.)
+- [N4] Within matched traces (1->1) added: action(n4,"end the process")
+- [N5] Within matched traces (1->1) added: end(e1)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b5,n17,"v5 = 'Simultaneously'") -> guard(b5,n29,"v5 = 'Hand letter'"); source=i25:Simultaneously; reason=The source specifies 'Simultaneously', which indicates a parallel (AND) execution. The model incorrectly implements this as an exclusive (XOR) decision branch with invented decision guards, altering the core behaviour.

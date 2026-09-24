@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:The process then checks again if the request is approved or not. (reason: The source explicitly prescribes a second verification step. The model collapses this entirely into structural branch elements and guards, omitting the actionable instruction required by the text.)
+- [N2] Node-level omission: i6:Finally, after the expenses are paid out, the process comes to an end. (reason: The closing phase is not faithfully implemented; the expected final payout confirmation and termination sequence is replaced by an unsupported placeholder action, leaving the source unit uncovered.)
+- [N3] Omitted trace (input 1): i1:the process begins by entering expenses. -> i2:generate a spreadsheet -> i3:the request can be approved or disapproved -> i4:the expenses can be paid out -> i5:The process then checks again if the request is approved or not. -> i1:the process begins by entering expenses.
+- [N4] Omitted trace (input 2): i1:the process begins by entering expenses. -> i2:generate a spreadsheet -> i3:the request can be approved or disapproved -> i4:the expenses can be paid out -> i5:The process then checks again if the request is approved or not. -> i6:Finally, after the expenses are paid out, the process comes to an end.
+
+Addition
+- [N5] Node-level addition: action(n4,"Approval Check 1") (reason: Introduces explicit 'Check' and 'End Process' action nodes that have no basis in the segmented source units; the conditional logic and process termination are already sufficiently represented by the branch gateways, guards, and structural end node.)
+- [N6] Node-level addition: action(n6,"Approval Check 2") (reason: Introduces explicit 'Check' and 'End Process' action nodes that have no basis in the segmented source units; the conditional logic and process termination are already sufficiently represented by the branch gateways, guards, and structural end node.)
+- [N7] Node-level addition: action(n7,"End Process") (reason: Introduces explicit 'Check' and 'End Process' action nodes that have no basis in the segmented source units; the conditional logic and process termination are already sufficiently represented by the branch gateways, guards, and structural end node.)
+- [N8] Node-level addition: guard(b2,n7,"v2 = \"Approved\"") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Node-level addition: guard(b2,c_loop,"v2 = \"Disapproved\"") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Within matched traces (0->0) added: init(i1)
+- [N11] Within matched traces (0->0) added: converge(c_merge)
+- [N12] Within matched traces (0->0) added: action(n4,"Approval Check 1")
+- [N13] Within matched traces (0->0) added: action(n6,"Approval Check 2")
+- [N14] Within matched traces (0->0) added: branch(b2,XOR)
+- [N15] Within matched traces (0->0) added: action(n7,"End Process")
+- [N16] Within matched traces (0->0) added: end(e1)
+
+Mutation
+- [N17] Node-level mutation: element=action(n5,"Payout"); source=i4:the expenses can be paid out; reason=Drops the subject 'expenses' and the modal qualifier 'can be', altering the source's conditional permission into a bare deterministic imperative, which violates the strict granularity requirement.

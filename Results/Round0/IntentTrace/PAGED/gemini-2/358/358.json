@@ -1,0 +1,515 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "initial decision"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "give priority"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "second decision"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "give priority"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "lookup vendor on SAP"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "vendor exists in SAP"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "need vendor master record"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "end due to missing vendor master"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "enter invoice in SAP"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "invoice entry decision"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "need vendor master record"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "end due to missing vendor master"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "give priority"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "priority decision again"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "enter invoice in SAP"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "place invoices in normal Outbox"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "initial decision",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "second decision",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "vendor exists in SAP",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "invoice entry decision",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "priority decision again",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "b2",
+        "n5",
+        "n6",
+        "n7",
+        "b3",
+        "n8",
+        "n9",
+        "e1",
+        "n10",
+        "n11",
+        "b4",
+        "n12",
+        "n13",
+        "e2",
+        "n14",
+        "n15",
+        "b5",
+        "n16",
+        "n17",
+        "e3",
+        "n18",
+        "n19",
+        "e4",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "e4"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "n19"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n5",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n8",
+      "condition": "v3 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n10",
+      "condition": "v3 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n12",
+      "condition": "v4 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n14",
+      "condition": "v4 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n16",
+      "condition": "v5 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n17",
+      "condition": "v5 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\""
+    },
+    {
+      "id": "i3",
+      "content": "then we continue the process"
+    },
+    {
+      "id": "i4",
+      "content": "we continue the process"
+    },
+    {
+      "id": "i5",
+      "content": "If the answer is \"No\" again"
+    },
+    {
+      "id": "i6",
+      "content": "If the answer is \"No\""
+    },
+    {
+      "id": "i7",
+      "content": "However, if the answer is \"Yes\""
+    },
+    {
+      "id": "i8",
+      "content": "then we give it priority"
+    },
+    {
+      "id": "i9",
+      "content": "After that"
+    },
+    {
+      "id": "i10",
+      "content": "we look up the Vendor on SAP"
+    },
+    {
+      "id": "i11",
+      "content": "then we need a Vendor master record"
+    },
+    {
+      "id": "i12",
+      "content": "we need a Vendor master record"
+    },
+    {
+      "id": "i13",
+      "content": "and the process ends."
+    },
+    {
+      "id": "i14",
+      "content": "But if the answer is \"Yes\""
+    },
+    {
+      "id": "i15",
+      "content": "then we enter the invoice in SAP"
+    },
+    {
+      "id": "i16",
+      "content": "And if the answer is \"Yes\" again"
+    },
+    {
+      "id": "i17",
+      "content": "we place the entered invoices in the normal Outbox"
+    }
+  ]
+}

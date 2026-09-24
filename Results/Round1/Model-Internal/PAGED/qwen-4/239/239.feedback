@@ -1,0 +1,43 @@
+Omission
+- [N1] Node-level omission: i7:availability needs to be checked again (reason: The model completely omits the mandatory retry step for availability checking, skipping directly to process termination instead of looping back or re-checking as instructed.)
+- [N2] Within matched traces (0->1) omitted: i4:At the same time, two steps need to be completed:
+- [N3] Within matched traces (0->1) omitted: i7:availability needs to be checked again
+- [N4] Within matched traces (1->2) omitted: i4:At the same time, two steps need to be completed:
+- [N5] Within matched traces (2->1) omitted: i4:At the same time, two steps need to be completed:
+- [N6] Within matched traces (2->1) omitted: i7:availability needs to be checked again
+- [N7] Within matched traces (3->2) omitted: i4:At the same time, two steps need to be completed:
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Unsubstantiated generic 'start' action; process initiation is already fully covered by init:i1 and the first instructional step.)
+- [N9] Node-level addition: action(n5,"End") (reason: Invents an explicit end node on the rejection path that is not described in the source text.)
+- [N10] Node-level addition: action(n12,"End") (reason: Invents an explicit end action after shipping; the source simply concludes the description without naming a terminal step.)
+- [N11] Node-level addition: label(n10,n11,"12") (reason: Contains arbitrary numeric content '12' with no basis in the source text, adding unsupported information to the connection.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N13] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"End") -> end(e2)
+- [N14] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n10,"Assemble Bike") -> action(n11,"Ship Product") -> action(n12,"End") -> end(e3)
+- [N15] Within matched traces (0->1) added: init(i1)
+- [N16] Within matched traces (0->1) added: action(n1,"start")
+- [N17] Within matched traces (0->1) added: converge(c1)
+- [N18] Within matched traces (1->2) added: init(i1)
+- [N19] Within matched traces (1->2) added: action(n1,"start")
+- [N20] Within matched traces (1->2) added: converge(c1)
+- [N21] Within matched traces (1->2) added: action(n8,"Is Backorder Required?")
+- [N22] Within matched traces (1->2) added: action(n12,"End")
+- [N23] Within matched traces (1->2) added: end(e3)
+- [N24] Within matched traces (2->1) added: init(i1)
+- [N25] Within matched traces (2->1) added: action(n1,"start")
+- [N26] Within matched traces (2->1) added: action(n3,"Is Order Rejected?")
+- [N27] Within matched traces (2->1) added: converge(c1)
+- [N28] Within matched traces (3->2) added: init(i1)
+- [N29] Within matched traces (3->2) added: action(n1,"start")
+- [N30] Within matched traces (3->2) added: action(n3,"Is Order Rejected?")
+- [N31] Within matched traces (3->2) added: converge(c1)
+- [N32] Within matched traces (3->2) added: action(n8,"Is Backorder Required?")
+- [N33] Within matched traces (3->2) added: action(n12,"End")
+- [N34] Within matched traces (3->2) added: end(e3)
+
+Mutation
+- [N35] Node-level mutation: element=action(n4,"Reject Order") -> guard(b1,n4,"v1 = true"); source=i2:If the order is to be rejected; reason=The source explicitly states that the process should simply continue if the order is rejected. The model mutates this by forcing an explicit 'Reject Order' action and terminating that path, altering the described outcome and flow.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=False].

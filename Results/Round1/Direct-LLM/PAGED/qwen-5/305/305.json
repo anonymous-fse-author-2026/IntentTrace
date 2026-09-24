@@ -1,0 +1,161 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Invoice arrives on Ground Floor"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Confirm payment possibility"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Add cost centers and complete process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Reject invoice"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Return invoice to client"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Can client pay?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n6",
+        "n8",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process for the Ground Floor, we start when the invoice arrives."
+    },
+    {
+      "id": "i2",
+      "content": "The client is then asked to confirm if payment is possible."
+    },
+    {
+      "id": "i3",
+      "content": "If the answer is \"yes\""
+    },
+    {
+      "id": "i4",
+      "content": "we add the relevant costs center to the invoice and the process is complete."
+    },
+    {
+      "id": "i5",
+      "content": "However, if the answer is \"no\""
+    },
+    {
+      "id": "i6",
+      "content": "we reject the invoice."
+    },
+    {
+      "id": "i7",
+      "content": "If the invoice is rejected, we return it to the client"
+    },
+    {
+      "id": "i8",
+      "content": "and the process ends."
+    }
+  ]
+}

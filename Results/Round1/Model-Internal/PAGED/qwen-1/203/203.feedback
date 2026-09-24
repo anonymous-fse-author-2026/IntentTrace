@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i7:Once the funds are disbursed,
+- [N2] Within matched traces (1->2) omitted: i5:the process ends.
+
+Addition
+- [N3] Node-level addition: action(n1,"Start the loan process") (reason: Invents a preliminary 'Start the loan process' step that lacks any supporting instruction, signal, or qualifier in the source text.)
+- [N4] Node-level addition: action(n7,"Process ends") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Node-level addition: action(n8,"Process ends") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start the loan process") -> action(n2,"Check loan application") -> action(n3,"Application rejected") -> branch(b1,XOR) -> action(n5,"Special terms agreed upon") -> branch(b2,XOR) -> action(n6,"Disburse funds") -> action(n7,"Process ends") -> end(e2)
+- [N7] Within matched traces (0->0) added: action(n1,"Start the loan process")
+- [N8] Within matched traces (1->2) added: action(n1,"Start the loan process")
+- [N9] Within matched traces (1->2) added: action(n3,"Application rejected")
+- [N10] Within matched traces (1->2) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the application is rejected,; reason=Guards replace the explicit business condition with generic abstract values ('Yes'/'No'), stripping away the specific semantic content and altering the intended decision logic.
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:is rejected; reason=Guards replace the explicit business condition with generic abstract values ('Yes'/'No'), stripping away the specific semantic content and altering the intended decision logic.
+- [N13] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'") -> guard(b2,n8,"v2 = 'No'"); source=i6:if special terms are agreed upon,; reason=Guards substitute the actual textual condition with abstract variable assignments ('Yes'/'No'), failing to encode the source requirement and distorting the route selection.

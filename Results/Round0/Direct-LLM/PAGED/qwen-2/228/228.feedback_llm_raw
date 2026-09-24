@@ -1,0 +1,8 @@
+
+
+- `branch(b1)` through `branch(b6)`: All conditional splits lack `guard(...)` statements, routing flows unconditionally via `precedence` instead of enforcing the source's explicit "if/otherwise" decision logic (violates SMC1, SMC4).
+- `defines(v1, ...)` through `defines(v6, ...)`: Each decision variable uses an empty range `{}`, failing to represent the boolean/presence semantics required by source conditions like "if we can capture data" or "if the genre is missing" (violates SMC6).
+- `action(n12, "continue process if additional genres present")`: The source only specifies continuing when there are *no* additional genres; introducing a path for when additional genres *are* present hallucinates undocumented behavior (violates SMC1).
+- `action(n18, "process continues if additional samples present")`: The source only addresses ending the process when there are *no* additional samples; creating a continuation path fabricates behavior and leaves a dangling node with no outgoing precedence edge (violates SMC1, SMC4, SMC5).
+- `branch(b7, AND)`: Declares a parallel split to concurrently execute "download the sample" (`n15`) and proceed to evaluate additional samples (`c3`), whereas the source describes a strictly sequential progression with no concurrent steps (violates SMC4).
+- `action(n19, "process ends if sample not missing and no additional samples")`: Fabricates a compound condition merging two separate checks; the source simply states "Otherwise, if there are no additional samples, the process ends" without requiring prior verification of both conditions simultaneously (violates SMC1, SMC2).

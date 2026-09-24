@@ -1,0 +1,21 @@
+Addition
+- [N1] Node-level addition: action(n1,"start process") (reason: Content 'start process' is invented; initiation is structurally handled by init:i1 and no source unit specifies a separate startup action.)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n10,"end process") -> end(e2)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n11,"invite declarant") -> action(n12,"end process") -> end(e3)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"start process")
+- [N6] Within matched traces (1->1) added: init(i1)
+- [N7] Within matched traces (1->1) added: action(n1,"start process")
+- [N8] Within matched traces (2->2) added: init(i1)
+- [N9] Within matched traces (2->2) added: action(n1,"start process")
+- [N10] Within matched traces (2->2) added: converge(c1)
+- [N11] Within matched traces (2->2) added: action(n9,"is declaration needed")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i3:If it needs to be sent back, the process ends.; reason=Guard replaces the natural language condition with an arbitrary variable assignment ('v1 = 'No'') that appears nowhere in the source.
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i4:However, if we need to check the income, we continue with the process.; reason=Guard substitutes the source condition with an invented boolean check ('v1 = 'Yes'') instead of reflecting the income requirement.
+- [N14] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i8:If we need to check the declaration, the process ends.; reason=Guard uses abstract logic ('v2 = 'Yes'') rather than the stated requirement to check the declaration.
+- [N15] Node-level mutation: element=guard(b2,n11,"v2 = 'No'"); source=i9:Otherwise, if we need to invite the declarant, the process also ends.; reason=Guard incorrectly assigns 'v2 = 'No'' instead of capturing the condition to invite the declarant.
+
+Permutation
+- [N16] Within matched traces (1->1) reordered: expected [i6:Then, we make a decision.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"is declaration needed")]

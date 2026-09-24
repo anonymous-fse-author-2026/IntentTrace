@@ -1,0 +1,10 @@
+- `guard(...)` statements: Completely omitted. The source explicitly defines branching conditions ("If the amount is less than 200 €...", "if the amount is 200 € or more...", "If the expense report is deemed acceptable...", "if the expense report is not satisfactory..."), requiring `guard` declarations to attach these conditions to the outgoing edges of `branch(b1, XOR)` and `branch(b2, XOR)`.
+- `defines(v1, ...)` and `defines(v2, ...)`: Declared with empty ranges `{}`, failing to reflect the binary decision contexts implied by the source text. Valid value sets must be specified to properly scope the decision variables.
+- `action(n3, "approve expense report")`: Lacks any outgoing `precedence` edge, leaving the "<200€" execution path disconnected from a termination point. The description implies this approval concludes the respective branch, violating complete init-to-end progression.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Control-flow semantics are ungrounded; without corresponding `guard` constraints, the model does not enforce the mutually exclusive conditions mandated by the source text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=1 and out=0. | DSL: action(n3,"approve expense report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n3 | DSL: action(n3,"approve expense report")

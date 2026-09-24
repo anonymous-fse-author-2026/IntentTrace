@@ -1,0 +1,464 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start: Initiate New Resupply Cycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check Inventory Levels"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Generate Equal to or below minimum Report"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Generate Above Minimum Report"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "End: Process Ends (Above Minimum)"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Create Purchase Order (PO)"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Review PO"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Print and Release PO"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Rework PO"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Reserve Funds for Released POs"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Mail POs to Supplier"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Receive Packing Slip"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Receive Inventory"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Proceed to Receive Invoice"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Proceed to Receive Packing Slip"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "Three-way Match"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Release Funds"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Issue Payment"
+    },
+    {
+      "id": "n20",
+      "type": "action",
+      "content": "End: Resupply Cycle Complete"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Check Inventory Levels",
+      "R_X": [
+        "Inventory <= Minimum",
+        "Inventory > Minimum"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Review PO",
+      "R_X": [
+        "Approved",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "n5",
+        "e1",
+        "n6",
+        "n7",
+        "b2",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "e2",
+        "b6",
+        "c1",
+        "c2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "n20"
+    },
+    {
+      "type": "precedence",
+      "A": "n20",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Inventory <= Minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Inventory > Minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'Rejected'"
+    },
+    {
+      "type": "label",
+      "A": "n10",
+      "B": "n12",
+      "str": "Funds Reserved"
+    },
+    {
+      "type": "label",
+      "A": "n11",
+      "B": "n13",
+      "str": "POs Mailed"
+    },
+    {
+      "type": "label",
+      "A": "n15",
+      "B": "c2",
+      "str": "Invoice Received"
+    },
+    {
+      "type": "label",
+      "A": "n18",
+      "B": "n19",
+      "str": "Funds Released"
+    },
+    {
+      "type": "label",
+      "A": "n19",
+      "B": "n20",
+      "str": "Payment Issued"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process for ACME, begin with the New Resupply Cycle and then Check Levels of Inventory."
+    },
+    {
+      "id": "i2",
+      "content": "If the inventory is below or equal to the minimum, generate an Equal to or below minimum Report."
+    },
+    {
+      "id": "i3",
+      "content": "If the inventory is greater than the minimum, generate an Above Minimum Report."
+    },
+    {
+      "id": "i4",
+      "content": "If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs)."
+    },
+    {
+      "id": "i5",
+      "content": "If the report indicates that the inventory is above the minimum, the process ends."
+    },
+    {
+      "id": "i6",
+      "content": "If the PO is rejected, it needs to be reworked."
+    },
+    {
+      "id": "i7",
+      "content": "If the PO is approved, it is printed and released in the system."
+    },
+    {
+      "id": "i8",
+      "content": "If the PO is created, it needs to be reviewed."
+    },
+    {
+      "id": "i9",
+      "content": "Simultaneously, reserve funds for the released POs and mail the POs to the supplier."
+    },
+    {
+      "id": "i10",
+      "content": "If funds are reserved for the released POs, receive the Packing Slip."
+    },
+    {
+      "id": "i11",
+      "content": "If the POs are mailed to the supplier, receive the inventory."
+    },
+    {
+      "id": "i12",
+      "content": "If the Packing Slip is received, proceed to receive the Invoice."
+    },
+    {
+      "id": "i13",
+      "content": "If the inventory is received, proceed to receive the Packing Slip."
+    },
+    {
+      "id": "i14",
+      "content": "If the Invoice is received, proceed to the Three-way match."
+    },
+    {
+      "id": "i15",
+      "content": "If the Three-way match is successful, release the funds."
+    },
+    {
+      "id": "i16",
+      "content": "Once the funds are released, issue the payment."
+    },
+    {
+      "id": "i17",
+      "content": "After the payment is issued, the Resupply Cycle is complete and the process ends."
+    }
+  ]
+}

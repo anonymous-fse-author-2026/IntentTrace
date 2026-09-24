@@ -1,0 +1,11 @@
+
+
+- `action(n9, "Place manufacturing order")`: Dangling node with no outgoing precedence edges; halts execution on this path despite the source describing it as a valid alternative step ("a manufacturing order is placed").
+- `action(n5, "Proceed to order dispatch")`: Chronologically misplaced; source places dispatch later in the workflow, not immediately after updating sales information ("proceed to order dispatch" occurs near process end, not right after the initial branch).
+- `precedence(n14, n15)`: Incorrectly sequences dispatch before stock update, contradicting the source statement "At the same time, the stock is updated and the motorcycles are dispatched."
+- `precedence(n15, n16)`: Incorrectly sequences stock and sales updates, contradicting the source statement "Simultaneously, the stock is updated and the sales information is updated."
+- Missing `guard` clauses for `branch(b1)`, `branch(b2)`, `branch(b3)`, and `branch(b4)`: Source explicitly conditions these decisions (e.g., "if a production order is received", "If there are unavailable materials", "if there are available goods"), but the model uses unguarded XOR splits, omitting documented decision logic.
+- `branch(b3, XOR)` and `branch(b4, XOR)`: Hallucinates exclusive choices after `action(n8, "Available goods for production")` and `action(n10, "Goods received from supplier")`; source describes these as deterministic triggers for subsequent actions, not branching points.
+- `precedence(b5, c1)`: Creates a direct zero-duration path from an AND split to a converge node, bypassing production logistics and breaking the intended parallel flow described in the source.
+- `defines(v1, ..., {})` through `defines(v4, ..., {})`: Declares empty value ranges for all decision variables, failing to capture the implied Boolean/categorical nature of the source conditions.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a single generic participant, ignoring source-specified responsibilities where "the customer" initiates the request and materials are "ordered from the supplier".

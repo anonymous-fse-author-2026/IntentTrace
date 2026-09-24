@@ -1,0 +1,15 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"answer is no") -> branch(b1,XOR) -> action(n3,"acquire pricing") -> converge(c1) -> action(n4,"second answer is no") -> branch(b2,XOR) -> action(n5,"acquire pricing") -> converge(c2) -> action(n6,"calculate margin") -> action(n7,"prepare offer") -> action(n8,"calculate transport rate") -> action(n9,"end of process") -> end(e1)
+- [N2] Within matched traces (0->1) added: converge(c1)
+- [N3] Within matched traces (0->1) added: action(n4,"second answer is no")
+- [N4] Within matched traces (0->1) added: branch(b2,XOR)
+- [N5] Within matched traces (0->1) added: converge(c2)
+- [N6] Within matched traces (1->2) added: action(n2,"answer is no")
+- [N7] Within matched traces (2->3) added: action(n2,"answer is no")
+- [N8] Within matched traces (2->3) added: action(n4,"second answer is no")
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:if the answer is "no"; reason=The model uses 'Yes' for the guard leading to pricing acquisition, but the source explicitly states to proceed if the answer is 'no'.
+- [N10] Node-level mutation: element=guard(b1,c1,"v1 = 'No'"); source=i4:if the answer is "yes"; reason=The model assigns 'No' to the path continuing with the process, but the source text states to continue if the answer is 'yes'.
+- [N11] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'"); source=i6:If the answer is "no" again; reason=The model uses 'Yes' for the second acquisition of pricing, but the source states to acquire pricing if the answer is 'no again'.
+- [N12] Node-level mutation: element=guard(b2,c2,"v2 = 'No'"); source=i8:if the answer is "yes" once more; reason=The model applies the condition 'No' to continuing the process the second time, but the source states to continue if the answer is 'yes once more'.

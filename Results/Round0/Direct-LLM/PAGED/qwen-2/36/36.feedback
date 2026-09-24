@@ -1,0 +1,16 @@
+- `action(n1, "start Talent Seek process")`: Hallucinated step; the source begins immediately with “Initially, you should check if the applicant wishes to discuss the terms and conditions” with no preliminary start action mentioned.
+- `defines(v1, "applicant wishes to discuss terms and conditions", {"Yes"})`: Incorrect value range (SMC6); the source includes an “Otherwise, continue with the process” path, requiring the variable to accommodate both affirmative and negative values.
+- `defines(v2, "applicant wants to modify terms and conditions", {"No"})`: Incorrect value range (SMC6); the source explicitly describes a positive branch (“If the answer is 'Yes', then continue to check if the change is within the set client limits”), requiring both “Yes” and “No” in the range.
+- `guard(b2, c2, v2 = 'No')` combined with `defines(v2, ...)` : Control-flow violation (SMC4); restricting `v2` to only `{"No"}` forces branch `b2` to deterministically bypass the limit-check path, contradicting the source’s conditional logic.
+- `action(n17, "End")`, `action(n20, "End")`, `action(n22, "End")`: Hallucinated steps (SMC1); the source states “the process ends” directly upon client acceptance, without modeling explicit intermediate “End” actions preceding the termination nodes.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=1 and out=0. | DSL: action(n15,"select new applicant from the list")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> c2` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,c2,"v2 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n15 | DSL: action(n15,"select new applicant from the list")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> c2` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,c2,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

@@ -1,0 +1,9 @@
+- `action(n3, "does the invoice need to be re-sent  posted  or blocked?")`: Hallucinates a discrete action step; the source transitions directly from checking mismatches to a conditional decision point, not an intermediate processing task.
+- `action(n8, "You have completed this procedure")`: Hallucinates a step entirely absent from the source text.
+- `defines(v1, "does the invoice need to be re-sent  posted  or blocked?", {})`: Declares an empty value range `{}`, failing to capture the three documented handling options ("re-send the invoice to the customer", "post the invoice", "block the invoice").
+- `precedence(n7, n8)` and `precedence(n8, e1)`: Breaks the explicit source chronology by inserting an unmentioned step between parking the invoice and process termination, contradicting ("park the invoice. After the invoice has been handled, the process comes to an end.").
+- `precedence(b1, n4)`, `precedence(b1, n5)`, `precedence(b1, n6)`: Lack corresponding `guard` statements to evaluate `v1`, leaving the explicitly conditioned paths ("If there is a need to...", "If the option is...", "Alternatively, if the decision is...") logically unguarded.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

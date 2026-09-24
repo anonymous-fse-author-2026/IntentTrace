@@ -1,0 +1,26 @@
+Omission
+- [N1] Omitted trace (input 0): i1:At the beginning -> i2:if we can capture data from FMA, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i8:On the other hand, if there are no additional samples, the process ends.
+- [N2] Omitted trace (input 1): i1:At the beginning -> i2:if we can capture data from FMA, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i9:Otherwise, if there are no additional samples, the process ends.
+- [N3] Omitted trace (input 4): i1:At the beginning -> i3:Otherwise, if we can capture data from Jamendo, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i8:On the other hand, if there are no additional samples, the process ends.
+- [N4] Omitted trace (input 5): i1:At the beginning -> i3:Otherwise, if we can capture data from Jamendo, we should continue the process. -> i4:After that, we need to get music ids for the genre. -> i5:If the genre is missing, we should continue the process. -> i7:If the sample is missing, we should continue the process. We should download the sample. -> i9:Otherwise, if there are no additional samples, the process ends.
+
+Addition
+- [N5] Node-level addition: guard(b2,c1,"v2 = 'No  continue'") (reason: These elements define branches, guards, labels, and steps (e.g., Jamendo failure route, genre-not-missing path, fetching IDs for the next genre) that lack any corresponding description or logical implication in the source text.)
+- [N6] Node-level addition: label(n3,c1,"No  continue") (reason: These elements define branches, guards, labels, and steps (e.g., Jamendo failure route, genre-not-missing path, fetching IDs for the next genre) that lack any corresponding description or logical implication in the source text.)
+- [N7] Node-level addition: guard(b3,n9,"v3 = 'No  check next'") (reason: These elements define branches, guards, labels, and steps (e.g., Jamendo failure route, genre-not-missing path, fetching IDs for the next genre) that lack any corresponding description or logical implication in the source text.)
+- [N8] Node-level addition: guard(b4,n10,"v4 = 'Yes'") (reason: These elements define branches, guards, labels, and steps (e.g., Jamendo failure route, genre-not-missing path, fetching IDs for the next genre) that lack any corresponding description or logical implication in the source text.)
+- [N9] Node-level addition: action(n10,"get: music ids for the next genre") (reason: These elements define branches, guards, labels, and steps (e.g., Jamendo failure route, genre-not-missing path, fetching IDs for the next genre) that lack any corresponding description or logical implication in the source text.)
+- [N10] Within matched traces (3->0) added: action(n7,"is the genre missing?")
+- [N11] Within matched traces (3->0) added: branch(b3,XOR)
+- [N12] Within matched traces (2->1) added: action(n7,"is the genre missing?")
+- [N13] Within matched traces (2->1) added: branch(b3,XOR)
+- [N14] Within matched traces (7->2) added: action(n2,"can we capture data from FMA?")
+- [N15] Within matched traces (7->2) added: action(n7,"is the genre missing?")
+- [N16] Within matched traces (7->2) added: branch(b3,XOR)
+- [N17] Within matched traces (6->3) added: action(n2,"can we capture data from FMA?")
+- [N18] Within matched traces (6->3) added: action(n7,"is the genre missing?")
+- [N19] Within matched traces (6->3) added: branch(b3,XOR)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")

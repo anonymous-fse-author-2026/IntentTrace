@@ -1,0 +1,11 @@
+- action(n1, "start procedure"): Hallucinates a procedural step not present in the source, which explicitly states "the process begins by choosing a book."
+- actor(a_default, "Default", [...]): Assigns every node to a generic participant, contradicting the source's clear assignment: "For buyers, the process begins..."
+- branch(b2, AND): Models the initial post-selection options as a parallel concurrency gateway, whereas the source describes them as sequential alternatives: "either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies."
+- precedence(n3, b2) / branch(b2): Omits the documented direct option to "see a list of new copies" immediately after choosing a book, restricting the gateway's outgoing flows only to book details and used copies.
+- converge(c1) / precedence(n8, c1): Incorrectly merges the "view: new copies" path with the "view: used copies" path, forcing both into the evaluation step. The source restricts this sequence exclusively to one branch: "if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy".
+- defines(v1, "do you want to select a copy or view new copies?", {}): Declares a decision variable with an empty value range `{}` and attaches no guards, failing to faithfully capture the source's conditional options.
+- action(n3, "do you want to view book details") / action(n5, "do you want to select a copy or view new copies?"): Payloads misrepresent control-flow decisions as executable interrogative tasks, rather than reflecting the source's actual steps where users simply exercise direct options ("they have the option to then view...").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

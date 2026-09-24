@@ -1,0 +1,7 @@
+
+
+- `defines(v2, "check answer again", {"Yes"})`: Source explicitly covers both outcomes for this decision ("If the answer is "No" again... However, if the answer is "Yes""); the declared range omits `"No"`.
+- `guard(b2, n5, v2 = 'Yes')` / `precedence(b2, c1)`: Source specifies a conditional split here, but the model lacks a guard for the `"No"` continuation edge (`b2` → `c1`).
+- `guard(b1, n3, v1 = 'Yes')` and `action(n3, "give it priority")`: Source ties the priority step exclusively to the second check's `"Yes"` outcome ("However, if the answer is "Yes", then we give it priority."), not the initial check.
+- `guard(b5, n14, v5 = 'No')` and `action(n14, "need Vendor master record")`: Source only describes a `"Yes"` outcome at this stage ("And if the answer is "Yes" again, then we enter the invoice in SAP."); the `"No"` branch and associated termination are hallucinated.
+- `action(n17, "end")`: Source concludes immediately after placing invoices in the Outbox ("place the entered invoices in the normal Outbox and the process ends"); inserting a separate action step named `"end"` before the terminal node is unsupported.

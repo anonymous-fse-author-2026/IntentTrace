@@ -1,0 +1,8 @@
+
+
+- `action(n5, "Candidate meets required criteria")`: Payload describes a decision condition rather than an executable step; violates SMC2 because the source frames this as a conditional evaluation ("If a candidate meets the required criteria..."), not a process action.
+- `action(n13, "Voting successful")`: Payload describes a post-evaluation state/outcome, not an action; placing it as a mandatory sequential step before branch `b2` misrepresents the source chronology where success/failure is determined immediately after counting votes.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`: Lack corresponding `guard(...)` statements to explicitly link the source conditions ("meets the required criteria", "voting fails", "voting is successful") to their respective outgoing edges; violates SMC4.
+- `defines(v1, "Candidate meets required criteria", {})`, `defines(v2, "Voting successful", {})`, `defines(v3, "Voting successful", {})`, `defines(v4, "Voting successful", {})`: Value ranges are explicitly empty `{}`, failing to capture the binary decision space (e.g., `{true, false}`) required by the source text; violates SMC6.
+- Control flow spanning `b2` through `b4` and nodes `n18`–`n34`: Incorrectly unrolls a simple iterative loop ("If the voting fails, another election should be conducted") into a finite, linear chain of duplicated sequences, hallucinating arbitrary termination points (`e3`, `e4`) instead of modeling a proper cyclic retry mechanism; violates SMC4 and SMC5.
+- `action(n34, "Conduct another election")`: Lacks any outgoing `precedence` statement, leaving this execution path dangling without reaching a valid `end` node; violates SMC5.

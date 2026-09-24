@@ -1,0 +1,9 @@
+- `precedence(e1, c3)` and `precedence(c3, n23)`: `end(e1)` is a terminal node; assigning it a successor violates SMC5 and contradicts the source directive to "end the process," incorrectly forcing the "payment received" path to continue to `n23` and `e2`.
+- `action(n5, "Send a Denial to the Customer due to Credit Limit")` and `action(n7, "Send a Denial to the Customer due to Article Unavailability")`: Both nodes lack outgoing precedence relations to any `end` node, leaving these execution paths incomplete and violating SMC5.
+- `precedence(n20, c3)` routing to `converge(c3)` → `action(n23, "End process after Closing Order")`: Forces the "Send a Reminder" branch to execute a step labeled "Closing Order" that the source does not associate with this condition, misrepresenting process state and chronology (violates SMC2, SMC3).
+- `action(n18, "End process")` → `precedence(n18, e1)` → `precedence(e1, c3)`: Hallucinates a non-terminating control-flow tail after an explicit end step, adding sequential behavior not documented in the source (violates SMC1, SMC5).
+
+Structural Check
+- [S1] STC6 failed: End nodes must not have outgoing precedence edges. | Violations: e1 | DSL: end(e1)
+- [S2] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n7` has in=1 and out=0. | DSL: action(n5,"Send a Denial to the Customer due to Credit Limit"); action(n7,"Send a Denial to the Customer due to Article Unavailability")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n7 | DSL: action(n5,"Send a Denial to the Customer due to Credit Limit"); action(n7,"Send a Denial to the Customer due to Article Unavailability")

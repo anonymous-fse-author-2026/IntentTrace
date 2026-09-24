@@ -1,0 +1,12 @@
+
+
+- `defines(v1, ...)`: Range omits `"Customer returns the items to the store"`; the source specifies two return methods that both continue the process.
+- `guard(b1, n3, ...)`: Only covers the delivery condition; omits the source's explicit alternative path for when `"Customer returns the items to the store," then we can continue the process.`
+- `defines(v3, ...)`: Range omits `"Packed for an existing order"`; the source explicitly contrasts packing with storage.
+- `guard(b3, n15, ...)`: Only models storage; omits the documented progression `"If the 'Items are packed for an existing order,' we continue the process."`
+- `defines(v4, ...)`: Range omits `"Customer returns the missing items"`; the source states both `"Customer returns the missing items"` and `"Customer does not return the missing items"` allow the process to continue.
+- `guard(b4, n8, ...)`: Only models non-return; omits the source's path for `"If the 'Customer returns the missing items,' we continue the process."`
+- `defines(v6, ...)`: Range omits `"Packed for an existing order"`; the source provides packing as a valid alternative to storage after the repair decision.
+- `guard(b6, n16, ...)`: Only models storage; omits the packing alternative described in the source.
+- `precedence(n13, c1)`: Incorrectly routes discarded items (`action(n13, "Discard items and email customer replacement charges")`) to `converge(c1)` and subsequently to `action(n14, "Items disposition after repair")`; the source indicates discarded items trigger replacement charges and do not proceed to packing/storage disposition.
+- `branch(b1, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`, `branch(b6, XOR)`: Declared as exclusive choice splits but only have a single outgoing `precedence`/`guard` defined; fails to represent the alternative paths explicitly documented in the source.

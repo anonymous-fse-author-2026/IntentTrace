@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: Behavioral unit i1 is not faithfully implemented; the only corresponding element (action:n1) mutates the verification target.)
+- [N2] Node-level omission: i2:If the amount is less than 200 €, (reason: Behavioral unit i2 is not faithfully implemented; the corresponding guards mutate the threshold into generic yes/no values, leaving the actual condition uncovered.)
+
+Addition
+- [N3] Node-level addition: guard(b2,n8,"v2 = 'not satisfactory'") (reason: Content 'v2 = "not satisfactory"' references a condition that is absent from the provided Input Elements (the 'not satisfactory' clause was cut during segmentation), leaving this guard without source justification.)
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (0->0) added: action(n7,"End process")
+- [N6] Within matched traces (0->0) added: end(e1)
+
+Mutation
+- [N7] Node-level mutation: element=action(n1,"start verifying account"); source=i1:To check the account, we start by verifying the amount.; reason=Distorts the core instruction by changing the verification target from 'the amount' to 'account'.
+- [N8] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'") -> guard(b1,n4,"v1 = 'No'"); source=i2:If the amount is less than 200 €,; reason=Replaces the explicit monetary threshold and operator with abstract boolean variables ('Yes'/'No'), completely dropping the quantitative condition.

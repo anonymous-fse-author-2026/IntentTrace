@@ -1,0 +1,8 @@
+
+
+- `action(n1, "Begin Change Assessment")`: Hallucinates an initial step not present in the source, which only specifies `"assess the change request"`. (SMC1)
+- `branch(b2, XOR)` with `guard(b2, n9, v2 = 'No')` and `guard(b2, n11, v2 = 'Yes')`: Models rejection and the information request as mutually exclusive alternatives, contradicting the source which sequences them: `"if the change is deemed unacceptable, it is rejected. In this case, a request for more information is made..."`. (SMC4)
+- `action(n10, "End process after rejection")` & `end(e2)`: Prematurely terminates the process upon rejection, violating the source requirement that rejection triggers subsequent steps (`"a request for more information is made..."`). (SMC1/SMC3)
+- `branch(b5, AND)` with `precedence(b5, n12)`, `precedence(b5, n13)`, `precedence(b5, n14)`: Enforces concurrency where the source explicitly describes a chronological sequence: `"The request is then followed by... After that..."`. (SMC3/SMC4)
+- `actor(a_default, "Default", [...])`: Fails to assign responsibilities to the specific roles named in the source (`"CAB"`, `"Change Coordinator"`, `"Change Requester"`), assigning all nodes to a generic participant. (SMC7)
+- `action(n16, "No inquiries from CAB")`: Misclassifies a conditional state as an executable task; the source treats `"no further inquiries or issues"` as a direct condition for process conclusion, not a distinct action. (SMC2)

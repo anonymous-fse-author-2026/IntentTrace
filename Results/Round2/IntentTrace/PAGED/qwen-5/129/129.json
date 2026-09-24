@@ -1,0 +1,112 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "At the start, the loan application is checked."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "end"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "However, if special terms are agreed upon, the process continues."
+    },
+    {
+      "id": "i4",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_res",
+      "name": "result",
+      "R_X": [
+        "rejected",
+        "agreed"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "b1",
+        "i2",
+        "i3",
+        "i4"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v_res = 'rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v_res = 'agreed'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "At the start, the loan application is checked."
+    },
+    {
+      "id": "i2",
+      "content": "If the application is rejected, the process ends."
+    },
+    {
+      "id": "i3",
+      "content": "However, if special terms are agreed upon, the process continues."
+    },
+    {
+      "id": "i4",
+      "content": "Once the funds are disbursed, the process ends."
+    }
+  ]
+}

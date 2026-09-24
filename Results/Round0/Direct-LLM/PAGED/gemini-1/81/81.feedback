@@ -1,0 +1,11 @@
+- action(n1, "start"): hallucinated action; the source text explicitly states "The first step is to receive and categorize the invoice."
+- action(n5, "End Process"), action(n7, "End Process"), action(n13, "End Process"), action(n16, "End Process"), action(n18, "End Process"), action(n24, "End Process"): hallucinated actions; the description simply states "the process ends," which should be represented by `end` nodes rather than distinct action steps.
+- action(n6, "Reject Invoice"), action(n17, "Reject Invoice"): hallucinated actions; the text states "If the instruction is to 'Reject invoice'", making this a decision condition rather than an executed action.
+- action(n8, "Return Invoice to Client for Completion"), action(n19, "Return Invoice..."): hallucinated actions; the text uses this phrase as a condition ("If the instruction is to..."), not a separate process step.
+- action(n10, "Process Invoice for SAP Entry"), action(n21, "Process Invoice..."): hallucinated actions; the source states "If the instruction is to 'Process Invoice for SAP Entry'", meaning this is a condition, not an executed process action.
+- precedence(n8, n9) and the duplicated nodes n14 through e6: incorrect control-flow logic; the text describes a cycle ("the invoice is received and categorized again"), but the model incorrectly unrolls the loop by duplicating the entire process flow instead of looping back to the initial receive step. 
+- precedence(n4, n5) and precedence(n15, n16): hallucinated process endings; the text states "then the next step is to sort the invoice" for forwarded invoices, but does not specify that the process ends after sorting.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n20` has in=1 and out=0. | DSL: action(n20,"Receive and Categorize Invoice")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n19, n20 | DSL: action(n19,"Return Invoice to Client for Completion"); action(n20,"Receive and Categorize Invoice")

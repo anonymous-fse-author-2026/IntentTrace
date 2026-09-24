@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start the appointment approval process")`: hallucinated initial step; the description begins directly with sending the appointment approval form.
+- `defines(v1, "is resource internal", {})`, `defines(v2, "check for variations", {})`, `defines(v3, "are there variations after business case", {})`: specify empty ranges `{}`, violating SMC6 by omitting the actual value domains (e.g., `{true, false}`) required for the decision variables.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: completely lack `guard(...)` statements, failing SMC4 to represent the conditional logic governing the exclusive splits.
+- `precedence(n12, n13)`: incorrectly sequences the variation check after `action(n12, "HR services receive documentation")`, contradicting SMC3/SMC5 since the source explicitly states that HR receiving the documents "marks the end of the process."
+- `action(n16, "are there variations after business case")`, `branch(b3, XOR)`, `action(n17, "continue process")`, `action(n18, "complete and attach business case")`: hallucinated nested decision tree; the source merely repeats the same variation/business-case rule and does not describe a secondary verification or a distinct "attach" workflow.
+- `action(n19, "process end")`: redundant and undocumented task; `end(e1)` alone correctly denotes process termination per the description.

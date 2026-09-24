@@ -1,0 +1,8 @@
+
+
+- `actor(a_default, "Default", [...])`: The source explicitly states all steps are performed by "the customer", but the model assigns them to a generic "Default" actor, failing to faithfully reflect source responsibilities (SMC7).
+- `action(n8,...)`, `branch(b1,...)`, `action(n10,...)`, `action(n11,...)`, `branch(b2,...)`, `action(n13,...)`, `end(e1)`: The source describes a strictly linear progression ("Once the purchase invoice and shipment are received, the customer can proceed to receive the invoice..."), containing no explicit checks, decision splits, re-waiting loops, or negative termination paths. These elements hallucinate undocumented behaviors and control flows (SMC1, SMC4).
+- `defines(v1, "check if purchase invoice and shipment are received", {})` and `defines(v2, "check if purchase invoice and shipment are received after waiting", {})`: The source provides no decision variables or value domains; declaring them with empty ranges `{}` does not faithfully reflect the source specification (SMC6).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Neither split point has associated `guard(...)` statements to define routing conditions, leaving the exclusive choices logically undefined and incomplete (SMC4).
+- `action(n9, "receive the invoice")` and `action(n12, "receive the invoice")`: The source describes receiving the invoice exactly once as a sequential step, but the model duplicates it across two alternative branches, distorting the intended progression (SMC1, SMC5).
+- `end(e1)` and `end(e2)`: The source indicates a single conclusion ("the process ends"), yet the model defines two separate termination points reachable via divergent, undocumented paths (SMC5).

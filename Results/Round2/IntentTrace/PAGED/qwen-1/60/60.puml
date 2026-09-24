@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:click: Start;
+:select: Edit Report;
+:is expense > 1000?;
+:v1: expense amount ({[0-]}); <<objectSignal>>
+if () then ([v1 > 1000])
+:review report;
+else ([v1 <= 1000])
+:check translation need;
+:v2: translation need ({Required, Not Required}); <<objectSignal>>
+if () then ([v2 = 'Required'])
+:translate receipts;
+else ([v2 = 'Not Required'])
+:confirm receipts;
+endif
+endif
+repeat :;
+:evaluate review decision;
+:v3: review decision ({Rejected, Approved}); <<objectSignal>>
+backward:edit report;
+repeat while () is ([v3 = 'Rejected']) not ([v3 = 'Approved'])
+:check translation need again;
+:v4: second review decision ({Approved, Rejected}); <<objectSignal>>
+if () then ([v4 = 'Approved'])
+:translate receipts again;
+else ([v4 = 'Rejected'])
+:edit report;
+endif
+:evaluate receipt decision;
+:v5: receipt decision ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v5 = 'Accepted'])
+:process expense;
+:end;
+stop
+else ([v5 = 'Rejected'])
+:edit report;
+:end;
+stop
+endif
+@enduml

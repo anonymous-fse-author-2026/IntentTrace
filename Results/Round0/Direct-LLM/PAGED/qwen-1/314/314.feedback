@@ -1,0 +1,13 @@
+- `guard` statements for `b1`, `b2`, `b3`: Missing. The source explicitly ties branching to candidate availability (“If there is no suitable candidate available…”, “if there is a suitable candidate available…”), requiring guards to define the conditional edges.
+- `precedence(b2, n6)` / `branch(b2, XOR)`: Incomplete control flow. The source states that if a candidate is available after advertising, the process proceeds to selection, but `b2` only has an outgoing edge to “Advertise Again” (`n6`), omitting the path for the positive case.
+- `branch(b3, XOR)`: Dead-end split. The source implies a final verification after the second advertisement, but `b3` has no outgoing precedences or guards, breaking the intended progression.
+- `precedence(n3, n8)`: Omits documented behavior. The source specifies “Once the candidate is appointed, the process comes to an end,” but the model routes directly from selection (`n3`) to end, skipping the appointment step.
+- `action(n1, "Start")`: Payload mismatch. The source begins with “identifying the vacancy,” not a generic start action.
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Empty value ranges. The variables represent binary availability checks, but their ranges are declared as empty `{}`, failing to reflect the source’s implied value space.
+- `label(n3, n8, "7")`: Hallucinated label. The string “7” has no semantic correspondence to any condition or step in the source description.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b3` has in=1 and out=0. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b2, b3, n4, n5, n6, n7 | DSL: branch(b2,XOR); branch(b3,XOR); action(n4,"Advertise Vacancy"); action(n5,"After advertising  any candidates?"); action(n6,"Advertise Again"); action(n7,"Final check: Any candidates after second advertisement?")

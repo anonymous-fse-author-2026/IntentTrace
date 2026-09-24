@@ -1,0 +1,564 @@
+{
+  "elements": [
+    {
+      "id": "init_node",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "the process begins"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "receiving the invoice"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "it is sorted per client"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "it is then sorted per vendor"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "attach the invoice entry form to the invoice"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "the required information is entered onto the form"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "the completeness of the invoice is checked"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "If the invoice is not complete"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "the process ends"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "the information for the SLA is entered. The date for completion is also entered and the priority is checked."
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "the priority is checked"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "If the priority is high"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "a red stamp is placed on the entry invoice"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "The invoice compliance is then checked"
+    },
+    {
+      "id": "b_comp",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "If it is not complete, the check continues."
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "If it is complete, the process continues."
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "If the invoice needs to be sent to experienced staff"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "the non-compliance invoice is processed"
+    },
+    {
+      "id": "i19",
+      "type": "action",
+      "content": "the client is called"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "a postal mail is sent requesting complete information and the process ends."
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "i22",
+      "type": "action",
+      "content": "Finally, the client is called and information is requested."
+    },
+    {
+      "id": "i23",
+      "type": "action",
+      "content": "The invoice is then batched and allocated to DEO"
+    },
+    {
+      "id": "i21",
+      "type": "action",
+      "content": "and the process ends"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check completeness of invoice",
+      "R_X": [
+        "Complete",
+        "Incomplete"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "check priority level",
+      "R_X": [
+        "High",
+        "Low"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "check compliance status",
+      "R_X": [
+        "Complete",
+        "Incomplete"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "case type",
+      "R_X": [
+        "Experienced",
+        "Normal",
+        "Other"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "init_node",
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "b1",
+        "i8",
+        "i9",
+        "e1",
+        "i10",
+        "i11",
+        "b2",
+        "i12",
+        "i13",
+        "c1",
+        "i14",
+        "b_comp",
+        "i15",
+        "i16",
+        "b3",
+        "i17",
+        "i18",
+        "i19",
+        "i20",
+        "e2",
+        "c2",
+        "i22",
+        "i23",
+        "i21",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "init_node",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "b_comp"
+    },
+    {
+      "type": "precedence",
+      "A": "b_comp",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_comp",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i19"
+    },
+    {
+      "type": "precedence",
+      "A": "i19",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "i22"
+    },
+    {
+      "type": "precedence",
+      "A": "i22",
+      "B": "i23"
+    },
+    {
+      "type": "precedence",
+      "A": "i23",
+      "B": "i21"
+    },
+    {
+      "type": "precedence",
+      "A": "i21",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i8",
+      "condition": "v1 = \"Incomplete\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i10",
+      "condition": "v1 = \"Complete\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i12",
+      "condition": "v2 = \"High\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = \"Low\""
+    },
+    {
+      "type": "guard",
+      "A": "b_comp",
+      "B": "i15",
+      "condition": "v3 = \"Incomplete\""
+    },
+    {
+      "type": "guard",
+      "A": "b_comp",
+      "B": "i16",
+      "condition": "v3 = \"Complete\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i17",
+      "condition": "v4 = \"Experienced\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i19",
+      "condition": "v4 = \"Normal\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i20",
+      "condition": "v4 = \"Other\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the process begins"
+    },
+    {
+      "id": "i2",
+      "content": "receiving the invoice"
+    },
+    {
+      "id": "i3",
+      "content": "it is sorted per client"
+    },
+    {
+      "id": "i4",
+      "content": "it is then sorted per vendor"
+    },
+    {
+      "id": "i5",
+      "content": "attach the invoice entry form to the invoice"
+    },
+    {
+      "id": "i6",
+      "content": "the required information is entered onto the form"
+    },
+    {
+      "id": "i7",
+      "content": "the completeness of the invoice is checked"
+    },
+    {
+      "id": "i8",
+      "content": "If the invoice is not complete"
+    },
+    {
+      "id": "i9",
+      "content": "the process ends"
+    },
+    {
+      "id": "i10",
+      "content": "the information for the SLA is entered. The date for completion is also entered and the priority is checked."
+    },
+    {
+      "id": "i11",
+      "content": "the priority is checked"
+    },
+    {
+      "id": "i12",
+      "content": "If the priority is high"
+    },
+    {
+      "id": "i13",
+      "content": "a red stamp is placed on the entry invoice"
+    },
+    {
+      "id": "i14",
+      "content": "The invoice compliance is then checked"
+    },
+    {
+      "id": "i15",
+      "content": "If it is not complete, the check continues."
+    },
+    {
+      "id": "i16",
+      "content": "If it is complete, the process continues."
+    },
+    {
+      "id": "i17",
+      "content": "If the invoice needs to be sent to experienced staff"
+    },
+    {
+      "id": "i18",
+      "content": "the non-compliance invoice is processed"
+    },
+    {
+      "id": "i19",
+      "content": "the client is called"
+    },
+    {
+      "id": "i20",
+      "content": "a postal mail is sent requesting complete information and the process ends."
+    },
+    {
+      "id": "i21",
+      "content": "and the process ends"
+    },
+    {
+      "id": "i22",
+      "content": "Finally, the client is called and information is requested."
+    },
+    {
+      "id": "i23",
+      "content": "The invoice is then batched and allocated to DEO"
+    }
+  ]
+}

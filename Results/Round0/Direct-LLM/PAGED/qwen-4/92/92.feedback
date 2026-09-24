@@ -1,0 +1,12 @@
+- action(n1, "start"): Payload misrepresents the required initial step quoted as "register your participation for the event" (SMC2).
+- defines(v1, ...) & defines(v2, ...): Both declare empty ranges `{}`, failing to specify the value domains (e.g., Yes/No, Approved/Rejected) needed for the documented decisions (SMC6).
+- branch(b1) & branch(b2): Missing `guard` statements to constrain outgoing edges using variables `v1` and `v2`, leaving the XOR choices undefined relative to the conditional text (SMC4).
+- action(n3, "Register post-seminar request"): Has no outgoing `precedence` to an `end` node, contradicting "Once you have registered a post-seminar request, the process will come to an end" (SMC1, SMC5).
+- end(e1) & precedence(e1, n8): Prematurely terminates the approval path before `action(n8)` and attaches an illegal outgoing edge to an `end` node; the source states "If you receive an approved notification, you should then register a post-seminar request", requiring the flow to continue to registration before termination (SMC3, SMC4, SMC5).
+
+Structural Check
+- [S1] STC6 failed: End nodes must not have outgoing precedence edges. | Violations: e1 | DSL: end(e1)
+- [S2] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n3,"Register post-seminar request"); action(n8,"Register post-seminar request")
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n3, n8 | DSL: action(n3,"Register post-seminar request"); action(n8,"Register post-seminar request")

@@ -1,0 +1,13 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i5:If the purchase status is rejected, rework the purchase order. -> i8:Rework the purchase order and then review it. -> i4:After creating the purchase order, review it.
+
+Addition
+- [N2] Within matched traces (0->0) added: init(i1)
+- [N3] Within matched traces (2->1) added: init(i1)
+- [N4] Within matched traces (3->2) added: init(i1)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i2:If the inventory level is at or below the minimum, create a purchase order.; reason=Guard payload uses abstract boolean v1 = 'Yes', dropping the explicit threshold condition 'at or below the minimum' required by the source.
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i3:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Guard payload uses abstract boolean v1 = 'No', dropping the explicit condition 'above the minimum' required by the source.
+- [N7] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i5:If the purchase status is rejected, rework the purchase order.; reason=Guard payload uses abstract boolean v2 = 'Yes', dropping the explicit status value 'rejected' required by the source.
+- [N8] Node-level mutation: element=guard(b2,n23,"v2 = 'No'"); source=i6:However, if the purchase status is approved, reserve the funds.; reason=Guard payload uses abstract boolean v2 = 'No', dropping the explicit status value 'approved' required by the source.

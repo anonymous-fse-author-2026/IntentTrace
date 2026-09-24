@@ -1,0 +1,231 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n0",
+      "type": "action",
+      "content": "Register participation for the event"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Register post-seminar request"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Create purchase request"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Check purchase request approval status"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Approved notification received"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Rejected notification received"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Register post-seminar request"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is there a fee?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Check purchase request approval status",
+      "R_X": [
+        "Approved",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n0",
+        "b1",
+        "n3",
+        "n4",
+        "n5",
+        "b2",
+        "n6",
+        "e1",
+        "n7",
+        "e2",
+        "n8"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n0"
+    },
+    {
+      "type": "precedence",
+      "A": "n0",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'Approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Rejected'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "please register your participation for the event."
+    },
+    {
+      "id": "i2",
+      "content": "If there is no fee"
+    },
+    {
+      "id": "i4",
+      "content": "proceed to register a post-seminar request"
+    },
+    {
+      "id": "i5",
+      "content": "if there is a fee"
+    },
+    {
+      "id": "i7",
+      "content": "create a purchase request"
+    },
+    {
+      "id": "i8",
+      "content": "Once you have registered a post-seminar request, the process will come to an end."
+    },
+    {
+      "id": "i9",
+      "content": "check if the purchase request has been approved"
+    },
+    {
+      "id": "i10",
+      "content": "If it is approved, you will receive an approved notification"
+    },
+    {
+      "id": "i11",
+      "content": "if the purchase request is rejected, you will be notified of the rejection"
+    },
+    {
+      "id": "i12",
+      "content": "you should then register a post-seminar request"
+    },
+    {
+      "id": "i13",
+      "content": "If you receive a rejection notification, the process will come to an end."
+    }
+  ]
+}

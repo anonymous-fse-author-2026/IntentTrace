@@ -1,0 +1,12 @@
+- `actor(a_default, "Default", ...)`: The actor is named "Default", but the source text specifies "Passengers" as the entity performing the activities (SMC7).
+- `action(n1, "start the process")`: Modeled as a separate action, but the text states "start the process by undergoing immigration checks", making this a hallucinated standalone step (SMC1/SMC2).
+- `branch(b5, AND)`: Modeled as a parallel AND gateway, but the text explicitly describes an exclusive choice ("chooses to use biometrics... However, if the passenger prefers to use ID documents"), requiring an XOR gateway (SMC4).
+- Missing `converge(...)`: The paths split at `b5` never rejoin. The text states "After the exit control checks...", implying a single unified flow, but the model incorrectly duplicates all subsequent checks and actions on both paths (e.g., `n6`/`n7`, `b1`/`b2`) (SMC4).
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`: The outgoing precedence edges from these gateways lack `guard()` statements to evaluate the conditional outcomes described in the text (e.g., "denied permission", "successful") (SMC4).
+- `defines(v1, ...)` to `defines(v4, ...)`: The defined decision variables have empty ranges `{}` instead of declaring the possible boolean or categorical values implied by the text (SMC6).
+- Missing `defines(...)`: There is no decision variable defined for the passenger's choice of exit control check method (SMC6).
+- `action(n18, "process ends")` through `action(n23, "process ends")`: The model hallucinates literal actions for "process ends" rather than simply routing the control-flow to the respective `end()` nodes (SMC1/SMC2).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n16` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n17` has 0 guards; exactly one is required.

@@ -1,0 +1,9 @@
+
+
+- `guard(b1, n3, v1 = 'Yes')` & `guard(b1, n4, v1 = 'No')`: Incorrectly binds `v1` ("check if order has been received") to sum-condition routing; source text sequences sum checks after receipt verification, not as mutually exclusive outcomes dependent on receipt status.
+- `branch(b2, XOR)` with `guard(b2, n5, v2 = 'Yes')` & `guard(b2, n11, v2 = 'No')`: Both outcomes route to "continue with the process", completely omitting the required discount evaluations (>2000, 1000-1500, 500-999) when the sum is not <500.
+- `guard(b6, n13, v6 = 'No')` & `guard(b6, n14, v6 = 'No')`: Identical guards on diverging edges remove deterministic control flow and provide no path for `v6 = 'Yes'`; source explicitly mandates computing a 4% discount when sum > 2000.
+- `precedence(b5, n9)` & `guard(b5, n9, v5 = 'No')` / `precedence(b9, n18)` & `guard(b9, n18, v9 = 'No')`: Creates unintended feedback loops back to decision nodes `n9` and `n18`; source describes a strictly linear progression with no retry or iteration behavior.
+- `branch(b10, AND)` & `precedence(b10, c1)`: Misuses an AND gateway to spawn a concurrent path directly to convergence `c1`, allowing the model to bypass the mandated second verification phase ("Once again, check the sum..."); source requires sequential execution before billing.
+- `defines(v6, "is sum of order greater than 2000", {"No"})`: Restricts the variable's value space to a single option, contradicting the binary decision context required by the source rules and the surrounding branch structure.
+- `action(n21, "process end")`: Hallucinates an explicit operational step for termination; source states "the process will come to an end" as a natural consequence of completing the bill, accurately represented only by `end(e1)`.

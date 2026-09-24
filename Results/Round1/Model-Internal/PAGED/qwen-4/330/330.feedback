@@ -1,0 +1,12 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start") (reason: The source combines initiation into a single instruction ('start with the Purchase Order-to-Delivery phase'). 'Start' is an artificially split, standalone step with no independent source unit support.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> action(n4,"Is invoice amount > $5000?") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> action(n7,"End Process") -> end(e1)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"Start")
+- [N5] Within matched traces (0->0) added: converge(c1)
+- [N6] Within matched traces (1->0) added: init(i1)
+- [N7] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i3:If the invoice amount is greater than $5000,; reason=Guard content 'v1 = true' replaces the explicit numeric threshold and operator ('> $5000') with an opaque boolean variable, altering the specified value and logic.
+- [N9] Node-level mutation: element=guard(b1,c1,"v1 = false"); source=i5:Otherwise, continue with the process.; reason=Guard content 'v1 = false' substitutes the explicit 'Otherwise' negative flow directive with an opaque boolean flag, drifting from the source's logical phrasing.

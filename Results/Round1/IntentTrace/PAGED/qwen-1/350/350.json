@@ -1,0 +1,185 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "provide userdata for flickr"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "end process successful login"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "do you want to try again"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "provide userdata for flickr again after first failure"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "abort process after first failure"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "d1",
+      "name": "login_status",
+      "R_X": [
+        "success",
+        "failure"
+      ]
+    },
+    {
+      "X": "d2",
+      "name": "next_action",
+      "R_X": [
+        "retry",
+        "abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "b2",
+        "n6",
+        "n7",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "d1 = \"success\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "d1 = \"failure\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "d2 = \"retry\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "d2 = \"abort\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i2",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "i3",
+      "content": "if the login fails"
+    },
+    {
+      "id": "i4",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i5",
+      "content": "if you choose to abort, the process will end"
+    }
+  ]
+}

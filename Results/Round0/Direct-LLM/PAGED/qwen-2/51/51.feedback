@@ -1,0 +1,8 @@
+- `action(n1, "start")` and `action(n6, "end process")`: Hallucinated behaviors; the source explicitly states the first step is to "check the SLA" and that "This marks the end of the process" immediately follows entering the date, leaving no documented standalone start or end actions.
+- `defines(v1, "are SLA details known from memory", {})`: The value range is empty `{}`, failing to faithfully reflect the binary decision space (known vs. not known) implied by the source's conditional logic.
+- `precedence(b1, n4)` and `precedence(b1, c1)`: Missing `guard` statements to semantically link the branch outcomes to the source conditions "not known from memory" (triggering lookup) and "known from memory" (continue without interruption), leaving the choice logic unfaithful to the documented progression.
+- `actor(a_default, "Default", [...])`: Incorrectly assigns all process nodes to a generic "Default" actor instead of "Admin Office", which the source explicitly identifies as responsible for the workflow.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

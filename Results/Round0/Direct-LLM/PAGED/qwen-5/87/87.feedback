@@ -1,0 +1,16 @@
+- `branch(b3, AND)`: Uses a parallel gateway to model a mutually exclusive decision point. Source: "If they are marked as 'Uncompleted'... However, if they are marked as 'Completed'..." describes conditional branching, requiring an XOR or OR gateway, violating SMC4.
+- Missing `defines` and `guard` for invoice status: No variable declaration or edge guards correspond to the completeness check following `action(n4, "Check completeness of the invoices")`. Source explicitly routes control flow based on "'Uncompleted'" or "'Completed'" marks, leaving the split at `b3` unconditioned, violating SMC4 and SMC6.
+- `actor(a_default, "Default", [i1, ... , b3])`: Assigns every node to a generic participant. Source explicitly anchors responsibilities to a specific unit: "To begin the process in the Admin Office...", violating SMC7.
+- `action(n6, "Wait for completion of invoices by client")` & `action(n13, "Wait for completion of invoices by client")`: Inserts waiting steps not described in the text. Source transitions directly from mailing to receipt: "Once the invoices are returned to the client, receive the completed ones.", violating SMC1.
+- `precedence(b1, n3)` & `guard(b1, n3, v1 = 'No')`: Routes to an immediate end state when the process hasn't started. Source only instructs to "check if it has started" without prescribing termination or fallback behavior, introducing an unsupported path, violating SMC1.
+- `defines(v1, "Has the process started", {"No"})` & `defines(v2, "Check if the process has been completed", {"Completed"})`: Restricts decision variables to single values, omitting complementary states (e.g., "Yes", "Ongoing") needed to evaluate the binary conditions described in the text, violating SMC6.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n8` has in=2 and out=1. | DSL: action(n8,"Mark relevant box on invoice entry form")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['Completed']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'Completed'` on `b2 -> n11` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n11,"v2 = 'Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Completed'` on `b2 -> n11` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n11,"v2 = 'Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

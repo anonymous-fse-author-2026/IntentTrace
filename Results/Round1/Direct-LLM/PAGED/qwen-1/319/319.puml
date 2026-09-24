@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_buyers| Buyers
+|a_buyers|
+start
+:choose a book;
+:v2: initial selection option ({view_details, view_new_copies, view_used_copies}); <<objectSignal>>
+switch ()
+case ([v2 = 'view_details'])
+:view: book details;
+:v1: do you want to select a copy or view new copies? ({select_copy, view_new_copies}); <<objectSignal>>
+if () then ([v1 = 'select_copy'])
+:select a copy;
+:end procedure;
+else ([v1 = 'view_new_copies'])
+:view: new copies;
+endif
+stop
+case ([v2 = 'view_new_copies'])
+case ([v2 = 'view_used_copies'])
+:view: used copies;
+:evaluate and select a copy from the list;
+:end procedure;
+stop
+endswitch
+@enduml

@@ -1,0 +1,9 @@
+- `branch(b1)` and `branch(b2)`: Missing `guard` statements to enforce decision logic. The source explicitly specifies conditions ("If the inventory level is at or below the minimum...", "If the purchase status is rejected/approved..."), but the model leaves both XOR splits unguarded.
+- `action(n3, "inventory at or below minimum")` and `action(n7, "purchase status approved")`: Incorrectly modeled as actionable steps. The source treats these as conditional evaluations directing control flow, not discrete tasks; they should be encoded as edge guards on the outgoing branches.
+- `defines(v1, ...)` and `defines(v2, ...)`: Both declare empty ranges `{}`. The source implies binary or comparative outcomes for inventory and status checks; the ranges must specify valid values (e.g., `{true, false}`) to faithfully reflect the decision value space.
+- `action(n5, "process ends")`, `action(n16, "process ends")`, and `action(n17, "process ends")`: Semantically redundant. The source describes termination as a concluding state ("the process ends"), not a performable operational step that precedes `end` nodes.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"purchase status approved")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

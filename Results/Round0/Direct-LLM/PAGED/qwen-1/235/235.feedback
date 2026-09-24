@@ -1,0 +1,12 @@
+- `precedence(n3, n4)`: Omits the explicitly documented step "enter the desired item page", which the source places between clicking the item and choosing an action.
+- `action(n5, "view quantity amount")` and `action(n6, "enter quantity amount")`: Fails to model the immediate subsequent steps "see the quantity amount" and "input it" that the description explicitly ties to each choice.
+- `action(n11, "return to desired item page")`: Lacks a `precedence` edge looping back to the item page node(s) (e.g., `n3` or `n4`), causing the "continue shopping" path to dead-end instead of reflecting the described cyclical return.
+- `branch(b1,...)`, `branch(b2,...)`, `branch(b3,...)`: Missing `guard` statements to formally represent the explicit decision conditions ("If they choose to view...", "If they choose to continue...", "If they choose to proceed...") governing the XOR splits.
+- `defines(v1, "...", {})`, `defines(v2, "...", {})`, `defines(v3, "...", {})`: Value ranges are empty `{}`, failing to reflect the specific actionable options listed in the source for each decision point.
+- `actor(a_default, "Default", [...])`: Incorrectly assigns all process steps to a "Default" actor, while the description consistently attributes every action to the "customer".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"return to desired item page")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n18` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n11 | DSL: action(n10,"continue shopping"); action(n11,"return to desired item page")

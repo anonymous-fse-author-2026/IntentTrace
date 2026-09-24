@@ -1,0 +1,20 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i6:and the process ends.
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: Content 'start' introduces a generic initiation step with no corresponding instruction or keyword in the provided Input Elements.)
+- [N3] Node-level addition: guard(b2,n10,"v2 = 'Reserved'") (reason: Content references a 'Reserved' state that lacks support in the segmented Input Elements and does not align with the backorder/reservation logic defined in the provided units.)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"Check Availability Again") -> end(e2)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n10,"Assemble Bike") -> action(n11,"Ship Product") -> action(n12,"End") -> end(e3)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n1,"start")
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: action(n1,"start")
+- [N11] Within matched traces (1->1) added: converge(c1)
+- [N12] Within matched traces (1->1) added: action(n12,"End")
+- [N13] Within matched traces (1->1) added: end(e3)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n6,"v1 = 'Accepted'"); source=i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.; reason=The source states that both paths continue regardless of status and that the two subsequent tasks occur simultaneously. The guards incorrectly bind exclusive routing to acceptance status, converting parallel execution into mutually exclusive branches and distorting the control logic.
+- [N15] Node-level mutation: element=guard(b1,n7,"v1 = 'Rejected'"); source=i3:At the same time, two steps need to be completed: preparing the assembling order and checking availability.; reason=The source states that both paths continue regardless of status and that the two subsequent tasks occur simultaneously. The guards incorrectly bind exclusive routing to acceptance status, converting parallel execution into mutually exclusive branches and distorting the control logic.

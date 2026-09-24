@@ -1,0 +1,8 @@
+
+
+- `action(n17, "PO needs to be reviewed")`, `precedence(n13, n17)`: Placed after `n13` ("print and release PO in system"), violating the source chronology "If the PO is created, it needs to be reviewed."
+- `action(n20,...)`, `action(n21,...)`, `action(n26,...)`, `action(n30,...)`, `action(n34,...)`, `action(n35,...)`, `action(n41,...)`: Declared as `action` but labeled/function as synchronous joins; should use `converge(id)` per DSL semantics for merging parallel flows (SMC2/SMC4).
+- `action(n25)`, `action(n29)`, `action(n33)`, `action(n37)`, `action(n40)`, `action(n46)`, `branch(b10)`, `defines(v10,...)`, `action(n49)`, `action(n50)`, `end(e3)`: Hallucinate "wait/recheck" mechanisms and a "No match/contact support" failure path entirely absent from the source text (SMC1).
+- `defines(v3, "Is PO rejected", {"Yes"})`: Range only contains `"Yes"`, making the XOR gateway `b3` semantically invalid as it cannot evaluate the implicit `"No"` path required to proceed to approval (SMC6).
+- `branch(b11, AND)`, `precedence(b11, n18)`, `precedence(b11, n19)`, `precedence(b11, n22)`: Splits into three concurrent paths, but the source specifies exactly two simultaneous activities: "Simultaneously, reserve funds for the released POs and mail the POs to the supplier." (SMC4).
+- `precedence(n15, n47)`, `precedence(n16, n48)`: Directs reworked POs to isolated nodes (`n47`, `n48`) instead of feeding back to the creation step, violating "If the PO needs to be reworked, it needs to be created again." (SMC5).

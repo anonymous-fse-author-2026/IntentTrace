@@ -1,0 +1,389 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "gather required items"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "inquire about availability of products"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "send inquiry"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "wait for invoice"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Is invoice received?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "review pricing and terms"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "send purchase requisition"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "wait for purchase invoice"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Is purchase invoice received?"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "wait for shipment"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Is shipment received?"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "receive invoice"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "make payment"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "transaction complete and process ends"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c_wait_inv",
+      "type": "converge"
+    },
+    {
+      "id": "c_wait_pinv",
+      "type": "converge"
+    },
+    {
+      "id": "c_wait_ship",
+      "type": "converge"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is invoice received?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is purchase invoice received?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Is shipment received?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "b1",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "b2",
+        "n11",
+        "n12",
+        "b3",
+        "n13",
+        "n14",
+        "n15",
+        "e1",
+        "c1",
+        "b4",
+        "c_wait_inv",
+        "c_wait_pinv",
+        "c_wait_ship"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c_wait_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c_wait_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "c_wait_inv",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "c_wait_pinv"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c_wait_pinv"
+    },
+    {
+      "type": "precedence",
+      "A": "c_wait_pinv",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "c_wait_ship"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "c_wait_ship"
+    },
+    {
+      "type": "precedence",
+      "A": "c_wait_ship",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c_wait_inv",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c_wait_pinv",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "c_wait_ship",
+      "condition": "v3 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "c1",
+      "condition": "v3 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process, the customer needs to gather the required items and then inquire about the availability of products."
+    },
+    {
+      "id": "i2",
+      "content": "After sending the inquiry, they should wait for the invoice."
+    },
+    {
+      "id": "i3",
+      "content": "Once the invoice is received"
+    },
+    {
+      "id": "i4",
+      "content": "the customer should review the pricing and terms of the items and then send a purchase requisition"
+    },
+    {
+      "id": "i5",
+      "content": "they need to wait for the purchase invoice and shipment"
+    },
+    {
+      "id": "i6",
+      "content": "Once the purchase invoice and shipment are received, the customer can proceed to receive the invoice."
+    },
+    {
+      "id": "i7",
+      "content": "Upon receiving the invoice, they should make the payment."
+    },
+    {
+      "id": "i8",
+      "content": "Once the payment is made, the transaction is complete and the process ends."
+    }
+  ]
+}

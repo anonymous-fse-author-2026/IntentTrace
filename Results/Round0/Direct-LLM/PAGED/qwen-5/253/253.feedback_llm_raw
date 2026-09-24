@@ -1,0 +1,5 @@
+
+
+- `action(n10, "Review Purchase Order")`: Missing a precedence edge returning to `branch(b2, XOR)` (or `action(n6)`). The source states "In case the order needs to be reworked, review the Purchase Order again," implying a feedback loop, but the model leaves this node as a dead end, breaking the intended cycle and leaving that path unable to reach an end node (SMC3/SMC4/SMC5).
+- `action(n4, "End")` and `action(n15, "End")`: Hallucinate explicit termination steps. The source describes direct process completion ("then the process ends", "Finally, the process ends after..."), making these executable action nodes redundant and semantically inaccurate compared to the proper `end(e1)` and `end(e2)` declarations (SMC1/SMC2).
+- `actor(a_default, ..., [n11, ...])`: Incorrectly assigns responsibility for `action(n11, "Supplier sends packing slip and invoice")` to the default process owner. The source explicitly attributes this activity to "the Supplier", which requires a dedicated supplier actor definition rather than lumping it under the default actor (SMC7).

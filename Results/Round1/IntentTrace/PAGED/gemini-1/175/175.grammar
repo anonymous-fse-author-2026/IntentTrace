@@ -1,0 +1,41 @@
+{
+  "ok": false,
+  "accepted_count": 28,
+  "rejected_count": 1,
+  "accepted": [
+    "init(i1)",
+    "action(i2, 'Rental Items are Returned to the Store.')",
+    "branch(b1, XOR)",
+    "action(i3, 'If the \"Customer returns the items to the store,\"')",
+    "action(i4, 'Delivery Crew picks-up items at the event site,')",
+    "converge(c1)",
+    "action(i5, 'During this step, the items are counted and compared to the original contract.')",
+    "branch(b2, XOR)",
+    "action(i6, 'If the \"Order is complete and all items were returned,\"')",
+    "action(i7, 'if the \"Order is incomplete and items are missing,\"')",
+    "action(i8, 'email the customer to inform them of the damage and additional charges')",
+    "branch(b3, XOR)",
+    "action(i9, 'if the \"Items are packed for an existing order,\"')",
+    "action(i10, 'if the \"Items are stored for future orders,\"')",
+    "converge(c2)",
+    "converge(c4)",
+    "action(i15, 'when the process is complete, it ends.')",
+    "end(e1)",
+    "action(i11, 'In case of missing items and replacement charges, we email the customer to inform them.')",
+    "branch(b4, XOR)",
+    "action(i13, 'If the \"Customer returns the missing items,\"')",
+    "action(i14, 'if the \"Customer does not return the missing items,\"')",
+    "converge(c5)",
+    "action(i22, 'and the process is complete.')",
+    "end(e3)",
+    "action(i12, 'temporarily take them out of inventory.')",
+    "branch(b5, XOR)",
+    "action(i16, 'If the \"Items are repaired and added into inventory,\"')"
+  ],
+  "rejected": [
+    {
+      "statement": "action(i17, 'if the \"Items can't be repaired and are discarded,\"')\nbranch(b6, XOR)\naction(i19, 'Lastly, the items are packed for an existing order. If the \"Items are packed for an existing order,\"')\naction(i20, 'If the \"Items are stored for future orders,\"')\nconverge(c3)\naction(i21, 'Once again, when the process is complete, it ends.')\nend(e2)\naction(i18, 'we email the customer with replacement charges.')\ndefines(v_return, 'Return Method', {'customer', 'crew'})\ndefines(v_condition, 'Condition', {'complete', 'missing', 'damaged'})\ndefines(v_stock1, 'Stock', {'pack', 'store'})\ndefines(v_missing, 'Missing Returned', {'yes', 'no'})\ndefines(v_repair, 'Repairable', {'yes', 'no'})\ndefines(v_stock2, 'Stock', {'pack', 'store'})\nactor(a_default, 'Default', [i1, i2, b1, i3, i4, c1, i5, b2, i6, i7, i8, b3, i9, i10, c2, c4, i15, e1, i11, b4, i13, i14, c5, i22, e3, i12, b5, i16, i17, i18, b6, i19, i20, c3, i21, e2])\nprecedence(i1, i2)\nprecedence(i2, b1)\nprecedence(b1, i3)\nprecedence(b1, i4)\nprecedence(i3, c1)\nprecedence(i4, c1)\nprecedence(c1, i5)\nprecedence(i5, b2)\nprecedence(b2, i6)\nprecedence(b2, i7)\nprecedence(b2, i8)\nprecedence(i6, b3)\nprecedence(b3, i9)\nprecedence(b3, i10)\nprecedence(i9, c2)\nprecedence(i10, c2)\nprecedence(c2, c4)\nprecedence(c4, i15)\nprecedence(i15, e1)\nprecedence(i7, i11)\nprecedence(i11, b4)\nprecedence(b4, i13)\nprecedence(b4, i14)\nprecedence(i13, c4)\nprecedence(i14, c5)\nprecedence(i8, i12)\nprecedence(i12, b5)\nprecedence(b5, i16)\nprecedence(b5, i17)\nprecedence(i16, b6)\nprecedence(b6, i19)\nprecedence(b6, i20)\nprecedence(i19, c3)\nprecedence(i20, c3)\nprecedence(c3, i21)\nprecedence(i21, e2)\nprecedence(i17, i18)\nprecedence(i18, c5)\nprecedence(c5, i22)\nprecedence(i22, e3)\nguard(b1, i3, v_return == 'customer')\nguard(b1, i4, v_return == 'crew')\nguard(b2, i6, v_condition == 'complete')\nguard(b2, i7, v_condition == 'missing')\nguard(b2, i8, v_condition == 'damaged')\nguard(b3, i9, v_stock1 == 'pack')\nguard(b3, i10, v_stock1 == 'store')\nguard(b4, i13, v_missing == 'yes')\nguard(b4, i14, v_missing == 'no')\nguard(b5, i16, v_repair == 'yes')\nguard(b5, i17, v_repair == 'no')\nguard(b6, i19, v_stock2 == 'pack')\nguard(b6, i20, v_stock2 == 'store')",
+      "reason": "unterminated string literal"
+    }
+  ]
+}

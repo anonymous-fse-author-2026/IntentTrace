@@ -1,0 +1,12 @@
+- `defines(v2, "check answer again", {"Yes"})`: Value range omits "No", directly contradicting the source text "If the answer is "No" again, we continue the process." (SMC6)
+- `guard(b5, n14, v5 = 'No')`, `action(n14, "need Vendor master record")`, `end(e3)`, and related `precedence` statements: Hallucinates a "No" decision branch and an early termination path. The source description only specifies the affirmative continuation at this stage ("And if the answer is "Yes" again, then we enter the invoice in SAP.") and contains no corresponding "No" case or endpoint. (SMC1, SMC5)
+- `action(n17, "end")`: Introduces a superfluous action node between `n16` and `end(e4)`. The source text states the process concludes immediately after placing invoices in the Outbox, with no intermediate step documented. (SMC1, SMC2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Yes'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b2,n5,"v2 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Yes'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n5,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report".;
+:v1: is expense > 1000? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:review report;
+else ([v1 = 'No'])
+:check translation need;
+:v2: check translation need ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:translate receipts;
+else ([v2 = 'No'])
+:confirm receipts;
+endif
+endif
+:evaluate review decision;
+:v3: evaluate review decision ({Rejected, Approved}); <<objectSignal>>
+if () then ([v3 = 'Approved'])
+:check translation need again;
+:Once again, evaluate the review decision;
+:v4: evaluate review decision again ({Rejected, Approved}); <<objectSignal>>
+if () then ([v4 = 'Approved'])
+:translate receipts again;
+:confirm receipts again;
+:evaluate receipt decision;
+:v5: evaluate receipt decision ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v5 = 'Accepted'])
+:process expense;
+:end;
+:end;
+else ([v5 = 'Rejected'])
+:edit report;
+endif
+else ([v4 = 'Rejected'])
+:edit report;
+endif
+stop
+else ([v3 = 'Rejected'])
+->;
+endif
+@enduml

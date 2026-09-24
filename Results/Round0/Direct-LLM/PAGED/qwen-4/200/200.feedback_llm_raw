@@ -1,0 +1,12 @@
+
+
+- `action(n1, "Start Process")`: Omits the documented initial step "start by placing an order" and substitutes an ungrounded generic action.
+- `action(n4, "End Process - Ineligible")`: Misclassified as an action node; source states "the process ends" immediately after informing, requiring a direct transition to an `end` node.
+- `branch(b5, AND)`, `precedence(n3, b5)`, `precedence(b5, n4)`: Introduces unjustified concurrent split and intermediate step; source dictates exact chronology "After informing the customer, the process ends."
+- `action(n8, "Prepare Products for Shipment")` and `action(n9, "Prepare Products for Shipment")`: Hallucinated duplicate nodes; source mentions "Prepare the products for shipment" exactly once.
+- `action(n12, "Check Payment Status")` and `action(n13, "Check Payment Status")`: Hallucinated duplicate nodes; source checks payment status once before branching on receipt or reminders.
+- `branch(b6, AND)`, `branch(b7, AND)`, `converge(c1)`, `converge(c2)`, `converge(c3)`: Distorts concurrency logic; source states "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment," requiring a single AND split after preparation and a single converge afterward, not duplicated preparation branches feeding multiple converges.
+- `precedence(b4, c5)`, `precedence(c5, n17)`, `action(n17, "Continue Process")`: Breaks intended loop progression; source says "If the number of reminders is less than 3, continue the process," but `n17` lacks outgoing precedence edges to return to the payment/invoicing workflow, terminating the path prematurely.
+- `precedence(b5, c6)`: Creates invalid cross-path convergence; illegally merges the independent "ineligible customer" termination path (`b5`) with the "reminders = 3" lawyer notification path (`c6`), contradicting their mutually exclusive business contexts.
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`, `defines(v4, ..., {})`: Empty value ranges fail to reflect source decision spaces; explicitly stated domains include {"eligible", "not eligible"}, {"available", "not available"}, {"received", "not received"}, and numeric thresholds ("< 3", "= 3") for reminders.
+- Missing `guard` statements on `b1`, `b2`, `b3`, `b4`: Omits explicit routing criteria required by the description, such as "if the customer is 'not eligible to order'", "if it is not [available]", "if the payment is received", and "if the number of reminders is less than 3".

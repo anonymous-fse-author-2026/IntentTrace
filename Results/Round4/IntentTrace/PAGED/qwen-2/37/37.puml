@@ -1,0 +1,38 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process for WIGGO by placing an Order;
+:Check the Customers Credit Limit;
+:v1: Is Credit Limit Okay ({Okay, No}); <<objectSignal>>
+if () then ([v1 = 'Okay'])
+:Check the Availability of the Article first time;
+:v_art: Article Availability ({Available, Unavailable}); <<objectSignal>>
+if () then ([v_art = 'Unavailable'])
+:Produce the Goods;
+else ([v_art = 'Available'])
+:Collect the Goods;
+endif
+:Send an Order Confirmation;
+split
+:Ship the Goods;
+split again
+:Send the Invoice;
+end split
+:Check the Payment status;
+:v_pay: Payment Status ({Received, Not Received}); <<objectSignal>>
+if () then ([v_pay = 'Received'])
+:Close the Order due to Payment received;
+:End process;
+else ([v_pay = 'Not Received'])
+:check if the Reminder count is greater than or equal to 3;
+:Write off the Order;
+:Additionally, send a Reminder;
+:After writing off the Order, close the Order and end the process;
+endif
+else ([v1 = 'No'])
+:Send a Denial to the Customer due to Credit Limit;
+endif
+stop
+@enduml

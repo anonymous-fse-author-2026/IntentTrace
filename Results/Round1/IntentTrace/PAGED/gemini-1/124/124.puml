@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:look at the order;
+:v1: order status ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v1 = 'Rejected'])
+:the process should continue;
+stop
+else ([v1 = 'Accepted'])
+split
+:preparing the assembling order;
+split again
+:checking availability;
+:v2: backorder? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:availability needs to be checked again;
+:v3: check again ({Loop, End}); <<objectSignal>>
+if () then ([v3 = 'End'])
+:the process ends;
+stop
+endif
+else ([v2 = 'No'])
+:the process should continue;
+endif
+end split
+:assemble the bike;
+:ship the product;
+stop
+endif
+@enduml

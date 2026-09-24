@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i2:If the instruction is to "Forward Invoice to Admin Officer", (reason: The condition for forwarding the invoice to the admin officer has no corresponding guard element in the generated model.)
+- [N2] Omitted trace (input 0): i1:The first step is to receive and categorize the invoice. -> i2:If the instruction is to "Forward Invoice to Admin Officer", -> i3:sort the invoice
+- [N3] Omitted trace (input 2): i1:The first step is to receive and categorize the invoice. -> i7:if the instruction is to "Return invoice to client for completion", -> i8:if the instruction is to "Return invoice to client for completion" -> i9:the invoice is received and categorized again. -> i1:The first step is to receive and categorize the invoice.
+
+Addition
+- [N4] Node-level addition: action(n1,"Start the invoice processing") (reason: This action repeats the initialization implicitly without corresponding source text supporting an explicit 'Start' action.)
+- [N5] Within matched traces (1->0) added: init(i1)
+- [N6] Within matched traces (1->0) added: action(n1,"Start the invoice processing")
+- [N7] Within matched traces (3->1) added: init(i1)
+- [N8] Within matched traces (3->1) added: action(n1,"Start the invoice processing")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4, n6 | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")

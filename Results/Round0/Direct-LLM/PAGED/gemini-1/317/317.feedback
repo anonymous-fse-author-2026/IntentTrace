@@ -1,0 +1,14 @@
+- precedence(n2, n3): The model executes "Check Referee Reports" (n2) and checking their completion (n3) sequentially, but the source explicitly states "At the same time, you should continue to monitor...", requiring parallel (AND) concurrency.
+- action(n10, "Check if Referee Reports are still uncompleted"), branch(b3, XOR), action(n11, "Contact support for further assistance"), and action(n12, "End of process"): The model hallucinates a third check, a support contact step, and early terminations. The source text simply states "Once the Referee Reports have been completed, you can move on..." without these abort paths.
+- branch(b4, XOR): The gateway lacks an outgoing 'No' path for when a Psychometric Test is not required, omitting the explicitly documented source action to "coordinate the second round of selection".
+- defines(v4, "Is Psychometric Test required?", {"Yes"}): The variable range omits the "No" condition, failing to reflect the "If not..." scenario described in the source text.
+- action(n18, "Proceed without HR Specialist"): The model inserts a hallucinated step when an HR Specialist is not required, whereas the source text states to route directly to completing the test ("Otherwise, you can proceed to complete the Psychometric Test.").
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b4` has in=1 and out=1. | DSL: branch(b4,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v4 = 'Yes'` on `b4 -> n16` uses undefined variable `v4`. | DSL: guard(b4,n16,"v4 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v4 = 'Yes'` on `b4 -> n16` cannot be evaluated: `v4` has no declared range. | DSL: guard(b4,n16,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` cannot be evaluated: `v4` has no declared range.

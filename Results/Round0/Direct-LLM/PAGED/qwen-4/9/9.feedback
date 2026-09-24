@@ -1,0 +1,20 @@
+- `guard(b8, n35, v8 = 'No')` & `action(n35, "Non compliance resolved")`: Assigns resolution to the `'No'` branch, contradicting the source "if it is returned, non-compliance is resolved," which logically maps to `v8 = 'Yes'`.
+- `action(n35, "Non compliance resolved")`: Has no outgoing `precedence` statement, creating a dead-end path that fails to progress toward an `end` node and breaks process completion.
+- `branch(b4, XOR)`: Declares an exclusive choice but only defines one outgoing `guard` (`v4 = 'Yes'`), omitting the `'No'` path required to handle cases where the issue does not require mailing back.
+- `branch(b11, XOR)`: Provides only a single outgoing `precedence` (`b11, n27`) with no alternative guard or edge, leaving the decision branch semantically incomplete.
+- `branch(b13, AND)`: Introduces an artificial parallel split routing `n9` simultaneously to `n12` and `c1`. The source describes a sequential decision sequence, not concurrency, hallucinating a control-flow structure.
+- `defines(v11, "Is there response from client after 10 days?", {})`: Specifies an empty value range `{}`, violating the constraint that decision variables must have a defined domain for evaluation.
+- `defines(v4, ...)` and `defines(v7, ...)`: Restrict ranges to `{"Yes"}` for binary decision variables ("Does issue require mail back?"), failing to include the implicit `"No"` option necessary for conditional branching.
+- `precedence(b9, n28)` & `guard(b9, n28, v9 = 'Yes')`: Routes an immediate client response directly to `action(n28, "Pay Invoice and notify client of payment")`, disrupting source chronology which sequences payment notification after the conditional 10-day wait and return-check phases.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | Node `n13` has in=1 and out=0. | Node `n17` has in=1 and out=0. | Node `n35` has in=1 and out=0. | Node `n4` has in=1 and out=0. | DSL: action(n11,"Return Invoice"); action(n13,"Return Invoice"); action(n17,"Return Invoice"); action(n35,"Non compliance resolved"); action(n4,"Return Invoice")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b11` has in=1 and out=1. | Node `b4` has in=1 and out=1. | Node `b7` has in=1 and out=1. | DSL: branch(b11,XOR); branch(b4,XOR); branch(b7,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `['Yes']`. | Variable `v7` has an invalid range `['Yes']`. | Variable `v11` has an invalid range `[]`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v4 = 'Yes'` on `b4 -> n11` uses undefined variable `v4`. | Guard `v7 = 'Yes'` on `b7 -> n17` uses undefined variable `v7`. | DSL: guard(b4,n11,"v4 = 'Yes'"); guard(b7,n17,"v7 = 'Yes'")
+- [S5] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b11 -> n27` has 0 guards; exactly one is required.
+- [S6] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b4, b7, n10, n11, n13, n16, n17, n35, n4 | DSL: branch(b4,XOR); branch(b7,XOR); action(n10,"Does issue require mail back?"); action(n11,"Return Invoice"); action(n13,"Return Invoice"); action(n16,"Does issue still require mail back?"); action(n17,"Return Invoice"); action(n35,"Non compliance resolved") (+1 more)
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v4 = 'Yes'` on `b4 -> n11` cannot be evaluated: `v4` has no declared range. | Guard `v7 = 'Yes'` on `b7 -> n17` cannot be evaluated: `v7` has no declared range. | DSL: guard(b4,n11,"v4 = 'Yes'"); guard(b7,n17,"v7 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` cannot be evaluated: `v4` has no declared range. | Branch `b7` cannot be evaluated: `v7` has no declared range.

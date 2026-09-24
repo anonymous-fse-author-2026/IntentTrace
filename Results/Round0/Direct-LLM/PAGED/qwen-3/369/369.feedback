@@ -1,0 +1,9 @@
+- `defines(v1, "is pesto available?", {}), defines(v2, "has tomato sauce been stolen?", {})`: Ranges are empty `{}`, violating SMC6 as they fail to specify the boolean/discrete values required for the documented conditions "If pesto is available..." and "If tomato sauce is stolen...".
+- `branch(b1, XOR), branch(b2, XOR)`: Missing `guard` statements for outgoing edges, omitting the required conditional logic "If pesto is available..." and "If tomato sauce is stolen...", violating SMC1 and SMC4.
+- `action(n4, "cook spaghetti")` via `precedence(b3, n4)` and `precedence(n4, c1)`: Executes concurrently with checking availability and merges before sauce retrieval, contradicting the explicit source instruction "Once the pesto is obtained, cook the spaghetti." (SMC3)
+- `action(n13, "take tomato sauce as is")`: Hallucinated behavior; the source only defines an action when sauce is stolen ("If tomato sauce is stolen, cook it.") and provides no fallback step. (SMC1)
+- `precedence(b2, c2)`: Directly links an XOR branch to a convergence node, bypassing the mutually exclusive decision paths and violating correct control-flow join semantics. (SMC4)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

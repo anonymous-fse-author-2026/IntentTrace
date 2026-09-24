@@ -1,0 +1,39 @@
+Omission
+- [N1] Node-level omission: i6:availability needs to be checked again (reason: The model lacks any step, loop, or feedback mechanism to re-check availability as explicitly instructed.)
+- [N2] Within matched traces (0->1) omitted: i6:availability needs to be checked again
+- [N3] Within matched traces (2->1) omitted: i6:availability needs to be checked again
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: No source text supports an explicit 'start' action step; the process begins naturally with examining the order.)
+- [N5] Node-level addition: action(n5,"End") (reason: Invents an 'End' action following the rejection path; the source indicates the process continues, not terminates.)
+- [N6] Node-level addition: action(n12,"End") (reason: Adds an explicit 'End' action after shipping; the source concludes naturally without defining a separate terminal step.)
+- [N7] Node-level addition: label(n10,n11,"12") (reason: The label '12' is entirely fabricated with no correspondence to the input text.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"End") -> end(e2)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n10,"Assemble Bike") -> action(n11,"Ship Product") -> action(n12,"End") -> end(e3)
+- [N11] Within matched traces (0->1) added: init(i1)
+- [N12] Within matched traces (0->1) added: action(n1,"start")
+- [N13] Within matched traces (0->1) added: converge(c1)
+- [N14] Within matched traces (1->2) added: init(i1)
+- [N15] Within matched traces (1->2) added: action(n1,"start")
+- [N16] Within matched traces (1->2) added: action(n12,"End")
+- [N17] Within matched traces (1->2) added: end(e3)
+- [N18] Within matched traces (2->1) added: init(i1)
+- [N19] Within matched traces (2->1) added: action(n1,"start")
+- [N20] Within matched traces (2->1) added: action(n3,"Is Order Rejected?")
+- [N21] Within matched traces (2->1) added: converge(c1)
+- [N22] Within matched traces (3->2) added: init(i1)
+- [N23] Within matched traces (3->2) added: action(n1,"start")
+- [N24] Within matched traces (3->2) added: action(n3,"Is Order Rejected?")
+- [N25] Within matched traces (3->2) added: action(n12,"End")
+- [N26] Within matched traces (3->2) added: end(e3)
+
+Mutation
+- [N27] Node-level mutation: element=action(n4,"Reject Order"); source=i2:If the order is to be rejected; reason=The source explicitly states the process should continue if rejected, but the model introduces a 'Reject Order' action step that alters the intended flow and outcome.
+
+Permutation
+- [N28] Within matched traces (1->2) reordered: expected [i9:The next steps are to assemble the bike and then ship the product.] but observed [converge(c1)] elsewhere; in its place the model has [branch(b2,XOR)]
+- [N29] Within matched traces (3->2) reordered: expected [i9:The next steps are to assemble the bike and then ship the product.] but observed [converge(c1)] elsewhere; in its place the model has [branch(b2,XOR)]
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=False].

@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start EC-Lille procedure;
+:Is 'research schedule directly' option selected;
+:v1: Is 'research schedule directly' option selected ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Research schedule;
+else ([v1 = 'No'])
+:Provide indications;
+:Proceed with research schedule;
+endif
+:Validate schedule;
+:Is schedule satisfactory;
+:v2: Is schedule satisfactory ({No, Yes, Yes_alt}); <<objectSignal>>
+switch ()
+case ([v2 = 'No'])
+:Research schedule;
+:v3: Is schedule still not satisfactory after researching again ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:If it is still not satisfactory;
+stop
+endif
+case ([v2 = 'Yes'])
+:Write ticket order to SNCF;
+:Validate ticket order;
+:Is ticket order approved;
+:v4: Is ticket order approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'No'])
+->;
+else ([v4 = 'Yes'])
+:Validate ticket order again;
+:Is ticket order approved after second validation;
+:v5: Is ticket order approved after second validation ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'No'])
+->;
+else ([v5 = 'Yes'])
+:Is ticket order approved after third validation;
+:v6: Is ticket order approved after third validation ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'No'])
+->;
+else ([v6 = 'Yes'])
+:End process;
+stop
+endif
+endif
+endif
+:End process;
+stop
+case ([v2 = 'Yes_alt'])
+:Proceed with writing ticket order to SNCF;
+endswitch
+@enduml

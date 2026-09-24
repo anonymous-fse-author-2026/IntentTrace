@@ -1,0 +1,8 @@
+- action(n6, "Process ends after interview"): Hallucinated action. The source text "the process comes to an end" indicates reaching a termination point (end node), not executing a distinct process step.
+- precedence(n3, c1): Incorrect control flow. The text states "If the decision is to send a negative email, then the process ends", but the model routes the negative email path (`n3`) to converge at `c1` and subsequently pass through `n6` ("Process ends after interview") before ending. 
+- branch(b1, XOR): Missing guards. The outgoing edges from the XOR branch to `n3` and `n4` lack guards representing the text's conditions ("If the decision is to send a negative email" and "if the decision is to invite the candidate").
+- defines(v1, "decide whether to send a negative email or invite candidate", {}): The variable has an empty range and fails to capture the possible outcomes of the decision described in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

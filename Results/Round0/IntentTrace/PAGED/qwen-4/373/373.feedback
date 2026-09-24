@@ -1,0 +1,45 @@
+Omission
+- [N1] Node-level omission: i6:offer the benefit. (reason: The source specifies offering a benefit on the accepted path, but no action element in the model captures this task.)
+- [N2] Within matched traces (2->2) omitted: i6:offer the benefit.
+
+Addition
+- [N3] Node-level addition: action(n11,"Merge after benefit recording and rejection continue") (reason: This merge action has no corresponding description in the source text and introduces an unmodeled structural step.)
+- [N4] Node-level addition: action(n5,"Accept the claim") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"Start receiving the claim") -> action(n2,"Create and record the claim") -> action(n3,"Make decision on the claim") -> branch(b1,XOR) -> action(n4,"Reject the claim") -> action(n6,"Review the claim rejection") -> action(n7,"Is claim rejection accepted") -> branch(b2,XOR) -> action(n8,"Continue the process") -> converge(c1) -> action(n11,"Merge after benefit recording and rejection continue") -> branch(b3,AND) -> action(n13,"Close the claim") -> converge(c2) -> action(n14,"End") -> end(e1)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"Start receiving the claim") -> action(n2,"Create and record the claim") -> action(n3,"Make decision on the claim") -> branch(b1,XOR) -> action(n5,"Accept the claim") -> action(n9,"Prepare the claim discharge") -> action(n10,"Record the benefit payment") -> converge(c1) -> action(n11,"Merge after benefit recording and rejection continue") -> branch(b3,AND) -> action(n13,"Close the claim") -> converge(c2) -> action(n14,"End") -> end(e1)
+- [N7] Within matched traces (0->0) added: branch(b2,XOR)
+- [N8] Within matched traces (0->0) added: action(n8,"Continue the process")
+- [N9] Within matched traces (0->0) added: converge(c1)
+- [N10] Within matched traces (0->0) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N11] Within matched traces (0->0) added: branch(b3,AND)
+- [N12] Within matched traces (0->0) added: action(n12,"Operate outgoing payment")
+- [N13] Within matched traces (0->0) added: converge(c2)
+- [N14] Within matched traces (1->0) added: action(n7,"Is claim rejection accepted")
+- [N15] Within matched traces (1->0) added: converge(c1)
+- [N16] Within matched traces (1->0) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N17] Within matched traces (1->0) added: branch(b3,AND)
+- [N18] Within matched traces (1->0) added: action(n12,"Operate outgoing payment")
+- [N19] Within matched traces (1->0) added: converge(c2)
+- [N20] Within matched traces (2->2) added: converge(c1)
+- [N21] Within matched traces (2->2) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N22] Within matched traces (2->2) added: branch(b3,AND)
+- [N23] Within matched traces (2->2) added: action(n12,"Operate outgoing payment")
+- [N24] Within matched traces (2->2) added: converge(c2)
+- [N25] Within matched traces (3->2) added: action(n2,"Create and record the claim")
+- [N26] Within matched traces (3->2) added: action(n3,"Make decision on the claim")
+- [N27] Within matched traces (3->2) added: branch(b1,XOR)
+- [N28] Within matched traces (3->2) added: action(n5,"Accept the claim")
+- [N29] Within matched traces (3->2) added: action(n9,"Prepare the claim discharge")
+- [N30] Within matched traces (3->2) added: action(n10,"Record the benefit payment")
+- [N31] Within matched traces (3->2) added: converge(c1)
+- [N32] Within matched traces (3->2) added: action(n11,"Merge after benefit recording and rejection continue")
+- [N33] Within matched traces (3->2) added: branch(b3,AND)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | DSL: branch(b2,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n8` uses undefined variable `v2`. | DSL: guard(b2,n8,"v2 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n8,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

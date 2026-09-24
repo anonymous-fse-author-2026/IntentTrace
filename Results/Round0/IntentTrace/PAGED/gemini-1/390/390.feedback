@@ -1,0 +1,47 @@
+Omission
+- [N1] Node-level omission: i6:if the order exceeds the purchaser's credit allowance (reason: The model fails to include this condition for routing to the Outstanding Balance path.)
+- [N2] Node-level omission: i10:If a new order is placed, (reason: The condition confirming the new order placement before recording in accounts receivable is omitted.)
+- [N3] Node-level omission: i14:if no payments are received (reason: The model drops the explicit condition for the negative payment path.)
+- [N4] Node-level omission: i19:if the order does not require installation (reason: The explicit negative condition prior to packing for delivery is not modeled.)
+- [N5] Omitted trace (input 1): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i4:If the condition is "Order with prior internal credit allowance" -> i5:processing the order for delivery -> i16:identify the order for installation -> i19:if the order does not require installation -> i20:packed for delivery
+- [N6] Omitted trace (input 2): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i6:if the order exceeds the purchaser's credit allowance -> i7:there will be an Outstanding Balance -> i9:the process ends at the Warehouse
+- [N7] Omitted trace (input 5): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i6:if the order exceeds the purchaser's credit allowance -> i7:there will be an Outstanding Balance -> i8:a new order is placed -> i10:If a new order is placed, -> i11:recorded in the Accounts Receivable -> i12:If Payments are Received -> i13:the process continues -> i16:identify the order for installation -> i19:if the order does not require installation -> i20:packed for delivery
+- [N8] Within matched traces (0->1) omitted: i18:an Installer will be assigned
+- [N9] Within matched traces (4->2) omitted: i6:if the order exceeds the purchaser's credit allowance
+- [N10] Within matched traces (4->2) omitted: i10:If a new order is placed,
+- [N11] Within matched traces (4->3) omitted: i6:if the order exceeds the purchaser's credit allowance
+- [N12] Within matched traces (4->3) omitted: i10:If a new order is placed,
+- [N13] Within matched traces (4->3) omitted: i18:an Installer will be assigned
+- [N14] Within matched traces (3->4) omitted: i6:if the order exceeds the purchaser's credit allowance
+- [N15] Within matched traces (3->4) omitted: i10:If a new order is placed,
+- [N16] Within matched traces (3->4) omitted: i14:if no payments are received
+
+Addition
+- [N17] Node-level addition: action(n17,"end process") (reason: These explicit 'end process' actions lack direct textual support, as the source only mentions ending at the warehouse.)
+- [N18] Node-level addition: action(n18,"end process") (reason: These explicit 'end process' actions lack direct textual support, as the source only mentions ending at the warehouse.)
+- [N19] Within matched traces (0->0) added: action(n17,"end process")
+- [N20] Within matched traces (0->0) added: end(e2)
+- [N21] Within matched traces (0->1) added: branch(b3,XOR)
+- [N22] Within matched traces (0->1) added: action(n16,"pack for delivery")
+- [N23] Within matched traces (0->1) added: action(n18,"end process")
+- [N24] Within matched traces (0->1) added: end(e3)
+- [N25] Within matched traces (4->2) added: action(n4,"Order with prior internal credit allowance")
+- [N26] Within matched traces (4->2) added: branch(b1,XOR)
+- [N27] Within matched traces (4->2) added: action(n17,"end process")
+- [N28] Within matched traces (4->2) added: end(e2)
+- [N29] Within matched traces (4->3) added: action(n4,"Order with prior internal credit allowance")
+- [N30] Within matched traces (4->3) added: branch(b1,XOR)
+- [N31] Within matched traces (4->3) added: branch(b3,XOR)
+- [N32] Within matched traces (4->3) added: action(n16,"pack for delivery")
+- [N33] Within matched traces (4->3) added: action(n18,"end process")
+- [N34] Within matched traces (4->3) added: end(e3)
+- [N35] Within matched traces (3->4) added: action(n4,"Order with prior internal credit allowance")
+- [N36] Within matched traces (3->4) added: branch(b1,XOR)
+- [N37] Within matched traces (3->4) added: action(n9,"Payments Received")
+- [N38] Within matched traces (3->4) added: branch(b2,XOR)
+- [N39] Within matched traces (3->4) added: action(n12,"end process")
+- [N40] Within matched traces (3->4) added: end(e1)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.

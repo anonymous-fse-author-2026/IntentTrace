@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:supply requirement and document it;
+:v1: check order reception method ({Fax, Mail/Phone}); <<objectSignal>>
+if () then ([v1 = 'Fax'])
+:If the order is received via fax, input the order into an Excel file.;
+else ([v1 = 'Mail/Phone'])
+:If the order is received via mail or phone, also input the order into an Excel file.;
+endif
+:Once the Excel list is complete after a week, send it to the student.;
+:Upon receiving the Excel list, type the orders into the MS-Access database.;
+:Once the database is completed, control the incoming order.;
+:At the same time, continue to do the check.;
+:v_decision: order evaluation result ({Correct, Incorrect, <5k, >5k}); <<objectSignal>>
+switch ()
+case ([v_decision = 'Correct'])
+:If the order is correct, release it.;
+case ([v_decision = 'Incorrect'])
+:However, if the order is incorrect, contact the selling agency.;
+:Contact the selling agency and upon receiving the actual issue, send the order for sign off.;
+:Once the order is signed off, contact the client and release the order.;
+case ([v_decision = '<5k'])
+:If the order is worth less than 5.000 €, release it.;
+case ([v_decision = '>5k'])
+:If the order is worth more than 5.000 €, send it for sign off and continue with the check.;
+endswitch
+:Once the order is received by PPC, they will initiate production.;
+:After PPC initiates production, the goods will be produced.;
+:v4: check if issue solvable ({Unsolvable, Solvable}); <<objectSignal>>
+if () then ([v4 = 'Unsolvable'])
+:If the issue cannot be solved, cancel the order.;
+stop
+else ([v4 = 'Solvable'])
+:If the issue can be solved, release the order.;
+:v5: check if order needs cancellation ({Cancel, Do not cancel}); <<objectSignal>>
+if () then ([v5 = 'Cancel'])
+:If the order needs to be cancelled, the process ends.;
+stop
+else ([v5 = 'Do not cancel'])
+:If not, check the quality of the goods.;
+:Once the quality is checked, create and send a quality report to the finance department.;
+:Release the order via memo and ensure that the memo is achieved in the warehouse.;
+split
+:Send the invoice and once it is sent, report the achievement to the finance department.;
+split again
+:At the same time, commission the goods and sign and send the memo.;
+split again
+:Also, send the goods and ensure that the signed memo is achieved in the logistic department.;
+end split
+:Finally, archive the memo and close the order.;
+stop
+endif
+endif
+@enduml

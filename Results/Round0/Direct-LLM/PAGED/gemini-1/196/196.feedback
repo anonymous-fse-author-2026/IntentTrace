@@ -1,0 +1,14 @@
+- `action(n4, "continue with the process")`: Lacks an outgoing precedence flow, creating a deadlock. The text indicates that after this step the process continues ("After this, we again check..."), meaning this path should reconnect to the flow instead of halting.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` declarations on their outgoing flows to correctly evaluate the "URN" and "URL" routing conditions described in the source.
+- `label(n1, n2, "is not URN")` and `label(n3, n5, "is URL")`: Descriptive labels are improperly placed on sequential flows between straight-line actions, rather than being associated with branch decisions.
+- `action(n6, "perform ONS-Resolving URN to a domain name")`: The model hallucinates repeating the resolution step. The text states "Once we have resolved the URN to a domain-name...", which acts as a temporal condition referring to the earlier resolution, not a new action.
+- `precedence(n7, n9)`: The model incorrectly transitions to sending a DNS query on the URL path. The text restricts this action to the URN resolution path ("Once we have resolved the URN to a domain-name, we send a DNS query").
+- `defines(v1, "check if the input is a URN", {})` and `defines(v2, "check if the input is a URN or a URL", {})`: The variables are defined with empty value ranges `{}`, failing to capture the "URN" and "URL" values clearly specified in the text.
+- `action(n1, "start the process")`, `action(n16, "process ends")`, and `action(n17, "process ends")`: These actions inappropriately model the structural start and end of the process as manual execution steps, duplicating the semantic purpose of the `init` and `end` nodes. 
+- `action(n8)` through `action(n15)`: The model completely duplicates the downstream sequence of actions (sending a query, receiving URLs, linking to the DS) into two entirely disconnected parallel paths, failing to accurately represent the control-flow convergence.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"continue with the process")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"continue with the process")

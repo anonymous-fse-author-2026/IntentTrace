@@ -1,0 +1,291 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1"
+      ],
+      "verbatim_texts": [
+        "To start the process for ACME,"
+      ],
+      "justification": "Matches the initialization and the 'start' action."
+    },
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "begin with the New Resupply Cycle"
+      ],
+      "justification": "Direct paraphrase of initiating the resupply cycle."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "and then Check Levels of Inventory."
+      ],
+      "justification": "Directly matches the check inventory step."
+    },
+    {
+      "refs": [
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "If the inventory is below or equal to the minimum"
+      ],
+      "justification": "Matches the condition acting as a decision point (XOR branch) and modeled as an action step."
+    },
+    {
+      "refs": [
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "generate an Equal to or below minimum Report."
+      ],
+      "justification": "Directly matches the report generation action."
+    },
+    {
+      "refs": [
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "generate an Above Minimum Report."
+      ],
+      "justification": "Directly matches the above minimum report generation action."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "the process ends."
+      ],
+      "justification": "Matches the explicit end of the process, modeled as both an action and an end node."
+    }
+  ],
+  "mutations": [],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs)."
+      ],
+      "reason": "The creation of Purchase Orders based on the report was completely omitted."
+    },
+    {
+      "verbatim_texts": [
+        "If the PO is rejected, it needs to be reworked."
+      ],
+      "reason": "The rejection and rework path for the PO is missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the PO is approved, it is printed and released in the system."
+      ],
+      "reason": "The approval, printing, and releasing steps for the PO are missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the PO is created, it needs to be reviewed. If the PO needs to be reworked, it needs to be created again."
+      ],
+      "reason": "The review step and the rework creation loop are omitted."
+    },
+    {
+      "verbatim_texts": [
+        "Simultaneously, reserve funds for the released POs and mail the POs to the supplier."
+      ],
+      "reason": "The parallel steps (simultaneously) for reserving funds and mailing POs are missing."
+    },
+    {
+      "verbatim_texts": [
+        "If funds are reserved for the released POs, receive the Packing Slip."
+      ],
+      "reason": "The reception of the packing slip is missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the POs are mailed to the supplier, receive the inventory."
+      ],
+      "reason": "The reception of inventory is missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the Packing Slip is received, proceed to receive the Invoice."
+      ],
+      "reason": "The reception of the invoice is missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the inventory is received, proceed to receive the Packing Slip."
+      ],
+      "reason": "The condition of receiving the packing slip after the inventory is missing."
+    },
+    {
+      "verbatim_texts": [
+        "If the Invoice is received, proceed to the Three-way match. If the Three-way match is successful, release the funds. Once the funds are released, issue the payment. After the payment is issued, the Resupply Cycle is complete and the process ends."
+      ],
+      "reason": "The entire final sequence of matching, releasing funds, issuing payment, and completing the cycle is omitted."
+    }
+  ],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "initiate new resupply cycle",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: initiate new resupply cycle"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "check levels of inventory",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: check levels of inventory"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "is inventory below or equal to minimum?",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: is inventory below or equal to minimum?"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "generate above minimum report",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: generate above minimum report"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "end process",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: end process"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "generate equal to or below minimum report",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: generate equal to or below minimum report"
+    }
+  ],
+  "metrics": {
+    "match_count": 7,
+    "mutation_count": 0,
+    "omission_count": 10,
+    "addition_count": 0,
+    "match_relation_count": 7,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 10,
+    "unique_refs_in_matches": 7,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 7,
+    "total_mappable_targets": 10,
+    "input_text_length": 1575,
+    "element_count": 10
+  },
+  "model_id": "vertex_ai/gemini-3.1-pro-preview",
+  "reasoning_effort": "medium"
+}

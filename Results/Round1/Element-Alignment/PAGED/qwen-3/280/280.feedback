@@ -1,0 +1,24 @@
+Omission
+- [N1] Within matched traces (3->0) omitted: i12:If the POs are mailed to the supplier, receive the inventory.
+- [N2] Within matched traces (3->0) omitted: i14:If the inventory is received, proceed to receive the Packing Slip.
+
+Addition
+- [N3] Node-level addition: guard(b3,n18,"v3 = 'Not Received'") (reason: The source text only specifies positive/trigger conditions for these transitions and never describes alternative outcomes such as 'Not Received' or 'Unsuccessful'. These guards invent missing negative branches.)
+- [N4] Node-level addition: guard(b4,n18,"v4 = 'Not Received'") (reason: The source text only specifies positive/trigger conditions for these transitions and never describes alternative outcomes such as 'Not Received' or 'Unsuccessful'. These guards invent missing negative branches.)
+- [N5] Node-level addition: guard(b5,n19,"v5 = 'Unsuccessful'") (reason: The source text only specifies positive/trigger conditions for these transitions and never describes alternative outcomes such as 'Not Received' or 'Unsuccessful'. These guards invent missing negative branches.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n10,"Reserve Funds for Released POs") -> action(n12,"Receive Packing Slip") -> branch(b3,XOR) -> action(n14,"Proceed to Receive Invoice") -> action(n16,"Receive Invoice") -> action(n17,"Three-way Match") -> branch(b5,XOR) -> action(n19,"Issue Payment") -> action(n20,"End: Resupply Cycle Complete") -> end(e2)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n11,"Mail POs to Supplier") -> action(n13,"Receive Inventory") -> branch(b4,XOR) -> action(n15,"Proceed to Receive Packing Slip") -> action(n17,"Three-way Match") -> branch(b5,XOR) -> action(n18,"Release Funds") -> action(n19,"Issue Payment") -> action(n20,"End: Resupply Cycle Complete") -> end(e2)
+- [N8] Added trace (model 4): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n11,"Mail POs to Supplier") -> action(n13,"Receive Inventory") -> branch(b4,XOR) -> action(n15,"Proceed to Receive Packing Slip") -> action(n17,"Three-way Match") -> branch(b5,XOR) -> action(n19,"Issue Payment") -> action(n20,"End: Resupply Cycle Complete") -> end(e2)
+- [N9] Added trace (model 5): init(i1) -> action(n1,"Start: Initiate New Resupply Cycle") -> action(n2,"Check Inventory Levels") -> branch(b1,XOR) -> action(n3,"Generate Equal to or below minimum Report") -> action(n6,"Create Purchase Order (PO)") -> action(n7,"Review PO") -> branch(b2,XOR) -> action(n8,"Print and Release PO") -> branch(b6,AND) -> action(n11,"Mail POs to Supplier") -> action(n13,"Receive Inventory") -> branch(b4,XOR) -> action(n18,"Release Funds") -> action(n19,"Issue Payment") -> action(n20,"End: Resupply Cycle Complete") -> end(e2)
+- [N10] Within matched traces (1->2) added: action(n8,"Print and Release PO")
+- [N11] Within matched traces (1->2) added: branch(b6,AND)
+- [N12] Within matched traces (1->2) added: action(n10,"Reserve Funds for Released POs")
+- [N13] Within matched traces (1->2) added: action(n12,"Receive Packing Slip")
+- [N14] Within matched traces (1->2) added: branch(b3,XOR)
+- [N15] Within matched traces (1->2) added: action(n18,"Release Funds")
+- [N16] Within matched traces (1->2) added: action(n19,"Issue Payment")
+- [N17] Within matched traces (1->2) added: action(n20,"End: Resupply Cycle Complete")
+- [N18] Within matched traces (1->2) added: end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=2 and out=1. | Node `n18` has in=3 and out=1. | Node `n19` has in=2 and out=1. | Node `n6` has in=2 and out=1. | DSL: action(n17,"Three-way Match"); action(n18,"Release Funds"); action(n19,"Issue Payment"); action(n6,"Create Purchase Order (PO)")

@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:place an order;
+:check the customer;
+:is customer eligible to order;
+:v1: is customer eligible to order ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:inform customer not eligible;
+:end process;
+stop
+else ([v1 = 'Yes'])
+:open new order in ERP system;
+:perform availability check;
+:is product available;
+:v2: is product available ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:start producing the missing parts;
+else ([v2 = 'Yes'])
+->;
+endif
+:prepare the products for shipment;
+:ship the products;
+:send the invoice;
+:check for payment;
+:is payment received;
+:v3: is payment received ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:close the order;
+:end process;
+stop
+else ([v3 = 'No'])
+:send a reminder;
+:are number of reminders less than 3;
+:v4: are number of reminders less than 3 ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:inform the lawyer;
+:end process;
+stop
+endif
+endif
+endif
+@enduml

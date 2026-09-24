@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i12:this should be repeated until all invoices are processed. (reason: No element faithfully implements this loop condition; the sole candidate (action:n8) mutates it into a question, leaving the original instruction uncovered.)
+- [N2] Node-level omission: i14:make sure to clear the outbox of the Data Entry Officer every hour. (reason: No element faithfully implements this step; the sole candidate (action:n10) omits the required actor/target, failing to cover the source unit.)
+- [N3] Node-level omission: i16:until the outbox is completely cleared (reason: No element faithfully implements this condition; the sole candidate (action:n11) alters it into an interrogative form, leaving the original requirement uncovered.)
+- [N4] Omitted trace (input 0): i1:To start the SSP process, first ensure that the Invoice is ready for verification. -> i2:After that, -> i3:check for invoice completeness. -> i4:Once the invoice completeness is confirmed, -> i5:proceed to check for SLA. -> i6:Once the SLA is checked, -> i7:move on to checking for invoice compliance. -> i8:Once these checks are completed, -> i9:the batched invoices are allocated to the Data Entry Officer and this is done by 9 am on the next working day. -> i10:The next step is -> i11:process the invoice batch and then take it to the outbox. -> i12:this should be repeated until all invoices are processed. -> i11:process the invoice batch and then take it to the outbox.
+- [N5] Within matched traces (1->0) omitted: i2:After that,
+- [N6] Within matched traces (1->0) omitted: i4:Once the invoice completeness is confirmed,
+- [N7] Within matched traces (1->0) omitted: i6:Once the SLA is checked,
+- [N8] Within matched traces (1->0) omitted: i8:Once these checks are completed,
+- [N9] Within matched traces (1->0) omitted: i10:The next step is
+- [N10] Within matched traces (1->0) omitted: i13:After taking the batch to the outbox,
+
+Mutation
+- [N11] Node-level mutation: element=action(n8,"More batches to process?"); source=i12:this should be repeated until all invoices are processed.; reason=Transforms the declarative loop condition into an interrogative format ('More batches to process?'), altering the original statement's form and logical framing.
+- [N12] Node-level mutation: element=guard(b1,n9,"v1 = 'No'") -> guard(b1,c1,"v1 = 'Yes'"); source=i12:this should be repeated until all invoices are processed.; reason=Replaces the explicit textual termination condition with abstract variable assignments ('v1 = Yes/No') that lack the original data and precision.
+- [N13] Node-level mutation: element=action(n10,"Clear outbox every hour until completely cleared"); source=i14:make sure to clear the outbox of the Data Entry Officer every hour.; reason=Drops the critical actor/target specification ('of the Data Entry Officer'), narrowing the intended scope of the instruction.
+- [N14] Node-level mutation: element=guard(b2,n12,"v2 = 'Yes'") -> guard(b2,c2,"v2 = 'No'"); source=i15:This process of clearing the outbox is done every hour until the outbox is completely cleared; reason=Substitutes the explicit completion criterion with opaque variable checks ('v2 = Yes/No') that do not align with the source text.
+- [N15] Node-level mutation: element=action(n11,"Outbox completely cleared?"); source=i16:until the outbox is completely cleared; reason=Rephrases the declarative terminal state as a direct question ('Outbox completely cleared?'), distorting the original conditional phrasing.
+
+Permutation
+- [N16] Within matched traces (1->0) reordered: expected [i16:until the outbox is completely cleared] but observed [action(n11,"Outbox completely cleared?")] elsewhere; in its place the model has [branch(b2,XOR)]

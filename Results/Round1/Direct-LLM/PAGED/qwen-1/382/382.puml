@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+|a_PathologyDepartment| Pathology Department
+|a_Pathologist| Pathologist
+|a_PathologyDepartment|
+start
+:Gross pathology request arrived;
+:Create barcode scan at registration start;
+:Registration gross pathology request;
+:Assign container to gross pathology request;
+:Specimen description;
+:Scan start for specimen description;
+:Scan end for specimen description;
+:Scan start for registration gross pathology request cont;
+:Macroscopic description writing;
+split
+:Tissue processing;
+split again
+:Digitalization?;
+:v1: Digitalization? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Proceed with Digitalization;
+else ([v1 = 'No'])
+->;
+endif
+end split
+:Digitalization?;
+:v1: Digitalization? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Proceed with Digitalization;
+else ([v1 = 'No'])
+->;
+endif
+|a_Pathologist|
+:Assign cases to pathologist;
+:Microscopic examination and diagnosis;
+|a_PathologyDepartment|
+:Write pathology report;
+:Confirm pathology report;
+:Deliver pathology report;
+:Post report processing;
+:Close pathology procedure;
+:Deliver pathology report and complete post report processing;
+stop
+@enduml

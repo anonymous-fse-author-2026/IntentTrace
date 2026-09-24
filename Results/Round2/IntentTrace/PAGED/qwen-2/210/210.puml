@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Request to purchase a motorcycle;
+:Production order received;
+:v2: Materials unavailable ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:Materials unavailable;
+:Order materials from supplier;
+:Goods received from supplier;
+else ([v2 = false])
+:Available goods for production;
+:Place manufacturing order;
+endif
+:Issue goods;
+:Produce motorcycles;
+:v_outcome: Ending Scenario ({standard, dispatch, sales_update}); <<objectSignal>>
+switch ()
+case ([v_outcome = 'sales_update'])
+:Update stock;
+:Update sales information;
+case ([v_outcome = 'dispatch'])
+:Dispatch motorcycles;
+:Update stock;
+case ([v_outcome = 'standard'])
+:Update stock;
+endswitch
+:End process;
+stop
+@enduml

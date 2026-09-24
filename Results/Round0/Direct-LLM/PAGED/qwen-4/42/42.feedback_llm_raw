@@ -1,0 +1,6 @@
+
+
+- `action(n1, "Start the booking process")`: Hallucinates an initial step not present in the source text, which begins directly with "choose your destination and calculate the distance".
+- `action(n7, "Process ends")` and `action(n13, "Process ends")`: Incorrectly model termination events as executable actions preceding `end` nodes; the source describes process completion ("the process will end"), which should map directly to `end` elements, not intermediate tasks.
+- `guard(b3, n14, v3 = 'No')` and `action(n14, "Process ends")`: Hallucinates a control-flow path and terminating action for when 24 hours have *not* passed. The source only specifies behavior for the condition where 24 hours *have* passed.
+- `defines(v1, "Do you need to book a flight?", {"No", "Yes"})`: Fails to faithfully reflect the source decision "check if you need to book a train or a flight", incorrectly narrowing the variable's descriptive scope to flights only.

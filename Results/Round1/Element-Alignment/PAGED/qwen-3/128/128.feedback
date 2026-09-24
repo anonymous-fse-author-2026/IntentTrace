@@ -1,0 +1,35 @@
+Addition
+- [N1] Node-level addition: action(n2,"How were the items returned?") (reason: Content 'How were the items returned?' is a conversational prompt not present in the source text.)
+- [N2] Node-level addition: action(n4,"Order status?") (reason: Content 'Order status?' is a conversational prompt not present in the source text.)
+- [N3] Node-level addition: action(n6,"Customer returns the missing items?") (reason: Content 'Customer returns the missing items?' is a conversational prompt not present in the source text.)
+- [N4] Node-level addition: action(n9,"Items repair status?") (reason: Content 'Items repair status?' is a conversational prompt not present in the source text.)
+- [N5] Node-level addition: action(n13,"Items packed for an existing order?") (reason: Content 'Items packed for an existing order?' is a conversational prompt not present in the source text.)
+- [N6] Within matched traces (0->3) added: action(n2,"How were the items returned?")
+- [N7] Within matched traces (0->3) added: action(n4,"Order status?")
+- [N8] Within matched traces (0->3) added: action(n13,"Items packed for an existing order?")
+- [N9] Within matched traces (1->0) added: action(n2,"How were the items returned?")
+- [N10] Within matched traces (1->0) added: action(n4,"Order status?")
+- [N11] Within matched traces (1->0) added: action(n6,"Customer returns the missing items?")
+- [N12] Within matched traces (1->0) added: action(n13,"Items packed for an existing order?")
+- [N13] Within matched traces (2->1) added: action(n2,"How were the items returned?")
+- [N14] Within matched traces (2->1) added: action(n4,"Order status?")
+- [N15] Within matched traces (2->1) added: action(n9,"Items repair status?")
+- [N16] Within matched traces (2->1) added: action(n13,"Items packed for an existing order?")
+- [N17] Within matched traces (3->2) added: action(n2,"How were the items returned?")
+- [N18] Within matched traces (3->2) added: action(n4,"Order status?")
+- [N19] Within matched traces (3->2) added: action(n9,"Items repair status?")
+- [N20] Within matched traces (3->2) added: action(n13,"Items packed for an existing order?")
+- [N21] Within matched traces (3->2) added: branch(b5,XOR)
+- [N22] Within matched traces (3->2) added: action(n15,"End")
+- [N23] Within matched traces (3->2) added: end(e1)
+
+Mutation
+- [N24] Node-level mutation: element=action(n1,"Start rental items return process"); source=i1:To begin the process, Rental Items are Returned to the Store.; reason=The action drops the destination qualifier "to the Store" and changes the passive return instruction into a generic "Start... process" phrase, altering the precise operation described.
+- [N25] Node-level mutation: element=guard(b2,n5,"v2 = 'Incomplete and items are missing'") -> guard(b2,n7,"v2 = 'Complete but items are damaged'") -> guard(b2,c1,"v2 = 'Complete and all items were returned'"); source=i12:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged",; reason=All three guards omit the subject "Order is" from the source condition strings (e.g., stores 'Incomplete and items are missing' instead of 'Order is incomplete...'), changing the exact condition payload.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=2 and out=1. | Node `n3` has in=2 and out=1. | DSL: action(n14,"Email customer with replacement charges"); action(n3,"Count items and compare to original contract")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Customer returns the items to the store]. | XOR branch `b3` has overlapping guards at state [v3=Customer returns the missing items]. | XOR branch `b5` has overlapping guards at state [v5=Items are packed for an existing order].

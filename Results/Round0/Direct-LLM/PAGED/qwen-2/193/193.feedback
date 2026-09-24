@@ -1,0 +1,11 @@
+- `action(n26, "You have completed this procedure")`: Hallucinated step; the source text concludes after completing post-report processing without this meta-action.
+- `precedence(n2, n3)`: Sequences "create barcode scan" (n3) after "Registration gross pathology request" (n2) finishes, contradicting "During the 'Registration gross pathology request' step, make sure to create a barcode scan at the start."
+- `branch(b3, AND)`, `precedence(b3, n9)`, `precedence(b3, n10)`: Excludes the digitalization check from the concurrent scope, violating "Simultaneously, complete the following steps: Tissue processing, check if 'Digitalization?' is required."
+- `precedence(n10, n11)`: Makes the digitalization check (n11) sequential to tissue processing (n10), contradicting the simultaneous execution specified in the description.
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Lacks `guard` statements to encode the "If the answer is 'no,'... If the answer is 'yes,'" decision logic, rendering conditional branches as non-deterministic choices.
+- `defines(v1, "Digitalization check after Tissue processing", {})`, `defines(v2, "Digitalization check second time", {})`: Declare empty ranges `{}`, failing to reflect the documented value options ("Yes"/"No") required for the digitalization decisions.
+- `actor(a_default, "Default", [...])`: Uniformly assigns every node to a generic participant, ignoring the specific task allocation implied by "assign cases to the pathologist" for downstream examination tasks.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n16` has 0 guards; exactly one is required.

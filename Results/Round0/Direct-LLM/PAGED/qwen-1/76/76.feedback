@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements referencing `v1` and `v2`, failing to implement the documented conditions "if someone 'Knows SLA'" and "If the task is 'Urgent'".
+- `defines(v1, "knows sla?", {})` and `defines(v2, "urgent?", {})`: Value ranges are empty `{}`, contradicting the source's implied binary/categorical choices for these decision variables.
+- Precedence chain `precedence(b1, n7)`, `precedence(n7, b3)`, `precedence(b3, c2)`, `precedence(c2, n8)`: Routes the "don't Know SLA" path straight to `action(n8, "end")`, completely bypassing `action(n3, "enter date")` and `action(n4, "urgent?")`; the source explicitly states "After that, they should enter the date" for all paths.
+- `branch(b3, AND)`: Incorrectly applied as a parallel split with only one incoming edge from `action(n7, "look up")`, spuriously forking execution into concurrent flows to `converge(c1)` and `converge(c2)` that violate the linear chronology of the description.
+- `action(n2, "knows sla?")` and `action(n4, "urgent?")`: Decision queries are declared as executable `action` nodes instead of being handled exclusively by `branch` and `guard` constructs, misrepresenting their role as pure routing conditions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.

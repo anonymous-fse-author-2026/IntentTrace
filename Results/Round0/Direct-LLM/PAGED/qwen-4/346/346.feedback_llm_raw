@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start the process")`: Hallucinated step; the source begins directly with "Initially, the appointment approval form is sent."
+- `branch(b4, AND)`, `precedence(b4, n4)`, `precedence(b4, n5)`: Violates source chronology by modeling "contact with TS" and "check approval" as parallel; the source sequences them: "Following the approval, there is a contact with TS to clarify the timing. Once the approval is received, it is checked."
+- `action(n6, "is resource internal?")`, `branch(b1, XOR)`: Misrepresents a conditional decision as an action node feeding an unguided branch; lacks `guard` statements to enforce "If the resource is internal" versus "If the resource is external".
+- `defines(v1, "is resource internal?", {})`, `defines(v2, "are there variations?", {})`, `defines(v3, "is there another variation?", {})`: Variable ranges are empty `{}`; the source implies discrete/boolean value spaces (e.g., Yes/No or true/false) for these decision variables.
+- `branch(b2, XOR)`: Lacks `guard` statements on outgoing edges to `n15` and `n17`; fails to implement the explicit conditional logic: "If there are no variations, the process continues. However, if there are variations, a business case is completed."
+- `action(n16, "is there another variation?")`, `branch(b3, XOR)`, `action(n18, "complete business case")`, `action(n19, "continue process without second variations")`: Hallucinates a nested secondary variation check and corresponding branching paths not mentioned anywhere in the source description.

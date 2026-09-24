@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Resupply Cycle Triggered;
+:Check Inventory Level;
+:v1: Check Inventory Level ({Inventory level is at or below the minimum, Inventory level is above the minimum}); <<objectSignal>>
+if () then ([v1 = 'Inventory level is at or below the minimum'])
+:Create Purchase Order;
+repeat :;
+:Reviewing the Purchase Order;
+:v2: Purchase Order approved ({Purchase Order approved, Purchase Order rejected}); <<objectSignal>>
+backward:Rework the order;
+repeat while () is ([v2 = 'Purchase Order rejected']) not ([v2 = 'Purchase Order approved'])
+:Reserve funds for the purchase;
+:Send Order to Suppliers;
+split
+:Supplier sends packing slip;
+:Record packing slip;
+split again
+:Supplier sends invoice;
+:Record invoice;
+end split
+:Release reserved funds and issue payment to the supplier;
+:End process after payment is issued to the supplier;
+stop
+else ([v1 = 'Inventory level is above the minimum'])
+:End process due to sufficient inventory;
+stop
+endif
+@enduml

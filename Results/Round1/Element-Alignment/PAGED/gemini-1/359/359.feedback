@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:continue with the process. (reason: The model completely omits the instruction to continue with the process, providing no corresponding path or action element.)
+- [N2] Node-level omission: i9:Once the candidate is appointed (reason: The temporal condition was improperly modeled as an active step (recorded as a mutation), leaving the actual event wait condition unrepresented.)
+- [N3] Omitted trace (input 0): i1:To begin the process, start by identifying the vacancy. -> i4:if there is a suitable candidate available -> i5:continue with the process. -> i8:proceed with selecting the appropriate applicant -> i9:Once the candidate is appointed -> i10:the process comes to an end
+- [N4] Omitted trace (input 2): i1:To begin the process, start by identifying the vacancy. -> i2:If there is no suitable candidate available -> i3:advertise the vacancy -> i6:If there is still no suitable candidate available -> i7:advertise the vacancy again -> i6:If there is still no suitable candidate available
+- [N5] Within matched traces (1->1) omitted: i3:advertise the vacancy
+
+Addition
+- [N6] Node-level addition: action(n2,"Is there a suitable candidate available initially") (reason: The element invents an explicit check action with the added qualifier 'initially', which is not described as an action in the source units.)
+- [N7] Node-level addition: action(n4,"Is there a suitable candidate available after advertising") (reason: The element invents an explicit check action with the added qualifier 'after advertising', which is not in the source units.)
+- [N8] Node-level addition: action(n8,"Process ends after candidate appointment") (reason: The element invents an action step for the process ending and adds the qualifier 'after candidate appointment', whereas the source simply states the process comes to an end.)
+- [N9] Node-level addition: guard(b2,c1,"v2 == \"Yes\"") (reason: This guard lacks a supporting source unit, as the corresponding conditional text from the raw text was omitted from the provided segmented input elements.)
+- [N10] Within matched traces (1->0) added: action(n2,"Is there a suitable candidate available initially")
+- [N11] Within matched traces (1->0) added: converge(c2)
+- [N12] Within matched traces (1->0) added: action(n4,"Is there a suitable candidate available after advertising")
+- [N13] Within matched traces (1->0) added: branch(b2,XOR)
+- [N14] Within matched traces (1->0) added: action(n8,"Process ends after candidate appointment")
+- [N15] Within matched traces (1->1) added: action(n2,"Is there a suitable candidate available initially")
+- [N16] Within matched traces (1->1) added: action(n8,"Process ends after candidate appointment")
+
+Mutation
+- [N17] Node-level mutation: element=action(n7,"Candidate is appointed"); source=i9:Once the candidate is appointed; reason=The source describes a temporal wait or event ('Once...'), but the model transforms this into an active step performed by the process ('Candidate is appointed'), altering the logic.

@@ -1,0 +1,25 @@
+Omission
+- [N1] Within matched traces (2->0) omitted: i7:reject the merchandise return
+- [N2] Within matched traces (2->0) omitted: i11:the process ends with the merchandise return request being rejected
+
+Addition
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> converge(c1) -> action(n6,"Check for Merchandise Return Request") -> branch(b1,XOR) -> action(n7,"Accept Merchandise Return") -> action(n9,"Proceed with Returning Merchandise") -> end(e2)
+- [N4] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> converge(c1) -> action(n6,"Check for Merchandise Return Request") -> branch(b1,XOR) -> branch(b3,XOR) -> action(n10,"Invoice the Customer") -> end(e3)
+- [N5] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> converge(c1) -> action(n6,"Check for Merchandise Return Request") -> branch(b1,XOR) -> branch(b3,XOR) -> action(n11,"Approve Loss Claim and End Process") -> end(e4)
+- [N6] Within matched traces (0->1) added: init(i1)
+- [N7] Within matched traces (0->1) added: converge(c1)
+- [N8] Within matched traces (0->1) added: action(n6,"Check for Merchandise Return Request")
+- [N9] Within matched traces (0->1) added: branch(b1,XOR)
+- [N10] Within matched traces (1->0) added: init(i1)
+- [N11] Within matched traces (2->0) added: init(i1)
+- [N12] Within matched traces (2->0) added: converge(c1)
+- [N13] Within matched traces (2->0) added: action(n9,"Proceed with Returning Merchandise")
+- [N14] Within matched traces (2->0) added: end(e2)
+- [N15] Within matched traces (3->2) added: init(i1)
+- [N16] Within matched traces (3->2) added: converge(c1)
+- [N17] Within matched traces (3->2) added: action(n6,"Check for Merchandise Return Request")
+- [N18] Within matched traces (3->2) added: branch(b1,XOR)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n8` has in=0 and out=1. | DSL: action(n8,"Reject Merchandise Return")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1, n8 | DSL: end(e1); action(n8,"Reject Merchandise Return")

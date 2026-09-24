@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: No element faithfully implements the 'verify the amount' instruction; the sole candidate mutates the target data.)
+- [N2] Node-level omission: i2:If the amount is less than 200 €, (reason: No element faithfully preserves the exact threshold representation and unit; the sole candidate alters the currency format.)
+
+Addition
+- [N3] Node-level addition: guard(b1,n3,"v1 = true") (reason: Abstract boolean labels ('v1 = true', 'v2 = false', etc.) have no supporting text, operators, or values in the source description.)
+- [N4] Node-level addition: guard(b1,n4,"v1 = false") (reason: Abstract boolean labels ('v1 = true', 'v2 = false', etc.) have no supporting text, operators, or values in the source description.)
+- [N5] Node-level addition: guard(b2,n6,"v2 = true") (reason: Abstract boolean labels ('v1 = true', 'v2 = false', etc.) have no supporting text, operators, or values in the source description.)
+- [N6] Node-level addition: guard(b2,c1,"v2 = false") (reason: Abstract boolean labels ('v1 = true', 'v2 = false', etc.) have no supporting text, operators, or values in the source description.)
+- [N7] Node-level addition: guard(b2,n8,"v2 = false") (reason: Abstract boolean labels ('v1 = true', 'v2 = false', etc.) have no supporting text, operators, or values in the source description.)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"start verifying account") -> action(n2,"Is the amount less than 200 euros") -> branch(b1,XOR) -> action(n4,"Evaluate the expense report") -> action(n5,"Is the expense report acceptable") -> branch(b2,XOR) -> converge(c1) -> action(n7,"End process") -> end(e1)
+- [N9] Within matched traces (0->0) added: converge(c1)
+- [N10] Within matched traces (0->0) added: action(n7,"End process")
+- [N11] Within matched traces (0->0) added: end(e1)
+
+Mutation
+- [N12] Node-level mutation: element=action(n1,"start verifying account"); source=i1:To check the account, we start by verifying the amount.; reason=Element content 'start verifying account' changes the verification target from 'amount' to 'account', altering the core data.
+- [N13] Node-level mutation: element=action(n2,"Is the amount less than 200 euros"); source=i2:If the amount is less than 200 €,; reason=Element content substitutes the currency symbol '€' with the word 'euros', violating the strict unit preservation rule.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=False].

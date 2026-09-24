@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: i3:At the same time (reason: The text explicitly specifies parallel execution, but no parallel branch element (AND gateway) is present.)
+- [N2] Node-level omission: i7:availability needs to be checked again (reason: The model completely missed the action step for re-checking availability.)
+- [N3] Within matched traces (0->2) omitted: i3:At the same time
+- [N4] Within matched traces (1->4) omitted: i3:At the same time
+- [N5] Within matched traces (2->3) omitted: i3:At the same time
+- [N6] Within matched traces (2->3) omitted: i7:availability needs to be checked again
+- [N7] Within matched traces (3->3) omitted: i3:At the same time
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Added a 'start' action that is not a distinct step described in the text.)
+- [N9] Node-level addition: action(n4,"Reject Order") (reason: Added a 'Reject Order' action, whereas the text only specifies a condition and says the process continues.)
+- [N10] Node-level addition: action(n5,"End") (reason: Added literal 'End' actions on paths where the text does not describe an ending step.)
+- [N11] Node-level addition: action(n12,"End") (reason: Added literal 'End' actions on paths where the text does not describe an ending step.)
+- [N12] Node-level addition: label(n10,n11,"12") (reason: Added an arbitrary numerical label '12' not supported by the text.)
+- [N13] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N14] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n6,"Prepare Assembling Order") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"End") -> end(e2)
+- [N15] Within matched traces (0->2) added: init(i1)
+- [N16] Within matched traces (0->2) added: action(n1,"start")
+- [N17] Within matched traces (0->2) added: converge(c1)
+- [N18] Within matched traces (0->2) added: action(n8,"Is Backorder Required?")
+- [N19] Within matched traces (0->2) added: branch(b2,XOR)
+- [N20] Within matched traces (0->2) added: action(n12,"End")
+- [N21] Within matched traces (0->2) added: end(e3)
+- [N22] Within matched traces (1->4) added: init(i1)
+- [N23] Within matched traces (1->4) added: action(n1,"start")
+- [N24] Within matched traces (1->4) added: converge(c1)
+- [N25] Within matched traces (1->4) added: action(n8,"Is Backorder Required?")
+- [N26] Within matched traces (1->4) added: branch(b2,XOR)
+- [N27] Within matched traces (1->4) added: action(n12,"End")
+- [N28] Within matched traces (1->4) added: end(e3)
+- [N29] Within matched traces (2->3) added: init(i1)
+- [N30] Within matched traces (2->3) added: action(n1,"start")
+- [N31] Within matched traces (2->3) added: branch(b2,XOR)
+- [N32] Within matched traces (2->3) added: action(n9,"End")
+- [N33] Within matched traces (2->3) added: end(e2)
+- [N34] Within matched traces (3->3) added: init(i1)
+- [N35] Within matched traces (3->3) added: action(n1,"start")
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

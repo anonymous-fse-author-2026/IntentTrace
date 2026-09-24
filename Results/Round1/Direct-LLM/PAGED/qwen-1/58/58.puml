@@ -1,0 +1,71 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start order processing by prioritizing orders based on when received;
+:Check if customer exists;
+:v1: Check if customer exists ({Exists, NotExists}); <<objectSignal>>
+if () then (["v1 = 'Exists'"])
+:Check customer's payment history;
+:Is payment history good;
+:v2: Is payment history good ({Good, Bad}); <<objectSignal>>
+if () then (["v2 = 'Bad'"])
+:Send customer declining message;
+stop
+else (["v2 = 'Good'"])
+->;
+endif
+else (["v1 = 'NotExists'"])
+:Verify customer status;
+:Is customer a private customer;
+:v3: Is customer a private customer ({Private, Wholesaler}); <<objectSignal>>
+if () then (["v3 = 'Private'"])
+:Send customer declining message;
+:End process after sending declining message to private customer;
+else (["v3 = 'Wholesaler'"])
+:Create new customer;
+:Check product availability;
+:Are products available;
+:v4: Are products available ({Available, Unavailable}); <<objectSignal>>
+if () then (["v4 = 'Unavailable'"])
+:Produce missing goods and send declining message;
+:End process due to no products and decline message;
+stop
+else (["v4 = 'Available'"])
+->;
+endif
+endif
+endif
+:Continue process and send order confirmation;
+split
+:Inform stock department;
+split again
+:Inform accounting department;
+end split
+:Packing goods;
+split
+:Write invoice;
+split again
+end split
+:Goods ready for delivery and invoice sent;
+:Deliver goods and invoice to customer;
+:Has payment been received;
+:v5: Has payment been received ({Received, Outstanding}); <<objectSignal>>
+if () then (["v5 = 'Received'"])
+:Close order;
+:End process after closing order;
+stop
+else (["v5 = 'Outstanding'"])
+:Check quantity of reminders for payment;
+:Are reminders less than three;
+:v6: Are reminders less than three ({LessThanThree, MoreThanThree}); <<objectSignal>>
+if () then (["v6 = 'LessThanThree'"])
+:Continue process;
+else (["v6 = 'MoreThanThree'"])
+:Activate donning process;
+:End process after activating donning process;
+stop
+endif
+endif
+@enduml

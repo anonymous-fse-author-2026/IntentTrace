@@ -1,0 +1,57 @@
+Omission
+- [N1] Node-level omission: i5:proceed to book a train (reason: This step is only covered by an element that distorts the instruction with an invented 'run:' prefix, leaving the strict instruction unfaithfully modeled.)
+- [N2] Node-level omission: i13:call a travel agency (reason: This step is only covered by an element that distorts the instruction with an invented 'run:' prefix, failing strict coverage.)
+- [N3] Node-level omission: i16:cancel your journey (reason: This step is only covered by an element that distorts the instruction with an invented 'run:' prefix, failing strict coverage.)
+- [N4] Node-level omission: i9:If a code is available (reason: This logic is only implemented by an action that invents a qualifier ('now') and a guard that completely drops the condition, failing strict coverage.)
+- [N5] Node-level omission: i12:Otherwise, if 24 hours have passed (reason: This condition is only implemented by a guard that distorts it by dropping the specific threshold, leaving the true logic uncovered.)
+- [N6] Node-level omission: i15:if a code is not available (reason: This condition is only implemented by a guard that distorts it by completely dropping the condition text, leaving the true logic uncovered.)
+- [N7] Within matched traces (0->1) omitted: i3:check if you need to book a train or a flight
+- [N8] Within matched traces (0->1) omitted: i5:proceed to book a train
+- [N9] Within matched traces (1->2) omitted: i3:check if you need to book a train or a flight
+- [N10] Within matched traces (1->2) omitted: i5:proceed to book a train
+- [N11] Within matched traces (1->2) omitted: i10:the process will end
+- [N12] Within matched traces (2->3) omitted: i3:check if you need to book a train or a flight
+- [N13] Within matched traces (2->3) omitted: i5:proceed to book a train
+- [N14] Within matched traces (3->1) omitted: i3:check if you need to book a train or a flight
+- [N15] Within matched traces (4->2) omitted: i3:check if you need to book a train or a flight
+- [N16] Within matched traces (4->2) omitted: i10:the process will end
+- [N17] Within matched traces (5->3) omitted: i3:check if you need to book a train or a flight
+
+Addition
+- [N18] Node-level addition: action(n1,"start") (reason: The explicit action step 'start' is completely invented; the source text only supports a structural initialization.)
+- [N19] Added trace (model 0): init(i1) -> action(n1,"start") -> branch(b_and1,AND) -> action(n2,"choose destination and calculate distance") -> converge(c_and1) -> branch(b1,XOR) -> action(n4,"run: book train") -> end(e1)
+- [N20] Added trace (model 4): init(i1) -> action(n1,"start") -> branch(b_and1,AND) -> action(n3,"do you need to book train or flight?") -> converge(c_and1) -> branch(b1,XOR) -> action(n4,"run: book train") -> end(e1)
+- [N21] Added trace (model 5): init(i1) -> action(n1,"start") -> branch(b_and1,AND) -> action(n3,"do you need to book train or flight?") -> converge(c_and1) -> branch(b1,XOR) -> action(n13,"book a flight") -> action(n6,"is code available within 24 hours?") -> branch(b2,XOR) -> action(n7,"end") -> end(e2)
+- [N22] Added trace (model 6): init(i1) -> action(n1,"start") -> branch(b_and1,AND) -> action(n3,"do you need to book train or flight?") -> converge(c_and1) -> branch(b1,XOR) -> action(n13,"book a flight") -> action(n6,"is code available within 24 hours?") -> branch(b2,XOR) -> action(n8,"run: call travel agency") -> action(n9,"is code now available?") -> branch(b3,XOR) -> action(n10,"end with hotel reservation") -> end(e3)
+- [N23] Added trace (model 7): init(i1) -> action(n1,"start") -> branch(b_and1,AND) -> action(n3,"do you need to book train or flight?") -> converge(c_and1) -> branch(b1,XOR) -> action(n13,"book a flight") -> action(n6,"is code available within 24 hours?") -> branch(b2,XOR) -> action(n8,"run: call travel agency") -> action(n9,"is code now available?") -> branch(b3,XOR) -> action(n11,"run: cancel journey") -> action(n12,"end") -> end(e4)
+- [N24] Within matched traces (0->1) added: action(n1,"start")
+- [N25] Within matched traces (0->1) added: branch(b_and1,AND)
+- [N26] Within matched traces (0->1) added: action(n13,"book a flight")
+- [N27] Within matched traces (1->2) added: action(n1,"start")
+- [N28] Within matched traces (1->2) added: branch(b_and1,AND)
+- [N29] Within matched traces (1->2) added: action(n13,"book a flight")
+- [N30] Within matched traces (1->2) added: action(n6,"is code available within 24 hours?")
+- [N31] Within matched traces (2->3) added: action(n1,"start")
+- [N32] Within matched traces (2->3) added: branch(b_and1,AND)
+- [N33] Within matched traces (2->3) added: action(n13,"book a flight")
+- [N34] Within matched traces (2->3) added: action(n6,"is code available within 24 hours?")
+- [N35] Within matched traces (2->3) added: action(n9,"is code now available?")
+- [N36] Within matched traces (3->1) added: action(n1,"start")
+- [N37] Within matched traces (3->1) added: branch(b_and1,AND)
+- [N38] Within matched traces (4->2) added: action(n1,"start")
+- [N39] Within matched traces (4->2) added: branch(b_and1,AND)
+- [N40] Within matched traces (4->2) added: action(n6,"is code available within 24 hours?")
+- [N41] Within matched traces (5->3) added: action(n1,"start")
+- [N42] Within matched traces (5->3) added: branch(b_and1,AND)
+- [N43] Within matched traces (5->3) added: action(n6,"is code available within 24 hours?")
+- [N44] Within matched traces (5->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N45] Node-level mutation: element=action(n4,"run: book train"); source=i5:proceed to book a train; reason=The element distorts the instruction by inserting an invented 'run:' prefix.
+- [N46] Node-level mutation: element=action(n8,"run: call travel agency"); source=i13:call a travel agency; reason=The element distorts the instruction by inserting an invented 'run:' prefix.
+- [N47] Node-level mutation: element=action(n11,"run: cancel journey"); source=i16:cancel your journey; reason=The element distorts the instruction by inserting an invented 'run:' prefix.
+- [N48] Node-level mutation: element=action(n9,"is code now available?"); source=i9:If a code is available; reason=The element inserts the invented temporal qualifier 'now', distorting the exact condition.
+- [N49] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i8:If a code is available within 24 hours; reason=The element completely drops the condition text and threshold, replacing it with a simple 'Yes'.
+- [N50] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i12:Otherwise, if 24 hours have passed; reason=The element completely drops the specific condition text and time threshold, replacing them with a generic 'No'.
+- [N51] Node-level mutation: element=guard(b3,n10,"v3 = 'Yes'"); source=i9:If a code is available; reason=The element completely drops the explicit condition text, using only 'Yes'.
+- [N52] Node-level mutation: element=guard(b3,n11,"v3 = 'No'"); source=i15:if a code is not available; reason=The element completely drops the explicit condition text, using only 'No'.

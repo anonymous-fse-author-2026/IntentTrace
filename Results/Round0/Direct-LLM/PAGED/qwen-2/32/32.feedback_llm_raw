@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial task; the description explicitly states "the process begins by entering expenses".
+- `defines(v1, "Approval Check 1", {})` and `defines(v2, "Approval Check 2", {})`: Declared with empty ranges `{}` instead of reflecting the documented decision values ("approved" or "disapproved").
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard()` statements for all outgoing edges, preventing the model from encoding the conditional routing described as "If the request is not approved... However, if the request is approved...".
+- `precedence(b2, n7)`: Omits a documented activity; the source states that after the second approval "the expenses can be paid out" before concluding, but the model routes directly from `b2` to `n7`.
+- `action(n7, "End Process")`: Incorrectly models termination as a performable action rather than a process boundary, contradicting "after the expenses are paid out, the process comes to an end".

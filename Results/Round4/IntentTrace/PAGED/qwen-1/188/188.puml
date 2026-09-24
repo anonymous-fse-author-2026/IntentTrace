@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Loan Application;
+:Receive Loan Application;
+:Construct Error Response from Banking Privilege Status;
+:v1: Construct Error Response from Banking Privilege Status ({Construct Error Response, Retrieve Customer Information}); <<objectSignal>>
+if () then ([v1 = 'Construct Error Response'])
+:Error Message;
+stop
+else ([v1 = 'Retrieve Customer Information'])
+:Retrieve Customer Information;
+:check the fulfillment of loan conditions;
+:Construct Error Response from loan conditions;
+:v2: Construct Error Response from loan conditions ({Construct Error Response, Calculate threshold amount}); <<objectSignal>>
+if () then ([v2 = 'Construct Error Response'])
+:Error Message;
+stop
+else ([v2 = 'Calculate threshold amount'])
+:Calculate threshold amount;
+:Check Creditworthiness;
+:Designate Status;
+:Initialize Loan Form;
+:v4: Construct Approve Response ({Construct Approve Response, Construct Reject Response}); <<objectSignal>>
+if () then ([v4 = 'Construct Approve Response'])
+:Approved Message;
+stop
+else ([v4 = 'Construct Reject Response'])
+:Construct Reject Response;
+:Reject Message;
+stop
+endif
+endif
+endif
+@enduml

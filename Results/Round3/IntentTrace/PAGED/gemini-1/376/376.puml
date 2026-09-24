@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process for flickr login;
+:Provide userdata for flickr login;
+:v1: Is login successful ({Successful, Failed}); <<objectSignal>>
+if () then ([v1 = 'Successful'])
+:End process after successful login;
+stop
+else ([v1 = 'Failed'])
+:We will continue with the process;
+:v2: Choose to try login again ({Want to try again, Choose to abort, Still want to try again, Decide to abort}); <<objectSignal>>
+switch ()
+case ([v2 = 'Want to try again'])
+:If you want to try again;
+case ([v2 = 'Choose to abort'])
+:if you choose to abort;
+:the process will end;
+stop
+case ([v2 = 'Still want to try again'])
+:If you still want to try again;
+case ([v2 = 'Decide to abort'])
+:if you decide to abort;
+endswitch
+endif
+@enduml

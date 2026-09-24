@@ -1,0 +1,7 @@
+
+
+- `defines(v3, "is psychometric test required?", {...})`: Range incorrectly includes `'HR Specialist required'`, conflating two distinct decision questions from the source text.
+- `branch(b3, XOR)` and associated guards: Omits the explicit intermediate decision "check if an HR Specialist is required" and incorrectly flattens the nested conditional logic into a single split, violating the source's sequential branching structure.
+- `defines(v1, ...)` and `defines(v2, ...)`: Ranges only specify negative outcomes (`"Referee Reports not completed"`, `"Referee Reports still not completed after second check"`), omitting the affirmative/completed values required to faithfully represent the alternative paths.
+- `precedence(b2, n4)`: Loops control flow directly back to `n4` ("flag and send reminder") when the second check fails, skipping `n5` ("check again..."). This breaks the source chronology, which requires re-evaluating completion status after each reminder before deciding to proceed or cycle.
+- Edge from `b3` to `n13` ("complete psychometric test"): Lacks a guard condition. The source explicitly ties this action to the absence of an HR Specialist requirement ("Otherwise, you can proceed to complete the Psychometric Test"), which is unmodeled.

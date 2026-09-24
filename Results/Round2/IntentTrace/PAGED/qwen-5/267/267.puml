@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v1: research schedule directly ({selected, not selected}); <<objectSignal>>
+if () then ([v1 = "selected"])
+:Research schedule;
+else ([v1 = "not selected"])
+:provide indications;
+:proceed with the research schedule;
+endif
+:validating the schedule;
+:v2: schedule satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v2 = "No"])
+:Research schedule;
+:v3: schedule still satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "No"])
+:provide indications;
+stop
+else ([v3 = "Yes"])
+:write a ticket order to SNCF;
+endif
+else ([v2 = "Yes"])
+:write a ticket order to SNCF;
+endif
+:validate the ticket order;
+:v4: ticket order approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "No"])
+stop
+else ([v4 = "Yes"])
+:validate the ticket order;
+:v5: ticket order approved again ({Yes, No}); <<objectSignal>>
+if () then ([v5 = "No"])
+stop
+else ([v5 = "Yes"])
+:validate the ticket order;
+:v6: ticket order approved once more ({Yes, No}); <<objectSignal>>
+if () then ([v6 = "Yes"])
+stop
+else ([v6 = "No"])
+stop
+endif
+endif
+endif
+@enduml

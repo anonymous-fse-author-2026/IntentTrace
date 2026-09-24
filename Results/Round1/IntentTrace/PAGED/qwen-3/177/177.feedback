@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i5:If the request for merchandise return is lodged, continue with the process. (reason: This initial conditional gate is explicitly described in the source text but has no corresponding branch, guard, or action in the model.)
+- [N2] Within matched traces (0->2) omitted: i5:If the request for merchandise return is lodged, continue with the process.
+- [N3] Within matched traces (1->0) omitted: i5:If the request for merchandise return is lodged, continue with the process.
+- [N4] Within matched traces (2->1) omitted: i5:If the request for merchandise return is lodged, continue with the process.
+- [N5] Within matched traces (3->3) omitted: i5:If the request for merchandise return is lodged, continue with the process.
+
+Addition
+- [N6] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> branch(b1,XOR) -> action(n11,"accept the merchandise return") -> action(n12,"return the merchandise") -> action(n13,"end with merchandise being returned") -> end(e2)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> branch(b1,XOR) -> action(n14,"reject the merchandise return") -> action(n15,"end with merchandise return request being rejected") -> end(e3)
+- [N8] Added trace (model 6): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> branch(b1,XOR) -> action(n8,"invoice the customer") -> action(n9,"end with customer being invoiced") -> end(e1)
+- [N9] Added trace (model 7): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> branch(b1,XOR) -> action(n17,"approve the loss claim") -> action(n18,"end with loss claim approved") -> end(e4)
+- [N10] Within matched traces (1->0) added: converge(c1)
+- [N11] Within matched traces (3->3) added: converge(c1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n8,"v_decision = 'Invoice'"); source=i6:If it has been 5 days; reason=The guard uses an abstract variable assignment (v_decision = 'Invoice') instead of the explicit temporal condition stated in the text.
+- [N13] Node-level mutation: element=guard(b1,n11,"v_decision = 'AcceptReturn'"); source=i8:If the return is accepted; reason=The guard substitutes the explicit state condition with an abstract decision variable.
+- [N14] Node-level mutation: element=guard(b1,n14,"v_decision = 'RejectReturn'"); source=i9:If the return is rejected; reason=The guard substitutes the explicit state condition with an abstract decision variable.
+- [N15] Node-level mutation: element=guard(b1,n17,"v_decision = 'LossClaim'"); source=i11:If a loss claim report is lodged; reason=The guard substitutes the explicit event condition with an abstract decision variable.

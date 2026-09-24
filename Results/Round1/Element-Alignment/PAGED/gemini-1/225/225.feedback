@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i5:accept the customer request (reason: This step is not faithfully implemented as a standalone process action; its only candidate is a mutated, merged element.)
+- [N2] Node-level omission: i6:reject the customer request (reason: This step lacks a faithful standalone implementation, having been inappropriately merged with an end state.)
+- [N3] Node-level omission: i7:create a purchase order (reason: This specific step is not represented independently, as it was improperly absorbed into a preceding action.)
+- [N4] Node-level omission: i13:reserve the funds (reason: This step is omitted as an independent action element because it was merged into a condition.)
+- [N5] Omitted trace (input 1): i1:To begin the process for ACME Company -> i2:receiving the customer request -> i3:check the current inventory level -> i4:If the inventory level is at or below the minimum -> i5:accept the customer request -> i7:create a purchase order -> i9:review it -> i10:If the purchase order is rejected -> i11:rework the purchase order -> i14:review it again -> i9:review it
+
+Addition
+- [N6] Node-level addition: guard(b1,n5,"v1 = \"above\"") (reason: This guard specifies the condition 'above', but there is no corresponding exact Input Segment provided that explicitly supports this conditional logic.)
+- [N7] Node-level addition: action(n15,"end process") (reason: The model generates a specific action node to 'end process', which lacks any supporting Input Segment at the end of the text.)
+- [N8] Within matched traces (2->0) added: action(n15,"end process")
+- [N9] Within matched traces (2->0) added: end(e2)
+- [N10] Within matched traces (3->1) added: action(n15,"end process")
+- [N11] Within matched traces (3->1) added: end(e2)
+
+Mutation
+- [N12] Node-level mutation: element=action(n4,"accept request and create PO"); source=i5:accept the customer request -> i7:create a purchase order; reason=The model incorrectly merges two distinct, sequentially described steps (accepting the request and creating the purchase order) into a single action element, distorting the process granularity.
+- [N13] Node-level mutation: element=action(n5,"reject request - end process"); source=i6:reject the customer request -> i8:the process ends; reason=The model inappropriately combines a functional action step (rejecting the request) and a structural outcome (the process ends) into a single action element.
+- [N14] Node-level mutation: element=action(n8,"approve purchase order and reserve funds"); source=i12:if the purchase order is approved -> i13:reserve the funds; reason=The element merges a conditional evaluation phrase and the ensuing operational step into a single consolidated node, distorting the logic and separation of steps.

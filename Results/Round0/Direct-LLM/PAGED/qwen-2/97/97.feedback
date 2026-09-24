@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)` (missing `guard` statements): The model omits all edge guards, violating control-flow logic requirements despite the source explicitly conditioning the flow ("If the amount is less than 200 €...", "If the expense report is deemed acceptable...").
+- `defines(v1, "Is the amount less than 200 euros", {})` and `defines(v2, "Is the expense report acceptable", {})`: Variable ranges are empty `{}`, failing to faithfully capture the documented value spaces ("<200 €/≥200 €" and "acceptable/not satisfactory").
+- `precedence(b2, c1)`: Adds an unconditioned direct edge from the second XOR branch to a converge node, hallucinating a silent transition path not described in the source text.
+- `converge(c1)`: Incorrectly merges disjoint terminal flows before process completion, contradicting the source's description of independent endings ("it is approved and the process comes to an end", "if the expense report is not satisfactory, the process also ends").
+- `action(n7, "End process")` and `action(n8, "End process")`: Model termination as active tasks rather than direct transitions to `end` nodes, introducing undocumented steps beyond "the process comes to an end".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

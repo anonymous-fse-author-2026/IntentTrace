@@ -1,0 +1,13 @@
+- `label(n1, n2, "No")`: Hallucinates a "No" label on the sequence flow after "you sell cars", which has no basis in the source text.
+- `defines(v2, "get a paycheck?", {"Yes"})`: Omits a negative value (e.g., "No") from the variable's range, failing to reflect the implied alternative choice for "If you 'get a paycheck'".
+- `action(n4, "end")` and `action(n6, "end")`: Hallucinates explicit action steps for ending the process; the source text "the process ends" describes control-flow termination and should be represented purely by the `end(e1)` and `end(e2)` nodes.
+- `precedence(b2, n4)`: Lacks a `guard` condition for this outgoing edge from the XOR branch `b2`, incorrectly representing the control-flow logic for when a paycheck is not received.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Yes'` on `b2 -> c1` uses undefined variable `v2`. | DSL: guard(b2,c1,"v2 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> n4` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Yes'` on `b2 -> c1` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,c1,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

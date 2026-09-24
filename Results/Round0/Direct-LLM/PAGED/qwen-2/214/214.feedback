@@ -1,0 +1,10 @@
+- action(n10, "get: music ids for the next genre"): Hallucinates a step not documented in the source, which only specifies getting IDs for "the genre". (SMC1)
+- branch(b5) with guard(b5, n13, v5 = 'Yes') and guard(b5, n14, v5 = 'No'): Incorrectly models two distinct source conditions as mutually exclusive alternatives. The source presents them as sequential evaluations ("If the sample is missing, we should continue the process. We should download the sample. On the other hand, if there are no additional samples, the process ends."), violating SMC4.
+- defines(v2, "can we capture data from Jamendo?", {"Yes", "No  continue"}) and defines(v3, "is the genre missing?", {"Yes", "No  check next"}): Variable ranges contain arbitrary textual suffixes (" continue", " check next") that do not appear in the source description, violating SMC6.
+- action(n5, "capture: data from Jamendo"): Has no outgoing precedence statement, dropping the source directive to "continue the process" after capturing Jamendo data, violating SMC1 and SMC3.
+- guard(b5, n14, v5 = 'No') leading to action(n14, "end: no additional samples"): Distorts payload meaning by equating the negative outcome of "is the sample missing?" with the completely separate source condition "if there are no additional samples", violating SMC2.
+- action(n8, "continue: with the process") and action(n10, "get: music ids for the next genre"): Both lack outgoing precedence edges, prematurely terminating process flows that the source explicitly instructs to "continue", violating SMC5.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")

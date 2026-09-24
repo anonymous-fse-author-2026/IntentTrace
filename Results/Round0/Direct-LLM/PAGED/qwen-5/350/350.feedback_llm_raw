@@ -1,0 +1,9 @@
+
+
+- action(n1, "start the flickr login process"): Hallucinates a preparatory step not present in the source, which begins directly with "please provide the userdata for flickr."
+- guard(b1, n5, v1 = 'Yes'): Inverts control-flow logic; the source states "If the login is successful, the process will end," but the guard incorrectly routes a successful login to the retry prompt (n5) instead of the termination path (n4).
+- guard(b3, n10, v3 = 'Yes'): Inverts control-flow logic; a successful retry should conclude the process, but the guard incorrectly routes a 'Yes' outcome to another retry prompt (n10) instead of the termination path (n9).
+- branch(b2, XOR) and branch(b4, XOR): Omit guards for explicit decision points in the source ("If you want to try again... On the other hand, if you choose to abort..." and "If you still want to try again... Alternatively, if you decide to abort..."), failing to encode the conditional routing.
+- defines(v2, "do you want to try again", {}), defines(v4, "do you want to try again after second failure", {}), defines(v5, "is the login successful after third try", {}): Declare empty value ranges that fail to reflect the binary outcomes (e.g., yes/no or try/abort) implied by the source text.
+- label(n2, n3, "No"), label(n6, n8, "No"), label(n11, n13, "No"): Misplace conditional labels on mandatory sequential precedence edges instead of on conditional branch outgoing edges, distorting the source's decision structure.
+- nodes n8 through end(e6): Hallucinate an entire third login attempt cycle and corresponding abort terminal not documented in the source, which concludes its progression after the second abort option.

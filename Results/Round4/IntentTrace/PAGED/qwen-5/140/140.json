@@ -1,0 +1,303 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "To begin the process, trigger the resupply cycle and then check the inventory level."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c_loop",
+      "type": "converge"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Otherwise, if the inventory level is above the minimum, the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "create a purchase order"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "review it"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Rework the purchase order and then review it."
+    },
+    {
+      "id": "n_reserve",
+      "type": "action",
+      "content": "Reserve the funds and send the order to the supplier."
+    },
+    {
+      "id": "b_par",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n_recv_ps",
+      "type": "action",
+      "content": "Receive the packing slip and then record it."
+    },
+    {
+      "id": "n_rec_ps",
+      "type": "action",
+      "content": "Record the packing slip and the process ends."
+    },
+    {
+      "id": "e_ps",
+      "type": "end"
+    },
+    {
+      "id": "n_recv_inv",
+      "type": "action",
+      "content": "Receive the invoice and then record it."
+    },
+    {
+      "id": "n_rec_inv",
+      "type": "action",
+      "content": "Record the invoice and the process ends."
+    },
+    {
+      "id": "e_inv",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is inventory level at or below minimum",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is purchase status rejected",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "c_loop",
+        "n4",
+        "e1",
+        "n5",
+        "n7",
+        "b2",
+        "n8",
+        "n_reserve",
+        "b_par",
+        "n_recv_ps",
+        "n_rec_ps",
+        "e_ps",
+        "n_recv_inv",
+        "n_rec_inv",
+        "e_inv"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "c_loop",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n_reserve"
+    },
+    {
+      "type": "precedence",
+      "A": "n_reserve",
+      "B": "b_par"
+    },
+    {
+      "type": "precedence",
+      "A": "b_par",
+      "B": "n_recv_ps"
+    },
+    {
+      "type": "precedence",
+      "A": "b_par",
+      "B": "n_recv_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "n_recv_ps",
+      "B": "n_rec_ps"
+    },
+    {
+      "type": "precedence",
+      "A": "n_rec_ps",
+      "B": "e_ps"
+    },
+    {
+      "type": "precedence",
+      "A": "n_recv_inv",
+      "B": "n_rec_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "n_rec_inv",
+      "B": "e_inv"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n_reserve",
+      "condition": "v2 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, trigger the resupply cycle and then check the inventory level."
+    },
+    {
+      "id": "i2",
+      "content": "If the inventory level is at or below the minimum, create a purchase order."
+    },
+    {
+      "id": "i3",
+      "content": "Otherwise, if the inventory level is above the minimum, the process ends."
+    },
+    {
+      "id": "i4",
+      "content": "After creating the purchase order, review it."
+    },
+    {
+      "id": "i5",
+      "content": "If the purchase status is rejected, rework the purchase order."
+    },
+    {
+      "id": "i6",
+      "content": "However, if the purchase status is approved, reserve the funds."
+    },
+    {
+      "id": "i7",
+      "content": "Rework the purchase order and then review it."
+    },
+    {
+      "id": "i8",
+      "content": "Reserve the funds and send the order to the supplier."
+    },
+    {
+      "id": "i9",
+      "content": "At the same time, complete the following steps: receive the packing slip and receive the invoice."
+    },
+    {
+      "id": "i10",
+      "content": "Receive the packing slip and then record it."
+    },
+    {
+      "id": "i11",
+      "content": "Receive the invoice and then record it."
+    },
+    {
+      "id": "i12",
+      "content": "Record the packing slip and the process ends."
+    },
+    {
+      "id": "i13",
+      "content": "Record the invoice and the process ends."
+    }
+  ]
+}

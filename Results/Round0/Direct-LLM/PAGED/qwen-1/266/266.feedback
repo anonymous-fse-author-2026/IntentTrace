@@ -1,0 +1,9 @@
+- `action(n1, "start")` / `action(n2, "Is meeting successful?")`: Omits the documented "informational meeting" step; misclassifies the meeting outcome evaluation as an action node rather than properly representing the meeting itself and its conditional result.
+- `precedence(n4, b6)`: Skips the explicit condition "If the storyboard is successful", proceeding directly to the AND-split without a guard or branch to evaluate the storyboard's outcome.
+- `action(n13, "Review rebuilt site")`, `branch(b4, XOR)`, `defines(v4, ...)`, `action(n15, "Approve rebuilt site")`, `branch(b5, XOR)`, `defines(v5, ...)`: Hallucinates intermediate review and approval stages for the rebuilt site, directly contradicting the source text: "If the rebuild is complete, the process ends. If the rebuild is rejected again, the site needs to be rebuilt again...".
+- `action(n17, "Rebuild site again")`: Dangling node with no outgoing `precedence` edge, leaving the execution path incomplete and failing to provide a valid init-to-end progression for this scenario.
+- `actor(a_default, "Default", [...])`: Fails to reflect documented responsibilities; the source explicitly assigns the meeting and storyboard to "the customer and the web design team" and site design/development/review to "the web design team", whereas the model assigns every node to a single generic actor.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Rebuild site again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n17 | DSL: action(n17,"Rebuild site again")

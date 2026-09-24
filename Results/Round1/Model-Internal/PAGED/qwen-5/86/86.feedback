@@ -1,0 +1,12 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i3:then select a supplier.
+- [N2] Within matched traces (0->0) omitted: i8:send the material purchase order.
+
+Addition
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Obtain raw material from received list") -> action(n3,"Is raw material available in stock?") -> branch(b1,XOR) -> action(n6,"Select a supplier") -> action(n7,"Send material purchase order") -> action(n8,"Check raw material and conclude process (After PO)") -> action(n9,"End") -> end(e2)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (1->0) added: init(i1)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = 'Available'"); source=i2:If the raw material is not available in stock; reason=Both guards define the condition simply as 'Available'/'Not Available', dropping the mandatory qualifier 'in stock' specified in the source units. This alters the precise data condition being evaluated and fails the strict fidelity requirement.
+- [N7] Node-level mutation: element=guard(b1,n6,"v1 = 'Not Available'"); source=i6:In the case where the raw material is not available in stock, select a supplier.; reason=Both guards define the condition simply as 'Available'/'Not Available', dropping the mandatory qualifier 'in stock' specified in the source units. This alters the precise data condition being evaluated and fails the strict fidelity requirement.

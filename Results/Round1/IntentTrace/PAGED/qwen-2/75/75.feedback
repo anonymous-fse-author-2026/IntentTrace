@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i4:If the claim is to be rejected, then reject it. -> i6:If the claim is rejected, review the claim rejection. -> i11:But if the claim rejection is not accepted, also continue the process. -> i12:also continue the process. -> i14:At the same time, complete the following steps: operate outgoing payment and close the claim. -> i13:Finally, the process ends.
+- [N2] Omitted trace (input 2): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i5:However, if the claim is to be accepted, offer the benefit. -> i7:On the other hand, if the claim is accepted, prepare the claim discharge. -> i8:Once the claim discharge is prepared, record the benefit payment. -> i14:At the same time, complete the following steps: operate outgoing payment and close the claim. -> i13:Finally, the process ends.
+
+Addition
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: branch(b3,AND)
+- [N5] Within matched traces (0->0) added: converge(c1)
+- [N6] Within matched traces (0->1) added: init(i1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=0 and out=1. | Node `n9` has in=1 and out=0. | DSL: action(n10,"record the benefit payment"); action(n9,"prepare the claim discharge")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b_rev -> n7` has 2 guards; exactly one is required. | XOR/OR edge `b_rev -> n7` has 2 guards; exactly one is required.
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: n10 | DSL: action(n10,"record the benefit payment")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n8, n8_off, n9 | DSL: action(n8,"accept the claim"); action(n8_off,"offer the benefit"); action(n9,"prepare the claim discharge")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b_rev` has overlapping guards at state [v2=accepted].

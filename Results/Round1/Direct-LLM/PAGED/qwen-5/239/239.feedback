@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i6:availability needs to be checked again (reason: No corresponding action element exists to implement the requirement to re-check availability when a backorder occurs.)
+- [N2] Omitted trace (input 0): i1:For the company, the first step is to look at the order. -> i2:If the order is to be rejected -> i4:At the same time, two steps need to be completed: preparing the assembling order and checking availability. -> i5:If there is a backorder -> i6:availability needs to be checked again -> i7:the process ends
+- [N3] Omitted trace (input 2): i1:For the company, the first step is to look at the order. -> i3:If the order is to be accepted, the process should also continue. -> i4:At the same time, two steps need to be completed: preparing the assembling order and checking availability. -> i5:If there is a backorder -> i6:availability needs to be checked again -> i7:the process ends
+- [N4] Omitted trace (input 3): i1:For the company, the first step is to look at the order. -> i3:If the order is to be accepted, the process should also continue. -> i4:At the same time, two steps need to be completed: preparing the assembling order and checking availability. -> i5:If there is a backorder -> i8:If the item can be reserved, the process should continue. -> i9:The next steps are to assemble the bike and then ship the product. -> i10:assemble the bike -> i11:ship the product
+- [N5] Within matched traces (1->0) omitted: i4:At the same time, two steps need to be completed: preparing the assembling order and checking availability.
+- [N6] Within matched traces (1->0) omitted: i9:The next steps are to assemble the bike and then ship the product.
+- [N7] Within matched traces (1->1) omitted: i9:The next steps are to assemble the bike and then ship the product.
+- [N8] Within matched traces (1->2) omitted: i9:The next steps are to assemble the bike and then ship the product.
+
+Addition
+- [N9] Node-level addition: action(n1,"start") (reason: Content 'start' has no supporting source unit; process initiation is already implicitly covered by the opening clause.)
+- [N10] Node-level addition: action(n4,"Reject Order") (reason: Invents a 'Reject Order' action step; the source only describes a conditional state that allows continuation, not an active rejection task.)
+- [N11] Within matched traces (1->0) added: init(i1)
+- [N12] Within matched traces (1->0) added: action(n1,"start")
+- [N13] Within matched traces (1->0) added: branch(b1,AND)
+- [N14] Within matched traces (1->0) added: action(n4,"Reject Order")
+- [N15] Within matched traces (1->1) added: init(i1)
+- [N16] Within matched traces (1->1) added: action(n1,"start")
+- [N17] Within matched traces (1->2) added: init(i1)
+- [N18] Within matched traces (1->2) added: action(n1,"start")
+
+Mutation
+- [N19] Node-level mutation: element=guard(b2,c1,"v2 = true"); source=i5:If there is a backorder -> i7:the process ends; reason=The guard routes the backorder condition to a converge node (c1), but the source text explicitly states the process should end in this case.

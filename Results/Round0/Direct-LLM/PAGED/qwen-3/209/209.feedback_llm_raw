@@ -1,0 +1,7 @@
+
+
+- action(n1, "start process"): Hallucinated step. The description explicitly states the process "begins with receiving an order request", with no preceding initialization action. (SMC1)
+- action(n5, "evaluation result ok"), action(n9, "installation successful"), action(n12, "everything in order"): Payloads are semantically biased/mislabeled. These nodes sit immediately before XOR branches that route based on both success and failure conditions, but their names unconditionally assert positive outcomes, contradicting the source's conditional phrasing (e.g., "If the evaluation result is 'NOK'...", "If the installation is not successful..."). (SMC2)
+- guard(b3, n15, v3 = 'No'), action(n15, "end no"), end(e3): Hallucinated alternative path and terminal node. The description only documents the continuation "if everything is in order"; it provides no documented behavior or exit path for a negative outcome at this stage. (SMC1)
+- action(n7, "end NOK"), action(n14, "end ok"), action(n15, "end no"): Hallucinated intermediate steps. The source simply indicates that the process "comes to an end" or "is completed", without defining distinct preparatory actions named "end [status]" before the actual termination points. (SMC1)
+- defines(v1, "evaluation result ok", {"NOK", "ok"}): Variable naming is semantically biased. The source refers neutrally to "the evaluation result", whereas the model embeds the specific value "ok" into the variable's identifier. (SMC6)

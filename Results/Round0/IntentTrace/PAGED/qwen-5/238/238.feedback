@@ -1,0 +1,62 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process for WIGGO, start by placing an Order -> i2:Check the Customer's Credit Limit -> i5:if the response is "No", send a Denial to the Customer
+- [N2] Within matched traces (1->0) omitted: i14:close the Order and end the process
+- [N3] Within matched traces (4->6) omitted: i14:close the Order and end the process
+
+Addition
+- [N4] Node-level addition: guard(b4,n19,"v4 = 'No'") (reason: The model includes a negative guard path and an 'End' action for cases where the reminder count is less than 3, but the source text provides no instruction or fallback behavior for this scenario. These elements lack source justification.)
+- [N5] Node-level addition: action(n19,"End") (reason: The model includes a negative guard path and an 'End' action for cases where the reminder count is less than 3, but the source text provides no instruction or fallback behavior for this scenario. These elements lack source justification.)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n8,"Produce the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n15,"Close the Order") -> action(n16,"End") -> end(e1)
+- [N7] Added trace (model 4): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n8,"Produce the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n18,"Write Off the Order") -> action(n20,"Send Reminder") -> action(n21,"Close the Order") -> action(n22,"End") -> end(e3)
+- [N8] Added trace (model 5): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n8,"Produce the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n19,"End") -> end(e2)
+- [N9] Added trace (model 9): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n9,"Collect the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n15,"Close the Order") -> action(n16,"End") -> end(e1)
+- [N10] Added trace (model 10): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n9,"Collect the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n18,"Write Off the Order") -> action(n20,"Send Reminder") -> action(n21,"Close the Order") -> action(n22,"End") -> end(e3)
+- [N11] Added trace (model 11): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n9,"Collect the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n19,"End") -> end(e2)
+- [N12] Within matched traces (1->0) added: init(i1)
+- [N13] Within matched traces (1->0) added: action(n4,"Credit Limit Okay")
+- [N14] Within matched traces (2->2) added: init(i1)
+- [N15] Within matched traces (2->2) added: action(n4,"Credit Limit Okay")
+- [N16] Within matched traces (2->2) added: action(n14,"Payment Received")
+- [N17] Within matched traces (2->2) added: action(n19,"End")
+- [N18] Within matched traces (2->2) added: end(e2)
+- [N19] Within matched traces (3->1) added: init(i1)
+- [N20] Within matched traces (3->1) added: action(n4,"Credit Limit Okay")
+- [N21] Within matched traces (3->1) added: action(n14,"Payment Received")
+- [N22] Within matched traces (3->1) added: branch(b4,XOR)
+- [N23] Within matched traces (3->1) added: action(n18,"Write Off the Order")
+- [N24] Within matched traces (3->1) added: action(n21,"Close the Order")
+- [N25] Within matched traces (3->1) added: action(n22,"End")
+- [N26] Within matched traces (3->1) added: end(e3)
+- [N27] Within matched traces (4->6) added: init(i1)
+- [N28] Within matched traces (4->6) added: action(n4,"Credit Limit Okay")
+- [N29] Within matched traces (4->6) added: action(n7,"Article Available")
+- [N30] Within matched traces (5->8) added: init(i1)
+- [N31] Within matched traces (5->8) added: action(n4,"Credit Limit Okay")
+- [N32] Within matched traces (5->8) added: action(n7,"Article Available")
+- [N33] Within matched traces (5->8) added: action(n14,"Payment Received")
+- [N34] Within matched traces (5->8) added: action(n19,"End")
+- [N35] Within matched traces (5->8) added: end(e2)
+- [N36] Within matched traces (6->7) added: init(i1)
+- [N37] Within matched traces (6->7) added: action(n4,"Credit Limit Okay")
+- [N38] Within matched traces (6->7) added: action(n7,"Article Available")
+- [N39] Within matched traces (6->7) added: action(n14,"Payment Received")
+- [N40] Within matched traces (6->7) added: branch(b4,XOR)
+- [N41] Within matched traces (6->7) added: action(n18,"Write Off the Order")
+- [N42] Within matched traces (6->7) added: action(n21,"Close the Order")
+- [N43] Within matched traces (6->7) added: action(n22,"End")
+- [N44] Within matched traces (6->7) added: end(e3)
+
+Mutation
+- [N45] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i3:If the response is "Okay"; reason=Guard condition specifies `v1 = 'Yes'`, but the source text explicitly defines the positive response value as "Okay". This is a direct value mismatch.
+- [N46] Node-level mutation: element=guard(b2,n9,"v2 = 'Yes'"); source=i8:if the Article is available; reason=Guard condition specifies `v2 = 'Yes'`, whereas the source text defines the positive condition as the article being "available". This alters the expected logical value.
+
+Permutation
+- [N47] Within matched traces (2->2) reordered: expected [i18:After writing off the Order, close the Order and end the process] but observed [converge(c2)] elsewhere; in its place the model has [branch(b4,XOR)]
+- [N48] Within matched traces (4->6) reordered: expected [i8:if the Article is available] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"Collect the Goods")]
+- [N49] Within matched traces (5->8) reordered: expected [i8:if the Article is available] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"Collect the Goods")]
+- [N50] Within matched traces (5->8) reordered: expected [i18:After writing off the Order, close the Order and end the process] but observed [converge(c2)] elsewhere; in its place the model has [branch(b4,XOR)]
+- [N51] Within matched traces (6->7) reordered: expected [i8:if the Article is available] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"Collect the Goods")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")

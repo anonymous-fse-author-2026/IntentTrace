@@ -1,0 +1,178 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n_check",
+      "type": "action",
+      "content": "check if order has been received"
+    },
+    {
+      "id": "b_decide",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_cont",
+      "type": "action",
+      "content": "continue with the process"
+    },
+    {
+      "id": "n_d4",
+      "type": "action",
+      "content": "compute a discount of 4%"
+    },
+    {
+      "id": "n_d3",
+      "type": "action",
+      "content": "compute a discount of 3%"
+    },
+    {
+      "id": "n_d2",
+      "type": "action",
+      "content": "compute a discount of 2%"
+    },
+    {
+      "id": "c_merge",
+      "type": "converge"
+    },
+    {
+      "id": "n_bill",
+      "type": "action",
+      "content": "create the bill"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "orderSum",
+      "name": "sum of the order",
+      "R_X": [
+        "[0-]"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n_check",
+        "b_decide",
+        "n_cont",
+        "n_d4",
+        "n_d3",
+        "n_d2",
+        "c_merge",
+        "n_bill",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n_check"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check",
+      "B": "b_decide"
+    },
+    {
+      "type": "precedence",
+      "A": "b_decide",
+      "B": "n_cont"
+    },
+    {
+      "type": "precedence",
+      "A": "b_decide",
+      "B": "n_d4"
+    },
+    {
+      "type": "precedence",
+      "A": "b_decide",
+      "B": "n_d3"
+    },
+    {
+      "type": "precedence",
+      "A": "b_decide",
+      "B": "n_d2"
+    },
+    {
+      "type": "precedence",
+      "A": "n_cont",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "n_d4",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "n_d3",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "n_d2",
+      "B": "c_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "c_merge",
+      "B": "n_bill"
+    },
+    {
+      "type": "precedence",
+      "A": "n_bill",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b_decide",
+      "B": "n_cont",
+      "condition": "orderSum < 500"
+    },
+    {
+      "type": "guard",
+      "A": "b_decide",
+      "B": "n_d4",
+      "condition": "orderSum > 2000"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process, begin by checking if the order has been received."
+    },
+    {
+      "id": "i2",
+      "content": "If the sum of the order is less than 500, then continue with the process."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the sum of the order is greater than 2000, compute a discount of 4%."
+    },
+    {
+      "id": "i4",
+      "content": "If the sum of the order falls between 1000 and 1500, compute a discount of 3%."
+    },
+    {
+      "id": "i5",
+      "content": "Similarly, if the sum of the order falls between 500 and 999, compute a discount of 2%."
+    },
+    {
+      "id": "i10",
+      "content": "Finally, create the bill and the process will come to an end."
+    }
+  ]
+}

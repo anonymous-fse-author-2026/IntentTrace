@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i6:However, if it is "Service Task 3", then the process will come to an end. (reason: The model completely omits the decision and condition checking for 'Service Task 3', substituting it instead with unrelated fallback logic.)
+- [N2] Omitted trace (input 2): i1:Initially, there is a User Task. -> i6:However, if it is "Service Task 3", then the process will come to an end.
+- [N3] Within matched traces (0->2) omitted: i7:After that,
+- [N4] Within matched traces (1->0) omitted: i7:After that,
+
+Addition
+- [N5] Node-level addition: guard(b1,b2,"v1 == \"No\"") (reason: These guards invent generic 'No' fallback condition paths that are not described anywhere in the source text.)
+- [N6] Node-level addition: guard(b2,e1,"v2 == \"No\"") (reason: These guards invent generic 'No' fallback condition paths that are not described anywhere in the source text.)
+- [N7] Node-level addition: guard(b3,e3,"v3 == \"No\"") (reason: These guards invent generic 'No' fallback condition paths that are not described anywhere in the source text.)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> branch(b1,XOR) -> converge(c1) -> branch(b3,XOR) -> end(e3)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> branch(b1,XOR) -> branch(b2,XOR) -> converge(c1) -> branch(b3,XOR) -> end(e3)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"Start User Task") -> branch(b1,XOR) -> branch(b2,XOR) -> end(e1)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,c1,"v1 == \"Yes\""); source=i2:If the task is "Service Task 1",; reason=The model replaces the specific check for 'Service Task 1' with a generic 'v1 == Yes'.
+- [N12] Node-level mutation: element=guard(b2,c1,"v2 == \"Yes\""); source=i4:If it is "Service Task 2",; reason=The model replaces the specific check for 'Service Task 2' with a generic 'v2 == Yes'.
+- [N13] Node-level mutation: element=guard(b3,e2,"v3 == \"Yes\""); source=i8:if there is a Manual Task,; reason=The model replaces the condition checking for a Manual Task with a generic 'v3 == Yes'.

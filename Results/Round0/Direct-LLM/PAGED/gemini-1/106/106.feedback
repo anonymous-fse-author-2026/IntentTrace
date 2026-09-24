@@ -1,0 +1,11 @@
+- `action(n1, "start")`: Hallucinated action; the source text "At the beginning" designates the start of the process (covered by the `init` node), not a distinct executable step.
+- `action(n9, "End")`: Hallucinated action; the source text "Finally, the process ends" designates the termination of the flow (covered by the `end` node), not an executable step.
+- `defines(v1, "Know SLA?", {})`: The variable range is empty and fails to reflect the condition outcomes "Knows SLA" and "don't 'Know SLA'".
+- `defines(v2, "Is task Urgent?", {})`: The variable range is empty and fails to reflect the condition outcomes "Urgent" and "Non Urgent".
+- `branch(b1, XOR)`: The outgoing edges `precedence(b1, n3)` and `precedence(b1, n4)` are missing `guard` statements to evaluate whether someone "Knows SLA" or does not.
+- `branch(b2, XOR)`: The outgoing edges `precedence(b2, n7)` and `precedence(b2, n8)` are missing `guard` statements to evaluate whether the task is "Urgent" or "Non Urgent".
+- Entire model: The model omits the subsequent behaviors explicitly documented at the end of the text: "If it is "Urgent", they should "Red Stamp". If they don't "Know SLA", they should "Look up". If it is "Non Urgent", they should "continue the process"."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

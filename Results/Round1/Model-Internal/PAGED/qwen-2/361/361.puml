@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:trigger: resupply cycle;
+:check: inventory level;
+if () then ([v1 = 'above_minimum'])
+:end process: above minimum;
+stop
+else ([v1 = 'below_minimum'])
+:create: purchase order;
+:review: purchase order;
+switch ()
+case ([v2 = 'rejected'])
+:rework: purchase order;
+:review: purchase order;
+if () then ([v3 = 'accepted'])
+stop
+else ([v3 = 'rejected'])
+stop
+endif
+case ([v2 = 'accepted'])
+:reserve funds and send PO;
+:receive packing slip and release funds;
+:end process: completed;
+case ([v2 = 'accepted'])
+:send to supplier;
+:receive packing slip and release funds;
+:end process: completed;
+endswitch
+endif
+@enduml

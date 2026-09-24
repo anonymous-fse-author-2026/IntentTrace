@@ -1,0 +1,593 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "guard:b_opt->n_res_dir",
+        "action:n_res_dir"
+      ],
+      "verbatim_texts": [
+        "Initially, if the option \"research schedule directly\" is selected, then the action to be taken is \"Research schedule\"."
+      ],
+      "justification": "Models the process start and the positive branch of the initial option decision."
+    },
+    {
+      "refs": [
+        "guard:b_opt->n_prov_ind",
+        "action:n_prov_ind",
+        "action:n_res_after"
+      ],
+      "verbatim_texts": [
+        "If the option is not selected, then \"provide indications\" and proceed with the research schedule."
+      ],
+      "justification": "Captures the negative branch of the initial option, including providing indications and researching, before converging."
+    },
+    {
+      "refs": [
+        "action:n_val_sched"
+      ],
+      "verbatim_texts": [
+        "After validating the schedule, check if the schedule is satisfactory."
+      ],
+      "justification": "Validates the schedule and introduces the first satisfaction decision point."
+    },
+    {
+      "refs": [
+        "guard:b_sat1->n_res_again",
+        "action:n_res_again"
+      ],
+      "verbatim_texts": [
+        "If it is not, then perform the action \"Research schedule\"."
+      ],
+      "justification": "Handles the first unsatisfactory outcome by triggering another research step."
+    },
+    {
+      "refs": [
+        "guard:b_sat1->c_pre_write"
+      ],
+      "verbatim_texts": [
+        "If it is, then proceed with writing a ticket order to SNCF."
+      ],
+      "justification": "Routes the first satisfactory outcome directly toward ticket creation."
+    },
+    {
+      "refs": [
+        "branch:b_sat2"
+      ],
+      "verbatim_texts": [
+        "If the schedule is not satisfactory, perform the action \"Research schedule\"."
+      ],
+      "justification": "Represents the secondary satisfaction check implied by the text structure."
+    },
+    {
+      "refs": [
+        "guard:b_sat2->n_prov_ind2",
+        "action:n_prov_ind2"
+      ],
+      "verbatim_texts": [
+        "If it is still not satisfactory, then \"provide indications\"."
+      ],
+      "justification": "Captures the fallback action when the schedule remains unsatisfactory after the second check."
+    },
+    {
+      "refs": [
+        "guard:b_sat2->c_pre_write"
+      ],
+      "verbatim_texts": [
+        "Alternatively, if the schedule is satisfactory, write a ticket order to SNCF."
+      ],
+      "justification": "Converges the second satisfactory path with the first, leading to ticket writing."
+    },
+    {
+      "refs": [
+        "action:n_write_tkt",
+        "action:n_val_tkt1"
+      ],
+      "verbatim_texts": [
+        "After writing the ticket order, validate it."
+      ],
+      "justification": "Directly implements the ticket writing and initial validation steps."
+    },
+    {
+      "refs": [
+        "branch:b_app1"
+      ],
+      "verbatim_texts": [
+        "Check if the ticket order is approved."
+      ],
+      "justification": "Splits the flow based on the approval status check."
+    },
+    {
+      "refs": [
+        "guard:b_app1->e_end_no"
+      ],
+      "verbatim_texts": [
+        "If it is not, then the process ends."
+      ],
+      "justification": "Terminates the process on the first negative approval check."
+    },
+    {
+      "refs": [
+        "guard:b_app1->n_val_tkt2",
+        "action:n_val_tkt2"
+      ],
+      "verbatim_texts": [
+        "If it is approved, then validate the ticket order."
+      ],
+      "justification": "Re-validates the ticket order upon a positive approval check."
+    },
+    {
+      "refs": [
+        "action:n_chk2"
+      ],
+      "verbatim_texts": [
+        "Check again if the ticket order is approved."
+      ],
+      "justification": "Models the explicit secondary approval check as an action step, preserving sequence."
+    },
+    {
+      "refs": [
+        "action:n_chk3"
+      ],
+      "verbatim_texts": [
+        "Check once more if the ticket order is approved."
+      ],
+      "justification": "Models the explicit tertiary approval check as an action step, preserving sequence."
+    },
+    {
+      "refs": [
+        "end:e_end_yes"
+      ],
+      "verbatim_texts": [
+        "If it is, then the process ends."
+      ],
+      "justification": "Terminates the process after the final successful check."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "branch:b_opt",
+      "kind": "branch",
+      "node_id": "b_opt",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_opt",
+        "b_opt"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_opt (XOR)"
+    },
+    {
+      "ref_id": "action:n_res_dir",
+      "kind": "action",
+      "node_id": "n_res_dir",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n_res_dir",
+        "n_res_dir"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_res_dir: Research schedule"
+    },
+    {
+      "ref_id": "action:n_prov_ind",
+      "kind": "action",
+      "node_id": "n_prov_ind",
+      "gateway": "",
+      "string_value": "Provide indications",
+      "aliases": [
+        "action:n_prov_ind",
+        "n_prov_ind"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_prov_ind: Provide indications"
+    },
+    {
+      "ref_id": "action:n_res_after",
+      "kind": "action",
+      "node_id": "n_res_after",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n_res_after",
+        "n_res_after"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_res_after: Research schedule"
+    },
+    {
+      "ref_id": "converge:c_pre_val",
+      "kind": "converge",
+      "node_id": "c_pre_val",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_pre_val",
+        "c_pre_val"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_pre_val"
+    },
+    {
+      "ref_id": "action:n_val_sched",
+      "kind": "action",
+      "node_id": "n_val_sched",
+      "gateway": "",
+      "string_value": "Validate schedule",
+      "aliases": [
+        "action:n_val_sched",
+        "n_val_sched"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_val_sched: Validate schedule"
+    },
+    {
+      "ref_id": "branch:b_sat1",
+      "kind": "branch",
+      "node_id": "b_sat1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_sat1",
+        "b_sat1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_sat1 (XOR)"
+    },
+    {
+      "ref_id": "action:n_res_again",
+      "kind": "action",
+      "node_id": "n_res_again",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n_res_again",
+        "n_res_again"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_res_again: Research schedule"
+    },
+    {
+      "ref_id": "branch:b_sat2",
+      "kind": "branch",
+      "node_id": "b_sat2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_sat2",
+        "b_sat2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_sat2 (XOR)"
+    },
+    {
+      "ref_id": "action:n_prov_ind2",
+      "kind": "action",
+      "node_id": "n_prov_ind2",
+      "gateway": "",
+      "string_value": "Provide indications",
+      "aliases": [
+        "action:n_prov_ind2",
+        "n_prov_ind2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_prov_ind2: Provide indications"
+    },
+    {
+      "ref_id": "converge:c_pre_write",
+      "kind": "converge",
+      "node_id": "c_pre_write",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_pre_write",
+        "c_pre_write"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_pre_write"
+    },
+    {
+      "ref_id": "action:n_write_tkt",
+      "kind": "action",
+      "node_id": "n_write_tkt",
+      "gateway": "",
+      "string_value": "Write ticket order to SNCF",
+      "aliases": [
+        "action:n_write_tkt",
+        "n_write_tkt"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_write_tkt: Write ticket order to SNCF"
+    },
+    {
+      "ref_id": "action:n_val_tkt1",
+      "kind": "action",
+      "node_id": "n_val_tkt1",
+      "gateway": "",
+      "string_value": "Validate ticket order",
+      "aliases": [
+        "action:n_val_tkt1",
+        "n_val_tkt1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_val_tkt1: Validate ticket order"
+    },
+    {
+      "ref_id": "branch:b_app1",
+      "kind": "branch",
+      "node_id": "b_app1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_app1",
+        "b_app1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_app1 (XOR)"
+    },
+    {
+      "ref_id": "end:e_end_no",
+      "kind": "end",
+      "node_id": "e_end_no",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_end_no",
+        "e_end_no"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_end_no"
+    },
+    {
+      "ref_id": "action:n_val_tkt2",
+      "kind": "action",
+      "node_id": "n_val_tkt2",
+      "gateway": "",
+      "string_value": "Validate ticket order",
+      "aliases": [
+        "action:n_val_tkt2",
+        "n_val_tkt2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_val_tkt2: Validate ticket order"
+    },
+    {
+      "ref_id": "action:n_chk2",
+      "kind": "action",
+      "node_id": "n_chk2",
+      "gateway": "",
+      "string_value": "Check again if the ticket order is approved.",
+      "aliases": [
+        "action:n_chk2",
+        "n_chk2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_chk2: Check again if the ticket order is approved."
+    },
+    {
+      "ref_id": "action:n_chk3",
+      "kind": "action",
+      "node_id": "n_chk3",
+      "gateway": "",
+      "string_value": "Check once more if the ticket order is approved.",
+      "aliases": [
+        "action:n_chk3",
+        "n_chk3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_chk3: Check once more if the ticket order is approved."
+    },
+    {
+      "ref_id": "end:e_end_yes",
+      "kind": "end",
+      "node_id": "e_end_yes",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_end_yes",
+        "e_end_yes"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_end_yes"
+    },
+    {
+      "ref_id": "guard:b_opt->n_res_dir",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_opt = 'Yes'",
+      "aliases": [
+        "guard:b_opt->n_res_dir"
+      ],
+      "from": "b_opt",
+      "to": "n_res_dir",
+      "source_line": "guard b_opt->n_res_dir: v_opt = 'Yes'",
+      "guard": {
+        "from": "b_opt",
+        "to": "n_res_dir",
+        "condition": "v_opt = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_opt->n_prov_ind",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_opt = 'No'",
+      "aliases": [
+        "guard:b_opt->n_prov_ind"
+      ],
+      "from": "b_opt",
+      "to": "n_prov_ind",
+      "source_line": "guard b_opt->n_prov_ind: v_opt = 'No'",
+      "guard": {
+        "from": "b_opt",
+        "to": "n_prov_ind",
+        "condition": "v_opt = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_sat1->n_res_again",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_sat1 = 'No'",
+      "aliases": [
+        "guard:b_sat1->n_res_again"
+      ],
+      "from": "b_sat1",
+      "to": "n_res_again",
+      "source_line": "guard b_sat1->n_res_again: v_sat1 = 'No'",
+      "guard": {
+        "from": "b_sat1",
+        "to": "n_res_again",
+        "condition": "v_sat1 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_sat1->c_pre_write",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_sat1 = 'Yes'",
+      "aliases": [
+        "guard:b_sat1->c_pre_write"
+      ],
+      "from": "b_sat1",
+      "to": "c_pre_write",
+      "source_line": "guard b_sat1->c_pre_write: v_sat1 = 'Yes'",
+      "guard": {
+        "from": "b_sat1",
+        "to": "c_pre_write",
+        "condition": "v_sat1 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_sat2->n_prov_ind2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_sat2 = 'No'",
+      "aliases": [
+        "guard:b_sat2->n_prov_ind2"
+      ],
+      "from": "b_sat2",
+      "to": "n_prov_ind2",
+      "source_line": "guard b_sat2->n_prov_ind2: v_sat2 = 'No'",
+      "guard": {
+        "from": "b_sat2",
+        "to": "n_prov_ind2",
+        "condition": "v_sat2 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_sat2->c_pre_write",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_sat2 = 'Yes'",
+      "aliases": [
+        "guard:b_sat2->c_pre_write"
+      ],
+      "from": "b_sat2",
+      "to": "c_pre_write",
+      "source_line": "guard b_sat2->c_pre_write: v_sat2 = 'Yes'",
+      "guard": {
+        "from": "b_sat2",
+        "to": "c_pre_write",
+        "condition": "v_sat2 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_app1->e_end_no",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_app = 'No'",
+      "aliases": [
+        "guard:b_app1->e_end_no"
+      ],
+      "from": "b_app1",
+      "to": "e_end_no",
+      "source_line": "guard b_app1->e_end_no: v_app = 'No'",
+      "guard": {
+        "from": "b_app1",
+        "to": "e_end_no",
+        "condition": "v_app = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_app1->n_val_tkt2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_app = 'Yes'",
+      "aliases": [
+        "guard:b_app1->n_val_tkt2"
+      ],
+      "from": "b_app1",
+      "to": "n_val_tkt2",
+      "source_line": "guard b_app1->n_val_tkt2: v_app = 'Yes'",
+      "guard": {
+        "from": "b_app1",
+        "to": "n_val_tkt2",
+        "condition": "v_app = 'Yes'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 15,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 22,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 22,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 22,
+    "total_mappable_targets": 28,
+    "input_text_length": 1059,
+    "element_count": 28
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

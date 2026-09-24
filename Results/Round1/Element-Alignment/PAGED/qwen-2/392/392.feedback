@@ -1,0 +1,16 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e3)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> end(e3)
+- [N3] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N4] Within matched traces (1->2) added: branch(b1,XOR)
+- [N5] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N6] Within matched traces (2->4) added: branch(b1,XOR)
+- [N7] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n3,"v1 = true"); source=i2:If the task is "Service Task 1", then the process should continue.; reason=The guard substitutes the explicit textual condition with an abstract boolean variable (v1 = true), dropping the specific data value required by the source.
+- [N9] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=i2:If the task is "Service Task 1", then the process should continue.; reason=Uses an abstract boolean (v1 = false) for the negative path instead of preserving the source's implicit conditional context or transition logic.
+- [N10] Node-level mutation: element=guard(b2,n5,"v2 = true"); source=i3:If it is "Service Task 2", the process should also continue.; reason=Replaces the explicit condition with an abstract boolean (v2 = true), losing the original data value from the text.
+- [N11] Node-level mutation: element=guard(b2,n6,"v2 = false"); source=i4:However, if it is "Service Task 3", then the process will come to an end.; reason=Encodes the fallback branch path with an abstract boolean (v2 = false) rather than reflecting the explicit source condition.
+- [N12] Node-level mutation: element=guard(b3,n9,"v3 = true"); source=i5:After that, if there is a Manual Task, the process will end.; reason=Substitutes the explicit manual task existence check with an abstract boolean (v3 = true), altering the payload specificity.
+- [N13] Node-level mutation: element=guard(b3,e3,"v3 = false"); source=i5:After that, if there is a Manual Task, the process will end.; reason=Applies an abstract boolean (v3 = false) to the alternative path, failing to retain the source's conditional framing.

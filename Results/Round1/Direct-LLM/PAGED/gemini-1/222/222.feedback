@@ -1,0 +1,21 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i7:process the invoice batch
+- [N2] Omitted trace (input 1): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i8:take it to the outbox -> i10:clear the outbox of the Data Entry Officer every hour -> i11:until the outbox is completely cleared -> i10:clear the outbox of the Data Entry Officer every hour
+
+Addition
+- [N3] Node-level addition: label(n1,n2,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N4] Node-level addition: label(n2,n3,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N5] Node-level addition: label(n3,n4,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N6] Node-level addition: label(n4,n5,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N7] Node-level addition: label(n5,n6,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N8] Node-level addition: label(n6,c1,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N9] Node-level addition: label(n9,c2,"Yes") (reason: These 'Yes' labels on sequential flows are invented and lack any corresponding logic or conditions in the source text.)
+- [N10] Node-level addition: guard(b1,n9,"v1 = 'No'") (reason: These guards use invented variable names (v1, v2) and assign generic 'Yes/No' values that do not correspond to the actual textual conditions.)
+- [N11] Node-level addition: guard(b1,c1,"v1 = 'Yes'") (reason: These guards use invented variable names (v1, v2) and assign generic 'Yes/No' values that do not correspond to the actual textual conditions.)
+- [N12] Node-level addition: guard(b2,n12,"v2 = 'Yes'") (reason: These guards use invented variable names (v1, v2) and assign generic 'Yes/No' values that do not correspond to the actual textual conditions.)
+- [N13] Node-level addition: guard(b2,c2,"v2 = 'No'") (reason: These guards use invented variable names (v1, v2) and assign generic 'Yes/No' values that do not correspond to the actual textual conditions.)
+
+Mutation
+- [N14] Node-level mutation: element=action(n5,"Check compliance"); source=i5:checking for invoice compliance; reason=The element drops the specific qualifier 'invoice' from the compliance check.
+- [N15] Node-level mutation: element=action(n8,"More batches to process?"); source=i9:repeated until all invoices are processed; reason=The text specifies checking until all 'invoices' are processed, but the model alters this to checking for more 'batches'.
+- [N16] Node-level mutation: element=action(n10,"Clear outbox every hour until completely cleared"); source=i10:clear the outbox of the Data Entry Officer every hour -> i11:until the outbox is completely cleared; reason=The action successfully combines the clauses but drops the explicit ownership qualifier 'of the Data Entry Officer' from the step.

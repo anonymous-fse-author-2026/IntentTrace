@@ -1,0 +1,40 @@
+Omission
+- [N1] Node-level omission: i4:At the same time (reason: The text clearly dictates a parallel split (AND branch) for the simultaneous steps, but no such structural element is present in the model.)
+- [N2] Node-level omission: i8:availability needs to be checked again (reason: The model fails to include an action step for checking availability a second time in the backorder path.)
+- [N3] Omitted trace (input 3): i1:the first step -> i2:look at the order -> i4:At the same time -> i5:preparing the assembling order -> i10:The next steps are to -> i11:assemble the bike -> i12:ship the product
+- [N4] Omitted trace (input 4): i1:the first step -> i2:look at the order -> i4:At the same time -> i6:checking availability -> i7:If there is a backorder -> i8:availability needs to be checked again -> i9:the process ends
+- [N5] Omitted trace (input 5): i1:the first step -> i2:look at the order -> i4:At the same time -> i6:checking availability -> i10:The next steps are to -> i11:assemble the bike -> i12:ship the product
+- [N6] Within matched traces (0->0) omitted: i4:At the same time
+- [N7] Within matched traces (0->0) omitted: i5:preparing the assembling order
+- [N8] Within matched traces (0->0) omitted: i10:The next steps are to
+- [N9] Within matched traces (0->0) omitted: i11:assemble the bike
+- [N10] Within matched traces (0->0) omitted: i12:ship the product
+- [N11] Within matched traces (1->1) omitted: i4:At the same time
+- [N12] Within matched traces (1->1) omitted: i6:checking availability
+- [N13] Within matched traces (1->1) omitted: i8:availability needs to be checked again
+- [N14] Within matched traces (0->2) omitted: i4:At the same time
+- [N15] Within matched traces (1->3) omitted: i4:At the same time
+- [N16] Within matched traces (1->3) omitted: i8:availability needs to be checked again
+- [N17] Within matched traces (2->4) omitted: i4:At the same time
+
+Addition
+- [N18] Node-level addition: action(n5,"End") (reason: An action step named 'End' is added here, but the source text explicitly states 'the process should continue' for this path.)
+- [N19] Node-level addition: action(n12,"End") (reason: An action step named 'End' is appended to the end of the process with no source text describing a final termination step or action.)
+- [N20] Node-level addition: label(n10,n11,"12") (reason: The label '12' has no support or reference in the source text.)
+- [N21] Within matched traces (0->0) added: action(n5,"End")
+- [N22] Within matched traces (0->0) added: end(e1)
+- [N23] Within matched traces (1->1) added: branch(b1,XOR)
+- [N24] Within matched traces (1->1) added: action(n6,"Prepare Assembling Order")
+- [N25] Within matched traces (1->1) added: converge(c1)
+- [N26] Within matched traces (0->2) added: action(n8,"Is Backorder Required?")
+- [N27] Within matched traces (0->2) added: branch(b2,XOR)
+- [N28] Within matched traces (0->2) added: action(n12,"End")
+- [N29] Within matched traces (0->2) added: end(e3)
+- [N30] Within matched traces (2->4) added: action(n8,"Is Backorder Required?")
+- [N31] Within matched traces (2->4) added: branch(b2,XOR)
+- [N32] Within matched traces (2->4) added: action(n12,"End")
+- [N33] Within matched traces (2->4) added: end(e3)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

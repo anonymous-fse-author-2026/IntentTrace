@@ -1,0 +1,17 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"start selling cars") -> branch(b_split,AND) -> branch(b1,OR) -> action(n3,"Yes continue process after bonus") -> converge(c1) -> action(n8,"pay the bill") -> end(e2)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start selling cars") -> branch(b_split,AND) -> branch(b2,OR) -> action(n6,"Yes continue process after paycheck") -> converge(c1) -> action(n8,"pay the bill") -> end(e2)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'") -> guard(b1,c1,"v1 = 'Yes'"); source=i2:If you "get a bonus"; reason=Guards use generic variable assignment 'v1 = Yes' instead of preserving the explicit textual condition '"get a bonus"'.
+- [N4] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'") -> guard(b2,c1,"v2 = 'Yes'"); source=i4:If you "get a paycheck"; reason=Guards use generic variable assignment 'v2 = Yes' instead of preserving the explicit textual condition '"get a paycheck"'.
+- [N5] Node-level mutation: element=action(n3,"Yes continue process after bonus"); source=i3:then you continue the process.; reason=Element content 'Yes continue process after bonus' injects the qualifier 'Yes' and appends 'after bonus', altering the precise instruction.
+- [N6] Node-level mutation: element=action(n6,"Yes continue process after paycheck"); source=i5:then you also continue the process.; reason=Element content 'Yes continue process after paycheck' injects the qualifier 'Yes' and appends 'after paycheck', altering the precise instruction.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v1 = 'Yes'` on `b1 -> c1` uses undefined variable `v1`. | Guard `v2 = 'Yes'` on `b2 -> n6` uses undefined variable `v2`. | Guard `v2 = 'Yes'` on `b2 -> c1` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,c1,"v1 = 'Yes'"); guard(b2,n6,"v2 = 'Yes'"); guard(b2,c1,"v2 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Yes'` on `b1 -> c1` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> n6` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> c1` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,c1,"v1 = 'Yes'"); guard(b2,n6,"v2 = 'Yes'"); guard(b2,c1,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

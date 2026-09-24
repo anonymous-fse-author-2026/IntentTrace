@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i5:proceed to book a train (reason: The only corresponding element was recorded as a mutation, leaving this action unfaithfully implemented.)
+- [N2] Node-level omission: i12:Otherwise, if 24 hours have passed (reason: The only corresponding element was recorded as a mutation, leaving this explicit temporal condition without a faithful implementation.)
+- [N3] Node-level omission: i13:call a travel agency (reason: The only corresponding element was recorded as a mutation, leaving this action unfaithfully implemented.)
+- [N4] Node-level omission: i16:cancel your journey (reason: The only corresponding element was recorded as a mutation, leaving this action unfaithfully implemented.)
+- [N5] Omitted trace (input 1): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i12:Otherwise, if 24 hours have passed -> i13:call a travel agency -> i9:If a code is available -> i10:the process will end -> i14:the process will end along with the hotel reservation
+- [N6] Omitted trace (input 2): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i12:Otherwise, if 24 hours have passed -> i13:call a travel agency -> i15:if a code is not available -> i16:cancel your journey -> i17:the process will end as well
+- [N7] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours
+- [N8] Within matched traces (0->0) omitted: i11:the process will end.
+- [N9] Within matched traces (4->2) omitted: i10:the process will end
+
+Addition
+- [N10] Node-level addition: action(n1,"start") (reason: The action 'start' is an invented step; the source text uses 'To begin with' merely as an introductory phrase, not as a distinct executable action.)
+- [N11] Within matched traces (0->0) added: action(n1,"start")
+- [N12] Within matched traces (3->1) added: action(n1,"start")
+- [N13] Within matched traces (4->2) added: action(n1,"start")
+- [N14] Within matched traces (4->2) added: action(n6,"is code available within 24 hours?")
+- [N15] Within matched traces (5->3) added: action(n1,"start")
+- [N16] Within matched traces (5->3) added: action(n6,"is code available within 24 hours?")
+- [N17] Within matched traces (5->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N18] Node-level mutation: element=action(n4,"run: book train"); source=i5:proceed to book a train; reason=The element adds the invented operational prefix 'run: ' and drops 'proceed to', distorting the faithful text.
+- [N19] Node-level mutation: element=action(n8,"run: call travel agency"); source=i13:call a travel agency; reason=The element adds the invented operational prefix 'run: '.
+- [N20] Node-level mutation: element=action(n9,"is code now available?"); source=i9:If a code is available; reason=The element transforms the condition into a question but adds the invented temporal qualifier 'now', altering the strict meaning.
+- [N21] Node-level mutation: element=action(n10,"end with hotel reservation"); source=i14:the process will end along with the hotel reservation; reason=The element truncates the text to 'end with hotel reservation', dropping 'the process will' and 'along'.
+- [N22] Node-level mutation: element=action(n11,"run: cancel journey"); source=i16:cancel your journey; reason=The element adds the invented operational prefix 'run: '.
+- [N23] Node-level mutation: element=action(n12,"end"); source=i17:the process will end as well; reason=The element drops 'the process will' and the qualifier 'as well', truncating the action to just 'end'.
+- [N24] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i12:Otherwise, if 24 hours have passed; reason=The guard uses a generic boolean 'v2 = 'No'', failing to faithfully represent the explicit temporal condition 'if 24 hours have passed'.

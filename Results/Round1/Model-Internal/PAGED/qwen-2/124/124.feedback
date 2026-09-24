@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i7:If the item can be reserved (reason: The affirmative reservation condition is not faithfully implemented; the sole model element covering it mutates the logic rather than preserving the source requirement.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start process") (reason: Generic 'start process' action lacks any supporting text or implicit cue in the source input.)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> action(n8,"end") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> action(n11,"end") -> end(e2)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start process")
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (1->1) added: init(i1)
+- [N9] Within matched traces (1->1) added: action(n1,"start process")
+- [N10] Within matched traces (1->1) added: converge(c1)
+- [N11] Within matched traces (1->1) added: action(n6,"backorder?")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i7:If the item can be reserved; reason=The guard specifies v2 = 'No', which directly contradicts the source condition that the process proceeds when the item *can* be reserved. The logical polarity is inverted.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Accepted].
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=Rejected].

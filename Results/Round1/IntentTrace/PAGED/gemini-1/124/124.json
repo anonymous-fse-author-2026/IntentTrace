@@ -1,0 +1,336 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "look at the order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_cont_rej",
+      "type": "action",
+      "content": "the process should continue"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "b_and",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "preparing the assembling order"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "checking availability"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "the process ends"
+    },
+    {
+      "id": "e_loop",
+      "type": "end"
+    },
+    {
+      "id": "n_cont",
+      "type": "action",
+      "content": "the process should continue"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "assemble the bike"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "ship the product"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "order status",
+      "R_X": [
+        "Accepted",
+        "Rejected"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "backorder?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "check again",
+      "R_X": [
+        "Loop",
+        "End"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n_cont_rej",
+        "e1",
+        "b_and",
+        "n4",
+        "n5",
+        "b2",
+        "n7",
+        "b3",
+        "n8",
+        "e_loop",
+        "n_cont",
+        "c2",
+        "n9",
+        "n10",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n_cont_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "n_cont_rej",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "b_and"
+    },
+    {
+      "type": "precedence",
+      "A": "b_and",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b_and",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n_cont"
+    },
+    {
+      "type": "precedence",
+      "A": "n_cont",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "b_and",
+      "condition": "v1 = 'Accepted'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n_cont_rej",
+      "condition": "v1 = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n_cont",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n5",
+      "condition": "v3 = 'Loop'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n8",
+      "condition": "v3 = 'End'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the first step is to look at the order"
+    },
+    {
+      "id": "i2",
+      "content": "If the order is to be rejected"
+    },
+    {
+      "id": "i3",
+      "content": "the process should continue"
+    },
+    {
+      "id": "i4",
+      "content": "If the order is to be accepted"
+    },
+    {
+      "id": "i5",
+      "content": "the process should also continue"
+    },
+    {
+      "id": "i6",
+      "content": "At the same time, two steps need to be completed:"
+    },
+    {
+      "id": "i7",
+      "content": "preparing the assembling order"
+    },
+    {
+      "id": "i8",
+      "content": "checking availability"
+    },
+    {
+      "id": "i9",
+      "content": "If there is a backorder"
+    },
+    {
+      "id": "i10",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "i11",
+      "content": "the process ends"
+    },
+    {
+      "id": "i12",
+      "content": "If the item can be reserved"
+    },
+    {
+      "id": "i13",
+      "content": "The next steps are"
+    },
+    {
+      "id": "i14",
+      "content": "assemble the bike"
+    },
+    {
+      "id": "i15",
+      "content": "ship the product"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+Addition
+- [N1] Node-level addition: action(n12,"form not authorized") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N2] Node-level addition: guard(b8,c4,"v8 = 'no'") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N3] Node-level mutation: element=action(n9,"approve form") -> guard(b3,n9,"v3 = 'yes'"); source=i11:they may not authorize the form.; reason=Incorrectly defines the outcome as 'approve form' on the external resource path, directly contradicting the source which states they 'may not authorize'.
+- [N4] Node-level mutation: element=action(n10,"was the form authorized by the external approver?"); source=i13:If the form is approved; reason=Introduces the invented qualifier 'by the external approver', unnecessarily narrowing the approval condition defined in the source.
+- [N5] Node-level mutation: element=action(n11,"scan and record form in GovSource"); source=i15:The HR department scans the completed form and records the position against the stored position in GovSource.; reason=Alters the recorded data object from 'position against the stored position' to simply 'form', dropping a critical qualification and changing the operation target.
+- [N6] Node-level mutation: element=action(n14,"inform recruitment manager and liaise with HR representative") -> action(n20,"inform recruitment manager and liaise with HR representative"); source=i20:The TS HR coordinator informs the recruitment manager, who then liaises with the HR representative; reason=Omits specific actors ('TS HR coordinator') and the sequential dependency ('who then'), degrading instruction granularity and responsibility mapping.
+- [N7] Node-level mutation: element=action(n13,"continue process (no terms needed)"); source=i6:the process continues.; reason=Appends the invented qualifier '(no terms needed)' which is not supported by the source text.
+- [N8] Node-level mutation: element=action(n19,"arrange and complete medical assessment (21 days)"); source=i19:it can take up to 21 days to arrange and complete.; reason=Changes the duration constraint from a maximum range ('up to 21 days') to a fixed value ('(21 days)'), altering the specified parameter.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=1 and out=0. | Node `n3` has in=0 and out=1. | DSL: action(n2,"advise unsuccessful candidates"); action(n3,"are there more candidates?")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b10, b11, b2, b3, b4, b5, b6, b7, b8, b9, c1, c2, c3, c4, c5, e1, n10, n11, n12, n13, n14, n15, n16, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n3, n30, n31, n32, n33, n34, n4, n5, n50, n51, n6, n7, n8, n9, n90, n91, n92 | DSL: branch(b1,XOR); branch(b10,XOR); branch(b11,AND); branch(b2,XOR); branch(b3,XOR); branch(b4,XOR); branch(b5,XOR); branch(b6,XOR) (+45 more)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: i1, n2 | DSL: init(i1); action(n2,"advise unsuccessful candidates")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b8` has overlapping guards at state [v8=no].

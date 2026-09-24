@@ -1,0 +1,8 @@
+
+
+- `action(n1, "Start client acquisition process")`: Hallucinated step; the source explicitly states `"the first step is to identify the need for a new client"`, with no preliminary initialization action.
+- `action(n5, "Have all initial tasks been completed")` & `branch(b1, XOR)`: Hallucinated control flow altering chronology (SMC3/SMC1); the source describes a mandatory continuation (`"Once these steps are done, the next step is to send an offer"`), not a decision point. Additionally, `branch(b1, XOR)` has only one outgoing edge (`precedence(b1, n6)`), which violates SMC4 (invalid control-flow logic).
+- `branch(b2, XOR)`: Lacks `guard` statements for its outgoing edges to `n11` and `n12`; the source mandates explicit conditional routing (`"If the response is positive... However, if the response is negative..."`), violating SMC4.
+- `defines(v1, ...)` & `defines(v2, ...)`: Specify empty value ranges `{}` instead of appropriate domains (e.g., `{true, false}` or `{"positive", "negative"}`), failing SMC6 (variables must faithfully reflect the source's decision space).
+- `action(n5, ...)` & `action(n10, ...)`: Incorrectly declared as `action` nodes despite representing logical decision checks/synchronization points rather than executable process steps, violating SMC2 (node payload meaning).
+- `action(n14, "You have completed this procedure")`: Hallucinated step; the source concludes immediately after signing (`"and the process comes to an end"`), with no explicit closure or notification task.

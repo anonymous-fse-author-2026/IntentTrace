@@ -1,0 +1,11 @@
+
+
+- `OMITTED`: Source states "During this step, the items are counted and compared to the original contract," but this verification step is completely absent from the model.
+- `action(n1, "start")`, `action(n14, "end process")`, `action(n20, "end process")`: Hallucinated steps; the source simply begins with returning items and concludes with "when the process is complete, it ends," without naming distinct start or end actions.
+- `action(n5, "order is complete...")`, `action(n6, "order is incomplete...")`, `action(n15, "customer returns...")`, `action(n16, "customer does not return...")`: Source phrases like "If the 'Order is complete and all items were returned,'" function as decision conditions, yet they are incorrectly modeled as sequential `action` nodes rather than governing branch logic.
+- `precedence(n5, b2)` & `precedence(b2, n6)`: Models "order is complete" (`n5`) as a mandatory preceding step before choosing "order is incomplete" (`n6`), contradicting the source's mutually exclusive conditional structure.
+- `precedence(n10, n11)` & `precedence(b6, n12)`: Forces "items are repaired" (`n11`) to occur before branching to "items can't be repaired and are discarded" (`n12`), violating the source's alternative phrasing "If... On the other hand, if...".
+- `branch(b11, AND)`, `branch(b12, AND)`: Uses parallel `AND` gateways to split to packing/storage, but the source explicitly frames them as alternatives: "If the 'Items are packed...,' we continue... Alternatively, if the 'Items are stored...,' we also continue."
+- `branch(b1)` through `branch(b10)`: All conditional transitions (e.g., "If the 'Delivery Crew picks-up items...'", "If the 'Order is incomplete...'") lack corresponding `guard` statements, leaving the documented choice logic unenforced.
+- `converge(c2)`: Merges flows from missing items, packing, and storing directly into `action(n10, "email customer with replacement charges")`, incorrectly forcing a single email step across divergent paths, whereas the source ties replacement emails specifically to missing or discarded scenarios.
+- `defines(v1, ..., {})` through `defines(v10, ..., {})`: All variable ranges are declared as empty sets `{}`, failing to capture the boolean or categorical value spaces implied by the source's conditional descriptions.

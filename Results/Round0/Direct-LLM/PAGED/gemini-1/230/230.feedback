@@ -1,0 +1,10 @@
+- action(n4, "Both assessments complete"): Hallucinates an action not described in the text; the source specifies "After that, the eligibility of the applicant is assessed," which implies a direct transition from convergence to eligibility assessment.
+- action(n6, "Is applicant eligible"): Hallucinates a standalone action for evaluating the gateway condition; the source text describes this purely as conditional logic ("If the applicant is eligible...") which belongs in branch guards.
+- action(n10, "End process after rejection"): Hallucinates an action; the source states "the loan application process ends," which should simply be a direct transition to an end node (`e1`).
+- action(n11, "End process after sending acceptance pack"): Hallucinates an action; the source explicitly says "Once the acceptance pack is sent, the process ends," requiring a direct edge from sending to an end node (`e2`).
+- branch(b1, XOR): Missing `guard` definitions for the outgoing edges to `n7` and `n8` to represent the explicit conditions in the text: "If the applicant is eligible" and "If the applicant is not eligible".
+- defines(v1, "Is applicant eligible", {}): The variable definition contains an empty range `{}` instead of a finite set (e.g., {"true", "false"} or {"eligible", "not eligible"}) to support the conditional splits in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

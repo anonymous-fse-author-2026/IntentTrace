@@ -1,0 +1,6 @@
+
+
+- `branch(b1)` and associated precedences: The model implements only a single decision point and immediately diverges into two independent paths. The source explicitly mandates a second evaluation: "After this, we again check if the input is a 'URN' or a 'URL' and take the corresponding action." This sequential step is completely omitted.
+- `guard(b1, n8, v1 = 'No')` and `action(n8, "Send DNS query for the URL")`: The model routes the non-URN case directly to a DNS query step. The source states that if the input is a "URL", we "simply continue with the process" (leading to the second check), making `n8` a hallucinated and chronologically misplaced step.
+- `end(e1)`, `end(e2)` and duplicated terminal nodes (`n5`/`n9`, `n6`/`n10`, `n7`/`n11`): The model terminates via two disjoint paths with repeated final steps. The source describes a unified progression that converges to a single outcome: "which we then use to link to a designated DS. Finally, we link to the designated DS and the process comes to an end." The model incorrectly represents this as parallel, non-converging flows.
+- `action(n3, "Resolve URN to domain-name")`: The node payload omits the "ONS-" prefix found in the source text ("ONS-Resolving URN to a domain-name"), failing to faithfully capture the documented step identifier.

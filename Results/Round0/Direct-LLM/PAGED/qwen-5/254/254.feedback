@@ -1,0 +1,10 @@
+- `action(n1, "start election process")`: Omits the specific initiation condition stated in the source: "begin with the rector's final year in their current position." (SMC2)
+- `defines(v1, ...)` and `defines(v2, ...)`: Use empty value ranges `{}`, which do not faithfully capture the expected decision outcomes for evaluating whether a candidate "meets the required criteria" or if "voting fails/successful". (SMC6)
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard(...)` statements to enforce the source conditions "If a candidate meets the required criteria" and "If the voting fails/successful" on their respective outgoing edges. (SMC4)
+- `action(n11, "publicize candidate list")`: Hallucinates a duplicate step after `action(n8, "form and publicize list of candidates")` already covers "it should be made public", contradicting the source's single sequential step before the simultaneous tasks. (SMC1)
+- `precedence(n15, c2)` and `precedence(c2, n17)`: Directs the failed-voting path straight to process conclusion instead of creating a feedback loop back to `action(n13, "conduct election and count votes")`, violating the requirement that "another election should be conducted." (SMC4)
+- `actor(a_default, "Default", [...])`: Assigns every node to a single participant, ignoring distinct responsibilities for the "rector", "candidates", and "Academic Senate" explicitly outlined in the source. (SMC7)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n16` has 0 guards; exactly one is required.

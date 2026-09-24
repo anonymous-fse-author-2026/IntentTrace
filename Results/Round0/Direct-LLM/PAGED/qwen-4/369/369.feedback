@@ -1,0 +1,10 @@
+- `action(n4, "cook spaghetti")` & `precedence(b3, n4)`: Positioned in the initial parallel split, contradicting "Once the pesto is obtained, cook the spaghetti," which explicitly mandates this step to occur after sauce retrieval.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Lack corresponding `guard` statements to enforce "If pesto is available", "If pesto is not available", and "If tomato sauce is stolen," omitting documented conditional routing logic.
+- `defines(v1, "is pesto available?", {})` & `defines(v2, "has tomato sauce been stolen?", {})`: Specify empty ranges `{}` rather than a valid domain (e.g., `{true, false}`), failing to faithfully reflect the decision variables' value spaces.
+- `action(n5, "merge after parallel tasks")`, `converge(c1)`, & `action(n6, "is pesto available?")`: Hallucinate undocumented intermediate nodes that disrupt the direct flow from `n3`, violating the immediate chronology of "If pesto is available, retrieve it from the cupboard."
+- `converge(c1)` & precedence path `n4` → `c1`: Prematurely merges the spaghetti task into the sauce-evaluation stream and loses it before `n11`, failing to mirror "combine all the meal components," which requires both prepared items to independently complete before joining.
+- `label(n8, n9, "Stolen?")`: Relies on a descriptive edge label to denote a branching condition instead of using the prescribed `guard` construct, misrepresenting the conditional instruction "If tomato sauce is stolen, cook it."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

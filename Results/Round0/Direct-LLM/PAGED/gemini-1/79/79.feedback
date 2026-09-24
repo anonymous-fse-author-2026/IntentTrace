@@ -1,0 +1,9 @@
+- `actor(a_default, "Default", ...)`: The source explicitly states that "the customer" executes the steps, but the model assigns responsibilities to a "Default" actor.
+- `action(n1, "start the purchase process")`: Hallucinates a discrete action for the introductory phrase "To begin the process", which is not a separate step.
+- `action(n7, "End of process")` and `action(n9, "End of process")`: Hallucinates execution steps for process termination, which should only be represented by `end` nodes as per the source ("the process will end").
+- `defines(v1, "add items to cart?", {})`: The decision variable has an empty range, failing to represent the true/false or yes/no outcomes described in the source ("choose to" vs. "decide not to").
+- `branch(b1, XOR)`: The model is missing `guard` statements on the outgoing edges to `n6` and `n8` to evaluate the conditions "If they choose to 'Add Items to cart'" and "if they decide not to add items to the cart".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i7:then book a flight. (reason: The source explicitly commands booking a flight when the answer is 'yes', but the model skips this step entirely and jumps directly to code availability checks.)
+- [N2] Node-level omission: i9:the process will end. (reason: The source dictates immediate termination if a code appears within 24 hours. Because the sole candidate element (n7) was distorted by added text, this exact instruction remains unimplemented.)
+- [N3] Omitted trace (input 3): i1:To begin with -> i2:choose your destination and calculate the distance. -> i3:continue to check if you need to book a train or a flight. -> i6:However, if the answer is "yes", -> i7:then book a flight. -> i8:If a code is available within 24 hours, -> i9:the process will end.
+- [N4] Omitted trace (input 4): i1:To begin with -> i2:choose your destination and calculate the distance. -> i3:continue to check if you need to book a train or a flight. -> i6:However, if the answer is "yes", -> i7:then book a flight. -> i8:If a code is available within 24 hours, -> i10:Otherwise, if 24 hours have passed, -> i11:you should call a travel agency. -> i12:If a code is available, -> i13:the process will end along with the hotel reservation.
+- [N5] Omitted trace (input 5): i1:To begin with -> i2:choose your destination and calculate the distance. -> i3:continue to check if you need to book a train or a flight. -> i6:However, if the answer is "yes", -> i7:then book a flight. -> i8:If a code is available within 24 hours, -> i10:Otherwise, if 24 hours have passed, -> i11:you should call a travel agency. -> i14:On the other hand, if a code is not available, -> i15:you should cancel your journey. -> i16:the process will end as well.
+- [N6] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours,
+- [N7] Within matched traces (0->0) omitted: i9:the process will end.
+- [N8] Within matched traces (0->1) omitted: i5:then proceed to book a train.
+- [N9] Within matched traces (1->2) omitted: i5:then proceed to book a train.
+- [N10] Within matched traces (2->3) omitted: i5:then proceed to book a train.
+
+Addition
+- [N11] Node-level addition: action(n1,"start") (reason: The 'start' action is a generic placeholder with no corresponding instruction in the source text.)
+- [N12] Node-level addition: action(n5,"end with train booked") (reason: 'end with train booked' fabricates a premature termination point; the source text continues to code availability checks after booking a train rather than ending the process.)
+- [N13] Within matched traces (0->0) added: action(n1,"start")
+- [N14] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N15] Within matched traces (0->0) added: end(e1)
+- [N16] Within matched traces (0->1) added: action(n1,"start")
+- [N17] Within matched traces (1->2) added: action(n1,"start")
+- [N18] Within matched traces (2->3) added: action(n1,"start")
+- [N19] Within matched traces (2->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N20] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i9:the process will end.; reason=The model appends 'with hotel reservation' to a step that originally only stated process termination, incorrectly importing a condition that belongs to a later path in the source text.

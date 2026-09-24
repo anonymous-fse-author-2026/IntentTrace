@@ -1,0 +1,8 @@
+- `action(n4, "All assessments completed")`: Hallucinates a step not present in the source text; the description proceeds directly from the simultaneous checks to stating "the eligibility of the applicant is assessed."
+- `defines(v1, "Is applicant eligible", {})`: Uses an empty value range `{}`, which fails to represent the binary decision space implied by "If the applicant is eligible... If the applicant is not eligible..."
+- `branch(b1, XOR)` and its outgoing precedence edges: Lacks `guard` statements to enforce routing logic; the model does not encode the explicit conditions "If the applicant is eligible" and "If the applicant is not eligible" on the respective paths.
+- `action(n6, "Is applicant eligible")`: Introduces a redundant action node splitting the decision point; the source describes only one assessment step (already covered by `action(n5, ...)`), after which the conditional branching should occur directly.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,7 @@
+- missing precedence from `action(n10)` back to `action(n6)`/`branch(b2)`: Breaks the documented rework cycle stated as "In case the order needs to be reworked, review the Purchase Order again"; the model leaves `n10` as an unconnected dead end.
+- `action(n4, "End")` & `action(n15, "End")`: Hallucinates explicit termination task steps not present in the source description ("the process ends"), which is already correctly captured by `end(e1)` and `end(e2)`.
+- `action(n2, "Inventory level at or below the minimum?")`: Payload mischaracterizes the source step "checking the Inventory Level" as a decision query rather than the actual checking activity.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"Review Purchase Order")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n8 | DSL: action(n10,"Review Purchase Order"); action(n8,"Rework the order")

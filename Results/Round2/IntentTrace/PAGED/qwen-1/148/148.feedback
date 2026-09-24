@@ -1,0 +1,17 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n3,"take a shower (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n3,"take a shower (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N4] Added trace (model 5): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N5] Within matched traces (0->0) added: converge(c1)
+- [N6] Within matched traces (1->3) added: action(n2,"are you hungry?")
+- [N7] Within matched traces (1->3) added: converge(c1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=0 and out=1. | DSL: action(n7,"have breakfast (B)")
+- [S2] STC13 failed: Every guard must be attached to an existing precedence edge. | Guard `v2 = 'hungry'` is attached to `b2 -> n7` without a precedence edge. | DSL: guard(b2,n7,"v2 = 'hungry'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required.
+- [S4] STC19 failed: Every non-init node must be reachable from the init node. | Violations: n7 | DSL: action(n7,"have breakfast (B)")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v2=hungry].

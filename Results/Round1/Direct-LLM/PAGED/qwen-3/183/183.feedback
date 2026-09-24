@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process, begin by adding the image description and uploading the image. -> i4:If the message indicates a successful upload, the process will end.
+- [N2] Omitted trace (input 2): i1:To start the process, begin by adding the image description and uploading the image. -> i5:However, if the message indicates an unsuccessful upload, then try again. -> i6:If the option to try again is selected, the process will continue. -> i1:To start the process, begin by adding the image description and uploading the image.
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: Content 'start' adds a standalone action step not specified in the source; process initiation is already fully covered by the implicit start condition and init node.)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"start")
+- [N6] Within matched traces (0->0) added: converge(c1)
+- [N7] Within matched traces (3->1) added: init(i1)
+- [N8] Within matched traces (3->1) added: action(n1,"start")
+- [N9] Within matched traces (3->1) added: converge(c1)
+- [N10] Within matched traces (3->1) added: action(n3,"Was image upload successful?")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the message "Image upload successful" appears; reason=Guard replaces the explicit success message check with a generic boolean variable assignment (v1 = 'Yes').
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:However, if the message indicates an unsuccessful upload, then try again.; reason=Guard replaces the explicit failure message check with a generic boolean variable assignment (v1 = 'No').
+- [N13] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:If the option to try again is selected, the process will continue.; reason=Guard replaces the explicit selection check with a generic boolean variable assignment (v2 = 'Yes').
+- [N14] Node-level mutation: element=guard(b2,n6,"v2 = 'No'"); source=i7:If the option to try again is not selected, then an error will occur and the process will end.; reason=Guard replaces the explicit rejection check with a generic boolean variable assignment (v2 = 'No').

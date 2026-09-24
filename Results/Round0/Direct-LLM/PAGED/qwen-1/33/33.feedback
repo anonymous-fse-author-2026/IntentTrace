@@ -1,0 +1,8 @@
+- action(n1, "start"): Hallucinates a step not documented in the source; the text states "To begin the process, start by placing an order...", meaning `action(n2, "place an order")` should follow `init(i1)` directly.
+- action(n6, "end process"), action(n17, "end process"), action(n21, "end process"): Introduce undocumented termination steps; the source simply states "the process ends" or "ending the process" at these points, which should transition directly to `end(e1)`, `end(e2)`, and `end(e3)`.
+- precedence(b5, c2): Incorrectly routes an AND split (`b5`) to a converge node (`c2`); branch gateways must target actions to faithfully instantiate the concurrent tasks described in "Simultaneously, complete the following steps...".
+- Missing convergence before action(n15, "is payment received"): Omits required synchronization; the source mandates completing "ship the products and send the invoice while checking for payment" simultaneously before evaluating receipt, requiring a converge node to join `n12`, `n13`, and `n14` prior to the decision action.
+- precedence(b2, c1) with guard(b2, c1, v2 = 'Yes'): Misdirects a branch outcome to a converge node (`c1`) instead of an action, failing to faithfully represent the source instruction "Otherwise, continue the process" as a standard control-flow step.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | DSL: action(n15,"is payment received")

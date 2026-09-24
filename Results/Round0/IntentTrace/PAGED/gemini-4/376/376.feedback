@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i7:we will continue with the process. (reason: The explicit action to continue with the process upon login failure is missing from the model.)
+- [N2] Omitted trace (input 2): i1:To start -> i2:please provide the userdata for flickr -> i6:if the login fails -> i7:we will continue with the process. -> i8:If you want to try again -> i3:please provide the userdata for flickr. -> i9:if you choose to abort -> i5:the process will end.
+- [N3] Omitted trace (input 3): i1:To start -> i2:please provide the userdata for flickr -> i6:if the login fails -> i7:we will continue with the process. -> i8:If you want to try again -> i3:please provide the userdata for flickr. -> i10:If you still want to try again -> i3:please provide the userdata for flickr.
+- [N4] Within matched traces (1->1) omitted: i7:we will continue with the process.
+- [N5] Within matched traces (1->2) omitted: i7:we will continue with the process.
+
+Addition
+- [N6] Node-level addition: label(n2,n3,"Abort") (reason: The 'Abort' label has no support in the source text at this point in the process.)
+- [N7] Within matched traces (1->1) added: action(n3,"Is login successful")
+- [N8] Within matched traces (1->2) added: action(n3,"Is login successful")
+- [N9] Within matched traces (1->2) added: branch(b3,XOR)
+- [N10] Within matched traces (1->2) added: action(n9,"Choose to try login again after aborted retry")
+- [N11] Within matched traces (1->2) added: branch(b4,XOR)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'Abort'"); source=i6:if the login fails; reason=The source specifies 'if the login fails', but the guard incorrectly uses the condition 'Abort'.
+- [N13] Node-level mutation: element=guard(b2,n7,"v2 = 'Provide userdata'"); source=i9:if you choose to abort; reason=The source specifies 'if you choose to abort', but the guard uses the reversed condition 'Provide userdata'.
+- [N14] Node-level mutation: element=guard(b3,n9,"v3 = 'Abort'"); source=i10:If you still want to try again; reason=The source specifies 'If you still want to try again', but the guard uses the condition 'Abort'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Abort']`. | Variable `v2` has an invalid range `['Provide userdata']`. | Variable `v3` has an invalid range `['Abort']`. | Variable `v4` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Abort'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'Abort'` on `b3 -> n9` uses undefined variable `v3`. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n6 | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Abort'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'Abort'` on `b3 -> n9` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

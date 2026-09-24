@@ -1,0 +1,15 @@
+Addition
+- [N1] Node-level addition: action(n6,"end process") (reason: The model explicitly defines an alternate branch and end action if special terms are not agreed upon, but the text does not describe this negative path.)
+- [N2] Node-level addition: guard(b2,n6,"v2 = 'No'") (reason: The model explicitly defines an alternate branch and end action if special terms are not agreed upon, but the text does not describe this negative path.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start loan application process") -> action(n2,"check loan application") -> action(n3,"is application rejected") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon") -> branch(b2,XOR) -> action(n6,"end process") -> end(e2)
+- [N4] Within matched traces (1->2) added: action(n3,"is application rejected")
+- [N5] Within matched traces (1->2) added: branch(b1,XOR)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

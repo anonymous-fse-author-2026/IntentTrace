@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i13:Finally, if everything is in order (reason: This explicit pre-condition/guard before the final marking is absent. The model attempts to cover it with invented action nodes rather than a proper condition or gate.)
+
+Addition
+- [N2] Node-level addition: action(n5,"check evaluation result") (reason: "check evaluation result" is not stated in the source; the text proceeds directly to the conditional branch.)
+- [N3] Node-level addition: action(n7,"end NOK") (reason: "end NOK" is invented. The source simply states the process comes to an end without labeling it.)
+- [N4] Node-level addition: action(n9,"check installation result") (reason: "check installation result" has no corresponding source unit and duplicates functionality already covered elsewhere.)
+- [N5] Node-level addition: action(n12,"check order status") (reason: "check order status" and "verify final status" are fabricated steps that replace the simple textual condition "if everything is in order".)
+- [N6] Node-level addition: action(b3,"verify final status") (reason: "check order status" and "verify final status" are fabricated steps that replace the simple textual condition "if everything is in order".)
+- [N7] Node-level addition: action(n14,"end ok") (reason: "end ok" is invented; the source concludes with "process is completed" without this specific labeled node.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=1 and out=0. | Node `n3` has in=0 and out=0. | Node `n4` has in=0 and out=0. | Node `n5` has in=0 and out=1. | DSL: action(n2,"receive order request"); action(n3,"register order"); action(n4,"evaluate order"); action(n5,"check evaluation result")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, b3, c1, e1, e2, n10, n11, n12, n13, n14, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); action(b3,"verify final status"); converge(c1); end(e1); end(e2); action(n10,"check installation"); action(n11,"prepare billing") (+10 more)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: i1, n2, n3, n4 | DSL: init(i1); action(n2,"receive order request"); action(n3,"register order"); action(n4,"evaluate order")

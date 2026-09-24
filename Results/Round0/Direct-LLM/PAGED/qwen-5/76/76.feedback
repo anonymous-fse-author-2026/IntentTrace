@@ -1,0 +1,10 @@
+- `defines(v1, "knows sla?", {})`, `defines(v2, "urgent?", {})`: Empty value ranges `{}` do not reflect the binary decision options described in the source ("Knows SLA"/don't know, "Urgent"/"Non Urgent").
+- `precedence(b1, c1)`: Omits the documented step for the positive path; the source states if someone "Knows SLA", they should "continue the process", but the model routes directly to converge `c1`.
+- `action(n6, "continue process")`: Positioned only after the urgency split (`b2`); the source also mandates this action immediately when the user initially "Knows SLA".
+- `branch(b3, AND)`, `precedence(n7, b3)`: Hallucinates parallel execution after "look up"; the description specifies a strictly sequential progression where both initial paths lead to "enter the date".
+- `precedence(b3, c1)`, `precedence(b3, c2)`: Violates source chronology by cross-routing the "look up" outcome backward to `c1` and forward to `c2` (skipping the urgency check), contradicting "After that, they should enter the date."
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Lack `guard` definitions to explicitly bind variables `v1` and `v2` to their respective conditional outcomes, leaving the routing logic for "Knows SLA" and "Urgent" unspecified.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.

@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 0): i1:For MyCorp, the process begins -> i2:by entering expenses -> i3:After entering expenses, the next step is to generate a spreadsheet. -> i4:Once the spreadsheet is generated, the request can be approved or disapproved. -> i5:If the request is not approved, the process goes back to entering expenses. -> i2:by entering expenses
+- [N2] Omitted trace (input 1): i1:For MyCorp, the process begins -> i2:by entering expenses -> i3:After entering expenses, the next step is to generate a spreadsheet. -> i4:Once the spreadsheet is generated, the request can be approved or disapproved. -> i6:However, if the request is approved, the expenses can be paid out. -> i7:The process then checks again if the request is approved or not. -> i8:If it is not approved, the process goes back to entering expenses. -> i2:by entering expenses
+
+Addition
+- [N3] Node-level addition: action(n1,"start the expenses process for MyCorp") (reason: Invents a discrete 'start' action step. The source combines process initiation and expense entry into a single continuous phrase without separating them into distinct tasks.)
+- [N4] Node-level addition: label(n3,n4,"Not Approved") (reason: No supporting source text exists for a 'Not Approved' label on the connection between spreadsheet generation and the approval check.)
+- [N5] Node-level addition: label(n5,n7,"Not Approved") (reason: No supporting source text exists for a 'Not Approved' label connecting the payout step to the secondary approval check.)
+- [N6] Within matched traces (2->0) added: action(n1,"start the expenses process for MyCorp")
+- [N7] Within matched traces (2->0) added: converge(c2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=1 and out=0. | Node `n4` has in=0 and out=1. | DSL: action(n3,"generate spreadsheet"); action(n4,"is the request approved")
+- [S2] STC18 failed: Labels are only allowed on existing precedence edges. | Label is attached to non-existing edge `n3 -> n4`. | DSL: label(n3,n4,"Not Approved")
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, b3, c1, e1, n10, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,AND); converge(c1); end(e1); action(n10,"end the expenses process"); action(n4,"is the request approved"); action(n5,"pay out expenses") (+4 more)
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, c1, c2, i1, n1, n2, n3, n6, n9 | DSL: branch(b3,AND); converge(c1); converge(c2); init(i1); action(n1,"start the expenses process for MyCorp"); action(n2,"enter expenses"); action(n3,"generate spreadsheet"); action(n6,"enter expenses") (+1 more)

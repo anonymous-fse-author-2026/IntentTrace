@@ -1,0 +1,9 @@
+
+
+- `action(n6, "cannot capture data from FMA or Jamendo")` & `end(e1)`: Hallucinates an early termination path; the description only states "if we can capture data from FMA, we should continue the process. Otherwise, if we can capture data from Jamendo, we should continue the process", providing no instruction to end if neither succeeds.
+- `branch(b1, XOR)` through `branch(b6, XOR)`: All decision branches lack `guard` statements to bind paths to their respective conditions (e.g., "if the genre is missing", "if there are no additional genres"), leaving the control-flow logic unanchored to the source text.
+- `defines(v1, "can capture data from FMA", {})` through `defines(v6, "are there additional samples", {})`: Value ranges are declared as empty sets `{}`, whereas the source describes binary decision points that require a boolean range like `{true, false}`.
+- `branch(b7, AND)`: Declared as a parallel synchronization gateway but has only a single incoming precedence edge (`precedence(n14, b7)`); the source describes a linear sequence of conditional checks, not concurrent flow merging.
+- `action(n18, "process continues if additional samples present")`: Has no outgoing `precedence` statement, creating a dead control-flow path that contradicts the source directive to "continue the process" when additional samples exist.
+- `action(n19, "process ends if sample not missing and no additional samples")`: Merges two separate source conditions ("If the sample is missing..." and "if there are no additional samples...") into one unguarded node/edge exiting `branch(b5)`, distorting the documented chronology and conditional logic.
+- `branch(b5, XOR)`: Connects to three distinct successors (`n14`, `c3`, `n19`) without guards, violating exclusive-choice semantics and misrepresenting the source's explicit conditional progression: "If the sample is missing... On the other hand, if there are no additional samples...".

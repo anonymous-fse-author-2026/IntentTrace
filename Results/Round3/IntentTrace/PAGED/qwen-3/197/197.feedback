@@ -1,0 +1,7 @@
+Addition
+- [N1] Added trace (model 0): init(i1) -> action(n1,"start process") -> action(n2,"gather required items") -> action(n3,"inquire about availability of products") -> action(n4,"send inquiry") -> action(n5,"wait for invoice") -> action(n6,"Is invoice received?") -> branch(b1,XOR) -> converge(c1) -> action(n13,"receive invoice") -> action(n14,"make payment") -> action(n15,"transaction complete and process ends") -> end(e1)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"gather required items") -> action(n3,"inquire about availability of products") -> action(n4,"send inquiry") -> action(n5,"wait for invoice") -> action(n6,"Is invoice received?") -> branch(b1,XOR) -> action(n7,"review pricing and terms") -> action(n8,"send purchase requisition") -> branch(b4,AND) -> action(n11,"wait for shipment") -> action(n12,"Is shipment received?") -> branch(b3,XOR) -> converge(c1) -> action(n13,"receive invoice") -> action(n14,"make payment") -> action(n15,"transaction complete and process ends") -> end(e1)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b3` has in=1 and out=1. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required.

@@ -1,0 +1,12 @@
+- `action(n2, "Is loan application rejected")` and `action(n4, "Are special terms agreed upon")`: Misclassified as `action` nodes; the source describes conditional evaluations (“If the application is rejected…”, “if special terms are agreed upon…”), which should be integrated into the `branch` nodes or decision logic rather than modeled as sequential tasks (SMC2).
+- `defines(v1, "Is loan application rejected", {"Yes"})` and `defines(v2, "Are special terms agreed upon", {"No"})`: Ranges are artificially restricted to a single value, omitting the alternative option required to properly evaluate the binary choices described in the text (SMC6).
+- `action(n7, "End process without disbursal")`, `end(e3)`, `precedence(b2, n7)`, and `guard(b2, n7, v2 = 'No')`: Hallucinates a termination path not supported by the description; the source only specifies that “the process continues” when terms are agreed and “ends” after disbursal, providing no documented outcome for when terms are not agreed upon (SMC1).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n7` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,n7,"v2 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,n7,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

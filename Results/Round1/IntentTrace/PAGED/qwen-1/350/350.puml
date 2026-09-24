@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:provide userdata for flickr;
+:d1: login_status ({success, failure}); <<objectSignal>>
+if () then ([d1 = "success"])
+:end process successful login;
+stop
+else ([d1 = "failure"])
+:do you want to try again;
+:d2: next_action ({retry, abort}); <<objectSignal>>
+if () then ([d2 = "retry"])
+:provide userdata for flickr again after first failure;
+else ([d2 = "abort"])
+:abort process after first failure;
+endif
+stop
+endif
+@enduml

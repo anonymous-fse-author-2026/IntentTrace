@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i16:However, if the approval is rejected, (reason: The model lacks a decision node or split following the approval stage to handle rejection; it only models the completion path.)
+- [N2] Node-level omission: i2:an informational meeting that lasts half a day, (reason: Described as a distinct initial step with duration, but not represented as a separate action in the model.)
+- [N3] Omitted trace (input 0): i1:The process starts -> i2:an informational meeting that lasts half a day, -> i5:is not successful -> i6:the process ends.
+- [N4] Within matched traces (1->0) omitted: i2:an informational meeting that lasts half a day,
+- [N5] Within matched traces (1->0) omitted: i10:preparing the content
+- [N6] Within matched traces (2->1) omitted: i2:an informational meeting that lasts half a day,
+- [N7] Within matched traces (2->1) omitted: i10:preparing the content
+- [N8] Within matched traces (2->1) omitted: i14:approval stage, which takes half a day
+- [N9] Within matched traces (2->1) omitted: i16:However, if the approval is rejected,
+- [N10] Within matched traces (3->2) omitted: i2:an informational meeting that lasts half a day,
+- [N11] Within matched traces (3->2) omitted: i10:preparing the content
+- [N12] Within matched traces (3->2) omitted: i14:approval stage, which takes half a day
+- [N13] Within matched traces (3->2) omitted: i16:However, if the approval is rejected,
+
+Addition
+- [N14] Node-level addition: guard(b5,e1,"\"v4 = false\"") (reason: Source does not specify a path or condition for an unsuccessful storyboard; it only describes the success path.)
+- [N15] Node-level addition: guard(b2,n13,"\"v2 = false\"") (reason: Source does not define a failure path for the review stage; the rebuild path is triggered by approval rejection, not review failure.)
+- [N16] Added trace (model 3): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b5,XOR) -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n11,"Approval stage (half a day)") -> action(n12,"End Process") -> end(e2)
+- [N17] Added trace (model 4): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b5,XOR) -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N18] Added trace (model 5): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b5,XOR) -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N19] Added trace (model 6): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b5,XOR) -> end(e1)
+- [N20] Within matched traces (2->1) added: action(n14,"Is the rebuild approved?")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"End Process")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"End Process")

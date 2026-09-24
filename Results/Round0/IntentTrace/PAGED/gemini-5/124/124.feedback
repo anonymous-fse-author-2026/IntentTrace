@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i5:At the same time (reason: The text explicitly specifies parallel execution for preparing and checking availability, but no parallel (AND) branch is present.)
+- [N2] Omitted trace (input 0): i1:the first step is -> i2:look at the order -> i3:If the order is to be rejected
+- [N3] Omitted trace (input 4): i1:the first step is -> i2:look at the order -> i4:If the order is to be accepted -> i5:At the same time -> i7:checking availability -> i11:If the item can be reserved -> i12:assemble the bike -> i13:ship the product
+- [N4] Within matched traces (3->0) omitted: i5:At the same time
+- [N5] Within matched traces (3->0) omitted: i7:checking availability
+- [N6] Within matched traces (1->1) omitted: i5:At the same time
+- [N7] Within matched traces (3->2) omitted: i5:At the same time
+- [N8] Within matched traces (2->3) omitted: i5:At the same time
+- [N9] Within matched traces (2->3) omitted: i9:availability needs to be checked again
+
+Addition
+- [N10] Node-level addition: action(n11,"end") (reason: This 'end' action node acts as a redundant step on the main path without explicit source justification beyond the structural completion.)
+- [N11] Within matched traces (3->0) added: action(n3,"order rejected?")
+- [N12] Within matched traces (1->1) added: action(n3,"order rejected?")
+- [N13] Within matched traces (1->1) added: converge(c1)
+- [N14] Within matched traces (1->1) added: action(n6,"backorder?")
+- [N15] Within matched traces (1->1) added: branch(b2,XOR)
+- [N16] Within matched traces (1->1) added: action(n11,"end")
+- [N17] Within matched traces (1->1) added: end(e2)
+- [N18] Within matched traces (3->2) added: action(n3,"order rejected?")
+- [N19] Within matched traces (2->3) added: action(n3,"order rejected?")
+- [N20] Within matched traces (2->3) added: action(n9,"assemble bike")
+- [N21] Within matched traces (2->3) added: action(n10,"ship product")
+- [N22] Within matched traces (2->3) added: action(n11,"end")
+- [N23] Within matched traces (2->3) added: end(e2)
+
+Mutation
+- [N24] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i11:If the item can be reserved; reason=The condition was changed from the item being reservable to checking if there is 'No' backorder.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Accepted']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Accepted'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'Accepted'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Accepted'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Accepted'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

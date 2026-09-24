@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and missing `guard()` statements: The model lacks guard conditions for the exclusive choice. The description explicitly conditions the flow on test outcomes ("If the test results indicate that everything is functioning properly... However, if the test results indicate that there are still issues..."), which requires `guard(b1, n7, ...)` and `guard(b1, n8, ...)` declarations referencing the decision variable. (SMC4)
+- `defines(v1, "Is system functioning properly", {})`: Variable `v1` is declared with an empty value range `{}`. The source implies a binary decision state (functioning vs. still issues), so the range must concretely define allowed values (e.g., `{true, false}`) to enable path selection. (SMC6)
+- `action(n6, "Is system functioning properly")`: Misclassifies a decision/evaluation point as a procedural action. Evaluating the test results should be handled directly on `branch(b1)` using guards, rather than as a distinct sequential action node inserted between `n5` and `b1`. (SMC2/SMC4)
+- `action(n4, "Conclude hardware examination")`: Node payload does not faithfully match the source text "conclude the hardware inspection", introducing unnecessary terminological drift that conflicts with the identical concluding actions modeled later as `n7` and `n9`. (SMC2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

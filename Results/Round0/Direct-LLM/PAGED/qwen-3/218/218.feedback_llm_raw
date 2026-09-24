@@ -1,0 +1,10 @@
+
+
+- action(n1, "start the expenses process for MyCorp"): Hallucinates an initial step; the source states the process begins directly by "entering expenses".
+- action(n10, "end the expenses process"): Hallucinates a terminal step; the source indicates the process concludes immediately "after the expenses are paid out".
+- action(n6, "enter expenses") and action(n9, "enter expenses"): Redundant hallucinations; the source only defines a single "entering expenses" step that feedback loops return to.
+- branch(b1, XOR) and branch(b2, XOR): Completely lack corresponding "guard(...)" statements to specify the "approved" versus "disapproved" conditions, omitting the explicit decision logic stated as "If the request is not approved... if the request is approved".
+- defines(v1, "is the request approved", {}) and defines(v2, "is the request approved", {}): Value ranges are left empty "{}" instead of defining valid options; additionally, defining two identical variables is unnecessary for the single recurring check in the text.
+- label(n3, n4, "Not Approved") and label(n5, n7, "Not Approved"): Incorrectly attached to mandatory sequential edges instead of the conditional outgoing edges of branches b1/b2, misrepresenting the source's conditional routing ("If the request is not approved, the process goes back...").
+- branch(b3, AND) and converge(c1): Introduce unwarranted parallel concurrency and synchronization; the source describes a strictly sequential workflow with conditional loops, not concurrent branches.
+- precedence(b1, c1), precedence(c1, n6), precedence(n9, b3), and precedence(b3, n2): Misroute the feedback loops through artificial converge/branch/dummy nodes instead of directly cycling back to the original "enter expenses" node, distorting the source chronology ("goes back to entering expenses").

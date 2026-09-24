@@ -1,0 +1,9 @@
+
+
+- `action(n1, "Start client acquisition process")` and `precedence(i1, n1)` / `precedence(n1, n2)`: Hallucinates an initial step; the source explicitly states "the first step is to identify the need for a new client", establishing `n2` as the true starting activity and breaking exact chronology.
+- `action(n14, "You have completed this procedure")` and `precedence(n14, e1)`: Hallucinates a concluding confirmation step; the source terminates the process directly after the contract stage ("it can be signed, and the process comes to an end").
+- `action(n5, "Have all initial tasks been completed")` and `branch(b1, XOR)`: Misrepresents control flow by inserting a decision branch and check-action after `converge(c1)`; the source describes a direct sequential continuation ("Once these steps are done, the next step is to send an offer..."), making `b1` and `n5` structurally incorrect.
+- `action(n5, ...)` and `action(n10, "Is the client's response positive")`: Falsely encodes decision checkpoints as standard process actions, conflating activity execution with routing logic that should be handled via the DSL's `branch` and `guard` constructs.
+- `defines(v1, ...)` and `defines(v2, ...)` with `{}`: Ranges are empty despite the source implying specific decision domains (task completion status, positive/negative feedback), failing to faithfully capture the variable value spaces.
+- Missing `guard` entries for `branch(b2, XOR)`: Omits required routing conditions; the source explicitly dictates conditional paths ("If the response is positive...", "if the response is negative..."), but no guards associate these criteria with the outgoing edges to `n11` and `n12`.
+- `precedence(n12, c2)` and `precedence(c2, n14)`: Distorts the negative-path progression; the source only details termination following contract signing, implying the rejection path concludes at the analysis step rather than merging into a shared completion routine before ending.

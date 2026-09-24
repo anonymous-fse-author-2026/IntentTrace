@@ -1,0 +1,11 @@
+- `action(n1, "start")`: Hallucinates an initial step; the source begins directly with "periodic planning needs and events that impact demand."
+- `action(n2, "periodic planning needs and events")`: Incomplete payload; omits the source qualifier "that impact demand."
+- `branch(b1, XOR)`, `converge(c1)`, `guard(b1, n8, ...)`, `guard(b1, c1, ...)`: Introduces a conditional split/merge structure that contradicts the source's strictly linear chronology ("Following PIR, we address any changes... before moving on to... Finally...").
+- `action(n7, "changes to MRP elements")` & `action(n8, "address changes to MRP elements if applicable")`: Distorts the single source step "we address any changes to MRP elements" by inserting an unconditional placeholder node (n7) and wrapping the actual addressing step (n8) in an unjustified optional branch.
+- `defines(v1, "changes to MRP elements", {"Yes", "No"})`: Hallucinates a decision variable and value set; the description specifies no conditional criteria, threshold, or binary choice regarding MRP changes.
+- `action(n10, "purchase requisitions'")`: Omits two concluding deliverables explicitly stated in the source: "planned orders, and dependent requirements."
+
+Structural Check
+- [S1] STC5 failed: The model must include at least one end node. | Violations: No end node is declared.
+- [S2] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"purchase requisitions'")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | This reachability check requires at least one end node. | Violations: b1, c1, i1, n1, n10, n2, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); converge(c1); init(i1); action(n1,"start"); action(n10,"purchase requisitions'"); action(n2,"periodic planning needs and events"); action(n3,"sales and operation plan"); action(n4,"operations plan") (+5 more)

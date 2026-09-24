@@ -1,0 +1,61 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i3:If the customer exists -> i4:we move on to checking their payment history -> i7:If the payment history is good, we can continue with the process. -> i11:If the products are available, we continue with the process and send an order confirmation. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i15:If payment has been received, we close the order. -> i14:Once the order is closed, we deliver the goods and invoice to the customer.
+- [N2] Omitted trace (input 2): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i3:If the customer exists -> i4:we move on to checking their payment history -> i7:If the payment history is good, we can continue with the process. -> i11:If the products are available, we continue with the process and send an order confirmation. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i16:However, if there is an outstanding payment, we check the quantity of reminders. -> i17:If there are less than three reminders, we continue with the process. -> i14:Once the order is closed, we deliver the goods and invoice to the customer.
+- [N3] Omitted trace (input 4): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i3:If the customer exists -> i4:we move on to checking their payment history -> i7:If the payment history is good, we can continue with the process. -> i11:If the products are available, we continue with the process and send an order confirmation. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i16:However, if there is an outstanding payment, we check the quantity of reminders. -> i18:On the other hand, if there are more than three reminders, we activate the donning process, thus ending the process.
+- [N4] Omitted trace (input 9): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i5:if the customer does not exist -> i6:we need to verify their customer status -> i9:In the case of a wholesaler, we create a new customer and check for product availability. -> i12:Simultaneously, we inform the stock and accounting departments. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i15:If payment has been received, we close the order. -> i14:Once the order is closed, we deliver the goods and invoice to the customer.
+- [N5] Omitted trace (input 11): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i5:if the customer does not exist -> i6:we need to verify their customer status -> i9:In the case of a wholesaler, we create a new customer and check for product availability. -> i12:Simultaneously, we inform the stock and accounting departments. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i16:However, if there is an outstanding payment, we check the quantity of reminders. -> i17:If there are less than three reminders, we continue with the process. -> i14:Once the order is closed, we deliver the goods and invoice to the customer.
+- [N6] Omitted trace (input 13): i1:To start the process, we first prioritize orders based on when they were received. -> i2:Then, we proceed to check the customer's information. -> i5:if the customer does not exist -> i6:we need to verify their customer status -> i9:In the case of a wholesaler, we create a new customer and check for product availability. -> i12:Simultaneously, we inform the stock and accounting departments. -> i13:After packing the goods and writing the invoice, the goods are ready for delivery and the invoice is sent. -> i16:However, if there is an outstanding payment, we check the quantity of reminders. -> i18:On the other hand, if there are more than three reminders, we activate the donning process, thus ending the process.
+- [N7] Within matched traces (7->0) omitted: i6:we need to verify their customer status
+- [N8] Within matched traces (7->0) omitted: i9:In the case of a wholesaler, we create a new customer and check for product availability.
+
+Addition
+- [N9] Node-level addition: guard(b2,n6,"v2 = 'Bad'") (reason: The source never describes an outcome or action for a 'bad' payment history; this negative branch and its decline action are invented by the model.)
+- [N10] Node-level addition: action(n6,"Send customer declining message") (reason: The source never describes an outcome or action for a 'bad' payment history; this negative branch and its decline action are invented by the model.)
+- [N11] Node-level addition: action(n29,"End process after closing order") (reason: Source states 'we close the order' but does not indicate the process terminates at this point.)
+- [N12] Node-level addition: action(n30,"End process after continuing process") (reason: Source states 'we continue with the process' but does not indicate it ends here.)
+- [N13] Node-level addition: action(n31,"End process after sending declining message to private customer") (reason: Source states 'we send them a declining message' for private customers but does not indicate the process ends after this step.)
+- [N14] Within matched traces (7->0) added: action(n3,"Check customer's payment history")
+- [N15] Within matched traces (7->0) added: action(n5,"Is payment history good")
+- [N16] Within matched traces (7->0) added: branch(b2,XOR)
+- [N17] Within matched traces (7->0) added: action(n6,"Send customer declining message")
+- [N18] Within matched traces (7->0) added: converge(c1)
+- [N19] Within matched traces (1->1) added: action(n14,"Continue process and send order confirmation")
+- [N20] Within matched traces (1->1) added: action(n29,"End process after closing order")
+- [N21] Within matched traces (1->1) added: end(e3)
+- [N22] Within matched traces (3->2) added: action(n14,"Continue process and send order confirmation")
+- [N23] Within matched traces (3->2) added: action(n22,"Has payment been received")
+- [N24] Within matched traces (3->2) added: action(n30,"End process after continuing process")
+- [N25] Within matched traces (3->2) added: end(e4)
+- [N26] Within matched traces (5->3) added: action(n14,"Continue process and send order confirmation")
+- [N27] Within matched traces (5->3) added: action(n21,"Deliver goods and invoice to customer")
+- [N28] Within matched traces (5->3) added: action(n22,"Has payment been received")
+- [N29] Within matched traces (5->3) added: action(n25,"Are reminders less than three")
+- [N30] Within matched traces (6->4) added: action(n31,"End process after sending declining message to private customer")
+- [N31] Within matched traces (6->4) added: end(e5)
+- [N32] Within matched traces (7->5) added: action(n7,"Is customer a private customer")
+- [N33] Within matched traces (8->6) added: action(n7,"Is customer a private customer")
+- [N34] Within matched traces (8->6) added: action(n11,"Are products available")
+- [N35] Within matched traces (8->6) added: action(n15,"Inform stock department")
+- [N36] Within matched traces (8->6) added: action(n16,"Inform accounting department")
+- [N37] Within matched traces (8->6) added: action(n29,"End process after closing order")
+- [N38] Within matched traces (8->6) added: end(e3)
+- [N39] Within matched traces (10->7) added: action(n7,"Is customer a private customer")
+- [N40] Within matched traces (10->7) added: action(n11,"Are products available")
+- [N41] Within matched traces (10->7) added: action(n15,"Inform stock department")
+- [N42] Within matched traces (10->7) added: action(n16,"Inform accounting department")
+- [N43] Within matched traces (10->7) added: action(n22,"Has payment been received")
+- [N44] Within matched traces (10->7) added: action(n30,"End process after continuing process")
+- [N45] Within matched traces (10->7) added: end(e4)
+- [N46] Within matched traces (12->8) added: action(n7,"Is customer a private customer")
+- [N47] Within matched traces (12->8) added: action(n11,"Are products available")
+- [N48] Within matched traces (12->8) added: action(n15,"Inform stock department")
+- [N49] Within matched traces (12->8) added: action(n16,"Inform accounting department")
+- [N50] Within matched traces (12->8) added: action(n21,"Deliver goods and invoice to customer")
+- [N51] Within matched traces (12->8) added: action(n22,"Has payment been received")
+- [N52] Within matched traces (12->8) added: action(n25,"Are reminders less than three")
+
+Permutation
+- [N53] Within matched traces (1->1) reordered: expected [i14:Once the order is closed, we deliver the goods and invoice to the customer.] but observed [action(n21,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [action(n23,"Close order")]
+- [N54] Within matched traces (3->2) reordered: expected [i14:Once the order is closed, we deliver the goods and invoice to the customer.] but observed [action(n21,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [action(n26,"Continue process")]
+- [N55] Within matched traces (8->6) reordered: expected [i14:Once the order is closed, we deliver the goods and invoice to the customer.] but observed [action(n21,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [action(n23,"Close order")]
+- [N56] Within matched traces (10->7) reordered: expected [i14:Once the order is closed, we deliver the goods and invoice to the customer.] but observed [action(n21,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [action(n26,"Continue process")]

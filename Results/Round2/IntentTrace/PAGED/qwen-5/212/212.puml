@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process by receiving the contract for the marketing campaign;
+:take the contract to the department;
+:input the customer's details into NKE;
+:are the customer's details ready;
+:v1: are the customer's details ready ({missing, ready}); <<objectSignal>>
+if () then ([v1 = 'missing'])
+:contact the customers to get missing details;
+:receive additional customer details;
+-> after receiving details;
+else ([v1 = 'ready'])
+->;
+endif
+:create a suitable team;
+:check previous campaigns for reusable material;
+:v2: found reusable ideas from previous campaigns ({found, not found}); <<objectSignal>>
+if () then ([v2 = 'found'])
+:found reusable ideas from previous campaigns;
+:create a new concept;
+else ([v2 = 'not found'])
+:create a new concept;
+endif
+:integrate new ideas and add further points;
+:integrate the revised campaign into the database;
+:present the concept to the relevant party for consideration;
+:was the concept accepted;
+:v3: was the concept accepted ({declined, accepted}); <<objectSignal>>
+if () then ([v3 = 'declined'])
+:rework the concept;
+:You have completed this procedure;
+stop
+else ([v3 = 'accepted'])
+:present the concept to the customer;
+:You have completed this procedure;
+stop
+endif
+@enduml

@@ -1,0 +1,8 @@
+
+
+- `branch(b6, AND)`, `precedence(b6, n3)`, `precedence(b6, n4)`: Incorrectly forces parallel execution of contacting TS and checking the approval. The source describes these steps sequentially: "Following the approval, there is a contact with TS to clarify the timing. Once the approval is received, it is checked."
+- `action(n13, "no variations present")`, `action(n14, "variations present")`: Misrepresented as executable actions rather than decision outcomes. The source treats them as conditional states triggering different paths: "If there are no variations, the process continues. However, if there are variations, a business case is completed."
+- `branch(b3, XOR)`, `branch(b4, XOR)`, `branch(b5, XOR)`: Hallucinates additional decision points not present in the source. The text specifies a single evaluation for variations, not a multi-level branching structure leading to further splits.
+- `precedence(b4, n16)` (targeting `action(n16, "complete business case")`): Creates a dead-end control-flow path with no subsequent edges toward convergence or termination, omitting the logical continuation to process completion described in the source.
+- `defines(v1, ...)` through `defines(v5, ...)`: All decision variables are declared with an empty range `{}`, failing to reflect the actual value domains implied by the source (e.g., "internal" vs "external", presence or absence of variations).
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`, `branch(b4, XOR)`, `branch(b5, XOR)`: Lack corresponding `guard` statements to specify the boolean conditions governing each exclusive choice, leaving the routing logic undefined despite the source explicitly stating conditions like "If the resource is internal..." and "If there are variations...".

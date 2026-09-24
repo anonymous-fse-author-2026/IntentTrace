@@ -1,0 +1,34 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, the report should be reviewed. -> i5:After this, evaluate the review decision. -> i6:If the report is rejected, edit the report. If it is approved, continue to check if there is a need for translation.
+- [N2] Omitted trace (input 1): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i4:If translation is required, proceed to translate the receipts. If not, confirm the receipts. -> i5:After this, evaluate the review decision. -> i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation.
+- [N3] Omitted trace (input 2): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i4:If translation is required, proceed to translate the receipts. If not, confirm the receipts. -> i5:After this, evaluate the review decision. -> i6:If the report is rejected, edit the report. If it is approved, continue to check if there is a need for translation.
+- [N4] Omitted trace (input 3): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, the report should be reviewed. -> i5:After this, evaluate the review decision. -> i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i4:If translation is required, proceed to translate the receipts. If not, confirm the receipts. -> i8:Once again, evaluate the review decision. -> i7:If the report is rejected, edit the report.
+- [N5] Omitted trace (input 5): i1:To start the ExpenseReport process, begin by clicking on "Start" and then selecting "Edit Report". -> i2:If the expense is greater than 1000, the report should be reviewed. -> i5:After this, evaluate the review decision. -> i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation. -> i4:If translation is required, proceed to translate the receipts. If not, confirm the receipts. -> i8:Once again, evaluate the review decision. -> i9:If it is approved, translate the receipts and then confirm them. -> i10:Finally, evaluate the receipts decision. -> i12:If they are rejected, edit the report.
+- [N6] Within matched traces (4->0) omitted: i3:However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation.
+- [N7] Within matched traces (4->0) omitted: i4:If translation is required, proceed to translate the receipts. If not, confirm the receipts.
+
+Addition
+- [N8] Node-level addition: guard(b4,c1,"v4 = false") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Node-level addition: guard(b5,c1,"v5 = false") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Node-level addition: guard(b9,c1,"v9 = 'rejected'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Within matched traces (4->0) added: branch(b1,XOR)
+- [N12] Within matched traces (4->0) added: branch(b3,XOR)
+- [N13] Within matched traces (4->0) added: action(n10,"Is report approved after review")
+- [N14] Within matched traces (4->0) added: branch(b5,XOR)
+- [N15] Within matched traces (4->0) added: action(n11,"check if translation is needed")
+- [N16] Within matched traces (4->1) added: branch(b3,XOR)
+- [N17] Within matched traces (4->1) added: action(n10,"Is report approved after review")
+- [N18] Within matched traces (4->1) added: branch(b5,XOR)
+- [N19] Within matched traces (4->1) added: action(n11,"check if translation is needed")
+- [N20] Within matched traces (4->2) added: branch(b3,XOR)
+- [N21] Within matched traces (4->2) added: action(n10,"Is report approved after review")
+- [N22] Within matched traces (4->2) added: branch(b5,XOR)
+- [N23] Within matched traces (4->2) added: action(n11,"check if translation is needed")
+
+Mutation
+- [N24] Node-level mutation: element=guard(b1,n3,"v1 = true"); source=If the expense is greater than 1000; reason=The guards replace the concrete threshold value (1000) and comparison operators (> / <=) with generic boolean assignments (v1 = true / v1 = false), dropping the required source values.
+- [N25] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=if the expense is less than or equal to 1000; reason=The guards replace the concrete threshold value (1000) and comparison operators (> / <=) with generic boolean assignments (v1 = true / v1 = false), dropping the required source values.
+
+Permutation
+- [N26] Within matched traces (4->1) reordered: expected [i5:After this, evaluate the review decision.] but observed [action(n7,"evaluate review decision")] elsewhere; in its place the model has [action(n4,"Is translation needed")]
+- [N27] Within matched traces (4->2) reordered: expected [i5:After this, evaluate the review decision.] but observed [action(n7,"evaluate review decision")] elsewhere; in its place the model has [action(n4,"Is translation needed")]

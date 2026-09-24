@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:undergo immigration checks;
+:select method for exit control checks;
+split
+:use biometrics for exit control checks;
+:is permission granted after exit control checks;
+:v1: is permission granted after exit control checks ({Denied, Allowed}); <<objectSignal>>
+if () then ([v1 = 'Denied'])
+:leave the area;
+:process ends;
+stop
+else ([v1 = 'Allowed'])
+:proceed to the next step;
+:is the exit control check outcome successful;
+:v3: is the exit control check outcome successful ({Unsuccessful, Successful}); <<objectSignal>>
+if () then ([v3 = 'Unsuccessful'])
+:leave the area;
+:process ends;
+stop
+else ([v3 = 'Successful'])
+:continue process;
+:process ends;
+stop
+endif
+endif
+split again
+:use ID documents for exit control checks;
+:is permission granted after exit control checks;
+:v2: is permission granted after exit control checks ({Denied, Allowed}); <<objectSignal>>
+if () then ([v2 = 'Denied'])
+:leave the area;
+:process ends;
+stop
+else ([v2 = 'Allowed'])
+:proceed to the next step;
+:is the exit control check outcome successful;
+:v4: is the exit control check outcome successful ({Unsuccessful, Successful}); <<objectSignal>>
+if () then ([v4 = 'Unsuccessful'])
+:leave the area;
+:process ends;
+stop
+else ([v4 = 'Successful'])
+:continue process;
+:process ends;
+stop
+endif
+endif
+end split
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:The process starts with an informational meeting that lasts half a day;
+:v_meeting: Is the meeting successful? ({Yes, No}); <<objectSignal>>
+if () then ([v_meeting = "Yes"])
+:If the meeting is successful,;
+:work on the storyboard, which takes a full day;
+:If the storyboard is successful,;
+:the next steps are site design;
+split
+:site design, which takes 10 days;
+split again
+:and preparing the content.;
+:preparing the content;
+end split
+:After that,;
+:the site development takes 2 days;
+:goes through a review process that lasts 1 day.;
+:If the review is successful,;
+:moves on to the approval stage, which takes half a day.;
+:v_app: Is the approval complete? ({Yes, No}); <<objectSignal>>
+if () then ([v_app = "Yes"])
+:If the approval is complete,;
+else ([v_app = "No"])
+repeat :;
+:the site needs to be rebuilt, which takes 3 days.;
+:v_reb: Is the rebuild complete? ({Yes, No}); <<objectSignal>>
+backward:the site needs to be rebuilt again, which also takes 3 days.;
+repeat while () is ([v_reb = "No"]) not ([v_reb = "Yes"])
+:If the rebuild is complete,;
+endif
+else ([v_meeting = "No"])
+->;
+endif
+:the process ends.;
+stop
+@enduml

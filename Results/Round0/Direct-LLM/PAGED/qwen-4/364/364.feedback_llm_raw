@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)` / `precedence(b1, n5)`, `precedence(b1, n6)`, `precedence(b1, n7)`: Incorrectly enforces mutual exclusivity on steps that should be concurrent. The source explicitly states "At the same time, we complete the following steps: checking deductibles and checking the house" alongside checking income, requiring AND-parallel routing rather than XOR choice.
+- `converge(c1)`: Fails to synchronize intended parallel flows because it follows an XOR gateway that prevents simultaneous execution of `n5`, `n6`, and `n7`, breaking the logical progression to `action(n8, "make decision")`.
+- `action(n1, "start")`: Hallucinates an introductory task. The description begins directly with "we receive a form", making a separate "start" step undocumented.
+- Missing `guard` declarations for `b1` and `b2`: Omit explicit decision criteria mandated by the text ("if it needs to be sent back", "if we need to check the declaration", "if we need to invite the declarant"), leaving the branching logic underspecified and violating control-flow representation requirements.
+- `action(n4, "end process: form needs to be sent back")` & `action(n9, "end process: check declaration")`: Mischaracterize terminal conditions as executable activities. The source frames these as immediate exit triggers ("the process ends"), which should be modeled as guarded transitions directly to `end` nodes rather than intermediate action steps.

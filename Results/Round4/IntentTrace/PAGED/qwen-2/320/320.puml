@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process for EC-Lille;
+:v1: option research schedule directly selected ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:perform research schedule;
+else ([v1 = false])
+:provide indications;
+:perform research schedule;
+endif
+:validate the schedule;
+:v2: is the schedule satisfactory ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+:perform research schedule;
+:v3: is the schedule satisfactory after research ({true, false}); <<objectSignal>>
+if () then ([v3 = false])
+:provide indications;
+else ([v3 = true])
+->;
+endif
+:write ticket order to SNCF;
+else ([v2 = true])
+:write ticket order to SNCF;
+endif
+:validate the ticket order;
+:v4: is the ticket order approved ({true, false}); <<objectSignal>>
+if () then ([v4 = false])
+:end the process;
+stop
+else ([v4 = true])
+:validate the ticket order again;
+:v5: is the ticket order approved again ({true, false}); <<objectSignal>>
+if () then ([v5 = false])
+:end the process;
+stop
+else ([v5 = true])
+:validate the ticket order once more;
+:v6: is the ticket order approved once more ({true, false}); <<objectSignal>>
+if () then ([v6 = true])
+:end the process;
+stop
+else ([v6 = false])
+:end the process;
+stop
+endif
+endif
+endif
+@enduml

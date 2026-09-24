@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i7:a reminder is sent (reason: The source explicitly states that a reminder is sent after 10 days, but no corresponding action element exists in the generated model.)
+- [N2] Within matched traces (0->2) omitted: i7:a reminder is sent
+
+Addition
+- [N3] Added trace (model 0): init(i1) -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> branch(b1,XOR) -> action(n4,"Return invoice due to incompleteness") -> end(e1)
+- [N4] Added trace (model 1): init(i1) -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> branch(b1,XOR) -> action(n6,"Proceed with compliant or non-compliant check") -> branch(b2,XOR) -> action(n8,"Resolve non-compliance via phone call") -> end(e5)
+- [N5] Added trace (model 4): init(i1) -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> branch(b1,XOR) -> action(n6,"Proceed with compliant or non-compliant check") -> branch(b2,XOR) -> action(n12,"Bill Client") -> branch(b3,XOR) -> action(n11,"Pay the invoice and notify client of payment") -> branch(b4,XOR) -> action(n17,"Continue process if client is satisfied") -> end(e4)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=0 and out=0. | DSL: action(n9,"Return invoice due to mail back requirement")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e2, n9 | DSL: end(e2); action(n9,"Return invoice due to mail back requirement")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n9 | DSL: action(n9,"Return invoice due to mail back requirement")

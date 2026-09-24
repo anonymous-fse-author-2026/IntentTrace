@@ -1,0 +1,9 @@
+
+
+- `branch(b5, AND)`: Source describes an exclusive choice between methods (“If the passenger chooses to use biometrics... However, if the passenger prefers to use ID documents...”), requiring an XOR gateway, not AND.
+- `precedence(n3, b5)`, `precedence(b5, n4)`, `precedence(b5, n5)`: The AND gateway enforces concurrent execution of both check types, contradicting the source’s instruction to “select the method” (singular).
+- Missing `guard` statements for `b1`, `b2`, `b3`, `b4`: Source explicitly defines conditional branching (“if the passenger is denied permission”, “if the exit control check outcome is unsuccessful”), but the model provides no guards to encode these decision criteria.
+- `action(n6, "is permission granted after exit control checks")`, `action(n7, ...)`, `action(n12, ...)`, `action(n13, ...)`: Modeled as sequential actions rather than decision gateways, misrepresenting their function as conditional evaluation points per the source text.
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`, `defines(v4, ..., {})`: Ranges are empty `{}`, whereas the source implies discrete binary outcomes (e.g., granted/denied, successful/unsuccessful); additionally, `v1`/`v2` and `v3`/`v4` share identical names without semantic distinction.
+- Downstream flow divergence (`n4`→`n6`→`b1` vs `n5`→`n7`→`b2` and subsequent splits): The model duplicates the permission and outcome check phases into separate parallel tracks that never converge, whereas the source describes a unified sequential progression after the method-specific check (“After the exit control checks, if the passenger is denied...”).
+- `actor(a_default, "Default", [...])`: Assigns all process steps to "Default", while the source explicitly identifies "Passengers" as the responsible participants performing the actions.

@@ -1,0 +1,7 @@
+- defines(v1, "applicant wishes to discuss terms and conditions", {"Yes"}): The variable range is missing a value (e.g., "No") to represent the "Otherwise" path.
+- guard(b1, c1): The model is missing a guard condition for the outgoing edge from branch `b1` to `c1` representing the "Otherwise, continue with the process" path.
+- defines(v2, "applicant wants to modify terms and conditions", {"No"}): The variable range is missing a "Yes" value corresponding to the "If the answer is 'Yes'" path.
+- guard(b2, n5): The model is missing a guard condition for the outgoing edge from branch `b2` to `n5` representing the "If the answer is 'Yes'" path.
+- action(n6, "relay applicant changes due to exceeding client limits"): The payload hallucinates "due to exceeding client limits"; the source only specifies to "relay the applicant's changes".
+- action(n15, "select new applicant from the list"): The node is missing an outgoing `precedence` edge to continue the process (e.g., to checking if the client accepts the changes), creating an unintended dead end.
+- precedence(n14, n16): The model incorrectly connects the "continue with the process" path (when changes are acceptable) to checking if the client accepts the changes, whereas the source dictates that this check follows selecting a new applicant ("If not, select a new applicant from the list. Check if the client accepts the changes.").

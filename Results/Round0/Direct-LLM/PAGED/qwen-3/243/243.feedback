@@ -1,0 +1,8 @@
+- `action(n2, "Create Account")`: Payload omits "User" present in the source text ("User Create Account").
+- `action(n7, "Account Creation Confirmed")`: Payload mismatches the source text, which specifies that upon confirmation the process "ends with the Account Successfully Created".
+- `branch(b1, XOR)` outgoing edges: Missing `guard` definitions to enforce the documented decision conditions ("If the account is not verified...", "if the account is verified..."), leaving the split uncontrolled.
+- `defines(v1, "Verify Personal Account", {})`: The empty range `{}` does not reflect the binary verification states (verified/not verified) implied by the source description.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i5:On the other hand, if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process. (reason: No element implements this unit faithfully; the only candidate (n10) mutates the granularity and drops key qualifiers, leaving the behavioral unit effectively uncovered.)
+- [N2] Omitted trace (input 1): i1:For buyers, the process begins by choosing a book. -> i3:Alternatively, they can also view a list of used copies. -> i5:On the other hand, if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process.
+
+Addition
+- [N3] Node-level addition: action(n1,"start procedure") (reason: No source text describes a standalone 'start procedure' step; the process begins directly with choosing a book.)
+- [N4] Node-level addition: action(n3,"do you want to view book details") (reason: The source presents available options declaratively without posing an interrogative prompt like 'do you want to view book details'.)
+- [N5] Node-level addition: action(n5,"do you want to select a copy or view new copies?") (reason: The source describes the procedural option without using a question format like 'do you want to select a copy or view new copies?'.)
+- [N6] Node-level addition: action(n11,"end procedure") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start procedure") -> action(n2,"choose a book") -> action(n3,"do you want to view book details") -> branch(b2,AND) -> action(n4,"view: book details") -> action(n5,"do you want to select a copy or view new copies?") -> branch(b1,XOR) -> action(n8,"view: new copies") -> converge(c1) -> action(n10,"evaluate and select a copy from the list") -> action(n11,"end procedure") -> end(e2)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"start procedure") -> action(n2,"choose a book") -> action(n3,"do you want to view book details") -> branch(b2,AND) -> action(n9,"view: used copies") -> converge(c1) -> action(n10,"evaluate and select a copy from the list") -> action(n11,"end procedure") -> end(e2)
+- [N9] Within matched traces (0->0) added: init(i1)
+- [N10] Within matched traces (0->0) added: action(n1,"start procedure")
+- [N11] Within matched traces (0->0) added: action(n3,"do you want to view book details")
+- [N12] Within matched traces (0->0) added: branch(b2,AND)
+- [N13] Within matched traces (0->0) added: action(n5,"do you want to select a copy or view new copies?")
+
+Mutation
+- [N14] Node-level mutation: element=action(n10,"evaluate and select a copy from the list"); source=i5:On the other hand, if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process.; reason=Merges two distinct sequential steps ('evaluate the list' and 'select their preferred copy') into a single action and drops the 'preferred' qualifier, violating the required granularity and strict fidelity standard.

@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Prioritize orders based on when received;
+:Check customer information;
+:v1: Customer existence ({Exists, NotExists}); <<objectSignal>>
+if () then ([v1 = 'Exists'])
+:Check customer payment history;
+else ([v1 = 'NotExists'])
+:Verify customer status;
+:v3: Customer type ({Private, Wholesaler}); <<objectSignal>>
+if () then ([v3 = 'Private'])
+:Send declining message to private customer;
+stop
+else ([v3 = 'Wholesaler'])
+:Create new customer;
+:Check product availability;
+:v4: Product availability ({Available, Unavailable}); <<objectSignal>>
+if () then ([v4 = 'Unavailable'])
+:Produce missing goods and send decline message;
+:End process due to no products;
+stop
+else ([v4 = 'Available'])
+:Continue process and send order confirmation;
+endif
+endif
+endif
+:v_mid: Processing path ({InformStock, PackInvoice}); <<objectSignal>>
+if () then ([v_mid = 'InformStock'])
+:Inform stock and accounting departments;
+else ([v_mid = 'PackInvoice'])
+:Pack goods;
+:Write invoice;
+:Goods ready for delivery and invoice sent;
+endif
+:Deliver goods and invoice to customer;
+:v5: Payment status ({Received, Outstanding}); <<objectSignal>>
+if () then ([v5 = 'Outstanding'])
+:Check quantity of reminders;
+:v6: Reminder count ({LessThanThree, MoreThanThree}); <<objectSignal>>
+if () then ([v6 = 'LessThanThree'])
+:Continue process;
+else ([v6 = 'MoreThanThree'])
+:Activate donning process;
+:End process after activating donning process;
+stop
+endif
+else ([v5 = 'Received'])
+->;
+endif
+:Close order;
+stop
+@enduml

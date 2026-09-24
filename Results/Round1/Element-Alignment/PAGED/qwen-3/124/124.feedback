@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i7:If the item can be reserved (reason: Source explicitly conditions process continuation on successful item reservation, but no element in the model implements this required check.)
+- [N2] Within matched traces (1->1) omitted: i7:If the item can be reserved
+- [N3] Within matched traces (3->1) omitted: i7:If the item can be reserved
+
+Addition
+- [N4] Added trace (model 2): init(i1) -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> action(n8,"end") -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> end(e2)
+- [N6] Within matched traces (0->0) added: converge(c1)
+- [N7] Within matched traces (1->1) added: converge(c1)
+- [N8] Within matched traces (1->1) added: action(n6,"backorder?")
+- [N9] Within matched traces (1->1) added: branch(b2,XOR)
+- [N10] Within matched traces (2->0) added: converge(c1)
+- [N11] Within matched traces (3->1) added: converge(c1)
+- [N12] Within matched traces (3->1) added: action(n6,"backorder?")
+- [N13] Within matched traces (3->1) added: branch(b2,XOR)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n4,"v1 = 'Accepted'"); source=i3:If the order is to be accepted; reason=Source states both accepted and rejected orders continue together to the same parallel steps, but this guard routes Accepted exclusively to prepare assembling order.
+- [N15] Node-level mutation: element=guard(b1,n5,"v1 = 'Rejected'"); source=i2:If the order is to be rejected; reason=Source states both outcomes continue together, but this guard routes Rejected exclusively to check availability, distorting the intended unified flow.
+- [N16] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i5:If there is a backorder; reason=Routes to assembly on a negative backorder result, incorrectly assuming this suffices to continue, while the source requires an explicit reservation check before proceeding.

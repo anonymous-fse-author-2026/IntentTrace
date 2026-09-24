@@ -1,0 +1,58 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process for ACME;
+:begin New Resupply Cycle;
+:Check Levels of Inventory;
+:Evaluate inventory against minimum;
+:v1: Inventory Level Status ({BelowOrEqual, Above}); <<objectSignal>>
+if () then ([v1 = 'BelowOrEqual'])
+:generate Equal to or below minimum Report;
+:Evaluate report indication;
+:v2: Report Indication ({BelowOrEqual, Above}); <<objectSignal>>
+if () then ([v2 = 'Above'])
+->;
+else ([v2 = 'BelowOrEqual'])
+repeat :;
+:create Purchase Orders POs;
+:review PO;
+:v3: PO Review Outcome ({Approved, Rejected}); <<objectSignal>>
+backward:rework PO;
+repeat while () is ([v3 = 'Rejected']) not ([v3 = 'Approved'])
+:print and release PO in system;
+split
+:reserve funds for released POs;
+:verify funds reservation;
+:check if funds reserved;
+:v5: Funds Reserved? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Receive Packing Slip;
+endif
+split again
+:Mail POs to supplier;
+:prepare POs for mailing;
+:Receive Inventory;
+:Receive Packing Slip;
+end split
+:Receive Invoice;
+:verify invoice receipt;
+:check if invoice received;
+:v7: Invoice Received? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:Proceed to Three way match;
+:evaluate Three way match;
+:v9: Three-way Match Result ({Success, Failure}); <<objectSignal>>
+if () then ([v9 = 'Success'])
+:Release funds;
+:Issue payment;
+:Resupply Cycle complete;
+stop
+endif
+endif
+endif
+else ([v1 = 'Above'])
+:generate Above Minimum Report;
+endif
+@enduml

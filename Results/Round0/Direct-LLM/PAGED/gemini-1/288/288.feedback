@@ -1,0 +1,9 @@
+- actor(a_default, "Default", [...]): The actor is defined as "Default", but the source explicitly states "the review clerk" is responsible for these steps.
+- action(n1, "start the process"): This action is hallucinated; the source specifies the clerk should "start by reviewing the received application", which is already captured by n2.
+- action(n12, "end the process"): This action is hallucinated; the source phrase "the process will come to an end" refers to the process termination (represented by end(e1)), not an additional action step.
+- defines(v1, "are there any new findings", {}) and defines(v2, "are there any new findings", {}): The value ranges for these decision variables are empty `{}`, failing to capture the "yes" and "no" outcomes described in the source text.
+- branch(b1, XOR) and branch(b2, XOR): The outgoing edges from these decision branches to actions n6, n7, n9, and n10 are missing the required `guard()` conditions to represent the "yes" and "no" logic specified in the text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

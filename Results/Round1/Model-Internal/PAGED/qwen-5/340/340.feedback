@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i4:if they already have the availability information, they can proceed with the process. (reason: The sole modeling candidate (guard:b1->c2) introduces invented qualifiers, leaving this explicit continuation path unfaithfully implemented.)
+- [N2] Node-level omission: i5:the team can also continue with the process. (reason: No element faithfully captures this parallel continuation instruction; associated labels/guards drift from the source meaning.)
+- [N3] Node-level omission: i9:contract the customer (reason: The corresponding action (n9) alters the verb to 'contact', resulting in a missing implementation of the specified contracting step.)
+- [N4] Within matched traces (0->0) omitted: i7:record the customer's details
+- [N5] Within matched traces (1->0) omitted: i7:record the customer's details
+- [N6] Within matched traces (2->0) omitted: i7:record the customer's details
+
+Addition
+- [N7] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no supporting source unit, explicit instruction, or behavioral requirement in the text.)
+- [N8] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: Condition 'Order not needed proceed' is entirely invented; the source text describes no negative branch or this routing logic.)
+- [N9] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Label invents a transitional check ('Check if parts are available or need ordering') that does not appear in any source segment.)
+- [N10] Node-level addition: label(n2,n3,"Check if information needs to be elicited") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> action(n4,"check availability of the parts") -> action(n5,"do the parts need to be ordered and received from Disuki?") -> branch(b2,XOR) -> action(n7,"receive part from Disuki") -> action(n8,"record customer details") -> converge(c1) -> action(n9,"contact the customer") -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N13] Within matched traces (0->0) added: init(i1)
+- [N14] Within matched traces (1->0) added: init(i1)
+- [N15] Within matched traces (1->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N16] Within matched traces (1->0) added: action(n4,"check availability of the parts")
+- [N17] Within matched traces (2->0) added: init(i1)
+- [N18] Within matched traces (2->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N19] Within matched traces (2->0) added: action(n4,"check availability of the parts")
+
+Mutation
+- [N20] Node-level mutation: element=action(n9,"contact the customer"); source=i9:contract the customer; reason=Model uses 'contact' instead of 'contract', fundamentally changing the action's meaning and business intent.
+- [N21] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer; reason=Guard condition states 'Need to check availability' rather than the source's 'needs to elicit information', altering the decision criterion.
+- [N22] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information, they can proceed with the process. -> i5:the team can also continue with the process.; reason=Guard invents the extra qualifier 'or after contacting customer', distorting the straightforward 'proceed/continue' logic intended by the source.
+- [N23] Node-level mutation: element=guard(b2,n7,"v2 = 'Order and receive the part'"); source=i8:order and receive the part from Disuki.; reason=Guard drops the required vendor qualifier 'from Disuki', losing a key constraint from the source.
+- [N24] Node-level mutation: element=label(n6,c1,"Contact the customer or after receiving parts") -> label(n8,c1,"Contact the customer or after receiving parts"); source=i9:contract the customer; reason=Labels incorrectly substitute 'contact' for 'contract' and append ungrounded conditional phrasing, mutating the referenced step.
+- [N25] Node-level mutation: element=label(n9,c2,"Proceed with process or after contacting customer"); source=i4:if they already have the availability information, they can proceed with the process. -> i5:the team can also continue with the process.; reason=Label inherits the 'contact' mutation and adds fabricated routing logic, failing to faithfully represent the continuation paths.

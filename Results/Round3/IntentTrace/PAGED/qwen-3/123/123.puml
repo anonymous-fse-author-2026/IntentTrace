@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Obtain raw material from received list;
+:Start Metal Works Process;
+:Is raw material available in stock?;
+:v1: Is raw material available in stock? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "Yes"])
+:Check raw material;
+:v1: Is raw material available in stock? ({Yes, No}); <<objectSignal>>
+fork
+if () then ([v1 = "Yes"])
+:Conclude process with available stock;
+endif
+fork again
+if () then ([v1 = "Yes"])
+stop
+endif
+end fork
+else ([v1 = "No"])
+:Select supplier;
+:Send material purchase order;
+:Check raw material after PO;
+:Conclude process with purchased stock;
+:End;
+endif
+stop
+@enduml

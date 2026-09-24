@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:Construct Error Response (reason: This unit describes a specific item/step that is entirely missing from the model; no element implements this content.)
+- [N2] Node-level omission: i7:Otherwise, if there is a "Retrieve Customer Information" (reason: Recorded as a mutation because the model drops the conditional qualifier and uses invented guard logic; thus, it is not faithfully implemented.)
+- [N3] Node-level omission: i9:Otherwise, if there is a "Calculate threshold amount" (reason: Recorded as a mutation because it was modeled as an unconditional action coupled with an invented guard, leaving the original logic unfulfilled.)
+- [N4] Node-level omission: i10:If there is a "Check Creditworthiness" (reason: Recorded as a mutation because it was modeled as an unconditional action, leaving the source unit's conditional logic unfulfilled.)
+- [N5] Node-level omission: i15:Otherwise, if there is a "Construct Reject Response" (reason: Recorded as a mutation because the model uses an invented variable logic instead of faithfully implementing the source condition.)
+- [N6] Within matched traces (0->0) omitted: i5:Construct Error Response
+- [N7] Within matched traces (1->1) omitted: i5:Construct Error Response
+
+Addition
+- [N8] Node-level addition: guard(b2,n8,"v2 = 'Yes'") (reason: This guard relies on invented logic ('v2 = Yes') and leads to a path that lacks conditional justification in the provided segmented source text.)
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i4:If there is a "Construct Error Response"; reason=The guard invents arbitrary variable logic ('v1 = Yes') instead of preserving the source condition text.
+- [N10] Node-level mutation: element=action(n6,"Retrieve Customer Information") -> guard(b1,n6,"v1 = 'No'"); source=i7:Otherwise, if there is a "Retrieve Customer Information"; reason=The model distorts the conditional phrase by splitting it into an invented guard ('v1 = No') and an unconditional action step, dropping the conditional structure.
+- [N11] Node-level mutation: element=action(n9,"Calculate threshold amount") -> guard(b2,n9,"v2 = 'No'"); source=i9:Otherwise, if there is a "Calculate threshold amount"; reason=The model distorts the conditional phrase by splitting it into an invented guard ('v2 = No') and an unconditional action step, leaving the source logic unfulfilled.
+- [N12] Node-level mutation: element=action(n10,"Check Creditworthiness"); source=i10:If there is a "Check Creditworthiness"; reason=The element is modeled strictly as an unconditional action step, completely dropping the 'If there is a' conditional qualifier.
+- [N13] Node-level mutation: element=guard(b4,n14,"v4 = 'Yes'"); source=i13:If there is a "Construct Approve Response"; reason=The guard invents arbitrary logic ('v4 = Yes') instead of using the conditional source text.
+- [N14] Node-level mutation: element=guard(b4,n16,"v4 = 'No'"); source=i15:Otherwise, if there is a "Construct Reject Response"; reason=The guard invents arbitrary logic ('v4 = No') instead of preserving the source condition.
+
+Permutation
+- [N15] Within matched traces (1->1) reordered: expected [i4:If there is a "Construct Error Response"] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n7,"Check fulfillment of loan conditions")]

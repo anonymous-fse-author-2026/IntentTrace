@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start the process")`: Omits the explicit scheduling constraint stated in the source: "start the process at 8:00 am". (SMC2)
+- `action(n13, "every wednesday evening: take books to miranda")`: Payload is incomplete relative to the source text: "take the letter book and member register to Miranda". (SMC2)
+- `action(n14, "applicant becomes member")` & `action(n23, "applicant cannot become member")`: Incorrectly modeled as executable task steps rather than decision outcomes; the source presents these as conditional branches ("If the applicant becomes a member... If the applicant cannot become a member..."). (SMC2, SMC4)
+- `branch(b5, XOR)` & `branch(b6, XOR)`: Declared as exclusive-choice gateways but each possesses only a single outgoing precedence edge (`n15` and `n24` respectively), violating XOR control-flow semantics which require at least two mutually exclusive paths. (SMC4)
+- `guard(b5, n15, v5 = 'Yes')`: Attached to a branch with only one outgoing path, rendering the guard logically inert and failing to route or evaluate the rejection scenario. (SMC4, SMC5)
+- `defines(v4, ..., {})`, `defines(v5, ..., {"Yes"})`, `defines(v6, ..., {})`: Contain empty or incomplete value ranges, failing to define valid evaluation spaces for their respective conditions. (SMC6)
+- `actor(a_default, "Default", [...])`: Assigns every process node to a single generic actor, completely ignoring explicit participant responsibilities for "Miranda" (receiving books) and "Charles" (handling letters, updating registers) detailed in the description. (SMC7)

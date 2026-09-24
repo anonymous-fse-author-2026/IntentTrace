@@ -1,0 +1,6 @@
+
+
+- `defines(v2, "Is claim rejection accepted", {"No"})`: Incomplete value range; the source specifies two outcomes ("accepted" and "not accepted"), but the definition only lists `{"No"}` (SMC6).
+- `branch(b2, XOR)` / `guard(b2, n8, v2 = 'No')`: Missing control-flow edge and guard for the "accepted" outcome; the source states `"If the claim rejection is accepted, continue the process. But if the claim rejection is not accepted, also continue the process,"` requiring coverage for both branches (SMC4).
+- `precedence(n5, n9)`: Omits documented step; the source explicitly states `"if the claim is to be accepted, offer the benefit"` before discharge preparation, but the model jumps directly from `action(n5)` to `action(n9)` (SMC1).
+- `action(n11, "Merge after benefit recording and rejection continue")` & `action(n14, "End")`: Hallucinated actions absent from the source text; flow convergence is already modeled by `converge(c1)`/`c2` and process termination by `end(e1)` (SMC1/SMC2).

@@ -1,0 +1,8 @@
+
+
+- `branch(b3, AND)` and `precedence(n5, b3)`: Introduces an incorrect concurrent split after shipping, whereas the source specifies a strictly sequential flow: "Once the P.O. is submitted, proceed to Ship Material. At this point, check if the shipment is okay."
+- `action(n12, ...)` and `precedence(b3, n12)`: Hallucinates a parallel communication step that becomes a dead-end; the source only directs communication after problem detection during inspection: "if there are any problems with the shipment, communicate them accordingly."
+- Missing `precedence` from `action(n8, ...)` or `action(n11, ...)` back to `action(n5, ...)`: Omits the required feedback loop explicitly stated in the source: "In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material."
+- Absence of `guard(...)` statements for `branch(b1, ...)` and `branch(b2, ...)`: Fails to encode the boolean routing conditions necessary for the XOR choices, ignoring the source directives: "If it is, then proceed to Send Payment. However, if there are any problems..."
+- `defines(v1, ..., {})` and `defines(v2, ..., {})`: Declares empty value ranges `{}` instead of capturing the expected decision outcomes (e.g., {true, false} or {okay, problem}) required to evaluate the shipment checks.
+- `action(n6, ...)` and `action(n9, ...)`: Models conditional verification steps as standard procedural actions preceding detached branch nodes, rather than representing them as decision points with attached conditions, misaligning with the source: "check if the shipment is okay... After checking the shipment status again..."

@@ -1,0 +1,9 @@
+- `action(n1, "Start P&E Court Process")`: The source states "To begin the process for the P&E Court, start by Listing", making "Listing" the first step rather than a separate start action that precedes it.
+- `action(n5, "Consider all P&E Judges when checking Availability")`: The source specifies to consider all judges "When checking the P&E Judge Availability", meaning it is a detail of the checking step (`n4`), not a distinct action that happens after it.
+- `action(n6, "Are there any issues with the P&E Judge Availability?")`: Hallucinated as a standalone action; the source text does not describe this as a step, only stating "Once the availability is checked, Resolve any issues...".
+- `branch(b1, XOR)`: The exclusive choice branch lacks mandatory `guard` definitions for its outgoing paths to `n7` and `c1`.
+- `defines(v1, "Are there any issues with the P&E Judge Availability?", {})`: The decision variable is defined with an empty range `{}`, failing to provide a valid value space for the decision.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

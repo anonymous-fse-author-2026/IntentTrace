@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Bill for Purchased Goods/Services;
+:Receive Invoice;
+:v1: Is Invoice Complete? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Return Invoice: Incomplete;
+else ([v1 = 'Yes'])
+:Check Invoice Compliance;
+:v2: Resolution Method ({Compliant, Phone, Mail}); <<objectSignal>>
+switch ()
+case ([v2 = 'Phone'])
+:Resolve Non-Compliance via Phone;
+:Pay Invoice and Resolve Non-Compliance;
+:Bill Client;
+:v3: Client Response ({No Response, Response}); <<objectSignal>>
+if () then ([v3 = 'No Response'])
+:Wait for 10 Days;
+:Send Reminder;
+else ([v3 = 'Response'])
+:Pay Invoice and Notify Client;
+:v4: Client Satisfaction ({Unsatisfied, Satisfied}); <<objectSignal>>
+if () then ([v4 = 'Unsatisfied'])
+:Resolve Payment Discrepancy;
+stop
+else ([v4 = 'Satisfied'])
+:Process Continues;
+stop
+endif
+endif
+case ([v2 = 'Mail'])
+:Return Invoice via Mail;
+case ([v2 = 'Compliant'])
+endswitch
+endif
+stop
+@enduml

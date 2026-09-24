@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i3:Once you have paid for the products and have enough to eat, the process comes to an end. (reason: The prerequisite condition 'have enough to eat' is entirely missing from the model's flow and guards.)
+- [N2] Node-level omission: i2:If you choose to take a salad, then you can continue with the process. Similarly, if you opt for sausages or meat, you can also continue with the process. (reason: The alternative option to 'opt for sausages or meat' is not faithfully implemented; the only related model elements incorrectly replace 'opt for' with invented purchasing steps.)
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: Invents a standalone 'start' step. The source uses 'start' merely as a verbal lead-in to 'feeling hungry', not as a distinct process stage.)
+- [N4] Node-level addition: action(n5,"purchase salad") (reason: Invents explicit 'purchase' actions for salad, sausages, and meat. The source only mentions choosing or opting for these items and contains no description of a purchasing transaction.)
+- [N5] Node-level addition: action(n6,"purchase sausages") (reason: Invents explicit 'purchase' actions for salad, sausages, and meat. The source only mentions choosing or opting for these items and contains no description of a purchasing transaction.)
+- [N6] Node-level addition: action(n7,"purchase meat") (reason: Invents explicit 'purchase' actions for salad, sausages, and meat. The source only mentions choosing or opting for these items and contains no description of a purchasing transaction.)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> action(n6,"purchase sausages") -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> action(n7,"purchase meat") -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N9] Within matched traces (0->0) added: init(i1)
+- [N10] Within matched traces (0->0) added: action(n1,"start")
+- [N11] Within matched traces (0->0) added: action(n5,"purchase salad")
+- [N12] Within matched traces (0->0) added: converge(c1)
+
+Mutation
+- [N13] Node-level mutation: element=branch(b1,AND); source=i2:If you choose to take a salad, then you can continue with the process. Similarly, if you opt for sausages or meat, you can also continue with the process.; reason=The gateway is configured as AND, requiring all branches to execute concurrently. The source presents these as alternative scenarios (salad versus sausages/meat) that each independently permit continuation, implying an OR/XOR logic.

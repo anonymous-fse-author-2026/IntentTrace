@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:begin the process for ACME Company;
+:receive the customer request;
+:check the current inventory level;
+:v1: check inventory level ({at_or_below, above}); <<objectSignal>>
+if () then ([v1 = 'at_or_below'])
+:accept the customer request;
+:create a purchase order;
+:review the purchase order;
+:v2: review purchase order ({approved, rejected}); <<objectSignal>>
+if () then ([v2 = 'rejected'])
+:rework the purchase order;
+:review the purchase order again;
+else ([v2 = 'approved'])
+:reserve the funds;
+:send the purchase order;
+split
+:receive the packing slip;
+:record the packing slip;
+split again
+:receive the invoice;
+:record the invoice;
+end split
+:release the reserved funds and issue the payment;
+:end the process;
+stop
+endif
+else ([v1 = 'above'])
+:reject the customer request;
+stop
+endif
+@enduml

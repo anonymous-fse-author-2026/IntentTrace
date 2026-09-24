@@ -1,0 +1,23 @@
+Addition
+- [N1] Node-level addition: action(n1,"start process") (reason: The content 'start process' has no supporting source text; the process explicitly begins with 'look at the order' which is already mapped to init:i1 and action:n2.)
+- [N2] Node-level addition: action(n11,"end") (reason: The content 'end' has no supporting source text; the process naturally terminates after shipping the product, making this action element unjustified.)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> action(n8,"end") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> action(n11,"end") -> end(e2)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start process")
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (1->1) added: init(i1)
+- [N9] Within matched traces (1->1) added: action(n1,"start process")
+- [N10] Within matched traces (1->1) added: converge(c1)
+- [N11] Within matched traces (1->1) added: action(n6,"backorder?")
+- [N12] Within matched traces (1->1) added: action(n11,"end")
+- [N13] Within matched traces (1->1) added: end(e2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Accepted']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Accepted'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'Accepted'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Accepted'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Accepted'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

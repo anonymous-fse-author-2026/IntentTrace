@@ -1,0 +1,8 @@
+
+
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Missing `guard` statements to enforce the source conditions “inventory level is at or below the minimum” and “purchase status is rejected”, leaving edge routing semantically undefined. (SMC4)
+- `action(n10, "is purchase status rejected after rework")`, `branch(b3, XOR)`, `action(n11, "rework the purchase order again")`, `action(n12, "review the purchase order after rework")`: Hallucinated steps absent from the source, which only prescribes “Rework the purchase order and then review it.” (SMC1, SMC2)
+- `precedence(n12, c2)`, `precedence(b2, c2)`, `precedence(c2, n13)`: Unconditionally merges the rework/review path into the approval path, forcing execution to `action(n13, "reserve the funds")` and skipping the required re-evaluation of purchase status implied by the source loop. (SMC4, SMC5)
+- `branch(b3, XOR)`: Structurally degenerate; precedences `b3 → c1` and `n11 → c1` guarantee all tokens reach `c1`, so the gateway never functions as an actual choice point. (SMC4)
+- `defines(v1, "is inventory level at or below minimum", {})`, `defines(v2, "is purchase status rejected", {})`, `defines(v3, "is purchase status rejected after rework", {})`: Value ranges are empty `{}`, failing to reflect the source’s implied binary domains (e.g., `{true, false}` or `{Yes, No}`). (SMC6)
+- `actor(a_default, "Default", [i1, n1, …, e3, c1, c2, b4])`: Assigns every single process element to one generic actor, inventing a flat responsibility structure not documented in the source. (SMC7)

@@ -1,0 +1,45 @@
+Omission
+- [N1] Node-level omission: i2:Rental Items are Returned to the Store. (reason: No element faithfully implements this specific initial step. The only candidate (action:n2) mutates it by conflating it with subsequent conditional paths, leaving the standalone return instruction uncovered.)
+- [N2] Omitted trace (input 0): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i6:If the "Order is complete and all items were returned," -> i7:"Order is complete and all items were returned," then we proceed with the process. -> i23:If the "Items are packed for an existing order," -> i17:Finally, when the process is complete, it ends.
+- [N3] Omitted trace (input 3): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i8:"Order is incomplete and items are missing," -> i9:"Order is incomplete and items are missing," we still continue the process. -> i13:In case of missing items and replacement charges, we email the customer to inform them. -> i16:"Customer does not return the missing items," we still continue the process. -> i17:Finally, when the process is complete, it ends.
+- [N4] Omitted trace (input 4): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i10:"Order is complete but items are damaged," -> i11:"Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i14:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i18:If the "Items are repaired and added into inventory," -> i19:If the "Items are repaired and added into inventory," we continue the process. -> i22:Lastly, the items are packed for an existing order. -> i23:If the "Items are packed for an existing order," -> i17:Finally, when the process is complete, it ends.
+- [N5] Omitted trace (input 6): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i10:"Order is complete but items are damaged," -> i11:"Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i14:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i20:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i21:"Items can't be repaired and are discarded," -> i22:Lastly, the items are packed for an existing order. -> i23:If the "Items are packed for an existing order," -> i25:The customer is then emailed with replacement charges, and the process is complete.
+- [N6] Omitted trace (input 7): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i3:If the "Customer returns the items to the store," -> i5:During this step, the items are counted and compared to the original contract. -> i10:"Order is complete but items are damaged," -> i11:"Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i14:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i20:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i21:"Items can't be repaired and are discarded," -> i22:Lastly, the items are packed for an existing order. -> i24:If the "Items are stored for future orders," -> i25:The customer is then emailed with replacement charges, and the process is complete.
+- [N7] Within matched traces (1->0) omitted: i2:Rental Items are Returned to the Store.
+- [N8] Within matched traces (1->0) omitted: i17:Finally, when the process is complete, it ends.
+- [N9] Within matched traces (2->1) omitted: i2:Rental Items are Returned to the Store.
+- [N10] Within matched traces (5->2) omitted: i2:Rental Items are Returned to the Store.
+- [N11] Within matched traces (5->2) omitted: i17:Finally, when the process is complete, it ends.
+- [N12] Within matched traces (5->3) omitted: i2:Rental Items are Returned to the Store.
+- [N13] Within matched traces (5->3) omitted: i17:Finally, when the process is complete, it ends.
+
+Addition
+- [N14] Node-level addition: action(n4,"Order status after count") (reason: Generic placeholders 'Order status after count' and 'Items disposition for returned items' invent intermediate steps that have no corresponding directive, data, or granularity in the source text.)
+- [N15] Node-level addition: action(n5,"Items disposition for returned items") (reason: Generic placeholders 'Order status after count' and 'Items disposition for returned items' invent intermediate steps that have no corresponding directive, data, or granularity in the source text.)
+- [N16] Node-level addition: action(n11,"Can damaged items be repaired") (reason: Placeholders 'Can damaged items be repaired' and 'Items disposition after repair' lack any supporting source unit. The source uses declarative conditionals rather than interrogative or generic disposition steps.)
+- [N17] Node-level addition: action(n14,"Items disposition after repair") (reason: Placeholders 'Can damaged items be repaired' and 'Items disposition after repair' lack any supporting source unit. The source uses declarative conditionals rather than interrogative or generic disposition steps.)
+- [N18] Node-level addition: action(n2,"Items returned by customer or picked up by delivery crew") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N19] Within matched traces (1->0) added: action(n2,"Items returned by customer or picked up by delivery crew")
+- [N20] Within matched traces (1->0) added: action(n4,"Order status after count")
+- [N21] Within matched traces (2->1) added: action(n2,"Items returned by customer or picked up by delivery crew")
+- [N22] Within matched traces (2->1) added: action(n4,"Order status after count")
+- [N23] Within matched traces (5->2) added: action(n2,"Items returned by customer or picked up by delivery crew")
+- [N24] Within matched traces (5->2) added: action(n4,"Order status after count")
+- [N25] Within matched traces (5->2) added: action(n11,"Can damaged items be repaired")
+- [N26] Within matched traces (5->2) added: converge(c1)
+- [N27] Within matched traces (5->2) added: action(n14,"Items disposition after repair")
+- [N28] Within matched traces (5->3) added: action(n2,"Items returned by customer or picked up by delivery crew")
+- [N29] Within matched traces (5->3) added: action(n4,"Order status after count")
+- [N30] Within matched traces (5->3) added: action(n11,"Can damaged items be repaired")
+- [N31] Within matched traces (5->3) added: converge(c1)
+- [N32] Within matched traces (5->3) added: action(n14,"Items disposition after repair")
+
+Permutation
+- [N33] Within matched traces (5->2) reordered: expected [i19:If the "Items are repaired and added into inventory," we continue the process.] but observed [branch(b5,XOR)] elsewhere; in its place the model has [action(n12,"Repair items and add to inventory")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | Node `n16` has in=2 and out=1. | Node `n3` has in=2 and out=1. | Node `n8` has in=2 and out=1. | DSL: action(n15,"End process"); action(n16,"End process"); action(n3,"Count and compare items to contract"); action(n8,"End process")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 2 guards; exactly one is required. | XOR/OR edge `b4 -> n8` has 2 guards; exactly one is required. | XOR/OR edge `b4 -> n8` has 2 guards; exactly one is required. | XOR/OR edge `b6 -> n16` has 2 guards; exactly one is required. | XOR/OR edge `b6 -> n16` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Delivery crew picks up items at event site]. | XOR branch `b3` has overlapping guards at state [v3=Stored for future orders]. | XOR branch `b4` has overlapping guards at state [v4=Customer does not return missing items]. | XOR branch `b6` has overlapping guards at state [v6=Stored for future orders].

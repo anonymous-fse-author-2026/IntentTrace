@@ -1,0 +1,282 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start with Insurance emergency"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "analyze the insurance agreement"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "offer immediate help"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "send out an offer for emergency help"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "ask for a rejection notification"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "proceed with internal accounting"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "conclude the process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "coverage",
+      "R_X": [
+        "yes",
+        "no"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "offer status",
+      "R_X": [
+        "rejected",
+        "accepted"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "repeat steps",
+      "R_X": [
+        "yes",
+        "no"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "c1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "b2",
+        "n7",
+        "n8",
+        "c2",
+        "b3",
+        "n12",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"yes\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"no\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = \"rejected\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = \"accepted\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "c1",
+      "condition": "v3 = \"yes\""
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n12",
+      "condition": "v3 = \"no\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start with Insurance \"emergency\""
+    },
+    {
+      "id": "i2",
+      "content": "analyze the insurance agreement"
+    },
+    {
+      "id": "i3",
+      "content": "If there is coverage,"
+    },
+    {
+      "id": "i4",
+      "content": "offer immediate help"
+    },
+    {
+      "id": "i5",
+      "content": "If there is no coverage,"
+    },
+    {
+      "id": "i6",
+      "content": "send out an offer for emergency help"
+    },
+    {
+      "id": "i7",
+      "content": "If the offer is rejected,"
+    },
+    {
+      "id": "i8",
+      "content": "ask for a rejection notification"
+    },
+    {
+      "id": "i9",
+      "content": "If it is accepted,"
+    },
+    {
+      "id": "i10",
+      "content": "proceed with internal accounting"
+    },
+    {
+      "id": "i11",
+      "content": "The process concludes once all steps have been completed."
+    }
+  ]
+}

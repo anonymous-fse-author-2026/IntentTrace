@@ -1,0 +1,81 @@
+Root Cause Analysis
+
+Root Cause 1: Decision points in the model lack properly defined variable domains and corresponding guard conditions on their outgoing transitions.
+- Includes:
+    - [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+    - [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> c5` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> c6` has 0 guards; exactly one is required.
+
+Root Cause 2: The continuation workflow is improperly wired, leaving the Continue Process node and its upstream converge as dead ends that prevent reaching termination states and cause the step to be dropped from matched traces.
+- Includes:
+    - [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Continue Process")
+    - [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: c5, n17 | DSL: converge(c5); action(n17,"Continue Process")
+    - [N1] Within matched traces (1->2) omitted: i10:continue the process
+    - [N2] Within matched traces (2->4) omitted: i10:continue the process
+    - [N3] Within matched traces (3->6) omitted: i10:continue the process
+    - [N4] Within matched traces (4->7) omitted: i10:continue the process
+    - [N5] Within matched traces (5->7) omitted: i10:continue the process
+    - [N6] Within matched traces (6->8) omitted: i10:continue the process
+    - [N7] Within matched traces (7->10) omitted: i10:continue the process
+    - [N8] Within matched traces (8->12) omitted: i10:continue the process
+    - [N9] Within matched traces (9->13) omitted: i10:continue the process
+    - [N10] Within matched traces (10->13) omitted: i10:continue the process
+
+Root Cause 3: Extraction artifacts introduced extraneous AND branches, converges, and duplicate action nodes throughout the fulfillment and payment phases, generating numerous execution paths that contradict the source description.
+- Includes:
+    - [N11] Added trace (model 1): init(i1) -> action(n1,"Start Process") -> action(n2,"Check Customer Eligibility") -> branch(b1,XOR) -> action(n3,"Inform Ineligible Customer") -> branch(b5,AND) -> converge(c6) -> action(n18,"Inform Lawyer") -> end(e3)
+    - [N12] Added trace (model 3): init(i1) -> action(n1,"Start Process") -> action(n2,"Check Customer Eligibility") -> branch(b1,XOR) -> action(n5,"Open New Order in ERP System") -> action(n6,"Perform Availability Check") -> branch(b2,XOR) -> action(n7,"Start Producing Missing Parts") -> action(n8,"Prepare Products for Shipment") -> branch(b6,AND) -> converge(c1) -> action(n10,"Ship Products") -> converge(c4) -> action(n13,"Check Payment Status") -> branch(b3,XOR) -> action(n15,"Send Payment Reminder") -> action(n16,"Check Number of Reminders") -> branch(b4,XOR) -> converge(c6) -> action(n18,"Inform Lawyer") -> end(e3)
+    - [N13] Added trace (model 5): init(i1) -> action(n1,"Start Process") -> action(n2,"Check Customer Eligibility") -> branch(b1,XOR) -> action(n5,"Open New Order in ERP System") -> action(n6,"Perform Availability Check") -> branch(b2,XOR) -> action(n7,"Start Producing Missing Parts") -> action(n8,"Prepare Products for Shipment") -> branch(b6,AND) -> converge(c2) -> action(n11,"Send Invoice") -> converge(c4) -> action(n13,"Check Payment Status") -> branch(b3,XOR) -> action(n15,"Send Payment Reminder") -> action(n16,"Check Number of Reminders") -> branch(b4,XOR) -> converge(c6) -> action(n18,"Inform Lawyer") -> end(e3)
+    - [N14] Added trace (model 9): init(i1) -> action(n1,"Start Process") -> action(n2,"Check Customer Eligibility") -> branch(b1,XOR) -> action(n5,"Open New Order in ERP System") -> action(n6,"Perform Availability Check") -> branch(b2,XOR) -> action(n9,"Prepare Products for Shipment") -> branch(b7,AND) -> converge(c1) -> action(n10,"Ship Products") -> converge(c4) -> action(n13,"Check Payment Status") -> branch(b3,XOR) -> action(n15,"Send Payment Reminder") -> action(n16,"Check Number of Reminders") -> branch(b4,XOR) -> converge(c6) -> action(n18,"Inform Lawyer") -> end(e3)
+    - [N15] Added trace (model 11): init(i1) -> action(n1,"Start Process") -> action(n2,"Check Customer Eligibility") -> branch(b1,XOR) -> action(n5,"Open New Order in ERP System") -> action(n6,"Perform Availability Check") -> branch(b2,XOR) -> action(n9,"Prepare Products for Shipment") -> branch(b7,AND) -> converge(c2) -> action(n11,"Send Invoice") -> converge(c4) -> action(n13,"Check Payment Status") -> branch(b3,XOR) -> action(n15,"Send Payment Reminder") -> action(n16,"Check Number of Reminders") -> branch(b4,XOR) -> converge(c6) -> action(n18,"Inform Lawyer") -> end(e3)
+    - [N16] Within matched traces (1->2) added: branch(b6,AND)
+    - [N17] Within matched traces (1->2) added: converge(c1)
+    - [N18] Within matched traces (1->2) added: converge(c4)
+    - [N19] Within matched traces (1->2) added: action(n13,"Check Payment Status")
+    - [N20] Within matched traces (1->2) added: branch(b3,XOR)
+    - [N21] Within matched traces (1->2) added: action(n14,"Close Order - Payment Received")
+    - [N22] Within matched traces (1->2) added: end(e2)
+    - [N23] Within matched traces (2->4) added: branch(b6,AND)
+    - [N24] Within matched traces (2->4) added: converge(c2)
+    - [N25] Within matched traces (2->4) added: converge(c4)
+    - [N26] Within matched traces (2->4) added: action(n13,"Check Payment Status")
+    - [N27] Within matched traces (2->4) added: branch(b3,XOR)
+    - [N28] Within matched traces (2->4) added: action(n14,"Close Order - Payment Received")
+    - [N29] Within matched traces (2->4) added: end(e2)
+    - [N30] Within matched traces (3->6) added: branch(b6,AND)
+    - [N31] Within matched traces (3->6) added: converge(c3)
+    - [N32] Within matched traces (4->7) added: branch(b6,AND)
+    - [N33] Within matched traces (4->7) added: converge(c3)
+    - [N34] Within matched traces (4->7) added: branch(b4,XOR)
+    - [N35] Within matched traces (4->7) added: converge(c6)
+    - [N36] Within matched traces (5->7) added: branch(b6,AND)
+    - [N37] Within matched traces (5->7) added: converge(c3)
+    - [N38] Within matched traces (5->7) added: branch(b4,XOR)
+    - [N39] Within matched traces (5->7) added: converge(c6)
+    - [N40] Within matched traces (5->7) added: action(n18,"Inform Lawyer")
+    - [N41] Within matched traces (5->7) added: end(e3)
+    - [N42] Within matched traces (6->8) added: branch(b7,AND)
+    - [N43] Within matched traces (6->8) added: converge(c1)
+    - [N44] Within matched traces (6->8) added: converge(c4)
+    - [N45] Within matched traces (6->8) added: action(n13,"Check Payment Status")
+    - [N46] Within matched traces (6->8) added: branch(b3,XOR)
+    - [N47] Within matched traces (6->8) added: action(n14,"Close Order - Payment Received")
+    - [N48] Within matched traces (6->8) added: end(e2)
+    - [N49] Within matched traces (7->10) added: branch(b7,AND)
+    - [N50] Within matched traces (7->10) added: converge(c2)
+    - [N51] Within matched traces (7->10) added: converge(c4)
+    - [N52] Within matched traces (7->10) added: action(n13,"Check Payment Status")
+    - [N53] Within matched traces (7->10) added: branch(b3,XOR)
+    - [N54] Within matched traces (7->10) added: action(n14,"Close Order - Payment Received")
+    - [N55] Within matched traces (7->10) added: end(e2)
+    - [N56] Within matched traces (8->12) added: branch(b7,AND)
+    - [N57] Within matched traces (8->12) added: converge(c3)
+    - [N58] Within matched traces (9->13) added: branch(b7,AND)
+    - [N59] Within matched traces (9->13) added: converge(c3)
+    - [N60] Within matched traces (9->13) added: branch(b4,XOR)
+    - [N61] Within matched traces (9->13) added: converge(c6)
+    - [N62] Within matched traces (10->13) added: branch(b7,AND)
+    - [N63] Within matched traces (10->13) added: converge(c3)
+    - [N64] Within matched traces (10->13) added: branch(b4,XOR)
+    - [N65] Within matched traces (10->13) added: converge(c6)
+    - [N66] Within matched traces (10->13) added: action(n18,"Inform Lawyer")
+    - [N67] Within matched traces (10->13) added: end(e3)

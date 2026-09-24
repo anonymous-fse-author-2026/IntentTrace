@@ -1,0 +1,87 @@
+Omission
+- [N1] Within matched traces (0->3) omitted: i5:it is returned
+- [N2] Within matched traces (0->3) omitted: i15:if it is returned
+- [N3] Within matched traces (1->4) omitted: i5:it is returned
+- [N4] Within matched traces (1->4) omitted: i15:if it is returned
+- [N5] Within matched traces (1->4) omitted: i20:the client is notified of the payment
+- [N6] Within matched traces (2->5) omitted: i5:it is returned
+- [N7] Within matched traces (2->5) omitted: i15:if it is returned
+- [N8] Within matched traces (2->5) omitted: i20:the client is notified of the payment
+- [N9] Within matched traces (4->4) omitted: i20:the client is notified of the payment
+- [N10] Within matched traces (5->5) omitted: i20:the client is notified of the payment
+- [N11] Within matched traces (6->3) omitted: i13:the invoice is returned
+- [N12] Within matched traces (6->3) omitted: i15:if it is returned
+- [N13] Within matched traces (7->4) omitted: i13:the invoice is returned
+- [N14] Within matched traces (7->4) omitted: i15:if it is returned
+- [N15] Within matched traces (7->4) omitted: i20:the client is notified of the payment
+- [N16] Within matched traces (8->5) omitted: i13:the invoice is returned
+- [N17] Within matched traces (8->5) omitted: i15:if it is returned
+- [N18] Within matched traces (8->5) omitted: i20:the client is notified of the payment
+- [N19] Within matched traces (10->10) omitted: i20:the client is notified of the payment
+- [N20] Within matched traces (11->11) omitted: i20:the client is notified of the payment
+
+Addition
+- [N21] Node-level addition: action(n6,"End Process") (reason: No text supports explicitly ending the process immediately after returning the incomplete invoice.)
+- [N22] Node-level addition: action(n12,"End Process") (reason: No text supports ending the process explicitly after returning the invoice for a mail-back issue.)
+- [N23] Node-level addition: action(n17,"End Process") (reason: No text supports ending the process right after notifying the client of the payment.)
+- [N24] Node-level addition: action(n25,"End Process") (reason: No text supports ending the process immediately after resolving a payment discrepancy.)
+- [N25] Node-level addition: guard(b4,c2,"v4 = 'No'") (reason: There is no explicit text condition mentioning the opposite of returning the invoice ('v4 = No').)
+- [N26] Node-level addition: guard(b5,n23,"v5 = 'Yes'") (reason: There is no explicit text condition for receiving a response ('v5 = Yes').)
+- [N27] Node-level addition: label(n10,c1,"Yes") (reason: These labels have no supporting text establishing them.)
+- [N28] Node-level addition: label(n15,c2,"Non compliance resolved") (reason: These labels have no supporting text establishing them.)
+- [N29] Added trace (model 0): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n5,"Return Invoice") -> action(n6,"End Process") -> end(e1)
+- [N30] Added trace (model 1): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Conduct Further Checks") -> action(n9,"Issue Can Be Resolved With Phone Call?") -> branch(b3,XOR) -> action(n10,"Resolve Non-Compliance") -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> action(n15,"Resolve Non-Compliance") -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> end(e3)
+- [N31] Added trace (model 2): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Conduct Further Checks") -> action(n9,"Issue Can Be Resolved With Phone Call?") -> branch(b3,XOR) -> action(n10,"Resolve Non-Compliance") -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> end(e3)
+- [N32] Added trace (model 6): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Conduct Further Checks") -> action(n9,"Issue Can Be Resolved With Phone Call?") -> branch(b3,XOR) -> action(n11,"Return Invoice") -> action(n12,"End Process") -> end(e2)
+- [N33] Added trace (model 7): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> action(n15,"Resolve Non-Compliance") -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> end(e3)
+- [N34] Added trace (model 8): init(i1) -> action(n1,"Start Process") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> end(e3)
+- [N35] Within matched traces (0->3) added: action(n7,"Invoice Compliant?")
+- [N36] Within matched traces (0->3) added: branch(b2,XOR)
+- [N37] Within matched traces (0->3) added: action(n8,"Conduct Further Checks")
+- [N38] Within matched traces (0->3) added: action(n9,"Issue Can Be Resolved With Phone Call?")
+- [N39] Within matched traces (0->3) added: branch(b3,XOR)
+- [N40] Within matched traces (1->4) added: action(n7,"Invoice Compliant?")
+- [N41] Within matched traces (1->4) added: branch(b2,XOR)
+- [N42] Within matched traces (1->4) added: action(n8,"Conduct Further Checks")
+- [N43] Within matched traces (1->4) added: action(n9,"Issue Can Be Resolved With Phone Call?")
+- [N44] Within matched traces (1->4) added: branch(b3,XOR)
+- [N45] Within matched traces (1->4) added: action(n18,"Bill Client")
+- [N46] Within matched traces (1->4) added: action(n19,"Client Responded?")
+- [N47] Within matched traces (1->4) added: branch(b5,XOR)
+- [N48] Within matched traces (1->4) added: action(n25,"End Process")
+- [N49] Within matched traces (1->4) added: end(e5)
+- [N50] Within matched traces (2->5) added: action(n7,"Invoice Compliant?")
+- [N51] Within matched traces (2->5) added: branch(b2,XOR)
+- [N52] Within matched traces (2->5) added: action(n8,"Conduct Further Checks")
+- [N53] Within matched traces (2->5) added: action(n9,"Issue Can Be Resolved With Phone Call?")
+- [N54] Within matched traces (2->5) added: branch(b3,XOR)
+- [N55] Within matched traces (2->5) added: action(n18,"Bill Client")
+- [N56] Within matched traces (2->5) added: action(n19,"Client Responded?")
+- [N57] Within matched traces (2->5) added: branch(b5,XOR)
+- [N58] Within matched traces (4->4) added: action(n18,"Bill Client")
+- [N59] Within matched traces (4->4) added: action(n19,"Client Responded?")
+- [N60] Within matched traces (4->4) added: branch(b5,XOR)
+- [N61] Within matched traces (4->4) added: action(n25,"End Process")
+- [N62] Within matched traces (4->4) added: end(e5)
+- [N63] Within matched traces (5->5) added: action(n18,"Bill Client")
+- [N64] Within matched traces (5->5) added: action(n19,"Client Responded?")
+- [N65] Within matched traces (5->5) added: branch(b5,XOR)
+- [N66] Within matched traces (7->4) added: action(n18,"Bill Client")
+- [N67] Within matched traces (7->4) added: action(n19,"Client Responded?")
+- [N68] Within matched traces (7->4) added: branch(b5,XOR)
+- [N69] Within matched traces (7->4) added: action(n25,"End Process")
+- [N70] Within matched traces (7->4) added: end(e5)
+- [N71] Within matched traces (8->5) added: action(n18,"Bill Client")
+- [N72] Within matched traces (8->5) added: action(n19,"Client Responded?")
+- [N73] Within matched traces (8->5) added: branch(b5,XOR)
+- [N74] Within matched traces (10->10) added: action(n18,"Bill Client")
+- [N75] Within matched traces (10->10) added: action(n19,"Client Responded?")
+- [N76] Within matched traces (10->10) added: branch(b5,XOR)
+- [N77] Within matched traces (10->10) added: action(n25,"End Process")
+- [N78] Within matched traces (10->10) added: end(e5)
+- [N79] Within matched traces (11->11) added: action(n18,"Bill Client")
+- [N80] Within matched traces (11->11) added: action(n19,"Client Responded?")
+- [N81] Within matched traces (11->11) added: branch(b5,XOR)
+
+Mutation
+- [N82] Node-level mutation: element=action(n26,"End Process"); source=i25:However, if the client is satisfied, the process continues.; reason=The text explicitly says 'the process continues', but the model uses an action stating 'End Process'.

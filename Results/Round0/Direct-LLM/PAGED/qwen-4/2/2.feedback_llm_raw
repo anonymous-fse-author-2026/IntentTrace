@@ -1,0 +1,8 @@
+
+
+- precedence(n7, n9) / precedence(n8, c1) / action(n9, "send Appointment Approval form"): The source states the form is sent after the voluntary redundancy check regardless of outcome, but `n9` is only reachable on the `v2='Yes'` path; the `v2='No'` path (`n8 -> c1`) omits this documented action.
+- guard(b8, c4, v8 = 'No') / precedence(c4, n28): The source explicitly states "If the candidate declines, the process continues," but the model routes declines directly to `c4` -> `n28` ("contact next candidate on shortlist"), hallucinating a premature jump to the next candidate that contradicts the source.
+- guard(b9, n38, v9 = 'No') / action(n38, "end TS recruitment"): The source indicates that if the rate is not 40%, "the process continues," whereas the model terminates execution at `n38`/`e4` when `v9 = 'No'`.
+- guard(b8, n32, v8 = 'Yes') / guard(b8, n33, v8 = 'Yes'): The source specifies the commencement pack and letter are sent "simultaneously" [with the offer workflow], not conditionally upon verbal offer acceptance. Gating `n32` and `n33` exclusively behind `v8 = 'Yes'` incorrectly restricts their execution scope.
+- guard(b4, n15, v4 = 'No') / action(n15, "end TS recruitment"): The source only describes progression when the form is approved and provides no instruction for unapproved forms. Routing `v4 = 'No'` to `n15`/`e3` introduces an unsupported terminal path.
+- actor(a_default, "Default", [i1, n1, ... c5]): The source distributes responsibilities across distinct participants (Recruitment Manager, Next Level Manager/Approver, Client HR, TS HR Coordinator, HR Representative, Candidate), but the model assigns every node to a single "Default" actor, failing to reflect the documented role assignments (SMC7).

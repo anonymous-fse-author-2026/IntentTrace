@@ -1,0 +1,127 @@
+Omission
+- [N1] Node-level omission: i27:check the quantity of reminders. (reason: The model implements the evaluation of the condition but omits the explicit action step to perform the check.)
+- [N2] Omitted trace (input 4): i1:To start the process, we first prioritize orders based on when they were received. -> i2:proceed to check the customer's information. -> i3:If the customer exists -> i4:checking their payment history. -> i7:If the payment history is good -> i8:continue with the process. -> i12:check for product availability. -> i17:send an order confirmation. -> i18:Simultaneously -> i19:inform the stock -> i21:packing the goods and writing the invoice -> i22:the goods are ready for delivery and the invoice is sent. -> i23:deliver the goods and invoice to the customer. -> i26:if there is an outstanding payment -> i27:check the quantity of reminders. -> i29:if there are more than three reminders -> i30:activate the donning process
+- [N3] Omitted trace (input 7): i1:To start the process, we first prioritize orders based on when they were received. -> i2:proceed to check the customer's information. -> i3:If the customer exists -> i4:checking their payment history. -> i7:If the payment history is good -> i8:continue with the process. -> i12:check for product availability. -> i17:send an order confirmation. -> i18:Simultaneously -> i20:and accounting departments. -> i21:packing the goods and writing the invoice -> i22:the goods are ready for delivery and the invoice is sent. -> i23:deliver the goods and invoice to the customer. -> i26:if there is an outstanding payment -> i27:check the quantity of reminders. -> i29:if there are more than three reminders -> i30:activate the donning process
+- [N4] Omitted trace (input 11): i1:To start the process, we first prioritize orders based on when they were received. -> i2:proceed to check the customer's information. -> i5:if the customer does not exist -> i6:verify their customer status. -> i11:In the case of a wholesaler, we create a new customer -> i12:check for product availability. -> i17:send an order confirmation. -> i18:Simultaneously -> i19:inform the stock -> i21:packing the goods and writing the invoice -> i22:the goods are ready for delivery and the invoice is sent. -> i23:deliver the goods and invoice to the customer. -> i26:if there is an outstanding payment -> i27:check the quantity of reminders. -> i29:if there are more than three reminders -> i30:activate the donning process
+- [N5] Omitted trace (input 14): i1:To start the process, we first prioritize orders based on when they were received. -> i2:proceed to check the customer's information. -> i5:if the customer does not exist -> i6:verify their customer status. -> i11:In the case of a wholesaler, we create a new customer -> i12:check for product availability. -> i17:send an order confirmation. -> i18:Simultaneously -> i20:and accounting departments. -> i21:packing the goods and writing the invoice -> i22:the goods are ready for delivery and the invoice is sent. -> i23:deliver the goods and invoice to the customer. -> i26:if there is an outstanding payment -> i27:check the quantity of reminders. -> i29:if there are more than three reminders -> i30:activate the donning process
+- [N6] Within matched traces (1->0) omitted: i8:continue with the process.
+- [N7] Within matched traces (1->0) omitted: i12:check for product availability.
+- [N8] Within matched traces (1->0) omitted: i13:If the products are not available
+- [N9] Within matched traces (1->0) omitted: i14:produce the missing goods
+- [N10] Within matched traces (1->0) omitted: i15:send a decline message
+- [N11] Within matched traces (1->0) omitted: i16:thus ending the process.
+- [N12] Within matched traces (2->1) omitted: i12:check for product availability.
+- [N13] Within matched traces (3->2) omitted: i12:check for product availability.
+- [N14] Within matched traces (3->2) omitted: i23:deliver the goods and invoice to the customer.
+- [N15] Within matched traces (3->2) omitted: i27:check the quantity of reminders.
+- [N16] Within matched traces (5->3) omitted: i12:check for product availability.
+- [N17] Within matched traces (6->4) omitted: i12:check for product availability.
+- [N18] Within matched traces (6->4) omitted: i23:deliver the goods and invoice to the customer.
+- [N19] Within matched traces (6->4) omitted: i27:check the quantity of reminders.
+- [N20] Within matched traces (10->8) omitted: i23:deliver the goods and invoice to the customer.
+- [N21] Within matched traces (10->8) omitted: i27:check the quantity of reminders.
+- [N22] Within matched traces (13->10) omitted: i23:deliver the goods and invoice to the customer.
+- [N23] Within matched traces (13->10) omitted: i27:check the quantity of reminders.
+
+Addition
+- [N24] Node-level addition: action(n1,"Start process") (reason: The model extracts the introductory announcer 'To start the process' as a distinct action step, which has no corresponding active behavior in the source.)
+- [N25] Node-level addition: guard(b2,n8,"v2 = 'No'") (reason: These elements model a negative path for bad payment history (sending a decline message and ending), which lacks any source support.)
+- [N26] Node-level addition: action(n8,"Send decline message") (reason: These elements model a negative path for bad payment history (sending a decline message and ending), which lacks any source support.)
+- [N27] Node-level addition: action(n9,"End") (reason: These elements model a negative path for bad payment history (sending a decline message and ending), which lacks any source support.)
+- [N28] Node-level addition: guard(b4,c1,"v4 = 'Yes'") (reason: There is no input segment provided for the positive condition (products being available).)
+- [N29] Node-level addition: action(n12,"End") (reason: These elements mandate explicitly ending the process at points where the provided input segments do not contain any text supporting termination.)
+- [N30] Node-level addition: action(n27,"End") (reason: These elements mandate explicitly ending the process at points where the provided input segments do not contain any text supporting termination.)
+- [N31] Node-level addition: action(n31,"End") (reason: These elements mandate explicitly ending the process at points where the provided input segments do not contain any text supporting termination.)
+- [N32] Node-level addition: action(n29,"Continue with process") (reason: The model features an action to 'Continue with process' but there is no corresponding segmented input text covering it.)
+- [N33] Within matched traces (1->0) added: init(i1)
+- [N34] Within matched traces (1->0) added: action(n1,"Start process")
+- [N35] Within matched traces (1->0) added: action(n8,"Send decline message")
+- [N36] Within matched traces (1->0) added: action(n9,"End")
+- [N37] Within matched traces (1->0) added: end(e1)
+- [N38] Within matched traces (2->1) added: init(i1)
+- [N39] Within matched traces (2->1) added: action(n1,"Start process")
+- [N40] Within matched traces (2->1) added: converge(c3)
+- [N41] Within matched traces (2->1) added: action(n27,"End")
+- [N42] Within matched traces (2->1) added: end(e4)
+- [N43] Within matched traces (3->2) added: init(i1)
+- [N44] Within matched traces (3->2) added: action(n1,"Start process")
+- [N45] Within matched traces (3->2) added: converge(c3)
+- [N46] Within matched traces (3->2) added: action(n24,"Payment received?")
+- [N47] Within matched traces (3->2) added: action(n30,"Activate donning process")
+- [N48] Within matched traces (3->2) added: action(n31,"End")
+- [N49] Within matched traces (3->2) added: end(e5)
+- [N50] Within matched traces (5->3) added: init(i1)
+- [N51] Within matched traces (5->3) added: action(n1,"Start process")
+- [N52] Within matched traces (5->3) added: converge(c3)
+- [N53] Within matched traces (5->3) added: action(n27,"End")
+- [N54] Within matched traces (5->3) added: end(e4)
+- [N55] Within matched traces (6->4) added: init(i1)
+- [N56] Within matched traces (6->4) added: action(n1,"Start process")
+- [N57] Within matched traces (6->4) added: converge(c3)
+- [N58] Within matched traces (6->4) added: action(n24,"Payment received?")
+- [N59] Within matched traces (6->4) added: action(n30,"Activate donning process")
+- [N60] Within matched traces (6->4) added: action(n31,"End")
+- [N61] Within matched traces (6->4) added: end(e5)
+- [N62] Within matched traces (0->5) added: init(i1)
+- [N63] Within matched traces (0->5) added: action(n1,"Start process")
+- [N64] Within matched traces (0->5) added: action(n4,"Does customer exist?")
+- [N65] Within matched traces (0->5) added: action(n12,"End")
+- [N66] Within matched traces (0->5) added: end(e2)
+- [N67] Within matched traces (8->6) added: init(i1)
+- [N68] Within matched traces (8->6) added: action(n1,"Start process")
+- [N69] Within matched traces (8->6) added: action(n4,"Does customer exist?")
+- [N70] Within matched traces (8->6) added: action(n10,"Is customer a private customer?")
+- [N71] Within matched traces (9->7) added: init(i1)
+- [N72] Within matched traces (9->7) added: action(n1,"Start process")
+- [N73] Within matched traces (9->7) added: action(n4,"Does customer exist?")
+- [N74] Within matched traces (9->7) added: action(n10,"Is customer a private customer?")
+- [N75] Within matched traces (9->7) added: action(n15,"Are products available?")
+- [N76] Within matched traces (9->7) added: branch(b4,XOR)
+- [N77] Within matched traces (9->7) added: converge(c1)
+- [N78] Within matched traces (9->7) added: converge(c3)
+- [N79] Within matched traces (9->7) added: action(n27,"End")
+- [N80] Within matched traces (9->7) added: end(e4)
+- [N81] Within matched traces (10->8) added: init(i1)
+- [N82] Within matched traces (10->8) added: action(n1,"Start process")
+- [N83] Within matched traces (10->8) added: action(n4,"Does customer exist?")
+- [N84] Within matched traces (10->8) added: action(n10,"Is customer a private customer?")
+- [N85] Within matched traces (10->8) added: action(n15,"Are products available?")
+- [N86] Within matched traces (10->8) added: branch(b4,XOR)
+- [N87] Within matched traces (10->8) added: converge(c1)
+- [N88] Within matched traces (10->8) added: converge(c3)
+- [N89] Within matched traces (10->8) added: action(n24,"Payment received?")
+- [N90] Within matched traces (10->8) added: action(n30,"Activate donning process")
+- [N91] Within matched traces (10->8) added: action(n31,"End")
+- [N92] Within matched traces (10->8) added: end(e5)
+- [N93] Within matched traces (12->9) added: init(i1)
+- [N94] Within matched traces (12->9) added: action(n1,"Start process")
+- [N95] Within matched traces (12->9) added: action(n4,"Does customer exist?")
+- [N96] Within matched traces (12->9) added: action(n10,"Is customer a private customer?")
+- [N97] Within matched traces (12->9) added: action(n15,"Are products available?")
+- [N98] Within matched traces (12->9) added: branch(b4,XOR)
+- [N99] Within matched traces (12->9) added: converge(c1)
+- [N100] Within matched traces (12->9) added: converge(c3)
+- [N101] Within matched traces (12->9) added: action(n27,"End")
+- [N102] Within matched traces (12->9) added: end(e4)
+- [N103] Within matched traces (13->10) added: init(i1)
+- [N104] Within matched traces (13->10) added: action(n1,"Start process")
+- [N105] Within matched traces (13->10) added: action(n4,"Does customer exist?")
+- [N106] Within matched traces (13->10) added: action(n10,"Is customer a private customer?")
+- [N107] Within matched traces (13->10) added: action(n15,"Are products available?")
+- [N108] Within matched traces (13->10) added: branch(b4,XOR)
+- [N109] Within matched traces (13->10) added: converge(c1)
+- [N110] Within matched traces (13->10) added: converge(c3)
+- [N111] Within matched traces (13->10) added: action(n24,"Payment received?")
+- [N112] Within matched traces (13->10) added: action(n30,"Activate donning process")
+- [N113] Within matched traces (13->10) added: action(n31,"End")
+- [N114] Within matched traces (13->10) added: end(e5)
+
+Mutation
+- [N115] Node-level mutation: element=guard(b3,n13,"v3 = 'No'"); source=i11:In the case of a wholesaler, we create a new customer; reason=The model uses 'v3 = No' (meaning simply 'not a private customer') which mutates the specific condition that the customer must strictly be a 'wholesaler'.
+- [N116] Node-level mutation: element=guard(b6,n30,"v6 = 'No'"); source=i29:if there are more than three reminders; reason=The model's 'v6 = No' to '< 3' mathematically includes exactly 3, whereas the text explicitly states strictly 'more than three'.
+
+Permutation
+- [N117] Within matched traces (2->1) reordered: expected [i23:deliver the goods and invoice to the customer.] but observed [action(n26,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [branch(b5,XOR)]
+- [N118] Within matched traces (5->3) reordered: expected [i23:deliver the goods and invoice to the customer.] but observed [action(n26,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [branch(b5,XOR)]
+- [N119] Within matched traces (9->7) reordered: expected [i23:deliver the goods and invoice to the customer.] but observed [action(n26,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [branch(b5,XOR)]
+- [N120] Within matched traces (12->9) reordered: expected [i23:deliver the goods and invoice to the customer.] but observed [action(n26,"Deliver goods and invoice to customer")] elsewhere; in its place the model has [branch(b5,XOR)]

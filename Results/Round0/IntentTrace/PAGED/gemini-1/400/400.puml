@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+-> No;
+:Is the answer No at the beginning?;
+:v1: Is the answer No at the beginning? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Is the answer No second time?;
+:v2: Is the answer No second time? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Continue process after first No answer;
+else ([v2 = 'No'])
+:Continue process after second No answer;
+endif
+:Give it priority after first No answers;
+:Look up the Vendor on SAP;
+:Is Vendor found on SAP?;
+:v6: Is Vendor found on SAP? ({No, Yes}); <<objectSignal>>
+if () then ([v6 = 'No'])
+:Need a Vendor master record;
+:End process due to missing Vendor master record;
+stop
+else ([v6 = 'Yes'])
+:Enter the invoice in SAP;
+:Is invoice entry confirmed?;
+:v7: Is invoice entry confirmed? ({No, Yes}); <<objectSignal>>
+if () then ([v7 = 'No'])
+:Need a Vendor master record;
+:End process due to missing Vendor master record;
+stop
+else ([v7 = 'Yes'])
+:Give it priority after invoice entry;
+:Is answer Yes again?;
+:v8: Is answer Yes again? ({Yes}); <<objectSignal>>
+if () then ([v8 = 'Yes'])
+:Enter the invoice in SAP again;
+:Place entered invoices in normal Outbox;
+:End process after placing invoices in Outbox;
+stop
+endif
+endif
+endif
+else ([v1 = 'Yes'])
+:Give it priority;
+:Look up the Vendor on SAP;
+:Is Vendor found on SAP?;
+:v3: Is Vendor found on SAP? ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:Need a Vendor master record;
+:End process due to missing Vendor master record;
+stop
+else ([v3 = 'Yes'])
+:Enter the invoice in SAP;
+:Is the invoice entry confirmed?;
+:v4: Is the invoice entry confirmed? ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:Need a Vendor master record;
+:End process due to missing Vendor master record;
+stop
+else ([v4 = 'Yes'])
+:Give it priority after invoice entry;
+-> Yes;
+:Is the answer Yes again after priority?;
+:v5: Is the answer Yes again after priority? ({Yes}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Enter the invoice in SAP again;
+:Place entered invoices in normal Outbox;
+:End process after placing invoices in Outbox;
+stop
+endif
+endif
+endif
+endif
+@enduml

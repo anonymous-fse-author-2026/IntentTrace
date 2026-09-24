@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i6:If it has been 5 days (reason: A explicit timing condition for invoicing that is completely missing from the model. No guard or action represents this 5-day threshold, changing the conditions under which the customer is invoiced.)
+- [N2] Within matched traces (0->2) omitted: i6:If it has been 5 days
+
+Addition
+- [N3] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n11,"accept the merchandise return") -> action(n12,"return the merchandise") -> action(n13,"end with merchandise being returned") -> end(e2)
+- [N4] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n14,"reject the merchandise return") -> action(n15,"end with merchandise return request being rejected") -> end(e3)
+- [N5] Added trace (model 6): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n8,"invoice the customer") -> action(n9,"end with customer being invoiced") -> end(e1)
+- [N6] Added trace (model 7): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n17,"approve the loss claim") -> action(n18,"end with loss claim approved") -> end(e4)
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v_loss_claim=True, v_return_status=accepted].

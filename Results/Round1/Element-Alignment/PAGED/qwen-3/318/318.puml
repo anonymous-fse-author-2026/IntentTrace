@@ -1,0 +1,88 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive the order;
+split
+:check the order;
+:is order okay;
+:v1: is order okay ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:send refusal;
+:end process;
+stop
+else ([v1 = 'Yes'])
+->;
+endif
+split again
+:check the customer;
+end split
+:is customer permitted;
+:v2: is customer permitted ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:send refusal;
+:end process;
+stop
+else ([v2 = 'Yes'])
+:release the order;
+:transfer the data in the database;
+:is worth greater than 10000 Euro;
+:v3: is worth greater than 10000 Euro ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:sign off on the order;
+else ([v3 = 'No'])
+:continue with the process;
+endif
+:sign off on the order and forward it to production;
+split
+:check the product quality;
+split again
+:start production;
+split again
+:produce the product;
+split again
+:create a material report;
+split
+:send material report to the warehouse;
+:end process;
+stop
+split again
+:create a quality report;
+:send quality report to Finance;
+:archive the report;
+:end process;
+stop
+split again
+:send the product to shipment;
+:ship the product and send the invoice;
+:check the payment;
+:is payment received;
+:v4: is payment received ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:close the order;
+:end process;
+stop
+else ([v4 = 'No'])
+:is reminder sent more than three times;
+:v5: is reminder sent more than three times ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:acquire a lawyer;
+:complete the court proceedings;
+:end process;
+stop
+else ([v5 = 'No'])
+:send a reminder;
+:send a reminder;
+:end process;
+stop
+endif
+endif
+split again
+:send the order to accounting;
+:end process;
+stop
+end split
+end split
+endif
+@enduml

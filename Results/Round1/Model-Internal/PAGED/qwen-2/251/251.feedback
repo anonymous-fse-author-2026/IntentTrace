@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i3:Similarly, if you opt for sausages or meat, you can also continue with the process. (reason: No action element models the 'opt for sausages or meat' step. The branching structure exists but the explicit choice action is absent, leaving this unit unimplemented.)
+- [N2] Node-level omission: i4:Once you have paid for the products and have enough to eat, the process comes to an end. (reason: The prerequisite condition 'and have enough to eat' is completely missing from the model flow prior to termination.)
+
+Addition
+- [N3] Node-level addition: action(n5,"purchase salad") (reason: Invented purchase steps. The source only specifies choosing/opting for items and a single subsequent general payment, with no mention of purchasing each product individually.)
+- [N4] Node-level addition: action(n6,"purchase sausages") (reason: Invented purchase steps. The source only specifies choosing/opting for items and a single subsequent general payment, with no mention of purchasing each product individually.)
+- [N5] Node-level addition: action(n7,"purchase meat") (reason: Invented purchase steps. The source only specifies choosing/opting for items and a single subsequent general payment, with no mention of purchasing each product individually.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> action(n6,"purchase sausages") -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> action(n4,"choose salad") -> branch(b1,AND) -> action(n7,"purchase meat") -> converge(c1) -> action(n8,"pay for products") -> action(n9,"end process") -> end(e1)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n5,"purchase salad")
+- [N10] Within matched traces (1->0) added: init(i1)
+- [N11] Within matched traces (1->0) added: action(n4,"choose salad")
+- [N12] Within matched traces (1->0) added: action(n5,"purchase salad")
+
+Mutation
+- [N13] Node-level mutation: element=branch(b1,AND); source=i2:If you choose to take a salad, then you can continue with the process. -> i3:Similarly, if you opt for sausages or meat, you can also continue with the process.; reason=Gateway is incorrectly set to AND (parallel execution). The source describes mutually exclusive alternatives ('If... Similarly if...'), which fundamentally requires XOR or OR logic, changing the control flow.

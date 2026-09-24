@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 0): i1:For the company, the first step is to look at the order. -> i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue. -> i3:At the same time, two steps need to be completed: preparing the assembling order and checking availability. -> i4:If there is a backorder, availability needs to be checked again and the process ends.
+- [N2] Omitted trace (input 1): i1:For the company, the first step is to look at the order. -> i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue. -> i3:At the same time, two steps need to be completed: preparing the assembling order and checking availability. -> i5:If the item can be reserved, the process should continue. -> i6:The next steps are to assemble the bike and then ship the product.
+
+Addition
+- [N3] Added trace (model 0): init(i1) -> branch(b_order,XOR) -> converge(c_order) -> branch(b_parallel,AND) -> action(n_prepare,"Prepare Assembling Order") -> converge(c_parallel) -> branch(b_availability,XOR) -> action(n_check_again,"Check Availability Again") -> end(e_backorder)
+- [N4] Added trace (model 1): init(i1) -> branch(b_order,XOR) -> converge(c_order) -> branch(b_parallel,AND) -> action(n_prepare,"Prepare Assembling Order") -> converge(c_parallel) -> branch(b_availability,XOR) -> action(n_assemble,"Assemble Bike") -> action(n_ship,"Ship Product") -> end(e_final)
+- [N5] Added trace (model 2): init(i1) -> branch(b_order,XOR) -> converge(c_order) -> branch(b_parallel,AND) -> action(n_check_avail,"Check Availability") -> converge(c_parallel) -> branch(b_availability,XOR) -> action(n_check_again,"Check Availability Again") -> end(e_backorder)
+- [N6] Added trace (model 3): init(i1) -> branch(b_order,XOR) -> converge(c_order) -> branch(b_parallel,AND) -> action(n_check_avail,"Check Availability") -> converge(c_parallel) -> branch(b_availability,XOR) -> action(n_assemble,"Assemble Bike") -> action(n_ship,"Ship Product") -> end(e_final)
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b_order -> c_order` has 2 guards; exactly one is required. | XOR/OR edge `b_order -> c_order` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b_order` has overlapping guards at state [v_order=Rejected].

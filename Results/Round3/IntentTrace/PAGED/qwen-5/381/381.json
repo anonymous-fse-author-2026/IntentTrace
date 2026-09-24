@@ -1,0 +1,270 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "a1",
+      "type": "action",
+      "content": "choose your destination and calculate the distance"
+    },
+    {
+      "id": "a3",
+      "type": "action",
+      "content": "book a train"
+    },
+    {
+      "id": "a4",
+      "type": "action",
+      "content": "book a flight"
+    },
+    {
+      "id": "a5",
+      "type": "action",
+      "content": "code available within 24 hours"
+    },
+    {
+      "id": "a6",
+      "type": "action",
+      "content": "call a travel agency"
+    },
+    {
+      "id": "a7",
+      "type": "action",
+      "content": "process ends along with the hotel reservation"
+    },
+    {
+      "id": "a8",
+      "type": "action",
+      "content": "cancel your journey"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_mode",
+      "name": "transport mode",
+      "R_X": [
+        "train",
+        "flight"
+      ]
+    },
+    {
+      "X": "v_time",
+      "name": "time check",
+      "R_X": [
+        "within_24h",
+        "passed_24h"
+      ]
+    },
+    {
+      "X": "v_code",
+      "name": "code availability",
+      "R_X": [
+        "available",
+        "not_available"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "actor_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "a1",
+        "b1",
+        "a3",
+        "a4",
+        "c1",
+        "b2",
+        "a5",
+        "e1",
+        "a6",
+        "b3",
+        "a7",
+        "e2",
+        "a8",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "a1"
+    },
+    {
+      "type": "precedence",
+      "A": "a1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "a3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "a4"
+    },
+    {
+      "type": "precedence",
+      "A": "a3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "a4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "a5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "a6"
+    },
+    {
+      "type": "precedence",
+      "A": "a5",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "a6",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "a7"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "a8"
+    },
+    {
+      "type": "precedence",
+      "A": "a7",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "a8",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "a3",
+      "condition": "v_mode = 'train'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "a4",
+      "condition": "v_mode = 'flight'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "a5",
+      "condition": "v_time = 'within_24h'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "a6",
+      "condition": "v_time = 'passed_24h'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "a7",
+      "condition": "v_code = 'available'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "a8",
+      "condition": "v_code = 'not_available'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin with, you should choose your destination and calculate the distance."
+    },
+    {
+      "id": "i2",
+      "content": "While doing so, continue to check if you need to book a train or a flight."
+    },
+    {
+      "id": "i3",
+      "content": "If the answer is \"no\", then proceed to book a train."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the answer is \"yes\", then book a flight."
+    },
+    {
+      "id": "i5",
+      "content": "If a code is available within 24 hours, the process will end."
+    },
+    {
+      "id": "i6",
+      "content": "Otherwise, if 24 hours have passed, you should call a travel agency."
+    },
+    {
+      "id": "i7",
+      "content": "If a code is available, the process will end along with the hotel reservation."
+    },
+    {
+      "id": "i8",
+      "content": "On the other hand, if a code is not available, you should cancel your journey. In that case, the process will end as well."
+    }
+  ]
+}

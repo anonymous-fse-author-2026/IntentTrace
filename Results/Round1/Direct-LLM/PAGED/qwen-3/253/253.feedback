@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 3): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. If the "Inventory level is at or below the minimum" -> i3:Inventory level is at or below the minimum -> i4:then proceed to Create Purchase Order -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i11:On the other hand, if the Purchase Order is rejected -> i12:then rework the order. -> i14:In case the order needs to be reworked, review the Purchase Order again. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:Inventory level is at or below the minimum; reason=The guard replaces the explicit business rule with a generic boolean flag ('v1 = Yes'), dropping the actual threshold condition.
+- [N3] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i5:However, if the "Inventory Level is above the minimum"; reason=The guard replaces the explicit business rule with a generic boolean flag ('v1 = No'), dropping the actual threshold condition.
+- [N4] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i8:If the Purchase Order is approved -> i9:Purchase Order is approved; reason=The guard uses an abstract boolean ('v2 = Yes') instead of explicitly checking the approval status stated in the source.
+- [N5] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i11:On the other hand, if the Purchase Order is rejected; reason=The guard uses an abstract boolean ('v2 = No') instead of explicitly checking the rejection status stated in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Purchase Order approved?")

@@ -1,0 +1,21 @@
+Addition
+- [N1] Node-level addition: action(n1,"start process") (reason: The step 'start process' invents a generic initialization action not described in the source text, which directly begins with the concrete act of receiving a form.)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n10,"end process") -> end(e2)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n11,"invite declarant") -> action(n12,"end process") -> end(e3)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"start process")
+- [N6] Within matched traces (1->1) added: init(i1)
+- [N7] Within matched traces (1->1) added: action(n1,"start process")
+- [N8] Within matched traces (2->2) added: init(i1)
+- [N9] Within matched traces (2->2) added: action(n1,"start process")
+- [N10] Within matched traces (2->2) added: converge(c1)
+- [N11] Within matched traces (2->2) added: action(n9,"is declaration needed")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i3:If it needs to be sent back, the process ends. -> i4:If it needs to be sent back; reason=The guard payload uses an abstract variable assignment (v1 = 'No') instead of the explicit natural-language condition 'needs to be sent back', distorting the decision logic.
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i5:However, if we need to check the income, we continue with the process. -> i6:if we need to check the income; reason=The guard payload uses an abstract variable assignment (v1 = 'Yes') instead of the explicit condition 'need to check the income'.
+- [N14] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i9:If we need to check the declaration, the process ends. -> i10:If we need to check the declaration; reason=The guard payload uses an abstract variable assignment (v2 = 'Yes') instead of the explicit condition 'need to check the declaration'.
+- [N15] Node-level mutation: element=guard(b2,n11,"v2 = 'No'"); source=i11:Otherwise, if we need to invite the declarant, the process also ends. -> i12:if we need to invite the declarant; reason=The guard payload uses an abstract variable assignment (v2 = 'No') instead of the explicit condition 'need to invite the declarant'.
+
+Permutation
+- [N16] Within matched traces (1->1) reordered: expected [i9:If we need to check the declaration, the process ends.] but observed [action(n9,"is declaration needed")] elsewhere; in its place the model has [action(n10,"end process")]

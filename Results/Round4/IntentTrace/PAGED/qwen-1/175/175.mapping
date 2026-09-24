@@ -1,0 +1,907 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:a_return"
+      ],
+      "verbatim_texts": [
+        "To begin the process, Rental Items are Returned to the Store."
+      ],
+      "justification": "Implicit start and explicit first action match the opening unit exactly."
+    },
+    {
+      "refs": [
+        "action:a_cust_ret",
+        "guard:b_method->a_cust_ret"
+      ],
+      "verbatim_texts": [
+        "If the \"Customer returns the items to the store,\" then we can continue the process."
+      ],
+      "justification": "Branch opens the choice, action contains the step, and guard captures the customer-return condition faithfully."
+    },
+    {
+      "refs": [
+        "action:a_crew_pick",
+        "guard:b_method->a_crew_pick"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process."
+      ],
+      "justification": "Alternative path and its guard preserve the delivery crew condition; converge rejoins the flow."
+    },
+    {
+      "refs": [
+        "action:a_compare"
+      ],
+      "verbatim_texts": [
+        "During this step, the items are counted and compared to the original contract."
+      ],
+      "justification": "Direct match to the comparison step."
+    },
+    {
+      "refs": [
+        "action:a_complete",
+        "guard:b_status->a_complete"
+      ],
+      "verbatim_texts": [
+        "If the \"Order is complete and all items were returned,\" then we proceed with the process."
+      ],
+      "justification": "Branch and guard correctly model the complete-order condition."
+    },
+    {
+      "refs": [
+        "action:a_incomplete",
+        "guard:b_status->a_incomplete"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Order is incomplete and items are missing,\" we still continue the process."
+      ],
+      "justification": "Action and guard accurately reflect the incomplete-order path."
+    },
+    {
+      "refs": [
+        "action:a_damaged",
+        "guard:b_status->a_damaged"
+      ],
+      "verbatim_texts": [
+        "Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges."
+      ],
+      "justification": "Captures the damaged-item branch and its notification requirement."
+    },
+    {
+      "refs": [
+        "action:a_pack_cond1",
+        "guard:b_ps1->a_pack_cond1"
+      ],
+      "verbatim_texts": [
+        "After this, if the \"Items are packed for an existing order,\" we continue the process."
+      ],
+      "justification": "Models the post-status packing condition and branch correctly."
+    },
+    {
+      "refs": [
+        "action:a_store_cond1",
+        "guard:b_ps1->a_store_cond1"
+      ],
+      "verbatim_texts": [
+        "Alternatively, if the \"Items are stored for future orders,\" we also continue the process."
+      ],
+      "justification": "Alternative storage condition and convergence are correctly aligned."
+    },
+    {
+      "refs": [
+        "action:a_email_miss"
+      ],
+      "verbatim_texts": [
+        "In case of missing items and replacement charges, we email the customer to inform them."
+      ],
+      "justification": "Exact match to the missing-items notification step."
+    },
+    {
+      "refs": [
+        "action:a_take_inv"
+      ],
+      "verbatim_texts": [
+        "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+      ],
+      "justification": "Direct match to the inventory removal step."
+    },
+    {
+      "refs": [
+        "action:a_miss_yes",
+        "guard:b_miss_ret->a_miss_yes"
+      ],
+      "verbatim_texts": [
+        "If the \"Customer returns the missing items,\" we continue the process."
+      ],
+      "justification": "Branch and guard correctly handle the positive return condition."
+    },
+    {
+      "refs": [
+        "action:a_miss_no",
+        "guard:b_miss_ret->a_miss_no"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Customer does not return the missing items,\" we still continue the process."
+      ],
+      "justification": "Handles the negative return path and rejoins flow."
+    },
+    {
+      "refs": [
+        "action:a_repaired",
+        "guard:b_repair->a_repaired"
+      ],
+      "verbatim_texts": [
+        "If the \"Items are repaired and added into inventory,\" we continue the process."
+      ],
+      "justification": "Correctly models the repair path and its condition."
+    },
+    {
+      "refs": [
+        "action:a_discarded",
+        "guard:b_repair->a_discarded"
+      ],
+      "verbatim_texts": [
+        "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+      ],
+      "justification": "Accurately captures the discard path, email action, and convergence."
+    },
+    {
+      "refs": [
+        "action:a_pack_lastly"
+      ],
+      "verbatim_texts": [
+        "Lastly, the items are packed for an existing order."
+      ],
+      "justification": "Direct match to the final packing step."
+    },
+    {
+      "refs": [
+        "action:a_pack_check",
+        "guard:b_final_cond->a_pack_check"
+      ],
+      "verbatim_texts": [
+        "If the \"Items are packed for an existing order,\" we continue the process."
+      ],
+      "justification": "Models the final packing check condition and branch."
+    },
+    {
+      "refs": [
+        "action:a_store_check",
+        "guard:b_final_cond->a_store_check"
+      ],
+      "verbatim_texts": [
+        "If the \"Items are stored for future orders,\" we also continue the process."
+      ],
+      "justification": "Alternative storage check and final convergence are correctly aligned."
+    },
+    {
+      "refs": [
+        "action:a_email_rep"
+      ],
+      "verbatim_texts": [
+        "The customer is then emailed with replacement charges, and the process is complete."
+      ],
+      "justification": "Captures the final email notification and both process termination points."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i_start",
+      "kind": "init",
+      "node_id": "i_start",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i_start",
+        "i_start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i_start"
+    },
+    {
+      "ref_id": "action:a_return",
+      "kind": "action",
+      "node_id": "a_return",
+      "gateway": "",
+      "string_value": "Rental Items are Returned to the Store.",
+      "aliases": [
+        "action:a_return",
+        "a_return"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_return: Rental Items are Returned to the Store."
+    },
+    {
+      "ref_id": "branch:b_method",
+      "kind": "branch",
+      "node_id": "b_method",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_method",
+        "b_method"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_method (XOR)"
+    },
+    {
+      "ref_id": "action:a_cust_ret",
+      "kind": "action",
+      "node_id": "a_cust_ret",
+      "gateway": "",
+      "string_value": "If the \"Customer returns the items to the store,\" then we can continue the process.",
+      "aliases": [
+        "action:a_cust_ret",
+        "a_cust_ret"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_cust_ret: If the \"Customer returns the items to the store,\" then we can continue the process."
+    },
+    {
+      "ref_id": "action:a_crew_pick",
+      "kind": "action",
+      "node_id": "a_crew_pick",
+      "gateway": "",
+      "string_value": "However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process.",
+      "aliases": [
+        "action:a_crew_pick",
+        "a_crew_pick"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_crew_pick: However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process."
+    },
+    {
+      "ref_id": "converge:c_method",
+      "kind": "converge",
+      "node_id": "c_method",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_method",
+        "c_method"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_method"
+    },
+    {
+      "ref_id": "action:a_compare",
+      "kind": "action",
+      "node_id": "a_compare",
+      "gateway": "",
+      "string_value": "During this step, the items are counted and compared to the original contract.",
+      "aliases": [
+        "action:a_compare",
+        "a_compare"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_compare: During this step, the items are counted and compared to the original contract."
+    },
+    {
+      "ref_id": "branch:b_status",
+      "kind": "branch",
+      "node_id": "b_status",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_status",
+        "b_status"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_status (XOR)"
+    },
+    {
+      "ref_id": "action:a_complete",
+      "kind": "action",
+      "node_id": "a_complete",
+      "gateway": "",
+      "string_value": "If the \"Order is complete and all items were returned,\" then we proceed with the process.",
+      "aliases": [
+        "action:a_complete",
+        "a_complete"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_complete: If the \"Order is complete and all items were returned,\" then we proceed with the process."
+    },
+    {
+      "ref_id": "action:a_incomplete",
+      "kind": "action",
+      "node_id": "a_incomplete",
+      "gateway": "",
+      "string_value": "However, if the \"Order is incomplete and items are missing,\" we still continue the process.",
+      "aliases": [
+        "action:a_incomplete",
+        "a_incomplete"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_incomplete: However, if the \"Order is incomplete and items are missing,\" we still continue the process."
+    },
+    {
+      "ref_id": "action:a_damaged",
+      "kind": "action",
+      "node_id": "a_damaged",
+      "gateway": "",
+      "string_value": "Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges.",
+      "aliases": [
+        "action:a_damaged",
+        "a_damaged"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_damaged: Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges."
+    },
+    {
+      "ref_id": "branch:b_ps1",
+      "kind": "branch",
+      "node_id": "b_ps1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_ps1",
+        "b_ps1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_ps1 (XOR)"
+    },
+    {
+      "ref_id": "action:a_pack_cond1",
+      "kind": "action",
+      "node_id": "a_pack_cond1",
+      "gateway": "",
+      "string_value": "After this, if the \"Items are packed for an existing order,\" we continue the process.",
+      "aliases": [
+        "action:a_pack_cond1",
+        "a_pack_cond1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_pack_cond1: After this, if the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "ref_id": "action:a_store_cond1",
+      "kind": "action",
+      "node_id": "a_store_cond1",
+      "gateway": "",
+      "string_value": "Alternatively, if the \"Items are stored for future orders,\" we also continue the process.",
+      "aliases": [
+        "action:a_store_cond1",
+        "a_store_cond1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_store_cond1: Alternatively, if the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "ref_id": "converge:c_ps1",
+      "kind": "converge",
+      "node_id": "c_ps1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_ps1",
+        "c_ps1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_ps1"
+    },
+    {
+      "ref_id": "action:a_email_miss",
+      "kind": "action",
+      "node_id": "a_email_miss",
+      "gateway": "",
+      "string_value": "In case of missing items and replacement charges, we email the customer to inform them.",
+      "aliases": [
+        "action:a_email_miss",
+        "a_email_miss"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_email_miss: In case of missing items and replacement charges, we email the customer to inform them."
+    },
+    {
+      "ref_id": "branch:b_miss_ret",
+      "kind": "branch",
+      "node_id": "b_miss_ret",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_miss_ret",
+        "b_miss_ret"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_miss_ret (XOR)"
+    },
+    {
+      "ref_id": "action:a_miss_yes",
+      "kind": "action",
+      "node_id": "a_miss_yes",
+      "gateway": "",
+      "string_value": "If the \"Customer returns the missing items,\" we continue the process.",
+      "aliases": [
+        "action:a_miss_yes",
+        "a_miss_yes"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_miss_yes: If the \"Customer returns the missing items,\" we continue the process."
+    },
+    {
+      "ref_id": "action:a_miss_no",
+      "kind": "action",
+      "node_id": "a_miss_no",
+      "gateway": "",
+      "string_value": "However, if the \"Customer does not return the missing items,\" we still continue the process.",
+      "aliases": [
+        "action:a_miss_no",
+        "a_miss_no"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_miss_no: However, if the \"Customer does not return the missing items,\" we still continue the process."
+    },
+    {
+      "ref_id": "converge:c_miss_ret",
+      "kind": "converge",
+      "node_id": "c_miss_ret",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_miss_ret",
+        "c_miss_ret"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_miss_ret"
+    },
+    {
+      "ref_id": "action:a_take_inv",
+      "kind": "action",
+      "node_id": "a_take_inv",
+      "gateway": "",
+      "string_value": "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.",
+      "aliases": [
+        "action:a_take_inv",
+        "a_take_inv"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_take_inv: Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+    },
+    {
+      "ref_id": "branch:b_repair",
+      "kind": "branch",
+      "node_id": "b_repair",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_repair",
+        "b_repair"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_repair (XOR)"
+    },
+    {
+      "ref_id": "action:a_repaired",
+      "kind": "action",
+      "node_id": "a_repaired",
+      "gateway": "",
+      "string_value": "If the \"Items are repaired and added into inventory,\" we continue the process.",
+      "aliases": [
+        "action:a_repaired",
+        "a_repaired"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_repaired: If the \"Items are repaired and added into inventory,\" we continue the process."
+    },
+    {
+      "ref_id": "action:a_discarded",
+      "kind": "action",
+      "node_id": "a_discarded",
+      "gateway": "",
+      "string_value": "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges.",
+      "aliases": [
+        "action:a_discarded",
+        "a_discarded"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_discarded: On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+    },
+    {
+      "ref_id": "converge:c_pre_lastly",
+      "kind": "converge",
+      "node_id": "c_pre_lastly",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_pre_lastly",
+        "c_pre_lastly"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_pre_lastly"
+    },
+    {
+      "ref_id": "action:a_pack_lastly",
+      "kind": "action",
+      "node_id": "a_pack_lastly",
+      "gateway": "",
+      "string_value": "Lastly, the items are packed for an existing order.",
+      "aliases": [
+        "action:a_pack_lastly",
+        "a_pack_lastly"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_pack_lastly: Lastly, the items are packed for an existing order."
+    },
+    {
+      "ref_id": "branch:b_final_cond",
+      "kind": "branch",
+      "node_id": "b_final_cond",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_final_cond",
+        "b_final_cond"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_final_cond (XOR)"
+    },
+    {
+      "ref_id": "action:a_pack_check",
+      "kind": "action",
+      "node_id": "a_pack_check",
+      "gateway": "",
+      "string_value": "If the \"Items are packed for an existing order,\" we continue the process.",
+      "aliases": [
+        "action:a_pack_check",
+        "a_pack_check"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_pack_check: If the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "ref_id": "action:a_store_check",
+      "kind": "action",
+      "node_id": "a_store_check",
+      "gateway": "",
+      "string_value": "If the \"Items are stored for future orders,\" we also continue the process.",
+      "aliases": [
+        "action:a_store_check",
+        "a_store_check"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_store_check: If the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "ref_id": "converge:c_final_cond",
+      "kind": "converge",
+      "node_id": "c_final_cond",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_final_cond",
+        "c_final_cond"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_final_cond"
+    },
+    {
+      "ref_id": "end:e_process",
+      "kind": "end",
+      "node_id": "e_process",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_process",
+        "e_process"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_process"
+    },
+    {
+      "ref_id": "action:a_email_rep",
+      "kind": "action",
+      "node_id": "a_email_rep",
+      "gateway": "",
+      "string_value": "The customer is then emailed with replacement charges, and the process is complete.",
+      "aliases": [
+        "action:a_email_rep",
+        "a_email_rep"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action a_email_rep: The customer is then emailed with replacement charges, and the process is complete."
+    },
+    {
+      "ref_id": "end:e_discard",
+      "kind": "end",
+      "node_id": "e_discard",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_discard",
+        "e_discard"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_discard"
+    },
+    {
+      "ref_id": "guard:b_method->a_cust_ret",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_method = \"Customer\"",
+      "aliases": [
+        "guard:b_method->a_cust_ret"
+      ],
+      "from": "b_method",
+      "to": "a_cust_ret",
+      "source_line": "guard b_method->a_cust_ret: v_method = \"Customer\"",
+      "guard": {
+        "from": "b_method",
+        "to": "a_cust_ret",
+        "condition": "v_method = \"Customer\""
+      }
+    },
+    {
+      "ref_id": "guard:b_method->a_crew_pick",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_method = \"Delivery\"",
+      "aliases": [
+        "guard:b_method->a_crew_pick"
+      ],
+      "from": "b_method",
+      "to": "a_crew_pick",
+      "source_line": "guard b_method->a_crew_pick: v_method = \"Delivery\"",
+      "guard": {
+        "from": "b_method",
+        "to": "a_crew_pick",
+        "condition": "v_method = \"Delivery\""
+      }
+    },
+    {
+      "ref_id": "guard:b_status->a_complete",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_status = \"Complete\"",
+      "aliases": [
+        "guard:b_status->a_complete"
+      ],
+      "from": "b_status",
+      "to": "a_complete",
+      "source_line": "guard b_status->a_complete: v_status = \"Complete\"",
+      "guard": {
+        "from": "b_status",
+        "to": "a_complete",
+        "condition": "v_status = \"Complete\""
+      }
+    },
+    {
+      "ref_id": "guard:b_status->a_incomplete",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_status = \"Incomplete\"",
+      "aliases": [
+        "guard:b_status->a_incomplete"
+      ],
+      "from": "b_status",
+      "to": "a_incomplete",
+      "source_line": "guard b_status->a_incomplete: v_status = \"Incomplete\"",
+      "guard": {
+        "from": "b_status",
+        "to": "a_incomplete",
+        "condition": "v_status = \"Incomplete\""
+      }
+    },
+    {
+      "ref_id": "guard:b_status->a_damaged",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_status = \"Damaged\"",
+      "aliases": [
+        "guard:b_status->a_damaged"
+      ],
+      "from": "b_status",
+      "to": "a_damaged",
+      "source_line": "guard b_status->a_damaged: v_status = \"Damaged\"",
+      "guard": {
+        "from": "b_status",
+        "to": "a_damaged",
+        "condition": "v_status = \"Damaged\""
+      }
+    },
+    {
+      "ref_id": "guard:b_ps1->a_pack_cond1",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_ps1 = \"Pack\"",
+      "aliases": [
+        "guard:b_ps1->a_pack_cond1"
+      ],
+      "from": "b_ps1",
+      "to": "a_pack_cond1",
+      "source_line": "guard b_ps1->a_pack_cond1: v_ps1 = \"Pack\"",
+      "guard": {
+        "from": "b_ps1",
+        "to": "a_pack_cond1",
+        "condition": "v_ps1 = \"Pack\""
+      }
+    },
+    {
+      "ref_id": "guard:b_ps1->a_store_cond1",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_ps1 = \"Store\"",
+      "aliases": [
+        "guard:b_ps1->a_store_cond1"
+      ],
+      "from": "b_ps1",
+      "to": "a_store_cond1",
+      "source_line": "guard b_ps1->a_store_cond1: v_ps1 = \"Store\"",
+      "guard": {
+        "from": "b_ps1",
+        "to": "a_store_cond1",
+        "condition": "v_ps1 = \"Store\""
+      }
+    },
+    {
+      "ref_id": "guard:b_miss_ret->a_miss_yes",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_miss_ret = \"Returns\"",
+      "aliases": [
+        "guard:b_miss_ret->a_miss_yes"
+      ],
+      "from": "b_miss_ret",
+      "to": "a_miss_yes",
+      "source_line": "guard b_miss_ret->a_miss_yes: v_miss_ret = \"Returns\"",
+      "guard": {
+        "from": "b_miss_ret",
+        "to": "a_miss_yes",
+        "condition": "v_miss_ret = \"Returns\""
+      }
+    },
+    {
+      "ref_id": "guard:b_miss_ret->a_miss_no",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_miss_ret = \"NoReturn\"",
+      "aliases": [
+        "guard:b_miss_ret->a_miss_no"
+      ],
+      "from": "b_miss_ret",
+      "to": "a_miss_no",
+      "source_line": "guard b_miss_ret->a_miss_no: v_miss_ret = \"NoReturn\"",
+      "guard": {
+        "from": "b_miss_ret",
+        "to": "a_miss_no",
+        "condition": "v_miss_ret = \"NoReturn\""
+      }
+    },
+    {
+      "ref_id": "guard:b_repair->a_repaired",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_repair = \"Repaired\"",
+      "aliases": [
+        "guard:b_repair->a_repaired"
+      ],
+      "from": "b_repair",
+      "to": "a_repaired",
+      "source_line": "guard b_repair->a_repaired: v_repair = \"Repaired\"",
+      "guard": {
+        "from": "b_repair",
+        "to": "a_repaired",
+        "condition": "v_repair = \"Repaired\""
+      }
+    },
+    {
+      "ref_id": "guard:b_repair->a_discarded",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_repair = \"Discarded\"",
+      "aliases": [
+        "guard:b_repair->a_discarded"
+      ],
+      "from": "b_repair",
+      "to": "a_discarded",
+      "source_line": "guard b_repair->a_discarded: v_repair = \"Discarded\"",
+      "guard": {
+        "from": "b_repair",
+        "to": "a_discarded",
+        "condition": "v_repair = \"Discarded\""
+      }
+    },
+    {
+      "ref_id": "guard:b_final_cond->a_pack_check",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_final = \"Pack\"",
+      "aliases": [
+        "guard:b_final_cond->a_pack_check"
+      ],
+      "from": "b_final_cond",
+      "to": "a_pack_check",
+      "source_line": "guard b_final_cond->a_pack_check: v_final = \"Pack\"",
+      "guard": {
+        "from": "b_final_cond",
+        "to": "a_pack_check",
+        "condition": "v_final = \"Pack\""
+      }
+    },
+    {
+      "ref_id": "guard:b_final_cond->a_store_check",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_final = \"Store\"",
+      "aliases": [
+        "guard:b_final_cond->a_store_check"
+      ],
+      "from": "b_final_cond",
+      "to": "a_store_check",
+      "source_line": "guard b_final_cond->a_store_check: v_final = \"Store\"",
+      "guard": {
+        "from": "b_final_cond",
+        "to": "a_store_check",
+        "condition": "v_final = \"Store\""
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 19,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 32,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 32,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 32,
+    "total_mappable_targets": 46,
+    "input_text_length": 1760,
+    "element_count": 46
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

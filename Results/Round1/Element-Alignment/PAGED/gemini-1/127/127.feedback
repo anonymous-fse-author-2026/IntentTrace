@@ -1,0 +1,39 @@
+Omission
+- [N1] Node-level omission: i11:Once the part is received, (reason: The model fails to implement this temporal event or condition; no corresponding element captures the waiting or receipt state before contracting the customer.)
+- [N2] Within matched traces (0->0) omitted: i13:After all the necessary parts are collected,
+- [N3] Within matched traces (1->2) omitted: i13:After all the necessary parts are collected,
+- [N4] Within matched traces (2->0) omitted: i13:After all the necessary parts are collected,
+- [N5] Within matched traces (3->1) omitted: i11:Once the part is received,
+- [N6] Within matched traces (3->1) omitted: i13:After all the necessary parts are collected,
+
+Addition
+- [N7] Added trace (model 3): init(i1) -> action(n2,"Identify parts") -> action(n3,"Need to elicit information from customer") -> branch(b1,XOR) -> action(n5,"Proceed with process") -> converge(c1) -> action(n6,"Are parts supplied to customer") -> branch(b2,XOR) -> action(n8,"Record customer details") -> action(n9,"Order and receive part from Disuki") -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> action(n11,"End") -> end(e1)
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n6,"Are parts supplied to customer")
+- [N10] Within matched traces (0->0) added: branch(b2,XOR)
+- [N11] Within matched traces (0->0) added: action(n12,"Continue with the process")
+- [N12] Within matched traces (0->0) added: converge(c2)
+- [N13] Within matched traces (0->0) added: action(n7,"Contract customer")
+- [N14] Within matched traces (1->2) added: action(n3,"Need to elicit information from customer")
+- [N15] Within matched traces (1->2) added: converge(c1)
+- [N16] Within matched traces (1->2) added: action(n6,"Are parts supplied to customer")
+- [N17] Within matched traces (1->2) added: branch(b2,XOR)
+- [N18] Within matched traces (1->2) added: action(n12,"Continue with the process")
+- [N19] Within matched traces (1->2) added: converge(c2)
+- [N20] Within matched traces (1->2) added: action(n7,"Contract customer")
+- [N21] Within matched traces (2->0) added: action(n3,"Need to elicit information from customer")
+- [N22] Within matched traces (2->0) added: branch(b1,XOR)
+- [N23] Within matched traces (2->0) added: action(n4,"Check availability of parts")
+- [N24] Within matched traces (2->0) added: converge(c1)
+- [N25] Within matched traces (2->0) added: converge(c2)
+- [N26] Within matched traces (2->0) added: action(n7,"Contract customer")
+- [N27] Within matched traces (3->1) added: action(n3,"Need to elicit information from customer")
+- [N28] Within matched traces (3->1) added: branch(b1,XOR)
+- [N29] Within matched traces (3->1) added: action(n4,"Check availability of parts")
+- [N30] Within matched traces (3->1) added: converge(c1)
+- [N31] Within matched traces (3->1) added: action(n6,"Are parts supplied to customer")
+
+Mutation
+- [N32] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the team needs to elicit information from the customer,; reason=The source describes a specific condition ('needs to elicit information'), but the guard arbitrarily abstracts this into a generic 'v1 = \'Yes\'', thereby dropping the actual condition logic.
+- [N33] Node-level mutation: element=guard(b2,n12,"v2 = 'Yes'"); source=i6:If the parts are supplied to the customer,; reason=The source describes a specific condition regarding parts being supplied, but the guard abstracts this into a generic 'v2 = \'Yes\'', which is a distortion of the data.
+- [N34] Node-level mutation: element=action(n8,"Record customer details"); source=i8:However, if they need to record the customer's details, -> i9:if they need to record the customer's details,; reason=The source introduces this phrase purely as a condition ('if they need to record...'), but the model transforms it into an imperative action step to actually record the details, altering the logic.

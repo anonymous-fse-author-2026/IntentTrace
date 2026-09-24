@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Course registration;
+:Is exception needed?;
+:v1: Is exception needed? ({Yes, No}); <<objectSignal>>
+if () then ([v1 == "Yes"])
+:Request for exception;
+:Exception approved;
+else ([v1 == "No"])
+->;
+endif
+:Course enrollment;
+:Seminar group enrollment;
+repeat :;
+:Homework assignment started;
+:Turn in homework;
+:Homework evaluated;
+:Is homework the last one?;
+:v2: Is homework the last one? ({Yes, No}); <<objectSignal>>
+backward:Another homework assigned;
+repeat while () is ([v2 == "No"]) not ([v2 == "Yes"])
+split
+:Grant accreditation;
+split again
+:Announce exam date;
+end split
+repeat :;
+:Sign up for exam;
+:Attend exam;
+:Exam evaluation;
+:Is exam passed?;
+:v3: Is exam passed? ({Yes, No}); <<objectSignal>>
+backward:Sign up for exam again;
+repeat while () is ([v3 == "No"]) not ([v3 == "Yes"])
+:Course passed;
+stop
+@enduml

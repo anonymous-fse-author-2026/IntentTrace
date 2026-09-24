@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i5:checking for invoice compliance (reason: The exact step is not faithfully implemented because its only candidate is a mutation that dropped the specific target 'invoice'.)
+- [N2] Node-level omission: i10:clear the outbox of the Data Entry Officer every hour (reason: The exact step is not faithfully implemented because its only candidate is a mutation that dropped the specific actor 'Data Entry Officer'.)
+- [N3] Omitted trace (input 0): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i7:process the invoice batch
+- [N4] Omitted trace (input 1): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i8:take it to the outbox -> i10:clear the outbox of the Data Entry Officer every hour -> i11:until the outbox is completely cleared -> i10:clear the outbox of the Data Entry Officer every hour
+
+Addition
+- [N5] Node-level addition: guard(b1,n9,"v1 = 'No'") (reason: These guards invent arbitrary variables and boolean logic (e.g., 'v1 = No', 'v2 = Yes') that have no basis in the source text.)
+- [N6] Node-level addition: guard(b1,c1,"v1 = 'Yes'") (reason: These guards invent arbitrary variables and boolean logic (e.g., 'v1 = No', 'v2 = Yes') that have no basis in the source text.)
+- [N7] Node-level addition: guard(b2,n12,"v2 = 'Yes'") (reason: These guards invent arbitrary variables and boolean logic (e.g., 'v1 = No', 'v2 = Yes') that have no basis in the source text.)
+- [N8] Node-level addition: guard(b2,c2,"v2 = 'No'") (reason: These guards invent arbitrary variables and boolean logic (e.g., 'v1 = No', 'v2 = Yes') that have no basis in the source text.)
+
+Mutation
+- [N9] Node-level mutation: element=action(n1,"start"); source=i1:To start the SSP process; reason=The action drops the specific target 'the SSP process', generalizing it to just 'start'.
+- [N10] Node-level mutation: element=action(n5,"Check compliance"); source=i5:checking for invoice compliance; reason=The action drops the qualifier 'invoice', broadening the scope of the compliance check.
+- [N11] Node-level mutation: element=action(n8,"More batches to process?"); source=i9:repeated until all invoices are processed; reason=The condition wrongly evaluates 'More batches' rather than the source text's specific condition of all 'invoices' being processed.
+- [N12] Node-level mutation: element=action(n10,"Clear outbox every hour until completely cleared"); source=i10:clear the outbox of the Data Entry Officer every hour -> i11:until the outbox is completely cleared; reason=The action combines these steps but drops the specific actor/target 'of the Data Entry Officer', distorting the exact instruction.

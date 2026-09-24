@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:can we capture data from FMA?;
+:v1: can we capture data from FMA? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:capture: data from FMA;
+-> No  continue;
+else ([v1 = 'No'])
+:can we capture data from Jamendo?;
+:v2: can we capture data from Jamendo? ({Yes, No  continue}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:capture: data from Jamendo;
+else ([v2 = 'No  continue'])
+->;
+endif
+endif
+repeat :;
+:get: music ids for the genre;
+:is the genre missing?;
+:;
+:continue: with the process;
+:is there an additional genre?;
+:v4: is there an additional genre? ({Yes, No}); <<objectSignal>>
+backward:get: music ids for the next genre;
+repeat while () is ([v4 = 'Yes']) not ([v4 = 'No'])
+:continue: to sample handling;
+:is the sample missing?;
+:v5: is the sample missing? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:download: the sample;
+stop
+else ([v5 = 'No'])
+:end: no additional samples;
+stop
+endif
+@enduml

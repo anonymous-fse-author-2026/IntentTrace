@@ -1,0 +1,152 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "book a bus"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "check availability"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "end - nok"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "proceed to book the bus"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "end - ok"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check availability",
+      "R_X": [
+        "ok",
+        "nok"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "n6",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"nok\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"ok\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the booking service, start by booking a bus and then check its availability."
+    },
+    {
+      "id": "i2",
+      "content": "If the availability is \"nok\", then the process of booking the bus will end."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the availability is \"ok\", you can proceed to book the bus and the process will come to an end."
+    }
+  ]
+}

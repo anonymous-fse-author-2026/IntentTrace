@@ -1,0 +1,7 @@
+
+
+- `action(n7, "rework purchase order")`: Omits the required feedback loop. The source states "In case the purchase order needs to be reworked, review it again," requiring `precedence(n7, n6)`, but its absence breaks the cycle and leaves the path incomplete.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lacks `guard` statements to enforce source decision rules. The text specifies conditional splits like "If the inventory level is at or below the minimum" and "if the purchase order is approved/rejected," yet no guards link `v1` or `v2` to these branches.
+- `defines(v1, "check inventory level", {})` and `defines(v2, "review purchase order", {})`: Empty ranges `{}` fail to capture the source's implied value spaces (e.g., numeric thresholds relative to a minimum, or a binary approval/rejection status), violating faithful variable specification.
+- `action(n4, "accept request and create PO")`: Incorrectly fuses two distinct sequential steps into one node. The source explicitly separates them chronologically: "accept the customer request. ... After accepting the customer request, create a purchase order," which requires separate nodes and an explicit precedence edge.
+- `action(n8, "approve purchase order and reserve funds")`: Conflates a branching condition with a subsequent action. The source presents approval as the trigger for the next step ("if the purchase order is approved, reserve the funds"), making "approve" a decision criterion rather than part of the action payload itself.

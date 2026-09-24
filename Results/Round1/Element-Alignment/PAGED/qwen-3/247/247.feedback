@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i4:If the input is a "URL", we simply continue with the process. (reason: Although a guard points toward this path, it mutates the condition and fails to faithfully implement the stated behavior. The source instruction for handling URLs is therefore left uncovered by any correct element.)
+
+Addition
+- [N2] Node-level addition: action(n8,"Send DNS query for the URL") (reason: These steps invent a full parallel processing sequence for URLs (sending queries, collecting results, linking, terminating) that the source text never describes. The source only directs to 'simply continue' for URLs without specifying these intermediate actions.)
+- [N3] Node-level addition: action(n9,"Get list of URLs from DNS query") (reason: These steps invent a full parallel processing sequence for URLs (sending queries, collecting results, linking, terminating) that the source text never describes. The source only directs to 'simply continue' for URLs without specifying these intermediate actions.)
+- [N4] Node-level addition: action(n10,"Link to designated DS") (reason: These steps invent a full parallel processing sequence for URLs (sending queries, collecting results, linking, terminating) that the source text never describes. The source only directs to 'simply continue' for URLs without specifying these intermediate actions.)
+- [N5] Node-level addition: action(n11,"End of process") (reason: These steps invent a full parallel processing sequence for URLs (sending queries, collecting results, linking, terminating) that the source text never describes. The source only directs to 'simply continue' for URLs without specifying these intermediate actions.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> action(n12,"Check if input is URN or URL") -> branch(b1,XOR) -> action(n8,"Send DNS query for the URL") -> action(n9,"Get list of URLs from DNS query") -> action(n10,"Link to designated DS") -> action(n11,"End of process") -> end(e2)
+- [N7] Within matched traces (1->0) added: action(n3,"Resolve URN to domain-name")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If it is, we proceed with the step of "ONS-Resolving URN to a domain-name".; reason=The guard substitutes the semantic condition ('If it is [a URN]') with a generic variable assignment ('v1 = Yes'), dropping the specific target value required by the source.
+- [N9] Node-level mutation: element=guard(b1,n8,"v1 = 'No'"); source=i4:If the input is a "URL", we simply continue with the process.; reason=The guard replaces the explicit condition ('If the input is a URL') with a generic negation ('v1 = No'), losing the defined payload and logic.
+
+Permutation
+- [N10] Within matched traces (0->0) reordered: expected [i3:If it is, we proceed with the step of "ONS-Resolving URN to a domain-name".] but observed [branch(b1,XOR) -> action(n3,"Resolve URN to domain-name")] elsewhere; in its place the model has [action(n12,"Check if input is URN or URL")]
+- [N11] Within matched traces (1->0) reordered: expected [i4:If the input is a "URL", we simply continue with the process.] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n12,"Check if input is URN or URL")]

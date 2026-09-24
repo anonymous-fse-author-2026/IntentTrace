@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:BUSINESS PROCESS REQUIREMENTS;
+:SAP Configuration;
+:Communications Design;
+:Learning Design;
+:Data Conversion Design & Test;
+-> Following Data Conversion Design & Test;
+:v_phase: phase ({IT, Comms, Learn}); <<objectSignal>>
+switch ()
+case ([v_phase = 'IT'] Once the SAP Configuration is completed)
+:IT Design Development & Functional Test;
+:v_deploy: deploy ({Yes, No}); <<objectSignal>>
+if () then ([v_deploy = 'Yes'] Once IT Design, Development & Functional Test is completed)
+:Integration Test;
+:Deployment;
+else ([v_deploy = 'No'])
+->;
+endif
+:PRODUCTION SUPPORT;
+stop
+case ([v_phase = 'Comms'])
+:Communications Deployment;
+-> After Communications Deployment;
+case ([v_phase = 'Learn'])
+:Learning Deployment;
+-> Similarly, after Learning Deployment;
+endswitch
+@enduml

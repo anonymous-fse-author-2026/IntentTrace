@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Enter Metadata;
+split
+:IN-Patient Step;
+split again
+:Send Data to Suppliers;
+:Extract and Transfer Data from Suppliers to Doctor;
+:Confirm GOP;
+:path_choice: Process Branch ({GOP_End, Payment_Path}); <<objectSignal>>
+if () then ([path_choice = 'GOP_End'])
+:End Process: GOP Confirmed;
+stop
+else ([path_choice = 'Payment_Path'])
+->;
+endif
+split again
+:Create Claim;
+end split
+:Register Case;
+:Handle Claim;
+:Extract Data from Suppliers Again;
+:Enter Data on Patient Record or Confirm IN-Patient Status;
+:Receive Payment;
+:Send Data Back to Suppliers;
+:End Process: Payment Received;
+stop
+@enduml

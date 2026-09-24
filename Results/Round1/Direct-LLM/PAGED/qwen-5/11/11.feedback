@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To initiate the process for ACME Company, the Resupply Cycle is triggered -> i2:followed by checking the Inventory Level. -> i5:Otherwise, a Purchase Order is created. -> i6:The Purchase Order is then reviewed. -> i7:If the Purchase Order is rejected, it is reworked. -> i6:The Purchase Order is then reviewed.
+
+Addition
+- [N2] Node-level addition: label(n9,c2,"Completed rework") (reason: The label text 'Completed rework' has no corresponding phrase or logical implication in the source text. It invents a status descriptor not present in the input elements.)
+- [N3] Added trace (model 2): init(i1) -> action(n2,"Trigger Resupply Cycle") -> action(n3,"Check Inventory Level") -> action(n4,"Inventory greater than Minimum Level?") -> branch(b1,XOR) -> action(n6,"Create Purchase Order") -> converge(c2) -> action(n7,"Review Purchase Order") -> action(n8,"Purchase Order accepted?") -> branch(b2,XOR) -> action(n10,"Reserve funds for payment") -> action(n11,"Send Purchase Order to Supplier") -> branch(b3,AND) -> action(n13,"Receive Invoice") -> action(n15,"Record Invoice") -> converge(c1) -> action(n16,"Release funds for payment") -> action(n17,"Issue payment to Supplier") -> end(e2)
+- [N4] Within matched traces (2->1) added: action(n4,"Inventory greater than Minimum Level?")
+- [N5] Within matched traces (2->1) added: branch(b1,XOR)
+- [N6] Within matched traces (2->1) added: converge(c1)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'") -> guard(b1,n6,"v1 = 'No'"); source=i3:If the Inventory is greater than the Minimum Level; reason=The guards use abstract boolean variables ('v1 = Yes', 'v1 = No') instead of preserving the explicit condition and threshold from the source text. This drops the subject and comparison logic required by the strict standard.
+- [N8] Node-level mutation: element=guard(b2,n9,"v2 = 'Rejected'"); source=i7:If the Purchase Order is rejected, it is reworked.; reason=The guards use abstract variable assignments ('v2 = Rejected', 'v2 = Accepted') rather than the full conditional phrases. This omits the critical subject qualifier ('the Purchase Order') and alters the explicit logic presentation found in the source.
+- [N9] Node-level mutation: element=guard(b2,n10,"v2 = 'Accepted'"); source=i8:However, if the Purchase Order is accepted, funds are reserved for payment.; reason=The guards use abstract variable assignments ('v2 = Rejected', 'v2 = Accepted') rather than the full conditional phrases. This omits the critical subject qualifier ('the Purchase Order') and alters the explicit logic presentation found in the source.

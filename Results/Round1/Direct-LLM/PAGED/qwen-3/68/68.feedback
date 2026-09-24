@@ -1,0 +1,64 @@
+Omission
+- [N1] Node-level omission: i22:Lastly, the items are packed for an existing order. (reason: The source defines packing for an existing order as an executable step, but the model only references it as a routing guard condition without a corresponding action node performing the pack operation.)
+- [N2] Within matched traces (0->0) omitted: i17:Finally, when the process is complete, it ends.
+- [N3] Within matched traces (1->0) omitted: i17:Finally, when the process is complete, it ends.
+- [N4] Within matched traces (2->2) omitted: i8:"Order is incomplete and items are missing,"
+- [N5] Within matched traces (3->2) omitted: i8:"Order is incomplete and items are missing,"
+- [N6] Within matched traces (4->5) omitted: i10:"Order is complete but items are damaged,"
+- [N7] Within matched traces (4->5) omitted: i22:Lastly, the items are packed for an existing order.
+- [N8] Within matched traces (4->5) omitted: i17:Finally, when the process is complete, it ends.
+- [N9] Within matched traces (5->5) omitted: i10:"Order is complete but items are damaged,"
+- [N10] Within matched traces (5->5) omitted: i22:Lastly, the items are packed for an existing order.
+- [N11] Within matched traces (5->5) omitted: i17:Finally, when the process is complete, it ends.
+- [N12] Within matched traces (6->7) omitted: i10:"Order is complete but items are damaged,"
+- [N13] Within matched traces (6->7) omitted: i21:"Items can't be repaired and are discarded,"
+- [N14] Within matched traces (6->7) omitted: i22:Lastly, the items are packed for an existing order.
+- [N15] Within matched traces (6->7) omitted: i25:The customer is then emailed with replacement charges, and the process is complete.
+- [N16] Within matched traces (7->7) omitted: i10:"Order is complete but items are damaged,"
+- [N17] Within matched traces (7->7) omitted: i21:"Items can't be repaired and are discarded,"
+- [N18] Within matched traces (7->7) omitted: i22:Lastly, the items are packed for an existing order.
+- [N19] Within matched traces (7->7) omitted: i25:The customer is then emailed with replacement charges, and the process is complete.
+
+Addition
+- [N20] Node-level addition: action(b1,"Return method verified") (reason: 'Return method verified' has no supporting source text; it invents a verification step not described in the input.)
+- [N21] Node-level addition: action(n4,"Order status after count") (reason: 'Order status after count' has no supporting source text; it is a modeling placeholder not found in the input.)
+- [N22] Node-level addition: action(n5,"Items disposition for returned items") (reason: 'Items disposition for returned items' is a generic sink node with no direct source span or specific instruction backing it.)
+- [N23] Node-level addition: action(n14,"Items disposition after repair") (reason: 'Items disposition after repair' is a generic sink node with no direct source span or specific instruction backing it.)
+- [N24] Added trace (model 1): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> action(b1,"Return method verified") -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n5,"Items disposition for returned items") -> branch(b3,XOR) -> action(n16,"End process") -> end(e3)
+- [N25] Added trace (model 3): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> action(b1,"Return method verified") -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n6,"Email customer missing items and replacement charges") -> action(n7,"Customer returns missing items") -> branch(b4,XOR) -> action(n5,"Items disposition for returned items") -> branch(b3,XOR) -> action(n15,"End process") -> end(e2)
+- [N26] Added trace (model 4): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> action(b1,"Return method verified") -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n6,"Email customer missing items and replacement charges") -> action(n7,"Customer returns missing items") -> branch(b4,XOR) -> action(n5,"Items disposition for returned items") -> branch(b3,XOR) -> action(n16,"End process") -> end(e3)
+- [N27] Added trace (model 6): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> action(b1,"Return method verified") -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n9,"Email customer damage and additional charges") -> action(n10,"Temporarily remove damaged items from inventory") -> action(n11,"Can damaged items be repaired") -> branch(b5,XOR) -> action(n12,"Repair items and add to inventory") -> converge(c1) -> action(n14,"Items disposition after repair") -> branch(b6,XOR) -> action(n15,"End process") -> end(e2)
+- [N28] Added trace (model 8): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> action(b1,"Return method verified") -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n9,"Email customer damage and additional charges") -> action(n10,"Temporarily remove damaged items from inventory") -> action(n11,"Can damaged items be repaired") -> branch(b5,XOR) -> action(n13,"Discard items and email customer replacement charges") -> converge(c1) -> action(n14,"Items disposition after repair") -> branch(b6,XOR) -> action(n15,"End process") -> end(e2)
+- [N29] Within matched traces (0->0) added: action(b1,"Return method verified")
+- [N30] Within matched traces (0->0) added: action(n4,"Order status after count")
+- [N31] Within matched traces (1->0) added: action(b1,"Return method verified")
+- [N32] Within matched traces (1->0) added: action(n4,"Order status after count")
+- [N33] Within matched traces (2->2) added: action(b1,"Return method verified")
+- [N34] Within matched traces (2->2) added: action(n4,"Order status after count")
+- [N35] Within matched traces (3->2) added: action(b1,"Return method verified")
+- [N36] Within matched traces (3->2) added: action(n4,"Order status after count")
+- [N37] Within matched traces (3->2) added: action(n7,"Customer returns missing items")
+- [N38] Within matched traces (4->5) added: action(b1,"Return method verified")
+- [N39] Within matched traces (4->5) added: action(n4,"Order status after count")
+- [N40] Within matched traces (4->5) added: converge(c1)
+- [N41] Within matched traces (4->5) added: action(n14,"Items disposition after repair")
+- [N42] Within matched traces (5->5) added: action(b1,"Return method verified")
+- [N43] Within matched traces (5->5) added: action(n4,"Order status after count")
+- [N44] Within matched traces (5->5) added: converge(c1)
+- [N45] Within matched traces (5->5) added: action(n14,"Items disposition after repair")
+- [N46] Within matched traces (6->7) added: action(b1,"Return method verified")
+- [N47] Within matched traces (6->7) added: action(n4,"Order status after count")
+- [N48] Within matched traces (6->7) added: converge(c1)
+- [N49] Within matched traces (6->7) added: action(n14,"Items disposition after repair")
+- [N50] Within matched traces (7->7) added: action(b1,"Return method verified")
+- [N51] Within matched traces (7->7) added: action(n4,"Order status after count")
+- [N52] Within matched traces (7->7) added: converge(c1)
+- [N53] Within matched traces (7->7) added: action(n14,"Items disposition after repair")
+
+Mutation
+- [N54] Node-level mutation: element=action(n15,"End process"); source=i12:"Items are stored for future orders," we also continue the process.; reason=The source explicitly instructs to 'continue the process' for stored items, but both action nodes incorrectly terminate the flow by stating 'End process'.
+- [N55] Node-level mutation: element=action(n16,"End process"); source=i24:If the "Items are stored for future orders,"; reason=The source explicitly instructs to 'continue the process' for stored items, but both action nodes incorrectly terminate the flow by stating 'End process'.
+- [N56] Node-level mutation: element=guard(b4,n8,"v4 = 'Customer does not return missing items'") -> action(n8,"End process"); source=i16:"Customer does not return the missing items," we still continue the process.; reason=On this specific branch arm, the guard routes to an 'End process' action, contradicting the source instruction to 'still continue the process'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | Node `n16` has in=2 and out=1. | Node `n5` has in=2 and out=1. | DSL: action(n15,"End process"); action(n16,"End process"); action(n5,"Items disposition for returned items")

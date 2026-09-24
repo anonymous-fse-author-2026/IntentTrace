@@ -1,0 +1,8 @@
+- `action(n1, "start the trip planning")`: Payload misrepresents the source text, which explicitly states "identify the requirements for your trip."
+- `defines(v1, "select trip type", {})`: Range is empty `{}`, failing to capture the source-specified value space `"Select one way"` and `"Select return"`.
+- `action(n11, "End")`: Hallucinates an intermediate termination step; source indicates immediate process completion after the final task ("once you have completed the flight selection, the process will come to an end.").
+- `precedence(n10, n11)` and `precedence(n11, e1)`: Disrupts exact source chronology by interposing the spurious `n11` node between flight selection and the actual `end(e1)` state.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

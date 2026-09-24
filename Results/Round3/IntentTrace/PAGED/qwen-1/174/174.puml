@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Process;
+:Bill for Purchased Goods/Services;
+:Receive Invoice;
+:Invoice Complete?;
+:v1: Invoice Complete? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Return Invoice;
+else ([v1 = 'Yes'])
+:Invoice Compliant?;
+:v2: Invoice Compliant? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Conduct Further Checks;
+:Issue Can Be Resolved With Phone Call?;
+:v3: Issue Can Be Resolved With Phone Call? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Resolve Non-Compliance;
+else ([v3 = 'No'])
+:Return Invoice;
+stop
+endif
+else ([v2 = 'Yes'])
+->;
+endif
+:Pay Invoice;
+:Bill Client;
+:Client Responded?;
+:Wait 10 Days;
+:Send Reminder;
+:End Process;
+stop
+endif
+@enduml

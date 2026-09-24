@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start loan application process")`: Hallucinates a preliminary step; source states `"At the start, the loan application is checked"` with no separate initialization task.
+- `defines(v1, "is application rejected", {"Yes"})`: Variable range lacks a negative value; source implies a binary outcome (`"rejected"` vs continuation), making the implicit else-path from `b1` semantically unsupported by the declared range.
+- `action(n3, "is application rejected")` & `action(n5, "are special terms agreed upon")`: Misdeclared as `action` nodes despite posing conditional questions; their payloads describe decision triggers, conflicting with the `branch`/`guard` constructs that actually perform the routing.
+- `action(n4, "end process")`, `action(n6, "end process")`, `action(n8, "end process")`: Introduce redundant termination activities before `end()` terminals; source describes termination as an immediate state (`"the process ends"`), not a distinct operational step.
+- `guard(b2, n6, v2 = 'No')` & `precedence(b2, n6)`: Hallucinates an explicit failure path; source only specifies `"if special terms are agreed upon, the process continues"`, leaving the non-agreement outcome undefined and intentionally unmodeled.

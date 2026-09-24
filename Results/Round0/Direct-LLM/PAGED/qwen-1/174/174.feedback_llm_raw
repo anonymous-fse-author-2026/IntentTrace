@@ -1,0 +1,6 @@
+
+
+- `action(n26, "End Process")` & `precedence(n26, e6)`: Terminates the workflow when the source explicitly states "if the client is satisfied, the process continues," contradicting the intended progression.
+- `action(n6, "End Process")`, `action(n12, "End Process")`, `action(n25, "End Process")`: Label intermediate outcomes ("it is returned", "payment discrepancy is resolved") as terminal activities paired with separate end nodes (`e1`, `e2`, `e5`), hallucinating immediate termination not supported by the text.
+- `guard(b2, c1, v2 = 'Yes')` & `precedence(b2, c1)` / `guard(b4, c2, v4 = 'No')` & `precedence(b4, c2)`: Route conditional branches directly to `converge` nodes instead of documented actions or logical merge points, misusing synchronization elements as conditional pass-throughs and distorting control-flow logic.
+- `branch(b7, AND)` parallel structure: Isolates `action(n16, "Notify Client Of Payment")` on the primary branch while the parallel client interaction branch (`n18`–`n26`) terminates independently, fragmenting the "client is notified of the payment" step and creating disjoint init-to-end paths that diverge from the source narrative.

@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check SLA details"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "look up SLA details"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "enter processing date from SLA into invoice entry form"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "are SLA details known from memory",
+      "R_X": [
+        "known",
+        "not known"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Admin Office",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n4",
+        "c1",
+        "n5",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"not known\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c1",
+      "condition": "v1 = \"known\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the Admin Office, the first step is to check the SLA."
+    },
+    {
+      "id": "i2",
+      "content": "If the SLA details are not known from memory, then it is necessary to look them up. However, if the SLA details are known from memory, the process can continue without interruption."
+    },
+    {
+      "id": "i3",
+      "content": "then it is necessary to look them up"
+    },
+    {
+      "id": "i4",
+      "content": "the process can continue without interruption"
+    },
+    {
+      "id": "i5",
+      "content": "the required processing date should be entered from the SLA into the invoice entry form"
+    },
+    {
+      "id": "i6",
+      "content": "This marks the end of the process."
+    }
+  ]
+}

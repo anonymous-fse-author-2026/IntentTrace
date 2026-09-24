@@ -1,0 +1,14 @@
+- `action(n1, "start process")`: Hallucinates an introductory step; the source description begins directly with "selecting a filter".
+- `defines(v2, "Is there another filter to apply", {"no"})`: The value range only specifies "no", failing to capture the affirmative case required by the source question.
+- `branch(b2, XOR)` / `guard(b2, n8, v2 = 'no')`: Omits the pathway for the affirmative case; the source states "If there is, continue with the process", but the model only routes the "no" outcome, breaking the intended control flow.
+- `defines(v3, "Is submit option true", {"false"})`: The value range only contains "false", contradicting the source condition "if the option to submit is set to 'true'".
+- `guard(b3, n9, v3 = 'false')`: Triggers progression to the end when the condition is false, directly contradicting the source instruction "if the option to submit is set to 'true', continue with the process".
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b3` has in=1 and out=1. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['no']`. | Variable `v3` has an invalid range `['false']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'no'` on `b2 -> n8` uses undefined variable `v2`. | Guard `v3 = 'false'` on `b3 -> n9` uses undefined variable `v3`. | DSL: guard(b2,n8,"v2 = 'no'"); guard(b3,n9,"v3 = 'false'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'no'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'false'` on `b3 -> n9` cannot be evaluated: `v3` has no declared range. | DSL: guard(b2,n8,"v2 = 'no'"); guard(b3,n9,"v3 = 'false'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

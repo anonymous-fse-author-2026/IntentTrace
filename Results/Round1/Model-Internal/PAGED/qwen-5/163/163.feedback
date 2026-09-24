@@ -1,0 +1,30 @@
+Omission
+- [N1] Within matched traces (0->5) omitted: i7:Create a claim and handle the claim accordingly.
+- [N2] Within matched traces (0->5) omitted: i8:Extract the data from the suppliers and enter it on the patient's record or confirm the IN-Patient status.
+- [N3] Within matched traces (0->5) omitted: i9:Register the case, handle the claim, and then receive the payment.
+- [N4] Within matched traces (1->5) omitted: i3:send data to suppliers and create a claim.
+- [N5] Within matched traces (1->5) omitted: i4:Once the data is sent to suppliers, extract the data from the suppliers and transfer it to the doctor's phone.
+- [N6] Within matched traces (1->5) omitted: i5:confirm the GOP and the process will come to an end.
+- [N7] Within matched traces (1->5) omitted: i7:Create a claim and handle the claim accordingly.
+- [N8] Within matched traces (1->5) omitted: i8:Extract the data from the suppliers and enter it on the patient's record or confirm the IN-Patient status.
+- [N9] Within matched traces (1->5) omitted: i9:Register the case, handle the claim, and then receive the payment.
+
+Addition
+- [N10] Node-level addition: action(n13,"receive the payment after handling claim") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Node-level addition: action(n14,"end process after handling claim") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: action(n17,"parallel start: send data back to suppliers") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: action(n21,"end process after payment received post registration") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Node-level addition: action(n26,"end process after payment received post registering case") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N15] Node-level addition: action(n30,"handle create a claim after initial create claim") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N16] Node-level addition: action(n31,"handle the claim accordingly after creation") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N17] Added trace (model 0): init(i1) -> action(n1,"start the process and enter the metadata") -> action(n2,"proceed to IN-Patient step") -> branch(b1,AND) -> action(n3,"parallel start: send data to suppliers") -> action(n6,"extract data from suppliers") -> action(n7,"transfer data to doctor's phone") -> action(n8,"confirm the GOP") -> action(n9,"end after confirming GOP") -> end(e1)
+- [N18] Added trace (model 1): init(i1) -> action(n1,"start the process and enter the metadata") -> action(n2,"proceed to IN-Patient step") -> branch(b1,AND) -> action(n4,"parallel start: create a claim") -> action(n30,"handle create a claim after initial create claim") -> action(n31,"handle the claim accordingly after creation") -> action(n32,"receive the payment after claim creation handling") -> action(n33,"end process after claim creation handling payment") -> end(e6)
+- [N19] Added trace (model 2): init(i1) -> action(n1,"start the process and enter the metadata") -> action(n2,"proceed to IN-Patient step") -> branch(b1,AND) -> action(n5,"parallel start: register the case") -> action(n10,"handle the claim") -> branch(b2,AND) -> action(n11,"create a claim within handling") -> action(n12,"handle the claim accordingly") -> action(n13,"receive the payment after handling claim") -> action(n14,"end process after handling claim") -> end(e2)
+- [N20] Added trace (model 3): init(i1) -> action(n1,"start the process and enter the metadata") -> action(n2,"proceed to IN-Patient step") -> branch(b1,AND) -> action(n5,"parallel start: register the case") -> action(n10,"handle the claim") -> branch(b2,AND) -> action(n15,"extract data from suppliers after claim handling") -> action(n16,"enter data on patient's record or confirm IN-Patient status from extraction") -> branch(b3,AND) -> action(n17,"parallel start: send data back to suppliers") -> action(n22,"send data to suppliers after patient record entry") -> action(n23,"register the case after sending data back") -> action(n24,"handle the claim after registering case") -> action(n25,"receive the payment after handling claim post registering case") -> action(n26,"end process after payment received post registering case") -> end(e4)
+- [N21] Added trace (model 4): init(i1) -> action(n1,"start the process and enter the metadata") -> action(n2,"proceed to IN-Patient step") -> branch(b1,AND) -> action(n5,"parallel start: register the case") -> action(n10,"handle the claim") -> branch(b2,AND) -> action(n15,"extract data from suppliers after claim handling") -> action(n16,"enter data on patient's record or confirm IN-Patient status from extraction") -> branch(b3,AND) -> action(n18,"parallel start: register the case after patient record entry") -> action(n19,"handle the claim after case registration") -> action(n20,"receive the payment after handling claim post registration") -> action(n21,"end process after payment received post registration") -> end(e3)
+- [N22] Within matched traces (0->5) added: branch(b1,AND)
+- [N23] Within matched traces (1->5) added: action(n2,"proceed to IN-Patient step")
+- [N24] Within matched traces (1->5) added: branch(b1,AND)
+
+Mutation
+- [N25] Node-level mutation: element=action(n11,"create a claim within handling"); source=i7:Create a claim and handle the claim accordingly.; reason=The model phrases this step as 'create a claim within handling', which incorrectly nests the creation inside the handling phase. This alters the sequential logic and granularity specified in the source, which treats creation and handling as distinct, adjacent steps.

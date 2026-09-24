@@ -1,0 +1,348 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Ensure invoice is ready for verification"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Check invoice completeness"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Check SLA"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Check compliance"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Allocate invoices to Data Entry Officer by 9 am next working day"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Process invoice batch"
+    },
+    {
+      "id": "n8",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Take batch to outbox"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Clear outbox every hour until completely cleared"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "until the outbox is completely cleared"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "End of process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "More batches to process?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Outbox completely cleared?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "c1",
+        "n7",
+        "n8",
+        "n9",
+        "c2",
+        "n10",
+        "n11",
+        "b2",
+        "n12",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "n8",
+      "B": "c1",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "n8",
+      "B": "n9",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c2",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n12",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "label",
+      "A": "n1",
+      "B": "n2",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n2",
+      "B": "n3",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n3",
+      "B": "n4",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n4",
+      "B": "n5",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n5",
+      "B": "n6",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n6",
+      "B": "c1",
+      "str": "Yes"
+    },
+    {
+      "type": "label",
+      "A": "n9",
+      "B": "c2",
+      "str": "Yes"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the SSP process"
+    },
+    {
+      "id": "i2",
+      "content": "first ensure that the Invoice is ready for verification"
+    },
+    {
+      "id": "i4",
+      "content": "check for invoice completeness"
+    },
+    {
+      "id": "i6",
+      "content": "proceed to check for SLA"
+    },
+    {
+      "id": "i8",
+      "content": "move on to checking for invoice compliance"
+    },
+    {
+      "id": "i10",
+      "content": "the batched invoices are allocated to the Data Entry Officer and this is done by 9 am on the next working day"
+    },
+    {
+      "id": "i11",
+      "content": "The next step is to process the invoice batch"
+    },
+    {
+      "id": "i12",
+      "content": "process the invoice batch"
+    },
+    {
+      "id": "i13",
+      "content": "then take it to the outbox"
+    },
+    {
+      "id": "i14",
+      "content": "this should be repeated until all invoices are processed"
+    },
+    {
+      "id": "i15",
+      "content": "repeated until all invoices are processed"
+    },
+    {
+      "id": "i17",
+      "content": "make sure to clear the outbox of the Data Entry Officer every hour"
+    },
+    {
+      "id": "i19",
+      "content": "done every hour until the outbox is completely cleared"
+    },
+    {
+      "id": "i20",
+      "content": "until the outbox is completely cleared"
+    },
+    {
+      "id": "i21",
+      "content": "which marks the end of the process"
+    }
+  ]
+}

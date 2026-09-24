@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_support| 1st Level Support
+|a_dev| Developer
+|a_acct_mgr| Account Manager
+|a_sys| System
+|a_sys|
+start
+:start;
+|a_support|
+:Ask 1st Level Support if there is an issue;
+|a_sys|
+:Is the issue resolved?;
+:v1: Is the issue resolved? ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+|a_acct_mgr|
+:Provide feedback for account manager;
+|a_sys|
+:End process;
+else ([v1 = false])
+|a_dev|
+:Ask developer for assistance;
+|a_sys|
+:Is the issue resolved now?;
+:v2: Is the issue resolved now? ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+|a_acct_mgr|
+:Provide feedback for account manager;
+|a_sys|
+:End process;
+else ([v2 = false])
+|a_dev|
+:Ask developer for help again;
+|a_sys|
+:Is the issue resolved after re-assistance?;
+:v3: Is the issue resolved after re-assistance? ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+|a_acct_mgr|
+:Provide feedback for account manager;
+|a_sys|
+else ([v3 = false])
+:Handle unresolved case;
+endif
+endif
+endif
+:End process;
+|a_dev|
+:Ask the developer;
+|a_support|
+:Provide feedback for 1st Level support;
+:Provide feedback for 1st Level support;
+|a_acct_mgr|
+:Provide feedback for account manager;
+|a_sys|
+stop
+@enduml

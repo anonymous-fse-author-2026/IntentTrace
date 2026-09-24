@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 0): i1:the first step -> i2:gather information about the part from the customer, including the make, model, and year -> i3:check the availability of the part in the local inventory -> i4:If the part is found to be available locally -> i5:retrieved from the inventory -> i7:the process comes to an end.
+- [N2] Omitted trace (input 1): i1:the first step -> i2:gather information about the part from the customer, including the make, model, and year -> i3:check the availability of the part in the local inventory -> i6:records the customer's details -> i8:orders the part from Disuki -> i7:the process comes to an end.
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: The action 'start' is an invented step. The text 'the first step' merely introduces the first action (gathering information) and justifies the init node, but does not describe a discrete 'start' behavior to justify an action node.)
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"gather information about the part from the customer (make model year)") -> action(n3,"check availability of the part in local inventory") -> branch(b1,XOR) -> action(n4,"retrieve part from local inventory") -> action(n5,"end process") -> end(e1)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"gather information about the part from the customer (make model year)") -> action(n3,"check availability of the part in local inventory") -> branch(b1,XOR) -> action(n6,"record customer details") -> action(n7,"order part from Disuki") -> action(n8,"end process") -> end(e2)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = \"Yes\"") -> guard(b1,n6,"v1 = \"No\""); source=i4: If the part is found to be available locally; reason=The guards abstract the conditional text into invented variables and arbitrary values ('v1 = "Yes"' / 'v1 = "No"'), dropping the semantic meaning and granularity of checking local availability.

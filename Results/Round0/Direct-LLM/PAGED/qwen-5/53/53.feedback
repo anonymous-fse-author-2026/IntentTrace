@@ -1,0 +1,9 @@
+- `action(n1, "Start P&E Court Process")`: Hallucinates an initial step; the source text begins directly with "start by Listing and then proceed".
+- `action(n5, "Consider all P&E Judges when checking Availability")`: Violates source chronology by sequencing this after `action(n4)`; the description instructs to "make sure to consider all judges" *when* checking availability, not as a subsequent sequential task.
+- `defines(v1, "Are there any issues with the P&E Judge Availability?", {})`: Specifies an empty value range `{}`, violating SMC6 by omitting the necessary decision values (e.g., `true`/`false`) to evaluate the branch condition.
+- `precedence(b1, n7)` and `precedence(b1, c1)`: Lack corresponding `guard` statements to define the boolean conditions for each outgoing edge of the XOR branch, rendering the exclusive choice logic incomplete per SMC4.
+- `action(n10, "End process for the P&E Court")`: Hallucinates a terminal action node; the source concludes with "before concluding the process", making the direct transition to `end(e1)` semantically correct without an intervening step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

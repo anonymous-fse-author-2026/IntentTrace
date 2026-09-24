@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle -> i2:check the inventory level -> i3:If the inventory level is at or below the minimum -> i4:create a purchase order -> i6:review it -> i7:If the purchase status is rejected -> i8:rework the purchase order -> i6:review it
+
+Addition
+- [N2] Within matched traces (2->0) added: action(n16,"process ends")
+- [N3] Within matched traces (2->0) added: end(e2)
+- [N4] Within matched traces (3->1) added: action(n17,"process ends")
+- [N5] Within matched traces (3->1) added: end(e3)
+- [N6] Within matched traces (0->2) added: action(n3,"inventory at or below minimum")
+- [N7] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'") -> guard(b1,n5,"v1 = 'No'"); source=i3:If the inventory level is at or below the minimum; reason=The model replaces the specific inventory level threshold with arbitrary boolean variables (v1 = 'Yes' and 'No').
+- [N9] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:If the purchase status is rejected; reason=The model replaces the exact rejection check with an arbitrary boolean variable (v2 = 'No').
+- [N10] Node-level mutation: element=guard(b2,n9,"v2 = 'Yes'"); source=i9:if the purchase status is approved; reason=The model replaces the exact approval check with an arbitrary boolean variable (v2 = 'Yes').

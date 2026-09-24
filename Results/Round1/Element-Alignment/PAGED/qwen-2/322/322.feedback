@@ -1,0 +1,13 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i5:proceed with processing the reimbursement
+- [N2] Within matched traces (0->1) omitted: i8:proceed with the payment
+
+Addition
+- [N3] Node-level addition: action(n7,"End") (reason: This action step lacks a corresponding Input Element. It attempts to model the unsegmented trailing phrase 'and end the process', but functionally overlaps with structural end nodes and has no dedicated source unit backing it.)
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start Expense Report process") -> action(n2,"Receive Expense Report") -> action(n3,"Verify account and review report") -> action(n4,"Is report accepted?") -> branch(b1,XOR) -> action(n5,"Process reimbursement") -> action(n6,"Proceed with payment") -> action(n7,"End") -> end(e1)
+- [N5] Within matched traces (0->1) added: action(n8,"Send Expense Rejection Notification")
+- [N6] Within matched traces (1->1) added: action(n4,"Is report accepted?")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i4:If the report is accepted; reason=The guard substitutes the explicit source condition ('accepted') with a generic variable assignment ('v1 = "Yes"'), altering the specific data/value stated in the text.
+- [N8] Node-level mutation: element=guard(b1,n8,"v1 = 'No'"); source=i6:However, if the report is rejected, send an Expense Rejection Notification; reason=The guard replaces the explicit source condition ('rejected') with a generic variable assignment ('v1 = "No"'), distorting the domain-specific value required by the source.

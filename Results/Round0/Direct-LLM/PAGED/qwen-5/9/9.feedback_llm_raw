@@ -1,0 +1,8 @@
+
+
+- `branch(b13, AND)`: Defined as an AND gateway but has only one incoming edge (`n9`). AND gateways semantically require synchronization of multiple concurrent flows, misrepresenting the control-flow logic of the source.
+- `converge(c2)`: Synchronizes `n20`/`n25` (resolution steps) with `n29` (sending reminder). The source describes the reminder sequentially: "After 10 days, a reminder is sent and the process ends," not concurrently with independent resolution actions.
+- `action(n35)` / `guard(b8, n35, v8 = 'No')`: Handles the case where the invoice is *not* returned after payment, but has no outgoing `precedence` edges. This creates a dead-end path, breaking the continuous progression implied by the source.
+- `defines(v11, "Is there response from client after 10 days?", {})`: Declares an empty value range `{}`, which invalidates the decision variable and makes it impossible to define meaningful guards for the associated branch `b11`.
+- `defines(v4, "Does issue require mail back?", {"Yes"})` and `defines(v7, "Does issue still require mail back?", {"Yes"})`: Restrict binary decision variables to a single value. This collapses the associated XOR branches (`b4`, `b7`) into unconditional transitions, failing to faithfully represent the decision points in the source.
+- `guard(b9, n28, v9 = 'Yes')` & `precedence(b9, n28)`: Routes processes with a client response directly to `n28` ("Pay Invoice and notify client"), bypassing the 10-day wait (`n23`, `n27`) and invoice return check (`n24`). This deviates from the source's chronological sequencing: "If there is no response, a period of 10 days is given... The invoice is paid and the client is notified of the payment."

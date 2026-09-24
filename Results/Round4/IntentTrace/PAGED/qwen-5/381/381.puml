@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+|actor_default| Default
+|actor_default|
+start
+:To begin with, you should choose your destination and calculate the distance.;
+:While doing so, continue to check if you need to book a train or a flight.;
+:v_transport: transport choice ({train, flight}); <<objectSignal>>
+if () then ([v_transport = 'train'])
+:If the answer is "no", then proceed to book a train.;
+else ([v_transport = 'flight'])
+:However, if the answer is "yes", then book a flight.;
+endif
+:v_time: time check ({within_24h, passed_24h}); <<objectSignal>>
+if () then ([v_time = 'within_24h'])
+:If a code is available within 24 hours, the process will end.;
+stop
+else ([v_time = 'passed_24h'])
+:Otherwise, if 24 hours have passed, you should call a travel agency.;
+:v_code: code availability ({available, not_available}); <<objectSignal>>
+if () then ([v_code = 'available'])
+:If a code is available, the process will end along with the hotel reservation.;
+stop
+else ([v_code = 'not_available'])
+:On the other hand, if a code is not available, you should cancel your journey. In that case, the process will end as well.;
+stop
+endif
+endif
+@enduml

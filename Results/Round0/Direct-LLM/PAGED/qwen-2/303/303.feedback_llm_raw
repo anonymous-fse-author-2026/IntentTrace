@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "is order received via fax", {"mail or phone"})`: The declared value range omits "fax", failing to capture the full choice space presented in the source text. (SMC6)
+- `branch(b1, XOR)` with `precedence(b1, n5)` and `guard(b1, n5, v1 = 'mail or phone')`: The XOR gateway lacks a second outgoing edge and guard for the fax scenario, omitting the documented behavior "If the order is received via fax, input the order into an Excel file." (SMC1, SMC4)
+- `branch(b8, AND)` followed by `branch(b9, AND)`: Chaining two parallel splits imposes a sequential dependency where the invoicing tasks wait for the warehouse memo confirmation. This contradicts the source statement "At the same time, commission the goods and sign and send the memo. Also, send the goods...", which requires all post-quality-report tasks to execute concurrently. (SMC3, SMC4)
+- `precedence(b9, c4)`: Directly connecting an AND branch to a converge node creates a zero-duration bypass path that decouples the invoice sequence from the join point, misrepresenting the intended concurrent tracking and synchronization logic. (SMC4)

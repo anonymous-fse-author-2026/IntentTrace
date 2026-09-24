@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v_opt: research schedule directly selected ({Yes, No}); <<objectSignal>>
+if () then ([v_opt = 'Yes'])
+:Research schedule;
+else ([v_opt = 'No'])
+:Provide indications;
+:Research schedule;
+endif
+:Validate schedule;
+:v_sat1: schedule satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v_sat1 = 'No'])
+:Research schedule;
+:v_sat2: schedule still satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v_sat2 = 'No'])
+:Provide indications;
+else ([v_sat2 = 'Yes'])
+->;
+endif
+else ([v_sat1 = 'Yes'])
+->;
+endif
+:Write ticket order to SNCF;
+:Validate ticket order;
+:v_app: ticket order approved ({Yes, No}); <<objectSignal>>
+if () then ([v_app = 'No'])
+stop
+else ([v_app = 'Yes'])
+:Validate ticket order;
+:Check again if the ticket order is approved.;
+:Check once more if the ticket order is approved.;
+stop
+endif
+@enduml

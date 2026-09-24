@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process, Course Packet Information Received should be sent -> i2:followed by sending the Design to Faculty. -> i3:the Faculty will choose the design. -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i5:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added" -> i6:Contact Faculty to inform of denial and ask if new content should be added -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance.
+- [N2] Omitted trace (input 1): i1:To start the process, Course Packet Information Received should be sent -> i2:followed by sending the Design to Faculty. -> i3:the Faculty will choose the design. -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i7:However, if the "Entire Course Packet Copyright Cleared" -> i8:if the "Entire Course Packet Copyright Cleared" -> i9:Calculate the Course Packet Cost -> i10:add the Bookstore margin to determine the retail price. -> i11:If the Faculty needs to reconsider the course packet content to decrease the price -> i12:reconsider the course packet content to decrease the price -> i4:identify the content that requires copyright clearance and contact the publisher to obtain clearance.
+
+Addition
+- [N3] Within matched traces (2->0) added: init(i1)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n8,"v1 = 'No'"); source=i5:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added"; reason=Guard payload `v1 = 'No'` replaces the specific natural-language condition from the source, altering the explicit decision logic.
+- [N5] Node-level mutation: element=guard(b1,n9,"v1 = 'Yes'"); source=i7:However, if the "Entire Course Packet Copyright Cleared"; reason=Guard payload `v1 = 'Yes'` replaces the specific natural-language condition from the source, altering the explicit decision logic.
+- [N6] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i11:If the Faculty needs to reconsider the course packet content to decrease the price; reason=Guard payload `v2 = 'No'` replaces the specific natural-language condition from the source, altering the explicit decision logic.
+- [N7] Node-level mutation: element=guard(b2,n13,"v2 = 'Yes'"); source=i13:Alternatively, if the Price of the Course Packet is finalized; reason=Guard payload `v2 = 'Yes'` replaces the specific natural-language condition from the source, altering the explicit decision logic.
+
+Permutation
+- [N8] Within matched traces (2->0) reordered: expected [i7:However, if the "Entire Course Packet Copyright Cleared"] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n7,"is copyright cleared?")]
+- [N9] Within matched traces (2->0) reordered: expected [i13:Alternatively, if the Price of the Course Packet is finalized] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n11,"is price finalized?")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=3 and out=1. | DSL: action(n3,"send: Design to Faculty")

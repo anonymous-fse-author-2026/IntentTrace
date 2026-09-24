@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i5:Similarly, if the value of "x" is greater than 2, the process should be continued. On the other hand, if the value of "x" is less than 2, the process should still be continued. (reason: The source explicitly repeats the entire conditional logic and continuation steps, but the model lacks any corresponding loop, iteration, or duplicated branch structure to reflect this textual redundancy.)
+- [N2] Omitted trace (input 0): i1:For testing purposes, the process should be continued from the beginning. -> i2:If the value of "x" is greater than 2 -> i3:the process should be continued. -> i4:However, if the value of "x" is less than 2, the process should still be continued. -> i5:Similarly, if the value of "x" is greater than 2, the process should be continued. On the other hand, if the value of "x" is less than 2, the process should still be continued.
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: Content 'start' is invented; the source specifies the process should be 'continued from the beginning' for testing, which is structurally handled by the init node rather than a discrete start action.)
+- [N4] Node-level addition: action(n5,"End") (reason: Content 'End' is invented; the source text concludes with repeated conditions and contains no termination step.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n3,"Continue the process") -> converge(c1) -> action(n5,"End") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n5,"End") -> end(e1)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=i4:However, if the value of "x" is less than 2, the process should still be continued.; reason=The source explicitly requires the condition 'less than 2', but the model substitutes it with a generic boolean 'v1 = false', dropping the specific threshold and operator required by the text.

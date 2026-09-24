@@ -1,0 +1,7 @@
+
+
+- `branch(b1)`, `branch(b2)`, `branch(b3)`: Missing `guard` declarations for all outgoing edges omit the documented routing conditions ("If the task is 'Service Task 1'", "If it is 'Service Task 2'", "if there is a Manual Task"), leaving the XOR split logic undefined and unfaithful to SMC1/SMC4.
+- `action(n10)` through `end(e3)`: Hallucinates a continuation and termination path for the absence of a Manual Task; the description only specifies behavior when one exists ("if there is a Manual Task, the process will end"), violating SMC1.
+- `precedence(b1, n4)` and `branch(b2)`: Incorrectly models the task-type decision as sequential nested checks (evaluating ST2 only after ST1 evaluates to false), rather than a single multi-way exclusive choice as presented in the source ("If the task is 'Service Task 1'... If it is 'Service Task 2'... However, if it is 'Service Task 3'..."), violating SMC3/SMC4.
+- `action(n2, "Is User Task Service Task 1?")`, `action(n4, "Is User Task Service Task 2?")`, `action(n8, "Is there a Manual Task?")`: Misuse the `action` node type for interrogative decision gates; these payloads describe routing logic that should structurally belong to branch exits and `guard` conditions, violating SMC2.
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Specify empty value ranges `{}` instead of reflecting the categorical or boolean domains implied by the source conditions (specific task types or presence/absence of a manual task), violating SMC6.

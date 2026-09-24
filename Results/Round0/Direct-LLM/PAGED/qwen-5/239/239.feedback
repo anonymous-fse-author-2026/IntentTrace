@@ -1,0 +1,11 @@
+- `branch(b1, XOR)` with `precedence(b1, n6)` and `precedence(b1, n7)`: Uses exclusive choice for tasks that must run concurrently, contradicting the source which states "At the same time, two steps need to be completed: preparing the assembling order and checking availability."
+- `action(n4, "Reject Order")`, `action(n5, "End")`, `end(e1)`: Routes rejected orders to immediate termination, contradicting the source which explicitly states "If the order is to be rejected, the process should continue."
+- `branch(b2, XOR)` leading to `action(n9, "End")` and `end(e2)`: Omits the required feedback loop; the source states "If there is a backorder, availability needs to be checked again and the process ends," but the model jumps straight to termination without re-checking.
+- `defines(v1, "Is Order Rejected?", {})` and `defines(v2, "Is Backorder Required?", {})`: Declares empty value ranges `{}`, failing to reflect the binary decision nature implied by the source text.
+- Missing `guard` statements for `b1` and `b2`: The model declares decision variables but provides no `guard(...)` rules to constrain the branch edges, leaving the exclusive choices undefined relative to the source conditions.
+- `action(n5, "End")`, `action(n9, "End")`, `action(n12, "End")`: Hallucinates explicit processing steps labeled "End"; the source describes natural termination without named end-tasks.
+- `label(n10, n11, "12")`: Assigns an arbitrary label "12" to an edge, which is not mentioned in the source description.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

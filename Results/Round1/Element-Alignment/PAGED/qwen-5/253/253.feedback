@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i7:On the other hand, if the Purchase Order is rejected, then rework the order. -> i9:In case the order needs to be reworked, review the Purchase Order again. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order.; reason=The guard uses abstract boolean logic ('v1 = Yes') instead of preserving the explicit source condition and threshold ('at or below the minimum'), dropping required data per strict evaluation standards.
+- [N3] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:However, if the "Inventory Level is above the minimum", then the process ends.; reason=The guard uses abstract boolean logic ('v1 = No') instead of preserving the explicit source condition ('above the minimum'), dropping required data per strict evaluation standards.
+- [N4] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i6:If the Purchase Order is approved, then reserve the funds for the purchase.; reason=The guard uses abstract boolean logic ('v2 = Yes') instead of preserving the explicit approval condition stated in the source.
+- [N5] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:On the other hand, if the Purchase Order is rejected, then rework the order.; reason=The guard uses abstract boolean logic ('v2 = No') instead of preserving the explicit rejection condition stated in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Purchase Order approved?")

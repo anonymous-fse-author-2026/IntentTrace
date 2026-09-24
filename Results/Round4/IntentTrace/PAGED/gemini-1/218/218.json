@@ -1,0 +1,285 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start the expenses process for MyCorp"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "entering expenses"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "generate a spreadsheet"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "the request can be approved or disapproved"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "the expenses can be paid out"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "The process then checks again if the request is approved or not"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "pay out expenses"
+    },
+    {
+      "id": "n10",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "goes back to entering expenses"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is the request approved",
+      "R_X": [
+        "Approved",
+        "Not Approved"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "is the request approved",
+      "R_X": [
+        "Approved",
+        "Not Approved"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "b1",
+        "n5",
+        "n7",
+        "b2",
+        "n8",
+        "n10",
+        "c1",
+        "c2",
+        "n6"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n10"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"Approved\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c2",
+      "condition": "v1 = \"Not Approved\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = \"Approved\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c2",
+      "condition": "v2 = \"Not Approved\""
+    },
+    {
+      "type": "label",
+      "A": "b1",
+      "B": "c2",
+      "str": "If the request is not approved"
+    },
+    {
+      "type": "label",
+      "A": "b2",
+      "B": "c2",
+      "str": "If it is not approved"
+    },
+    {
+      "type": "label",
+      "A": "b1",
+      "B": "n5",
+      "str": "However, if the request is approved"
+    },
+    {
+      "type": "label",
+      "A": "b2",
+      "B": "n8",
+      "str": "But if it is approved"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For MyCorp, the process begins"
+    },
+    {
+      "id": "i2",
+      "content": "entering expenses"
+    },
+    {
+      "id": "i3",
+      "content": "generate a spreadsheet"
+    },
+    {
+      "id": "i4",
+      "content": "the request can be approved or disapproved"
+    },
+    {
+      "id": "i5",
+      "content": "If the request is not approved"
+    },
+    {
+      "id": "i6",
+      "content": "goes back to entering expenses"
+    },
+    {
+      "id": "i7",
+      "content": "However, if the request is approved"
+    },
+    {
+      "id": "i8",
+      "content": "the expenses can be paid out"
+    },
+    {
+      "id": "i9",
+      "content": "The process then checks again if the request is approved or not"
+    },
+    {
+      "id": "i10",
+      "content": "If it is not approved"
+    },
+    {
+      "id": "i11",
+      "content": "But if it is approved"
+    },
+    {
+      "id": "i12",
+      "content": "the process comes to an end"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+- `defines(v1, "Know SLA?", {})` and `defines(v2, "Is task Urgent?", {})`: Ranges are empty `{}`, failing to capture the binary alternatives explicitly described in the source (`"if someone 'Knows SLA'"` versus `"If they don't 'Know SLA'"`, and `"If the task is 'Urgent'"` versus `"If it is 'Non Urgent'"`).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to explicitly associate outgoing edges with the source's conditional criteria (`"if someone 'Knows SLA'"`, `"If the task is 'Urgent'"`), leaving the split logic semantically unanchored.
+- `action(n1, "start")`: Hallucinates an initial step not mentioned in the description, which begins immediately with the first condition (`"At the beginning, if someone 'Knows SLA'..."`).
+- `action(n2, "Know SLA?")` and `action(n6, "Is task Urgent?")`: Incorrectly models decision predicates as executable process tasks, whereas the source uses these phrases solely as conditional checks that direct subsequent flow.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

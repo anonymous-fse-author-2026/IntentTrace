@@ -1,0 +1,9 @@
+
+
+- `guard(...)` statements: Missing entirely for all XOR branches (b1-b6), despite explicit conditional statements in the source (e.g., "If the invoice is not complete", "If the priority is high"). This violates SMC4 by leaving decision logic undefined.
+- `defines(v1..v6, ..., {})`: All decision variables have empty ranges `{}`, violating SMC6. The source implies specific value domains (e.g., complete/incomplete, high/low priority) that must be properly declared.
+- `branch(b7, AND)`, `branch(b8, AND)`, `converge(c1/c2/c3)`: Introduce parallel splits and synchronization points absent from the description. The source outlines a strictly sequential process with exclusive choices, making these constructs a hallucination per SMC1 and SMC4.
+- `precedence(b7, n9)` & `precedence(b7, c2)`: Incorrectly bifurcates control flow after `n7` ("invoice complete"). The source specifies a linear progression: "information for the SLA is entered. The date... is also entered and the priority is checked," violating SMC3 chronology.
+- `action(n18, "send postal mail...")` & `action(n25, "send postal mail...")`: Duplicates the termination path. The source only specifies this outcome once ("If none of these conditions apply... process ends"), indicating a flawed representation of exclusive alternatives per SMC1 and SMC4.
+- `branch(b4, XOR)` linkage: Routes exclusively from `n17` ("invoice compliance not complete"), whereas the source presents three routing options ("needs experienced staff", "normal case", "none apply") as alternatives evaluated after compliance checking, distorting the intended control-flow logic (SMC4).
+- `action(n23, "call client")` & `action(n26, "call client and request information")`: Fragments client interaction across disconnected paths. The source ties calling the client to the "normal case" alternative and a final sequential step, but the model isolates them in unrelated branches (`n21→n23` vs `b6→n26`), breaking SMC3 faithfulness.

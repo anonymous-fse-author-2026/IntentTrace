@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i4:the Faculty will choose the design (reason: There is no corresponding action element in the generated model for the Faculty making their design choice.)
+- [N2] Omitted trace (input 0): i1:To start the process -> i2:Course Packet Information Received should be sent -> i3:sending the Design to Faculty -> i4:the Faculty will choose the design -> i5:identify the content that requires copyright clearance and contact the publisher to obtain clearance -> i6:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added" -> i4:the Faculty will choose the design
+- [N3] Within matched traces (2->0) omitted: i4:the Faculty will choose the design
+- [N4] Within matched traces (2->0) omitted: i12:if the Price of the Course Packet is finalized
+- [N5] Within matched traces (1->1) omitted: i4:the Faculty will choose the design
+
+Addition
+- [N6] Node-level addition: label(n4,n5,"Yes No") (reason: These labels interject a 'Yes No' decision on basic sequence flows between actions where no branching or text support exists.)
+- [N7] Node-level addition: label(n8,n9,"Yes No") (reason: These labels interject a 'Yes No' decision on basic sequence flows between actions where no branching or text support exists.)
+- [N8] Node-level addition: guard(b1,n7,"v1 == \"No\"") (reason: There is no provided input text segment to support a negative branch condition leading to the cost calculation.)
+- [N9] Node-level addition: action(n13,"end: Reconsider Content") (reason: There is no source text stating that an 'end: Reconsider Content' action occurs.)
+- [N10] Within matched traces (2->0) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N11] Within matched traces (2->0) added: branch(b1,XOR)
+- [N12] Within matched traces (1->1) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N13] Within matched traces (1->1) added: branch(b1,XOR)
+- [N14] Within matched traces (1->1) added: action(n9,"condition: if Price of the Course Packet is finalized")
+- [N15] Within matched traces (1->1) added: action(n13,"end: Reconsider Content")
+- [N16] Within matched traces (1->1) added: end(e2)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b2,n12,"v2 == \"No\""); source=i9:If the Faculty needs to reconsider the course packet content to decrease the price; reason=The model replaces this specific condition with a generic 'No' negation (v2 == "No") linked to the prior finalized price check, structurally changing the explicit logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"identify content requiring copyright clearance and contact publisher")

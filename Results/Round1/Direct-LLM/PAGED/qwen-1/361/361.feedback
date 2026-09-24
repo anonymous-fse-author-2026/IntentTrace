@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: complete the following steps: reserve funds for the purchase and send the purchase order to the supplier. (reason: No element faithfully implements this concurrent pair with correct granularity; the model distorts it by merging steps (n9) and inventing a split (n12), leaving the original instruction structurally uncovered.)
+- [N2] Within matched traces (2->1) omitted: i6:If the purchase order is rejected, rework the purchase order.
+- [N3] Within matched traces (2->1) omitted: i7:After reworking the purchase order, review it again.
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Content 'start' is generic boilerplate with no corresponding instruction or data in the provided input elements.)
+- [N5] Node-level addition: action(n12,"send to supplier") (reason: Isolates 'send to supplier' as a discrete task without source justification; the input element presents it strictly as part of a combined concurrent instruction, not a standalone step.)
+- [N6] Node-level addition: guard(b3,n6,"\"v3 = 'accepted'\"") (reason: Invents an 'accepted' condition and routes it to a review node. The provided input elements contain no unit describing an acceptance path, making this guard and its target unsupported.)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,AND) -> action(n12,"send to supplier") -> action(n13,"receive packing slip and release funds") -> action(n14,"end process: completed") -> converge(c1) -> end(e2)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n1,"start")
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: action(n1,"start")
+- [N12] Within matched traces (1->1) added: converge(c1)
+- [N13] Within matched traces (1->1) added: end(e2)
+- [N14] Within matched traces (2->1) added: init(i1)
+- [N15] Within matched traces (2->1) added: action(n1,"start")
+- [N16] Within matched traces (2->1) added: converge(c1)
+- [N17] Within matched traces (2->1) added: end(e2)
+
+Mutation
+- [N18] Node-level mutation: element=action(n9,"reserve funds and send PO"); source=i8:At the same time, complete the following steps: reserve funds for the purchase and send the purchase order to the supplier.; reason=Merges two explicitly listed concurrent steps into a single monolithic action node, altering the prescribed granularity and preventing proper parallel branching execution.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | Node `n7` has in=2 and out=1. | DSL: action(n6,"review: purchase order"); action(n7,"rework: purchase order")

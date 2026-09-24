@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` / missing `guard(...)`: The model provides no guard conditions to dictate the routing logic at the split, failing to encode the explicit conditional instructions from the source: "If it is [a URN], we proceed... If the input is a 'URL', we simply continue".
+- `defines(v1, "Is input a URN or URL?", {})`: The value range is declared as an empty set `{}`, which does not faithfully represent the documented possible inputs `{"URN", "URL"}`.
+- `label(n1, n2, "Yes No")`: The label is misassigned to the sequential edge between `n1` and `n2` and uses non-specific text, rather than marking the outgoing edges of `b1` with the actual branching criteria ("URN" vs "URL").
+- Omitted secondary check: The source explicitly requires a repeated validation step ("After this, we again check if the input is a 'URN' or a 'URL' and take the corresponding action."), but the model contains only one decision structure (`n2`/`b1`) and completely drops this second check.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

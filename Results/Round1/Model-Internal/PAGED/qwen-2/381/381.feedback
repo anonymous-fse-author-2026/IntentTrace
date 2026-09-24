@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i6:If a code is available (reason: The source presents this as a distinct conditional clause leading to a different outcome, but the model ignores it and only implements the 24-hour variant.)
+- [N2] Node-level omission: i10:the process will end along with the hotel reservation (reason: No element captures the completion of the hotel reservation tied to the process termination in this branch.)
+- [N3] Node-level omission: i12:you should cancel your journey (reason: Completely missing from the model; the negative code branch incorrectly routes to calling a travel agency instead of canceling.)
+- [N4] Within matched traces (1->1) omitted: i9:you should call a travel agency
+- [N5] Within matched traces (1->1) omitted: i6:If a code is available
+- [N6] Within matched traces (1->1) omitted: i10:the process will end along with the hotel reservation
+- [N7] Within matched traces (2->3) omitted: i8:Otherwise, if 24 hours have passed, you should call a travel agency.
+- [N8] Within matched traces (2->3) omitted: i9:you should call a travel agency
+- [N9] Within matched traces (2->3) omitted: i12:you should cancel your journey
+
+Addition
+- [N10] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no supporting source span; the text begins directly with the destination selection instruction.)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"choose destination and calculate distance") -> action(n3,"check if need to book train or flight") -> branch(b1,XOR) -> action(n5,"book a flight") -> action(n10,"check if code is available within 24 hours (flight)") -> branch(b3,XOR) -> action(n11,"code available within 24 hours (flight)") -> end(e3)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (1->1) added: action(n1,"start")
+- [N14] Within matched traces (1->1) added: action(n6,"check if code is available within 24 hours (train)")
+- [N15] Within matched traces (1->1) added: branch(b2,XOR)
+- [N16] Within matched traces (1->1) added: action(n8,"call travel agency (train)")
+- [N17] Within matched traces (2->3) added: action(n1,"start")
+- [N18] Within matched traces (2->3) added: action(n10,"check if code is available within 24 hours (flight)")
+- [N19] Within matched traces (2->3) added: branch(b3,XOR)
+- [N20] Within matched traces (2->3) added: action(n12,"call travel agency (flight)")
+
+Mutation
+- [N21] Node-level mutation: element=action(n6,"check if code is available within 24 hours (train)") -> guard(b2,n7,"v2 = true") -> guard(b2,n8,"v2 = false") -> action(n7,"code available within 24 hours (train)") -> action(n8,"call travel agency (train)"); source=i5:If a code is available within 24 hours; reason=These elements claim to model the positive code-available branch but systematically append an unsourced '(train)' qualifier to every step, distorting the scope.
+- [N22] Node-level mutation: element=action(n9,"end of process after calling travel agency (train)"); source=i8:Otherwise, if 24 hours have passed, you should call a travel agency. -> i7:the process will end; reason=Drops the explicit '24 hours have passed' time condition from the preceding guard logic and incorrectly wraps a direct process termination into a standalone action step.
+- [N23] Node-level mutation: element=action(n10,"check if code is available within 24 hours (flight)") -> guard(b3,n11,"v3 = true") -> guard(b3,n12,"v3 = false") -> action(n11,"code available within 24 hours (flight)") -> action(n12,"call travel agency (flight)"); source=i5:If a code is available within 24 hours; reason=Duplicates the previous logic with an invented '(flight)' suffix. Critically, action:n12 misstates the required action, using 'call travel agency' where the source dictates a different outcome for the unavailable path.
+- [N24] Node-level mutation: element=action(n13,"end of process after calling travel agency (flight)"); source=i11:On the other hand, if a code is not available -> i13:the process will end as well; reason=Repeats the distortion pattern from the train branch, appending '(flight)' and treating a structural process end as a redundant action step.

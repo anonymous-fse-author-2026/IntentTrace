@@ -1,0 +1,8 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> action(n4,"Is invoice amount > $5000?") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> action(n7,"End Process") -> end(e1)
+- [N2] Within matched traces (0->0) added: init(i1)
+- [N3] Within matched traces (1->0) added: init(i1)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i3:If the invoice amount is greater than $5000,; reason=Replaces the explicit threshold and comparison operator (> $5000) with an opaque boolean assignment (v1 = true), dropping the core data required to evaluate the condition.
+- [N5] Node-level mutation: element=guard(b1,c1,"v1 = false"); source=i3:If the invoice amount is greater than $5000, -> i5:Otherwise, continue with the process.; reason=Uses an opaque boolean negation (v1 = false) instead of reflecting the explicit fallback path conditioned on failing the stated $5000 threshold.

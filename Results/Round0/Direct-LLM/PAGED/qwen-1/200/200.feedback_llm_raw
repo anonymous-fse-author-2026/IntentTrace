@@ -1,0 +1,10 @@
+
+
+- `action(n1, "Start Process")`: Payload contradicts source text "start by placing an order".
+- `action(n9, "Prepare Products for Shipment")` and `action(n13, "Check Payment Status")`: Hallucinated duplicate nodes; source mentions each operational step only once.
+- `action(n4, "End Process - Ineligible")`: Incorrectly modeled as an intermediate action instead of a direct `end` node; misrepresents source flow "inform them... the process ends".
+- `defines(v1,...,{})`, `defines(v2,...,{})`, `defines(v3,...,{})`, `defines(v4,...,{})`: Variable ranges are empty `{}`, failing to capture source-defined value spaces (customer eligibility, product availability, payment status, reminder counts).
+- `branch(b1,XOR)`, `branch(b2,XOR)`, `branch(b3,XOR)`, `branch(b4,XOR)`: Completely missing `guard` statements to route flows based on explicit source conditions (e.g., `"not eligible to order"`, `"available"`, payment received vs not received, reminders `< 3` vs `= 3`).
+- `branch(b6,AND)`, `branch(b7,AND)`, `converge(c1)`, `converge(c2)`, `converge(c3)`: Distorts source simultaneity "Simultaneously, complete the following steps: ship... send invoice... checking for payment" into an indirect, blocking dependency chain using superfluous converge nodes instead of a direct parallel split.
+- `action(n17, "Continue Process")` and `converge(c5)`: Breaks the intended retry loop; source states "If the number of reminders is less than 3, continue the process", but the model routes to `c5` which has no outgoing precedence edge, terminating the flow instead of cycling back to payment/reminders.
+- `branch(b5,AND)` on the ineligible path: Introduces unnecessary concurrency in a linear sequence; source describes a direct progression "inform them... the process ends" without parallel execution.

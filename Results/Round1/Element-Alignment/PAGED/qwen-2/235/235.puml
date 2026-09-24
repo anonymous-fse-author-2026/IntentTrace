@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start customer on website;
+:search desired item;
+:click desired item;
+:choose action from desired item page;
+:v1: choose action from desired item page ({view_quantity, enter_quantity}); <<objectSignal>>
+if () then ([v1 = 'view_quantity'])
+:view quantity amount;
+else ([v1 = 'enter_quantity'])
+:enter quantity amount;
+endif
+:return to desired item page;
+:add item to cart;
+:choose action after item added;
+:v2: choose action after item added ({continue_shopping, check_out}); <<objectSignal>>
+if () then ([v2 = 'continue_shopping'])
+:continue shopping;
+:return to desired item page;
+else ([v2 = 'check_out'])
+:check out current item;
+:proceed to check out;
+:confirm item;
+:choose action after confirm;
+:v3: choose action after confirm ({proceed_checkout, recalculate_shipping, enter_coupon}); <<objectSignal>>
+switch ()
+case ([v3 = 'proceed_checkout'])
+:proceed to check out page;
+case ([v3 = 'recalculate_shipping'])
+:recalculate shipping;
+case ([v3 = 'enter_coupon'])
+:enter coupon code;
+endswitch
+:enter check-out page;
+:enter billing information;
+:end process;
+stop
+endif
+@enduml

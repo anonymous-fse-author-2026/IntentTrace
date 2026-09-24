@@ -1,0 +1,12 @@
+- action(n1, "start loan application process"): Hallucinates an introductory step; the source explicitly begins with "At the start, the loan application is checked." without any prior actions. (SMC1)
+- action(n4, "end process"), action(n6, "end process"), action(n8, "end process"): Incorrectly models termination as discrete activities preceding `end()` nodes, whereas the source describes ending as a direct state transition ("the process ends"). (SMC2)
+- guard(b2, n6, v2 = 'No') & precedence(b2, n6): Introduces an explicit termination path for declined special terms that is not documented in the source ("if special terms are agreed upon, the process continues"), constituting hallucinated behavior. (SMC1)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive customer request;
+:check current inventory level;
+:v1: is inventory at or below minimum level? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:accept customer request;
+:create purchase order;
+repeat :;
+:review purchase order;
+:v2: is purchase order approved? ({Yes, No}); <<objectSignal>>
+backward:rework purchase order;
+repeat while () is ([v2 = 'No']) not ([v2 = 'Yes'])
+:reserve funds;
+:send purchase order;
+split
+:receive packing slip;
+:record packing slip;
+split again
+:receive invoice;
+:record invoice;
+end split
+:release reserved funds;
+:issue payment;
+stop
+else ([v1 = 'No'])
+:reject customer request;
+stop
+endif
+@enduml

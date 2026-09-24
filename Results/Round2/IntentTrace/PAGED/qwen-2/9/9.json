@@ -1,0 +1,635 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start with Bill for Purchased Goods or Services"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Is the invoice incomplete?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Return Invoice"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "If the invoice is returned, non-compliance is resolved"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Is the invoice non compliant?"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Continue with compliant invoice process"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Conduct further checks on non compliant invoice"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Can the issue be resolved with phone call?"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Resolve non compliance with phone call"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Does issue require mail back?"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Return Invoice"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Pay Invoice"
+    },
+    {
+      "id": "c_pay_in",
+      "type": "converge"
+    },
+    {
+      "id": "b8",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n20",
+      "type": "action",
+      "content": "Non compliance resolved"
+    },
+    {
+      "id": "c_pay_out",
+      "type": "converge"
+    },
+    {
+      "id": "n21",
+      "type": "action",
+      "content": "Bill Client"
+    },
+    {
+      "id": "b9",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n23",
+      "type": "action",
+      "content": "Wait period of 10 days"
+    },
+    {
+      "id": "b12",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n28",
+      "type": "action",
+      "content": "Pay Invoice and notify client of payment"
+    },
+    {
+      "id": "n32",
+      "type": "action",
+      "content": "Resolve payment discrepancy"
+    },
+    {
+      "id": "n33",
+      "type": "action",
+      "content": "Continue process"
+    },
+    {
+      "id": "c_end_merge",
+      "type": "converge"
+    },
+    {
+      "id": "n29",
+      "type": "action",
+      "content": "Send reminder after 10 days"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is the invoice incomplete?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is the invoice non compliant?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Can the issue be resolved with phone call?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Does issue require mail back?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "Is the invoice incomplete after issue resolution?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v6",
+      "name": "Can the issue still be resolved with phone call?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v7",
+      "name": "Does issue still require mail back?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v8",
+      "name": "Is the invoice returned after payment?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v9",
+      "name": "Is there response from client?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v10",
+      "name": "Is invoice returned?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v11",
+      "name": "Is there response from client after 10 days?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v12",
+      "name": "Is client unsatisfied?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "n12",
+        "n5",
+        "b2",
+        "n6",
+        "n7",
+        "n8",
+        "b3",
+        "n9",
+        "n10",
+        "b4",
+        "n11",
+        "c_pay_in",
+        "n18",
+        "b8",
+        "n20",
+        "c_pay_out",
+        "n21",
+        "b9",
+        "n23",
+        "b12",
+        "n28",
+        "n32",
+        "n33",
+        "c_end_merge",
+        "n29",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c_pay_in"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "c_pay_in"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "c_pay_in"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c_pay_in"
+    },
+    {
+      "type": "precedence",
+      "A": "c_pay_in",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "b8"
+    },
+    {
+      "type": "precedence",
+      "A": "b8",
+      "B": "n20"
+    },
+    {
+      "type": "precedence",
+      "A": "b8",
+      "B": "c_pay_out"
+    },
+    {
+      "type": "precedence",
+      "A": "n20",
+      "B": "c_pay_out"
+    },
+    {
+      "type": "precedence",
+      "A": "c_pay_out",
+      "B": "n21"
+    },
+    {
+      "type": "precedence",
+      "A": "n21",
+      "B": "b9"
+    },
+    {
+      "type": "precedence",
+      "A": "b9",
+      "B": "n23"
+    },
+    {
+      "type": "precedence",
+      "A": "b9",
+      "B": "b12"
+    },
+    {
+      "type": "precedence",
+      "A": "n23",
+      "B": "c_end_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "b12",
+      "B": "n32"
+    },
+    {
+      "type": "precedence",
+      "A": "b12",
+      "B": "n28"
+    },
+    {
+      "type": "precedence",
+      "A": "n32",
+      "B": "c_end_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "n28",
+      "B": "n33"
+    },
+    {
+      "type": "precedence",
+      "A": "n33",
+      "B": "c_end_merge"
+    },
+    {
+      "type": "precedence",
+      "A": "c_end_merge",
+      "B": "n29"
+    },
+    {
+      "type": "precedence",
+      "A": "n29",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n9",
+      "condition": "v3 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n10",
+      "condition": "v3 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n11",
+      "condition": "v4 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "c_pay_in",
+      "condition": "v4 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b8",
+      "B": "n20",
+      "condition": "v8 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b8",
+      "B": "c_pay_out",
+      "condition": "v8 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b9",
+      "B": "n23",
+      "condition": "v9 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b9",
+      "B": "b12",
+      "condition": "v9 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b12",
+      "B": "n32",
+      "condition": "v12 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b12",
+      "B": "n28",
+      "condition": "v12 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice."
+    },
+    {
+      "id": "i2",
+      "content": "If the invoice is incomplete, it is returned."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the invoice is complete, the process continues."
+    },
+    {
+      "id": "i4",
+      "content": "If the invoice is non-compliant, further checks are conducted."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if the invoice is compliant, the process continues."
+    },
+    {
+      "id": "i6",
+      "content": "If the issue can be resolved with a phone call, non-compliance is resolved."
+    },
+    {
+      "id": "i7",
+      "content": "But if the issue requires mail back, the invoice is returned."
+    },
+    {
+      "id": "i9",
+      "content": "After that, the invoice is paid and if it is returned, non-compliance is resolved."
+    },
+    {
+      "id": "i10",
+      "content": "Simultaneously, the following steps are completed: Bill Client."
+    },
+    {
+      "id": "i11",
+      "content": "If there is no response, a period of 10 days is given."
+    },
+    {
+      "id": "i12",
+      "content": "If the invoice is returned, non-compliance is resolved."
+    },
+    {
+      "id": "i13",
+      "content": "The invoice is paid and the client is notified of the payment."
+    },
+    {
+      "id": "i14",
+      "content": "After 10 days, a reminder is sent and the process ends."
+    },
+    {
+      "id": "i15",
+      "content": "If the client is unsatisfied, payment discrepancy is resolved."
+    },
+    {
+      "id": "i16",
+      "content": "However, if the client is satisfied, the process continues."
+    }
+  ]
+}

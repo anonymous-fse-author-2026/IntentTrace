@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce the documented conditions ("amount is less than 200 €", "200 € or more", "deemed acceptable", "not satisfactory"), leaving the exclusive choice logic semantically undefined (SMC4).
+- `precedence(b2, c1)`: Hallucinates a direct control-flow edge from `b2` to `c1`, introducing an unintended third path from an XOR branch; the source explicitly describes only two outcomes after evaluation (SMC1, SMC4).
+- `action(n2, "Is the amount less than 200 euros")` and `action(n5, "Is the expense report acceptable")`: Incorrectly modeled as executable task nodes rather than decision predicates; the description treats these as conditional checks that directly route flow, not as performed steps (SMC2, SMC4).
+- `defines(v1, ...)` and `defines(v2, ...)`: Value ranges are left empty `{}`, failing to faithfully represent the documented thresholds and states ("< 200", ">= 200", "acceptable", "not satisfactory") (SMC6).
+- `precedence(n2, b1)` and `precedence(n5, b2)`: Enforces a sequential action-step before the split, misrepresenting the source chronology where verification and evaluation immediately trigger conditional routing (SMC3).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

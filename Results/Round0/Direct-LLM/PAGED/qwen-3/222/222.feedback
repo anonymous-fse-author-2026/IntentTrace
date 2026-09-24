@@ -1,0 +1,17 @@
+- `action(n1, "start")`: Misused node type for process initiation. Should be declared as `init(id)` to faithfully represent "To start the SSP process...", but is incorrectly modeled as a standard task.
+- `branch(b1)` / `precedence(b1, n9)`: Broken iterative control flow. Only an exit edge exists (`guard(b1, n9, v1 = 'No')`), with no precedence edge returning to `n7` for the alternative outcome, omitting the requirement that processing "should be repeated until all invoices are processed."
+- `branch(b2)` / `precedence(b2, n12)`: Broken iterative control flow. Only an exit edge exists (`guard(b2, n12, v2 = 'Yes')`), with no precedence edge returning to `n10` for the alternative outcome, omitting the requirement that clearing is "done every hour until the outbox is completely cleared".
+- `defines(v1, ...)` / `defines(v2, ...)`: Restrictive decision ranges. Ranges `{"No"}` and `{"Yes"}` contain only a single value, preventing valid XOR branching and contradicting the binary repetition conditions implied in "repeated until all invoices are processed" and "until the outbox is completely cleared".
+- `actor(a_default, "Default", [...])`: Faithless responsibility assignment. All nodes are assigned to a generic `"Default"` actor instead of the `"Data Entry Officer"` explicitly named in the source for allocation, processing, and outbox management.
+- `label(n1, n2, "Yes")` through `label(n5, n6, "Yes")`: Hallucinated edge labels. Imposes conditional "Yes" transitions on sequential steps, contradicting the source's unambiguous chronological sequence ("After that, check... Once confirmed, proceed... Once checked, move on...").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=0 and out=1. | DSL: action(n1,"start")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['Yes']`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n9` uses undefined variable `v1`. | Guard `v2 = 'Yes'` on `b2 -> n12` uses undefined variable `v2`. | DSL: guard(b1,n9,"v1 = 'No'"); guard(b2,n12,"v2 = 'Yes'")
+- [S5] STC19 failed: Every non-init node must be reachable from the init node. | This reachability check requires exactly one init node. | Violations: b1, b2, e1, n1, n10, n11, n12, n2, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); end(e1); action(n1,"start"); action(n10,"Clear outbox every hour until completely cleared"); action(n11,"Outbox completely cleared?"); action(n12,"End of process"); action(n2,"Ensure invoice is ready for verification") (+7 more)
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n9` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> n12` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n9,"v1 = 'No'"); guard(b2,n12,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

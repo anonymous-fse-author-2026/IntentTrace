@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Check if process has started in Admin Office;
+:Proceed to verify completeness of invoices;
+:v1: Invoice Completeness Status ({Uncompleted, Completed}); <<objectSignal>>
+if () then ([v1 = 'Uncompleted'])
+:Return uncompleted invoices to client via postal mail;
+else ([v1 = 'Completed'])
+->;
+endif
+:Receive completed invoices from client;
+:Mark relevant box on invoice entry form;
+:Check if process has been completed;
+:v2: Process Completion Check ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+stop
+else ([v2 = 'No'])
+stop
+endif
+@enduml

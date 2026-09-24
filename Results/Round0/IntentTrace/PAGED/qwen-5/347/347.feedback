@@ -1,0 +1,53 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process for ACME, -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory. -> i4:If the inventory is below or equal to the minimum, -> i6:generate an Equal to or below minimum Report. -> i8:If the report indicates that the inventory is equal to or below the minimum, -> i9:create Purchase Orders (POs). -> i15:If the PO is created, it needs to be reviewed. -> i11:If the PO is rejected, -> i12:it needs to be reworked. -> i16:If the PO needs to be reworked, it needs to be created again. -> i9:create Purchase Orders (POs).
+- [N2] Omitted trace (input 3): i1:To start the process for ACME, -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory. -> i4:If the inventory is below or equal to the minimum, -> i6:generate an Equal to or below minimum Report. -> i8:If the report indicates that the inventory is equal to or below the minimum, -> i9:create Purchase Orders (POs). -> i15:If the PO is created, it needs to be reviewed. -> i13:If the PO is approved, -> i14:it is printed and released in the system. -> i17:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. -> i20:receive the inventory. -> i23:If the inventory is received, -> i24:proceed to receive the Packing Slip. -> i21:If the Packing Slip is received, -> i22:proceed to receive the Invoice. -> i25:If the Invoice is received, -> i26:proceed to the Three-way match. -> i27:If the Three-way match is successful, -> i28:release the funds. -> i29:Once the funds are released, issue the payment. -> i30:After the payment is issued, the Resupply Cycle is complete and the process ends.
+- [N3] Within matched traces (2->1) omitted: i28:release the funds.
+- [N4] Within matched traces (2->1) omitted: i29:Once the funds are released, issue the payment.
+- [N5] Within matched traces (2->1) omitted: i30:After the payment is issued, the Resupply Cycle is complete and the process ends.
+- [N6] Within matched traces (0->2) omitted: i7:If the inventory is greater than the minimum, generate an Above Minimum Report.
+
+Addition
+- [N7] Node-level addition: action(n25,"Wait for funds reservation or recheck status") (reason: These 'Wait for... or recheck status' actions introduce polling/waiting loops that are completely absent from the source description.)
+- [N8] Node-level addition: action(n29,"Wait for packing slip or recheck status") (reason: These 'Wait for... or recheck status' actions introduce polling/waiting loops that are completely absent from the source description.)
+- [N9] Node-level addition: action(n33,"Wait for invoice or recheck status") (reason: These 'Wait for... or recheck status' actions introduce polling/waiting loops that are completely absent from the source description.)
+- [N10] Node-level addition: action(n37,"Wait for inventory or recheck status") (reason: These 'Wait for... or recheck status' actions introduce polling/waiting loops that are completely absent from the source description.)
+- [N11] Node-level addition: action(n40,"Wait for inventory or recheck status") (reason: These 'Wait for... or recheck status' actions introduce polling/waiting loops that are completely absent from the source description.)
+- [N12] Node-level addition: action(n46,"No match proceed with review and correction") (reason: This entire branch models an error-handling path (review, correction, contacting support) that the source text never describes.)
+- [N13] Node-level addition: action(n49,"Contact support or review process") (reason: This entire branch models an error-handling path (review, correction, contacting support) that the source text never describes.)
+- [N14] Node-level addition: action(n50,"Proceed with corrections and recheck") (reason: This entire branch models an error-handling path (review, correction, contacting support) that the source text never describes.)
+- [N15] Node-level addition: label(b12,n36,"Yes") (reason: Generic 'Yes' and 'No' edge labels lack any supporting phrasing in the source text.)
+- [N16] Node-level addition: label(b12,n37,"No") (reason: Generic 'Yes' and 'No' edge labels lack any supporting phrasing in the source text.)
+- [N17] Within matched traces (2->0) added: action(n10,"Is PO rejected")
+- [N18] Within matched traces (2->0) added: branch(b3,XOR)
+- [N19] Within matched traces (2->0) added: branch(b11,AND)
+- [N20] Within matched traces (2->1) added: action(n10,"Is PO rejected")
+- [N21] Within matched traces (2->1) added: branch(b3,XOR)
+- [N22] Within matched traces (2->1) added: branch(b11,AND)
+- [N23] Within matched traces (2->1) added: branch(b9,XOR)
+- [N24] Within matched traces (2->1) added: action(n46,"No match proceed with review and correction")
+- [N25] Within matched traces (2->1) added: branch(b10,XOR)
+- [N26] Within matched traces (2->1) added: action(n49,"Contact support or review process")
+- [N27] Within matched traces (2->1) added: end(e3)
+- [N28] Within matched traces (0->2) added: action(n4,"Is inventory below or equal to minimum")
+- [N29] Within matched traces (0->2) added: branch(b1,XOR)
+- [N30] Within matched traces (0->2) added: action(n5,"generate Equal to or below minimum Report")
+- [N31] Within matched traces (0->2) added: action(n7,"Does report indicate inventory equal or below minimum")
+- [N32] Within matched traces (0->2) added: branch(b2,XOR)
+
+Mutation
+- [N33] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'") -> guard(b1,n6,"v1 = 'No'") -> guard(b2,n8,"v2 = 'Yes'") -> guard(b2,n9,"v2 = 'No'") -> guard(b3,n11,"v3 = 'Yes'") -> guard(b4,n13,"v4 = 'Yes'") -> guard(b4,n14,"v4 = 'No'") -> guard(b5,n24,"v5 = 'Yes'") -> guard(b5,n25,"v5 = 'No'") -> guard(b6,n28,"v6 = 'Yes'") -> guard(b6,n29,"v6 = 'No'") -> guard(b7,n32,"v7 = 'Yes'") -> guard(b7,n33,"v7 = 'No'") -> guard(b8,n39,"v8 = 'Yes'") -> guard(b8,n40,"v8 = 'No'") -> guard(b9,n43,"v9 = 'Yes'") -> guard(b9,n46,"v9 = 'No'") -> guard(b10,n49,"v10 = 'Contact support'") -> guard(b10,n50,"v10 = 'Recheck and retry'"); source=i5:If the inventory is below or equal to the minimum; reason=Every conditional guard replaces explicit textual conditions (thresholds, status checks, success criteria) with abstract variable assignments (e.g., v1 = 'Yes', v3 = 'No'). This systematically alters the operators, values, and business logic defined in the source text.
+
+Permutation
+- [N34] Within matched traces (2->0) reordered: expected [i15:If the PO is created, it needs to be reviewed.] but observed [action(n17,"PO needs to be reviewed")] elsewhere; in its place the model has [action(n12,"Is PO approved")]
+- [N35] Within matched traces (2->1) reordered: expected [i15:If the PO is created, it needs to be reviewed.] but observed [action(n17,"PO needs to be reviewed")] elsewhere; in its place the model has [action(n12,"Is PO approved")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n22` has in=1 and out=0. | Node `n25` has in=1 and out=0. | Node `n29` has in=1 and out=0. | Node `n33` has in=1 and out=0. | Node `n34` has in=1 and out=0. | Node `n37` has in=1 and out=0. | Node `n39` has in=1 and out=0. | Node `n40` has in=1 and out=0. | Node `n41` has in=1 and out=0. | Node `n47` has in=1 and out=0. | Node `n48` has in=1 and out=0. | Node `n50` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n22,"Merge reserve funds and mail POs"); action(n25,"Wait for funds reservation or recheck status"); action(n29,"Wait for packing slip or recheck status"); action(n33,"Wait for invoice or recheck status"); action(n34,"Merge packing slip received and inventory received"); action(n37,"Wait for inventory or recheck status"); action(n39,"Receive Packing Slip"); action(n40,"Wait for inventory or recheck status") (+5 more)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes'` on `b3 -> n11` uses undefined variable `v3`. | DSL: guard(b3,n11,"v3 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n34` has 0 guards; exactly one is required. | XOR/OR edge `b8 -> n41` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b12, b8, n11, n14, n15, n16, n19, n21, n22, n25, n29, n33, n34, n35, n36, n37, n38, n39, n40, n41, n47, n48, n50, n6 | DSL: branch(b12,AND); branch(b8,XOR); action(n11,"rework PO"); action(n14,"rework PO"); action(n15,"PO needs to be created again"); action(n16,"PO needs to be created again"); action(n19,"Mail POs to supplier"); action(n21,"Merge reserve funds and mail POs") (+16 more)
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n11,"v3 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

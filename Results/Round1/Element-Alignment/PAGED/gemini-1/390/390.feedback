@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, -> i2:start with Orders Required -> i3:place a Bulk order -> i6:if the order exceeds the purchaser's credit allowance -> i7:there will be an Outstanding Balance -> i9:the process ends at the Warehouse
+
+Addition
+- [N2] Within matched traces (1->1) added: action(n14,"installation required")
+- [N3] Within matched traces (4->2) added: action(n4,"Order with prior internal credit allowance")
+- [N4] Within matched traces (5->3) added: action(n4,"Order with prior internal credit allowance")
+- [N5] Within matched traces (5->3) added: action(n14,"installation required")
+- [N6] Within matched traces (3->4) added: action(n4,"Order with prior internal credit allowance")
+- [N7] Within matched traces (3->4) added: action(n9,"Payments Received")
+- [N8] Within matched traces (3->4) added: action(n12,"end process")
+- [N9] Within matched traces (3->4) added: end(e1)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n5,"v1==\"internal\""); source=i4:If the condition is "Order with prior internal credit allowance"; reason=The guard drastically truncates the exact quoted condition to just 'internal', losing the critical context.
+- [N11] Node-level mutation: element=guard(b1,n6,"v1==\"exceeds\""); source=i6:if the order exceeds the purchaser's credit allowance; reason=The guard truncates the condition to 'exceeds', completely omitting 'the purchaser's credit allowance'.
+- [N12] Node-level mutation: element=action(n12,"end process"); source=i9:the process ends at the Warehouse; reason=The action genericizes the step to 'end process', losing the specific location 'at the Warehouse' defined in the source.
+- [N13] Node-level mutation: element=guard(b2,n10,"v2==\"received\""); source=i12:If Payments are Received; reason=The guard truncates the condition to just 'received', dropping the key subject 'Payments'.
+- [N14] Node-level mutation: element=action(n14,"installation required"); source=i17:If the installation needs to be scheduled; reason=The action rephrases 'needs to be scheduled' to 'required', altering the exact instruction specified in the text.
+- [N15] Node-level mutation: element=guard(b3,n16,"v3==\"does not require\""); source=i19:if the order does not require installation; reason=The condition truncates the logic to 'does not require', omitting the key object 'installation'.

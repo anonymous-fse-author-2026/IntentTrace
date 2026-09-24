@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i7:At the same time, we complete the following steps simultaneously (reason: The source explicitly requires parallel execution (an AND branch split) which the model completely failed to implement, opting for sequential steps instead.)
+- [N2] Node-level omission: i14:Once the customer accepts the offer (reason: The model failed to include any guard or label to enforce this state condition prior to dispatching the article.)
+- [N3] Node-level omission: i16:once the article is dispatched (reason: This concluding condition was entirely omitted from the model before ending the process.)
+- [N4] Omitted trace (input 2): i1:To begin the process -> i2:the customer makes an enquiry -> i3:check if the article is in stock -> i4:If the article is available -> i7:At the same time, we complete the following steps simultaneously -> i10:calculate the price -> i11:send the offer -> i12:once the offer is sent -> i13:wait for the customer to accept it -> i14:Once the customer accepts the offer -> i15:dispatch the article -> i16:once the article is dispatched -> i17:the process comes to an end
+- [N5] Within matched traces (1->1) omitted: i7:At the same time, we complete the following steps simultaneously
+- [N6] Within matched traces (1->1) omitted: i14:Once the customer accepts the offer
+- [N7] Within matched traces (1->1) omitted: i16:once the article is dispatched
+
+Addition
+- [N8] Node-level addition: label(n6,n7,"price calculated") (reason: The label 'price calculated' invents a transition state that is not present in the source text, which only specified the action to calculate the price.)
+
+Mutation
+- [N9] Node-level mutation: element=action(n4,"end process due to no stock"); source=i6:abort the enquiry and end the process; reason=The element drops the explicit instruction to 'abort the enquiry' and invents an unstated qualifier 'due to no stock'.

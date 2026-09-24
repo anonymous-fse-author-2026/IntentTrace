@@ -1,0 +1,9 @@
+
+
+- `action(n2, "Production order received")`: Incorrectly modeled as a sequential step before `b1`; the source frames it as a conditional trigger ("if a production order is received") and should be represented as a guard, not an action.
+- `precedence(b1, n4)` → `n4` → `n5`: The path covering "update the sales information and proceed to order dispatch" dead-ends at `n5` with no link to an `end` node or continuation, omitting the required process termination.
+- `action(n6, "Materials unavailable")` & `action(n8, "Available goods for production")`: Both modeled as action nodes rather than conditions on `b2` edges, violating the source's explicit conditional structure ("If there are unavailable materials...", "Alternatively, if there are available goods for production...").
+- `branch(b3, XOR)` & `n9`: `b3` is a degenerate split with a single target, and `n9` ("Place manufacturing order") dead-ends without connecting to subsequent production steps, fragmenting the intended flow for available goods.
+- `branch(b5, AND)` placement: Positioned immediately after `n3` ("Continue the process"), prematurely forcing parallelism across material checks, stock updates, and dispatches. The source restricts concurrency to later stages ("At the same time, the stock is updated and the motorcycles are dispatched" after materials are processed).
+- Missing `guard(...)` statements: Decision variables `v1`–`v4` are defined but never bound to branch edges via guards, leaving all splits unguarded despite the source specifying multiple conditional paths.
+- `branch(b4, XOR)`: Acts as a degenerate split with only one outgoing edge (`b4` → `n11`), contradicting the source's straightforward sequential description ("the goods are issued and the motorcycles are produced").

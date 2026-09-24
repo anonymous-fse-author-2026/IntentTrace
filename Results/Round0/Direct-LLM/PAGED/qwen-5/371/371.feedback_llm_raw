@@ -1,0 +1,7 @@
+
+
+- `action(n1, "Start ExpenseReport process")`: Hallucinates an initial step not present in the source; the description begins directly with `"clicking on 'Start'"`.
+- `precedence(n5, n6)`, `branch(b2, XOR)`, `guard(b2, ...)`: Incorrectly introduces a control-flow split immediately after `"review report"`; the source specifies that the decision occurs later, stating `"After this, evaluate the review decision."`
+- `guard(b4, n13, v4 = 'Approved')`, `precedence(b4, n13)`: Omits a documented step; when the first review decision is approved, the model jumps directly to translation instead of following `"continue to check if there is a need for translation."`
+- `precedence(n14, n15)`, `action(n15, "evaluate receipts decision")`, `branch(b5, XOR)`: Skips a documented progression; the source explicitly requires `"Once again, evaluate the review decision."` (with its own reject/approve outcomes) before moving to the receipts decision.
+- `defines(v2, "review decision", ...)` & `action(n6, "review decision")`: Misrepresents node payload and timing; models a premature, separate decision rather than aligning with the source's single explicit `"evaluate the review decision"` event that occurs after the translation/receipt steps.

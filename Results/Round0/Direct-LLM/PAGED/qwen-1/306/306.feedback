@@ -1,0 +1,10 @@
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements on outgoing edges, failing to encode the explicit source conditions `"If the inventory level is at or below the minimum..."` and `"If the purchase status is rejected/approved..."`.
+- `action(n3, "inventory at or below minimum")` & `action(n7, "purchase status approved")`: Misrepresent decision predicates as executable actions; the source text presents them as conditional clauses (`"If..."`), not distinct process steps.
+- `action(n5, "process ends")`, `action(n16, "process ends")`, `action(n17, "process ends")`: Incorrectly instantiate termination events as actionable steps; the source states `"...the process ends"` immediately, requiring direct transitions to `end(e1/e2/e3)` without intermediate action nodes.
+- `defines(v1, "inventory at or below minimum", {})` & `defines(v2, "purchase status approved", {})`: Declare decision variables with empty `{}` value ranges, failing to capture the source's implied domains (numeric threshold comparison and categorical status values).
+- `precedence(n2, n3)` & `precedence(n6, n7)`: Introduce superfluous conditional nodes between evaluation steps (`"check the inventory level"`, `"review it"`) and their respective branches, distorting the chronological flow described in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"purchase status approved")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

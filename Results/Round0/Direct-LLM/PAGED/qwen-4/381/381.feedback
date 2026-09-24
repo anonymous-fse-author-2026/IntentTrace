@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates a step. The description begins directly with `"choose your destination and calculate the distance"`; `init(i1)` already marks the process start.
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Specify empty value ranges `{}`. The source describes binary decision points (`"no"`/`"yes"`, code available/unavailable), which require populated ranges like `{Yes, No}` or `{true, false}`.
+- `guard(b1, ...)`, `guard(b2, ...)`, `guard(b3, ...)`: Missing guard definitions for all XOR branches. The description explicitly states routing conditions (e.g., `"If the answer is 'no'"`, `"If a code is available within 24 hours"`, `"if a code is not available"`), which must constrain the outgoing edges.
+- `precedence(b2, n8)` and `precedence(b3, n12)`: Misrepresents the control-flow logic. The description states that when a code is not available, you should `"cancel your journey"`, but the model routes these paths to `"call travel agency"`.
+- `action(...)` for `"hotel reservation"`: Omits a documented behavior. The text specifies that when a code is available, the process ends `"along with the hotel reservation"`, indicating this action should precede end nodes `e1`/`e3`.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.

@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Bill for Purchased Goods/Services and then Receive Invoice;
+:Is the invoice incomplete?;
+:v1: Is the invoice incomplete? ({Incomplete, Complete}); <<objectSignal>>
+if () then ([v1 = 'Incomplete'])
+:Return invoice due to incompleteness;
+:End of process: Invoice returned due to incompleteness;
+stop
+else ([v1 = 'Complete'])
+:Is the invoice non-compliant?;
+:v2: Is the invoice non-compliant? ({Phone Call, Mail Back, Compliant}); <<objectSignal>>
+switch ()
+case ([v2 = 'Phone Call'])
+:Resolve non-compliance via phone call;
+:Pay the invoice and notify client of payment;
+:Bill Client;
+:Is there no response from client?;
+:v3: Is there no response from client? ({No Response, Response}); <<objectSignal>>
+if () then ([v3 = 'No Response'])
+:Give 10 days waiting period;
+:End of process: Reminder sent after 10 days;
+stop
+else ([v3 = 'Response'])
+:v4: Resolve payment discrepancy if client is unsatisfied ({Unsatisfied, Satisfied}); <<objectSignal>>
+if () then ([v4 = 'Unsatisfied'])
+:Resolve payment discrepancy if client is unsatisfied;
+else ([v4 = 'Satisfied'])
+:Continue process if client is satisfied;
+:End of process: Payment completed and client notified;
+endif
+stop
+endif
+case ([v2 = 'Mail Back'])
+:Return invoice due to mail back requirement;
+:End of process: Invoice returned due to mail back;
+stop
+case ([v2 = 'Compliant'])
+endswitch
+endif
+@enduml

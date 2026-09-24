@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i7:process the invoice batch
+- [N2] Omitted trace (input 2): i1:To start the SSP process -> i2:ensure that the Invoice is ready for verification -> i3:check for invoice completeness -> i4:check for SLA -> i5:checking for invoice compliance -> i6:allocated to the Data Entry Officer and this is done by 9 am on the next working day -> i7:process the invoice batch -> i9:repeated until all invoices are processed -> i8:take it to the outbox -> i10:clear the outbox of the Data Entry Officer every hour -> i11:until the outbox is completely cleared -> i12:marks the end of the process
+
+Addition
+- [N3] Node-level addition: label(n1,n2,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N4] Node-level addition: label(n2,n3,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N5] Node-level addition: label(n3,n4,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N6] Node-level addition: label(n4,n5,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N7] Node-level addition: label(n5,n6,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N8] Node-level addition: label(n6,c1,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+- [N9] Node-level addition: label(n9,c2,"Yes") (reason: These labels assign conditional 'Yes' outcomes to sequential transitions, but the source text presents these steps as a simple mandatory sequence with no conditional branching logic.)
+
+Mutation
+- [N10] Node-level mutation: element=action(n8,"More batches to process?") -> guard(b1,n9,"v1 = 'No'") -> guard(b1,c1,"v1 = 'Yes'"); source=i9:repeated until all invoices are processed; reason=The source text explicitly defines the condition as 'until all invoices are processed'. The generated action checks for 'batches' instead of 'invoices', changing the condition's granularity. The associated guards execute this mutated boolean logic.

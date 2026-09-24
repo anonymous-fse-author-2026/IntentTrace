@@ -1,0 +1,11 @@
+- precedence(n7, b6), precedence(b6, n8), precedence(b6, n9): Routes actions n8 ("type orders into MS-Access database") and n9 ("control incoming order and check") through an AND split, executing them concurrently. Source explicitly sequences them: "After typing the orders into the database, ensure that it is completed. Once the database is completed, control the incoming order. At the same time, continue to do the check."
+- precedence(n15, e1): Terminates the process at e1 immediately after releasing orders ≤5000€, omitting subsequent required phases. Source indicates the workflow continues for all released orders: "Once the order is received by PPC, they will initiate production... If not, check the quality of the goods."
+- branch(b9, AND): Lacks any incoming precedence statement, completely disconnecting actions n28, n29, and n30 from the process flow despite source stating these tasks occur "At the same time" alongside other administrative steps.
+- action(n27, "release order via memo"): Has no outgoing precedence edge, creating a dead-end path. Source requires all concurrent administrative tasks to finish before the final join: "Finally, archive the memo and close the order."
+- defines(v3, "check order value", {"<= 5000 €", "> 5000 €"}): Defines an inclusive boundary (≤) for the lower range, contradicting the source's strict wording: "If the order is worth less than 5.000 €... If the order is worth more than 5.000 €".
+- actor(a_default, "Default", [...]): Assigns every process node to a single generic actor, ignoring explicit role distributions in the source: "send it to the student", "contact the selling agency", "contact the client", "received by PPC", "finance department", and "logistic department".
+- precedence(n12, b7): Forces the "correct order" path through an AND gateway to concurrently trigger value checking (n14) and progression to PPC (c3). Source describes a linear release step without concurrent branching: "If the order is correct, release it."
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"contact selling agency (incorrect)")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"contact selling agency (incorrect)")

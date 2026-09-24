@@ -1,0 +1,14 @@
+Addition
+- [N1] Node-level addition: action(n7,"click on Submit button again") (reason: The model includes 'click on Submit button again', but the source text only describes clicking the Submit button once and provides no instruction to click it again.)
+- [N2] Node-level addition: guard(b3,n14,"v3 = 'No'") (reason: The guard specifies 'v3 = "No"', but the source text does not define a negative condition, a 'No' outcome, or a variable v3 for this transition.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"continue with process if option submit true")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n14` uses undefined variable `v3`. | DSL: guard(b3,n14,"v3 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"continue with process if option submit true")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n14` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n14,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

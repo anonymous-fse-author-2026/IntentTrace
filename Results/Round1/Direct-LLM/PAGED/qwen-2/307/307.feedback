@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i4:Simultaneously (reason: The source explicitly signals concurrent execution for the subsequent steps. The model lacks a parallel split/join structure to enforce simultaneity, failing to implement the mandated concurrency.)
+- [N2] Within matched traces (0->0) omitted: i4:Simultaneously
+- [N3] Within matched traces (1->1) omitted: i4:Simultaneously
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: The source integrates 'start' into the first checking instruction ('start by checking...'). Isolating it as a standalone action introduces invented granularity not supported by the text.)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"check for errors") -> branch(b1,OR) -> action(n5,"highlight errors on form and record DEO performance") -> end(e1)
+- [N6] Within matched traces (0->0) added: action(n1,"start")
+- [N7] Within matched traces (1->1) added: action(n1,"start")
+
+Mutation
+- [N8] Node-level mutation: element=action(n2,"check for errors"); source=i1:To begin the validation process, start by checking the received invoice for any errors.; reason=Drops the critical qualifier 'received invoice', reducing fidelity to the source instruction under the strict matching standard.
+- [N9] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i5:highlight any errors on the invoice entry form and keep a record of the DEO's performance.; reason=Incorrectly applies a conditional guard (v1 = 'Yes') to this action. The source text specifies it occurs simultaneously without being gated by the error-check result, altering the execution logic.
+
+Permutation
+- [N10] Within matched traces (0->0) reordered: expected [i5:highlight any errors on the invoice entry form and keep a record of the DEO's performance.] but observed [branch(b1,OR)] elsewhere; in its place the model has [action(n3,"continue with process")]
+- [N11] Within matched traces (1->1) reordered: expected [i5:highlight any errors on the invoice entry form and keep a record of the DEO's performance.] but observed [branch(b1,OR)] elsewhere; in its place the model has [action(n4,"mark invoice entered correctly")]

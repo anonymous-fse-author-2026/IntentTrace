@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: ensure that it is correct (reason: The source requires ensuring correctness as an integral part of the confirmation step, but the model drops this linear validation requirement and replaces it with an invented branching structure.)
+
+Addition
+- [N2] Node-level addition: action(n7,"Is shipping address correct") (reason: Invents a validation decision gateway and exclusive branching paths (true/false) for address correctness that are not described in the source text, artificially splitting a linear step.)
+- [N3] Node-level addition: guard(b2,n8,"v2 = true") (reason: Invents a validation decision gateway and exclusive branching paths (true/false) for address correctness that are not described in the source text, artificially splitting a linear step.)
+- [N4] Node-level addition: guard(b2,n10,"v2 = false") (reason: Invents a validation decision gateway and exclusive branching paths (true/false) for address correctness that are not described in the source text, artificially splitting a linear step.)
+- [N5] Node-level addition: action(n10,"End") (reason: Redundant termination nodes; the source specifies a single process end already covered by n9 and e1.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Provide requested shipping information") -> action(n2,"Determine shipping details") -> action(n3,"Is shipping address saved or new") -> branch(b1,XOR) -> action(n4,"Saved shipping address selected") -> converge(c1) -> action(n6,"Confirm shipping address") -> action(n7,"Is shipping address correct") -> branch(b2,XOR) -> action(n10,"End") -> end(e2)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"Provide requested shipping information") -> action(n2,"Determine shipping details") -> action(n3,"Is shipping address saved or new") -> branch(b1,XOR) -> action(n5,"New shipping address entered") -> converge(c1) -> action(n6,"Confirm shipping address") -> action(n7,"Is shipping address correct") -> branch(b2,XOR) -> action(n8,"Select desired shipping speed") -> action(n9,"End") -> end(e1)
+- [N8] Added trace (model 3): init(i1) -> action(n1,"Provide requested shipping information") -> action(n2,"Determine shipping details") -> action(n3,"Is shipping address saved or new") -> branch(b1,XOR) -> action(n5,"New shipping address entered") -> converge(c1) -> action(n6,"Confirm shipping address") -> action(n7,"Is shipping address correct") -> branch(b2,XOR) -> action(n10,"End") -> end(e2)
+- [N9] Within matched traces (0->0) added: action(n7,"Is shipping address correct")
+- [N10] Within matched traces (0->0) added: branch(b2,XOR)

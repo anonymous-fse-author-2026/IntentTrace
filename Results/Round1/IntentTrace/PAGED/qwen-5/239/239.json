@@ -1,0 +1,225 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "b_order",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c_order",
+      "type": "converge"
+    },
+    {
+      "id": "b_parallel",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n_prepare",
+      "type": "action",
+      "content": "Prepare Assembling Order"
+    },
+    {
+      "id": "n_check_avail",
+      "type": "action",
+      "content": "Check Availability"
+    },
+    {
+      "id": "c_parallel",
+      "type": "converge"
+    },
+    {
+      "id": "b_availability",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_check_again",
+      "type": "action",
+      "content": "Check Availability Again"
+    },
+    {
+      "id": "e_backorder",
+      "type": "end"
+    },
+    {
+      "id": "n_assemble",
+      "type": "action",
+      "content": "Assemble Bike"
+    },
+    {
+      "id": "n_ship",
+      "type": "action",
+      "content": "Ship Product"
+    },
+    {
+      "id": "e_final",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_order",
+      "name": "Order Status",
+      "R_X": [
+        "Rejected",
+        "Accepted"
+      ]
+    },
+    {
+      "X": "v_availability",
+      "name": "Availability Status",
+      "R_X": [
+        "Backorder",
+        "Reserved"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "b_order",
+        "c_order",
+        "b_parallel",
+        "n_prepare",
+        "n_check_avail",
+        "c_parallel",
+        "b_availability",
+        "n_check_again",
+        "e_backorder",
+        "n_assemble",
+        "n_ship",
+        "e_final"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b_order"
+    },
+    {
+      "type": "precedence",
+      "A": "b_order",
+      "B": "c_order"
+    },
+    {
+      "type": "precedence",
+      "A": "b_order",
+      "B": "c_order"
+    },
+    {
+      "type": "precedence",
+      "A": "c_order",
+      "B": "b_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "b_parallel",
+      "B": "n_prepare"
+    },
+    {
+      "type": "precedence",
+      "A": "b_parallel",
+      "B": "n_check_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "n_prepare",
+      "B": "c_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_avail",
+      "B": "c_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "c_parallel",
+      "B": "b_availability"
+    },
+    {
+      "type": "precedence",
+      "A": "b_availability",
+      "B": "n_check_again"
+    },
+    {
+      "type": "precedence",
+      "A": "b_availability",
+      "B": "n_assemble"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_again",
+      "B": "e_backorder"
+    },
+    {
+      "type": "precedence",
+      "A": "n_assemble",
+      "B": "n_ship"
+    },
+    {
+      "type": "precedence",
+      "A": "n_ship",
+      "B": "e_final"
+    },
+    {
+      "type": "guard",
+      "A": "b_order",
+      "B": "c_order",
+      "condition": "v_order = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b_order",
+      "B": "c_order",
+      "condition": "v_order = 'Accepted'"
+    },
+    {
+      "type": "guard",
+      "A": "b_availability",
+      "B": "n_check_again",
+      "condition": "v_availability = 'Backorder'"
+    },
+    {
+      "type": "guard",
+      "A": "b_availability",
+      "B": "n_assemble",
+      "condition": "v_availability = 'Reserved'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the company, the first step is to look at the order."
+    },
+    {
+      "id": "i2",
+      "content": "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue."
+    },
+    {
+      "id": "i3",
+      "content": "At the same time, two steps need to be completed: preparing the assembling order and checking availability."
+    },
+    {
+      "id": "i4",
+      "content": "If there is a backorder, availability needs to be checked again and the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "If the item can be reserved, the process should continue."
+    },
+    {
+      "id": "i6",
+      "content": "The next steps are to assemble the bike and then ship the product."
+    }
+  ]
+}

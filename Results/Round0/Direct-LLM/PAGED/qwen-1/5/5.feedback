@@ -1,0 +1,12 @@
+- `defines(v1, ...)` & `defines(v2, ...)`: Empty value ranges `{}` violate SMC6 by failing to specify the decision states needed to evaluate `"check if the shipment is okay"`.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Outgoing edges lack `guard` statements, omitting the explicit conditions `"If it is, then proceed to Send Payment. However, if there are any problems with the shipment"` required for correct routing (SMC4).
+- `branch(b3, AND)` & `precedence(n5, b3)`: Incorrectly enforces parallel execution (AND) of the first check and `"communicate shipment problems before shipment"`; the source describes sequential, conditional steps, not concurrent flows (SMC4).
+- `action(n12, "communicate shipment problems before shipment")`: Has no outgoing `precedence`, resulting in a dead-end path that breaks the continuous progression described (SMC1).
+- `action(n11, "communicate shipment problems second time")`: Reached via `b2` but lacks `precedence` to `converge(c1)` or `end(e1)`, leaving a post-check failure path unresolved despite the text stating `"the process comes to an end"` after resolution/payment (SMC5).
+- Control flow around `n5` ("Ship Material"): Omits the backward linkage or precondition implied by `"In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material,"` modeling only a forward-only sequence (SMC3).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | Node `n12` has in=1 and out=0. | DSL: action(n11,"communicate shipment problems second time"); action(n12,"communicate shipment problems before shipment")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n12 | DSL: action(n11,"communicate shipment problems second time"); action(n12,"communicate shipment problems before shipment")

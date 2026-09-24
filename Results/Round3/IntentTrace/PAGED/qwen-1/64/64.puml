@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start rector election process with rector's final year;
+:Launch acceptance of proposals for rector candidates;
+:Rector self-nominates as candidate;
+:Stop acceptance of proposals;
+:v1: Candidate meets required criteria ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Include candidate in list of candidates;
+:Make list of candidates public;
+split
+:Candidates promote ideas to public;
+split again
+:Organize public meeting of Academic Senate;
+end split
+:Begin public meeting for rectors voting;
+repeat :Conduct election and count votes;
+:v2: Voting successful ({true, false}); <<objectSignal>>
+backward:another election should be conducted;
+repeat while () is ([v2 = false]) not ([v2 = true])
+:Announce election result;
+:Conclude public meeting;
+:Inform candidate of election results;
+:End process;
+stop
+else ([v1 = false])
+:Inform candidate of refusal and end process;
+stop
+endif
+@enduml

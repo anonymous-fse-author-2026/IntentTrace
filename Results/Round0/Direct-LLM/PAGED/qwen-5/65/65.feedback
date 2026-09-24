@@ -1,0 +1,13 @@
+- `action(n1, "Start the J and J local contacts process")`: Hallucinates an introductory step; source states directly that "the first step is to identify the business need."
+- `action(n5, "Create a scorecard from the business requirements")`: Lacks outgoing `precedence` edges after `branch(b2, AND)`, leaving it disconnected from the workflow despite the requirement that "business requirements should also be used to create a scorecard."
+- `branch(b4, AND)` & `converge(c1)`: Incorrectly models scoring proposals (`n11`) and attending presentations/Q&A (`n12`) as parallel flows that merge. Source dictates a strict sequence: "Once the proposals have been received, they should be scored again. Following this, presentations should be attended and the proposals should be rescored..."
+- `action(n17, "Review updated proposals and rescore")` & `precedence(b1, n17)`: Misplaces a rescore action on the negative decision branch. Source implies skipping straight to vendor notification if adjustments are not needed, making this step a hallucination that violates the conditional logic.
+- `converge(c2)`: Joins the legitimate post-adjustment path (`n16`) with the erroneous `n17` path into notification, breaking the faithful representation of the conditional progression outlined in the source.
+- `defines(v1, "Is pricing and scope adjustment necessary", {})`: Declares an empty value space `{}`, failing to represent the boolean decision context required by "If necessary, pricing and scope adjustments should be requested."
+- `action(n20, "You have completed this procedure")`: Hallucinates a terminal confirmation step; source concludes explicitly with "A contract should be created based on the winning proposal, and this marks the end of the process."
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n17` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")

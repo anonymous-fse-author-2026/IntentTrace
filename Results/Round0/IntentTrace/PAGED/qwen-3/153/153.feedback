@@ -1,0 +1,43 @@
+Omission
+- [N1] Node-level omission: i17:Simultaneously, (reason: Source explicitly signals concurrent execution, but the model lacks corresponding parallel branch/converge nodes.)
+- [N2] Node-level omission: i27:and continue the process. (reason: Explicit continuation step following invoice preparation is missing from the model.)
+- [N3] Omitted trace (input 3): i1:To become a member, start the process at 8:00 am and then empty the mailbox. -> i2:Check if the mailbox is empty -> i3:if not -> i4:continue the process. -> i6:Check if the mailbox is empty again -> i7:Verify if the information is complete. -> i9:make a telephone call to the sender. -> i10:complete the data by adding the incoming mail number, date, and record it in the letter book. -> i11:Every Wednesday evening -> i12:take the letter book and member register to Miranda. -> i13:If the applicant becomes a member -> i14:stamp "new Member" on the letter and write the date on it. -> i16:write the data. -> i17:Simultaneously, -> i19:hand the letter to Charles. -> i20:Ask Charles to write the amount in the register. -> i22:Print the membership card with all the data and send it to the new member. -> i23:The process ends.
+- [N4] Omitted trace (input 4): i1:To become a member, start the process at 8:00 am and then empty the mailbox. -> i2:Check if the mailbox is empty -> i3:if not -> i4:continue the process. -> i6:Check if the mailbox is empty again -> i7:Verify if the information is complete. -> i8:add the incoming mail number, date, and record it in the letter book. -> i11:Every Wednesday evening -> i12:take the letter book and member register to Miranda. -> i13:If the applicant becomes a member -> i14:stamp "new Member" on the letter and write the date on it. -> i16:write the data. -> i17:Simultaneously, -> i18:calculate the fee -> i20:Ask Charles to write the amount in the register. -> i22:Print the membership card with all the data and send it to the new member. -> i23:The process ends.
+- [N5] Omitted trace (input 5): i1:To become a member, start the process at 8:00 am and then empty the mailbox. -> i2:Check if the mailbox is empty -> i3:if not -> i4:continue the process. -> i6:Check if the mailbox is empty again -> i7:Verify if the information is complete. -> i8:add the incoming mail number, date, and record it in the letter book. -> i11:Every Wednesday evening -> i12:take the letter book and member register to Miranda. -> i13:If the applicant becomes a member -> i14:stamp "new Member" on the letter and write the date on it. -> i16:write the data. -> i17:Simultaneously, -> i19:hand the letter to Charles. -> i20:Ask Charles to write the amount in the register. -> i22:Print the membership card with all the data and send it to the new member. -> i23:The process ends.
+- [N6] Within matched traces (2->0) omitted: i17:Simultaneously,
+- [N7] Within matched traces (1->1) omitted: i8:add the incoming mail number, date, and record it in the letter book.
+
+Addition
+- [N8] Node-level addition: action(n15,"skip taking letter book and member register") (reason: Step to skip taking documents has no supporting source text.)
+- [N9] Node-level addition: action(n19,"after write to applicant") (reason: Temporal marker referencing writing to applicant misaligns with source which references stamping/writing date.)
+- [N10] Node-level addition: label(n2,n3,"No") (reason: Negative flow labels lack any corresponding conditional or transitional phrasing in the source text.)
+- [N11] Node-level addition: label(n12,n13,"No") (reason: Negative flow labels lack any corresponding conditional or transitional phrasing in the source text.)
+- [N12] Node-level addition: label(n14,n16,"No") (reason: Negative flow labels lack any corresponding conditional or transitional phrasing in the source text.)
+- [N13] Within matched traces (2->0) added: init(i1)
+- [N14] Within matched traces (2->0) added: branch(b1,XOR)
+- [N15] Within matched traces (2->0) added: action(n22,"hand letter to Charles")
+- [N16] Within matched traces (1->1) added: init(i1)
+- [N17] Within matched traces (1->1) added: branch(b1,XOR)
+- [N18] Within matched traces (1->1) added: branch(b3,XOR)
+- [N19] Within matched traces (1->1) added: action(n11,"make a telephone call to the sender")
+- [N20] Within matched traces (1->1) added: action(n12,"add incoming mail number date and record it in letter book")
+- [N21] Within matched traces (1->1) added: action(n19,"after write to applicant")
+- [N22] Within matched traces (1->1) added: action(n26,"hand letter to Charles")
+- [N23] Within matched traces (1->1) added: action(n27,"add new member to register")
+- [N24] Within matched traces (1->1) added: action(n28,"prepare invoice for new members")
+- [N25] Within matched traces (1->1) added: action(n29,"ask Charles to write amount in register")
+- [N26] Within matched traces (1->1) added: action(n30,"write fee amount to register")
+- [N27] Within matched traces (1->1) added: action(n31,"end process")
+- [N28] Within matched traces (1->1) added: end(e4)
+- [N29] Within matched traces (0->2) added: init(i1)
+- [N30] Within matched traces (0->2) added: branch(b1,XOR)
+- [N31] Within matched traces (0->2) added: action(n4,"continue the process")
+- [N32] Within matched traces (0->2) added: action(n6,"is the mailbox empty?")
+- [N33] Within matched traces (0->2) added: branch(b2,XOR)
+- [N34] Within matched traces (0->3) added: init(i1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n15` has in=1 and out=0. | DSL: action(n10,"add incoming mail number date and record it in letter book"); action(n15,"skip taking letter book and member register")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n18` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n15 | DSL: action(n10,"add incoming mail number date and record it in letter book"); action(n15,"skip taking letter book and member register")

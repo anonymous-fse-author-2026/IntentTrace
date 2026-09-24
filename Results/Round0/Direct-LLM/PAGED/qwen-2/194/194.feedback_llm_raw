@@ -1,0 +1,6 @@
+
+
+- `branch(b1, AND)` through `branch(b4, AND)` & `converge(c1)` through `converge(c4)`: Hallucinates concurrent execution and synchronization points. The source explicitly describes a strictly linear workflow using phrases like "followed by", "proceed to", and "Once ... completed, move on to". (Violates SMC1, SMC4)
+- `precedence(b1, c1)`: Creates a control-flow path (`i1 → n1 → b1 → c1 → n3`) that bypasses `action(n2, "Pre-admission (T1)")`, contradicting the source instruction "To begin the process, start with Start, followed by Pre-admission (T1)". (Violates SMC1, SMC3, SMC5)
+- `precedence(b4, c4)` & `precedence(c4, n6)`: Enables an execution path (`n4 → b4 → c4 → n6`) that allows `action(n6, "Follow up (T5)")` to start after `action(n4, "Detection and treatment (T3)")`, skipping `action(n5, "Discharge (T4)")`. This violates the explicit rule "After Discharge (T4), it is time for Follow up (T5)". (Violates SMC3, SMC5)
+- `precedence(n5, c4)`: Connects `action(n5, "Discharge (T4)")` to converge node `c4` alongside the output of `branch(b4)` (which follows T3), incorrectly modeling a concurrent/conditional join instead of preserving the exact chronological order mandated by the source. (Violates SMC3, SMC4)

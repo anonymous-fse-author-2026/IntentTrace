@@ -1,0 +1,8 @@
+- `branch(b1, XOR)`: Missing `guard` statements for edges to `n4` and `n5`, omitting the source’s explicit routing conditions: "If a 'Saved shipping address' has been selected" and "if a 'New shipping address' has been entered".
+- `branch(b2, XOR)`, `action(n7, "Is shipping address correct")`, `action(n10, "End")`, `end(e2)`: Hallucinated control flow. The source describes a direct continuation: "After confirming the shipping address, proceed to select the desired shipping speed. Finally... the process comes to an end," with no secondary decision point or parallel termination path.
+- `action(n9, "End")`, `action(n10, "End")`: Hallucinated activity steps. The source treats process completion as a state ("the process comes to an end"), not as distinct actions to be performed.
+- `defines(v1, "Is shipping address saved or new", {})`, `defines(v2, "Is shipping address correct", {})`: Assign empty value ranges `{}`, violating SMC6. The source implies specific choices ("Saved"/"New" and correctness status) required to evaluate branching conditions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

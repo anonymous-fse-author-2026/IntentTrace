@@ -1,0 +1,88 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:advise unsuccessful candidates;
+:are there more candidates?;
+:v1: are there more candidates? ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:re-advertise position;
+else ([v1 = true])
+:check if terms and conditions need to be sorted out;
+:v2: check if terms and conditions need to be sorted out ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:send appointment approval form;
+:is the approver an external resource?;
+:v3: is the approver an external resource? ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:continue process;
+else ([v3 = false])
+:approve form;
+:was the form authorized by the external approver?;
+:v4: was the form authorized by the external approver? ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:scan and record form in GovSource;
+else ([v4 = false])
+:contact external approver for clarification;
+endif
+endif
+else ([v2 = false])
+:continue process (no terms needed);
+endif
+:inform recruitment manager and liaise with HR representative;
+:are there any variations?;
+:v5: are there any variations? ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+:create business case;
+else ([v5 = false])
+:continue process;
+split
+:is medical assessment required (12% rate)?;
+:v6: is medical assessment required (12% rate)? ({true, false}); <<objectSignal>>
+if () then ([v6 = true])
+:arrange and complete medical assessment (21 days);
+:inform recruitment manager and liaise with HR representative;
+:is assessment satisfactory?;
+:v7: is assessment satisfactory? ({true, false}); <<objectSignal>>
+if () then ([v7 = false])
+:contact next candidate on shortlist;
+else ([v7 = true])
+:continue process;
+:make formal verbal offer to candidate;
+:does candidate accept offer?;
+:v8: does candidate accept offer? ({true, false}); <<objectSignal>>
+switch ()
+case ([v8 = true])
+:create formal written offer;
+:send commencement pack and letter of appointment;
+:is there a 40% rate?;
+:v9: is there a 40% rate? ({true, false}); <<objectSignal>>
+if () then ([v9 = true])
+:renegotiate terms;
+:are renegotiations successful?;
+:v10: are renegotiations successful? ({true, false}); <<objectSignal>>
+if () then ([v10 = false])
+:identify next candidate on shortlist;
+else ([v10 = true])
+:continue process;
+endif
+else ([v9 = false])
+->;
+endif
+case ([v8 = false])
+:continue process;
+case ([v8 = false])
+endswitch
+endif
+:end of procedure;
+stop
+else ([v6 = false])
+->;
+endif
+split again
+end split
+endif
+endif
+@enduml

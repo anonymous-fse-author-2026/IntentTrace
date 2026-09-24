@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:ensure Freights are ready to be shipped;
+:ship the freight;
+split
+:deliver the freight;
+split again
+:notify the delivery;
+end split
+:v_decision: process_decision ({AcceptReturn, RejectReturn, Invoice, LossClaim}); <<objectSignal>>
+switch ()
+case ([v_decision = 'Invoice'])
+:invoice the customer;
+:end with customer being invoiced;
+stop
+case ([v_decision = 'AcceptReturn'])
+:accept the merchandise return;
+:return the merchandise;
+:end with merchandise being returned;
+stop
+case ([v_decision = 'RejectReturn'])
+:reject the merchandise return;
+:end with merchandise return request being rejected;
+stop
+case ([v_decision = 'LossClaim'])
+:approve the loss claim;
+:end with loss claim approved;
+stop
+endswitch
+@enduml

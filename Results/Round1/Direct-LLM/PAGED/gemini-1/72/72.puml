@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Bill for Purchased Goods/Services and then Receive Invoice;
+:Is the invoice incomplete?;
+:v1: Is the invoice incomplete? ({Incomplete, Complete}); <<objectSignal>>
+if () then ([v1 = 'Incomplete'])
+:Return invoice due to incompleteness;
+:End of process: Invoice returned due to incompleteness;
+stop
+else ([v1 = 'Complete'])
+:Proceed with compliant or non-compliant check;
+:v2: Is the invoice non-compliant? ({Non-compliant, Compliant}); <<objectSignal>>
+if () then ([v2 = 'Non-compliant'])
+:Is the invoice non-compliant?;
+:further checks are conducted;
+:v5: Resolution method ({Phone call, Mail back}); <<objectSignal>>
+if () then ([v5 = 'Phone call'])
+:Resolve non-compliance via phone call;
+else ([v5 = 'Mail back'])
+:Return invoice due to mail back requirement;
+:End of process: Invoice returned due to mail back;
+stop
+endif
+else ([v2 = 'Compliant'])
+->;
+endif
+:Pay the invoice and notify client of payment;
+split
+:Bill Client;
+:Is there no response from client?;
+:v3: Is there no response from client? ({No response, Response}); <<objectSignal>>
+if () then ([v3 = 'No response'])
+:Give 10 days waiting period;
+:End of process: Reminder sent after 10 days;
+stop
+else ([v3 = 'Response'])
+:Process continues as client responded;
+stop
+endif
+split again
+:v4: Resolve payment discrepancy if client is unsatisfied ({Unsatisfied, Satisfied}); <<objectSignal>>
+if () then ([v4 = 'Unsatisfied'])
+:Resolve payment discrepancy if client is unsatisfied;
+stop
+else ([v4 = 'Satisfied'])
+:Continue process if client is satisfied;
+:End of process: Payment completed and client notified;
+stop
+endif
+end split
+endif
+@enduml

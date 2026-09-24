@@ -1,0 +1,29 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i13:After writing off the Order, close the Order and end the process.
+- [N2] Within matched traces (2->6) omitted: i13:After writing off the Order, close the Order and end the process.
+- [N3] Within matched traces (3->1) omitted: i12:Additionally, send a Reminder.
+- [N4] Within matched traces (4->5) omitted: i12:Additionally, send a Reminder.
+
+Addition
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n8,"Produce the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n15,"Close the Order") -> action(n16,"End") -> end(e1)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n8,"Produce the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n19,"End") -> end(e2)
+- [N7] Added trace (model 7): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n9,"Collect the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n15,"Close the Order") -> action(n16,"End") -> end(e1)
+- [N8] Added trace (model 8): init(i1) -> action(n1,"start WIGGO process") -> action(n2,"Place Order") -> action(n3,"Check Customers Credit Limit") -> action(n4,"Credit Limit Okay") -> branch(b1,XOR) -> action(n6,"Check Availability Of Article") -> action(n7,"Article Available") -> branch(b2,XOR) -> action(n9,"Collect the Goods") -> converge(c1) -> action(n10,"Send Order Confirmation") -> branch(b5,AND) -> action(n12,"Send Invoice") -> converge(c2) -> action(n13,"Check Payment Status") -> action(n14,"Payment Received") -> branch(b3,XOR) -> action(n17,"Reminder Count Ge 3") -> branch(b4,XOR) -> action(n19,"End") -> end(e2)
+- [N9] Within matched traces (0->0) added: init(i1)
+- [N10] Within matched traces (0->0) added: action(n4,"Credit Limit Okay")
+- [N11] Within matched traces (1->2) added: init(i1)
+- [N12] Within matched traces (1->2) added: converge(c2)
+- [N13] Within matched traces (2->6) added: init(i1)
+- [N14] Within matched traces (2->6) added: action(n7,"Article Available")
+- [N15] Within matched traces (2->6) added: converge(c2)
+- [N16] Within matched traces (3->1) added: init(i1)
+- [N17] Within matched traces (3->1) added: converge(c2)
+- [N18] Within matched traces (4->5) added: init(i1)
+- [N19] Within matched traces (4->5) added: action(n7,"Article Available")
+- [N20] Within matched traces (4->5) added: converge(c2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n22` has in=1 and out=0. | DSL: action(n22,"End")
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `n22 -> e3` references unknown node(s). | DSL: action(n22,"End")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n18, n20, n21, n22 | DSL: action(n18,"Write Off the Order"); action(n20,"Send Reminder"); action(n21,"Close the Order"); action(n22,"End")
+- [S4] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `e3` in assigned_nodes.

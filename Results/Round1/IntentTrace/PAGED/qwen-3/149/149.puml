@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Request to Purchase Motorcycle;
+:v1: Material Status ({Unavailable, Available}); <<objectSignal>>
+if () then ([v1 = 'Unavailable'])
+:Order Materials from Supplier;
+else ([v1 = 'Available'])
+:Place Manufacturing Order;
+endif
+:Issue Goods and Produce Motorcycles;
+:v2: Dispatch Option ({Stock Dispatch, Sales Update}); <<objectSignal>>
+if () then ([v2 = 'Stock Dispatch'])
+:Update Stock and Dispatch Motorcycles;
+else ([v2 = 'Sales Update'])
+:Simultaneously Update Stock;
+:Update Sales Information;
+endif
+stop
+@enduml

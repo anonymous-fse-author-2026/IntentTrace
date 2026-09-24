@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i12:After reworking the purchase order, we review it again. (reason: Because the sole candidate element (action:n8) omits the 'again' qualifier and is flagged as a mutation, the source unit lacks a faithful implementation in the model.)
+- [N2] Omitted trace (input 0): i1:To start the process for ACME Company, we first trigger the Resupply Cycle. -> i2:After that, we check the inventory level. -> i3:Once the inventory level is checked, we proceed to create a purchase order. -> i4:If the purchase order is not good -> i5:not good -> i6:we reject it -> i10:In case the purchase order is rejected, we rework it. -> i12:After reworking the purchase order, we review it again. -> i4:If the purchase order is not good
+- [N3] Within matched traces (1->0) omitted: i18:release funds for payment and issue the payment.
+- [N4] Within matched traces (2->1) omitted: i18:release funds for payment and issue the payment.
+
+Addition
+- [N5] Within matched traces (1->0) added: converge(c1)
+- [N6] Within matched traces (2->1) added: converge(c1)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:not good; reason=Guard content substitutes the logical value 'No' for the source condition 'not good', altering the evaluated state/value.
+- [N8] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i8:is good; reason=Guard content substitutes the logical value 'Yes' for the source condition 'is good', altering the evaluated state/value.
+- [N9] Node-level mutation: element=action(n8,"review purchase order"); source=i12:After reworking the purchase order, we review it again.; reason=Drops the critical qualifier 'again', reducing a mandated iterative re-review step to a standard single review, which changes process behavior.

@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i3:check the current inventory level (reason: Only mapped to a mutating element that drops the 'current' qualifier; no fully faithful action implements this step.)
+- [N2] Node-level omission: i10:review it again. (reason: Only mapped to a mutating element that drops the 'again' qualifier; no fully faithful action implements this step.)
+- [N3] Node-level omission: i12:reserve funds for the purchase and send the purchase order to the supplier (reason: Only mapped to a mutating element that drops target/purpose qualifiers; no fully faithful action implements this step.)
+- [N4] Node-level omission: i13:send the purchase order to the supplier (reason: Only mapped to a mutating element that drops the main object being sent; no fully faithful action implements this step.)
+- [N5] Node-level omission: i14:Once the packing slip is received, release the reserved funds (reason: Only mapped to mutating elements that drop the 'reserved' qualifier; no fully faithful action implements this step.)
+
+Addition
+- [N6] Node-level addition: guard(b1,n5,"v1 = 'below minimum'") (reason: The conditional guard 'below minimum' is not supported by any text segment within the provided input elements.)
+- [N7] Node-level addition: guard(b2,c1,"v2 = 'accepted'") (reason: The conditional guard 'accepted' is not supported by any text segment within the provided input elements.)
+- [N8] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n7,"rework: purchase order") -> action(n8,"review: purchase order") -> converge(c1) -> branch(b3,AND) -> action(n12,"send to supplier") -> action(n13,"receive packing slip and release funds") -> action(n14,"end process: completed") -> end(e3)
+- [N9] Within matched traces (1->1) added: converge(c1)
+- [N10] Within matched traces (1->1) added: branch(b3,AND)
+- [N11] Within matched traces (1->1) added: action(n9,"reserve funds and send PO")
+- [N12] Within matched traces (1->1) added: action(n10,"receive packing slip and release funds")
+- [N13] Within matched traces (1->1) added: action(n11,"end process: completed")
+- [N14] Within matched traces (1->1) added: end(e2)
+- [N15] Within matched traces (2->3) added: branch(b2,XOR)
+- [N16] Within matched traces (2->3) added: converge(c1)
+- [N17] Within matched traces (3->4) added: branch(b2,XOR)
+- [N18] Within matched traces (3->4) added: converge(c1)
+
+Mutation
+- [N19] Node-level mutation: element=action(n3,"check: inventory level"); source=i3:check the current inventory level; reason=The element drops the qualifier 'current', altering the strict granularity of the source text.
+- [N20] Node-level mutation: element=action(n4,"end process: above minimum"); source=i5:then the process ends.; reason=The element incorporates an invented qualifier ('above minimum') directly into the action's payload, distorting the simple instruction.
+- [N21] Node-level mutation: element=action(n8,"review: purchase order"); source=i10:review it again.; reason=The element drops the repetition qualifier 'again', losing the exact granularity of the instruction.
+- [N22] Node-level mutation: element=action(n9,"reserve funds and send PO"); source=i12:reserve funds for the purchase and send the purchase order to the supplier; reason=The element drops the explicit qualifiers 'for the purchase' and 'to the supplier', altering the exact data given in the text.
+- [N23] Node-level mutation: element=action(n12,"send to supplier"); source=i13:send the purchase order to the supplier; reason=The element completely drops the core data object ('the purchase order') being sent.
+- [N24] Node-level mutation: element=action(n10,"receive packing slip and release funds") -> action(n13,"receive packing slip and release funds"); source=i14:Once the packing slip is received, release the reserved funds; reason=The elements drop the specific qualifier 'reserved' regarding the funds, drifting from the exact data.
+- [N25] Node-level mutation: element=action(n11,"end process: completed") -> action(n14,"end process: completed"); source=i15:and then the process ends.; reason=The elements incorporate an invented qualifier ('completed') into the action's payload, distorting the source text.

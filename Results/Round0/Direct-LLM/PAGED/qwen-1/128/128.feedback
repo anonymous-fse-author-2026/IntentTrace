@@ -1,0 +1,17 @@
+- `defines(v1, ...)`: Range omits `"Customer returns the items to the store"`, which the source explicitly lists as a valid return method alongside delivery pickup. (SMC6)
+- `defines(v3, ...)`: Range omits `"Customer returns the missing items"`, despite the source explicitly stating it as a branching condition alongside non-return. (SMC6)
+- `defines(v5, ...)`: Range omits `"Items are packed for an existing order"`, contradicting the source which presents it as a co-equal option to storing items. (SMC6)
+- `guard(b1, n3, ...)`: Only defines a condition for the delivery crew; lacks a guard or control-flow edge for `"Customer returns the items to the store"`, leaving the XOR branch structurally incomplete and omitting a documented path. (SMC1, SMC4)
+- `guard(b4, n11, ...)`: Missing guard for the `"Items can't be repaired and are discarded"` condition, failing to explicitly model one half of the documented XOR split. (SMC1, SMC4)
+- `action(n10, ...)` & `action(n11, ...)`: Modeled as sequential process steps, but the source treats them as decision conditions (`"If the 'Items are repaired...'..."`, `"if the 'Items can't be repaired...'..."`), misrepresenting their semantic role as tasks rather than branch criteria or edge labels. (SMC2, SMC4)
+- `precedence(b2, c1)` / missing guard: Routes the `"Order is complete and all items were returned"` case directly to convergence without a guard, omitting the explicit condition documented in the source and relying on an implicit default. (SMC1, SMC4)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b3` has in=1 and out=1. | Node `b5` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b3,XOR); branch(b5,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Delivery Crew picks-up items at the event site']`. | Variable `v3` has an invalid range `['Customer does not return the missing items']`. | Variable `v5` has an invalid range `['Items are stored for future orders']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Delivery Crew picks-up items at the event site'` on `b1 -> n3` uses undefined variable `v1`. | DSL: guard(b1,n3,"v1 = 'Delivery Crew picks-up items at the event site'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Delivery Crew picks-up items at the event site'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n3,"v1 = 'Delivery Crew picks-up items at the event site'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` has no enabled outgoing guard at state [v2=Complete and all items were returned]. | Branch `b4` has no enabled outgoing guard at state [v4=Items can't be repaired and are discarded].

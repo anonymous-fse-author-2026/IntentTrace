@@ -1,0 +1,7 @@
+
+
+- `action(n4, "Construct Error Response from Banking Privilege Status")` & `action(n7, "Construct Error Response from loan conditions")`: Payloads conflate the source's distinct verification steps ("check the Banking Privilege Status", "check the fulfillment of loan conditions") with subsequent error outcomes, distorting node meaning (SMC2).
+- `action(n13, "Construct Approve Response")` preceding `branch(b4)`: Incorrectly places the approve response step unconditionally before the approval/rejection decision. The source treats them as mutually exclusive conditions ("If there is a 'Construct Approve Response'... Otherwise, if there is a 'Construct Reject Response'"), violating chronology and control-flow logic (SMC3, SMC4).
+- `branch(b5)`, `action(n17, "End of procedure")`, `end(e5)`, `defines(v5, ...)`: Hallucinates a tertiary decision point and terminal node. The source explicitly states the process ends with a "Reject Message" immediately after the reject response, with no further branching or steps (SMC1).
+- `defines(v3, "Check Creditworthiness", {"Yes"})` & `defines(v4, "Construct Approve Response", {"Yes"})`: Ranges are incorrectly restricted to a single value, invalidating their use as boolean guards for XOR branches and misrepresenting conditional logic (SMC6).
+- `branch(b3)`: Declared as XOR but defines only one outgoing precedence (`precedence(b3, n11)`), improperly modeling a direct sequence as an exclusive choice gateway (SMC4).

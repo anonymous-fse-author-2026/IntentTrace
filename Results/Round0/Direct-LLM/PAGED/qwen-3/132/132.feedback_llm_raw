@@ -1,0 +1,8 @@
+
+
+- `defines(v1, "is the article in stock", {})` and `defines(v2, "has the customer accepted the offer", {})`: Empty value ranges `{}` do not capture the binary outcomes required by the source ("If the article is available...", "Once the customer accepts..."), violating SMC6.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements linking `v1` and `v2` to specific outgoing edges, leaving the decision logic unspecified and violating SMC4.
+- `action(n11, "abort the enquiry and end process")`, `end(e2)`, and `precedence(b2, n11)`: Hallucinates a non-acceptance path; the description only covers the positive case ("Once the customer accepts the offer, we dispatch the article."), violating SMC1.
+- `action(n12, "end process")` and `precedence(n10, n12)`: Adds an undocumented task before termination; the source states the process simply "comes to an end" directly after dispatch, violating SMC1.
+- `actor(a_default, "Default", [...])`: Consolidates all steps under one participant, ignoring the explicit division between "the customer" ("the customer makes an enquiry", "wait for the customer to accept it") and "we" (all other operations), violating SMC7.
+- `action(n2, "is the article in stock")` and `action(n9, "has the customer accepted the offer")`: Misclassified as executable actions rather than evaluation checkpoints; the source frames them as direct conditional tests ("check if the article is in stock", "Once the customer accepts..."), violating SMC2.

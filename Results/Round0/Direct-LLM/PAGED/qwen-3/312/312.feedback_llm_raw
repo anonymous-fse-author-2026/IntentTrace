@@ -1,0 +1,6 @@
+
+
+- `guard` statements for `b1` and `b2`: Completely omitted. The description explicitly defines conditional routing ("If the amount is less than 200 €...", "if the expense report is deemed acceptable..."), but the model lacks `guard(...)` declarations to attach these conditions to the branch edges, violating SMC1 and SMC4.
+- `defines(v1, ...)` and `defines(v2, ...)`: Both declare empty ranges `{}`, failing to capture the source's specified value domains (a numeric threshold `< 200 €` and a binary acceptable/not-satisfactory status), violating SMC6.
+- `action(n7, "end process")` and `action(n8, "end process")`: Hallucinated steps. The description states the process simply "comes to an end" upon approval or rejection; it does not specify a discrete activity named "end process" before reaching the terminal state, violating SMC1.
+- Outgoing edges from `branch(b1, XOR)` and `branch(b2, XOR)`: Unlabeled and unguarded. Without corresponding `guard` or `label` statements, the model cannot semantically distinguish the intended paths ("less than 200 €" vs. "200 € or more"; "acceptable" vs. "not satisfactory"), breaking fidelity to the source control-flow logic (SMC4).

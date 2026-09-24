@@ -1,0 +1,10 @@
+
+
+- `action(n1, "start the expenses process for MyCorp")`: Hallucinates an introductory step; the source explicitly states "the process begins by entering expenses".
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to define transition conditions; the source specifies explicit conditional paths ("If the request is not approved...", "if the request is approved...").
+- `defines(v1, "is the request approved", {})` and `defines(v2, "is the request approved", {})`: Value range is empty `{}` instead of reflecting the implied binary decision space, failing to capture the source's approval/disapproval logic.
+- `label(n3, n4, "Not Approved")`: Incorrectly attached to the edge preceding the decision node; conditional labels must annotate outgoing edges from the branch to reflect whether the request was "approved or disapproved".
+- `label(n5, n7, "Not Approved")`: Illogically placed on the sequential link between payout and the second approval check; does not correspond to any conditional split described ("The process then checks again if the request is approved or not").
+- `precedence(b1, c1)`, `precedence(c1, n6)`, `precedence(n6, n2)`, `precedence(b2, n9)`, `precedence(n9, b3)`, `precedence(b3, n2)`: Severely distorts the rejection feedback chronology; the source states non-approval simply "goes back to entering expenses", whereas the model erroneously routes it through a `converge` node (`c1`), duplicate action nodes (`n6`, `n9`), and an extraneous routing branch.
+- `branch(b3, AND)`: Introduces unsupported parallel execution/splitting; the source describes a strictly sequential workflow with conditional loops.
+- `action(n10, "end the expenses process")`: Unnecessary intermediate action; the source concludes directly with "after the expenses are paid out, the process comes to an end", which maps straight to an `end` node without an intervening action.

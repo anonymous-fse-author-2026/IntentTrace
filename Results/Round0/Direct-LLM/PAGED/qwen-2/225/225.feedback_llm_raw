@@ -1,0 +1,6 @@
+
+
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to constrain the exclusive choices according to the source conditions ("inventory level is at or below the minimum"/"above the minimum" and "purchase order is rejected"/"approved"), violating SMC4.
+- `defines(v1, "check inventory level", {})` and `defines(v2, "review purchase order", {})`: Specify empty ranges `{}` rather than defining the valid decision values implied by the conditional branches, violating SMC6.
+- `action(n7, "rework purchase order")`: Lacks a `precedence` edge pointing back to `action(n6, "review purchase order")`, omitting the explicit feedback loop described as "In case the purchase order needs to be reworked, review it again.", violating SMC1 and SMC3.
+- `action(n15, "end process")`: Hallucinates a superfluous step before `end(e2)`, contradicting the terminal progression "issue the payment and the process ends", which dictates direct termination after `action(n12)`, violating SMC1 and SMC5.

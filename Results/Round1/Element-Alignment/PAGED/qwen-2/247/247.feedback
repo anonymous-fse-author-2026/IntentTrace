@@ -1,0 +1,13 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i6:After this, we again check if the input is a "URN" or a "URL" and take the corresponding action.
+- [N2] Within matched traces (1->0) omitted: i6:After this, we again check if the input is a "URN" or a "URL" and take the corresponding action.
+
+Addition
+- [N3] Node-level addition: action(n_url_cont,"Simply continue with process") (reason: The action text 'Simply continue with process' does not appear in any provided input unit (i5 is segmented to contain only the conditional phrase), leaving this element without source support.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n_url_cont,"Simply continue with process") -> end(e2)
+- [N5] Within matched traces (0->0) added: action(n_check2,"Check if input is URN or URL again")
+- [N6] Within matched traces (1->0) added: action(n3,"Resolve URN to domain-name")
+- [N7] Within matched traces (1->0) added: action(n_check2,"Check if input is URN or URL again")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n_url_cont,"v1 = 'No'"); source=i5:If the input is a "URL",; reason=The source explicitly tests for a 'URL', but the model guard substitutes a generic negative boolean ('v1 = No'), losing the specific condition value.

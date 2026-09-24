@@ -1,0 +1,16 @@
+Addition
+- [N1] Node-level addition: action(n1,"start buyer process") (reason: 'start buyer process' invents an introductory step not found in the source text. 'End' is a generic action that redundantly duplicates process termination already covered by explicit completion actions and the structural end node.)
+- [N2] Node-level addition: action(n12,"End") (reason: 'start buyer process' invents an introductory step not found in the source text. 'End' is a generic action that redundantly duplicates process termination already covered by explicit completion actions and the structural end node.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start buyer process") -> action(n2,"choose a book") -> action(n3,"choose what to do after selecting book") -> branch(b1,XOR) -> action(n4,"view book details") -> action(n7,"choose what to do after viewing book details") -> branch(b2,XOR) -> action(n9,"select a copy and complete process") -> converge(c1) -> action(n12,"End") -> end(e1)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start buyer process") -> action(n2,"choose a book") -> action(n3,"choose what to do after selecting book") -> branch(b1,XOR) -> action(n5,"view list of new copies") -> converge(c1) -> action(n12,"End") -> end(e1)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start buyer process")
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (0->0) added: action(n12,"End")
+- [N9] Within matched traces (1->3) added: init(i1)
+- [N10] Within matched traces (1->3) added: action(n1,"start buyer process")
+- [N11] Within matched traces (1->3) added: action(n3,"choose what to do after selecting book")
+- [N12] Within matched traces (1->3) added: action(n12,"End")
+
+Mutation
+- [N13] Node-level mutation: element=label(n5,c1,"After selecting preferred copy") -> label(n8,c1,"After selecting preferred copy") -> label(n9,c1,"After selecting preferred copy") -> label(n11,c1,"After selecting preferred copy"); source=i6:if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process.; reason=All four connection labels identically read 'After selecting preferred copy'. This incorrectly projects a condition specific to the used-copies path onto every converging path, including those that only involve viewing lists or selecting any copy. It also fabricates a unified convergence trigger absent from the source text.

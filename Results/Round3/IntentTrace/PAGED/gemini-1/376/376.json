@@ -1,0 +1,293 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start process for flickr login"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Provide userdata for flickr login"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End process after successful login"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "We will continue with the process"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "If you want to try again"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "if you choose to abort"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "If you still want to try again"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "if you decide to abort"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "the process will end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is login successful",
+      "R_X": [
+        "Successful",
+        "Failed"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Choose to try login again",
+      "R_X": [
+        "Want to try again",
+        "Choose to abort",
+        "Still want to try again",
+        "Decide to abort"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "c1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "b2",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "c2",
+        "n11",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Successful'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Failed'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Want to try again'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Choose to abort'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'Still want to try again'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = 'Decide to abort'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start"
+    },
+    {
+      "id": "i2",
+      "content": "please provide the userdata for flickr"
+    },
+    {
+      "id": "i3",
+      "content": "If the login is successful"
+    },
+    {
+      "id": "i4",
+      "content": "the process will end"
+    },
+    {
+      "id": "i5",
+      "content": "if the login fails"
+    },
+    {
+      "id": "i6",
+      "content": "we will continue with the process"
+    },
+    {
+      "id": "i7",
+      "content": "If you want to try again"
+    },
+    {
+      "id": "i8",
+      "content": "if you choose to abort"
+    },
+    {
+      "id": "i9",
+      "content": "If you still want to try again"
+    },
+    {
+      "id": "i10",
+      "content": "if you decide to abort"
+    }
+  ]
+}

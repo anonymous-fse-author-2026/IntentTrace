@@ -1,0 +1,7 @@
+- `branch(b5, AND) / precedence(b5, c2)`: The AND gateway only initiates two actions (`n12`, `n13`) and routes a token directly to `converge(c2)`, omitting the third concurrent task mandated by the source text "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment."
+- `precedence(c3, n15)`: The join node `c3` proceeds directly to the payment decision `n15`, bypassing `n14` ("check for payment") in the primary flow. This contradicts the documented chronology which groups payment checking with the simultaneous shipping and invoicing steps.
+- `converge(c2)`: Misused as a general merge/feedback connector receiving inputs from an unrelated AND-split (`b5`) and a downstream XOR-decision (`b4`), violating the DSL constraint that converge nodes solely rejoin corresponding split flows and corrupting the control-flow logic (SMC4).
+- `precedence(c2, n14) / guard(b4, c2, v4 = 'Yes')`: Forces the "<3 reminders" retry path through `c2` into `n14`, decoupling payment verification from the initial concurrent block and distorting the intended init-to-end progression where payment status immediately drives the reminder/close-order decision (SMC5).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | DSL: action(n15,"is payment received")

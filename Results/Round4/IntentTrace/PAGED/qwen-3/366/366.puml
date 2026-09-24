@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process;
+:Check order received;
+:Check article availability;
+:v1: Article available? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Initiate procurement process;
+else ([v1 = 'Yes'])
+:Ship article;
+endif
+:Check article availability after shipping;
+:v2: Article available after shipping? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Initiate procurement process;
+else ([v2 = 'Yes'])
+:Proceed to ship the article;
+:Complete financial settlement;
+:Receipt of payment;
+endif
+stop
+@enduml

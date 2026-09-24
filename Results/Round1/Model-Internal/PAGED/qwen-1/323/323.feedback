@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i6:confirm the shipping address and ensure that it is correct. (reason: No element implements this unit faithfully; the only candidates mutate it by omitting the mandatory correctness check, leaving the full requirement unimplemented.)
+
+Addition
+- [N2] Node-level addition: action(n1,"Start") (reason: Invents a standalone "Start" action; the source integrates the initiation directly into the information-provision step without a separate preparatory action.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Provide shipping information") -> action(n3,"Determine shipping details") -> action(n4,"Is the shipping address saved or new?") -> branch(b1,XOR) -> action(n6,"Confirm shipping address") -> action(n7,"Select shipping speed") -> action(n8,"End") -> end(e1)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"Start")
+- [N6] Within matched traces (1->0) added: init(i1)
+- [N7] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N8] Node-level mutation: element=action(n5,"Confirm shipping address") -> action(n6,"Confirm shipping address"); source=i6:confirm the shipping address and ensure that it is correct.; reason=Both actions drop the explicit verification qualifier "and ensure that it is correct", reducing the instruction's granularity and completeness relative to the source unit.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"Select shipping speed")

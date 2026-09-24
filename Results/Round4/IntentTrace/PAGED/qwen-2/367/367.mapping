@@ -1,0 +1,610 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1",
+        "action:n2",
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "To start the process for ACME, begin with the New Resupply Cycle and then Check Levels of Inventory."
+      ],
+      "justification": "Covers process initiation and the first three sequential steps."
+    },
+    {
+      "refs": [
+        "guard:b1->n5",
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "If the inventory is greater than the minimum, generate an Above Minimum Report."
+      ],
+      "justification": "Models the positive arm of the inventory decision and its corresponding report generation."
+    },
+    {
+      "refs": [
+        "guard:b1->n7",
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "If the inventory is below or equal to the minimum, generate an Equal to or below minimum Report."
+      ],
+      "justification": "Models the negative arm of the inventory decision and its corresponding report generation."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "If the report indicates that the inventory is above the minimum, the process ends."
+      ],
+      "justification": "Captures the early termination path for above-minimum inventory."
+    },
+    {
+      "refs": [
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs)."
+      ],
+      "justification": "Directly matches the PO creation step triggered by the below/equal report."
+    },
+    {
+      "refs": [
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "If the PO is created, it needs to be reviewed."
+      ],
+      "justification": "Matches the PO review requirement."
+    },
+    {
+      "refs": [
+        "guard:b2->n10",
+        "action:n10"
+      ],
+      "verbatim_texts": [
+        "If the PO is rejected, it needs to be reworked."
+      ],
+      "justification": "Models the review rejection path and the rework action."
+    },
+    {
+      "refs": [
+        "guard:b2->n11",
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "If the PO is approved, it is printed and released in the system."
+      ],
+      "justification": "Models the review approval path and the release action."
+    },
+    {
+      "refs": [
+        "converge:c_loop"
+      ],
+      "verbatim_texts": [
+        "If the PO needs to be reworked, it needs to be created again."
+      ],
+      "justification": "Structural merge point supporting the described rework-and-recreate loop."
+    },
+    {
+      "refs": [
+        "action:n12",
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "Simultaneously, reserve funds for the released POs and mail the POs to the supplier."
+      ],
+      "justification": "Correctly uses an AND gateway to model the simultaneous reservation and mailing steps."
+    },
+    {
+      "refs": [
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "If the POs are mailed to the supplier, receive the inventory."
+      ],
+      "justification": "Direct match for the inventory receipt step following mailing."
+    },
+    {
+      "refs": [
+        "converge:n14"
+      ],
+      "verbatim_texts": [
+        "If funds are reserved for the released POs, receive the Packing Slip."
+      ],
+      "justification": "Structural merge point for the parallel reservation and mailing streams before proceeding."
+    },
+    {
+      "refs": [
+        "action:n16"
+      ],
+      "verbatim_texts": [
+        "If the Packing Slip is received, proceed to receive the Invoice. If the inventory is received, proceed to receive the Packing Slip.",
+        "If the Packing Slip is received, proceed to receive the Invoice."
+      ],
+      "justification": "Captures the invoice reception step, abstracting the intermediate packing slip handling without altering control flow."
+    },
+    {
+      "refs": [
+        "action:n17"
+      ],
+      "verbatim_texts": [
+        "If the Invoice is received, proceed to the Three-way match."
+      ],
+      "justification": "Direct match for the matching step."
+    },
+    {
+      "refs": [
+        "action:n18"
+      ],
+      "verbatim_texts": [
+        "If the Three-way match is successful, release the funds."
+      ],
+      "justification": "Direct match for fund release upon successful match."
+    },
+    {
+      "refs": [
+        "action:n19"
+      ],
+      "verbatim_texts": [
+        "Once the funds are released, issue the payment."
+      ],
+      "justification": "Direct match for payment issuance."
+    },
+    {
+      "refs": [
+        "end:e2"
+      ],
+      "verbatim_texts": [
+        "After the payment is issued, the Resupply Cycle is complete and the process ends."
+      ],
+      "justification": "Marks the successful completion of the process."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "initiate new resupply cycle",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: initiate new resupply cycle"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "check levels of inventory",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: check levels of inventory"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "generate above minimum report",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: generate above minimum report"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "end process",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: end process"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "generate equal to or below minimum report",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: generate equal to or below minimum report"
+    },
+    {
+      "ref_id": "converge:c_loop",
+      "kind": "converge",
+      "node_id": "c_loop",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_loop",
+        "c_loop"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_loop"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "create Purchase Orders",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: create Purchase Orders"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "review PO",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: review PO"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "rework PO",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: rework PO"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "print and release PO",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: print and release PO"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (AND)"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "reserve funds for released POs",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: reserve funds for released POs"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "mail POs to supplier",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: mail POs to supplier"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "receive inventory",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: receive inventory"
+    },
+    {
+      "ref_id": "converge:n14",
+      "kind": "converge",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge n14"
+    },
+    {
+      "ref_id": "action:n16",
+      "kind": "action",
+      "node_id": "n16",
+      "gateway": "",
+      "string_value": "receive Invoice",
+      "aliases": [
+        "action:n16",
+        "n16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n16: receive Invoice"
+    },
+    {
+      "ref_id": "action:n17",
+      "kind": "action",
+      "node_id": "n17",
+      "gateway": "",
+      "string_value": "Three-way match",
+      "aliases": [
+        "action:n17",
+        "n17"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n17: Three-way match"
+    },
+    {
+      "ref_id": "action:n18",
+      "kind": "action",
+      "node_id": "n18",
+      "gateway": "",
+      "string_value": "release funds",
+      "aliases": [
+        "action:n18",
+        "n18"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n18: release funds"
+    },
+    {
+      "ref_id": "action:n19",
+      "kind": "action",
+      "node_id": "n19",
+      "gateway": "",
+      "string_value": "issue payment",
+      "aliases": [
+        "action:n19",
+        "n19"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n19: issue payment"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v1 = 'above_min'\"",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: \"v1 = 'above_min'\"",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "\"v1 = 'above_min'\""
+      }
+    },
+    {
+      "ref_id": "guard:b1->n7",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v1 = 'below_or_eq'\"",
+      "aliases": [
+        "guard:b1->n7"
+      ],
+      "from": "b1",
+      "to": "n7",
+      "source_line": "guard b1->n7: \"v1 = 'below_or_eq'\"",
+      "guard": {
+        "from": "b1",
+        "to": "n7",
+        "condition": "\"v1 = 'below_or_eq'\""
+      }
+    },
+    {
+      "ref_id": "guard:b2->n10",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v2 = 'rejected'\"",
+      "aliases": [
+        "guard:b2->n10"
+      ],
+      "from": "b2",
+      "to": "n10",
+      "source_line": "guard b2->n10: \"v2 = 'rejected'\"",
+      "guard": {
+        "from": "b2",
+        "to": "n10",
+        "condition": "\"v2 = 'rejected'\""
+      }
+    },
+    {
+      "ref_id": "guard:b2->n11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "\"v2 = 'approved'\"",
+      "aliases": [
+        "guard:b2->n11"
+      ],
+      "from": "b2",
+      "to": "n11",
+      "source_line": "guard b2->n11: \"v2 = 'approved'\"",
+      "guard": {
+        "from": "b2",
+        "to": "n11",
+        "condition": "\"v2 = 'approved'\""
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 17,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 25,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 24,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 24,
+    "total_mappable_targets": 29,
+    "input_text_length": 1575,
+    "element_count": 29
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

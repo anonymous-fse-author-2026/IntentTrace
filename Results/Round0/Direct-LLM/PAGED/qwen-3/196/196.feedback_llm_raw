@@ -1,0 +1,8 @@
+
+
+- `branch(b1)` and `branch(b2)`: Missing `guard` statements to define the boolean conditions for selecting the URN or URL paths, contradicting the source's explicit routing rules ("If it is... If the input is a 'URL'...").
+- `defines(v1, "check if the input is a URN", {})` and `defines(v2, "check if the input is a URN or a URL", {})`: Value ranges are empty `{}`, failing to reflect the source's expected decision values (e.g., `"URN"` vs `"URL"`).
+- `action(n4, "continue with the process")`: Lacks any outgoing `precedence` edge, creating a dead-end that breaks the chronology and omits subsequent steps described in the source ("simply continue with the process").
+- `label(n1, n2, "is not URN")`: Placed on a linear edge (`n1`→`n2`) rather than a split branch, incorrectly attributing a conditional outcome to a mandatory sequential step.
+- `label(n3, n5, "is URL")`: Attached to the edge exiting "perform ONS-Resolving URN to a domain name"; this contradicts the source, which states resolution occurs only when the input IS a URN, not a URL.
+- `action(n8)`/`action(n9)`, `action(n10)`/`action(n11)`, `action(n12)`/`action(n13)`, and `action(n14)`/`action(n15)`: Duplicate identical action chains fragment the control flow into unnecessary parallel tracks, whereas the source describes a single linear progression ("send a DNS query... receive a list of URLs... link to a designated DS") after the initial decision point.

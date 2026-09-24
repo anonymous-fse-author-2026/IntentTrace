@@ -1,0 +1,213 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "assess potential for seizure"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "assess potential for significant hemorrhage"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "assess potential for acute respiratory distress"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "all assessments complete"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "is midazolam needed"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "administer midazolam 10 mg"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "procedure complete"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "procedure complete"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is midazolam needed",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "b1",
+        "n7",
+        "n8",
+        "e1",
+        "n9",
+        "e2",
+        "c1",
+        "b2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n9"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n9",
+      "condition": "v1 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the first step is to assess the potential for seizure, significant hemorrhage, or acute respiratory distress"
+    },
+    {
+      "id": "i2",
+      "content": "Once this assessment is complete"
+    },
+    {
+      "id": "i3",
+      "content": "administer midazolam 10 mg"
+    },
+    {
+      "id": "i4",
+      "content": "as needed"
+    },
+    {
+      "id": "i5",
+      "content": "the process is considered complete"
+    }
+  ]
+}

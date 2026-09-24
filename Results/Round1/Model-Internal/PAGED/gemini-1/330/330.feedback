@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i7:Once the payment is triggered (reason: The passive condition of waiting for the payment to trigger is not faithfully implemented; the only candidate element is an incorrect active action.)
+
+Addition
+- [N2] Node-level addition: action(n1,"Start") (reason: The generic action 'Start' lacks source justification, as the beginning of the process and the first phase are already fully covered by the init node and a subsequent action.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> action(n4,"Is invoice amount > $5000?") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> action(n7,"End Process") -> end(e1)
+- [N4] Within matched traces (0->0) added: action(n1,"Start")
+- [N5] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N6] Node-level mutation: element=action(n6,"Trigger payment process"); source=i7:Once the payment is triggered; reason=The model converts a passive event or condition ('Once the payment is triggered') into an active process step ('Trigger payment process'), incorrectly changing the action and actor.
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 == \"Yes\""); source=i4:If the invoice amount is greater than $5000; reason=The guard drops the specific numeric threshold from the source and replaces it with a generic boolean 'Yes'.
+- [N8] Node-level mutation: element=guard(b1,c1,"v1 == \"No\""); source=i6:Otherwise, continue with the process.; reason=The guard drops the logical inverse condition implied by 'Otherwise' and replaces it with a generic boolean 'No'.

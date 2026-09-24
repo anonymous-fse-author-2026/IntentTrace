@@ -1,0 +1,660 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin the process for WIGGO, start by placing an Order"
+      ],
+      "justification": "Implicitly initiates the process and directly implements the first ordering step."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "then proceed to Check the Customer's Credit Limit"
+      ],
+      "justification": "Faithfully captures the credit limit verification action."
+    },
+    {
+      "refs": [
+        "guard:b1->n6",
+        "action:n6",
+        "guard:b1->n5",
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "If the response is \"Okay\", proceed to Check the Availability of the Article. However, if the response is \"No\", send a Denial to the Customer."
+      ],
+      "justification": "Correctly models the XOR decision, both guard conditions, and the resulting actions with accurate values."
+    },
+    {
+      "refs": [
+        "guard:b2->n8",
+        "action:n8",
+        "guard:b2->n9",
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "If the Article is not available, proceed to Produce the Goods. However, if the Article is available, proceed to Collect the Goods."
+      ],
+      "justification": "Accurately represents the availability branching logic and its two distinct outcomes."
+    },
+    {
+      "refs": [
+        "action:n10"
+      ],
+      "verbatim_texts": [
+        "send an Order Confirmation."
+      ],
+      "justification": "Direct paraphrase of the confirmation dispatch step."
+    },
+    {
+      "refs": [
+        "action:n11",
+        "action:n12"
+      ],
+      "verbatim_texts": [
+        "Simultaneously, complete the following steps: Ship the Goods and Send the Invoice."
+      ],
+      "justification": "AND gateway correctly splits into the two simultaneous shipping and invoicing actions."
+    },
+    {
+      "refs": [
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "Check the Payment status."
+      ],
+      "justification": "Faithfully restates the payment verification step."
+    },
+    {
+      "refs": [
+        "guard:b3->n15",
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "If the payment has been received, close the Order and end the process."
+      ],
+      "justification": "Models the positive payment path, the closing action, and the explicit process termination."
+    },
+    {
+      "refs": [
+        "guard:b3->b4"
+      ],
+      "verbatim_texts": [
+        "If the payment has been received, close the Order and end the process. If the payment has not been received, check if the Reminder count is greater than or equal to 3.",
+        "If the payment has not been received, check if the Reminder count is greater than or equal to 3."
+      ],
+      "justification": "Captures the branching decision point and the guard for the unpaid status that triggers the reminder count evaluation."
+    },
+    {
+      "refs": [
+        "action:n18",
+        "action:n20"
+      ],
+      "verbatim_texts": [
+        "If the Reminder count is greater than or equal to 3, Write off the Order. Additionally, send a Reminder."
+      ],
+      "justification": "Accurately implements the write-off and reminder sending steps described in the source."
+    },
+    {
+      "refs": [
+        "action:n21"
+      ],
+      "verbatim_texts": [
+        "After writing off the Order, close the Order and end the process."
+      ],
+      "justification": "Matches the final administrative closing action and the terminal node."
+    }
+  ],
+  "mutations": [
+    {
+      "refs": [
+        "guard:b4->n18"
+      ],
+      "verbatim_texts": [
+        "If the payment has been received, close the Order and end the process. If the payment has not been received, check if the Reminder count is greater than or equal to 3.",
+        "If the payment has not been received, check if the Reminder count is greater than or equal to 3.",
+        "If the Reminder count is greater than or equal to 3, Write off the Order. Additionally, send a Reminder."
+      ],
+      "reason": "The source explicitly requires evaluating whether 'the Reminder count is greater than or equal to 3'. The model guards replace this specific threshold and comparison with generic boolean checks ('v4 = \"Yes\"' / 'v4 = \"No\"'), thereby losing the critical numeric condition."
+    },
+    {
+      "refs": [
+        "guard:b4->c3"
+      ],
+      "verbatim_texts": [
+        "If the payment has been received, close the Order and end the process. If the payment has not been received, check if the Reminder count is greater than or equal to 3.",
+        "If the payment has not been received, check if the Reminder count is greater than or equal to 3.",
+        "If the Reminder count is greater than or equal to 3, Write off the Order. Additionally, send a Reminder."
+      ],
+      "reason": "The source explicitly requires evaluating whether 'the Reminder count is greater than or equal to 3'. The model guards replace this specific threshold and comparison with generic boolean checks ('v4 = \"Yes\"' / 'v4 = \"No\"'), thereby losing the critical numeric condition."
+    }
+  ],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "After checking the availability, if the response is \"Okay\", proceed to Check the Availability of the Article again. If the response is \"No\", send a Denial to the Customer."
+      ],
+      "reason": "This input element defines a distinct secondary validation step with its own conditional branches and outcomes. The model contains no corresponding elements for this repeated check or its associated denial path."
+    }
+  ],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "Place Order",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: Place Order"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "Check Customers Credit Limit",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: Check Customers Credit Limit"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "Send Denial To Customer",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: Send Denial To Customer"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "Check Availability Of Article",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: Check Availability Of Article"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "Produce the Goods",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: Produce the Goods"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "Collect the Goods",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: Collect the Goods"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "Send Order Confirmation",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: Send Order Confirmation"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "Ship the Goods",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: Ship the Goods"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "Send Invoice",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: Send Invoice"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "Check Payment Status",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: Check Payment Status"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "Close the Order",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: Close the Order"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "branch:b4",
+      "kind": "branch",
+      "node_id": "b4",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b4",
+        "b4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b4 (XOR)"
+    },
+    {
+      "ref_id": "action:n18",
+      "kind": "action",
+      "node_id": "n18",
+      "gateway": "",
+      "string_value": "Write Off the Order",
+      "aliases": [
+        "action:n18",
+        "n18"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n18: Write Off the Order"
+    },
+    {
+      "ref_id": "action:n20",
+      "kind": "action",
+      "node_id": "n20",
+      "gateway": "",
+      "string_value": "Send Reminder",
+      "aliases": [
+        "action:n20",
+        "n20"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n20: Send Reminder"
+    },
+    {
+      "ref_id": "action:n21",
+      "kind": "action",
+      "node_id": "n21",
+      "gateway": "",
+      "string_value": "Close the Order",
+      "aliases": [
+        "action:n21",
+        "n21"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n21: Close the Order"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "converge:c2",
+      "kind": "converge",
+      "node_id": "c2",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c2",
+        "c2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c2"
+    },
+    {
+      "ref_id": "converge:c3",
+      "kind": "converge",
+      "node_id": "c3",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c3",
+        "c3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c3"
+    },
+    {
+      "ref_id": "branch:b5",
+      "kind": "branch",
+      "node_id": "b5",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b5",
+        "b5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b5 (AND)"
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'No'",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: v1 = 'No'",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "v1 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Okay'",
+      "aliases": [
+        "guard:b1->n6"
+      ],
+      "from": "b1",
+      "to": "n6",
+      "source_line": "guard b1->n6: v1 = 'Okay'",
+      "guard": {
+        "from": "b1",
+        "to": "n6",
+        "condition": "v1 = 'Okay'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Not Available'",
+      "aliases": [
+        "guard:b2->n8"
+      ],
+      "from": "b2",
+      "to": "n8",
+      "source_line": "guard b2->n8: v2 = 'Not Available'",
+      "guard": {
+        "from": "b2",
+        "to": "n8",
+        "condition": "v2 = 'Not Available'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n9",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Available'",
+      "aliases": [
+        "guard:b2->n9"
+      ],
+      "from": "b2",
+      "to": "n9",
+      "source_line": "guard b2->n9: v2 = 'Available'",
+      "guard": {
+        "from": "b2",
+        "to": "n9",
+        "condition": "v2 = 'Available'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n15",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b3->n15"
+      ],
+      "from": "b3",
+      "to": "n15",
+      "source_line": "guard b3->n15: v3 = 'Yes'",
+      "guard": {
+        "from": "b3",
+        "to": "n15",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->b4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b3->b4"
+      ],
+      "from": "b3",
+      "to": "b4",
+      "source_line": "guard b3->b4: v3 = 'No'",
+      "guard": {
+        "from": "b3",
+        "to": "b4",
+        "condition": "v3 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b4->n18",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v4 = 'Yes'",
+      "aliases": [
+        "guard:b4->n18"
+      ],
+      "from": "b4",
+      "to": "n18",
+      "source_line": "guard b4->n18: v4 = 'Yes'",
+      "guard": {
+        "from": "b4",
+        "to": "n18",
+        "condition": "v4 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b4->c3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v4 = 'No'",
+      "aliases": [
+        "guard:b4->c3"
+      ],
+      "from": "b4",
+      "to": "c3",
+      "source_line": "guard b4->c3: v4 = 'No'",
+      "guard": {
+        "from": "b4",
+        "to": "c3",
+        "condition": "v4 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 11,
+    "mutation_count": 2,
+    "omission_count": 1,
+    "addition_count": 0,
+    "match_relation_count": 21,
+    "mutation_relation_count": 6,
+    "omission_relation_count": 1,
+    "unique_refs_in_matches": 20,
+    "unique_refs_in_mutations": 2,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 22,
+    "total_mappable_targets": 33,
+    "input_text_length": 1249,
+    "element_count": 33
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

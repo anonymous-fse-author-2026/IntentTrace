@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:enter kitchen;
+split
+:check pesto availability;
+:is pesto available?;
+:v1: is pesto available? ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:retrieve pesto from cupboard;
+else ([v1 = false])
+:take tomato sauce from roommate;
+-> Stolen?;
+:has tomato sauce been stolen?;
+:v2: has tomato sauce been stolen? ({true, false}); <<objectSignal>>
+switch ()
+case ([v2 = true])
+:cook tomato sauce;
+case ([v2 = false])
+:take tomato sauce as is;
+case ([v2 = false])
+endswitch
+endif
+split again
+:cook spaghetti;
+end split
+:combine meal components and prepare meal;
+:end process;
+stop
+@enduml

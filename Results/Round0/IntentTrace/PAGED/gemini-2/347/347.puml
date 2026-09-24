@@ -1,0 +1,116 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process for ACME;
+:begin New Resupply Cycle;
+:Check Levels of Inventory;
+:Is inventory below or equal to minimum;
+:v1: Is inventory below or equal to minimum ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:generate Equal to or below minimum Report;
+:Does report indicate inventory equal or below minimum;
+:v2: Does report indicate inventory equal or below minimum ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:create Purchase Orders POs;
+:Is PO rejected;
+:v3: Is PO rejected ({Yes}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:rework PO;
+:PO needs to be created again;
+:After rework PO create again;
+else ( )
+:Is PO approved;
+:v4: Is PO approved ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:print and release PO in system;
+:PO needs to be reviewed;
+split
+:Simultaneously reserve funds for released POs;
+:Merge reserve funds and mail POs;
+:Are funds reserved for the released POs;
+:v5: Are funds reserved for the released POs ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Receive Packing Slip;
+:Merge packing slip received and inventory received;
+:Has Packing Slip been received;
+:v6: Has Packing Slip been received ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v6 = 'Yes'])
+:Receive Invoice;
+:Merge packing slip received and inventory received;
+:Has Invoice been received;
+:v7: Has Invoice been received ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:Proceed to Three way match;
+:Is Three way match successful;
+:v9: Is Three way match successful ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+:Release funds;
+:Issue payment;
+:Resupply Cycle is complete process ends;
+stop
+else ([v9 = 'No'])
+:No match proceed with review and correction;
+:v10: No match proceed with review and correction ({Contact support, Recheck and retry}); <<objectSignal>>
+if () then ([v10 = 'Contact support'])
+:Contact support or review process;
+stop
+else ([v10 = 'Recheck and retry'])
+:Proceed with corrections and recheck;
+endif
+endif
+else ([v7 = 'No'])
+:Wait for invoice or recheck status;
+endif
+case ([v6 = 'No'])
+:Wait for packing slip or recheck status;
+case (else)
+:Merge packing slip received and inventory received;
+endswitch
+else ([v5 = 'No'])
+:Wait for funds reservation or recheck status;
+endif
+split again
+:Mail POs to supplier;
+:Merge reserve funds and mail POs;
+split
+-> Yes;
+:Receive Inventory;
+:Merge packing slip received and inventory received;
+:Has Inventory been received;
+:v8: Has Inventory been received ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v8 = 'Yes'])
+:Receive Packing Slip;
+case ([v8 = 'No'])
+:Wait for inventory or recheck status;
+case (else)
+:Merge packing slip received and inventory received;
+endswitch
+kill
+split again
+-> No;
+:Wait for inventory or recheck status;
+kill
+end split
+kill
+split again
+:Merge reserve funds and mail POs;
+kill
+end split
+else ([v4 = 'No'])
+:rework PO;
+:PO needs to be created again;
+:After rework PO create again;
+endif
+endif
+else ([v2 = 'No'])
+:process ends;
+stop
+endif
+else ([v1 = 'No'])
+:generate Above Minimum Report;
+endif
+@enduml

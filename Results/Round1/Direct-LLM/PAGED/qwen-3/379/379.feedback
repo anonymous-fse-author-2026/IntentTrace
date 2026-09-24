@@ -1,0 +1,21 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i5:it needs to be reworked.
+
+Addition
+- [N2] Added trace (model 0): init(i1) -> action(n1,"start acme resupply cycle") -> action(n2,"check levels of inventory") -> action(n3,"is inventory below or equal to minimum?") -> branch(b1,XOR) -> action(n4,"generate: below or equal to minimum report") -> converge(c2) -> action(n7,"create purchase orders (pos)") -> action(n8,"review pos") -> action(n9,"is po approved?") -> branch(b2,XOR) -> action(n10,"print and release pos in system") -> branch(b3,AND) -> action(n12,"reserve funds for released pos") -> converge(c1) -> action(n14,"receive packing slip") -> action(n16,"receive invoice") -> action(n17,"proceed to three-way match") -> action(n18,"perform three-way match") -> branch(b4,XOR) -> action(n19,"release funds if successful") -> action(n20,"issue payment") -> action(n21,"end process") -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start acme resupply cycle") -> action(n2,"check levels of inventory") -> action(n3,"is inventory below or equal to minimum?") -> branch(b1,XOR) -> action(n4,"generate: below or equal to minimum report") -> converge(c2) -> action(n7,"create purchase orders (pos)") -> action(n8,"review pos") -> action(n9,"is po approved?") -> branch(b2,XOR) -> action(n10,"print and release pos in system") -> branch(b3,AND) -> action(n13,"mail pos to supplier") -> action(n15,"receive inventory") -> converge(c1) -> action(n14,"receive packing slip") -> action(n16,"receive invoice") -> action(n17,"proceed to three-way match") -> action(n18,"perform three-way match") -> branch(b4,XOR) -> end(e2)
+- [N4] Within matched traces (0->4) added: init(i1)
+- [N5] Within matched traces (1->1) added: init(i1)
+- [N6] Within matched traces (1->1) added: branch(b3,AND)
+- [N7] Within matched traces (1->1) added: action(n12,"reserve funds for released pos")
+- [N8] Within matched traces (1->1) added: converge(c1)
+- [N9] Within matched traces (1->1) added: action(n14,"receive packing slip")
+- [N10] Within matched traces (1->1) added: action(n16,"receive invoice")
+- [N11] Within matched traces (1->1) added: action(n17,"proceed to three-way match")
+- [N12] Within matched traces (1->1) added: action(n18,"perform three-way match")
+- [N13] Within matched traces (1->1) added: branch(b4,XOR)
+- [N14] Within matched traces (1->1) added: end(e2)
+- [N15] Within matched traces (2->2) added: init(i1)
+
+Mutation
+- [N16] Node-level mutation: element=guard(b4,e2,"v3 = false"); source=i13:If the Three-way match is successful; reason=The source only specifies behavior when the match is successful. Routing the unsuccessful path directly to process termination invents a fallback logic not stated in the text.

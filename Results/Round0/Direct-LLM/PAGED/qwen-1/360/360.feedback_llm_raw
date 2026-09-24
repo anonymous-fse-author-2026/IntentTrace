@@ -1,0 +1,6 @@
+
+
+- `branch(b1, XOR)` / `branch(b2, XOR)`: Missing `guard` statements on outgoing edges to formalize the conditions described as "If it is..." and "If the input is a 'URL'...", leaving the exclusive choice logic undefined and violating SMC4.
+- `defines(v1, "is the input a URN", {})` / `defines(v2, "is the input a URN or URL", {})`: Value ranges are empty `{}`, failing to capture the categorical options (e.g., "URN", "URL") required to evaluate the input type checks, violating SMC6.
+- `action(n2, "is the input a URN")` / `action(n5, "is the input a URN or URL")`: Modeled as standalone executable steps preceding branches rather than being integrated as decision criteria via guards, misrepresenting the textual evaluation "checking if the input is a 'URN'" as a process task, violating SMC2.
+- `precedence(b1, n3)` & `precedence(b1, n4)` (and `b2` equivalents): Control-flow edges are unconditional, so they cannot enforce the mutually exclusive routing mandated by the source text's "If it is..." / "If the input is..." clauses, violating SMC4.

@@ -1,0 +1,687 @@
+{
+  "elements": [
+    {
+      "id": "init_node",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "In the beginning, the process starts with Bill for Purchased Goods/Services"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "b_after_i2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "If the invoice is incomplete"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "it is returned"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "if the invoice is complete"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "the process continues"
+    },
+    {
+      "id": "b_after_i6",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "If the invoice is non-compliant"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "further checks are conducted"
+    },
+    {
+      "id": "b_after_i8",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "if the issue requires mail back"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "the invoice is returned"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "If the issue can be resolved with a phone call"
+    },
+    {
+      "id": "c_before_i11",
+      "type": "converge"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "non-compliance is resolved"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "if the invoice is compliant"
+    },
+    {
+      "id": "c_before_i14",
+      "type": "converge"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "the invoice is paid"
+    },
+    {
+      "id": "b14",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "b_returned",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "if it is returned"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "Bill Client"
+    },
+    {
+      "id": "b_after_bill",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "If there is no response"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "a period of 10 days is given"
+    },
+    {
+      "id": "i21",
+      "type": "action",
+      "content": "After 10 days, a reminder is sent"
+    },
+    {
+      "id": "i19",
+      "type": "action",
+      "content": "If the invoice is returned"
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "The invoice is paid and the client is notified of the payment"
+    },
+    {
+      "id": "b_after_i20",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i23",
+      "type": "action",
+      "content": "If the client is unsatisfied"
+    },
+    {
+      "id": "i24",
+      "type": "action",
+      "content": "payment discrepancy is resolved"
+    },
+    {
+      "id": "i25",
+      "type": "action",
+      "content": "if the client is satisfied"
+    },
+    {
+      "id": "c_before_i22",
+      "type": "converge"
+    },
+    {
+      "id": "i22",
+      "type": "action",
+      "content": "the process ends"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_inv",
+      "name": "Invoice completeness",
+      "R_X": [
+        "incomplete",
+        "complete"
+      ]
+    },
+    {
+      "X": "v_comp",
+      "name": "Invoice compliance",
+      "R_X": [
+        "non-compliant",
+        "compliant"
+      ]
+    },
+    {
+      "X": "v_issue",
+      "name": "Issue resolution",
+      "R_X": [
+        "mail back",
+        "phone call"
+      ]
+    },
+    {
+      "X": "v14",
+      "name": "Is it returned after payment?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_bill",
+      "name": "Client response",
+      "R_X": [
+        "no response",
+        "returned",
+        "paid"
+      ]
+    },
+    {
+      "X": "v_client",
+      "name": "Client satisfaction",
+      "R_X": [
+        "unsatisfied",
+        "satisfied"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "init_node",
+        "i1",
+        "i2",
+        "b_after_i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "b_after_i6",
+        "i7",
+        "i8",
+        "b_after_i8",
+        "i12",
+        "i13",
+        "i10",
+        "c_before_i11",
+        "i11",
+        "i9",
+        "c_before_i14",
+        "i14",
+        "b14",
+        "b_returned",
+        "i15",
+        "i16",
+        "b_after_bill",
+        "i17",
+        "i18",
+        "i21",
+        "i19",
+        "i20",
+        "b_after_i20",
+        "i23",
+        "i24",
+        "i25",
+        "c_before_i22",
+        "i22",
+        "e1",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "init_node",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "b_after_i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i2",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "b_after_i6"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i6",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "b_after_i8"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i8",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i8",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "c_before_i11"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i6",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "c_before_i14"
+    },
+    {
+      "type": "precedence",
+      "A": "c_before_i11",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "c_before_i14"
+    },
+    {
+      "type": "precedence",
+      "A": "c_before_i14",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "b14"
+    },
+    {
+      "type": "precedence",
+      "A": "b14",
+      "B": "b_returned"
+    },
+    {
+      "type": "precedence",
+      "A": "b14",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "b_returned",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "b_returned",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "c_before_i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "b_after_bill"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_bill",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "i21"
+    },
+    {
+      "type": "precedence",
+      "A": "i21",
+      "B": "c_before_i22"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_bill",
+      "B": "i19"
+    },
+    {
+      "type": "precedence",
+      "A": "i19",
+      "B": "c_before_i11"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_bill",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "b_after_i20"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i20",
+      "B": "i23"
+    },
+    {
+      "type": "precedence",
+      "A": "i23",
+      "B": "i24"
+    },
+    {
+      "type": "precedence",
+      "A": "i24",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_after_i20",
+      "B": "i25"
+    },
+    {
+      "type": "precedence",
+      "A": "i25",
+      "B": "c_before_i22"
+    },
+    {
+      "type": "precedence",
+      "A": "c_before_i22",
+      "B": "i22"
+    },
+    {
+      "type": "precedence",
+      "A": "i22",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i2",
+      "B": "i3",
+      "condition": "v_inv = 'incomplete'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i2",
+      "B": "i5",
+      "condition": "v_inv = 'complete'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i6",
+      "B": "i7",
+      "condition": "v_comp = 'non-compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i6",
+      "B": "i9",
+      "condition": "v_comp = 'compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i8",
+      "B": "i12",
+      "condition": "v_issue = 'mail back'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i8",
+      "B": "i10",
+      "condition": "v_issue = 'phone call'"
+    },
+    {
+      "type": "guard",
+      "A": "b_returned",
+      "B": "i15",
+      "condition": "v14 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_returned",
+      "B": "e2",
+      "condition": "v14 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_bill",
+      "B": "i17",
+      "condition": "v_bill = 'no response'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_bill",
+      "B": "i19",
+      "condition": "v_bill = 'returned'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_bill",
+      "B": "i20",
+      "condition": "v_bill = 'paid'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i20",
+      "B": "i23",
+      "condition": "v_client = 'unsatisfied'"
+    },
+    {
+      "type": "guard",
+      "A": "b_after_i20",
+      "B": "i25",
+      "condition": "v_client = 'satisfied'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning, the process starts with Bill for Purchased Goods/Services"
+    },
+    {
+      "id": "i2",
+      "content": "Receive Invoice"
+    },
+    {
+      "id": "i3",
+      "content": "If the invoice is incomplete"
+    },
+    {
+      "id": "i4",
+      "content": "it is returned"
+    },
+    {
+      "id": "i5",
+      "content": "if the invoice is complete"
+    },
+    {
+      "id": "i6",
+      "content": "the process continues"
+    },
+    {
+      "id": "i7",
+      "content": "If the invoice is non-compliant"
+    },
+    {
+      "id": "i8",
+      "content": "further checks are conducted"
+    },
+    {
+      "id": "i9",
+      "content": "if the invoice is compliant"
+    },
+    {
+      "id": "i10",
+      "content": "If the issue can be resolved with a phone call"
+    },
+    {
+      "id": "i11",
+      "content": "non-compliance is resolved"
+    },
+    {
+      "id": "i12",
+      "content": "if the issue requires mail back"
+    },
+    {
+      "id": "i13",
+      "content": "the invoice is returned"
+    },
+    {
+      "id": "i14",
+      "content": "the invoice is paid"
+    },
+    {
+      "id": "i15",
+      "content": "if it is returned"
+    },
+    {
+      "id": "i16",
+      "content": "Bill Client"
+    },
+    {
+      "id": "i17",
+      "content": "If there is no response"
+    },
+    {
+      "id": "i18",
+      "content": "a period of 10 days is given"
+    },
+    {
+      "id": "i19",
+      "content": "If the invoice is returned"
+    },
+    {
+      "id": "i20",
+      "content": "The invoice is paid and the client is notified of the payment"
+    },
+    {
+      "id": "i21",
+      "content": "After 10 days, a reminder is sent"
+    },
+    {
+      "id": "i22",
+      "content": "the process ends"
+    },
+    {
+      "id": "i23",
+      "content": "If the client is unsatisfied"
+    },
+    {
+      "id": "i24",
+      "content": "payment discrepancy is resolved"
+    },
+    {
+      "id": "i25",
+      "content": "if the client is satisfied"
+    }
+  ]
+}

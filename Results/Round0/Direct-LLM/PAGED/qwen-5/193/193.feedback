@@ -1,0 +1,11 @@
+- `action(n26, "You have completed this procedure")`: Hallucinated element; the source description contains no mention of this completion message or step.
+- `branch(b3, AND)` with `precedence(b3, n9)` and `precedence(b3, n10)`: Misrepresents concurrency. The source states "proceed with Macroscopic description writing. Simultaneously, complete the following steps: Tissue processing, check if 'Digitalization?' is required." The model only splits into two flows and omits a concurrent path for the digitalization check.
+- `precedence(n10, n11)`: Violates chronology and simultaneity. The source explicitly lists Tissue processing and the digitalization check as steps to be completed "Simultaneously", but the model forces the check to occur strictly after tissue processing.
+- `action(n11, "Digitalization check after Tissue processing")`: Unfaithful payload; the appended phrase "after Tissue processing" directly contradicts the source's instruction that these tasks are performed simultaneously.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lacks required routing logic. The source explicitly conditions the flow on the answer ("If the answer is 'no,' continue the process. If the answer is 'yes,' proceed with Digitalization."), but the model omits corresponding `guard` statements to enforce these choices.
+- `defines(v1, ..., {})` and `defines(v2, ..., {})`: Invalid value spaces. The source describes a binary decision, but the ranges are declared as empty `{}` rather than a finite set reflecting the options (e.g., `{"Yes", "No"}`).
+- `precedence(n2, n3)`: Incorrect temporal ordering. The source instructs to "create a barcode scan at the start" *during* the Registration step, whereas the model sequences it to execute only after `n2` has fully completed.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n16` has 0 guards; exactly one is required.

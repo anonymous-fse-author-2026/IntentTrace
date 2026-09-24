@@ -1,0 +1,30 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i7:If a code is available, the process will end along with the hotel reservation.
+- [N2] Within matched traces (1->2) omitted: i5:If a code is available within 24 hours, the process will end.
+- [N3] Within matched traces (1->2) omitted: i6:Otherwise, if 24 hours have passed, you should call a travel agency.
+- [N4] Within matched traces (2->1) omitted: i8:On the other hand, if a code is not available, you should cancel your journey.
+- [N5] Within matched traces (2->1) omitted: i9:In that case, the process will end as well.
+- [N6] Within matched traces (3->3) omitted: i5:If a code is available within 24 hours, the process will end.
+- [N7] Within matched traces (3->3) omitted: i6:Otherwise, if 24 hours have passed, you should call a travel agency.
+
+Addition
+- [N8] Node-level addition: action(n9,"end of process after calling travel agency (train)") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"choose destination and calculate distance") -> action(n3,"check if need to book train or flight") -> branch(b1,XOR) -> action(n4,"book a train") -> action(n6,"check if code is available within 24 hours (train)") -> branch(b2,XOR) -> action(n7,"code available within 24 hours (train)") -> end(e1)
+- [N10] Within matched traces (0->1) added: init(i1)
+- [N11] Within matched traces (0->1) added: action(n9,"end of process after calling travel agency (train)")
+- [N12] Within matched traces (0->1) added: end(e2)
+- [N13] Within matched traces (1->2) added: init(i1)
+- [N14] Within matched traces (2->1) added: init(i1)
+- [N15] Within matched traces (2->1) added: action(n9,"end of process after calling travel agency (train)")
+- [N16] Within matched traces (2->1) added: end(e2)
+- [N17] Within matched traces (3->3) added: init(i1)
+- [N18] Within matched traces (3->3) added: action(n10,"check if code is available within 24 hours (flight)")
+- [N19] Within matched traces (3->3) added: branch(b3,XOR)
+
+Mutation
+- [N20] Node-level mutation: element=action(n10,"check if code is available within 24 hours (flight)") -> action(n11,"code available within 24 hours (flight)"); source=i7:If a code is available, the process will end along with the hotel reservation.; reason=The model incorrectly imposes a 'within 24 hours' constraint and appends '(flight)' to these steps, whereas the source text states the condition simply as 'If a code is available' without a time limit.
+- [N21] Node-level mutation: element=action(n12,"call travel agency (flight)"); source=i8:On the other hand, if a code is not available, you should cancel your journey.; reason=The model substitutes 'call travel agency' for the source's explicit instruction to 'cancel your journey', altering the prescribed action.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.

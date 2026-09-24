@@ -1,0 +1,19 @@
+Addition
+- [N1] Node-level addition: action(n5,"merge after parallel tasks") (reason: Content 'merge after parallel tasks' is generic boilerplate not present in the source text.)
+- [N2] Node-level addition: action(n13,"take tomato sauce as is") (reason: Content 'take tomato sauce as is' invents a fallback step that the source does not describe.)
+- [N3] Node-level addition: guard(b2,n13,"v2 = false") (reason: Condition solely supports the invented action n13 and lacks any source justification.)
+- [N4] Node-level addition: guard(b2,c2,"v2 = false") (reason: Duplicate guard condition pointing to a converge node has no source support and is structurally redundant.)
+- [N5] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n3,"check pesto availability") -> action(n6,"is pesto available?") -> branch(b1,XOR) -> action(n8,"take tomato sauce from roommate") -> action(n9,"has tomato sauce been stolen?") -> branch(b2,XOR) -> action(n13,"take tomato sauce as is") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N7] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"enter kitchen") -> branch(b3,AND) -> action(n4,"cook spaghetti") -> converge(c2) -> action(n11,"combine meal components and prepare meal") -> action(n12,"end process") -> end(e1)
+- [N8] Within matched traces (1->1) added: action(n6,"is pesto available?")
+- [N9] Within matched traces (1->1) added: branch(b1,XOR)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=0 and out=0. | DSL: action(n5,"merge after parallel tasks")
+- [S2] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c1` has in=0 and out=0. | DSL: converge(c1)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: c1, n5 | DSL: converge(c1); action(n5,"merge after parallel tasks")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: c1, n5 | DSL: converge(c1); action(n5,"merge after parallel tasks")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=False].

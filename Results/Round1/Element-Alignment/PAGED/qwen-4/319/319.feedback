@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i2:they can either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies. (reason: Fails to implement the initial standalone option to 'see a list of new copies'. While new copies appear later, they are only reachable via a conditional branch after viewing details, leaving the original independent alternative uncovered.)
+
+Addition
+- [N2] Node-level addition: action(n3,"do you want to view book details") (reason: These steps introduce interrogative prompts ('do you want to...') that reframe declarative user capabilities into explicit system questions. The source text describes options and permissions without posing any questions or prompting interfaces.)
+- [N3] Node-level addition: action(n5,"do you want to select a copy or view new copies?") (reason: These steps introduce interrogative prompts ('do you want to...') that reframe declarative user capabilities into explicit system questions. The source text describes options and permissions without posing any questions or prompting interfaces.)
+- [N4] Added trace (model 1): init(i1) -> action(n2,"choose a book") -> action(n3,"do you want to view book details") -> branch(b2,XOR) -> action(n4,"view: book details") -> action(n5,"do you want to select a copy or view new copies?") -> branch(b1,XOR) -> action(n8,"view: new copies") -> converge(c1) -> action(n10,"evaluate and select a copy from the list") -> action(n11,"end procedure") -> end(e2)
+- [N5] Within matched traces (0->0) added: action(n3,"do you want to view book details")
+- [N6] Within matched traces (0->0) added: branch(b2,XOR)
+- [N7] Within matched traces (0->0) added: action(n5,"do you want to select a copy or view new copies?")
+- [N8] Within matched traces (1->2) added: action(n3,"do you want to view book details")
+- [N9] Within matched traces (1->2) added: branch(b2,XOR)
+- [N10] Within matched traces (1->2) added: converge(c1)
+
+Mutation
+- [N11] Node-level mutation: element=action(n10,"evaluate and select a copy from the list"); source=i4:if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process.; reason=Collapses two distinct sequential steps ('evaluate the list' and 'select their preferred copy') into a single action, and omits the qualifier 'preferred', altering the specified granularity and target specificity.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

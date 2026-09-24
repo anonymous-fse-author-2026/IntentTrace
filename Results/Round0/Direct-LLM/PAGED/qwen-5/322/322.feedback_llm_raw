@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start Expense Report process")`: Hallucinates a preliminary step; the description explicitly states "start by receiving the expense report", indicating that reception is the initial action, not a separate setup task.
+- `action(n7, "End")` and `action(n9, "End")`: Hallucinates explicit termination tasks; the source simply instructs to "end the process", which should map directly to the `end()` nodes without intervening action steps.
+- `defines(v1, "Is report accepted?", {"Yes", "No"})`: Value range fails to faithfully reflect the source terminology, which explicitly uses "accepted" and "rejected" as the decision outcomes.
+- `precedence(n6, n7)` and `precedence(n8, n9)`: Incorrect control-flow routing caused by the hallucinated "End" actions; precedence should proceed directly from `n6` to `e1` and `n8` to `e2` to accurately mirror "proceed with the payment and end the process" and "send an Expense Rejection Notification and end the process".
+- `action(n4, "Is report accepted?")`: Misrepresents a conditional check as a discrete task; the source frames acceptance as an immediate decision point ("If the report is accepted..."), not as a separate process step preceding the `branch(b1, XOR)` node.

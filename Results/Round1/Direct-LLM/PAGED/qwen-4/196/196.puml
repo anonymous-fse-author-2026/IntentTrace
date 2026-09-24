@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:check if the input is a URN;
+:v1: check if the input is a URN ({URN, URL}); <<objectSignal>>
+if () then ([v1 = 'URN'] is URN)
+:perform ONS-Resolving URN to a domain name;
+else ([v1 = 'URL'] is URL)
+:continue with the process;
+endif
+:check if the input is a URN or a URL;
+:v2: check if the input is a URN or a URL ({URN, URL}); <<objectSignal>>
+if () then ([v2 = 'URN'] [v2 = 'URL'])
+->;
+else ([v2 = 'URN'] [v2 = 'URL'])
+->;
+endif
+:send a DNS query;
+:receive a list of URLs from the DNS query;
+:use the list of URLs to link to a designated DS;
+:link to the designated DS;
+stop
+@enduml

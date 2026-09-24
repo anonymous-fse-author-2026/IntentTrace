@@ -1,0 +1,82 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({Return, Pickup}); <<objectSignal>>
+if () then ([v1 = 'Return'])
+:customer returns items to store;
+else ([v1 = 'Pickup'])
+:delivery crew picks up items at event site;
+endif
+:order is complete and all items were returned;
+:v2: order is complete and all items were returned ({Complete, Incomplete}); <<objectSignal>>
+if () then ([v2 = 'Incomplete'])
+:order is incomplete and items are missing;
+:v3: order is incomplete and items are missing ({Missing, NotMissing}); <<objectSignal>>
+switch ()
+case ([v3 = 'Missing'])
+:customer returns missing items;
+:v7: customer returns missing items ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'No'])
+->;
+else ([v7 = 'Yes'])
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+:v9: items packed for existing order ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'No'])
+->;
+else ([v9 = 'Yes'])
+:end process;
+endif
+split again
+:items stored for future orders;
+:v10: items stored for future orders ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'No'])
+->;
+else ([v10 = 'Yes'])
+endif
+end split
+endif
+stop
+case ([v3 = 'NotMissing'])
+:customer does not return missing items;
+:v8: customer does not return missing items ({Yes, No}); <<objectSignal>>
+if () then ([v8 = 'No'])
+->;
+else ([v8 = 'Yes'])
+endif
+case ([v3 = 'Other'])
+endswitch
+else ([v2 = 'Complete'])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: items packed for existing order ({Packed, Stored}); <<objectSignal>>
+if () then ([v4 = 'Stored'])
+->;
+else ([v4 = 'Packed'])
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: items are repaired and added into inventory ({Repair, Discard}); <<objectSignal>>
+if () then ([v6 = 'Discard'])
+:items can't be repaired and are discarded;
+else ([v6 = 'Repair'])
+:email customer with replacement charges;
+endif
+:end process;
+endif
+split again
+:items stored for future orders;
+:v5: items stored for future orders ({Stored, Proceed}); <<objectSignal>>
+if () then ([v5 = 'Proceed'])
+->;
+else ([v5 = 'Stored'])
+endif
+end split
+stop
+endif
+@enduml

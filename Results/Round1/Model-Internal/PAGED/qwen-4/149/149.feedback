@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i7:a manufacturing order is placed. (reason: While the condition for this path is captured by a guard, the actual action of placing a manufacturing order is completely absent from the model; the flow jumps directly to convergence.)
+- [N2] Node-level omission: i12:Simultaneously, the stock is updated and the sales information is updated. (reason: i12 requires updating sales information alongside stock updates, but the model lacks any corresponding action element for updating sales information.)
+- [N3] Omitted trace (input 1): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:continue the process if a production order is received -> i3:if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier. -> i8:Once the materials are received from the supplier, -> i9:the goods are issued and the motorcycles are produced. -> i12:Simultaneously, the stock is updated and the sales information is updated. -> i11:the process ends.
+- [N4] Omitted trace (input 3): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:continue the process if a production order is received -> i3:if a production order is received -> i7:a manufacturing order is placed. -> i9:the goods are issued and the motorcycles are produced. -> i12:Simultaneously, the stock is updated and the sales information is updated. -> i11:the process ends.
+- [N5] Omitted trace (input 4): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i4:update the sales information and proceed to order dispatch -> i11:the process ends.
+- [N6] Within matched traces (0->2) omitted: i2:continue the process if a production order is received
+- [N7] Within matched traces (2->3) omitted: i2:continue the process if a production order is received
+
+Addition
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (2->1) added: converge(c1)
+- [N10] Within matched traces (2->1) added: action(n5,"Check Material Availability")
+- [N11] Within matched traces (0->2) added: action(n4,"Update Sales Information and Proceed to Dispatch")
+- [N12] Within matched traces (0->2) added: converge(c1)
+- [N13] Within matched traces (2->3) added: action(n4,"Update Sales Information and Proceed to Dispatch")
+- [N14] Within matched traces (2->3) added: converge(c1)
+- [N15] Within matched traces (2->3) added: action(n5,"Check Material Availability")
+
+Permutation
+- [N16] Within matched traces (0->0) reordered: expected [i3:if a production order is received] but observed [action(n2,"Production Order Received?") -> branch(b1,XOR)] elsewhere; in its place the model has [action(n3,"Continue with Production Order")]
+- [N17] Within matched traces (2->1) reordered: expected [i3:if a production order is received] but observed [action(n2,"Production Order Received?") -> branch(b1,XOR)] elsewhere; in its place the model has [action(n3,"Continue with Production Order")]

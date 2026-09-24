@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:accept the customer request (reason: This step was not faithfully implemented as a distinct action; it was improperly merged into a single element with the PO creation.)
+- [N2] Node-level omission: i6:reject the customer request (reason: This step was not faithfully implemented as a distinct action; it was improperly merged with process termination.)
+- [N3] Node-level omission: i7:create a purchase order (reason: This step was not faithfully implemented as a distinct action; it was improperly merged into a single element with the request acceptance.)
+- [N4] Node-level omission: i13:reserve the funds (reason: This step was not faithfully implemented as a distinct action; it was improperly merged with the approval outcome.)
+- [N5] Node-level omission: i14:review it again (reason: This distinct review action is completely missing from the generated model.)
+- [N6] Omitted trace (input 1): i1:To begin the process for ACME Company -> i2:receiving the customer request -> i3:check the current inventory level -> i4:If the inventory level is at or below the minimum -> i5:accept the customer request -> i7:create a purchase order -> i9:review it -> i10:If the purchase order is rejected -> i11:rework the purchase order -> i14:review it again -> i9:review it
+- [N7] Within matched traces (2->0) omitted: i5:accept the customer request
+- [N8] Within matched traces (2->0) omitted: i7:create a purchase order
+- [N9] Within matched traces (2->0) omitted: i13:reserve the funds
+- [N10] Within matched traces (3->1) omitted: i5:accept the customer request
+- [N11] Within matched traces (3->1) omitted: i7:create a purchase order
+- [N12] Within matched traces (3->1) omitted: i13:reserve the funds
+- [N13] Within matched traces (0->2) omitted: i6:reject the customer request
+
+Addition
+- [N14] Node-level addition: action(n4,"accept request and create PO") (reason: Combines multiple steps ('accept request' and 'create PO') into a single element, violating granularity and lacking a single corresponding source unit.)
+- [N15] Node-level addition: action(n5,"reject request - end process") (reason: Combines 'reject request' and 'end process' into a single action element, distorting process granularity.)
+- [N16] Node-level addition: action(n8,"approve purchase order and reserve funds") (reason: Combines the approval outcome and the 'reserve funds' action into a single step, altering granularity.)
+- [N17] Node-level addition: action(n15,"end process") (reason: Invented leftover step; there is no 'process ends' segment at the end of the provided input list.)
+- [N18] Node-level addition: guard(b1,n5,"v1 = \"above minimum\"") (reason: The condition 'above minimum' is entirely missing from the segmented input units provided.)
+- [N19] Within matched traces (2->0) added: action(n15,"end process")
+- [N20] Within matched traces (2->0) added: end(e2)
+- [N21] Within matched traces (3->1) added: action(n15,"end process")
+- [N22] Within matched traces (3->1) added: end(e2)
+- [N23] Within matched traces (0->2) added: branch(b1,XOR)
+- [N24] Within matched traces (0->2) added: action(n5,"reject request - end process")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"review purchase order")

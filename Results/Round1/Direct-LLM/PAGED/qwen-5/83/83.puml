@@ -1,0 +1,96 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start Rental Items Return Process;
+:v1: Are items returned by Customer to Store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Are items returned by Customer to Store;
+:v2: Are items picked up by Delivery Crew at Event Site ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:Continue process after Customer returns items;
+else ([v2 = false])
+->;
+endif
+else ([v1 = false])
+:Are items picked up by Delivery Crew at Event Site;
+:v3: Is Order complete and all items returned ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:Continue process after Delivery Crew picks up items;
+else ([v3 = false])
+->;
+endif
+endif
+:Count items and compare to original contract;
+:Is Order complete and all items returned;
+:v5: Is Order complete but items damaged ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v5 = "Complete"])
+:Proceed with process for complete order;
+case ([v5 = "Incomplete"])
+:Is the Order incomplete and items missing;
+:Proceed with process for incomplete order;
+case ([v5 = "Damaged"])
+:Is Order complete but items damaged;
+:Email customer informing about damage and additional charges;
+endswitch
+:Do items get packed for existing order;
+:v6: Do items get packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v6 = true])
+:Continue process for items packed for existing order;
+else ([v6 = false])
+:Do items get stored for future orders;
+:v7: Do items get stored for future orders ({true, false}); <<objectSignal>>
+if () then ([v7 = true])
+:Continue process for items stored for future orders;
+else ([v7 = false])
+:Are there missing items and replacement charges;
+endif
+endif
+:Email customer for missing items and replacement charges;
+:v8: Are there missing items and replacement charges ({true, false}); <<objectSignal>>
+if () then ([v8 = true])
+:Are there damaged items and additional charges;
+:v9: Are there damaged items and additional charges ({true, false}); <<objectSignal>>
+if () then ([v9 = true])
+:Did customer return missing items;
+:v10: Did customer return missing items ({true, false}); <<objectSignal>>
+switch ()
+case ([v10 = true])
+:Continue process after customer returns missing items;
+case ([v10 = false])
+:Is items repaired and added into inventory;
+:Continue process after items repaired and added into inventory;
+case ([v10 = true])
+:Are items can't be repaired and are discarded;
+:v12: Are items can't be repaired and are discarded ({true, false}); <<objectSignal>>
+if () then ([v12 = true])
+:Email customer with replacement charges for discarded items;
+else ([v12 = false])
+->;
+endif
+endswitch
+:Do items get packed for existing order (final);
+:v13: Do items get packed for existing order (final) ({true, false}); <<objectSignal>>
+if () then ([v13 = true])
+:Continue process for items packed for existing order (final);
+else ([v13 = false])
+:Do items get stored for future orders (final);
+:v14: Do items get stored for future orders (final) ({true, false}); <<objectSignal>>
+if () then ([v14 = true])
+:Continue process for items stored for future orders (final);
+endif
+endif
+else ([v9 = false])
+->;
+endif
+else ([v8 = false])
+:Temporarily remove damaged items from inventory;
+:v11: Is items repaired and added into inventory ({true, false}); <<objectSignal>>
+if () then ([v11 = false])
+:Continue process when customer does not return missing items;
+else ([v11 = true])
+endif
+endif
+@enduml

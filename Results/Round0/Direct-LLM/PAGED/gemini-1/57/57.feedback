@@ -1,0 +1,22 @@
+- actor(a_default, "Default", [...]): The source text explicitly identifies the "customer" as performing actions, but the model incorrectly assigns all steps to a generic "Default" actor.
+- action(n1, "start"): Hallucinated action; the source text does not describe a "start" step.
+- action(n2, "make purchase and connect to website"): Combines distinct steps; the source explicitly states "make a purchase and then connect to the website", which requires two sequential actions to preserve exactly the source chronology.
+- action(n4, "add item to cart / continue shopping"): Hallucinated as an action step; the text describes this as a decision for a branch ("If they choose to..."), not a standalone action.
+- branch(b1, XOR): Missing guards on its outgoing edges to evaluate the customer's choice between "Add item to cart" and "Continue Shopping".
+- action(n6, "continue shopping"): Lacks an outgoing control-flow edge; the text specifies "they should continue with the process" (implying a loop), but the model incorrectly leaves this path as a dead end.
+- action(n9, "checkout tasks completed?"), branch(b2, XOR), guard(b2, n17, v2 = 'Checkout Tasks Not Completed'), action(n17, "checkout tasks not completed"), end(e3), and defines(v2, ...): Hallucinated behaviors; the text does not mention a check for whether checkout tasks are completed or ending the process if they are not.
+- action(n10, "credit card approved and inventory in stock?"): Hallucinated as an action step; evaluating these conditions is part of the branching logic based on the checks already performed in action(n8).
+- branch(b3, XOR): Missing guards on its outgoing edges to represent the conditions for credit card approval and inventory status.
+- precedence(n16, e2): Violates the source text "In either case, the order confirmation number should be displayed"; the model inappropriately terminates the process at end(e2) instead of routing the flow to action(n11).
+- defines(v1, "add item to cart / continue shopping", {}) and defines(v3, "credit card approved and inventory in stock?", {}): The variables have empty ranges, failing to faithfully define the value spaces for the decisions described in the source text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"continue shopping")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Checkout Tasks Not Completed']`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` uses undefined variable `v2`. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"continue shopping")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

@@ -1,0 +1,25 @@
+Addition
+- [N1] Node-level addition: action(n25,"End") (reason: This action 'End' lacks direct textual justification, as concluding was already covered by closing steps and the formal end element.)
+- [N2] Node-level addition: label(b3,n9,"macroscopic_preparation") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+- [N3] Node-level addition: label(b3,n10,"macroscopic_preparation") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+- [N4] Node-level addition: label(n10,n11,"macroscopic_preparation") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+- [N5] Node-level addition: label(n20,n21,"post_report") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+- [N6] Node-level addition: label(n21,n22,"close_pathology") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+- [N7] Node-level addition: label(n22,n23,"final_delivery") (reason: These specific transition labels do not correspond to any explicit text in the source.)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n12,"v1 = 'second check digitalization'"); source=i12:If the answer is "no,"; reason=The text states the condition is 'no', but the guard uses the value 'second check digitalization'.
+- [N9] Node-level mutation: element=guard(b1,n13,"v1 = 'second check digitalization'"); source=i14:If the answer is "yes,"; reason=The text states the condition is 'yes', but the guard uses the value 'second check digitalization'.
+- [N10] Node-level mutation: element=guard(b2,n15,"v2 = 'assign_cases'"); source=i12:If the answer is "no,"; reason=The text states the condition is 'no', but the guard uses the value 'assign_cases'.
+- [N11] Node-level mutation: element=guard(b2,n16,"v2 = 'assign_cases'"); source=i14:If the answer is "yes,"; reason=The text states the condition is 'yes', but the guard uses the value 'assign_cases'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=1 and out=0. | DSL: action(n9,"Macroscopic description writing")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['second check digitalization']`. | Variable `v2` has an invalid range `['assign_cases']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'second check digitalization'` on `b1 -> n12` uses undefined variable `v1`. | Guard `v1 = 'second check digitalization'` on `b1 -> n13` uses undefined variable `v1`. | Guard `v2 = 'assign_cases'` on `b2 -> n15` uses undefined variable `v2`. | Guard `v2 = 'assign_cases'` on `b2 -> n16` uses undefined variable `v2`. | DSL: guard(b1,n12,"v1 = 'second check digitalization'"); guard(b1,n13,"v1 = 'second check digitalization'"); guard(b2,n15,"v2 = 'assign_cases'"); guard(b2,n16,"v2 = 'assign_cases'")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n9 | DSL: action(n9,"Macroscopic description writing")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'second check digitalization'` on `b1 -> n12` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'second check digitalization'` on `b1 -> n13` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'assign_cases'` on `b2 -> n15` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'assign_cases'` on `b2 -> n16` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n12,"v1 = 'second check digitalization'"); guard(b1,n13,"v1 = 'second check digitalization'"); guard(b2,n15,"v2 = 'assign_cases'"); guard(b2,n16,"v2 = 'assign_cases'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

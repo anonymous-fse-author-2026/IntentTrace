@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process at 8:00 am;
+:empty the mailbox;
+:is the mailbox empty?;
+:v1: is the mailbox empty? ({true, false}); <<objectSignal>>
+if () then (["v1 = false"])
+:continue the process;
+:is the mailbox empty?;
+:v2: is the mailbox empty? ({true, false}); <<objectSignal>>
+if () then (["v2 = false"])
+:continue the process;
+:is the information complete?;
+:v3: is the information complete? ({true, false}); <<objectSignal>>
+if () then (["v3 = true"])
+:add incoming mail number date and record it in letter book;
+else (["v3 = false"])
+:make a telephone call to the sender;
+:add incoming mail number date and record it in letter book;
+endif
+:is it Wednesday evening?;
+:check Wednesday schedule;
+:take letter book and member register to Miranda;
+:has applicant become a member?;
+:v5: has applicant become a member? ({true, false}); <<objectSignal>>
+if () then (["v5 = true"])
+:stamp new Member on letter and write date on letter;
+:write the data;
+:calculate fee;
+:hand letter to Charles;
+:ask Charles to write amount in register;
+:print membership card and send to new member;
+:end process;
+stop
+else (["v5 = false"])
+:write to applicant and inform decision;
+:hand letter to Charles;
+:add new member to register;
+:prepare invoice for new members;
+:ask Charles to write amount in register;
+:write fee amount to register;
+stop
+endif
+else (["v2 = true"])
+:end process;
+stop
+endif
+else (["v1 = true"])
+:end process;
+stop
+endif
+@enduml

@@ -1,0 +1,82 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:return items to store, count and compare to contract;
+:v1: items returned to store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:customer returns items to store;
+else ([v1 = false])
+:delivery crew picks up items at event site;
+endif
+:v2: order is complete and all items were returned ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:v4: items packed for existing order ({true, false})
+v3: order is incomplete and items are missing ({true, false}); <<objectSignal>>
+switch ()
+case ([v4 = true])
+if () then ( )
+->;
+endif
+case ([v3 = true])
+:customer returns missing items;
+:v9: items packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v9 = true])
+:temporarily take damaged items out of inventory;
+:v2: order is complete and all items were returned ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:items packed for existing order;
+:v3: order is incomplete and items are missing ({true, false}); <<objectSignal>>
+if () then ([v3 = false])
+->;
+else ([v3 = true])
+:end process;
+endif
+else ([v2 = false])
+:items stored for future orders;
+:v4: items packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v4 = false])
+->;
+else ([v4 = true])
+endif
+endif
+stop
+else ([v9 = false])
+->;
+endif
+case ([v3 = false])
+:customer does not return missing items;
+:v10: items stored for future orders ({true, false}); <<objectSignal>>
+if () then ([v10 = true])
+else ([v10 = false])
+->;
+endif
+endswitch
+else ([v2 = false])
+:assess damage and email customer for charges;
+:v1: items returned to store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:items packed for existing order;
+:v4: items packed for existing order ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+->;
+else ([v4 = false])
+:email customer with replacement charges;
+:v6: items are repaired and added into inventory ({true, false}); <<objectSignal>>
+if () then ([v6 = false])
+->;
+endif
+endif
+else ([v1 = false])
+:items stored for future orders;
+:v5: items stored for future orders ({true, false}); <<objectSignal>>
+if () then ([v5 = false])
+->;
+else ([v5 = true])
+endif
+endif
+stop
+endif
+@enduml

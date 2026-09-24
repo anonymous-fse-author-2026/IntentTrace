@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process for ACME;
+:begin New Resupply Cycle;
+:Check Levels of Inventory;
+:Is inventory below or equal to minimum;
+:v1: Is inventory below or equal to minimum ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:generate Equal to or below minimum Report;
+else ([v1 = 'No'])
+:generate Above Minimum Report;
+endif
+:Does report indicate inventory equal or below minimum;
+:v2: Does report indicate inventory equal or below minimum ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:create Purchase Orders POs;
+:PO needs to be reviewed;
+:v3: Is PO rejected ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:rework PO;
+:PO needs to be created again;
+else ([v3 = 'No'])
+:print and release PO in system;
+split
+:Simultaneously reserve funds for released POs;
+:Receive Packing Slip;
+split again
+:Mail POs to supplier;
+:Receive Inventory;
+end split
+:Receive Invoice;
+:Proceed to Three way match;
+:Is Three way match successful;
+:v_match: Three way match result ({Successful, Unsuccessful}); <<objectSignal>>
+if () then ([v_match = 'Unsuccessful'])
+->;
+else ([v_match = 'Successful'])
+:Release funds;
+:Issue payment;
+:Resupply Cycle is complete process ends;
+endif
+stop
+endif
+else ([v2 = 'No'])
+:process ends;
+stop
+endif
+@enduml

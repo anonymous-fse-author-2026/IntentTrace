@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start the process;
+:Gather the required items;
+:Inquire about the availability of products;
+:Send the inquiry;
+repeat :Wait for the invoice;
+:Invoice received;
+:v1: Invoice received ({Invoice received, Invoice not received}); <<objectSignal>>
+backward:Wait for invoice;
+repeat while () is ([v1 = 'Invoice not received']) not ([v1 = 'Invoice received'])
+:Review the pricing and terms of the items;
+:Send a purchase requisition;
+repeat :Wait for the purchase invoice and shipment;
+:Purchase invoice and shipment received;
+:v2: Purchase invoice and shipment received ({Received, Not received}); <<objectSignal>>
+backward:Wait for purchase invoice and shipment;
+repeat while () is ([v2 = 'Not received']) not ([v2 = 'Received'])
+:Receive the invoice;
+:Make the payment;
+:Transaction complete and process ends;
+stop
+@enduml

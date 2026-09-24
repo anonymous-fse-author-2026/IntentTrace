@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i2:check the invoice for any mismatches (reason: The step is not faithfully implemented because the required target 'the invoice' is missing from its only candidate element.)
+- [N2] Node-level omission: i4:re-send the invoice to the customer (reason: The action is not faithfully implemented because the recipient 'to the customer' is missing from the modeled step.)
+- [N3] Node-level omission: i5:If the option is to "post the invoice" (reason: The condition is distorted by dropping 'the invoice', leaving the exact condition uncovered.)
+- [N4] Node-level omission: i7:Alternatively, if the decision is to "block the invoice" (reason: The condition is distorted by dropping 'the invoice', leaving the exact condition uncovered.)
+
+Addition
+- [N5] Node-level addition: action(n3,"does the invoice need to be re-sent  posted  or blocked?") (reason: The model invents an explicit querying/checking step prior to the decision branches that is not supported by the source text.)
+- [N6] Within matched traces (0->0) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N7] Within matched traces (1->1) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N8] Within matched traces (2->2) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+
+Mutation
+- [N9] Node-level mutation: element=action(n2,"check for mismatches"); source=i2:check the invoice for any mismatches; reason=The element drops the target 'the invoice' from the action step.
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 == \"re-send\""); source=i3:If there is a need to "re-send the invoice to the customer"; reason=The guard element only extracts 're-send', dropping the target and recipient 'the invoice to the customer', which alters the full condition.
+- [N11] Node-level mutation: element=action(n4,"re-send the invoice"); source=i4:re-send the invoice to the customer; reason=The element drops the recipient target 'to the customer' from the action.
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 == \"post\""); source=i5:If the option is to "post the invoice"; reason=The element extracts only 'post', dropping the target 'the invoice' from the condition.
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 == \"block\""); source=i7:Alternatively, if the decision is to "block the invoice"; reason=The element extracts only 'block', dropping the target 'the invoice' from the condition.

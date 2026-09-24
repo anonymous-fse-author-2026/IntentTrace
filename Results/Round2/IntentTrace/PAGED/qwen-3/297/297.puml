@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process at 8:00 am;
+:empty the mailbox;
+:check if mailbox is empty?;
+:v1: check if mailbox is empty? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v1 = 'Mailbox is empty'])
+:end the process;
+stop
+else ([v1 = 'Mailbox is not empty'])
+:continue the process;
+:check if mailbox is empty again?;
+:v2: check if mailbox is empty again? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v2 = 'Mailbox is empty'])
+:end the process;
+stop
+else ([v2 = 'Mailbox is not empty'])
+:continue the process;
+:verify if information is complete?;
+:v3: verify if information is complete? ({Information is complete, Information is not complete}); <<objectSignal>>
+if () then ([v3 = 'Information is complete'])
+:add incoming mail number  date and record in letter book;
+else ([v3 = 'Information is not complete'])
+:make a telephone call to sender;
+-> After telephone call;
+:complete data by adding incoming mail number  date and record in letter book;
+endif
+:every wednesday evening: take books to miranda;
+:v4: applicant membership status ({Member, Not Member}); <<objectSignal>>
+if () then ([v4 = 'Member'])
+:applicant becomes member;
+:stamp 'new member' on the letter and write date;
+:write data in the letter book;
+:v_tail: processing method ({Calc fee, Hand letter, Invoice}); <<objectSignal>>
+switch ()
+case ([v_tail = 'Calc fee'])
+:calculate the fee and hand the letter to Charles;
+case ([v_tail = 'Hand letter'])
+:Hand the letter to Charles and add the new member to the register;
+case ([v_tail = 'Invoice'])
+:Prepare an invoice for the new members and continue the process;
+endswitch
+:Ask Charles to write the amount in the register;
+:and write the fee amount to the register;
+:print membership card with all data and send to new member;
+stop
+else ([v4 = 'Not Member'])
+:applicant cannot become member;
+:write to applicant and inform decision;
+stop
+endif
+endif
+endif
+@enduml

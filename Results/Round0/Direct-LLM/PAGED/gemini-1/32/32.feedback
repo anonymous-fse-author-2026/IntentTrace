@@ -1,0 +1,12 @@
+- `action(n1, "start")`: Hallucinated step; the source states "the process begins by entering expenses", meaning the initialization should connect directly to entering expenses.
+- `action(n7, "End Process")`: Hallucinated action; the source states "the process comes to an end", which corresponds to the existing `end(e1)` node. 
+- `precedence(b2, n7)`: Omits the second payout behavior. The source states "But if it is approved, the expenses can be paid out. Finally, after the expenses are paid out, the process comes to an end."
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements on all outgoing edges to evaluate the documented conditions "If the request is not approved" and "if the request is approved".
+- `defines(v1, "Approval Check 1", {})` and `defines(v2, "Approval Check 2", {})`: The ranges are empty `{}` and fail to include the source's outcomes "approved" and "disapproved" (or "not approved").
+- `action(n2, "Enter Expenses")`: Missing a `converge` node before this action to properly merge the initial control flow with the loop-back flows from `b1` and `b2`.
+- `actor(a_default, "Default", [...])`: Fails to assign responsibilities to the actor/context "MyCorp" as established by the source text "For MyCorp".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=3 and out=1. | DSL: action(n2,"Enter Expenses")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n2` has 0 guards; exactly one is required.

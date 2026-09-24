@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i8:receive the completed ones.
+- [N2] Within matched traces (1->2) omitted: i9:mark the relevant box on the invoice entry form
+
+Addition
+- [N3] Node-level addition: action(n3,"End process") (reason: The source only instructs to 'check if it has started' without defining any behavior for a negative result. The model invents a 'v1 = No' guard and an 'End process' action for this unsupported path.)
+- [N4] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: The source only instructs to 'check if it has started' without defining any behavior for a negative result. The model invents a 'v1 = No' guard and an 'End process' action for this unsupported path.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N6] Within matched traces (0->1) added: action(n11,"End process")
+- [N7] Within matched traces (2->1) added: action(n11,"End process")
+
+Mutation
+- [N8] Node-level mutation: element=action(n11,"End process"); source=i6:the process should be continued.; reason=The model places 'End process' on the 'Completed' branch arm, directly contradicting the source instruction that the process should be continued when invoices are marked as completed.
+
+Permutation
+- [N9] Within matched traces (0->1) reordered: expected [i3:if it has started.] but observed [action(n2,"Has the process started")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N10] Within matched traces (1->2) reordered: expected [i3:if it has started.] but observed [action(n2,"Has the process started")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N11] Within matched traces (2->1) reordered: expected [i3:if it has started.] but observed [action(n2,"Has the process started")] elsewhere; in its place the model has [branch(b1,XOR)]

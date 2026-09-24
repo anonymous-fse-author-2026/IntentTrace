@@ -1,0 +1,54 @@
+Omission
+- [N1] Node-level omission: i2:Bill for Purchased Goods/Services (reason: The initial billing step mentioned in the text is omitted from the model.)
+- [N2] Node-level omission: i9:further checks are conducted (reason: The action to conduct further checks for non-compliant invoices is missing.)
+- [N3] Omitted trace (input 2): i1:In the beginning, the process starts -> i2:Bill for Purchased Goods/Services -> i3:Receive Invoice -> i6:if the invoice is complete -> i7:the process continues -> i8:If the invoice is non-compliant -> i9:further checks are conducted -> i10:If the issue can be resolved with a phone call -> i11:non-compliance is resolved -> i14:Bill Client -> i15:a period of 10 days is given -> i18:a reminder is sent -> i19:the process ends
+- [N4] Within matched traces (0->0) omitted: i2:Bill for Purchased Goods/Services
+- [N5] Within matched traces (1->2) omitted: i2:Bill for Purchased Goods/Services
+- [N6] Within matched traces (1->2) omitted: i7:the process continues
+- [N7] Within matched traces (1->2) omitted: i9:further checks are conducted
+- [N8] Within matched traces (3->1) omitted: i2:Bill for Purchased Goods/Services
+- [N9] Within matched traces (3->1) omitted: i7:the process continues
+- [N10] Within matched traces (3->1) omitted: i9:further checks are conducted
+- [N11] Within matched traces (3->1) omitted: i17:the client is notified of the payment
+- [N12] Within matched traces (3->1) omitted: i20:If the client is unsatisfied
+- [N13] Within matched traces (3->1) omitted: i21:payment discrepancy is resolved
+- [N14] Within matched traces (4->1) omitted: i2:Bill for Purchased Goods/Services
+- [N15] Within matched traces (4->1) omitted: i7:the process continues
+- [N16] Within matched traces (4->1) omitted: i9:further checks are conducted
+- [N17] Within matched traces (4->1) omitted: i17:the client is notified of the payment
+- [N18] Within matched traces (4->1) omitted: i22:if the client is satisfied
+
+Addition
+- [N19] Node-level addition: action(n11,"Invoice Process Complete") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N20] Node-level addition: action(n12,"Bill Client Process Complete") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N21] Node-level addition: action(n13,"After Receiving Invoice") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N22] Node-level addition: action(n21,"Payment Process Complete") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N23] Node-level addition: action(n22,"Finalize Payment Process") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N24] Node-level addition: label(n13,n14,"Yes") (reason: These status updates and transition actions lack specific supporting text in the source description.)
+- [N25] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n17,"End Billing Process") -> end(e5)
+- [N26] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n19,"Resolve Payment Discrepancy") -> action(n21,"Payment Process Complete") -> end(e6)
+- [N27] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n20,"Continue Process") -> action(n22,"Finalize Payment Process") -> end(e7)
+- [N28] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n12,"Bill Client Process Complete") -> end(e4)
+- [N29] Within matched traces (0->0) added: action(n2,"Bill Client")
+- [N30] Within matched traces (0->0) added: branch(b4,AND)
+- [N31] Within matched traces (0->0) added: branch(b5,AND)
+- [N32] Within matched traces (1->2) added: action(n2,"Bill Client")
+- [N33] Within matched traces (1->2) added: branch(b4,AND)
+- [N34] Within matched traces (1->2) added: branch(b5,AND)
+- [N35] Within matched traces (1->2) added: action(n4,"Is Invoice Complete?")
+- [N36] Within matched traces (3->1) added: action(n2,"Bill Client")
+- [N37] Within matched traces (3->1) added: branch(b4,AND)
+- [N38] Within matched traces (3->1) added: branch(b5,AND)
+- [N39] Within matched traces (3->1) added: action(n4,"Is Invoice Complete?")
+- [N40] Within matched traces (3->1) added: action(n11,"Invoice Process Complete")
+- [N41] Within matched traces (3->1) added: end(e3)
+- [N42] Within matched traces (4->1) added: action(n2,"Bill Client")
+- [N43] Within matched traces (4->1) added: branch(b4,AND)
+- [N44] Within matched traces (4->1) added: branch(b5,AND)
+- [N45] Within matched traces (4->1) added: action(n4,"Is Invoice Complete?")
+- [N46] Within matched traces (4->1) added: action(n11,"Invoice Process Complete")
+- [N47] Within matched traces (4->1) added: end(e3)
+
+Mutation
+- [N48] Node-level mutation: element=guard(b2,n7,"v2 = 'Non-Compliant'"); source=i10:If the issue can be resolved with a phone call; reason=The text describes a phone call resolution, but the guard incorrectly states 'v2 = Non-Compliant'.
+- [N49] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i12:if the issue requires mail back; reason=The text specifies mail back requirement, but the guard generically states 'v2 = No'.

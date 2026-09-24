@@ -1,0 +1,226 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process in Admin Office"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check if process has started"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "verify completeness of invoices"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "OR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "return invoices to client via postal mail"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "continue process"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "receive completed invoices"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "mark relevant box on invoice entry form"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "are invoices marked uncompleted",
+      "R_X": [
+        "Uncompleted",
+        "Completed"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "b1",
+        "n5",
+        "n6",
+        "c1",
+        "n7",
+        "n11",
+        "e1",
+        "n4",
+        "n8"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Uncompleted'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'Completed'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Uncompleted'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v1 = 'Completed'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process in the Admin Office,"
+    },
+    {
+      "id": "i2",
+      "content": "first check if it has started."
+    },
+    {
+      "id": "i3",
+      "content": "verify the completeness of the invoices."
+    },
+    {
+      "id": "i4",
+      "content": "If they are marked as \"Uncompleted\", they should be returned to the client through postal mail."
+    },
+    {
+      "id": "i5",
+      "content": "However, if they are marked as \"Completed\", the process should be continued."
+    },
+    {
+      "id": "i8",
+      "content": "Once the invoices are returned to the client, receive the completed ones."
+    },
+    {
+      "id": "i9",
+      "content": "Then, mark the relevant box on the invoice entry form"
+    },
+    {
+      "id": "i10",
+      "content": "and proceed with checking if the process has been completed."
+    },
+    {
+      "id": "i11",
+      "content": "Finally, the process ends."
+    }
+  ]
+}

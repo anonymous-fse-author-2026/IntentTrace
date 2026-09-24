@@ -1,0 +1,9 @@
+
+
+- `transition from n2 to b1`: Omits the documented step "During this step, the items are counted and compared to the original contract," jumping directly to the delivery route split without performing the required verification.
+- `action(n5, "order is complete and all items were returned")` & `action(n6, "order is incomplete and items are missing")`: Misclassify explicit conditional states as executable actions, violating the source's framing of these as decision gates rather than process tasks.
+- `precedence(n10, n11)`: Sequences `n10` ("email customer with replacement charges") before `b6`/`n11` (repair assessment), contradicting the source rule that customers are charged only "if the 'Items can't be repaired and are discarded'".
+- `precedence(c4, n17)`: Routes `n17` ("temporarily take damaged items out of inventory") off the missing-items resolution path (`b3`→`n15`/`n16`), whereas the text explicitly places this step after the damage assessment: "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+- `missing guard(...) statements`: Fails to bind declared variables `v1`–`v10` to any branch edges, leaving all XOR/OR splits unconditioned and omitting the explicit IF/THEN logic required by the description.
+- `action(n15, "customer returns missing items")` & `action(n16, "customer does not return missing items")`: Model external customer events as internal process actions, conflating participant responsibilities with system workflow steps and distorting control-flow timing.
+- `branch(b3, XOR)` precedence edges: Defines three outbound targets (`to c2`, `to n15`, `to n16`) for a single XOR split, creating a structurally ambiguous concurrent choice that breaks the sequential missing-item handling described in the text.

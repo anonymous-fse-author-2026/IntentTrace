@@ -1,0 +1,8 @@
+- `defines(v1, "Is input a URN or URL?", {})`: The range is empty `{}`, violating SMC6 because it fails to capture the source's decision values `"URN"` and `"URL"`.
+- `branch(b1, XOR)` / missing `guard` statements: No `guard` rules define conditions for `b1`'s outgoing edges, violating SMC4 as the source explicitly dictates different paths based on `"checking if the input is a 'URN'"` or a `"'URL'"`.
+- `label(n1, n2, "Yes No")`: Incorrectly places decision outcomes on the sequential edge between `n1` and `n2` instead of the branch edges, violating SMC1/SMC2; the source does not describe labeling this transition.
+- `action(n3, "Resolve URN to domain-name")`: Payload omits the `"ONS-"` prefix from the source text `"ONS-Resolving URN to a domain-name"`, violating SMC2.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

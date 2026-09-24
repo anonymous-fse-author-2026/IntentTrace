@@ -1,0 +1,18 @@
+Addition
+- [N1] Node-level addition: action(n7,"Merge Continue Process after Service Task 1 and 2") (reason: This action describes a merge with invented text ('Merge Continue Process after Service Task 1 and 2'). The text contains no such executable step, only the structural implication 'After that'.)
+- [N2] Node-level addition: action(n10,"Continue Process if no Manual Task") (reason: The text does not prescribe an explicit step to continue the process if there is no Manual Task.)
+- [N3] Node-level addition: action(n11,"End Process") (reason: There is no source support for an additional end process action step at the end of the text.)
+- [N4] Node-level addition: guard(b1,n4,"v1 = \"No\"") (reason: There is no explicit text supporting a negative routing guard connecting the check for Service Task 1 to the check for Service Task 2.)
+- [N5] Node-level addition: guard(b3,n10,"v3 = \"No\"") (reason: There is no explicit text supporting a negative guard for the Manual Task condition.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N8] Within matched traces (0->0) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N9] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N10] Within matched traces (1->2) added: branch(b1,XOR)
+- [N11] Within matched traces (1->2) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N12] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N13] Within matched traces (2->4) added: branch(b1,XOR)
+- [N14] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+
+Mutation
+- [N15] Node-level mutation: element=guard(b2,n6,"v2 = \"No\""); source=i6:However, if it is "Service Task 3", then the process will come to an end.; reason=The model distorts the logic by routing to the end state whenever the task is not Service Task 2 (v2 = "No"), dropping the explicit requirement that it must strictly be 'Service Task 3'.

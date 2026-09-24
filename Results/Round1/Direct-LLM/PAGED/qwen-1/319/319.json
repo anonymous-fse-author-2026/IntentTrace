@@ -1,0 +1,230 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "choose a book"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "view: book details"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "select a copy"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "end procedure"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "view: new copies"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "view: used copies"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "evaluate and select a copy from the list"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "end procedure"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "do you want to select a copy or view new copies?",
+      "R_X": [
+        "select_copy",
+        "view_new_copies"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "initial selection option",
+      "R_X": [
+        "view_details",
+        "view_new_copies",
+        "view_used_copies"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_buyers",
+      "name": "Buyers",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n4",
+        "n6",
+        "n7",
+        "e1",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "e2",
+        "b1",
+        "b2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n4",
+      "condition": "v2 = 'view_details'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'view_new_copies'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'view_used_copies'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'select_copy'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v1 = 'view_new_copies'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For buyers, the process begins by choosing a book."
+    },
+    {
+      "id": "i2",
+      "content": "they can either view the book details or see a list of new copies"
+    },
+    {
+      "id": "i3",
+      "content": "Alternatively, they can also view a list of used copies."
+    },
+    {
+      "id": "i4",
+      "content": "If they choose to view the book details, they have the option to then view a list of new copies or proceed to select a copy and end the process."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy to complete the process."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+Addition
+- [N1] Node-level addition: guard(b3,n10,"\"v3 = 'No'\"") (reason: The source text only specifies that the process ends when a Manual Task exists. It does not describe any continuation path, alternative decision outcome, or secondary end state for the absence of a Manual Task. These elements invent an unsupported negative branch.)
+- [N2] Node-level addition: action(n10,"Continue Process if no Manual Task") (reason: The source text only specifies that the process ends when a Manual Task exists. It does not describe any continuation path, alternative decision outcome, or secondary end state for the absence of a Manual Task. These elements invent an unsupported negative branch.)
+- [N3] Node-level addition: action(n11,"End Process") (reason: The source text only specifies that the process ends when a Manual Task exists. It does not describe any continuation path, alternative decision outcome, or secondary end state for the absence of a Manual Task. These elements invent an unsupported negative branch.)
+- [N4] Node-level addition: action(n7,"Merge Continue Process after Service Task 1 and 2") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Node-level addition: guard(b1,n4,"\"v1 = 'No'\"") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n3,"Continue Process after Service Task 1") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"Start User Task") -> action(n2,"Is User Task Service Task 1?") -> branch(b1,XOR) -> action(n4,"Is User Task Service Task 2?") -> branch(b2,XOR) -> action(n5,"Continue Process after Service Task 2") -> converge(c1) -> action(n7,"Merge Continue Process after Service Task 1 and 2") -> action(n8,"Is there a Manual Task?") -> branch(b3,XOR) -> action(n10,"Continue Process if no Manual Task") -> action(n11,"End Process") -> end(e3)
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N10] Within matched traces (1->2) added: action(n2,"Is User Task Service Task 1?")
+- [N11] Within matched traces (1->2) added: branch(b1,XOR)
+- [N12] Within matched traces (1->2) added: converge(c1)
+- [N13] Within matched traces (1->2) added: action(n7,"Merge Continue Process after Service Task 1 and 2")
+- [N14] Within matched traces (2->4) added: action(n2,"Is User Task Service Task 1?")
+- [N15] Within matched traces (2->4) added: branch(b1,XOR)
+- [N16] Within matched traces (2->4) added: action(n4,"Is User Task Service Task 2?")
+
+Mutation
+- [N17] Node-level mutation: element=guard(b1,n3,"\"v1 = 'Yes'\""); source=i2:If the task is "Service Task 1", then the process should continue.; reason=The guard replaces the explicit task identifier check with an abstract boolean assignment ("v1 = 'Yes'"), distorting the original data and comparison logic.
+- [N18] Node-level mutation: element=guard(b2,n5,"\"v2 = 'Yes'\""); source=i3:If it is "Service Task 2", the process should also continue.; reason=The guard substitutes the specific "Service Task 2" condition with an abstract variable check ("v2 = 'Yes'"), changing the evaluated value.
+- [N19] Node-level mutation: element=guard(b2,n6,"\"v2 = 'No'\""); source=i4:However, if it is "Service Task 3", then the process will come to an end.; reason=The guard alters the decision logic by checking for a negative prior variable state ("v2 = 'No'") instead of directly evaluating for "Service Task 3" as stated in the source.
+- [N20] Node-level mutation: element=guard(b3,n9,"\"v3 = 'Yes'\""); source=i5:After that, if there is a Manual Task, the process will end.; reason=The guard drops the explicit "Manual Task" reference and replaces it with an abstract boolean evaluation ("v3 = 'Yes'"), modifying the condition payload.

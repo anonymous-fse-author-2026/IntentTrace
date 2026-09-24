@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to link the exclusive choices to the decision variables, omitting the documented conditions `"if someone 'Knows SLA'"` and `"If the task is 'Urgent'"` (violates SMC1, SMC4).
+- `defines(v1, "Knows SLA", {})` and `defines(v2, "Task is Urgent", {})`: Variable ranges are empty `{}`, failing to specify the expected value space (e.g., true/false or categorical options) needed to evaluate the source's conditional branches (violates SMC6).
+- `action(n2, "Knows SLA")` and `action(n6, "Task is Urgent")`: Incorrectly modeled as sequential procedural steps rather than conditional evaluations; the source frames them as decision triggers (`"if someone..."`, `"If the task is..."`) that should directly govern the subsequent branch routing (violates SMC2, SMC4).
+- `action(n3, "Continue the process after knowing SLA")` and `action(n8, "Continue process with Non Urgent task")`: Payloads hallucinate contextual qualifiers not present in the source, which simply instructs to `"continue the process"` without附加 descriptors (violates SMC1, SMC2).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,11 @@
+
+
+- `action(n1, "start the process")`: Hallucinates an introductory step; the source begins immediately with sending "Course Packet Information Received".
+- Source text "the Faculty will choose the design": Omitted documented behavior; the model completely skips this step between sending the design and identifying content.
+- `action(n5, ...)` and `action(n9, ...)`: Falsely represent decision checkpoints as executable action payloads instead of structuring them as branch evaluation points.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Define split points but lack any `guard(...)` statements to specify routing criteria, leaving control-flow logic undefined.
+- Source text "Entire Course Packet Copyright Cleared": Omitted condition; the source explicitly pairs this with the denial path to drive flow, but the model never declares or evaluates it.
+- `action(n6, ...)` and `action(n12, ...)` terminal paths: Incorrectly dead-end or terminate at `end(e2)`, contradicting the source directive that "the process should be continued" (which implies resuming the workflow cycle, not concluding).
+- `defines(v1, ...)` and `defines(v2, ...)`: Assigned empty value ranges `{}`, failing to capture the boolean/categorical decision domains required by the source conditions.
+- `actor(a_default, "Default", [...])`: Faithless responsibility mapping; the source explicitly assigns steps to "Faculty" (choose design) and "MPC" (calculate cost, add margin, notify bookstore), but the model lumps everything under a single default actor.
+- `precedence(n5, b1)` and `precedence(n9, b2)`: Distort source chronology by forcing conditional evaluations as sequential predecessors to branches rather than aligning decision logic directly with the split nodes.

@@ -1,0 +1,22 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i8:Simultaneously, the stock is updated and the sales information is updated.
+- [N2] Within matched traces (3->4) omitted: i8:Simultaneously, the stock is updated and the sales information is updated.
+
+Addition
+- [N3] Added trace (model 1): init(i1) -> action(n1,"Request to purchase a motorcycle") -> action(n2,"Production order received") -> branch(b1,XOR) -> action(n3,"Continue the process") -> branch(b5,AND) -> action(n6,"Materials unavailable") -> branch(b2,XOR) -> action(n7,"Order materials from supplier") -> action(n10,"Goods received from supplier") -> branch(b4,XOR) -> converge(c1) -> action(n13,"Update stock") -> converge(c2) -> action(n17,"End process") -> end(e1)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"Request to purchase a motorcycle") -> action(n2,"Production order received") -> branch(b1,XOR) -> action(n3,"Continue the process") -> branch(b5,AND) -> action(n6,"Materials unavailable") -> branch(b2,XOR) -> action(n8,"Available goods for production") -> branch(b3,XOR) -> action(n9,"Place manufacturing order") -> converge(c1) -> action(n13,"Update stock") -> converge(c2) -> action(n17,"End process") -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"Request to purchase a motorcycle") -> action(n2,"Production order received") -> branch(b1,XOR) -> action(n3,"Continue the process") -> branch(b5,AND) -> action(n6,"Materials unavailable") -> branch(b2,XOR) -> action(n8,"Available goods for production") -> branch(b3,XOR) -> converge(c1) -> action(n13,"Update stock") -> converge(c2) -> action(n17,"End process") -> end(e1)
+- [N6] Added trace (model 5): init(i1) -> action(n1,"Request to purchase a motorcycle") -> action(n2,"Production order received") -> branch(b1,XOR) -> action(n3,"Continue the process") -> branch(b5,AND) -> action(n14,"Dispatch motorcycles") -> action(n15,"Update stock") -> action(n16,"Update sales information") -> converge(c2) -> action(n17,"End process") -> end(e1)
+- [N7] Added trace (model 6): init(i1) -> action(n1,"Request to purchase a motorcycle") -> action(n2,"Production order received") -> branch(b1,XOR) -> action(n4,"Update sales information") -> action(n5,"Proceed to order dispatch") -> converge(c2) -> action(n17,"End process") -> end(e1)
+- [N8] Within matched traces (1->0) added: converge(c2)
+- [N9] Within matched traces (1->0) added: action(n17,"End process")
+- [N10] Within matched traces (1->0) added: end(e1)
+- [N11] Within matched traces (3->4) added: converge(c2)
+- [N12] Within matched traces (3->4) added: action(n17,"End process")
+- [N13] Within matched traces (3->4) added: end(e1)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n3,"v1 = true") -> guard(b1,n4,"v1 = false"); source=i2:Once the request is received, the next step is to either continue the process if a production order is received or update the sales information and proceed to order dispatch.; reason=Both guards replace the explicit textual condition 'if a production order is received' with generic boolean placeholders (v1 = true/false), altering the evaluated logic and values.
+- [N15] Node-level mutation: element=guard(b2,n7,"v2 = true") -> guard(b2,n8,"v2 = false"); source=i3:If there are unavailable materials, they are ordered from the supplier.; reason=Guards substitute the specific material availability condition with v2 = true/false, dropping the original semantic trigger.
+- [N16] Node-level mutation: element=guard(b3,n9,"v3 = true") -> guard(b3,c1,"v3 = false"); source=i4:Alternatively, if there are available goods for production, a manufacturing order is placed.; reason=Guards replace the goods availability condition with v3 = true/false, introducing generic boolean logic not present in the source.
+- [N17] Node-level mutation: element=guard(b4,n11,"v4 = true") -> guard(b4,c1,"v4 = false"); source=i5:Once the materials are received from the supplier, the goods are issued and the motorcycles are produced.; reason=Guards convert a temporal/trigger clause ('Once the materials are received') into a false binary decision (v4 = true/false), distorting the sequential flow into an unsupported conditional split.

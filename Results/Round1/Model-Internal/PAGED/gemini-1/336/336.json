@@ -1,0 +1,320 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Receive form"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Is form complete"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Send form back and end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Is income check needed"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Complete check deductibles"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Complete check house"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Make decision after completing checks"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "End process as declaration check needed"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End process as invitation needed"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Proceed to next process or end"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is form complete",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Is income check needed",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Make decision after completing checks",
+      "R_X": [
+        "Declaration",
+        "Invitation",
+        "Other"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "e1",
+        "n4",
+        "b2",
+        "n5",
+        "n6",
+        "n7",
+        "b3",
+        "n8",
+        "e2",
+        "n9",
+        "e3",
+        "n10",
+        "e4",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e4"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n10"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n8",
+      "condition": "v3 = 'Declaration'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n9",
+      "condition": "v3 = 'Invitation'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n10",
+      "condition": "v3 = 'Other'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "At the start, we receive a form."
+    },
+    {
+      "id": "i2",
+      "content": "we check if it is complete."
+    },
+    {
+      "id": "i3",
+      "content": "If it needs to be sent back, the process ends."
+    },
+    {
+      "id": "i4",
+      "content": "However, if we need to check the income"
+    },
+    {
+      "id": "i5",
+      "content": "if we need to check the income, we continue with the process."
+    },
+    {
+      "id": "i6",
+      "content": "At the same time, we complete the following steps:"
+    },
+    {
+      "id": "i7",
+      "content": "checking deductibles"
+    },
+    {
+      "id": "i8",
+      "content": "checking the house."
+    },
+    {
+      "id": "i9",
+      "content": "Then, we make a decision."
+    },
+    {
+      "id": "i10",
+      "content": "If we need to check the declaration, the process ends."
+    },
+    {
+      "id": "i11",
+      "content": "Otherwise, if we need to invite the declarant, the process also ends."
+    }
+  ]
+}

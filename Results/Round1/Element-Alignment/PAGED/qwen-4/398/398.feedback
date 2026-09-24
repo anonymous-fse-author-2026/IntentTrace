@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:However, if the login fails, we will continue with the process. (reason: The explicit instruction to continue is missing from the model; the flow jumps directly to the retry decision without capturing the stated continuation state.)
+- [N2] Omitted trace (input 1): i1:To start, please provide the userdata for flickr. -> i5:However, if the login fails, we will continue with the process. -> i6:If you want to try again -> i2:please provide the userdata for flickr.
+- [N3] Omitted trace (input 3): i1:To start, please provide the userdata for flickr. -> i5:However, if the login fails, we will continue with the process. -> i8:If you still want to try again -> i2:please provide the userdata for flickr.
+- [N4] Omitted trace (input 4): i1:To start, please provide the userdata for flickr. -> i5:However, if the login fails, we will continue with the process. -> i9:Alternatively, if you decide to abort -> i4:the process will end.
+- [N5] Within matched traces (2->1) omitted: i4:the process will end.
+
+Addition
+- [N6] Node-level addition: action(n1,"start") (reason: Invents a discrete 'start' step that artificially fractures the single instructional unit i1; the source couples 'To start' directly with providing userdata and contains no standalone start action.)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n1,"start")
+- [N9] Within matched traces (0->0) added: converge(c1)
+- [N10] Within matched traces (2->1) added: init(i1)
+- [N11] Within matched traces (2->1) added: action(n1,"start")
+- [N12] Within matched traces (2->1) added: converge(c1)
+- [N13] Within matched traces (2->1) added: action(n3,"is login successful")
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the login is successful; reason=Guard replaces the explicit condition 'successful' with a generic variable assignment 'v1 = Yes', altering the specified value/logic.
+- [N15] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:However, if the login fails, we will continue with the process.; reason=Guard replaces the explicit condition 'login fails' with 'v1 = No', distorting the original failure criterion.
+- [N16] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i6:If you want to try again; reason=Guard substitutes the textual intent 'want to try again' with a generic boolean 'v2 = Yes', changing the condition representation.
+- [N17] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:On the other hand, if you choose to abort; reason=Guard substitutes the textual intent 'choose to abort' with a generic boolean 'v2 = No', changing the condition representation.

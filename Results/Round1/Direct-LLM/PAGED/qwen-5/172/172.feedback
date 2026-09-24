@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i9:the process will end. (reason: No element faithfully implements this span; the only corresponding model element mutates it by adding unsupported details, leaving the exact source instruction uncovered.)
+- [N2] Omitted trace (input 1): i1:To begin with -> i2:choose your destination and calculate the distance. -> i3:continue to check if you need to book a train or a flight. -> i4:If the answer is "no" -> i5:then proceed to book a train. -> i8:If a code is available within 24 hours, -> i10:Otherwise, if 24 hours have passed, -> i11:you should call a travel agency. -> i12:If a code is available, -> i13:the process will end along with the hotel reservation.
+- [N3] Omitted trace (input 2): i1:To begin with -> i2:choose your destination and calculate the distance. -> i3:continue to check if you need to book a train or a flight. -> i4:If the answer is "no" -> i5:then proceed to book a train. -> i8:If a code is available within 24 hours, -> i10:Otherwise, if 24 hours have passed, -> i11:you should call a travel agency. -> i14:On the other hand, if a code is not available, -> i15:you should cancel your journey. -> i16:the process will end as well.
+- [N4] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours,
+- [N5] Within matched traces (0->0) omitted: i9:the process will end.
+
+Addition
+- [N6] Node-level addition: action(n1,"start") (reason: Invented redundant step 'start' lacks distinct source justification beyond the structural initiator already covered.)
+- [N7] Node-level addition: action(n5,"end with train booked") (reason: Invented step 'end with train booked' has no support in the source text; the description proceeds directly to checking code availability without closing the train branch.)
+- [N8] Within matched traces (0->0) added: action(n1,"start")
+- [N9] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N10] Within matched traces (0->0) added: end(e1)
+- [N11] Within matched traces (3->1) added: action(n1,"start")
+- [N12] Within matched traces (4->2) added: action(n1,"start")
+- [N13] Within matched traces (5->3) added: action(n1,"start")
+- [N14] Within matched traces (5->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N15] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i9:the process will end.; reason=Adds 'with hotel reservation' which is absent in this specific source span; invents a qualifier not supported by the original text.

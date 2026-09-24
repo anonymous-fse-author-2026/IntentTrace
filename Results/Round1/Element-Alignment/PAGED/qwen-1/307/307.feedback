@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i5:mark the "invoice entered correctly" box (reason: The only corresponding model element (n4) drops critical qualifiers, failing to implement the source instruction faithfully.)
+- [N2] Node-level omission: i6:Simultaneously (reason: The concurrency directive requires a parallel (AND) split to execute tasks concurrently, but no corresponding branching gateway or simultaneous path is modeled.)
+- [N3] Node-level omission: i7:highlight any errors on the invoice entry form and keep a record of the DEO's performance (reason: The only corresponding model element (n5) omits key contextual phrases, resulting in an incomplete and drifted implementation of the source directive.)
+- [N4] Omitted trace (input 1): i1:To begin the validation process, start by checking the received invoice for any errors. -> i4:If no errors are found -> i6:Simultaneously -> i5:mark the "invoice entered correctly" box -> i8:the invoice is checked -> i9:the process ends
+- [N5] Within matched traces (2->1) omitted: i6:Simultaneously
+
+Addition
+- [N6] Node-level addition: action(n1,"start") (reason: Models a standalone 'start' step that fragments the source's single instruction. The source uses 'start' as an announcer verb ('start by checking...'), not as a discrete actionable task.)
+- [N7] Within matched traces (0->0) added: action(n1,"start")
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n5,"highlight errors on form and record DEO performance")
+- [N10] Within matched traces (0->0) added: action(n7,"the invoice is checked")
+- [N11] Within matched traces (0->0) added: end(e1)
+- [N12] Within matched traces (2->1) added: action(n1,"start")
+
+Mutation
+- [N13] Node-level mutation: element=action(n2,"check for errors"); source=i1:To begin the validation process, start by checking the received invoice for any errors.; reason=Abstracts the specific task to 'check for errors', dropping the explicit subject ('received invoice') and scope ('any errors') required by the source unit.
+- [N14] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:If any errors are found; reason=Replaces the explicit textual condition with an undefined variable assignment ('v1 = \'Yes\''), failing to preserve the original semantic content and logical trigger.
+- [N15] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:If no errors are found; reason=Substitutes the source condition with 'v1 = \'No\'', altering the guard's payload and obscuring the original decision logic.
+- [N16] Node-level mutation: element=action(n4,"mark invoice entered correctly"); source=i5:mark the "invoice entered correctly" box; reason=Omits the target UI component ('box') and exact labeling quotes, changing the granularity and specificity of the instructed action.
+- [N17] Node-level mutation: element=action(n5,"highlight errors on form and record DEO performance"); source=i7:highlight any errors on the invoice entry form and keep a record of the DEO's performance; reason=Strips essential contextual qualifiers ('any', 'invoice entry form', 'keep a record of'), reducing instructional precision and deviating from the source's explicit phrasing.
+
+Permutation
+- [N18] Within matched traces (2->1) reordered: expected [i9:the process ends] but observed [action(n6,"end of process")] elsewhere; in its place the model has [action(n7,"the invoice is checked")]

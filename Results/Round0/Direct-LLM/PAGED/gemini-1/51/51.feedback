@@ -1,0 +1,9 @@
+- `actor(a_default, "Default", ...)`: The actor assignment fails to reflect the source text, which explicitly states these responsibilities are "For the Admin Office".
+- `action(n1, "start")`: This is a hallucinated action; the source text specifies that "the first step is to check the SLA".
+- `action(n6, "end process")`: This is a hallucinated action; the source text states that entering the processing date "marks the end of the process," requiring no distinct "end process" action.
+- `defines(v1, "are SLA details known from memory", {})`: The variable has an empty range `{}` instead of a valid value space (e.g., boolean or finite set) to evaluate the conditions.
+- `branch(b1, XOR)`: The outgoing edges `precedence(b1, n4)` and `precedence(b1, c1)` are missing `guard` statements to correctly evaluate the branching logic based on "If the SLA details are not known from memory" and "if the SLA details are known from memory".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

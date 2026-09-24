@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i14:However, if the approval is rejected (reason: The source clearly describes a conditional split immediately after the approval stage (complete vs. rejected). The model lacks a corresponding branch element and routing guards after the approval action, causing the rejection logic to be misplaced under the review branch instead.)
+- [N2] Within matched traces (1->0) omitted: i5:the process ends
+- [N3] Within matched traces (2->1) omitted: i12:approval stage, which takes half a day
+- [N4] Within matched traces (2->1) omitted: i14:However, if the approval is rejected
+- [N5] Within matched traces (3->1) omitted: i12:approval stage, which takes half a day
+- [N6] Within matched traces (3->1) omitted: i14:However, if the approval is rejected
+- [N7] Within matched traces (3->1) omitted: i18:the site needs to be rebuilt again, which also takes 3 days
+
+Addition
+- [N8] Added trace (model 2): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n11,"Approval stage (half a day)") -> action(n12,"End Process") -> end(e2)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N11] Added trace (model 5): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N12] Within matched traces (0->6) added: action(n2,"Is the informational meeting successful?")
+- [N13] Within matched traces (1->0) added: branch(b4,AND)
+- [N14] Within matched traces (1->0) added: action(n5,"Site design and development preparation (10 days)")
+- [N15] Within matched traces (1->0) added: converge(c1)
+- [N16] Within matched traces (2->1) added: branch(b4,AND)
+- [N17] Within matched traces (2->1) added: action(n5,"Site design and development preparation (10 days)")
+- [N18] Within matched traces (2->1) added: converge(c1)
+- [N19] Within matched traces (3->1) added: branch(b4,AND)
+- [N20] Within matched traces (3->1) added: action(n5,"Site design and development preparation (10 days)")
+- [N21] Within matched traces (3->1) added: converge(c1)
+- [N22] Within matched traces (3->1) added: action(n14,"Is the rebuild approved?")
+
+Mutation
+- [N23] Node-level mutation: element=guard(b2,n13,"v2 = false"); source=i11:If the review is successful; reason=This guard evaluates the negative condition for the review branch (b2) and routes to 'Rebuild site'. However, the source explicitly states that rebuilding occurs only if 'the approval is rejected', not if the review fails. The guard incorrectly binds the rebuild trigger to the wrong decision node.

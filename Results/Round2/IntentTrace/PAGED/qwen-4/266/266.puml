@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Informational meeting (half a day);
+:v1: Meeting success ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process;
+stop
+else ([v1 = 'Yes'])
+:Work on storyboard (full day);
+:v5: Storyboard result ({Not successful, Successful}); <<objectSignal>>
+if () then ([v5 = 'Not successful'])
+stop
+else ([v5 = 'Successful'])
+split
+:Prepare content;
+split again
+:Design site (10 days);
+end split
+:Develop site (2 days);
+:Review site (1 day);
+:Approval stage (half a day);
+:v3: Approve site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Approved'])
+:End process;
+stop
+else ([v3 = 'Rejected'])
+:Rebuild site (3 days);
+:v4: Rebuild result ({Complete, Rejected again}); <<objectSignal>>
+if () then ([v4 = 'Complete'])
+:End process;
+else ([v4 = 'Rejected again'])
+:Rebuild site again (3 days);
+endif
+stop
+endif
+endif
+endif
+@enduml

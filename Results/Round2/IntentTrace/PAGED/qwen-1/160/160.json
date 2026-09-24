@@ -1,0 +1,278 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "claim what is requested"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "check insured status of claimant"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "evaluate the claim"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "reject the claim"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "notify the claimant"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n_forms",
+      "type": "action",
+      "content": "If the claim is a simple one or a complex one, send the relevant forms accordingly"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "receive returned forms"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "check forms for completeness"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "register the claim"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "inform claimant to complete details"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is claimant insured?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "are all relevant details provided?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "b1",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "e1",
+        "n_forms",
+        "n12",
+        "n13",
+        "b3",
+        "n15",
+        "n16",
+        "n17",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n_forms"
+    },
+    {
+      "type": "precedence",
+      "A": "n_forms",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n15",
+      "condition": "v3 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n16",
+      "condition": "v3 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by claiming what is requested and then check the insured status of the claimant."
+    },
+    {
+      "id": "i2",
+      "content": "If the claimant is insured, proceed to evaluate the claim."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the claimant is not insured, reject the claim."
+    },
+    {
+      "id": "i4",
+      "content": "Once the claim is rejected, notify the claimant and the process comes to an end."
+    },
+    {
+      "id": "i5",
+      "content": "If the claim is a simple one or a complex one, send the relevant forms accordingly."
+    },
+    {
+      "id": "i6",
+      "content": "Once the forms are returned, check them for completeness."
+    },
+    {
+      "id": "i7",
+      "content": "If all the relevant details are provided, proceed to register the claim."
+    },
+    {
+      "id": "i8",
+      "content": "However, if not all the relevant details are provided, inform the claimant to complete them."
+    },
+    {
+      "id": "i9",
+      "content": "Once the claim is registered, the process comes to an end."
+    }
+  ]
+}

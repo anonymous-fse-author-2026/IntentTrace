@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Receive form;
+:Is form complete;
+:v1: Is form complete ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Send form back and end process;
+stop
+else ([v1 = 'Yes'])
+:Is income check needed;
+:v2: Is income check needed ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Complete check deductibles;
+else ([v2 = 'No'])
+:Complete check house;
+endif
+:Make decision after completing checks;
+:v3: Make decision after completing checks ({CheckDeclaration, InviteDeclarant, Proceed}); <<objectSignal>>
+switch ()
+case ([v3 = 'CheckDeclaration'])
+:End process as declaration check needed;
+stop
+case ([v3 = 'InviteDeclarant'])
+:End process as invitation needed;
+stop
+case ([v3 = 'Proceed'])
+:Proceed to next process or end;
+stop
+endswitch
+endif
+@enduml

@@ -1,0 +1,108 @@
+{
+  "ok": false,
+  "accepted_count": 67,
+  "rejected_count": 8,
+  "accepted": [
+    "init(i1)",
+    "action(n1, \"start\")",
+    "action(n2, \"Bill for Purchased Goods/Services and then Receive Invoice\")",
+    "action(n3, \"Is the invoice incomplete?\")",
+    "branch(b1, XOR)",
+    "action(n4, \"Return invoice due to incompleteness\")",
+    "end(e1)",
+    "action(n6, \"if the invoice is complete, the process continues\")",
+    "action(n7, \"Is the invoice non-compliant?\")",
+    "action(n7a, \"further checks are conducted\")",
+    "branch(b2, XOR)",
+    "action(n8, \"Resolve non-compliance via phone call\")",
+    "action(n9, \"Return invoice due to mail back requirement\")",
+    "end(e2)",
+    "action(n10a, \"After that, the invoice is paid and if it is returned, non-compliance is resolved\")",
+    "action(n11, \"Pay the invoice and notify client of payment\")",
+    "action(n12, \"Bill Client\")",
+    "action(n13, \"Is there no response from client?\")",
+    "branch(b3, XOR)",
+    "action(n14, \"Give 10 days waiting period\")",
+    "action(n15, \"End of process: Reminder sent after 10 days\")",
+    "end(e3)",
+    "end(e5)",
+    "action(n16, \"Resolve payment discrepancy if client is unsatisfied\")",
+    "branch(b4, XOR)",
+    "action(n17, \"Continue process if client is satisfied\")",
+    "end(e4)",
+    "end(e6)",
+    "converge(c1)",
+    "branch(b5, AND)",
+    "branch(b6, AND)",
+    "defines(v1, \"Is the invoice incomplete?\", {\"yes\", \"no\"})",
+    "defines(v2, \"Is the invoice non-compliant?\", {\"yes\", \"no\"})",
+    "defines(v3, \"Is there no response from client?\", {\"yes\", \"no\"})",
+    "defines(v4, \"Resolve payment discrepancy if client is unsatisfied\", {\"yes\", \"no\"})",
+    "actor(a_default, \"Default\", [i1, n1, n2, n3, b1, n4, e1, n6, n7, n7a, b2, n8, n9, e2, n10a, n11, n12, n13, b3, n14, n15, e3, e5, n16, b4, n17, e4, e6, c1, b5, b6])",
+    "precedence(i1, n1)",
+    "precedence(n1, n2)",
+    "precedence(n2, n3)",
+    "precedence(n3, b1)",
+    "precedence(b1, n4)",
+    "precedence(n4, e1)",
+    "precedence(b1, n6)",
+    "precedence(n6, b5)",
+    "precedence(b5, n7)",
+    "precedence(n7, n7a)",
+    "precedence(n7a, b2)",
+    "precedence(b2, n8)",
+    "precedence(b2, n9)",
+    "precedence(n9, e2)",
+    "precedence(n8, c1)",
+    "precedence(b5, c1)",
+    "precedence(c1, n10a)",
+    "precedence(n10a, n11)",
+    "precedence(n11, b6)",
+    "precedence(b6, n12)",
+    "precedence(n12, n13)",
+    "precedence(n13, b3)",
+    "precedence(b3, n14)",
+    "precedence(b3, e5)",
+    "precedence(n14, n15)",
+    "precedence(n15, e3)",
+    "precedence(b6, n16)",
+    "precedence(n16, b4)",
+    "precedence(b4, n17)",
+    "precedence(b4, e6)",
+    "precedence(n17, e4)"
+  ],
+  "rejected": [
+    {
+      "statement": "guard(b1, n4, v1 == \"yes\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b1, n6, v1 == \"no\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, n8, v2 == \"no\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b2, n9, v2 == \"yes\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b3, n14, v3 == \"yes\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b3, e5, v3 == \"no\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b4, n17, v4 == \"yes\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    },
+    {
+      "statement": "guard(b4, e6, v4 == \"no\")",
+      "reason": "invalid guard condition: Unexpected token: Token(kind='OP', value='=')"
+    }
+  ]
+}

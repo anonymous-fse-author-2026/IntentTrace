@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i11:If the number of reminders is less than 3, continue the process. (reason: No element faithfully implements the instruction to "continue the process". The only corresponding candidate (action:n17) mutates the step's content, leaving the original instruction uncovered.)
+- [N2] Within matched traces (2->1) omitted: i12:Otherwise, if the number of reminders is equal to 3, inform the lawyer and end the process.
+- [N3] Within matched traces (3->1) omitted: i11:If the number of reminders is less than 3, continue the process.
+
+Addition
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start by placing an order") -> action(n2,"check customer eligibility") -> branch(b1,XOR) -> action(n5,"open new order in ERP system") -> action(n6,"perform availability check") -> branch(b2,XOR) -> action(n7,"start producing missing parts") -> action(n8,"prepare products for shipment") -> converge(c_prep) -> branch(b6,AND) -> action(n11,"send the invoice") -> converge(c4) -> action(n13,"payment received?") -> branch(b3,XOR) -> action(n14,"close order") -> end(e2)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start by placing an order") -> action(n2,"check customer eligibility") -> branch(b1,XOR) -> action(n5,"open new order in ERP system") -> action(n6,"perform availability check") -> branch(b2,XOR) -> action(n7,"start producing missing parts") -> action(n8,"prepare products for shipment") -> converge(c_prep) -> branch(b6,AND) -> action(n12,"check for payment") -> converge(c4) -> action(n13,"payment received?") -> branch(b3,XOR) -> action(n14,"close order") -> end(e2)
+- [N6] Added trace (model 4): init(i1) -> action(n1,"start by placing an order") -> action(n2,"check customer eligibility") -> branch(b1,XOR) -> action(n5,"open new order in ERP system") -> action(n6,"perform availability check") -> branch(b2,XOR) -> action(n9,"prepare products for shipment") -> converge(c_prep) -> branch(b6,AND) -> action(n10,"ship the products") -> converge(c4) -> action(n13,"payment received?") -> branch(b3,XOR) -> action(n14,"close order") -> end(e2)
+- [N7] Added trace (model 5): init(i1) -> action(n1,"start by placing an order") -> action(n2,"check customer eligibility") -> branch(b1,XOR) -> action(n5,"open new order in ERP system") -> action(n6,"perform availability check") -> branch(b2,XOR) -> action(n9,"prepare products for shipment") -> converge(c_prep) -> branch(b6,AND) -> action(n11,"send the invoice") -> converge(c4) -> action(n13,"payment received?") -> branch(b3,XOR) -> action(n14,"close order") -> end(e2)
+- [N8] Added trace (model 6): init(i1) -> action(n1,"start by placing an order") -> action(n2,"check customer eligibility") -> branch(b1,XOR) -> action(n5,"open new order in ERP system") -> action(n6,"perform availability check") -> branch(b2,XOR) -> action(n9,"prepare products for shipment") -> converge(c_prep) -> branch(b6,AND) -> action(n12,"check for payment") -> converge(c4) -> action(n13,"payment received?") -> branch(b3,XOR) -> action(n14,"close order") -> end(e2)
+- [N9] Within matched traces (0->0) added: init(i1)
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: converge(c_prep)
+- [N12] Within matched traces (1->1) added: branch(b6,AND)
+- [N13] Within matched traces (1->1) added: converge(c4)
+- [N14] Within matched traces (2->1) added: init(i1)
+- [N15] Within matched traces (2->1) added: converge(c_prep)
+- [N16] Within matched traces (2->1) added: branch(b6,AND)
+- [N17] Within matched traces (2->1) added: converge(c4)
+- [N18] Within matched traces (2->1) added: action(n13,"payment received?")
+- [N19] Within matched traces (2->1) added: action(n14,"close order")
+- [N20] Within matched traces (2->1) added: end(e2)
+- [N21] Within matched traces (3->1) added: init(i1)
+- [N22] Within matched traces (3->1) added: converge(c_prep)
+- [N23] Within matched traces (3->1) added: branch(b6,AND)
+- [N24] Within matched traces (3->1) added: converge(c4)
+- [N25] Within matched traces (3->1) added: action(n13,"payment received?")
+- [N26] Within matched traces (3->1) added: action(n14,"close order")
+- [N27] Within matched traces (3->1) added: end(e2)
+
+Mutation
+- [N28] Node-level mutation: element=action(n17,"send another payment reminder"); source=i11:If the number of reminders is less than 3, continue the process.; reason=The source explicitly instructs to "continue the process", but the element payload specifies "send another payment reminder", altering the prescribed action/outcome.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=2 and out=1. | Node `n18` has in=1 and out=0. | DSL: action(n12,"check for payment"); action(n18,"inform lawyer and end process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e3 | DSL: end(e3)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n18 | DSL: action(n18,"inform lawyer and end process")

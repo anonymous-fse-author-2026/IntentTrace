@@ -1,0 +1,8 @@
+- action(n1, "start"): Hallucinated step. The source text begins directly with "acquire a new customer"; no preliminary start task is documented.
+- action(n8, "end process: team organized") and action(n9, "end process: contact customer"): Hallucinated steps. The source states that after organizing a team or contacting the customer, "the process will come to an end", not that explicit concluding actions are performed before termination.
+- branch(b1, XOR): Control-flow logic incomplete. The source defines explicit routing conditions ("If the contract is deemed okay..." and "...if there are any missing details..."), but the model omits corresponding `guard` statements for the edges from `b1` to `n6` and `n7`.
+- defines(v1, "is the contract okay?", {}): Variable definition semantically invalid. The value range `{}` is empty and `v1` is never referenced in any `guard`, failing to capture the source's explicit binary decision criteria.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

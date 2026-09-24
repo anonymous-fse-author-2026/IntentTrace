@@ -1,0 +1,14 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> branch(b1,XOR) -> action(n6,"opt for sausages") -> converge(c1) -> action(n8,"pay for products") -> branch(b2,XOR) -> action(n9,"end process") -> end(e1)
+- [N2] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"feel hungry") -> action(n3,"go shopping") -> branch(b1,XOR) -> action(n7,"opt for meat") -> converge(c1) -> action(n8,"pay for products") -> branch(b2,XOR) -> action(n9,"end process") -> end(e1)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: converge(c1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"go shopping")
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v_choice = 'salad'` on `b1 -> n5` uses undefined variable `v_choice`. | Guard `v_choice = 'sausages'` on `b1 -> n6` uses undefined variable `v_choice`. | Guard `v_choice = 'meat'` on `b1 -> n7` uses undefined variable `v_choice`. | DSL: guard(b1,n5,"v_choice = 'salad'"); guard(b1,n6,"v_choice = 'sausages'"); guard(b1,n7,"v_choice = 'meat'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v_choice = 'salad'` on `b1 -> n5` cannot be evaluated: `v_choice` has no declared range. | Guard `v_choice = 'sausages'` on `b1 -> n6` cannot be evaluated: `v_choice` has no declared range. | Guard `v_choice = 'meat'` on `b1 -> n7` cannot be evaluated: `v_choice` has no declared range. | DSL: guard(b1,n5,"v_choice = 'salad'"); guard(b1,n6,"v_choice = 'sausages'"); guard(b1,n7,"v_choice = 'meat'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v_choice` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v_choice` has no declared range.

@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_rect| Rector
+|a_cand| Candidates
+|a_sen| Academic Senate
+|a_rect|
+start
+:start election process beginning with rector's final year in current position;
+:launch acceptance of proposals for candidates;
+:nominate candidate for rector position;
+:stop acceptance of proposals;
+:check if candidate meets criteria;
+:v1: check if candidate meets criteria ({Meets Criteria, Does Not Meet Criteria}); <<objectSignal>>
+if () then ([v1 = 'Meets Criteria'])
+:include in list of candidates;
+:form and publicize list of candidates;
+|a_sen|
+split
+|a_cand|
+:promote ideas to the public;
+split again
+|a_sen|
+:organize public meeting of Academic Senate;
+end split
+:commence public meeting and ensure voting capability;
+repeat :;
+:conduct election and count votes;
+|a_rect|
+:check if voting was successful;
+:v2: check if voting was successful ({Successful, Failed}); <<objectSignal>>
+backward:repeat election process;
+repeat while () is ([v2 = 'Failed']) not ([v2 = 'Successful'])
+:announce election result;
+:conclude public meeting and inform candidate of results;
+stop
+else ([v1 = 'Does Not Meet Criteria'])
+:inform of refusal and end process;
+stop
+endif
+@enduml

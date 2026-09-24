@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i10:If a code is available, the process will end along with the hotel reservation. (reason: The model fails to include the second code check and the hotel reservation end step.)
+- [N2] Node-level omission: i11:On the other hand, if a code is not available, you should cancel your journey. (reason: The model completely missed the action to cancel the journey.)
+- [N3] Node-level omission: i12:In that case, the process will end as well. (reason: The final process termination after canceling the journey is missing.)
+- [N4] Omitted trace (input 1): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i5:If the answer is "no" -> i4:book a train -> i9:you should call a travel agency -> i10:If a code is available, the process will end along with the hotel reservation.
+- [N5] Omitted trace (input 2): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i5:If the answer is "no" -> i4:book a train -> i9:you should call a travel agency -> i11:On the other hand, if a code is not available, you should cancel your journey. -> i12:In that case, the process will end as well.
+- [N6] Omitted trace (input 4): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i6:However, if the answer is "yes" -> i7:book a flight -> i9:you should call a travel agency -> i10:If a code is available, the process will end along with the hotel reservation.
+- [N7] Omitted trace (input 5): i1:To begin with -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i6:However, if the answer is "yes" -> i7:book a flight -> i9:you should call a travel agency -> i11:On the other hand, if a code is not available, you should cancel your journey. -> i12:In that case, the process will end as well.
+
+Addition
+- [N8] Node-level addition: action(n9,"end of process after calling travel agency (train)") (reason: These actions specify ending the process immediately after calling the travel agency, which lacks source support because the text specifies further steps (checking for a code again) before ending.)
+- [N9] Node-level addition: action(n13,"end of process after calling travel agency (flight)") (reason: These actions specify ending the process immediately after calling the travel agency, which lacks source support because the text specifies further steps (checking for a code again) before ending.)
+- [N10] Within matched traces (0->1) added: branch(b2,XOR)
+- [N11] Within matched traces (0->1) added: action(n8,"call travel agency (train)")
+- [N12] Within matched traces (0->1) added: action(n9,"end of process after calling travel agency (train)")
+- [N13] Within matched traces (0->1) added: end(e2)
+- [N14] Within matched traces (3->3) added: branch(b3,XOR)
+- [N15] Within matched traces (3->3) added: action(n12,"call travel agency (flight)")
+- [N16] Within matched traces (3->3) added: action(n13,"end of process after calling travel agency (flight)")
+- [N17] Within matched traces (3->3) added: end(e4)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.

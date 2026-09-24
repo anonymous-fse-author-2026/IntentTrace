@@ -1,0 +1,8 @@
+- `guard(...)`: Missing `guard` statements for branches `b1` and `b2`. The source explicitly defines conditional routing ("If the answer is yes...", "if the answer is no..."), but the model omits guards to assign these conditions to the respective outgoing edges, violating SMC4.
+- `defines(v1, "are there any new findings", {})` / `defines(v2, "are there any new findings", {})`: Variable ranges are declared as empty `{}` instead of a finite set reflecting the "yes"/"no" options in the source, violating SMC6.
+- `actor(a_default, "Default", [...])`: The actor is named "Default" instead of "review clerk" as explicitly stated in the description ("the review clerk should start by reviewing..."), violating SMC7.
+- `action(n1, "start the process")` / `action(n12, "end the process")`: These steps are hallucinated; the text begins directly with "reviewing the received application" and concludes with "the process will come to an end", violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

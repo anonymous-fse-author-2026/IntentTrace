@@ -1,0 +1,21 @@
+- `action(n1, "start the process")`: omits the constraint "at 8:00 am" from the source text "start the process at 8:00 am".
+- `action(n14, "applicant becomes member")` and `action(n23, "applicant cannot become member")`: incorrectly model the decision conditions ("If the applicant becomes a member...", "If the applicant cannot become a member...") as actionable steps.
+- `branch(b4, XOR)`: lacks guards on its outgoing edges to `n14` and `n23` to evaluate the applicant decision logic.
+- `branch(b5, XOR)` and `branch(b6, XOR)`: are incorrectly modeled as split gateways despite each having only a single outgoing edge (to `n15` and `n24` respectively).
+- `action(n16, "write data in the letter book")`: hallucinates the location "in the letter book", as the source text only states "write the data".
+- `action(n18, "hand the letter to charles and ask to write amount in register")`: conflates two distinct, sequential source behaviors ("hand the letter to Charles. Ask Charles to write the amount in the register.") into a single action.
+- `precedence(n19, n20)`: incorrectly continues the control flow to add the new member, ignoring the source text which explicitly states "The process ends" immediately after printing and sending the membership card.
+- `action(n20, "add new member to register")`: omits the preceding behavior "Hand the letter to Charles" from the source sentence "Hand the letter to Charles and add the new member to the register."
+- `action(n22, "end the process")`: incorrectly terminates the process, contradicting the source text "continue the process" that follows preparing an invoice.
+- Control-flow omission: the model completely omits the final required source steps "Ask Charles to write the amount in the register and write the fee amount to the register."
+- `defines(v4, "every wednesday evening: take books to miranda", {})`: incorrectly declares a standard action/event as a decision variable.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b5` has in=1 and out=1. | Node `b6` has in=1 and out=1. | DSL: branch(b5,XOR); branch(b6,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `['Yes']`. | Variable `v6` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v5 = 'Yes'` on `b5 -> n15` uses undefined variable `v5`. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n23` has 0 guards; exactly one is required. | XOR/OR edge `b6 -> n24` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v5 = 'Yes'` on `b5 -> n15` cannot be evaluated: `v5` has no declared range. | DSL: guard(b5,n15,"v5 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b5` cannot be evaluated: `v5` has no declared range.

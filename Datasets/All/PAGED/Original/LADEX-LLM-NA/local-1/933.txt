@@ -1,0 +1,52 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"start process","start","","","",""
+2,"receive order","entity","1","","",""
+3,"check order and check customer (parallel)","entity","2","","",""
+4,"order okay?","condition","3","Both checks completed","",""
+5,"send refusal","entity","4","Order not okay","",""
+6,"End","end","5","","",""
+7,"customer permitted?","condition","4","Customer not permitted","",""
+8,"send refusal","entity","7","Customer not permitted","",""
+9,"End","end","8","","",""
+10,"release order and transfer data to database","entity","7","Customer permitted; Order okay","",""
+11,"order worth > 10.000 €?","condition","10","Data transferred","",""
+12,"sign off on order and forward to production","entity","11","Order worth > 10.000 €","",""
+13,"check product quality  start production  produce product (parallel)","entity","12","Order signed off","",""
+14,"create material report","entity","13","Production completed","",""
+15,"send material report to warehouse","entity","14","Material report created","",""
+16,"archive report","entity","15","Report sent to warehouse","",""
+17,"End","end","16","Process completed","",""
+18,"check product quality  start production  produce product (parallel)","entity","11","Order worth <= 10.000 €","",""
+19,"create material report and send to warehouse","entity","18","Production completed","",""
+20,"send order to accounting","entity","19","Material report sent to warehouse","",""
+21,"create quality report and send product to shipment","entity","20","Order sent to accounting","",""
+22,"archive report","entity","21","Quality report created; Product shipped","",""
+23,"End","end","22","Process completed","",""
+24,"send order to Finance","entity","16","Payment checked","",""
+25,"ship product and send invoice","entity","24","Report archived","",""
+26,"check payment status","condition","25","Product shipped; Invoice sent","",""
+27,"close order","entity","26","Payment received","",""
+28,"End","end","27","Order closed","",""
+29,"reminder sent > 3 times?","condition","26","Payment not received","",""
+30,"acquire lawyer and complete court proceedings","entity","29","Reminder sent > 3 times","",""
+31,"send reminder","entity","29","Reminder sent <= 3 times","",""
+32,"End","end","30","Court proceedings completed","",""
+33,"End","end","31","Reminder sent","",""

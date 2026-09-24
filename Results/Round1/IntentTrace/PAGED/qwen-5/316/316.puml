@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start the course registration process;
+:Is an exception needed for course registration;
+:v1: Is an exception needed for course registration ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Make a request for the exception;
+:Is the exception approved;
+else ([v1 = 'No'])
+:Continue without exception request;
+-> Continue;
+endif
+:Proceed to course enrollment;
+:Enroll in seminar group;
+repeat :;
+:Start homework assignment;
+:Turn in homework;
+:Evaluate homework;
+:Is this the last homework;
+:v3: Is this the last homework ({Yes, No}); <<objectSignal>>
+backward:Assign another homework;
+repeat while () is ([v3 = 'No']) not ([v3 = 'Yes'])
+:Continue after last homework;
+split
+:Grant accreditation;
+split again
+:Announce exam date;
+end split
+:Merge accreditation and exam date announcement;
+:Sign up for the exam;
+:Attend exam;
+:Evaluate exam;
+:Did the exam pass;
+:v4: Did the exam pass ({Pass, Fail}); <<objectSignal>>
+if () then ([v4 = 'Pass'])
+:Course considered passed;
+stop
+else ([v4 = 'Fail'])
+:Sign up for exam again;
+:Return to exam attendance;
+endif
+@enduml

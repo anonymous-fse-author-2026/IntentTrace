@@ -1,0 +1,8 @@
+
+
+- `branch(b1, XOR)` and `precedence(b1, n3)`: Models an exclusive choice where a missing bonus routes to checking a paycheck, hallucinating a conditional fallback chain not stated in the text ("If you 'get a bonus', then you continue the process. If you 'get a paycheck', then you also continue the process.").
+- `defines(v2, "get a paycheck?", {"Yes"})`: Declares a value range containing only "Yes", yet `branch(b2, XOR)` has an outgoing edge to `n4` with no corresponding guard or range value, failing to faithfully represent the decision space (SMC6).
+- `action(n4, "end")` and `end(e1)`: Creates a termination path that completely bypasses the final required step, directly contradicting the explicit constraint "Once you pay the bill, the process ends." (SMC1/SMC5).
+- `action(n6, "end")`: Hallucinates a distinct "end" action node placed immediately before `end(e2)`, which has no basis in the source description (SMC1/SMC2).
+- `label(n1, n2, "No")`: Attaches an unsupported descriptive label to the `n1`→`n2` transition, introducing semantics not present in the source text (SMC1).
+- `precedence(b1, n3)` and `guard(b1, n3, v1 = 'No')`: Alters the source chronology by treating bonus/payout checks as mutually exclusive gating conditions rather than independent continuation triggers, distorting the intended control-flow logic (SMC3/SMC4).

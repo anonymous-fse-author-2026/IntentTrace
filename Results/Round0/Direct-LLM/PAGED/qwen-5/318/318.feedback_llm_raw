@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "is order okay", {"No"})`: Value range is incomplete; the source implies a binary decision (okay vs. not okay), so the "Yes" value is missing, violating SMC6.
+- `guard(b1, n5, v1 = 'No')`: No guard is specified for the alternative outgoing edge (`b1 → c1`), and combined with the truncated variable range, the control-flow logic for an "okay" order is undefined, violating SMC4.
+- `action(n6, "end process")`, `action(n9, "end process")`, `action(n21, "end process")`, `action(n28, "end process")`, `action(n37, "end process")`, `action(n38, "end process")`, `action(n39, "end process")`, `action(n40, "end process")`: These insert explicit task steps not mentioned in the source text; process termination is already semantically covered by the `end()` nodes, making these actions hallucinated (SMC1/SMC2).
+- `precedence(n24, n40)` & `end(e8)`: Adds a termination path immediately after "send the order to accounting". The source text merely states this step occurs in parallel with other activities and does not indicate the process ends here, violating SMC1/SMC5.

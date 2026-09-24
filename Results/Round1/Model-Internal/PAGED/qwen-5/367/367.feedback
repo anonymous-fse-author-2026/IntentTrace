@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i5:create Purchase Orders (POs) (reason: No action node exists to initiate PO creation after the low-inventory report path.)
+- [N2] Node-level omission: i7:If the PO is rejected, it needs to be reworked. (reason: Entire decision tree and looping logic governing PO rejection, approval, review, and rework cycles are completely absent.)
+- [N3] Node-level omission: i8:If the PO is approved, it is printed and released in the system. (reason: Entire decision tree and looping logic governing PO rejection, approval, review, and rework cycles are completely absent.)
+- [N4] Node-level omission: i9:If the PO is created, it needs to be reviewed. (reason: Entire decision tree and looping logic governing PO rejection, approval, review, and rework cycles are completely absent.)
+- [N5] Node-level omission: i10:If the PO needs to be reworked, it needs to be created again. (reason: Entire decision tree and looping logic governing PO rejection, approval, review, and rework cycles are completely absent.)
+- [N6] Node-level omission: i11:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. (reason: Missing synchronization gateway, parallel task nodes, and explicit concurrency directive.)
+- [N7] Node-level omission: i12:receive the Packing Slip. (reason: Sequential material/document receipt steps and the subsequent matching procedure are entirely unmodeled.)
+- [N8] Node-level omission: i13:receive the inventory. (reason: Sequential material/document receipt steps and the subsequent matching procedure are entirely unmodeled.)
+- [N9] Node-level omission: i14:proceed to receive the Invoice. (reason: Sequential material/document receipt steps and the subsequent matching procedure are entirely unmodeled.)
+- [N10] Node-level omission: i15:proceed to the Three-way match. (reason: Sequential material/document receipt steps and the subsequent matching procedure are entirely unmodeled.)
+- [N11] Node-level omission: i16:release the funds. (reason: Final financial settlement steps that formally close the resupply cycle are omitted.)
+- [N12] Node-level omission: i17:issue the payment. (reason: Final financial settlement steps that formally close the resupply cycle are omitted.)
+- [N13] Omitted trace (input 2): i1:To start the process for ACME, begin with the New Resupply Cycle and then Check Levels of Inventory. -> i2:If the inventory is below or equal to the minimum -> i3:generate an Equal to or below minimum Report. -> i5:create Purchase Orders (POs) -> i9:If the PO is created, it needs to be reviewed. -> i8:If the PO is approved, it is printed and released in the system. -> i11:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. -> i13:receive the inventory. -> i12:receive the Packing Slip. -> i14:proceed to receive the Invoice. -> i15:proceed to the Three-way match. -> i16:release the funds. -> i17:issue the payment.
+- [N14] Within matched traces (1->1) omitted: i5:create Purchase Orders (POs)
+- [N15] Within matched traces (1->1) omitted: i9:If the PO is created, it needs to be reviewed.
+- [N16] Within matched traces (1->1) omitted: i7:If the PO is rejected, it needs to be reworked.
+- [N17] Within matched traces (1->1) omitted: i10:If the PO needs to be reworked, it needs to be created again.
+
+Addition
+- [N18] Within matched traces (0->0) added: init(i1)
+- [N19] Within matched traces (0->0) added: action(n4,"is inventory below or equal to minimum?")
+- [N20] Within matched traces (1->1) added: init(i1)

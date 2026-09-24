@@ -1,0 +1,10 @@
+- `defines(v1, ...), defines(v2, ...)`: Empty value ranges `{}` do not reflect the binary availability checks ('no suitable candidate available' vs. 'suitable candidate available') required to drive the process decisions.
+- `branch(b1, XOR), branch(b2, XOR)`: Missing `guard()` statements. The model fails to bind the source conditions to the outgoing edges, leaving the exclusive routing logic undefined per DSL requirements.
+- `action(n2, ...), action(n4, ...)`: Incorrectly implement decision points as sequential actions. These nodes redundantly state the availability question immediately before branches `b1` and `b2`, distorting SMC2 and SMC4 by separating the evaluation step from the actual gateway.
+- `precedence(n5, n4)`: Hallucinates an unconditional feedback loop. The source ends the conditional branch at 'advertise the vacancy again' without indicating a return to the availability check, violating SMC1.
+- `converge(c1)`: Merges flows from `b1` and `b2` without corresponding `guard` constraints to verify that only the 'candidate available' paths proceed to `n6`. This breaks SMC5, as the model cannot semantically guarantee that the 'advertise' paths are excluded from bypassing to applicant selection.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"Is there a suitable candidate available after advertising")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.

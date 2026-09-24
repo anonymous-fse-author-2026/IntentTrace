@@ -1,0 +1,64 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"Begin Rental Items Return Process","start","","","",""
+2,"Did Customer Return Items to Store","condition","1","","",""
+3,"Continue process with Customer Returned Items","entity","2","","",""
+4,"Did Delivery Crew Pick-Up Items at Event Site","condition","2","","",""
+5,"Continue process with Delivery Crew Picked-Up Items","entity","4","","",""
+37,"End Process Due To No Return or Pickup","end","4","No","",""
+6,"Order Items Counted and Compared to Original Contract","entity","3,5","","",""
+7,"Is Order Complete and All Items Returned","condition","6","","",""
+8,"Proceed with Complete Order","entity","7","","",""
+9,"Is Order Incomplete With Missing Items","condition","7","","",""
+10,"Proceed with Incomplete Order Missing Items","entity","9","","",""
+11,"Is Order Complete But Items Damaged","condition","9","","",""
+12,"Email Customer of Damage and Additional Charges","entity","11","","",""
+13,"Items Packed for Existing Order","condition","11,8,10,12","","",""
+14,"Continue Packing Items for Existing Order","entity","13","","",""
+15,"Items Stored for Future Orders","condition","13","","",""
+16,"Continue Storing Items for Future Orders","entity","15","","",""
+38,"Skip Storing Items for Future Orders","entity","15","","",""
+17,"Continue Process After Packing or Storing Items","entity","14,16,38","","",""
+18,"Are There Missing Items With Replacement Charges","condition","10","","",""
+39,"Proceed Without Missing Item Replacement Charges","entity","10","","",""
+19,"Email Customer for Missing Item Replacement Charges","entity","18","","",""
+20,"Are There Damaged Items and Additional Charges","condition","12","","",""
+40,"Proceed Without Damaged Item Additional Charges","entity","12","","",""
+21,"Temporarily Remove Damaged Items from Inventory","entity","20","","",""
+22,"Did Customer Return Missing Items","condition","19","","",""
+23,"Continue After Customer Returned Missing Items","entity","22","","",""
+24,"Continue If Customer Did Not Return Missing Items","entity","22","","",""
+25,"End Process After Handling Missing Items Return","end","23,24","","",""
+26,"Items Repaired and Added to Inventory","condition","21","","",""
+27,"Continue Process After Repairing Items","entity","26","","",""
+41,"Items Not Repaired But Retained in Inventory","entity","26","","",""
+28,"Items Cannot Be Repaired and Are Discarded","condition","21","","",""
+29,"Email Customer with Replacement Charges for Discarded Items","entity","28","","",""
+42,"Items Retained Despite Discard Condition","entity","28","","",""
+30,"Items Packed for Existing Order After Repairs or Discard","condition","27,29,41,42","","",""
+31,"Continue Packing Items For Existing Order After Repairs","entity","30","","",""
+32,"Items Stored for Future Orders After Repairs","condition","30","","",""
+33,"Continue Storing Items For Future Orders After Repairs","entity","32","","",""
+43,"Skip Storing Items For Future Orders After Repairs","entity","32","","",""
+17,"Continue Process After Packing or Storing Items","entity","39,40","","",""
+44,"Continue Process After Repairs Packing or Storing","entity","31,33,43","","",""
+35,"Email Customer with Replacement Charges After Process","entity","44","","",""
+36,"End Process After Final Customer Email","end","35","","",""
+45,"Merge Process After Missing Items Check","entity","17,44","","",""

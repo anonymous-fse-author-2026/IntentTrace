@@ -1,0 +1,68 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start the resupply process;
+:Check inventory level;
+-> Yes;
+:Is inventory level at or below minimum;
+:v1: Is inventory level at or below minimum ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process due to sufficient inventory;
+stop
+else ([v1 = 'Yes'])
+:Create purchase order;
+:Review purchase order;
+-> No;
+:Is purchase status rejected;
+:v2: Is purchase status rejected ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Rework purchase order;
+:Review purchase order again after rework;
+-> No;
+:Is purchase status rejected after rework;
+:Rework purchase order again;
+:Review purchase order again after second rework;
+-> No;
+:Is purchase status approved after second review;
+:v4: Is purchase status approved after second review ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Reserve funds after second approval;
+split
+:Send order to supplier after second approval;
+split
+:Receive packing slip;
+:Record packing slip;
+:End after recording packing slip;
+stop
+split again
+:Receive invoice;
+:Record invoice;
+:End after recording invoice;
+stop
+split again
+:Receive packing slip;
+:Record packing slip;
+:End after recording packing slip;
+stop
+split again
+:Receive invoice;
+:Record invoice;
+:End after recording invoice;
+stop
+end split
+split again
+:Send order to supplier after first approval;
+split
+split again
+end split
+end split
+else ([v4 = 'No'])
+:Reserve funds after first approval;
+endif
+else ([v2 = 'No'])
+:Is purchase status approved after first review;
+endif
+endif
+@enduml

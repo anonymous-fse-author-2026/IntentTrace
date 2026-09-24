@@ -1,0 +1,45 @@
+Omission
+- [N1] Node-level omission: i3:If the invoice is non-compliant, further checks are conducted. (reason: The source explicitly states that non-compliant invoices undergo 'further checks', but no action or process step in the model implements this required intermediate work.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: Contains only the generic word 'start', which duplicates the implicit initialization already covered by the source opening and init node; lacks specific instructional content.)
+- [N3] Node-level addition: action(n5,"End of process: Invoice returned due to incompleteness") (reason: Invents explicit termination phrasing ('End of process: Invoice returned due to incompleteness') not present in the source unit for incomplete invoices.)
+- [N4] Node-level addition: action(n10,"End of process: Invoice returned due to mail back") (reason: Invents explicit termination phrasing ('End of process: Invoice returned due to mail back') not present in the source unit for mail-back returns.)
+- [N5] Node-level addition: action(n18,"End of process: Payment completed and client notified") (reason: Invents explicit termination phrasing ('End of process: Payment completed and client notified') not present in the source unit for invoice payment/notification.)
+- [N6] Node-level addition: guard(b2,c1,"v2 = 'Compliant'") (reason: Specifies a 'Compliant' routing condition that has no corresponding source unit or explicit textual basis in the provided segmentation.)
+- [N7] Node-level addition: guard(b3,b4,"v3 = 'Response'") (reason: Specifies a 'Response' routing condition that has no corresponding source unit or explicit textual basis in the provided segmentation.)
+- [N8] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n11,"Pay the invoice and notify client of payment") -> action(n12,"Bill Client") -> action(n13,"Is there no response from client?") -> branch(b3,XOR) -> action(n14,"Give 10 days waiting period") -> action(n15,"End of process: Reminder sent after 10 days") -> end(e3)
+- [N9] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n11,"Pay the invoice and notify client of payment") -> action(n12,"Bill Client") -> action(n13,"Is there no response from client?") -> branch(b3,XOR) -> branch(b4,XOR) -> action(n16,"Resolve payment discrepancy if client is unsatisfied") -> end(e4)
+- [N10] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services and then Receive Invoice") -> action(n3,"Is the invoice incomplete?") -> branch(b1,XOR) -> action(n7,"Is the invoice non-compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n11,"Pay the invoice and notify client of payment") -> action(n12,"Bill Client") -> action(n13,"Is there no response from client?") -> branch(b3,XOR) -> branch(b4,XOR) -> action(n17,"Continue process if client is satisfied") -> action(n18,"End of process: Payment completed and client notified") -> end(e4)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (0->0) added: action(n5,"End of process: Invoice returned due to incompleteness")
+- [N14] Within matched traces (0->0) added: end(e1)
+- [N15] Within matched traces (1->4) added: init(i1)
+- [N16] Within matched traces (1->4) added: action(n1,"start")
+- [N17] Within matched traces (1->4) added: action(n3,"Is the invoice incomplete?")
+- [N18] Within matched traces (1->4) added: action(n10,"End of process: Invoice returned due to mail back")
+- [N19] Within matched traces (1->4) added: end(e2)
+- [N20] Within matched traces (2->1) added: init(i1)
+- [N21] Within matched traces (2->1) added: action(n1,"start")
+- [N22] Within matched traces (2->1) added: action(n3,"Is the invoice incomplete?")
+- [N23] Within matched traces (3->2) added: init(i1)
+- [N24] Within matched traces (3->2) added: action(n1,"start")
+- [N25] Within matched traces (3->2) added: action(n3,"Is the invoice incomplete?")
+- [N26] Within matched traces (3->2) added: action(n13,"Is there no response from client?")
+- [N27] Within matched traces (3->2) added: branch(b3,XOR)
+- [N28] Within matched traces (4->3) added: init(i1)
+- [N29] Within matched traces (4->3) added: action(n1,"start")
+- [N30] Within matched traces (4->3) added: action(n3,"Is the invoice incomplete?")
+- [N31] Within matched traces (4->3) added: action(n13,"Is there no response from client?")
+- [N32] Within matched traces (4->3) added: branch(b3,XOR)
+- [N33] Within matched traces (4->3) added: action(n18,"End of process: Payment completed and client notified")
+- [N34] Within matched traces (4->3) added: end(e4)
+
+Mutation
+- [N35] Node-level mutation: element=guard(b1,n7,"v1 = 'Complete'"); source=i3:If the invoice is non-compliant, further checks are conducted.; reason=The guard condition incorrectly specifies v1 = 'Complete', but it routes to the action checking for non-compliance. The source explicitly ties the downstream path to a 'non-compliant' state, creating a reversed/mismatched condition value.
+
+Permutation
+- [N36] Within matched traces (2->1) reordered: expected [i8:The invoice is paid and the client is notified of the payment.] but observed [action(n11,"Pay the invoice and notify client of payment")] elsewhere; in its place the model has [action(n12,"Bill Client")]
+- [N37] Within matched traces (3->2) reordered: expected [i8:The invoice is paid and the client is notified of the payment.] but observed [action(n11,"Pay the invoice and notify client of payment")] elsewhere; in its place the model has [action(n12,"Bill Client")]
+- [N38] Within matched traces (4->3) reordered: expected [i8:The invoice is paid and the client is notified of the payment.] but observed [action(n11,"Pay the invoice and notify client of payment")] elsewhere; in its place the model has [action(n12,"Bill Client")]

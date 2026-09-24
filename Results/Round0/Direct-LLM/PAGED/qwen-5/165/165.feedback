@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinated step; the source states "the first step is to gather information about the part from the customer", with no preliminary initialization action.
+- `action(n5, "end process")` and `action(n8, "end process")`: Hallucinated/redundant actions; the source simply notes "the process comes to an end", which is correctly captured by the `end(e1)` and `end(e2)` terminal nodes without requiring intermediate action steps.
+- `actor(a_default, "Default", [...])`: Unfaithful actor assignment; the source explicitly attributes all tasks to the "DMS Parts Provision Team", not a generic "Default" participant.
+- `branch(b1, XOR)` outgoing edges (`precedence(b1, n4)` and `precedence(b1, n6)`): Missing guard conditions to map the source's explicit decision criteria ("If the part is found to be available locally" vs "if the part is not available locally") to the respective paths, weakening control-flow fidelity (SMC4).
+- `defines(v1, "check availability of the part in local inventory", {})`: Declares a decision variable with an empty range `{}` that is never referenced in any `guard` statement, failing to faithfully model the availability condition described in the source (SMC6).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

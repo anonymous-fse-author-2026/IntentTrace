@@ -1,0 +1,13 @@
+- `action(n1, "start")`: Hallucinates a preparatory step; the source begins directly with "Course Packet Information Received should be sent".
+- `action(n14, "end")`: Hallucinates an intermediate termination step; the source states the process ends immediately after "the Packet information should be notified to the Bookstore".
+- `defines(v1, "is copyright cleared?", {})` / `defines(v2, "is price finalized?", {})`: Specifies empty ranges `{}` for decision variables, failing to capture the discrete/binary value space required by the source's conditional logic.
+- `branch(b1, XOR)` / `branch(b2, XOR)`: Lacks corresponding `guard` statements to bind outgoing edges to conditions, omitting the source's explicit triggers "if the Entire Course Packet Copyright Cleared" and "if the Price of the Course Packet is finalized".
+- `precedence` (missing outgoing from `n8` and `n12`): Creates dead-end paths by omitting loop-back or continuation edges, contradicting the source directive "then the process should be continued" after both the faculty contact and price reconsideration steps.
+- `actor(a_default, "Default", [...])`: Consolidates all nodes under a single generic participant, disregarding distinct responsibilities explicitly assigned to the Faculty, MPC, Publisher, and Bookstore in the source.
+- `action(n7, "is copyright cleared?")` / `action(n11, "is price finalized?")`: Misrepresents decision gateways as linear sequential actions, fragmenting the intended exclusive choice structure described in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n12,"reconsider: Re-evaluate content after reconsideration"); action(n8,"notify: Contact Faculty to inform of denial and ask if new content should be added")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n12, n8 | DSL: action(n12,"reconsider: Re-evaluate content after reconsideration"); action(n8,"notify: Contact Faculty to inform of denial and ask if new content should be added")

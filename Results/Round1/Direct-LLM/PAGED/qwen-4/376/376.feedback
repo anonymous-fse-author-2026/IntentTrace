@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i9:If you still want to try again, please provide the userdata for flickr. (reason: This repeated source unit carries a required instruction that is not faithfully implemented; the model substitutes it with a mutated step instead of preserving the original command.)
+- [N2] Within matched traces (1->1) omitted: i6:If you want to try again
+- [N3] Within matched traces (1->1) omitted: i10:If you still want to try again
+- [N4] Within matched traces (1->1) omitted: i11:Alternatively, if you decide to abort, the process will end.
+
+Addition
+- [N5] Node-level addition: action(n1,"Start process for flickr login") (reason: Invents a generic "Start process" action not present in the source text, which immediately jumps to requesting userdata without a preliminary setup step.)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"Start process for flickr login") -> action(n2,"Provide userdata for flickr login") -> action(n3,"Is login successful") -> branch(b1,XOR) -> action(n5,"Choose to try login again") -> branch(b2,XOR) -> action(n7,"Choose to abort after retry option") -> end(e2)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n1,"Start process for flickr login")
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: action(n1,"Start process for flickr login")
+- [N11] Within matched traces (1->1) added: action(n3,"Is login successful")
+
+Mutation
+- [N12] Node-level mutation: element=action(n7,"Choose to abort after retry option"); source=i7:On the other hand, if you choose to abort, the process will end.; reason=Appends the unsupported qualifier "after retry option" to the abort instruction, altering the plain directive given in the source.
+- [N13] Node-level mutation: element=action(n8,"Resume login verification"); source=i9:If you still want to try again, please provide the userdata for flickr.; reason=Replaces the explicit instruction to provide userdata with an unrelated "Resume login verification" step, changing the required action.

@@ -1,0 +1,8 @@
+
+
+- `defines(v1, "are referee reports completed?", {"Referee Reports not completed"})`: Range only specifies the negative outcome, omitting the positive/completed state required by the source's explicit decision "If they have been completed, you can proceed...".
+- `defines(v2, "are referee reports completed after reminder?", {"Referee Reports still not completed after second check"})`: Range only specifies the negative outcome, omitting the positive/completed state needed to validate the progression to `c1` per the source text "If they have, you can continue...".
+- `defines(v3, "is psychometric test required?", {"Psychometric Test not required", "HR Specialist required"})`: Conflates two sequential source decisions ("check if a Psychometric Test is required" then "check if an HR Specialist is required") and omits the documented third scenario where the test is required but an HR Specialist is not ("Otherwise, you can proceed to complete the Psychometric Test").
+- `branch(b3, XOR)` & `action(n13, "complete psychometric test")`: The outgoing edge to `n13` lacks a `guard` statement on the XOR split `b3`, leaving its execution condition undefined despite mapping to a distinct source path.
+- `action(n1, "start")` & `action(n15, "end")`: Hallucinated filler steps; the source explicitly begins with "check the Referee Reports" and concludes after "request the final candidate ranking", containing no generic initialization or termination actions.
+- `precedence(b1, c1)` & `precedence(b2, c1)`: These edges representing the affirmative "reports completed" paths lack explicit `guard` conditions, relying on implicit fallback rather than faithfully modeling the documented decision branches.

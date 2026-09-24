@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i7: offer the benefit. (reason: The specific action 'offer the benefit' is completely absent from the model. The only candidate (n8) mutates it, leaving the source unit uncovered.)
+- [N2] Node-level omission: i11: If the claim rejection is accepted (reason: No corresponding guard or branch element models this explicit condition, despite it signaling a decision point in the flow.)
+- [N3] Omitted trace (input 0): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i6:However, if the claim is to be accepted -> i7:offer the benefit. -> i9:On the other hand, if the claim is accepted, prepare the claim discharge. -> i10:Once the claim discharge is prepared, record the benefit payment. -> i14:Finally, the process ends.
+- [N4] Omitted trace (input 1): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i4:If the claim is to be rejected -> i5:then reject it. -> i8:If the claim is rejected, review the claim rejection. -> i11:If the claim rejection is accepted -> i12:continue the process. -> i14:Finally, the process ends.
+- [N5] Omitted trace (input 2): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i4:If the claim is to be rejected -> i5:then reject it. -> i8:If the claim is rejected, review the claim rejection. -> i11:If the claim rejection is accepted -> i13:But if the claim rejection is not accepted -> i14:Finally, the process ends.
+- [N6] Omitted trace (input 3): i1:To start the process, begin by receiving the claim. -> i2:Then, create the claim and record it. -> i3:After that, make a decision on the claim. -> i4:If the claim is to be rejected -> i5:then reject it. -> i8:If the claim is rejected, review the claim rejection. -> i11:If the claim rejection is accepted -> i13:But if the claim rejection is not accepted -> i15:At the same time, complete the following steps: operate outgoing payment and close the claim.
+
+Addition
+- [N7] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"receive claim") -> action(n3,"create and record the claim") -> action(n4,"make a decision on the claim") -> branch(b1,XOR) -> action(n5,"reject the claim") -> action(n6,"review the claim rejection") -> converge(c1) -> action(n13,"end of process") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"receive claim") -> action(n3,"create and record the claim") -> action(n4,"make a decision on the claim") -> branch(b1,XOR) -> action(n8,"accept the claim") -> action(n9,"prepare the claim discharge") -> action(n10,"record the benefit payment") -> converge(c1) -> action(n13,"end of process") -> end(e1)
+
+Mutation
+- [N9] Node-level mutation: element=action(n8,"accept the claim"); source=i7: offer the benefit.; reason=Element content 'accept the claim' replaces the required action 'offer the benefit'. The condition was already captured by guard:b1->n8, making this a semantic drift in the step payload.
+
+Structural Check
+- [S1] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b2, b3, n11, n12, n7 | DSL: branch(b2,AND); branch(b3,AND); action(n11,"operate outgoing payment"); action(n12,"close the claim"); action(n7,"continue the process")

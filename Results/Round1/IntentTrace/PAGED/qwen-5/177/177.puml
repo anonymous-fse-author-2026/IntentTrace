@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:v_start: initial route ({Ship, Notify}); <<objectSignal>>
+if () then ([v_start = 'Ship'])
+:ensure Freights are ready to be shipped;
+:ship the freight;
+else ([v_start = 'Notify'])
+:deliver the freight;
+:notify the delivery;
+endif
+:is request for merchandise return lodged?;
+:v1: is request for merchandise return lodged? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:has it been 5 days?;
+:v_dec: post-return decision ({Invoice, Accept, Reject}); <<objectSignal>>
+switch ()
+case ([v_dec = 'Invoice'])
+:invoice the customer;
+:end with customer being invoiced;
+stop
+case ([v_dec = 'Accept'])
+:accept the merchandise return;
+:return the merchandise;
+:end with merchandise being returned;
+stop
+case ([v_dec = 'Reject'])
+:reject the merchandise return;
+:end with merchandise return request being rejected;
+stop
+endswitch
+else ([v1 = 'No'])
+:is loss claim report lodged?;
+:approve the loss claim;
+:end with loss claim approved;
+stop
+endif
+@enduml

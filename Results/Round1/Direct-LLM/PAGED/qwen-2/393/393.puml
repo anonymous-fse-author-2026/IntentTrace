@@ -1,0 +1,107 @@
+@startuml
+!theme plain
+|a_recruit_mgr| Recruitment Manager
+|a_next_lvl_mgr| Next Level Manager
+|a_client_hr| Client HR
+|a_ts_hr_coord| TS HR Coordinator
+|a_sys| System
+|a_recruit_mgr|
+start
+:start;
+:advise unsuccessful candidates;
+:are there more candidates?;
+:v1: are there more candidates? ({no, yes}); <<objectSignal>>
+if () then ([v1 = 'no'])
+:re-advertise position;
+else ([v1 = 'yes'])
+:check if terms and conditions need to be sorted out;
+:v2: check if terms and conditions need to be sorted out ({yes, no}); <<objectSignal>>
+if () then ([v2 = 'yes'])
+:send appointment approval form;
+|a_next_lvl_mgr|
+:is the approver an external resource?;
+:v3: is the approver an external resource? ({external, internal}); <<objectSignal>>
+if () then ([v3 = 'internal'])
+:continue process;
+else ([v3 = 'external'])
+:approve form;
+:was the form authorized by the external approver?;
+:v4: was the form authorized by the external approver? ({yes, no}); <<objectSignal>>
+if () then ([v4 = 'yes'])
+|a_client_hr|
+:scan and record form in GovSource;
+|a_next_lvl_mgr|
+else ([v4 = 'no'])
+->;
+endif
+endif
+|a_recruit_mgr|
+else ([v2 = 'no'])
+:continue process (no terms needed);
+endif
+|a_sys|
+repeat :;
+|a_recruit_mgr|
+:are there any variations?;
+:v5: are there any variations? ({yes, no}); <<objectSignal>>
+backward:create business case;
+repeat while () is ([v5 = 'yes']) not ([v5 = 'no'])
+:continue process;
+|a_sys|
+:v11: progression ({continue, end}); <<objectSignal>>
+if () then ([v11 = 'continue'])
+|a_recruit_mgr|
+:is medical assessment required (12% rate)?;
+:v6: is medical assessment required (12% rate)? ({yes, no}); <<objectSignal>>
+if () then ([v6 = 'yes'])
+:arrange and complete medical assessment (21 days);
+|a_ts_hr_coord|
+:inform recruitment manager and liaise with HR representative;
+|a_recruit_mgr|
+:is assessment satisfactory?;
+:v7: is assessment satisfactory? ({no, yes}); <<objectSignal>>
+if () then ([v7 = 'no'])
+:contact next candidate on shortlist;
+else ([v7 = 'yes'])
+:continue process;
+:inform recruitment manager and liaise with HR representative;
+:make formal verbal offer to candidate;
+:does candidate accept offer?;
+:v8: does candidate accept offer? ({accepts, declines, pending}); <<objectSignal>>
+switch ()
+case ([v8 = 'accepts'])
+:create formal written offer;
+:send commencement pack and letter of appointment;
+:is there a 40% rate?;
+:v9: is there a 40% rate? ({yes, no}); <<objectSignal>>
+if () then ([v9 = 'yes'])
+:renegotiate terms;
+:are renegotiations successful?;
+:v10: are renegotiations successful? ({no, yes}); <<objectSignal>>
+if () then ([v10 = 'no'])
+:identify next candidate on shortlist;
+else ([v10 = 'yes'])
+:continue process;
+endif
+else ([v9 = 'no'])
+->;
+endif
+case ([v8 = 'declines'])
+:continue process;
+case ([v8 = 'pending'])
+endswitch
+endif
+:end of procedure;
+|a_sys|
+stop
+|a_recruit_mgr|
+else ([v6 = 'no'])
+->;
+endif
+|a_sys|
+else ([v11 = 'end'])
+->;
+endif
+|a_recruit_mgr|
+endif
+@enduml

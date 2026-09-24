@@ -1,0 +1,37 @@
+Omission
+- [N1] Node-level omission: i2:check the Banking Privilege Status. (reason: No element faithfully implements this verification step; the closest candidate mutates it into an error-handling action.)
+- [N2] Node-level omission: i7:check the fulfillment of loan conditions. (reason: No element faithfully implements this verification step; the closest candidate mutates it into an error-handling action.)
+- [N3] Within matched traces (1->2) omitted: i6:if there is a "Retrieve Customer Information"
+- [N4] Within matched traces (1->2) omitted: i9:if there is a "Calculate threshold amount"
+- [N5] Within matched traces (2->3) omitted: i6:if there is a "Retrieve Customer Information"
+- [N6] Within matched traces (2->3) omitted: i9:if there is a "Calculate threshold amount"
+
+Addition
+- [N7] Node-level addition: action(n1,"start") (reason: Introduces a standalone 'start' step that is not distinguished in the source; the source treats it as a verbal lead-in to the Loan Application step.)
+- [N8] Node-level addition: guard(b1,n6,"v1 = 'No'") (reason: Invents negative/alternate path guards using undefined variables (vX = 'No') where the source simply implies continuation or 'Otherwise' without specifying variable checks.)
+- [N9] Node-level addition: guard(b2,n9,"v2 = 'No'") (reason: Invents negative/alternate path guards using undefined variables (vX = 'No') where the source simply implies continuation or 'Otherwise' without specifying variable checks.)
+- [N10] Node-level addition: guard(b3,e5,"v3 = 'No'") (reason: Invents negative/alternate path guards using undefined variables (vX = 'No') where the source simply implies continuation or 'Otherwise' without specifying variable checks.)
+- [N11] Node-level addition: guard(b4,n15,"v4 = 'No'") (reason: Invents negative/alternate path guards using undefined variables (vX = 'No') where the source simply implies continuation or 'Otherwise' without specifying variable checks.)
+- [N12] Node-level addition: guard(b5,n17,"v5 = 'No'") (reason: Invents negative/alternate path guards using undefined variables (vX = 'No') where the source simply implies continuation or 'Otherwise' without specifying variable checks.)
+- [N13] Node-level addition: action(n17,"End of procedure") (reason: The 'End of procedure' action has no supporting source text and invents a concluding step.)
+- [N14] Node-level addition: action(n8,"Error Message") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N15] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n8,"Error Message") -> end(e2)
+- [N16] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n9,"Calculate threshold amount") -> action(n10,"Check Creditworthiness") -> branch(b3,XOR) -> action(n11,"Designate Status") -> action(n12,"Initialize Loan Form") -> action(n13,"Construct Approve Response") -> branch(b4,XOR) -> action(n15,"Construct Reject Response") -> branch(b5,XOR) -> action(n17,"End of procedure") -> end(e5)
+- [N17] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Construct Error Response from Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Construct Error Response from loan conditions") -> branch(b2,XOR) -> action(n9,"Calculate threshold amount") -> action(n10,"Check Creditworthiness") -> branch(b3,XOR) -> end(e5)
+- [N18] Within matched traces (0->0) added: init(i1)
+- [N19] Within matched traces (0->0) added: action(n1,"start")
+- [N20] Within matched traces (1->2) added: init(i1)
+- [N21] Within matched traces (1->2) added: action(n1,"start")
+- [N22] Within matched traces (2->3) added: init(i1)
+- [N23] Within matched traces (2->3) added: action(n1,"start")
+- [N24] Within matched traces (2->3) added: action(n13,"Construct Approve Response")
+- [N25] Within matched traces (2->3) added: branch(b4,XOR)
+
+Mutation
+- [N26] Node-level mutation: element=action(n4,"Construct Error Response from Banking Privilege Status"); source=i2:check the Banking Privilege Status.; reason=Distorts the original verification step into an error-construction step, changing both the action and the target.
+- [N27] Node-level mutation: element=action(n7,"Construct Error Response from loan conditions"); source=i7:check the fulfillment of loan conditions.; reason=Distorts the original verification step into an error-construction step, altering the intended process behavior.
+- [N28] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If there is a "Construct Error Response"; reason=Replaces explicit textual conditions with undefined boolean variables (e.g., v1 = 'Yes'), completely obscuring the source's decision logic and required values.
+- [N29] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i8:Otherwise, if there is a "Calculate threshold amount"; reason=Replaces explicit textual conditions with undefined boolean variables (e.g., v1 = 'Yes'), completely obscuring the source's decision logic and required values.
+- [N30] Node-level mutation: element=guard(b3,n11,"v3 = 'Yes'"); source=i10:If there is a "Check Creditworthiness", designate the Status.; reason=Replaces explicit textual conditions with undefined boolean variables (e.g., v1 = 'Yes'), completely obscuring the source's decision logic and required values.
+- [N31] Node-level mutation: element=guard(b4,n14,"v4 = 'Yes'"); source=i12:If there is a "Construct Approve Response"; reason=Replaces explicit textual conditions with undefined boolean variables (e.g., v1 = 'Yes'), completely obscuring the source's decision logic and required values.
+- [N32] Node-level mutation: element=guard(b5,n16,"v5 = 'Yes'"); source=i14:Otherwise, if there is a "Construct Reject Response"; reason=Replaces explicit textual conditions with undefined boolean variables (e.g., v1 = 'Yes'), completely obscuring the source's decision logic and required values.

@@ -1,0 +1,219 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Examine Order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Prepare Assembling Order"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Check Availability"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Check Availability Again"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Assemble Bike"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Ship Product"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v2",
+      "name": "Is Backorder Required?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n6",
+        "n7",
+        "c1",
+        "b2",
+        "n13",
+        "n9",
+        "e2",
+        "n10",
+        "n11",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n13",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "label",
+      "A": "n10",
+      "B": "n11",
+      "str": "then"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the first step is to look at the order."
+    },
+    {
+      "id": "i2",
+      "content": "If the order is to be rejected, the process should continue."
+    },
+    {
+      "id": "i4",
+      "content": "If the order is to be accepted, the process should also continue."
+    },
+    {
+      "id": "i7",
+      "content": "preparing the assembling order and checking availability."
+    },
+    {
+      "id": "i8",
+      "content": "If there is a backorder"
+    },
+    {
+      "id": "i9",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "i10",
+      "content": "and the process ends."
+    },
+    {
+      "id": "i11",
+      "content": "If the item can be reserved, the process should continue."
+    },
+    {
+      "id": "i12",
+      "content": "assemble the bike and then ship the product."
+    }
+  ]
+}

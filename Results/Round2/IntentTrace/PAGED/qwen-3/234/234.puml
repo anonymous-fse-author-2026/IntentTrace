@@ -1,0 +1,69 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:supply requirement and document it;
+:check order reception method;
+:v1: check order reception method ({Fax, Mail/Phone}); <<objectSignal>>
+if () then ([v1 = 'Fax'])
+:input order into Excel (fax);
+else ([v1 = 'Mail/Phone'])
+:input order into Excel (mail/phone);
+endif
+:complete Excel list after a week;
+:send Excel list to student;
+:receive Excel list and start parallel tasks;
+split
+:type orders into MS-Access database;
+split again
+:control incoming order and check;
+end split
+:orders input completed and checked;
+:continue to do the check;
+:v_decision: order evaluation result ({Correct, Incorrect, <5k, >5k}); <<objectSignal>>
+switch ()
+case ([v_decision = 'Correct'])
+:release order (correct);
+case ([v_decision = 'Incorrect'])
+:contact selling agency (incorrect);
+:receive actual issue and send for sign off;
+:Once the order is signed off, contact the client and release the order;
+case ([v_decision = '<5k'])
+:release order (<5k€);
+case ([v_decision = '>5k'])
+:send for sign-off (>5k€);
+endswitch
+:PPC initiates production;
+:produce goods;
+:v4: check if issue solvable ({Unsolvable, Solvable}); <<objectSignal>>
+if () then ([v4 = 'Unsolvable'])
+:cancel order (unsolvable);
+stop
+else ([v4 = 'Solvable'])
+:release order (solvable);
+:v5: check if order needs cancellation ({Cancel, Do not cancel}); <<objectSignal>>
+if () then ([v5 = 'Cancel'])
+:process ends (cancel);
+stop
+else ([v5 = 'Do not cancel'])
+:check quality of goods;
+:create and send quality report;
+:release order via memo;
+:ensure that the memo is achieved in the warehouse;
+split
+:send invoice to finance;
+split again
+:commission goods;
+split again
+:sign and send memo to logistic;
+split again
+:send the goods;
+end split
+:ensure memos are archived;
+:close order;
+stop
+endif
+endif
+@enduml

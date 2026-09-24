@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: i4:if they already have the availability information, they can proceed with the process (reason: Fails to model this explicit alternative path and its immediate continuation within the branching logic.)
+- [N2] Node-level omission: i5:If the parts are supplied to the customer, the team can also continue with the process (reason: Completely absent from the diagram; another defined alternative condition that allows proceeding is missing.)
+- [N3] Node-level omission: i8:Once the part is received, the team can then contract the customer (reason: The explicit temporal prerequisite 'Once the part is received' is not represented by any guard or structural node enforcing this sequence before the contact step.)
+- [N4] Omitted trace (input 1): i1:the first step is to identify the parts -> i4:if they already have the availability information, they can proceed with the process -> i9:After all the necessary parts are collected, the team can proceed with the payment -> i10:Once the payment is made, the process comes to an end
+- [N5] Omitted trace (input 2): i1:the first step is to identify the parts -> i5:If the parts are supplied to the customer, the team can also continue with the process -> i9:After all the necessary parts are collected, the team can proceed with the payment -> i10:Once the payment is made, the process comes to an end
+- [N6] Within matched traces (0->2) omitted: i3:check the availability of the parts
+
+Addition
+- [N7] Node-level addition: action(n1,"start") (reason: Generic placeholder action with no supporting source text; initiation is already covered structurally by init:i1.)
+- [N8] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Inventive transition label describing a combined check that does not exist in the source between these nodes.)
+- [N9] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: Synthesized label merging unrelated concepts ('contact' and 'receiving parts') with no basis in the source description.)
+- [N10] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: Fabricated transition label mixing procedural phrases not found in the input text.)
+- [N11] Node-level addition: guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'") (reason: Variable assignment guard contains invented composite text that does not correspond to any source condition or path.)
+- [N12] Within matched traces (3->0) added: init(i1)
+- [N13] Within matched traces (3->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N14] Within matched traces (3->0) added: branch(b1,XOR)
+- [N15] Within matched traces (3->0) added: action(n4,"check availability of the parts")
+- [N16] Within matched traces (3->0) added: converge(c2)
+- [N17] Within matched traces (0->1) added: init(i1)
+- [N18] Within matched traces (0->1) added: action(n5,"need to record customer's details?")
+- [N19] Within matched traces (0->1) added: branch(b2,XOR)
+- [N20] Within matched traces (0->1) added: converge(c1)
+- [N21] Within matched traces (0->1) added: action(n9,"contact the customer")
+- [N22] Within matched traces (0->1) added: converge(c2)
+- [N23] Within matched traces (0->2) added: init(i1)
+- [N24] Within matched traces (0->2) added: converge(c2)
+
+Mutation
+- [N25] Node-level mutation: element=action(n9,"contact the customer"); source=i8:Once the part is received, the team can then contract the customer; reason=Alters the specific instruction by changing 'contract' to 'contact', modifying the intended business action.
+- [N26] Node-level mutation: element=action(n8,"record customer details") -> label(n7,n8,"Record the customer's details"); source=i6:However, if they need to record the customer's details, they should order and receive the part from Disuki; reason=Distorts the process logic: the source treats recording details as a precondition trigger for ordering/receiving, whereas the model incorrectly sequences it as an action performed after part receipt.

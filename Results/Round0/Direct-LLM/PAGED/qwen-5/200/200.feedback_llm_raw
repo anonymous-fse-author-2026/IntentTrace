@@ -1,0 +1,10 @@
+
+
+- `action(n1, "Start Process")`: Label mismatches source instruction to "start by placing an order".
+- `defines(v1,...,{})`, `defines(v2,...,{})`, `defines(v3,...,{})`, `defines(v4,...,{})`: All ranges are empty `{}`, failing to capture source value domains such as "'not eligible to order'", "'available'", "'payment is received'", and "number of reminders is less than 3 / equal to 3".
+- `branch(b1)`, `branch(b2)`, `branch(b3)`, `branch(b4)`: Missing `guard(...)` statements to enforce documented decision criteria like "customer is 'not eligible to order'", "product is 'available'", "payment is received", and "number of reminders is less than 3".
+- `precedence(n3, b5)`, `precedence(b5, c5)`, `precedence(b5, c6)`: Contradicts source rule "After informing the customer, the process ends" by routing flow through AND gateway `b5` and erroneously cross-linking to the reminder-evaluation path.
+- `action(n9, "Prepare Products for Shipment")`, `action(n13, "Check Payment Status")`: Hallucinates duplicate nodes identical to `n8` and `n12`, adding unrequested steps that fragment the flow.
+- `branch(b6, AND)`, `branch(b7, AND)`, `converge(c1)`, `converge(c2)`, `converge(c3)`: Misrepresents source concurrency "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment" by using chained splits/converges instead of a single parallel gateway.
+- `action(n17, "Continue Process")`: Lacks outgoing `precedence` edges, creating a dead-end that breaks source progression "If the number of reminders is less than 3, continue the process" (which implies looping back to payment verification).
+- `precedence(b4, c5)`, `precedence(b4, c6)`: Indirectly routes the reminder-count decision through `c5`/`c6` instead of directly to `n17`/`n18`, distorting source chronology for "continue the process" and "inform the lawyer and end the process".

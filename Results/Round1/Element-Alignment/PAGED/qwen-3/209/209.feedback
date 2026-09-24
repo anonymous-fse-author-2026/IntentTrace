@@ -1,0 +1,25 @@
+Omission
+- [N1] Node-level omission: i7:the order is considered as "NOK" and the process ends (reason: On the installation failure branch, the model routes directly from the decision gateway to the convergence node without implementing the explicit step to consider/mark the order as 'NOK', omitting a required behavioral step.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start process") (reason: Generic 'start process' action has no corresponding source unit; the process initiation is already structurally handled by the init node and the receive order step.)
+- [N3] Node-level addition: action(n7,"end NOK") (reason: Placeholder 'end NOK' action lacks supporting source text; process termination and status marking are already fully covered by existing elements.)
+- [N4] Node-level addition: action(n14,"end ok") (reason: Placeholder 'end ok' action lacks supporting source text; process completion and final status marking are already fully covered by existing elements.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"receive order request") -> action(n3,"register order") -> action(n4,"evaluate order") -> action(n5,"evaluation result ok") -> branch(b1,XOR) -> action(n8,"perform installation") -> action(n9,"installation successful") -> branch(b2,XOR) -> converge(c1) -> action(n6,"mark order as NOK") -> action(n7,"end NOK") -> end(e1)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n1,"start process")
+- [N8] Within matched traces (0->0) added: action(n5,"evaluation result ok")
+- [N9] Within matched traces (0->0) added: action(n7,"end NOK")
+- [N10] Within matched traces (0->0) added: end(e1)
+- [N11] Within matched traces (1->0) added: init(i1)
+- [N12] Within matched traces (1->0) added: action(n1,"start process")
+- [N13] Within matched traces (1->0) added: action(n6,"mark order as NOK")
+- [N14] Within matched traces (1->0) added: action(n7,"end NOK")
+- [N15] Within matched traces (1->0) added: end(e1)
+- [N16] Within matched traces (2->2) added: init(i1)
+- [N17] Within matched traces (2->2) added: action(n1,"start process")
+- [N18] Within matched traces (2->2) added: action(n14,"end ok")
+- [N19] Within matched traces (2->2) added: end(e2)
+
+Mutation
+- [N20] Node-level mutation: element=guard(b2,c1,"v2 = 'No'"); source=i6:If the installation is not successful; reason=The source defines the failure condition explicitly as 'not successful', but the guard substitutes it with a binary value 'No', altering the semantic domain and potentially changing the execution logic.

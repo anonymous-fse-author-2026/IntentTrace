@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start procedure"), action(n3, "do you want to view book details"), action(n5, "do you want to select a copy or view new copies?"), action(n7, "end procedure"), action(n11, "end procedure")`: Hallucinated steps and dialogue not present in the source, which directly transitions between choices and states "the process begins by choosing a book" and later "proceed to select a copy and end the process".
+- `branch(b2, AND)`: Uses a parallel AND gateway, contradicting the source’s alternative choices ("they can either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies"), which require an XOR or OR gateway.
+- `precedence(b2, n4), precedence(b2, n9)`: Routes from `b2` to only two paths, omitting the source’s direct option to "see a list of new copies" immediately after selecting a book.
+- `converge(c1), precedence(n8, c1), precedence(n9, c1)`: Incorrectly joins the new and used copies flows before evaluation, whereas the source only specifies evaluation for used copies ("if they choose to view a list of used copies, they can evaluate the list") and presents the paths as distinct alternatives.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a generic participant, failing to reflect the source’s explicit responsibility assignment "For buyers".
+- `defines(v1, "...", {})`: Declares an empty value range `{}`, failing to faithfully capture the documented decision options ("view book details", "list of new copies", "list of used copies").

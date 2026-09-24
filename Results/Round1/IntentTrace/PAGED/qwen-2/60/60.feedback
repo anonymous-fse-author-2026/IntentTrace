@@ -1,0 +1,36 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n5,"review report") -> converge(c1) -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n11,"check translation need again") -> action(n19,"Once again, evaluate the review decision") -> branch(b4,XOR) -> action(n13,"confirm receipts again") -> converge(c2) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> action(n18,"end") -> end(e2)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n7,"translate receipts") -> converge(c1) -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n11,"check translation need again") -> action(n19,"Once again, evaluate the review decision") -> branch(b4,XOR) -> action(n13,"confirm receipts again") -> converge(c2) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> action(n18,"end") -> end(e2)
+- [N3] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"click: Start") -> action(n3,"select: Edit Report") -> action(n4,"is expense > 1000?") -> branch(b1,XOR) -> action(n6,"check translation need") -> branch(b2,XOR) -> action(n8,"confirm receipts") -> converge(c1) -> action(n9,"evaluate review decision") -> branch(b3,XOR) -> action(n11,"check translation need again") -> action(n19,"Once again, evaluate the review decision") -> branch(b4,XOR) -> action(n13,"confirm receipts again") -> converge(c2) -> action(n14,"evaluate receipt decision") -> branch(b5,XOR) -> action(n15,"process expense") -> action(n17,"end") -> action(n18,"end") -> end(e2)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: converge(c2)
+- [N6] Within matched traces (0->0) added: action(n17,"end")
+- [N7] Within matched traces (0->0) added: action(n18,"end")
+- [N8] Within matched traces (0->0) added: end(e2)
+- [N9] Within matched traces (1->0) added: init(i1)
+- [N10] Within matched traces (1->0) added: converge(c2)
+- [N11] Within matched traces (2->2) added: init(i1)
+- [N12] Within matched traces (2->2) added: action(n4,"is expense > 1000?")
+- [N13] Within matched traces (2->2) added: converge(c2)
+- [N14] Within matched traces (2->2) added: action(n17,"end")
+- [N15] Within matched traces (2->2) added: action(n18,"end")
+- [N16] Within matched traces (2->2) added: end(e2)
+- [N17] Within matched traces (3->2) added: init(i1)
+- [N18] Within matched traces (3->2) added: action(n4,"is expense > 1000?")
+- [N19] Within matched traces (3->2) added: converge(c2)
+- [N20] Within matched traces (4->4) added: init(i1)
+- [N21] Within matched traces (4->4) added: action(n4,"is expense > 1000?")
+- [N22] Within matched traces (4->4) added: converge(c2)
+- [N23] Within matched traces (4->4) added: action(n17,"end")
+- [N24] Within matched traces (4->4) added: action(n18,"end")
+- [N25] Within matched traces (4->4) added: end(e2)
+- [N26] Within matched traces (5->4) added: init(i1)
+- [N27] Within matched traces (5->4) added: action(n4,"is expense > 1000?")
+- [N28] Within matched traces (5->4) added: converge(c2)
+
+Mutation
+- [N29] Node-level mutation: element=guard(b4,n12,"v4 = 'Yes'") -> guard(b4,n13,"v4 = 'No'") -> action(n12,"translate receipts again") -> action(n13,"confirm receipts again"); source=i10:If the report is rejected, edit the report. If it is approved, translate the receipts and then confirm them.; reason=The model incorrectly splits the single approved outcome into two mutually exclusive paths guarded by 'Yes' and 'No', diverging from the source's 'rejected'/'approved' terminology. It also entirely omits the rejection path and separates the sequential 'translate and confirm' instruction into independent branches, fundamentally altering the control flow.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=3 and out=1. | DSL: action(n1,"start")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e1 | DSL: end(e1)

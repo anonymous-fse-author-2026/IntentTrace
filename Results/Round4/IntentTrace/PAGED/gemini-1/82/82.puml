@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:trigger resupply cycle;
+:check inventory level;
+:create purchase order;
+:v1: is purchase order good? ({PO Good, PO Not Good}); <<objectSignal>>
+if () then ([v1 = 'PO Not Good'])
+:If the purchase order is not good;
+:reject purchase order;
+:rework purchase order;
+:review reworked purchase order;
+else ([v1 = 'PO Good'])
+:if the purchase order is good;
+:approve purchase order;
+:reserve funds for purchase;
+:send purchase order to supplier;
+split
+-> Packing Slip;
+:receive packing slip;
+:record packing slip;
+split again
+-> Invoice;
+:receive invoice;
+:record invoice;
+end split
+:release funds for payment;
+:issue payment;
+:end process;
+stop
+endif
+@enduml

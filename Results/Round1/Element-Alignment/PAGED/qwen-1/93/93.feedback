@@ -1,0 +1,11 @@
+Addition
+- [N1] Node-level addition: action(n4,"send back form") (reason: The source text only states 'If it needs to be sent back, the process ends.' It does not describe an explicit procedural step to send the form back before terminating; this action is invented by the modeler.)
+- [N2] Added trace (model 3): init(i1) -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n10,"end process") -> end(e2)
+- [N3] Added trace (model 4): init(i1) -> action(n2,"receive form") -> action(n3,"is form complete") -> branch(b1,XOR) -> action(n6,"check income") -> branch(b3,AND) -> action(n8,"check house") -> converge(c1) -> action(n9,"is declaration needed") -> branch(b2,XOR) -> action(n11,"invite declarant") -> action(n12,"end process") -> end(e3)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i5:However, if we need to check the income, we continue with the process.; reason=The guard content 'v1 = 'Yes'' duplicates the payload of the preceding branch arm. It fails to capture the distinct requirement to check income, effectively merging two separate source conditions into one and altering the branching logic.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Yes].
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=No].

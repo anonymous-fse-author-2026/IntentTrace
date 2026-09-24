@@ -1,0 +1,297 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "send: Course Packet Information Received"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "send: Design to Faculty"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Faculty chooses the design"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "identify content requiring copyright clearance and contact publisher"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "notify: Contact Faculty to inform of denial and ask if new content should be added"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "calculate: Course Packet Cost"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "add: Bookstore margin to determine retail price"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "notify: Notify Bookstore of Course packet  Course number  Faculty name  and sections"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "end: Packet information notified to Bookstore"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "reconsider content to decrease price"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Clearance Status",
+      "R_X": [
+        "Cleared",
+        "Denial"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Price Decision",
+      "R_X": [
+        "Finalized",
+        "Reconsider"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "actor_faculty",
+      "name": "Faculty",
+      "assigned_nodes": [
+        "n3",
+        "n5",
+        "n12"
+      ]
+    },
+    {
+      "id": "actor_mpc",
+      "name": "MPC",
+      "assigned_nodes": [
+        "n2",
+        "n7",
+        "n8",
+        "n10"
+      ]
+    },
+    {
+      "id": "actor_clearance",
+      "name": "Clearance",
+      "assigned_nodes": [
+        "n4",
+        "n6"
+      ]
+    },
+    {
+      "id": "actor_bookstore",
+      "name": "Bookstore",
+      "assigned_nodes": [
+        "n11"
+      ]
+    },
+    {
+      "id": "actor_system",
+      "name": "System",
+      "assigned_nodes": [
+        "i1",
+        "b1",
+        "b2",
+        "c1",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'Denial'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = 'Cleared'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = 'Finalized'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n12",
+      "condition": "v2 = 'Reconsider'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process"
+    },
+    {
+      "id": "i2",
+      "content": "Course Packet Information Received should be sent"
+    },
+    {
+      "id": "i3",
+      "content": "followed by sending the Design to Faculty."
+    },
+    {
+      "id": "i4",
+      "content": "the Faculty will choose the design."
+    },
+    {
+      "id": "i5",
+      "content": "identify the content that requires copyright clearance and contact the publisher to obtain clearance."
+    },
+    {
+      "id": "i6",
+      "content": "If there is a need to \"Contact Faculty to inform of denial and ask if new content should be added\", then the process should be continued."
+    },
+    {
+      "id": "i7",
+      "content": "\"Contact Faculty to inform of denial and ask if new content should be added\""
+    },
+    {
+      "id": "i8",
+      "content": "if the \"Entire Course Packet Copyright Cleared\", then the MPC should Calculate the Course Packet Cost."
+    },
+    {
+      "id": "i9",
+      "content": "add the Bookstore margin to determine the retail price."
+    },
+    {
+      "id": "i10",
+      "content": "If the Faculty needs to reconsider the course packet content to decrease the price, then the process should be continued. Alternatively, if the Price of the Course Packet is finalized,"
+    },
+    {
+      "id": "i11",
+      "content": "notify the Bookstore of the Course packet, Course number, Faculty name, and sections."
+    },
+    {
+      "id": "i12",
+      "content": "the Packet information should be notified to the Bookstore, and the process will end."
+    }
+  ]
+}

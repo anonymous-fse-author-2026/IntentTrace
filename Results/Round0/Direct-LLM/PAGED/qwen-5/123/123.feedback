@@ -1,0 +1,7 @@
+- action(n1, "Start Metal Works Process"): Omits the documented initial step "obtaining the raw material from the received list" and hallucinates a generic start action instead.
+- branch(b1, XOR): Lacks guard(...) statements on its outgoing edges to enforce the documented decision conditions ("If the raw material is not available in stock... if the raw material is available in stock"), leaving the exclusive choice logic unconditioned.
+- defines(v1, "Is raw material available in stock?", {}): The range {} is empty and fails to represent the expected values (available vs. not available) implied by the decision context in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

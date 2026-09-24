@@ -1,0 +1,8 @@
+
+
+- `branch(b2, XOR)`: Incorrect control-flow logic. The source states "At the same time, we complete the following steps: checking deductibles and checking the house.", which mandates concurrent execution requiring an AND gateway, not an exclusive choice.
+- `action(n10, "Proceed to next process or end")` & `end(e4)`: Hallucinated behavior. The description explicitly lists only two termination conditions after the decision and contains no reference to an alternative fallback path or subsequent process.
+- `guard(b1, n4, v1 = 'Yes')`: Misaligned condition. The guard uses `v1` ("Is form complete") to trigger the continuation path, but the source explicitly states continuation occurs "if we need to check the income."
+- `action(n4, "Is income check needed")`: Misrepresents a conditional premise as a mandatory activity. The text presents this as a routing condition ("if we need to check the income, we continue with the process"), not as a discrete process step to be performed.
+- Missing `guard` statements for `branch(b3, ...)`: Omits documented choice logic. The source specifies explicit routing conditions ("If we need to check the declaration, the process ends. Otherwise, if we need to invite the declarant, the process also ends."), but no guards are defined on the outgoing edges of `b3`.
+- `defines(v2, "Is income check needed", {})` & `defines(v3, "Make decision after completing checks", {})`: Unfaithful variable specification. Both ranges are empty `{}`, and neither variable is referenced in any `guard` statement, failing to operationalize the explicit decision conditions stated in the source.

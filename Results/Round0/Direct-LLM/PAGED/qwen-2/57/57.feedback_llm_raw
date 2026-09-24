@@ -1,0 +1,11 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step; the source begins directly with "the customer needs to make a purchase".
+- `action(n4, "add item to cart / continue shopping")`: Misrepresents a conditional decision point as a sequential action; the source frames this as a branching choice ("If they choose to... if they select...").
+- `branch(b1, XOR)` and `defines(v1, ...)`: Lacks guard conditions and declares an empty range `{}`, failing to encode the source-specified selection criteria ("Add item to cart" vs "Continue Shopping").
+- `action(n6, "continue shopping")`: Terminates as a dead-end node with no outgoing precedence, contradicting the source instruction that selecting this option means they "should continue with the process".
+- `action(n9, "checkout tasks completed?")`, `branch(b2, XOR)`, and `guard(b2, ...)`: Hallucinates an intermediate validation step; the source proceeds directly from the parallel checkout tasks to evaluating credit card and inventory status.
+- `action(n10, "credit card approved and inventory in stock?")`: Misclassified as an `action` instead of a `branch`; the source treats this as a conditional gateway determining subsequent flow.
+- `defines(v2, ...)` and `defines(v3, ...)`: Specify empty or incomplete ranges `{}` and `{"Checkout Tasks Not Completed"}`, omitting the source-defined evaluation states (approved/denied, in stock/out of stock).
+- `branch(b3, XOR)` routing to `action(n16, "transaction ended")` → `end(e2)`: Violates the source directive "In either case, the order confirmation number should be displayed"; the rejection/out-of-stock path terminates immediately instead of converging to execute the mandatory confirmation sequence.
+- Missing guards on `branch(b1)` and `branch(b3)`: Critical control-flow transitions lack boolean conditions, leaving the model unable to faithfully evaluate the "Continue Shopping", "approved/in stock", and "denied/no inventory" outcomes described in the source.

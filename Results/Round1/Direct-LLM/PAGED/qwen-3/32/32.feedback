@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 0): i1:the process begins by entering expenses -> i2:generate a spreadsheet -> i3:the request can be approved or disapproved -> i4:If the request is not approved, the process goes back to entering expenses. -> i1:the process begins by entering expenses
+- [N2] Omitted trace (input 1): i1:the process begins by entering expenses -> i2:generate a spreadsheet -> i3:the request can be approved or disapproved -> i5:However, if the request is approved, the expenses can be paid out. -> i6:the expenses can be paid out -> i7:checks again if the request is approved or not -> i8:If it is not approved, the process goes back to entering expenses. -> i1:the process begins by entering expenses
+- [N3] Omitted trace (input 2): i1:the process begins by entering expenses -> i2:generate a spreadsheet -> i3:the request can be approved or disapproved -> i5:However, if the request is approved, the expenses can be paid out. -> i6:the expenses can be paid out -> i7:checks again if the request is approved or not -> i9:But if it is approved, the expenses can be paid out. -> i6:the expenses can be paid out
+
+Addition
+- [N4] Node-level addition: action(n4,"Approval Check 1") (reason: No source unit supports an explicit action called 'Approval Check 1'. Unit i3 describes the possibility of approval/disapproval as a decision context, not as a distinct action step preceding the branch.)
+- [N5] Added trace (model 0): init(i1) -> action(n2,"Enter Expenses") -> action(n3,"Generate Spreadsheet") -> action(n4,"Approval Check 1") -> branch(b1,XOR) -> action(n5,"Payout") -> action(n6,"Approval Check 2") -> branch(b2,XOR) -> action(n8,"Payout") -> action(n7,"End Process") -> end(e1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"Enter Expenses")

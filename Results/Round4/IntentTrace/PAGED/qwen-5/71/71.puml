@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:understand the BPMN Model;
+:write a failing test;
+:extend BPMN/mocks;
+:v1: is test green ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:check if the level satisfies the project requirements;
+:v2: does the level satisfy project requirements ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:If it does, the process ends.;
+else ([v2 = 'No'])
+:If not, they should continue the process.;
+endif
+else ([v1 = 'No'])
+:upgrade the test level;
+:v3: does the level satisfy project requirements ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+->;
+else ([v3 = 'No'])
+:check if the level satisfies project requirements again.;
+:v3: does the level satisfy project requirements ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:If it does, the process ends.;
+stop
+else ([v3 = 'No'])
+:upgrade the test level once more;
+stop
+endif
+endif
+endif
+stop
+@enduml

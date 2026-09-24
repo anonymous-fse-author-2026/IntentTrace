@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Rental Items are Returned to the Store;
+:v1: Items returned by customer or picked up by delivery crew ({Customer returns items to store, Delivery crew picks up items at event site}); <<objectSignal>>
+if () then ([v1 = 'Customer returns items to store'])
+:Customer returns the items to the store;
+else ([v1 = 'Delivery crew picks up items at event site'])
+:Delivery Crew picks-up items at the event site;
+endif
+:Count and compare items to contract;
+:v2: Order status after count ({All items returned, Items missing, Items damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'All items returned'])
+:Order is complete and all items were returned;
+case ([v2 = 'Items missing'])
+:Order is incomplete and items are missing;
+:Email customer missing items and replacement charges;
+:v4: Customer returns missing items ({Customer returns missing items, Customer does not return missing items}); <<objectSignal>>
+if () then ([v4 = 'Customer returns missing items'])
+:Customer returns the missing items;
+:Items are packed for an existing order;
+:Items are stored for future orders;
+else ([v4 = 'Customer does not return missing items'])
+:Customer does not return the missing items;
+endif
+stop
+case ([v2 = 'Items damaged'])
+:Order is complete but items are damaged;
+:Temporarily take damaged items out of inventory;
+:v5: Can damaged items be repaired ({Can be repaired, Cannot be repaired}); <<objectSignal>>
+if () then ([v5 = 'Can be repaired'])
+:Items are repaired and added into inventory;
+else ([v5 = 'Cannot be repaired'])
+:Items can't be repaired and are discarded;
+endif
+endswitch
+@enduml

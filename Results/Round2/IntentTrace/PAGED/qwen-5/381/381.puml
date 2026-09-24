@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:choose your destination and calculate the distance;
+:v_mode: transport mode ({train, flight}); <<objectSignal>>
+if () then ([v_mode = 'train'])
+:book a train;
+:v_time: time check ({within_24h, passed_24h}); <<objectSignal>>
+if () then ([v_time = 'within_24h'])
+:code available within 24 hours;
+stop
+else ([v_time = 'passed_24h'])
+:call a travel agency;
+:v_code: code availability ({available, not_available}); <<objectSignal>>
+if () then ([v_code = 'available'])
+:process ends along with the hotel reservation;
+stop
+else ([v_code = 'not_available'])
+:cancel your journey;
+stop
+endif
+endif
+else ([v_mode = 'flight'])
+:book a flight;
+:v_time: time check ({within_24h, passed_24h}); <<objectSignal>>
+if () then ([v_time = 'within_24h'])
+:code available within 24 hours;
+stop
+else ([v_time = 'passed_24h'])
+:call a travel agency;
+:v_code: code availability ({available, not_available}); <<objectSignal>>
+if () then ([v_code = 'available'])
+:process ends along with the hotel reservation;
+stop
+else ([v_code = 'not_available'])
+:cancel your journey;
+stop
+endif
+endif
+endif
+@enduml

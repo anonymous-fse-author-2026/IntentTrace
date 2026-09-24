@@ -1,0 +1,23 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i18:Similarly, when the invoice is received, record it as well.
+- [N2] Within matched traces (1->0) omitted: i11:if the Purchase Order is rejected, then rework the order.
+- [N3] Within matched traces (1->0) omitted: i14:In case the order needs to be reworked, review the Purchase Order again.
+
+Addition
+- [N4] Node-level addition: label(n2,n3,"Inventory Level is at or below the minimum;Inventory Level is above the minimum") (reason: Both labels concatenate multiple independent conditions onto single transitions without a corresponding single source unit. They invent combined edge descriptions not present in the text.)
+- [N5] Node-level addition: label(n6,n7,"approved;rejected") (reason: Both labels concatenate multiple independent conditions onto single transitions without a corresponding single source unit. They invent combined edge descriptions not present in the text.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start with Resupply Cycle Triggered") -> action(n2,"check Inventory Level") -> action(n3,"Inventory level is at or below the minimum") -> branch(b1,XOR) -> action(n4,"Create Purchase Order") -> action(n6,"Review Purchase Order") -> action(n7,"Purchase Order is approved") -> branch(b2,XOR) -> action(n8,"Reserve funds for purchase") -> action(n10,"Send Order to Suppliers") -> branch(b3,AND) -> action(n13,"Supplier sends invoice") -> action(n15,"record invoice") -> converge(c1) -> action(n16,"Release reserved funds and issue payment to supplier") -> action(n17,"End process after payment is issued") -> end(e2)
+- [N7] Within matched traces (1->0) added: action(n7,"Purchase Order is approved")
+- [N8] Within matched traces (1->0) added: action(n8,"Reserve funds for purchase")
+- [N9] Within matched traces (1->0) added: action(n10,"Send Order to Suppliers")
+- [N10] Within matched traces (1->0) added: branch(b3,AND)
+- [N11] Within matched traces (1->0) added: action(n12,"Supplier sends packing slip")
+- [N12] Within matched traces (1->0) added: action(n14,"record packing slip")
+- [N13] Within matched traces (1->0) added: converge(c1)
+- [N14] Within matched traces (1->0) added: action(n16,"Release reserved funds and issue payment to supplier")
+- [N15] Within matched traces (1->0) added: action(n17,"End process after payment is issued")
+- [N16] Within matched traces (1->0) added: end(e2)
+- [N17] Within matched traces (2->2) added: action(n3,"Inventory level is at or below the minimum")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Review Purchase Order")

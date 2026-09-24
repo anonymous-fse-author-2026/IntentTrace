@@ -1,0 +1,7 @@
+
+
+- action(n1, "start DMS Parts Provision Process"): Hallucinated step; the source begins directly with "gather information about the part from the customer" without any preliminary start task.
+- action(n6, "end process after retrieving part") and action(n9, "end process after ordering part"): Hallucinated steps; the source simply states the workflow concludes ("the process comes to an end") after these tasks, not via distinct intermediate actions.
+- branch(b1, XOR) / missing guard statements: Omits routing conditions on outgoing edges; the source explicitly dictates the split logic ("If the part is found to be available locally... However, if the part is not available locally"), which requires `guard` definitions to resolve the XOR choice toward `n5` and `n7`.
+- defines(v1, "is part available locally", {}): Declares an empty value range `{}`; the source implies a binary availability state that must be explicitly scoped in the variable's domain (e.g., `{true, false}`).
+- actor(a_default, "Default", [...] ): Incorrectly assigns all process nodes to a generic placeholder instead of the explicitly responsible "DMS Parts Provision Team" named in the description.

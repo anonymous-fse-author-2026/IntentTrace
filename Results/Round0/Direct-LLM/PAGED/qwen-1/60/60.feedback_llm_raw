@@ -1,0 +1,6 @@
+
+
+- `action(n1, "start")`: Hallucinated step; the source only specifies "clicking on 'Start'" (mapped to `n2`) as the initial interaction, with no preceding generic start action.
+- `branch(b4, XOR)` with `guard(b4, n12, v4 = 'Yes')` and `guard(b4, n13, v4 = 'No')`: Incorrect control-flow logic; the source mandates that after checking translation need again, the process must "evaluate the review decision" before proceeding, but the model incorrectly uses the translation-need variable (`v4`) to directly gate the translation/confirmation actions.
+- `action(n12, "translate receipts again")` and `action(n13, "confirm receipts again")` routed via `b4`: Violates source progression; the text explicitly states these should occur sequentially ("translate the receipts and then confirm them") when approved, whereas the model treats them as an exclusive choice.
+- Omitted node between `n11` and `c1`/`n14`: Missing the explicitly documented step "Once again, evaluate the review decision.", causing a critical workflow stage to be skipped and misaligning the decision sequence with the source.

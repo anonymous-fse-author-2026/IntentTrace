@@ -1,0 +1,8 @@
+
+
+- action(n1, "start flight booking process for Flight Centre"): Misrepresents the initiation event; the source explicitly states the process "begins with the availability of the departing flight", not a generic booking start action.
+- branch(b1, XOR), branch(b2, XOR): Hallucinates exclusive choice points; the source describes a strictly linear, deterministic progression ("Once the departing flight is available, the next step is to select the return flight...") with no branching logic.
+- action(n6, "Wait for departing flight availability"), action(n7, "Is departing flight available"), and precedences (b2,n6), (n6,n7), (b2,n2): Hallucinates a waiting/retry loop completely absent from the source, which proceeds directly to the next step once availability is confirmed.
+- guard(b1,...), guard(b2,...): Missing entirely; XOR branches must specify boolean conditions on their outgoing edges to faithfully represent choices, yet none are declared.
+- defines(v1, "Is departing flight available", {}), defines(v2, "Is departing flight available", {}): Hallucinates two unused decision variables with empty value ranges and duplicate names that do not appear in or reflect the source description.
+- action(n5, "End process"): Introduces a redundant terminating step; the source indicates the process ends immediately after completion ("once the flight selection is complete, the process comes to an end"), making this intermediate action unfaithful to the stated chronology.

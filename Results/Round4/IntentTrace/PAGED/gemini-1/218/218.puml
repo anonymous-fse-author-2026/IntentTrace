@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the expenses process for MyCorp;
+:entering expenses;
+:generate a spreadsheet;
+:the request can be approved or disapproved;
+:v1: is the request approved ({Approved, Not Approved}); <<objectSignal>>
+if () then ([v1 = "Approved"] However, if the request is approved)
+:the expenses can be paid out;
+:The process then checks again if the request is approved or not;
+:v2: is the request approved ({Approved, Not Approved}); <<objectSignal>>
+if () then ([v2 = "Approved"] But if it is approved)
+:pay out expenses;
+stop
+else ([v2 = "Not Approved"] If it is not approved)
+->;
+endif
+else ([v1 = "Not Approved"] If the request is not approved)
+->;
+endif
+:goes back to entering expenses;
+@enduml

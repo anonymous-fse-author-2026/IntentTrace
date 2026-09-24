@@ -1,0 +1,10 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing guards for their outgoing edges to capture the conditions from the source text ("amount is less than 200 €", "amount is 200 € or more", "deemed acceptable", and "not satisfactory").
+- `precedence(b2, c1)`: Hallucinated control-flow path from `b2` that does not correspond to any condition in the source text, which only specifies two outcomes for evaluating the expense report.
+- `action(n7, "End process")` and `action(n8, "End process")`: Misrepresented as action steps; the source text ("the process comes to an end", "the process also ends") describes process termination, which should be represented solely by end nodes.
+- `defines(v1, "Is the amount less than 200 euros", {})` and `defines(v2, "Is the expense report acceptable", {})`: The variables have empty ranges `{}` and fail to reflect the decision values from the source text.
+- `action(n1, "start verifying account")`: Misrepresents the source text, which states "we start by verifying the amount", not verifying the account.
+- `action(n2, "Is the amount less than 200 euros")` and `action(n5, "Is the expense report acceptable")`: Hallucinated as distinct actions; these represent the routing conditions of the gateways rather than executable tasks in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

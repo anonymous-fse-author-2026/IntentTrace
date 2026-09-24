@@ -1,0 +1,26 @@
+Addition
+- [N1] Node-level addition: guard(b3,n11,"\"v3 = 'Yes'\"") (reason: Introduces a third branching condition (v3 = Yes/No) that lacks any supporting conditional logic, decision point, or textual cue in the source description.)
+- [N2] Node-level addition: guard(b3,c1,"\"v3 = 'No'\"") (reason: Introduces a third branching condition (v3 = Yes/No) that lacks any supporting conditional logic, decision point, or textual cue in the source description.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> branch(b3,XOR) -> action(n11,"rework the purchase order again") -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n16,"receive the invoice") -> action(n18,"record the invoice") -> action(n20,"process ends after recording invoice") -> end(e3)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> branch(b3,XOR) -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n15,"receive the packing slip") -> action(n17,"record the packing slip") -> action(n19,"process ends after recording packing slip") -> end(e2)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"trigger the resupply cycle") -> action(n3,"check the inventory level") -> action(n4,"is inventory level at or below minimum") -> branch(b1,XOR) -> action(n5,"create a purchase order") -> action(n7,"review the purchase order") -> action(n8,"is purchase status rejected") -> branch(b2,XOR) -> action(n9,"rework the purchase order") -> branch(b3,XOR) -> converge(c1) -> action(n12,"review the purchase order after rework") -> converge(c2) -> action(n13,"reserve the funds") -> action(n14,"send order to supplier") -> branch(b4,AND) -> action(n16,"receive the invoice") -> action(n18,"record the invoice") -> action(n20,"process ends after recording invoice") -> end(e3)
+- [N6] Within matched traces (0->6) added: init(i1)
+- [N7] Within matched traces (0->6) added: action(n4,"is inventory level at or below minimum")
+- [N8] Within matched traces (1->0) added: init(i1)
+- [N9] Within matched traces (1->0) added: branch(b3,XOR)
+- [N10] Within matched traces (1->0) added: converge(c2)
+- [N11] Within matched traces (1->0) added: action(n13,"reserve the funds")
+- [N12] Within matched traces (1->0) added: action(n14,"send order to supplier")
+- [N13] Within matched traces (1->0) added: branch(b4,AND)
+- [N14] Within matched traces (1->0) added: action(n15,"receive the packing slip")
+- [N15] Within matched traces (1->0) added: action(n17,"record the packing slip")
+- [N16] Within matched traces (1->0) added: action(n19,"process ends after recording packing slip")
+- [N17] Within matched traces (1->0) added: end(e2)
+- [N18] Within matched traces (2->4) added: init(i1)
+- [N19] Within matched traces (2->4) added: action(n8,"is purchase status rejected")
+- [N20] Within matched traces (3->5) added: init(i1)
+- [N21] Within matched traces (3->5) added: action(n8,"is purchase status rejected")
+
+Mutation
+- [N22] Node-level mutation: element=guard(b1,n5,"\"v1 = 'Yes'\""); source=i2:If the inventory level is at or below the minimum, create a purchase order.; reason=Replaces the explicit quantitative thresholds and comparison operators ('at or below the minimum', 'above the minimum') with generic boolean flags ('v1 = Yes', 'v1 = No'), distorting the operational condition logic and dropping the specific business values required by the source.
+- [N23] Node-level mutation: element=guard(b1,n6,"\"v1 = 'No'\""); source=i3:Otherwise, if the inventory level is above the minimum, the process ends.; reason=Replaces the explicit quantitative thresholds and comparison operators ('at or below the minimum', 'above the minimum') with generic boolean flags ('v1 = Yes', 'v1 = No'), distorting the operational condition logic and dropping the specific business values required by the source.

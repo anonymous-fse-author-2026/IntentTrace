@@ -1,0 +1,8 @@
+
+
+- `branch(b6, AND)`: Incorrectly enforces parallel concurrency; the source lists conditional alternatives (“If there are any issues…”, “If you need to check…”, “If you need to analyze…”), which structurally require an XOR or OR split, not simultaneous execution.
+- `action(n8, "assign negative points again")`: Dangling node with no outgoing `precedence` statements; the model omits the necessary control-flow continuation after this step, breaking the chronological progression implied by the source.
+- `action(n12, "assign roles in team")`: Dangling node with no outgoing `precedence`; the source logically flows from role assignment to task execution, but the model drops control flow instead of connecting to `n13` ("perform work according role").
+- `action(n22, "continue working according role")`: Terminal-phase dangling node with no outgoing edges; the source specifies “Finally, present the project and the process will come to an end,” but the model provides no path from `n22` to the final presentation or end markers.
+- `action(n17, "end of process")` / `end(e1)`: Hallucinates a premature termination path triggered by the first project acceptance; the source describes an iterative review cycle that only concludes after the explicit “Finally, present…” step.
+- `defines(v3, ...)` / `guard(b3, c2, v3 = 'No (check);After fixing')`: Variable naming and range values conflate two distinct source decisions; the guard condition does not faithfully map to the discrete textual options (“check the process and assign points” vs. “analyze the field of study”), obscuring the intended choice logic.

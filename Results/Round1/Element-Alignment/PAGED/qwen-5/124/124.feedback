@@ -1,0 +1,7 @@
+Mutation
+- [N1] Node-level mutation: element=action(n3,"order rejected?") -> guard(b1,n4,"v1 = 'Accepted'") -> guard(b1,n5,"v1 = 'Rejected'"); source=i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.; reason=The source explicitly states that both rejection and acceptance simply allow the process to continue forward to the identical subsequent steps. The model incorrectly creates an exclusive (XOR) decision that routes 'Accepted' and 'Rejected' outcomes to entirely different immediate actions, distorting the control flow and conditional outcomes.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=1 and out=0. | Node `n3` has in=0 and out=1. | DSL: action(n2,"look at the order"); action(n3,"order rejected?")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, c1, e1, e2, n10, n11, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); converge(c1); end(e1); end(e2); action(n10,"ship product"); action(n11,"end"); action(n3,"order rejected?") (+6 more)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: i1, n2 | DSL: init(i1); action(n2,"look at the order")

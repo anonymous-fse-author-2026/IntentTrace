@@ -1,0 +1,10 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start") (reason: Extracts only the generic verb 'Start' while stripping the essential qualifier 'with the Purchase Order-to-Delivery phase'. Functions as a fragmented artifact with no independent source support and alters the original instruction's granularity.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> action(n4,"Is invoice amount > $5000?") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> action(n7,"End Process") -> end(e1)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"Start")
+- [N5] Within matched traces (1->0) added: init(i1)
+- [N6] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n5,"v1 = true") -> guard(b1,c1,"v1 = false"); source=i3:If the invoice amount is greater than $5000; reason=Both guards use abstract boolean assignments ('v1 = true', 'v1 = false') instead of preserving the concrete condition text, comparison operator, and monetary threshold ($5000) required by the source. This drops critical execution data and violates the strict fidelity standard.

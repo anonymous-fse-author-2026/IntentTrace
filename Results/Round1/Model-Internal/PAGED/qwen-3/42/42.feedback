@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i2:continue to check if you need to book a train or a flight. (reason: Because the sole corresponding element (n3) mutates the dual-option check into a single-flight query, the original instruction covering both transport modes is not faithfully implemented.)
+
+Addition
+- [N2] Node-level addition: action(n1,"Start the booking process") (reason: Generic initialization step with no corresponding instruction or semantic anchor in the source text.)
+- [N3] Node-level addition: guard(b3,n14,"v3 = 'No'") (reason: Invents a termination path for the scenario where 24 hours have not passed, which is entirely absent from the source description.)
+- [N4] Node-level addition: action(n14,"Process ends") (reason: Invents a termination path for the scenario where 24 hours have not passed, which is entirely absent from the source description.)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"Start the booking process") -> action(n2,"Choose your destination and calculate distance") -> action(n3,"Do you need to book a flight?") -> branch(b1,XOR) -> action(n4,"Book a train") -> converge(c1) -> action(n6,"Is a code available within 24 hours?") -> branch(b2,XOR) -> action(n8,"Have 24 hours passed?") -> branch(b3,XOR) -> action(n14,"Process ends") -> end(e4)
+- [N6] Added trace (model 7): init(i1) -> action(n1,"Start the booking process") -> action(n2,"Choose your destination and calculate distance") -> action(n3,"Do you need to book a flight?") -> branch(b1,XOR) -> action(n5,"Book a flight") -> converge(c1) -> action(n6,"Is a code available within 24 hours?") -> branch(b2,XOR) -> action(n8,"Have 24 hours passed?") -> branch(b3,XOR) -> action(n14,"Process ends") -> end(e4)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n1,"Start the booking process")
+- [N9] Within matched traces (0->0) added: converge(c1)
+- [N10] Within matched traces (1->4) added: init(i1)
+- [N11] Within matched traces (1->4) added: action(n1,"Start the booking process")
+- [N12] Within matched traces (1->4) added: converge(c1)
+- [N13] Within matched traces (2->1) added: init(i1)
+- [N14] Within matched traces (2->1) added: action(n1,"Start the booking process")
+- [N15] Within matched traces (2->1) added: converge(c1)
+- [N16] Within matched traces (2->1) added: action(n6,"Is a code available within 24 hours?")
+- [N17] Within matched traces (3->5) added: init(i1)
+- [N18] Within matched traces (3->5) added: action(n1,"Start the booking process")
+- [N19] Within matched traces (3->5) added: converge(c1)
+- [N20] Within matched traces (3->5) added: action(n6,"Is a code available within 24 hours?")
+- [N21] Within matched traces (4->2) added: init(i1)
+- [N22] Within matched traces (4->2) added: action(n1,"Start the booking process")
+- [N23] Within matched traces (4->2) added: converge(c1)
+- [N24] Within matched traces (4->2) added: action(n6,"Is a code available within 24 hours?")
+- [N25] Within matched traces (4->2) added: action(n10,"Is a code available?")
+- [N26] Within matched traces (5->6) added: init(i1)
+- [N27] Within matched traces (5->6) added: action(n1,"Start the booking process")
+- [N28] Within matched traces (5->6) added: converge(c1)
+- [N29] Within matched traces (5->6) added: action(n6,"Is a code available within 24 hours?")
+- [N30] Within matched traces (5->6) added: action(n10,"Is a code available?")
+
+Mutation
+- [N31] Node-level mutation: element=action(n3,"Do you need to book a flight?"); source=i2:continue to check if you need to book a train or a flight.; reason=The source requires checking for both train and flight options. The model restricts this to a single-question format about flights only, altering the decision target and scope.

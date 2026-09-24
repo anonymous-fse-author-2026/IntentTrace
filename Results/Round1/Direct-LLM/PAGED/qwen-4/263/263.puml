@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_webteam| Web Design Team
+|a_proc| Process Control
+|a_proc|
+start
+|a_customer|
+:Start;
+:Is the informational meeting successful?;
+|a_proc|
+:v1: Is the informational meeting successful? ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+|a_customer|
+:Work on storyboard (full day);
+|a_proc|
+split
+|a_webteam|
+:Site design (10 days);
+split again
+:Content preparation;
+end split
+|a_proc|
+:Design and content completed;
+|a_webteam|
+:Site development (2 days);
+:Review process (1 day);
+:Is the review successful?;
+|a_proc|
+:v2: Is the review successful? ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+->;
+else ([v2 = true])
+|a_customer|
+:Approval stage (half a day);
+|a_proc|
+:v3: Is the rebuild approved? ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+|a_customer|
+:End Process;
+|a_proc|
+stop
+else ([v3 = false])
+|a_webteam|
+:Rebuild site (3 days);
+:Is the rebuild approved?;
+|a_proc|
+:v4: Rebuild status ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:End Process;
+stop
+else ([v4 = false])
+|a_webteam|
+:Rebuild site again (3 days);
+|a_proc|
+:End Process;
+stop
+endif
+endif
+endif
+else ([v1 = false])
+:End Process;
+endif
+stop
+@enduml

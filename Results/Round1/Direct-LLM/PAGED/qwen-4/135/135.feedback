@@ -1,0 +1,22 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i7:However, if there are any problems with the shipment, communicate them accordingly.
+- [N2] Within matched traces (2->2) omitted: i7:However, if there are any problems with the shipment, communicate them accordingly.
+- [N3] Within matched traces (2->2) omitted: i11:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.
+
+Addition
+- [N4] Node-level addition: guard(n5,c1,"v1 = 'No'") (reason: The guard 'v1 = No' lacks supporting source text. The original description only defines paths for 'okay' and 'problems', leaving no explicit basis for a standalone 'No' branch targeting a convergence node.)
+- [N5] Node-level addition: guard(n11,n12,"v3 = 'Yes'") (reason: These guards introduce conditions ('v3 = Yes/No') for a third decision split not present in the source text. The final source sentence provides a conditional instruction for existing problems but does not describe a new branching gateway or associated guards.)
+- [N6] Node-level addition: guard(n11,n13,"v3 = 'No'") (reason: These guards introduce conditions ('v3 = Yes/No') for a third decision split not present in the source text. The final source sentence provides a conditional instruction for existing problems but does not describe a new branching gateway or associated guards.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> branch(n5,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> branch(n8,XOR) -> action(n9,"Send Payment") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> branch(n5,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> branch(n8,XOR) -> action(n10,"Communicate shipment problems") -> branch(n11,XOR) -> action(n12,"Send Payment") -> end(e1)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> branch(n5,XOR) -> converge(c1) -> action(n7,"Ship Material") -> branch(n8,XOR) -> action(n10,"Communicate shipment problems") -> branch(n11,XOR) -> action(n12,"Send Payment") -> end(e1)
+- [N10] Within matched traces (2->2) added: action(n9,"Send Payment")
+- [N11] Within matched traces (2->2) added: end(e1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(n5,n6,"v1 = 'Yes'"); source=i5:At this point, check if the shipment is okay. -> i7:However, if there are any problems with the shipment, communicate them accordingly.; reason=The guard assigns 'v1 = Yes' to the path leading to 'Communicate shipment problems'. Since the preceding decision asks whether the shipment is 'okay', a 'Yes' response should logically route to the positive outcome (payment), while problems represent the negative/exception path. The guard's value reverses the intended conditional logic.
+
+Permutation
+- [N13] Within matched traces (0->2) reordered: expected [i5:At this point, check if the shipment is okay.] but observed [branch(n5,XOR)] elsewhere; in its place the model has [action(n7,"Ship Material")]
+- [N14] Within matched traces (1->2) reordered: expected [i5:At this point, check if the shipment is okay.] but observed [branch(n5,XOR)] elsewhere; in its place the model has [action(n7,"Ship Material")]
+- [N15] Within matched traces (2->2) reordered: expected [i5:At this point, check if the shipment is okay.] but observed [branch(n5,XOR)] elsewhere; in its place the model has [action(n7,"Ship Material")]

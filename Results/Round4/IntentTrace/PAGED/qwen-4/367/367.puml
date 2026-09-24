@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:initiate new resupply cycle;
+:check levels of inventory;
+:is inventory below or equal to minimum?;
+:v1: inventory status ({Above, BelowOrEqual}); <<objectSignal>>
+if () then ([v1 = "Above"])
+:generate above minimum report;
+:end process;
+stop
+else ([v1 = "BelowOrEqual"])
+:generate equal to or below minimum report;
+:create purchase orders;
+:review purchase orders;
+:v2: PO review outcome ({Approved, Rejected}); <<objectSignal>>
+if () then ([v2 = "Rejected"])
+:rework purchase orders;
+else ([v2 = "Approved"])
+:print and release approved POs;
+endif
+split
+:reserve funds;
+:receive packing slip;
+split again
+:mail POs to supplier;
+:receive inventory;
+:receive packing slip from inventory;
+end split
+:receive invoice;
+:three-way match;
+:release funds;
+:issue payment;
+stop
+endif
+@enduml

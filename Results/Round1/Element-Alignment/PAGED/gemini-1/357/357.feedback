@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i4:After finding the desired book (reason: Because the text's straightforward temporal progression was distorted into a branch, the simple precondition of successfully finding the book is not faithfully implemented.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start the process") (reason: The model invents an executable 'start the process' action, but the source text only uses a connective announcer phrase ('the first step is').)
+- [N3] Node-level addition: guard(b1,n8,"v1 == \"No\"") (reason: The model invents a negative path and an early termination step for not finding the book, which has no justification in the source text.)
+- [N4] Node-level addition: action(n8,"end of process") (reason: The model invents a negative path and an early termination step for not finding the book, which has no justification in the source text.)
+- [N5] Node-level addition: guard(b2,e3,"v2 == \"No\"") (reason: The model invents a negative path for failing to proceed with the purchase, which is not described in the source.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n10,"search for a book") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n4,"add used copy to cart") -> action(n5,"can you proceed with purchase?") -> branch(b2,XOR) -> end(e3)
+- [N7] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n10,"search for a book") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n8,"end of process") -> end(e2)
+- [N8] Within matched traces (0->0) added: action(n1,"start the process")
+
+Mutation
+- [N9] Node-level mutation: element=action(n3,"did you find the book?") -> guard(b1,n4,"v1 == \"Yes\""); source=i4:After finding the desired book; reason=The source text describes a sequential dependency/precondition, but the model distorts this by turning it into an explicit 'yes/no' decision point and conditional guard.
+- [N10] Node-level mutation: element=action(n5,"can you proceed with purchase?") -> guard(b2,n6,"v2 == \"Yes\""); source=i6:they can proceed to; reason=The source text merely indicates a sequential progression to the next step, but the model distorts this into an unnecessary condition/decision point.

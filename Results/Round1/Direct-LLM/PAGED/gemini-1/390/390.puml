@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Orders Required;
+:place Bulk order;
+:v1: credit_allowance ({prior, exceeds}); <<objectSignal>>
+if () then ([v1 == "prior"])
+:process order for delivery;
+else ([v1 == "exceeds"])
+:place new order;
+split
+:process ends at the Warehouse;
+stop
+split again
+:record in Accounts Receivable;
+:v2: payments ({received, none}); <<objectSignal>>
+if () then ([v2 == "received"])
+:continue process;
+:identify order for installation;
+:v3: installation ({scheduled, not}); <<objectSignal>>
+if () then ([v3 == "scheduled"])
+:assign Installer;
+:end process;
+stop
+else ([v3 == "not"])
+:pack for delivery;
+:end process;
+stop
+endif
+else ([v2 == "none"])
+:drop order;
+:end process;
+stop
+endif
+end split
+endif
+@enduml

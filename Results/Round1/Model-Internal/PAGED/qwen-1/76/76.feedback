@@ -1,0 +1,22 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i3:they should "continue the process".
+- [N2] Within matched traces (1->0) omitted: i3:they should "continue the process".
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: The 'start' action has no corresponding source unit; process initiation is already handled by init:i1 and input element i1.)
+- [N4] Node-level addition: guard(b2,n6,"v2 = false") (reason: This guard represents a negative branch ('v2 = false') for the urgency check, but the provided input elements do not contain a 'Non Urgent' condition unit to support it.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n5,"red stamp") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c1) -> action(n3,"enter date") -> action(n4,"urgent?") -> branch(b2,XOR) -> action(n6,"continue process") -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N8] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"knows sla?") -> branch(b1,XOR) -> action(n7,"look up") -> branch(b3,AND) -> converge(c2) -> action(n8,"end") -> end(e1)
+- [N9] Within matched traces (0->0) added: action(n1,"start")
+- [N10] Within matched traces (1->0) added: action(n1,"start")
+- [N11] Within matched traces (2->0) added: action(n1,"start")
+- [N12] Within matched traces (2->0) added: action(n2,"knows sla?")
+- [N13] Within matched traces (3->0) added: action(n1,"start")
+- [N14] Within matched traces (3->0) added: action(n2,"knows sla?")
+
+Mutation
+- [N15] Node-level mutation: element=guard(b1,c1,"v1 = true"); source=i2:if someone "Knows SLA"; reason=The guards abstract the natural language conditions into generic boolean assignments ('v1 = true/false'), losing the specific 'Knows SLA' context and phrasing required by the source units.
+- [N16] Node-level mutation: element=guard(b1,n7,"v1 = false"); source=i4:If they don't "Know SLA", they should "Look up".; reason=The guards abstract the natural language conditions into generic boolean assignments ('v1 = true/false'), losing the specific 'Knows SLA' context and phrasing required by the source units.
+- [N17] Node-level mutation: element=guard(b2,n5,"v2 = true"); source=i6:If the task is "Urgent"; reason=The guard replaces the explicit urgency condition with an abstract variable assignment ('v2 = true'), failing to preserve the source qualifier.

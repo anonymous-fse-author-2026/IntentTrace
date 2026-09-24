@@ -1,0 +1,16 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i7:If the PO is created, it needs to be reviewed.
+- [N2] Within matched traces (1->2) omitted: i4:If the PO is rejected, it needs to be reworked. If the PO is approved, it is printed and released in the system.
+- [N3] Within matched traces (1->2) omitted: i5:it needs to be reworked.
+- [N4] Within matched traces (2->0) omitted: i10:receive the inventory.
+
+Addition
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start acme resupply cycle") -> action(n2,"check levels of inventory") -> action(n3,"is inventory below or equal to minimum?") -> branch(b1,XOR) -> action(n4,"generate: below or equal to minimum report") -> action(n7,"create purchase orders (pos)") -> action(n8,"review pos") -> action(n9,"is po approved?") -> branch(b2,XOR) -> action(n10,"print and release pos in system") -> branch(b3,AND) -> action(n13,"mail pos to supplier") -> action(n15,"receive inventory") -> converge(c1) -> action(n16,"receive invoice") -> action(n17,"proceed to three-way match") -> action(n18,"perform three-way match") -> action(n19,"release funds if successful") -> action(n20,"issue payment") -> action(n21,"end process") -> end(e2)
+- [N6] Within matched traces (0->2) added: init(i1)
+- [N7] Within matched traces (1->2) added: init(i1)
+- [N8] Within matched traces (2->0) added: init(i1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"create purchase orders (pos)")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.

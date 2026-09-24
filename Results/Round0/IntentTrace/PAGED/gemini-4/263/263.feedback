@@ -1,0 +1,48 @@
+Omission
+- [N1] Node-level omission: i2:an informational meeting that lasts half a day (reason: The model has an action for deciding if the meeting was successful, but omitted the action step for the actual meeting taking place.)
+- [N2] Node-level omission: i6:If the storyboard is successful (reason: The text defines a conditional split after the storyboard, but the model omits the branch gateway for this decision.)
+- [N3] Node-level omission: i16:If the approval is complete (reason: The text specifies a split based on approval, but no XOR branch element is provided in the model to handle this logic.)
+- [N4] Node-level omission: i17:However, if the approval is rejected (reason: The text specifies a split based on approval, but no XOR branch element is provided in the model to handle this logic.)
+- [N5] Within matched traces (0->6) omitted: i2:an informational meeting that lasts half a day
+- [N6] Within matched traces (1->0) omitted: i2:an informational meeting that lasts half a day
+- [N7] Within matched traces (1->0) omitted: i6:If the storyboard is successful
+- [N8] Within matched traces (1->0) omitted: i16:If the approval is complete
+- [N9] Within matched traces (2->3) omitted: i2:an informational meeting that lasts half a day
+- [N10] Within matched traces (2->3) omitted: i6:If the storyboard is successful
+- [N11] Within matched traces (2->3) omitted: i16:If the approval is complete
+- [N12] Within matched traces (3->1) omitted: i2:an informational meeting that lasts half a day
+- [N13] Within matched traces (3->1) omitted: i6:If the storyboard is successful
+- [N14] Within matched traces (3->1) omitted: i14:approval stage, which takes half a day
+- [N15] Within matched traces (3->1) omitted: i17:However, if the approval is rejected
+- [N16] Within matched traces (4->4) omitted: i2:an informational meeting that lasts half a day
+- [N17] Within matched traces (4->4) omitted: i6:If the storyboard is successful
+- [N18] Within matched traces (4->4) omitted: i14:approval stage, which takes half a day
+- [N19] Within matched traces (4->4) omitted: i17:However, if the approval is rejected
+- [N20] Within matched traces (5->2) omitted: i2:an informational meeting that lasts half a day
+- [N21] Within matched traces (5->2) omitted: i6:If the storyboard is successful
+- [N22] Within matched traces (5->2) omitted: i14:approval stage, which takes half a day
+- [N23] Within matched traces (5->2) omitted: i17:However, if the approval is rejected
+- [N24] Within matched traces (6->5) omitted: i2:an informational meeting that lasts half a day
+- [N25] Within matched traces (6->5) omitted: i6:If the storyboard is successful
+- [N26] Within matched traces (6->5) omitted: i14:approval stage, which takes half a day
+- [N27] Within matched traces (6->5) omitted: i17:However, if the approval is rejected
+
+Addition
+- [N28] Node-level addition: action(n17,"End Process") (reason: The text does not explicitly state an 'End Process' action after the second rebuild, making this an unsupported addition as an action step.)
+- [N29] Within matched traces (0->6) added: action(n2,"Is the informational meeting successful?")
+- [N30] Within matched traces (0->6) added: branch(b1,XOR)
+- [N31] Within matched traces (5->2) added: action(n14,"Is the rebuild approved?")
+- [N32] Within matched traces (5->2) added: branch(b3,XOR)
+- [N33] Within matched traces (5->2) added: action(n17,"End Process")
+- [N34] Within matched traces (5->2) added: end(e4)
+- [N35] Within matched traces (6->5) added: action(n14,"Is the rebuild approved?")
+- [N36] Within matched traces (6->5) added: branch(b3,XOR)
+- [N37] Within matched traces (6->5) added: action(n17,"End Process")
+- [N38] Within matched traces (6->5) added: end(e4)
+
+Mutation
+- [N39] Node-level mutation: element=action(n5,"Site design and development preparation (10 days)"); source=i8:site design, which takes 10 days; reason=The text only specifies 'site design', but the model added 'and development preparation' to this step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.

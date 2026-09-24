@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+-> At the start, we receive a form.;
+:check if form is complete;
+:v1: check if form is complete ({send_back, check_income}); <<objectSignal>>
+if () then ([v1 = "send_back"])
+:end process: form needs to be sent back;
+:the process ends;
+stop
+else ([v1 = "check_income"] check income)
+:v_split: step_after_income ({deductibles, house}); <<objectSignal>>
+if () then ([v_split = "deductibles"])
+:check deductibles;
+else ([v_split = "house"])
+:check house;
+endif
+:make decision;
+:v2: make decision ({check_declaration, invite_declarant}); <<objectSignal>>
+if () then ([v2 = "check_declaration"])
+:end process: check declaration;
+stop
+else ([v2 = "invite_declarant"])
+:invite declarant;
+stop
+endif
+endif
+@enduml

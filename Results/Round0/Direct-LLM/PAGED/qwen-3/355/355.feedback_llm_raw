@@ -1,0 +1,7 @@
+
+
+- `guard(b3, c2, v3 = 'No')` and `guard(b3, c3, v3 = 'No')`: Identical guard conditions on separate outgoing edges of XOR branch `b3`. Violates SMC4; XOR gateways require mutually exclusive conditions, and routing identical conditions to different nodes creates non-deterministic/broken control flow.
+- `action(n19, "send invoice and deliver product")`: Incorrectly scoped exclusively to the production path (via `precedence(b8, n19)`). The source states "Simultaneously, send the invoice and deliver the product" immediately after the order confirmation step, which applies to both the in-stock and production flows. Violates SMC1 (omits documented behavior for the in-stock path).
+- `label(n26, n27, "}")`: Payload contains a literal brace character `"}"` not present in the source text. Violates SMC2 (hallucinated element content).
+- `converge(c2)` and `converge(c3)`: Misused as direct targets of XOR branch `b3` to route to `n11` and `n12`. The source mandates concurrent execution for wholesalers ("At the same time, check the availability..."), which requires an AND split gateway, not converge nodes positioned downstream of an XOR split. Violates SMC4.
+- `branch(b8, AND)`: Forces "send order confirmation" (`n18`) to execute concurrently with "send invoice and deliver product" (`n19`). The source describes producing the article and sending confirmation sequentially, then separately notes that invoice and delivery occur simultaneously with each other. Violates SMC3 and SMC4 (misrepresents chronology and concurrency).

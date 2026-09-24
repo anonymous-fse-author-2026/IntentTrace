@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start verifying account;
+:Is the amount less than 200 euros;
+:v1: Is the amount less than 200 euros ({< 200, >= 200}); <<objectSignal>>
+if () then ([v1 = '< 200'])
+:Approve the expense report;
+else ([v1 = '>= 200'])
+:Evaluate the expense report;
+:Is the expense report acceptable;
+:v2: Is the expense report acceptable ({acceptable, not satisfactory}); <<objectSignal>>
+switch ()
+case ([v2 = 'acceptable'])
+:Approve the expense report;
+case ([v2 = 'not satisfactory'])
+:End process;
+stop
+case ([v2 = 'not satisfactory'])
+endswitch
+endif
+:End process;
+stop
+@enduml

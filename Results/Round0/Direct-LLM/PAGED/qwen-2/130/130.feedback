@@ -1,0 +1,9 @@
+- `action(n1, "start acquiring new client")`: Hallucinates a step not documented in the source; the description begins directly with "identify the need for a new client."
+- `action(n14, "end of process")`: Hallucinates an intermediate action; the source states "the process comes to an end," which should terminate directly at `end(e1)` without an extra task node.
+- `defines(v1, "is the response positive?", {})`: Declares an empty value range `{}`, failing to reflect the source's implied binary outcome requiring values such as `{"positive", "negative"}`.
+- `branch(b1, XOR)` with `precedence(b1, n11)` and `precedence(b1, n12)`: Omits `guard` statements to enforce the source conditions "If the response is positive" and "if the response is negative," leaving the routing logic undefined.
+- `action(n10, "is the response positive?")`: Misrepresents a decision condition as a procedural step; the source presents this purely as a branching criterion, not an executable action.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n12` has 0 guards; exactly one is required.

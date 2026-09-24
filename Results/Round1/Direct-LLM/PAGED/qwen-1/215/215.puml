@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+start
+:Check stock levels;
+:Generate Purchase Request;
+:v1: Inventory level is at or below the minimum ({below minimum, above minimum}); <<objectSignal>>
+if () then (["v1 = 'below minimum'"] Inventory level is at or below the minimum)
+:Submit order to supplier;
+else (["v1 = 'above minimum'"] Inventory level is above the minimum)
+:Wait for replenishment;
+endif
+:Evaluate PO;
+:v2: Purchase Order is approved ({approved, rejected}); <<objectSignal>>
+if () then (["v2 = 'approved'"] Purchase Order is approved)
+:Confirm delivery schedule;
+:Send packing slip and invoice;
+:Accept delivery;
+stop
+else (["v2 = 'rejected'"] Purchase Order is rejected)
+:Rework the order;
+:Review Purchase Order;
+endif
+@enduml

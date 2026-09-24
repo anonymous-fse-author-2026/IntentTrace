@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Check if process has started in Admin Office;
+:v1: Check if process has started in Admin Office ({Uncompleted, Completed}); <<objectSignal>>
+if () then ([v1 = "Uncompleted"])
+repeat :Proceed to verify completeness of invoices;
+:Return uncompleted invoices to client via postal mail;
+:Receive completed invoices from client;
+:Mark relevant box on invoice entry form;
+:Check if process has been completed;
+:v2: Check if process has been completed ({Uncompleted, Completed}); <<objectSignal>>
+backward:Proceed to verify completeness of invoices;
+repeat while () is ([v2 = "Uncompleted"]) not ([v2 = "Completed"])
+:End;
+stop
+else ([v1 = "Completed"])
+:End;
+stop
+endif
+@enduml

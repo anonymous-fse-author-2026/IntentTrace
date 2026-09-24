@@ -1,0 +1,11 @@
+- `action(n1, "start")` and `action(n5/n7/n13/n16/n18/n24, "End Process")`: Hallucinated steps; the source description contains no explicit "start" or "End Process" actions, only implicit terminations.
+- `action(n3, "Is the instruction to Forward Reject Return or Process for SAP?")` and `action(n14, "...")`: Misrepresented node payloads; these describe a decision query rather than a behavioral step, incorrectly treating a gateway condition as an executable action.
+- `defines(v1, "...", {"Forward", "Reject", "Return", "SAP"})` and `defines(v2, "...")`: Unfaithful variable ranges; the source specifies exact instruction strings (`"Forward Invoice to Admin Officer"`, `"Reject invoice"`, etc.), not abbreviated keywords.
+- `precedence(n8, n9)` leading to `branch(b2, XOR)` and nodes `n15`–`n24`: Incorrect control-flow logic; the model linearly duplicates the entire decision-and-processing structure instead of correctly implementing a cyclic loop back to `"receive and categorize the invoice"`.
+- `precedence(n19, n20)` with no outgoing edges from `n20`: Broken chronology; the second "Return" path dead-ends at `n20` instead of reconnecting to the decision point, failing to mirror the source's iterative progression.
+- `guard(b1, n6, v1 = 'Reject')` → `action(n6, "Reject Invoice")`: Extraneous action step; the source states `"if the instruction is to 'Reject invoice', then the process ends there"`, implying immediate termination without an intervening rejection action.
+- `guard(b1, n10, v1 = 'SAP')` → `action(n10, "Process Invoice for SAP Entry")`: Faithfulness mismatch; the source treats `"Process Invoice for SAP Entry"` as a conditional instruction that triggers forwarding, not as a distinct process action that must be performed beforehand.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n20` has in=1 and out=0. | DSL: action(n20,"Receive and Categorize Invoice")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n19, n20 | DSL: action(n19,"Return Invoice to Client for Completion"); action(n20,"Receive and Categorize Invoice")

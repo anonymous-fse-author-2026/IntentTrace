@@ -1,0 +1,50 @@
+Omission
+- [N1] Node-level omission: If the PO is created, (reason: The model includes the review action (n17) but completely drops the triggering condition specified in the source unit.)
+- [N2] Node-level omission: If the PO needs to be reworked, (reason: The model includes the PO recreation actions (n15/n16) but omits the explicit conditioning clause from the source.)
+- [N3] Node-level omission: If the POs are mailed to the supplier, (reason: The model includes the inventory receipt action (n36) but fails to implement the preceding conditional trigger.)
+- [N4] Within matched traces (0->4) omitted: i7:If the report indicates that the inventory is above the minimum, the process ends.
+- [N5] Within matched traces (1->4) omitted: i6:If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs).
+- [N6] Within matched traces (1->4) omitted: i10:If the PO is created, it needs to be reviewed.
+- [N7] Within matched traces (1->4) omitted: i8:If the PO is rejected, it needs to be reworked.
+- [N8] Within matched traces (1->4) omitted: i11:If the PO needs to be reworked, it needs to be created again.
+
+Addition
+- [N9] Node-level addition: action(n14,"rework PO") (reason: Content describes a second rework step that has no corresponding source unit or logical placement in the documented flow.)
+- [N10] Node-level addition: guard(b4,n14,"v4 = 'No'") (reason: Creates a negative routing path to an unsupported rework action following the approval check, which is not described in the text.)
+- [N11] Node-level addition: guard(b9,e2,"v9 = 'No'") (reason: Implements an immediate process termination on a failed three-way match outcome, introducing an exit path absent from the source description.)
+- [N12] Node-level addition: guard(b3,n12,"v3 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Added trace (model 1): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n5,"generate Equal to or below minimum Report") -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> action(n8,"create Purchase Orders POs") -> action(n17,"PO needs to be reviewed") -> action(n10,"Is PO rejected") -> branch(b3,XOR) -> action(n12,"Is PO approved") -> branch(b4,XOR) -> action(n13,"print and release PO in system") -> branch(b11,AND) -> action(n18,"Simultaneously reserve funds for released POs") -> converge(n20) -> converge(n21) -> converge(n26) -> converge(n30) -> converge(n34) -> converge(n35) -> converge(n41) -> action(n23,"Are funds reserved for the released POs") -> action(n24,"Receive Packing Slip") -> action(n27,"Has Packing Slip been received") -> action(n28,"Receive Invoice") -> action(n31,"Has Invoice been received") -> action(n32,"Proceed to Three way match") -> action(n39,"Receive Packing Slip") -> action(n36,"Receive Inventory") -> action(n38,"Has Inventory been received") -> action(n42,"Is Three way match successful") -> branch(b9,XOR) -> end(e2)
+- [N14] Added trace (model 2): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n5,"generate Equal to or below minimum Report") -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> action(n8,"create Purchase Orders POs") -> action(n17,"PO needs to be reviewed") -> action(n10,"Is PO rejected") -> branch(b3,XOR) -> action(n12,"Is PO approved") -> branch(b4,XOR) -> action(n13,"print and release PO in system") -> branch(b11,AND) -> action(n19,"Mail POs to supplier") -> converge(n20) -> converge(n21) -> converge(n26) -> converge(n30) -> converge(n34) -> converge(n35) -> converge(n41) -> action(n23,"Are funds reserved for the released POs") -> action(n24,"Receive Packing Slip") -> action(n27,"Has Packing Slip been received") -> action(n28,"Receive Invoice") -> action(n31,"Has Invoice been received") -> action(n32,"Proceed to Three way match") -> action(n39,"Receive Packing Slip") -> action(n36,"Receive Inventory") -> action(n38,"Has Inventory been received") -> action(n42,"Is Three way match successful") -> branch(b9,XOR) -> action(n43,"Release funds") -> action(n44,"Issue payment") -> action(n45,"Resupply Cycle is complete process ends") -> end(e2)
+- [N15] Added trace (model 3): init(i1) -> action(n1,"start the process for ACME") -> action(n2,"begin New Resupply Cycle") -> action(n3,"Check Levels of Inventory") -> action(n4,"Is inventory below or equal to minimum") -> branch(b1,XOR) -> action(n5,"generate Equal to or below minimum Report") -> action(n7,"Does report indicate inventory equal or below minimum") -> branch(b2,XOR) -> action(n8,"create Purchase Orders POs") -> action(n17,"PO needs to be reviewed") -> action(n10,"Is PO rejected") -> branch(b3,XOR) -> action(n12,"Is PO approved") -> branch(b4,XOR) -> action(n13,"print and release PO in system") -> branch(b11,AND) -> action(n19,"Mail POs to supplier") -> converge(n20) -> converge(n21) -> converge(n26) -> converge(n30) -> converge(n34) -> converge(n35) -> converge(n41) -> action(n23,"Are funds reserved for the released POs") -> action(n24,"Receive Packing Slip") -> action(n27,"Has Packing Slip been received") -> action(n28,"Receive Invoice") -> action(n31,"Has Invoice been received") -> action(n32,"Proceed to Three way match") -> action(n39,"Receive Packing Slip") -> action(n36,"Receive Inventory") -> action(n38,"Has Inventory been received") -> action(n42,"Is Three way match successful") -> branch(b9,XOR) -> end(e2)
+- [N16] Within matched traces (0->4) added: action(n4,"Is inventory below or equal to minimum")
+- [N17] Within matched traces (1->4) added: action(n6,"generate Above Minimum Report")
+- [N18] Within matched traces (1->4) added: end(e1)
+- [N19] Within matched traces (2->0) added: action(n10,"Is PO rejected")
+- [N20] Within matched traces (2->0) added: branch(b3,XOR)
+- [N21] Within matched traces (2->0) added: converge(n20)
+- [N22] Within matched traces (2->0) added: converge(n21)
+- [N23] Within matched traces (2->0) added: converge(n26)
+- [N24] Within matched traces (2->0) added: converge(n30)
+- [N25] Within matched traces (2->0) added: converge(n34)
+- [N26] Within matched traces (2->0) added: converge(n35)
+- [N27] Within matched traces (2->0) added: converge(n41)
+- [N28] Within matched traces (2->0) added: action(n39,"Receive Packing Slip")
+- [N29] Within matched traces (2->0) added: action(n36,"Receive Inventory")
+- [N30] Within matched traces (2->0) added: action(n38,"Has Inventory been received")
+- [N31] Within matched traces (3->0) added: action(n10,"Is PO rejected")
+- [N32] Within matched traces (3->0) added: branch(b3,XOR)
+- [N33] Within matched traces (3->0) added: converge(n20)
+- [N34] Within matched traces (3->0) added: converge(n21)
+- [N35] Within matched traces (3->0) added: converge(n26)
+- [N36] Within matched traces (3->0) added: converge(n30)
+- [N37] Within matched traces (3->0) added: converge(n34)
+- [N38] Within matched traces (3->0) added: converge(n35)
+- [N39] Within matched traces (3->0) added: converge(n41)
+
+Permutation
+- [N40] Within matched traces (3->0) reordered: expected [i14:If the POs are mailed to the supplier, receive the inventory.] but observed [action(n36,"Receive Inventory")] elsewhere; in its place the model has [action(n24,"Receive Packing Slip")]
+- [N41] Within matched traces (3->0) reordered: expected [i16:If the inventory is received, proceed to receive the Packing Slip.] but observed [action(n38,"Has Inventory been received") -> action(n39,"Receive Packing Slip")] elsewhere; in its place the model has [action(n24,"Receive Packing Slip")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n23` has in=1 and out=2. | Node `n24` has in=1 and out=2. | Node `n27` has in=1 and out=2. | Node `n31` has in=1 and out=2. | Node `n32` has in=1 and out=2. | Node `n36` has in=1 and out=2. | Node `n8` has in=3 and out=1. | Node `n9` has in=1 and out=0. | DSL: action(n23,"Are funds reserved for the released POs"); action(n24,"Receive Packing Slip"); action(n27,"Has Packing Slip been received"); action(n31,"Has Invoice been received"); action(n32,"Proceed to Three way match"); action(n36,"Receive Inventory"); action(n8,"create Purchase Orders POs"); action(n9,"process ends")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n9 | DSL: action(n9,"process ends")

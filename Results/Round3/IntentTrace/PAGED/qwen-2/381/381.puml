@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:choose destination and calculate distance;
+:check if need to book train or flight;
+:v1: check if need to book train or flight ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:book a train;
+:check if code is available within 24 hours (train);
+else ([v1 = true])
+:book a flight;
+:check if code is available (flight);
+endif
+:Otherwise, if 24 hours have passed, you should call a travel agency;
+:v4: code available after calling travel agency ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:If a code is available, the process will end along with the hotel reservation.;
+stop
+else ([v4 = false])
+:On the other hand, if a code is not available, you should cancel your journey.;
+:In that case, the process will end as well.;
+stop
+endif
+@enduml

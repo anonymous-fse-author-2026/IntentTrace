@@ -1,0 +1,62 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start SSP process by receiving the invoice;
+:sort invoice per client;
+:sort invoice per vendor;
+:attach invoice entry form to invoice;
+:enter required information onto form;
+:check completeness of the invoice;
+if () then ( )
+:invoice complete;
+split
+:enter information for SLA;
+:enter date for completion;
+:check priority;
+if () then ( )
+:priority is high;
+:place red stamp on entry invoice;
+else ( )
+:priority is low;
+endif
+:check invoice compliance;
+if () then ( )
+:invoice compliance complete;
+else ( )
+:invoice compliance not complete - continue checking or act;
+if () then ( )
+:send postal mail requesting complete information and end process;
+stop
+else ( )
+:check if invoice needs to be sent to experienced staff;
+if () then ( )
+:invoice needs sending to experienced staff;
+:non-compliance invoice processed;
+split
+:unknown or none of above conditions apply;
+if () then ( )
+:send postal mail requesting complete information and end process;
+stop
+else ( )
+:call client and request information;
+:batch invoice and allocate to DEO;
+endif
+split again
+end split
+:end process;
+stop
+else ( )
+:normal case invoice;
+:call client;
+endif
+endif
+endif
+split again
+end split
+else ( )
+:invoice incomplete - end process;
+stop
+endif
+@enduml

@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:rental items returned to store;
+:v1: return_method ({customer, crew}); <<objectSignal>>
+if () then ([v1 = 'customer'])
+:customer returns items to store;
+else ([v1 = 'crew'])
+:delivery crew picks up items at event site;
+endif
+:items counted and compared to original contract;
+:v2: order_status ({complete, incomplete, damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'complete'])
+:order is complete;
+case ([v2 = 'incomplete'])
+:order is incomplete and items are missing;
+case ([v2 = 'damaged'])
+:email customer to inform of damage and additional charges;
+endswitch
+:v3: handling_1 ({packed, stored}); <<objectSignal>>
+if () then ([v3 = 'packed'])
+:items packed for existing order;
+else ([v3 = 'stored'])
+:items stored for future orders;
+endif
+:email customer with replacement charges;
+:temporarily take damaged items out of inventory;
+:v4: missing_returned ({yes, no}); <<objectSignal>>
+if () then ([v4 = 'yes'])
+:customer returns missing items;
+else ([v4 = 'no'])
+:customer does not return missing items;
+endif
+:v5: path_choice ({end_process, repaired, discarded}); <<objectSignal>>
+switch ()
+case ([v5 = 'end_process'])
+stop
+case ([v5 = 'repaired'])
+:items are repaired and added into inventory;
+:items packed for existing order;
+:items stored for future orders;
+:v8: final_step ({end_main, email_charges}); <<objectSignal>>
+if () then ([v8 = 'end_main'])
+:process ends;
+else ([v8 = 'email_charges'])
+:email customer with replacement charges;
+endif
+stop
+case ([v5 = 'discarded'])
+:items can't be repaired and are discarded;
+endswitch
+@enduml

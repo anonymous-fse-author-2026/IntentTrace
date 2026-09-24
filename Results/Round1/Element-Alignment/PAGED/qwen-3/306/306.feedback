@@ -1,0 +1,21 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, trigger the resupply cycle and then check the inventory level. -> i2:If the inventory level is at or below the minimum, create a purchase order. -> i4:After creating the purchase order, review it. -> i5:If the purchase status is rejected, rework the purchase order. -> i7:Rework the purchase order and then review it. -> i4:After creating the purchase order, review it.
+
+Addition
+- [N2] Within matched traces (2->0) added: init(i1)
+- [N3] Within matched traces (2->0) added: branch(b1,XOR)
+- [N4] Within matched traces (2->0) added: converge(c1)
+- [N5] Within matched traces (2->0) added: branch(b2,XOR)
+- [N6] Within matched traces (3->1) added: init(i1)
+- [N7] Within matched traces (3->1) added: branch(b1,XOR)
+- [N8] Within matched traces (3->1) added: converge(c1)
+- [N9] Within matched traces (3->1) added: branch(b2,XOR)
+- [N10] Within matched traces (0->2) added: init(i1)
+- [N11] Within matched traces (0->2) added: action(n3,"inventory at or below minimum")
+- [N12] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n4,"\"v1 = 'Yes'\""); source=is at or below the minimum; reason=Replaces the explicit threshold condition with an opaque variable assignment 'v1 = Yes', losing the original business logic and value.
+- [N14] Node-level mutation: element=guard(b1,n5,"\"v1 = 'No'\""); source=is above the minimum; reason=Replaces the explicit threshold condition with an opaque variable assignment 'v1 = No', altering the stated comparison logic.
+- [N15] Node-level mutation: element=guard(b2,n8,"\"v2 = 'No'\""); source=is rejected; reason=Replaces the explicit status condition with an abstract variable assignment 'v2 = No', dropping the semantic target.
+- [N16] Node-level mutation: element=guard(b2,n9,"\"v2 = 'Yes'\""); source=is approved; reason=Replaces the explicit status condition with an abstract variable assignment 'v2 = Yes', dropping the semantic target.

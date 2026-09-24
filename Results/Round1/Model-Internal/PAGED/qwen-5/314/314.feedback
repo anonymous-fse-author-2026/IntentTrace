@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i2:by identifying the vacancy. (reason: No element in the model performs or references the identification of the vacancy, which is explicitly stated as the initial procedural step.)
+- [N2] Within matched traces (0->2) omitted: i2:by identifying the vacancy.
+- [N3] Within matched traces (0->2) omitted: i6:then advertise the vacancy again.
+
+Addition
+- [N4] Node-level addition: action(n7,"Final check: Any candidates after second advertisement?") (reason: These elements invent a third verification step, additional branching logic, guard conditions, and a sequential label that have no basis in the source text.)
+- [N5] Node-level addition: guard(b3,n4,"v3 = 'No'") (reason: These elements invent a third verification step, additional branching logic, guard conditions, and a sequential label that have no basis in the source text.)
+- [N6] Node-level addition: guard(b3,e1,"v3 = 'Yes'") (reason: These elements invent a third verification step, additional branching logic, guard conditions, and a sequential label that have no basis in the source text.)
+- [N7] Node-level addition: label(n3,n8,"7") (reason: These elements invent a third verification step, additional branching logic, guard conditions, and a sequential label that have no basis in the source text.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"Start") -> action(n2,"Any candidates available?") -> branch(b1,XOR) -> action(n3,"Select Applicant") -> action(n8,"End") -> end(e1)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Any candidates available?") -> branch(b1,XOR) -> action(n4,"Advertise Vacancy") -> action(n5,"After advertising  any candidates?") -> branch(b2,XOR) -> action(n6,"Advertise Again") -> action(n7,"Final check: Any candidates after second advertisement?") -> branch(b3,XOR) -> end(e1)
+
+Mutation
+- [N10] Node-level mutation: element=action(n2,"Any candidates available?"); source=i3:If there is no suitable candidate available; reason=Changes 'suitable candidate' to generic 'candidates', dropping the critical qualification qualifier specified in the source.
+- [N11] Node-level mutation: element=guard(b2,e1,"v2 = 'Yes'"); source=i5:If there is still no suitable candidate available -> i7:proceed with selecting the appropriate applicant.; reason=Routes the positive outcome of the second check directly to the process end, completely bypassing the mandatory applicant selection step described in the source.
+- [N12] Node-level mutation: element=action(n8,"End"); source=i8:Once the candidate is appointed, the process comes to an end.; reason=Reduces the closing condition to a bare 'End', omitting the explicit prerequisite 'Once the candidate is appointed' and altering the termination trigger.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"Advertise Vacancy")

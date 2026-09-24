@@ -1,0 +1,310 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "identify parts"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "does the team need to elicit information from the customer?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "check availability of the parts"
+    },
+    {
+      "id": "c3",
+      "type": "converge"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "do the parts need to be ordered and received from Disuki?"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "record customer details"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "order part from Disuki"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "receive part from Disuki"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "contract the customer"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "collect all necessary parts"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "proceed with payment"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "end of process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "does the team need to elicit information from the customer?",
+      "R_X": [
+        "Need to elicit information",
+        "Already have information or supplied"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "do the parts need to be ordered and received from Disuki?",
+      "R_X": [
+        "Order and receive the part",
+        "Proceed"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "b1",
+        "n4",
+        "c3",
+        "n5",
+        "n8",
+        "b2",
+        "n6",
+        "n7",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "e1",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "c3",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Need to elicit information'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "c3",
+      "condition": "v1 = 'Already have information or supplied'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'Order and receive the part'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Proceed'"
+    },
+    {
+      "type": "label",
+      "A": "i1",
+      "B": "n2",
+      "str": "Identify the parts"
+    },
+    {
+      "type": "label",
+      "A": "n2",
+      "B": "n3",
+      "str": "Check if information needs to be elicited"
+    },
+    {
+      "type": "label",
+      "A": "n10",
+      "B": "n11",
+      "str": "Proceed to payment step"
+    },
+    {
+      "type": "label",
+      "A": "n11",
+      "B": "n12",
+      "str": "Payment completed"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the Part Provision Team, the first step is to identify the parts."
+    },
+    {
+      "id": "i2",
+      "content": "If the team needs to elicit information from the customer,"
+    },
+    {
+      "id": "i3",
+      "content": "they should then check the availability of the parts."
+    },
+    {
+      "id": "i4",
+      "content": "On the other hand, if they already have the availability information, they can proceed with the process."
+    },
+    {
+      "id": "i5",
+      "content": "If the parts are supplied to the customer, the team can also continue with the process."
+    },
+    {
+      "id": "i6",
+      "content": "However, if they need to record the customer's details,"
+    },
+    {
+      "id": "i7",
+      "content": "they should order and receive the part from Disuki."
+    },
+    {
+      "id": "i8",
+      "content": "Once the part is received, the team can then contract the customer."
+    },
+    {
+      "id": "i9",
+      "content": "After all the necessary parts are collected, the team can proceed with the payment."
+    },
+    {
+      "id": "i10",
+      "content": "Once the payment is made, the process comes to an end."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+- `branch(b1, XOR)`: Incorrectly models an exclusive choice instead of concurrent execution. The source explicitly states "At the same time, two steps need to be completed", requiring an AND gateway.
+- `defines(v1, "order rejected?", {"Accepted"})`: Omits "Rejected" from the value space. The source explicitly identifies both rejection and acceptance as valid conditions that allow the process to continue.
+- `guard(b1, n4, v1 = 'Accepted')` and `guard(b1, n5, v1 = 'Accepted')`: Restrict flow progression to only accepted orders. The source states "If the order is to be rejected, the process should continue... [and] if accepted, the process should also continue", meaning both outcomes must trigger the subsequent parallel steps.
+- `action(n8, "end")` and `action(n11, "end")`: Hallucinates explicit processing steps named "end". The source only describes process termination implicitly ("the process ends"), not as distinct executable actions.
+- `precedence(n3, b1)` with `branch(b1, XOR)`: Imposes a mandatory routing decision immediately after reviewing the order, contradicting the source which indicates that both rejection and acceptance follow identical subsequent progression without divergent paths.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Accepted']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Accepted'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'Accepted'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Accepted'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Accepted'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

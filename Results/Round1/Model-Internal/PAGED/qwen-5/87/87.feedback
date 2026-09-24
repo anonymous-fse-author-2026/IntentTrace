@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i7:mark the relevant box on the invoice entry form (reason: The source explicitly requires marking a box on an entry form, but no model element implements this step. The required administrative action is completely missing from the diagram.)
+- [N2] Within matched traces (0->1) omitted: i7:mark the relevant box on the invoice entry form
+- [N3] Within matched traces (1->2) omitted: i6:Once the invoices are returned to the client, receive the completed ones.
+- [N4] Within matched traces (1->2) omitted: i7:mark the relevant box on the invoice entry form
+
+Addition
+- [N5] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: Introduces a 'No' guard path for the initial start check that targets a termination step. The source text provides no instruction or outcome for what happens if the process has not started, making this guard and its implied branch unsupported.)
+- [N6] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: Invents waiting steps ('Wait for completion...') and a duplicate receiving step not present in the source. Only one receipt instruction exists in the text (covered by n7), so these extra nodes lack source justification.)
+- [N7] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: Invents waiting steps ('Wait for completion...') and a duplicate receiving step not present in the source. Only one receipt instruction exists in the text (covered by n7), so these extra nodes lack source justification.)
+- [N8] Node-level addition: action(n14,"Receive completed invoices") (reason: Invents waiting steps ('Wait for completion...') and a duplicate receiving step not present in the source. Only one receipt instruction exists in the text (covered by n7), so these extra nodes lack source justification.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N10] Within matched traces (0->1) added: init(i1)
+- [N11] Within matched traces (0->1) added: action(n6,"Wait for completion of invoices by client")
+- [N12] Within matched traces (0->1) added: converge(n8)
+- [N13] Within matched traces (0->1) added: converge(c1)
+- [N14] Within matched traces (1->2) added: init(i1)
+
+Mutation
+- [N15] Node-level mutation: element=guard(b2,n11,"v2 = 'Completed'") -> action(n11,"End process"); source=i4:However, if they are marked as "Completed", the process should be continued.; reason=The guard correctly identifies the 'Completed' condition, but the linked action ('End process') incorrectly terminates the workflow instead of continuing it as the source explicitly dictates. This distorts the core decision outcome.
+
+Permutation
+- [N16] Within matched traces (0->1) reordered: expected [i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Return invoices to client through postal mail")]

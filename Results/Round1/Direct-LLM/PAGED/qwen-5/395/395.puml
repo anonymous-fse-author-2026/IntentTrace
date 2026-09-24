@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_recruiter| Recruiter
+|a_selection_panel| Selection Panel
+|a_hr_specialist| HR Specialist
+|a_third_party| Third Party
+|a_recruiter|
+start
+:start;
+:check referee reports status;
+:are referee reports completed?;
+:v1: are referee reports completed? ({Referee Reports not completed, Referee Reports completed}); <<objectSignal>>
+if () then ([v1 = 'Referee Reports not completed'])
+:flag and send reminder;
+-> Referee Reports still not completed;
+:check again if referee reports are completed;
+-> Referee Reports still not completed after second check;
+:are referee reports completed after reminder?;
+:v2: are referee reports completed after reminder? ({Referee Reports still not completed after second check, Referee Reports completed after second check}); <<objectSignal>>
+if () then ([v2 = 'Referee Reports still not completed after second check'])
+:flag and send another reminder;
+else ([v2 = 'Referee Reports completed after second check'])
+->;
+endif
+else ([v1 = 'Referee Reports completed'])
+->;
+endif
+:proceed with process;
+|a_selection_panel|
+:organize interviews for selection panel with top candidates;
+:receive feedback from interview candidates;
+|a_hr_specialist|
+:is psychometric test required?;
+|a_recruiter|
+:v3: is psychometric test required? ({Psychometric Test not required, Psychometric Test required}); <<objectSignal>>
+if () then ([v3 = 'Psychometric Test not required'])
+:coordinate second round of selection;
+-> Finalize process;
+else ([v3 = 'Psychometric Test required'])
+:v4: is HR specialist required? ({HR Specialist required, HR Specialist not required}); <<objectSignal>>
+if () then ([v4 = 'HR Specialist required'])
+|a_third_party|
+:schedule psychometric test with third party;
+-> Finalize process;
+|a_recruiter|
+else ([v4 = 'HR Specialist not required'])
+|a_hr_specialist|
+:complete psychometric test;
+-> Finalize process;
+|a_recruiter|
+endif
+endif
+:request final candidate ranking and continue process;
+:end;
+stop
+@enduml

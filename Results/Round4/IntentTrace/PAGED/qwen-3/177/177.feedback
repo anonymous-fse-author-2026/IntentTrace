@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i13:Invoice the customer and the process ends with the customer being invoiced.
+
+Addition
+- [N2] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n11,"accept the merchandise return") -> action(n12,"return the merchandise") -> action(n13,"end with merchandise being returned") -> end(e2)
+- [N3] Added trace (model 5): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n14,"reject the merchandise return") -> action(n15,"end with merchandise return request being rejected") -> end(e3)
+- [N4] Added trace (model 6): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n8,"invoice the customer") -> action(n9,"end with customer being invoiced") -> end(e1)
+- [N5] Added trace (model 7): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"request for merchandise return is lodged") -> branch(b1,XOR) -> action(n17,"approve the loss claim") -> action(n18,"end with loss claim approved") -> end(e4)
+- [N6] Within matched traces (2->1) added: branch(b1,XOR)
+
+Permutation
+- [N7] Within matched traces (0->2) reordered: expected [i7:invoice the customer.] but observed [action(n8,"invoice the customer")] elsewhere; in its place the model has [action(n9,"end with customer being invoiced")]
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v_loss_claim=False].

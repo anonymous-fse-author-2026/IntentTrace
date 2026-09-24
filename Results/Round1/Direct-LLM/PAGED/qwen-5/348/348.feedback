@@ -1,0 +1,50 @@
+Omission
+- [N1] Omitted trace (input 0): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i2:If the invoice is incomplete, it is returned. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i9:If there is no response, a period of 10 days is given. -> i11:After 10 days, a reminder is sent and the process ends.
+- [N2] Omitted trace (input 1): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i2:If the invoice is incomplete, it is returned. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i10:The invoice is paid and the client is notified of the payment. -> i12:If the client is unsatisfied, payment discrepancy is resolved.
+- [N3] Omitted trace (input 2): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i2:If the invoice is incomplete, it is returned. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i10:The invoice is paid and the client is notified of the payment. -> i13:However, if the client is satisfied, the process continues.
+- [N4] Omitted trace (input 3): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i3:However, if the invoice is complete, the process continues. -> i4:If the invoice is non-compliant, further checks are conducted. -> i5:If the issue can be resolved with a phone call, non-compliance is resolved. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i9:If there is no response, a period of 10 days is given. -> i11:After 10 days, a reminder is sent and the process ends.
+- [N5] Omitted trace (input 5): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i3:However, if the invoice is complete, the process continues. -> i4:If the invoice is non-compliant, further checks are conducted. -> i5:If the issue can be resolved with a phone call, non-compliance is resolved. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i10:The invoice is paid and the client is notified of the payment. -> i13:However, if the client is satisfied, the process continues.
+- [N6] Omitted trace (input 7): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i3:However, if the invoice is complete, the process continues. -> i4:If the invoice is non-compliant, further checks are conducted. -> i6:But if the issue requires mail back, the invoice is returned. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i10:The invoice is paid and the client is notified of the payment. -> i12:If the client is unsatisfied, payment discrepancy is resolved.
+- [N7] Omitted trace (input 8): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i3:However, if the invoice is complete, the process continues. -> i4:If the invoice is non-compliant, further checks are conducted. -> i6:But if the issue requires mail back, the invoice is returned. -> i7:After that, the invoice is paid and if it is returned, non-compliance is resolved. -> i8:Simultaneously, the following steps are completed: Bill Client. -> i10:The invoice is paid and the client is notified of the payment. -> i13:However, if the client is satisfied, the process continues.
+- [N8] Within matched traces (4->1) omitted: i8:Simultaneously, the following steps are completed: Bill Client.
+- [N9] Within matched traces (6->3) omitted: i7:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N10] Within matched traces (6->3) omitted: i8:Simultaneously, the following steps are completed: Bill Client.
+- [N11] Within matched traces (6->3) omitted: i9:If there is no response, a period of 10 days is given.
+- [N12] Within matched traces (6->3) omitted: i11:After 10 days, a reminder is sent and the process ends.
+
+Addition
+- [N13] Node-level addition: action(n11,"Invoice Process Complete") (reason: Content 'Invoice Process Complete' has no corresponding step or phrasing in the source text.)
+- [N14] Node-level addition: action(n21,"Payment Process Complete") (reason: Content 'Payment Process Complete' is invented and unsupported by any source unit.)
+- [N15] Node-level addition: action(n22,"Finalize Payment Process") (reason: Content 'Finalize Payment Process' adds a procedural step not described in the source.)
+- [N16] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Is Invoice Complete?") -> branch(b1,XOR) -> action(n5,"Return Invoice: Incomplete") -> end(e1)
+- [N17] Within matched traces (4->1) added: init(i1)
+- [N18] Within matched traces (4->1) added: action(n4,"Is Invoice Complete?")
+- [N19] Within matched traces (4->1) added: action(n11,"Invoice Process Complete")
+- [N20] Within matched traces (4->1) added: action(n13,"Await Response")
+- [N21] Within matched traces (4->1) added: action(n14,"Wait for 10 Days")
+- [N22] Within matched traces (4->1) added: action(n15,"Send Reminder")
+- [N23] Within matched traces (4->1) added: action(n17,"Process Ends")
+- [N24] Within matched traces (4->1) added: action(n21,"Payment Process Complete")
+- [N25] Within matched traces (4->1) added: end(e6)
+- [N26] Within matched traces (4->2) added: init(i1)
+- [N27] Within matched traces (4->2) added: action(n4,"Is Invoice Complete?")
+- [N28] Within matched traces (4->2) added: action(n11,"Invoice Process Complete")
+- [N29] Within matched traces (4->2) added: action(n13,"Await Response")
+- [N30] Within matched traces (4->2) added: action(n14,"Wait for 10 Days")
+- [N31] Within matched traces (4->2) added: action(n15,"Send Reminder")
+- [N32] Within matched traces (4->2) added: action(n17,"Process Ends")
+- [N33] Within matched traces (4->2) added: action(n20,"Continue Process")
+- [N34] Within matched traces (4->2) added: action(n22,"Finalize Payment Process")
+- [N35] Within matched traces (6->3) added: init(i1)
+- [N36] Within matched traces (6->3) added: action(n4,"Is Invoice Complete?")
+
+Mutation
+- [N37] Node-level mutation: element=guard(b2,n7,"v2 = 'Non-Compliant'"); source=i5:If the issue can be resolved with a phone call, non-compliance is resolved.; reason=The guard asserts `v2 = 'Non-Compliant'`, but the source explicitly conditions this path on whether the issue 'can be resolved with a phone call'. The operator/value pair misrepresents the routing logic.
+- [N38] Node-level mutation: element=guard(b2,n8,"v2 = 'Compliant'"); source=i6:But if the issue requires mail back, the invoice is returned.; reason=The guard asserts `v2 = 'Compliant'`, but the source conditions this alternative path on whether the issue 'requires mail back'. This reverses/mislabels the actual split criterion.
+- [N39] Node-level mutation: element=label(n13,n14,"Yes"); source=i9:If there is no response, a period of 10 days is given.; reason=The label reads 'Yes', implying a positive/affirmative response triggers the 10-day wait. The source explicitly states the wait occurs 'If there is no response', creating a logical contradiction.
+
+Permutation
+- [N40] Within matched traces (4->2) reordered: expected [i8:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n12,"Bill Client")] elsewhere; in its place the model has [action(n16,"Client Notified of Payment")]
+
+Structural Check
+- [S1] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e3, e5, e7 | DSL: end(e3); end(e5); end(e7)

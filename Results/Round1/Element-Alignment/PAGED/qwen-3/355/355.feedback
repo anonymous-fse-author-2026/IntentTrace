@@ -1,0 +1,223 @@
+Omission
+- [N1] Omitted trace (input 14): i1:To begin the process, start by checking the customer's order. -> i6:If the customer is a wholesaler, -> i7:enter their data and take the order. -> i8:check the availability of the items. -> i10:If they are in stock, continue with the process. -> i11:send the order confirmation. -> i13:send the invoice and deliver the product. -> i14:Check the payment status. -> i15:If payment is received, close the order.
+- [N2] Omitted trace (input 15): i1:To begin the process, start by checking the customer's order. -> i6:If the customer is a wholesaler, -> i7:enter their data and take the order. -> i8:check the availability of the items. -> i10:If they are in stock, continue with the process. -> i11:send the order confirmation. -> i13:send the invoice and deliver the product. -> i14:Check the payment status. -> i16:If no payment is received, check the number of reminders. -> i17:If there are more than three reminders, engage a lawyer.
+- [N3] Omitted trace (input 16): i1:To begin the process, start by checking the customer's order. -> i6:If the customer is a wholesaler, -> i7:enter their data and take the order. -> i8:check the availability of the items. -> i10:If they are in stock, continue with the process. -> i11:send the order confirmation. -> i13:send the invoice and deliver the product. -> i14:Check the payment status. -> i16:If no payment is received, check the number of reminders. -> i18:If there are three or fewer reminders, send a reminder. -> i14:Check the payment status.
+- [N4] Within matched traces (1->4) omitted: i13:send the invoice and deliver the product.
+- [N5] Within matched traces (1->4) omitted: i14:Check the payment status.
+- [N6] Within matched traces (2->5) omitted: i13:send the invoice and deliver the product.
+- [N7] Within matched traces (2->5) omitted: i14:Check the payment status.
+- [N8] Within matched traces (3->6) omitted: i13:send the invoice and deliver the product.
+- [N9] Within matched traces (3->6) omitted: i14:Check the payment status.
+- [N10] Within matched traces (4->7) omitted: i13:send the invoice and deliver the product.
+- [N11] Within matched traces (4->7) omitted: i14:Check the payment status.
+- [N12] Within matched traces (5->8) omitted: i13:send the invoice and deliver the product.
+- [N13] Within matched traces (5->8) omitted: i14:Check the payment status.
+- [N14] Within matched traces (6->9) omitted: i13:send the invoice and deliver the product.
+- [N15] Within matched traces (6->9) omitted: i14:Check the payment status.
+- [N16] Within matched traces (8->4) omitted: i13:send the invoice and deliver the product.
+- [N17] Within matched traces (8->4) omitted: i14:Check the payment status.
+- [N18] Within matched traces (9->5) omitted: i13:send the invoice and deliver the product.
+- [N19] Within matched traces (9->5) omitted: i14:Check the payment status.
+- [N20] Within matched traces (10->6) omitted: i13:send the invoice and deliver the product.
+- [N21] Within matched traces (10->6) omitted: i14:Check the payment status.
+- [N22] Within matched traces (11->7) omitted: i13:send the invoice and deliver the product.
+- [N23] Within matched traces (11->7) omitted: i14:Check the payment status.
+- [N24] Within matched traces (12->8) omitted: i13:send the invoice and deliver the product.
+- [N25] Within matched traces (12->8) omitted: i14:Check the payment status.
+- [N26] Within matched traces (13->9) omitted: i13:send the invoice and deliver the product.
+- [N27] Within matched traces (13->9) omitted: i14:Check the payment status.
+- [N28] Within matched traces (17->7) omitted: i6:If the customer is a wholesaler,
+- [N29] Within matched traces (17->7) omitted: i7:enter their data and take the order.
+- [N30] Within matched traces (17->7) omitted: i13:send the invoice and deliver the product.
+- [N31] Within matched traces (17->7) omitted: i14:Check the payment status.
+- [N32] Within matched traces (18->8) omitted: i6:If the customer is a wholesaler,
+- [N33] Within matched traces (18->8) omitted: i7:enter their data and take the order.
+- [N34] Within matched traces (18->8) omitted: i13:send the invoice and deliver the product.
+- [N35] Within matched traces (18->8) omitted: i14:Check the payment status.
+- [N36] Within matched traces (19->9) omitted: i6:If the customer is a wholesaler,
+- [N37] Within matched traces (19->9) omitted: i7:enter their data and take the order.
+- [N38] Within matched traces (19->9) omitted: i13:send the invoice and deliver the product.
+- [N39] Within matched traces (19->9) omitted: i14:Check the payment status.
+
+Addition
+- [N40] Node-level addition: action(n23,"end process") (reason: These 'end process' actions are placed after 'close order', 'engage lawyer', and 'send reminder' respectively. The source text never instructs the process to terminate at these points; it simply stops describing subsequent steps. Modeling them as explicit end steps invents process boundaries not present in the source.)
+- [N41] Node-level addition: action(n25,"end process") (reason: These 'end process' actions are placed after 'close order', 'engage lawyer', and 'send reminder' respectively. The source text never instructs the process to terminate at these points; it simply stops describing subsequent steps. Modeling them as explicit end steps invents process boundaries not present in the source.)
+- [N42] Node-level addition: action(n27,"end process") (reason: These 'end process' actions are placed after 'close order', 'engage lawyer', and 'send reminder' respectively. The source text never instructs the process to terminate at these points; it simply stops describing subsequent steps. Modeling them as explicit end steps invents process boundaries not present in the source.)
+- [N43] Node-level addition: guard(b3,n10,"v3 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N44] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N45] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N46] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N47] Added trace (model 10): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N48] Added trace (model 11): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N49] Added trace (model 12): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n4,"check payment morale") -> action(n6,"is payment morale good") -> branch(b2,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N50] Added trace (model 14): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N51] Added trace (model 15): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N52] Added trace (model 16): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c2) -> action(n_wh,"check if wholesaler") -> action(n11,"enter data and take order") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N53] Added trace (model 17): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n14,"continue with process") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N54] Added trace (model 18): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n14,"continue with process") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N55] Added trace (model 19): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n14,"continue with process") -> converge(c4) -> action(n16,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N56] Added trace (model 20): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N57] Added trace (model 21): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N58] Added trace (model 22): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n18,"send order confirmation") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N59] Added trace (model 23): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n21,"close order") -> action(n23,"end process") -> end(e2)
+- [N60] Added trace (model 24): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n24,"engage lawyer") -> action(n25,"end process") -> end(e3)
+- [N61] Added trace (model 25): init(i1) -> action(n1,"start process") -> action(n2,"check customer order") -> action(n3,"is customer registered") -> branch(b1,XOR) -> action(n5,"check customer status") -> action(n7,"is end customer") -> branch(b3,XOR) -> action(n10,"continue with process") -> branch(b7,AND) -> converge(c3) -> action(n12,"check item availability") -> action(n13,"are items in stock") -> branch(b4,XOR) -> action(n15,"start production") -> action(n17,"produce article") -> branch(b8,AND) -> action(n19,"send invoice and deliver product") -> converge(c5) -> action(n_pay,"check payment status") -> action(n20,"is payment received") -> branch(b5,XOR) -> action(n22,"are reminders more than 3") -> branch(b6,XOR) -> action(n26,"send reminder") -> action(n27,"end process") -> end(e4)
+- [N62] Within matched traces (0->0) added: init(i1)
+- [N63] Within matched traces (0->0) added: action(n6,"is payment morale good")
+- [N64] Within matched traces (1->4) added: init(i1)
+- [N65] Within matched traces (1->4) added: branch(b7,AND)
+- [N66] Within matched traces (1->4) added: converge(c3)
+- [N67] Within matched traces (1->4) added: action(n13,"are items in stock")
+- [N68] Within matched traces (1->4) added: converge(c5)
+- [N69] Within matched traces (1->4) added: action(n_pay,"check payment status")
+- [N70] Within matched traces (1->4) added: action(n23,"end process")
+- [N71] Within matched traces (1->4) added: end(e2)
+- [N72] Within matched traces (2->5) added: init(i1)
+- [N73] Within matched traces (2->5) added: branch(b7,AND)
+- [N74] Within matched traces (2->5) added: converge(c3)
+- [N75] Within matched traces (2->5) added: action(n13,"are items in stock")
+- [N76] Within matched traces (2->5) added: converge(c5)
+- [N77] Within matched traces (2->5) added: action(n_pay,"check payment status")
+- [N78] Within matched traces (2->5) added: action(n20,"is payment received")
+- [N79] Within matched traces (2->5) added: action(n25,"end process")
+- [N80] Within matched traces (2->5) added: end(e3)
+- [N81] Within matched traces (3->6) added: init(i1)
+- [N82] Within matched traces (3->6) added: branch(b7,AND)
+- [N83] Within matched traces (3->6) added: converge(c3)
+- [N84] Within matched traces (3->6) added: action(n13,"are items in stock")
+- [N85] Within matched traces (3->6) added: converge(c5)
+- [N86] Within matched traces (3->6) added: action(n_pay,"check payment status")
+- [N87] Within matched traces (3->6) added: action(n20,"is payment received")
+- [N88] Within matched traces (3->6) added: action(n27,"end process")
+- [N89] Within matched traces (3->6) added: end(e4)
+- [N90] Within matched traces (4->7) added: init(i1)
+- [N91] Within matched traces (4->7) added: branch(b7,AND)
+- [N92] Within matched traces (4->7) added: converge(c3)
+- [N93] Within matched traces (4->7) added: converge(c5)
+- [N94] Within matched traces (4->7) added: action(n_pay,"check payment status")
+- [N95] Within matched traces (4->7) added: action(n23,"end process")
+- [N96] Within matched traces (4->7) added: end(e2)
+- [N97] Within matched traces (5->8) added: init(i1)
+- [N98] Within matched traces (5->8) added: branch(b7,AND)
+- [N99] Within matched traces (5->8) added: converge(c3)
+- [N100] Within matched traces (5->8) added: converge(c5)
+- [N101] Within matched traces (5->8) added: action(n_pay,"check payment status")
+- [N102] Within matched traces (5->8) added: action(n20,"is payment received")
+- [N103] Within matched traces (5->8) added: action(n25,"end process")
+- [N104] Within matched traces (5->8) added: end(e3)
+- [N105] Within matched traces (6->9) added: init(i1)
+- [N106] Within matched traces (6->9) added: branch(b7,AND)
+- [N107] Within matched traces (6->9) added: converge(c3)
+- [N108] Within matched traces (6->9) added: converge(c5)
+- [N109] Within matched traces (6->9) added: action(n_pay,"check payment status")
+- [N110] Within matched traces (6->9) added: action(n20,"is payment received")
+- [N111] Within matched traces (6->9) added: action(n27,"end process")
+- [N112] Within matched traces (6->9) added: end(e4)
+- [N113] Within matched traces (7->13) added: init(i1)
+- [N114] Within matched traces (7->13) added: action(n3,"is customer registered")
+- [N115] Within matched traces (8->4) added: init(i1)
+- [N116] Within matched traces (8->4) added: action(n3,"is customer registered")
+- [N117] Within matched traces (8->4) added: action(n4,"check payment morale")
+- [N118] Within matched traces (8->4) added: branch(b7,AND)
+- [N119] Within matched traces (8->4) added: converge(c3)
+- [N120] Within matched traces (8->4) added: action(n13,"are items in stock")
+- [N121] Within matched traces (8->4) added: converge(c5)
+- [N122] Within matched traces (8->4) added: action(n_pay,"check payment status")
+- [N123] Within matched traces (8->4) added: action(n23,"end process")
+- [N124] Within matched traces (8->4) added: end(e2)
+- [N125] Within matched traces (9->5) added: init(i1)
+- [N126] Within matched traces (9->5) added: action(n3,"is customer registered")
+- [N127] Within matched traces (9->5) added: action(n4,"check payment morale")
+- [N128] Within matched traces (9->5) added: branch(b7,AND)
+- [N129] Within matched traces (9->5) added: converge(c3)
+- [N130] Within matched traces (9->5) added: action(n13,"are items in stock")
+- [N131] Within matched traces (9->5) added: converge(c5)
+- [N132] Within matched traces (9->5) added: action(n_pay,"check payment status")
+- [N133] Within matched traces (9->5) added: action(n20,"is payment received")
+- [N134] Within matched traces (9->5) added: action(n25,"end process")
+- [N135] Within matched traces (9->5) added: end(e3)
+- [N136] Within matched traces (10->6) added: init(i1)
+- [N137] Within matched traces (10->6) added: action(n3,"is customer registered")
+- [N138] Within matched traces (10->6) added: action(n4,"check payment morale")
+- [N139] Within matched traces (10->6) added: branch(b7,AND)
+- [N140] Within matched traces (10->6) added: converge(c3)
+- [N141] Within matched traces (10->6) added: action(n13,"are items in stock")
+- [N142] Within matched traces (10->6) added: converge(c5)
+- [N143] Within matched traces (10->6) added: action(n_pay,"check payment status")
+- [N144] Within matched traces (10->6) added: action(n20,"is payment received")
+- [N145] Within matched traces (10->6) added: action(n27,"end process")
+- [N146] Within matched traces (10->6) added: end(e4)
+- [N147] Within matched traces (11->7) added: init(i1)
+- [N148] Within matched traces (11->7) added: action(n3,"is customer registered")
+- [N149] Within matched traces (11->7) added: action(n4,"check payment morale")
+- [N150] Within matched traces (11->7) added: branch(b7,AND)
+- [N151] Within matched traces (11->7) added: converge(c3)
+- [N152] Within matched traces (11->7) added: converge(c5)
+- [N153] Within matched traces (11->7) added: action(n_pay,"check payment status")
+- [N154] Within matched traces (11->7) added: action(n23,"end process")
+- [N155] Within matched traces (11->7) added: end(e2)
+- [N156] Within matched traces (12->8) added: init(i1)
+- [N157] Within matched traces (12->8) added: action(n3,"is customer registered")
+- [N158] Within matched traces (12->8) added: action(n4,"check payment morale")
+- [N159] Within matched traces (12->8) added: branch(b7,AND)
+- [N160] Within matched traces (12->8) added: converge(c3)
+- [N161] Within matched traces (12->8) added: converge(c5)
+- [N162] Within matched traces (12->8) added: action(n_pay,"check payment status")
+- [N163] Within matched traces (12->8) added: action(n20,"is payment received")
+- [N164] Within matched traces (12->8) added: action(n25,"end process")
+- [N165] Within matched traces (12->8) added: end(e3)
+- [N166] Within matched traces (13->9) added: init(i1)
+- [N167] Within matched traces (13->9) added: action(n3,"is customer registered")
+- [N168] Within matched traces (13->9) added: action(n4,"check payment morale")
+- [N169] Within matched traces (13->9) added: branch(b7,AND)
+- [N170] Within matched traces (13->9) added: converge(c3)
+- [N171] Within matched traces (13->9) added: converge(c5)
+- [N172] Within matched traces (13->9) added: action(n_pay,"check payment status")
+- [N173] Within matched traces (13->9) added: action(n20,"is payment received")
+- [N174] Within matched traces (13->9) added: action(n27,"end process")
+- [N175] Within matched traces (13->9) added: end(e4)
+- [N176] Within matched traces (17->7) added: init(i1)
+- [N177] Within matched traces (17->7) added: action(n3,"is customer registered")
+- [N178] Within matched traces (17->7) added: branch(b1,XOR)
+- [N179] Within matched traces (17->7) added: action(n4,"check payment morale")
+- [N180] Within matched traces (17->7) added: action(n6,"is payment morale good")
+- [N181] Within matched traces (17->7) added: branch(b2,XOR)
+- [N182] Within matched traces (17->7) added: action(n10,"continue with process")
+- [N183] Within matched traces (17->7) added: branch(b7,AND)
+- [N184] Within matched traces (17->7) added: converge(c3)
+- [N185] Within matched traces (17->7) added: converge(c5)
+- [N186] Within matched traces (17->7) added: action(n_pay,"check payment status")
+- [N187] Within matched traces (17->7) added: action(n23,"end process")
+- [N188] Within matched traces (17->7) added: end(e2)
+- [N189] Within matched traces (18->8) added: init(i1)
+- [N190] Within matched traces (18->8) added: action(n3,"is customer registered")
+- [N191] Within matched traces (18->8) added: branch(b1,XOR)
+- [N192] Within matched traces (18->8) added: action(n4,"check payment morale")
+- [N193] Within matched traces (18->8) added: action(n6,"is payment morale good")
+- [N194] Within matched traces (18->8) added: branch(b2,XOR)
+- [N195] Within matched traces (18->8) added: action(n10,"continue with process")
+- [N196] Within matched traces (18->8) added: branch(b7,AND)
+- [N197] Within matched traces (18->8) added: converge(c3)
+- [N198] Within matched traces (18->8) added: converge(c5)
+- [N199] Within matched traces (18->8) added: action(n_pay,"check payment status")
+- [N200] Within matched traces (18->8) added: action(n20,"is payment received")
+- [N201] Within matched traces (18->8) added: action(n25,"end process")
+- [N202] Within matched traces (18->8) added: end(e3)
+- [N203] Within matched traces (19->9) added: init(i1)
+- [N204] Within matched traces (19->9) added: action(n3,"is customer registered")
+- [N205] Within matched traces (19->9) added: branch(b1,XOR)
+- [N206] Within matched traces (19->9) added: action(n4,"check payment morale")
+- [N207] Within matched traces (19->9) added: action(n6,"is payment morale good")
+- [N208] Within matched traces (19->9) added: branch(b2,XOR)
+- [N209] Within matched traces (19->9) added: action(n10,"continue with process")
+- [N210] Within matched traces (19->9) added: branch(b7,AND)
+- [N211] Within matched traces (19->9) added: converge(c3)
+- [N212] Within matched traces (19->9) added: converge(c5)
+- [N213] Within matched traces (19->9) added: action(n_pay,"check payment status")
+- [N214] Within matched traces (19->9) added: action(n20,"is payment received")
+- [N215] Within matched traces (19->9) added: action(n27,"end process")
+- [N216] Within matched traces (19->9) added: end(e4)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=2 and out=1. | DSL: action(n10,"continue with process")
+- [S2] STC10 failed: Each converge node must have at least two incoming and exactly one outgoing edge. | Node `c2` has in=1 and out=1. | Node `c3` has in=1 and out=1. | DSL: converge(c2); converge(c3)

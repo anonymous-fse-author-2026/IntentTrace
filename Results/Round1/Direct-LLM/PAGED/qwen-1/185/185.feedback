@@ -1,0 +1,35 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i28:Finally, the client is called and information is requested.
+- [N2] Within matched traces (1->2) omitted: i29:The invoice is then batched and allocated to DEO,
+- [N3] Within matched traces (2->3) omitted: i28:Finally, the client is called and information is requested.
+- [N4] Within matched traces (2->3) omitted: i29:The invoice is then batched and allocated to DEO,
+- [N5] Within matched traces (4->6) omitted: i28:Finally, the client is called and information is requested.
+- [N6] Within matched traces (4->6) omitted: i29:The invoice is then batched and allocated to DEO,
+- [N7] Within matched traces (5->7) omitted: i28:Finally, the client is called and information is requested.
+- [N8] Within matched traces (5->7) omitted: i29:The invoice is then batched and allocated to DEO,
+
+Addition
+- [N9] Added trace (model 0): init(i1) -> action(n1,"start SSP process by receiving the invoice") -> action(n2,"sort invoice per client") -> action(n3,"sort invoice per vendor") -> action(n4,"attach invoice entry form to invoice") -> action(n5,"enter required information onto form") -> action(n6,"check completeness of the invoice") -> branch(b1,XOR) -> action(n7,"invoice complete") -> action(n9,"enter information for SLA") -> action(n10,"enter date for completion") -> action(n11,"check priority") -> branch(b2,XOR) -> action(n12,"priority is high") -> action(n14,"place red stamp on entry invoice") -> action(n15,"check invoice compliance") -> branch(b3,XOR) -> action(n16,"invoice compliance complete") -> action(n28,"end process") -> end(e4)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"start SSP process by receiving the invoice") -> action(n2,"sort invoice per client") -> action(n3,"sort invoice per vendor") -> action(n4,"attach invoice entry form to invoice") -> action(n5,"enter required information onto form") -> action(n6,"check completeness of the invoice") -> branch(b1,XOR) -> action(n7,"invoice complete") -> action(n9,"enter information for SLA") -> action(n10,"enter date for completion") -> action(n11,"check priority") -> branch(b2,XOR) -> action(n13,"priority is low") -> action(n15,"check invoice compliance") -> branch(b3,XOR) -> action(n16,"invoice compliance complete") -> action(n28,"end process") -> end(e4)
+- [N11] Within matched traces (1->2) added: action(n17,"invoice compliance not complete - continue checking or act")
+- [N12] Within matched traces (1->2) added: action(n28,"end process")
+- [N13] Within matched traces (1->2) added: end(e4)
+- [N14] Within matched traces (2->3) added: action(n17,"invoice compliance not complete - continue checking or act")
+- [N15] Within matched traces (2->3) added: branch(b4,XOR)
+- [N16] Within matched traces (2->3) added: action(n19,"check if invoice needs to be sent to experienced staff")
+- [N17] Within matched traces (2->3) added: action(n28,"end process")
+- [N18] Within matched traces (2->3) added: end(e4)
+- [N19] Within matched traces (3->1) added: action(n17,"invoice compliance not complete - continue checking or act")
+- [N20] Within matched traces (4->6) added: action(n17,"invoice compliance not complete - continue checking or act")
+- [N21] Within matched traces (4->6) added: action(n28,"end process")
+- [N22] Within matched traces (4->6) added: end(e4)
+- [N23] Within matched traces (5->7) added: action(n17,"invoice compliance not complete - continue checking or act")
+- [N24] Within matched traces (5->7) added: branch(b4,XOR)
+- [N25] Within matched traces (5->7) added: action(n19,"check if invoice needs to be sent to experienced staff")
+- [N26] Within matched traces (5->7) added: action(n28,"end process")
+- [N27] Within matched traces (5->7) added: end(e4)
+- [N28] Within matched traces (6->5) added: action(n17,"invoice compliance not complete - continue checking or act")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | Node `n24` has in=0 and out=1. | Node `n28` has in=4 and out=1. | DSL: action(n15,"check invoice compliance"); action(n24,"unknown or none of above conditions apply"); action(n28,"end process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b6, e3, n24, n25, n26, n27 | DSL: branch(b6,XOR); end(e3); action(n24,"unknown or none of above conditions apply"); action(n25,"send postal mail requesting complete information and end process"); action(n26,"call client and request information"); action(n27,"batch invoice and allocate to DEO")

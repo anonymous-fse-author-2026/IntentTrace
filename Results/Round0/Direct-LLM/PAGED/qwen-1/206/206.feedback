@@ -1,0 +1,8 @@
+- `converge(c1)`, `action(n6, "Process ends after interview")`, `end(e1)`: Forces both branches through a shared convergence and final action, contradicting the source which specifies two independent termination points ("then the process ends" after negative email; "the process comes to an end" after interview).
+- `precedence(b1, n3)`, `precedence(b1, n4)`: Omits `guard` statements required to implement the conditional logic ("If the decision is to send a negative email...", "if the decision is to invite...") using variable `v1`.
+- `action(n3, "send negative email and end process")`: Claims the process ends at this node, but `precedence(n3, c1)` continues the flow to `c1` and `n6`, violating the source text ("then the process ends").
+- `defines(v1, "decide whether to send a negative email or invite candidate", {})`: Specifies an empty range `{}`, which cannot support the binary choice implied by the decision step.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.

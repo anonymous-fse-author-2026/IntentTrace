@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial step; the description begins directly with "clicking on 'Start'", making this action node redundant.
+- `precedence(n7, c1)`, `precedence(n8, c1)`, `precedence(c1, n14)`: Incorrectly bypasses the review evaluation; the description requires that after translating or confirming receipts, the process must "evaluate the review decision" (`n9`), not jump directly to receipt evaluation (`n14`).
+- `precedence(b4, n12)` and `precedence(b4, n13)`: Misrepresents control-flow as an exclusive choice (XOR), whereas the description specifies a sequential progression: "translate the receipts and then confirm them."
+- `action(n10, "edit report")`: Lacks any outgoing precedence edge, creating a dead-end path that violates the implied continuation or re-evaluation loop in the source.
+- `action(n17, "end")`, `action(n18, "end")`, `end(e2)`: Hallucinates termination points for the rejection/edit path; the description explicitly states the process ends only "by processing the expense and then ending it."
+- Control flow after `action(n11, "check translation need again")`: Omits the documented step "Once again, evaluate the review decision," jumping directly to the translation/confirmation branch instead.
+- `guard(b4, n12, v4 = 'Yes')`, `guard(b4, n13, v4 = 'No')`: Misapplies variable `v4` ("check translation need again") to gate the split, while the description ties this transition to the prior review decision outcome ("If it is approved, translate...").

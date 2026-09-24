@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_web| Web Design Team
+|a_ctrl| Control Flow
+|a_ctrl|
+start
+|a_customer|
+:Informational meeting (half day);
+|a_ctrl|
+:v1: Is the informational meeting successful? ({true, false}); <<objectSignal>>
+if () then (["v1 = true"])
+|a_customer|
+:Work on storyboard (full day);
+|a_ctrl|
+split
+|a_web|
+:Site design (10 days);
+split again
+:Content preparation;
+end split
+:Merge: Site design and content preparation completed;
+:Site development (2 days);
+:Review process (1 day);
+|a_ctrl|
+:v2: Is the review successful? ({true, false}); <<objectSignal>>
+if () then (["v2 = true"])
+|a_web|
+:Approval stage (half a day);
+|a_ctrl|
+:v3: Approval result ({complete, rejected}); <<objectSignal>>
+if () then (["v3 = 'rejected'"])
+|a_web|
+:Rebuild site (3 days);
+|a_ctrl|
+:v4: Rebuild result ({complete, rejected}); <<objectSignal>>
+if () then (["v4 = 'rejected'"])
+|a_web|
+:Rebuild site again (3 days);
+|a_ctrl|
+stop
+else (["v4 = 'complete'"])
+stop
+endif
+else (["v3 = 'complete'"])
+stop
+endif
+else (["v2 = false"])
+stop
+endif
+else (["v1 = false"])
+stop
+endif
+@enduml

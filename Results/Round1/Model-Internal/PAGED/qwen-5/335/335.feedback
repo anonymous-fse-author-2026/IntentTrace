@@ -1,0 +1,9 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start Purchase Order-to-Delivery phase") -> action(n2,"formally review the purchase invoice and ensure its accuracy") -> action(n3,"invoice amount greater than $5000") -> branch(b1,XOR) -> action(n5,"continue with the process") -> converge(c1) -> action(n6,"trigger payment") -> action(n7,"process ends") -> end(e1)
+- [N2] Within matched traces (0->0) added: converge(c1)
+- [N3] Within matched traces (1->0) added: action(n3,"invoice amount greater than $5000")
+- [N4] Within matched traces (1->0) added: converge(c1)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the invoice amount is greater than $5000, approve the purchase invoice. -> i4:is greater than $5000 -> i5:Otherwise, continue with the process. -> i6:Otherwise; reason=The guards replace the explicit numerical threshold and logical branches ('greater than $5000', 'Otherwise') with generic boolean variables ('v1 = Yes', 'v1 = No'). This strips away the concrete value and precise decision logic mandated by the source text.
+- [N6] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:If the invoice amount is greater than $5000, approve the purchase invoice. -> i4:is greater than $5000 -> i5:Otherwise, continue with the process. -> i6:Otherwise; reason=The guards replace the explicit numerical threshold and logical branches ('greater than $5000', 'Otherwise') with generic boolean variables ('v1 = Yes', 'v1 = No'). This strips away the concrete value and precise decision logic mandated by the source text.

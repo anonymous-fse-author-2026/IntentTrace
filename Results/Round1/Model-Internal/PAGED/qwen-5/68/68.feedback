@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: i8:if the "Order is incomplete and items are missing," we still continue the process. (reason: The source requires the process to continue when items are missing. The model routes this condition directly to an email action without implementing the mandated continuation step.)
+- [N2] Node-level omission: i13:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. (reason: Both branches in the source explicitly require continuing the process. The model replaces this continuation logic entirely with an end node, omitting the required flow behavior.)
+- [N3] Node-level omission: i18:The customer is then emailed with replacement charges, and the process is complete. (reason: This final explicit step describes a concluding email and completion state that has no corresponding action or structural element in the generated model.)
+- [N4] Within matched traces (0->0) omitted: i10:After this, if the "Items are packed for an existing order," we continue the process. Alternatively, if the "Items are stored for future orders," we also continue the process.
+- [N5] Within matched traces (0->0) omitted: i17:Once again, when the process is complete, it ends.
+- [N6] Within matched traces (2->4) omitted: i17:Once again, when the process is complete, it ends.
+- [N7] Within matched traces (3->5) omitted: i18:The customer is then emailed with replacement charges, and the process is complete.
+
+Addition
+- [N8] Node-level addition: action(n4,"Order status after count") (reason: The element 'Order status after count' invents an intermediate placeholder step. The source transitions directly from counting/comparing items to evaluating order conditions without introducing a distinct status-checking phase.)
+- [N9] Node-level addition: action(n14,"Items disposition after repair") (reason: The element 'Items disposition after repair' introduces an ungrounded abstraction. The source moves directly from repair decisions to concrete packing/storing options without a general disposition step.)
+- [N10] Node-level addition: action(n7,"Customer returns missing items") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Node-level addition: guard(b4,n8,"v4 = 'Customer does not return missing items'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: guard(b3,n15,"v3 = 'Stored for future orders'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: guard(b6,n16,"v6 = 'Stored for future orders'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Node-level addition: guard(b3,e2,"v3 = 'Packed for existing order'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N15] Node-level addition: guard(b4,e1,"v4 = 'Customer returns missing items'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N16] Node-level addition: guard(b6,e3,"v6 = 'Packed for existing order'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N17] Added trace (model 1): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> branch(b1,XOR) -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n5,"Items disposition for returned items") -> branch(b3,XOR) -> end(e2)
+- [N18] Added trace (model 3): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> branch(b1,XOR) -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n6,"Email customer missing items and replacement charges") -> action(n7,"Customer returns missing items") -> branch(b4,XOR) -> end(e1)
+- [N19] Added trace (model 6): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> branch(b1,XOR) -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n9,"Email customer damage and additional charges") -> action(n10,"Temporarily remove damaged items from inventory") -> action(n11,"Can damaged items be repaired") -> branch(b5,XOR) -> action(n13,"Discard items and email customer replacement charges") -> converge(c1) -> action(n14,"Items disposition after repair") -> branch(b6,XOR) -> action(n16,"End process") -> end(e3)
+- [N20] Added trace (model 7): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> branch(b1,XOR) -> action(n3,"Count and compare items to contract") -> action(n4,"Order status after count") -> branch(b2,XOR) -> action(n9,"Email customer damage and additional charges") -> action(n10,"Temporarily remove damaged items from inventory") -> action(n11,"Can damaged items be repaired") -> branch(b5,XOR) -> action(n13,"Discard items and email customer replacement charges") -> converge(c1) -> action(n14,"Items disposition after repair") -> branch(b6,XOR) -> end(e3)
+- [N21] Added trace (model 8): init(i1) -> action(n1,"Start process") -> action(n2,"Items returned by customer or picked up by delivery crew") -> branch(b1,XOR) -> end(e1)
+- [N22] Within matched traces (0->0) added: action(n4,"Order status after count")
+- [N23] Within matched traces (1->2) added: action(n4,"Order status after count")
+- [N24] Within matched traces (1->2) added: action(n7,"Customer returns missing items")
+- [N25] Within matched traces (1->2) added: branch(b4,XOR)
+- [N26] Within matched traces (2->4) added: action(n4,"Order status after count")
+- [N27] Within matched traces (2->4) added: converge(c1)
+- [N28] Within matched traces (2->4) added: action(n14,"Items disposition after repair")
+- [N29] Within matched traces (2->4) added: branch(b6,XOR)
+- [N30] Within matched traces (3->5) added: action(n4,"Order status after count")
+- [N31] Within matched traces (3->5) added: converge(c1)
+- [N32] Within matched traces (3->5) added: action(n14,"Items disposition after repair")
+- [N33] Within matched traces (3->5) added: branch(b6,XOR)
+- [N34] Within matched traces (3->5) added: end(e3)
+
+Mutation
+- [N35] Node-level mutation: element=action(n5,"Items disposition for returned items"); source=i7:If the "Order is complete and all items were returned," then we proceed with the process.; reason=The source instructs to proceed with the process. The element abstracts this to 'Items disposition for returned items', dropping the explicit continuation directive and altering the step's granularity and intent.
+- [N36] Node-level mutation: element=action(n8,"End process"); source=i13:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process.; reason=The source mandates continuing the process on both branches. The element models this path as 'End process', fundamentally altering the control flow logic.
+- [N37] Node-level mutation: element=action(n15,"End process") -> action(n16,"End process"); source=i16:Lastly, the items are packed for an existing order. If the "Items are packed for an existing order," we continue the process. If the "Items are stored for future orders," we also continue the process.; reason=The source explicitly directs to continue the process after either packing or storing. Both elements state 'End process', reversing the intended continuation behavior and prematurely terminating the flow.

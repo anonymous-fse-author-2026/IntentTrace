@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:gather the required items;
+:inquire about the availability of products;
+:wait for the invoice;
+:review the pricing and terms of the items;
+:send a purchase requisition;
+:wait for the purchase invoice and shipment;
+:check if purchase invoice and shipment are received;
+:v1: check if purchase invoice and shipment are received ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:receive the invoice;
+else ([v1 = false])
+:wait for the purchase invoice and shipment;
+:check if purchase invoice and shipment are received after waiting;
+:v2: check if purchase invoice and shipment are received after waiting ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:receive the invoice;
+endif
+endif
+:make the payment;
+:transaction is complete;
+stop
+@enduml

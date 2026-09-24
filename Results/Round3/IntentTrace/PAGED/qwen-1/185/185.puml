@@ -1,0 +1,52 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start SSP process by receiving the invoice;
+:sort invoice per client;
+:sort invoice per vendor;
+:attach invoice entry form to invoice;
+:enter required information onto form;
+:check completeness of the invoice;
+:v1: check completeness of the invoice ({complete, incomplete}); <<objectSignal>>
+if () then ([v1 = 'complete'])
+:invoice complete;
+:enter information for SLA;
+:enter date for completion;
+:check priority;
+:v2: check priority ({high, low}); <<objectSignal>>
+if () then ([v2 = 'high'])
+:priority is high;
+:place red stamp on entry invoice;
+else ([v2 = 'low'])
+:priority is low;
+endif
+:check invoice compliance;
+:v4: compliance completeness ({complete, not_complete}); <<objectSignal>>
+if () then ([v4 = 'not_complete'])
+:If it is not complete, the check continues.;
+else ([v4 = 'complete'])
+:if complete, process continues;
+endif
+:v3: compliance decision ({experienced_staff, normal_case, none_apply}); <<objectSignal>>
+switch ()
+case ([v3 = 'experienced_staff'])
+:invoice needs sending to experienced staff;
+:non-compliance invoice processed;
+:call client and request information;
+:batch invoice and allocate to DEO;
+stop
+case ([v3 = 'normal_case'])
+:normal case invoice;
+:call client;
+case ([v3 = 'none_apply'])
+:none of above conditions apply;
+:send postal mail requesting complete information;
+stop
+endswitch
+else ([v1 = 'incomplete'])
+:invoice incomplete - end process;
+stop
+endif
+@enduml

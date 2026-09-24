@@ -1,0 +1,17 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i6:If you want to try again
+- [N2] Within matched traces (1->2) omitted: i8:if you choose to abort
+- [N3] Within matched traces (1->2) omitted: i10:If you still want to try again
+
+Addition
+- [N4] Node-level addition: guard(b2,n7,"v2 = 'Abort'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Node-level addition: guard(b3,n9,"v3 = 'Retry'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 1): init(i1) -> action(n2,"Provide userdata for flickr login") -> action(n3,"Is login successful") -> branch(b1,XOR) -> action(n5,"Choose to try login again") -> branch(b2,XOR) -> action(n7,"Choose to abort after retry option") -> branch(b3,XOR) -> action(n8,"End process after abort") -> end(e2)
+- [N7] Within matched traces (1->2) added: action(n3,"Is login successful")
+
+Mutation
+- [N8] Node-level mutation: element=action(n7,"Choose to abort after retry option"); source=i7:On the other hand, if you choose to abort, the process will end.; reason=Invents the sequential qualifier 'after retry option' which is not present in the source unit, altering the granularity and context of the choice step.
+- [N9] Node-level mutation: element=action(n9,"Choose to try login again after aborted retry"); source=i9:If you still want to try again, please provide the userdata for flickr.; reason=Invents the sequential qualifier 'after aborted retry' which is not stated in the source unit, adding unsourced procedural context.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=3 and out=1. | DSL: action(n3,"Is login successful")

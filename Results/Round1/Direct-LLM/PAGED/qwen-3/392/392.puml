@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start User Task;
+:Is User Task Service Task 1?;
+:v1: User Task Type ({Service Task 1, Service Task 2, Service Task 3}); <<objectSignal>>
+if () then ([v1 = 'Service Task 1'])
+:Continue Process after Service Task 1;
+else ([v1 != 'Service Task 1'])
+:Is User Task Service Task 2?;
+:v1: User Task Type ({Service Task 1, Service Task 2, Service Task 3}); <<objectSignal>>
+if () then ([v1 = 'Service Task 2'])
+:Continue Process after Service Task 2;
+else ([v1 = 'Service Task 3'])
+:End Process due to Service Task 3;
+stop
+endif
+endif
+:Merge Continue Process after Service Task 1 and 2;
+:Is there a Manual Task?;
+:v3: Is there a Manual Task? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:End Process if Manual Task Yes;
+stop
+else ([v3 = 'No'])
+:Continue Process if no Manual Task;
+:End Process;
+stop
+endif
+@enduml

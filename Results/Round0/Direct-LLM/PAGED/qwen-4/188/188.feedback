@@ -1,0 +1,15 @@
+- `action(n4, "Construct Error Response from Banking Privilege Status")`: Omits the explicit step "check the Banking Privilege Status" and conflates it with the response action, violating SMC1/SMC2.
+- `action(n7, "Construct Error Response from loan conditions")`: Omits the explicit step "check the fulfillment of loan conditions" and conflates it with the response action, violating SMC1/SMC2.
+- `precedence(n12, n13)`, `branch(b4)`, `action(n15, "Construct Reject Response")`: Sequences "Construct Approve Response" (`n13`) before the approval/rejection split, whereas the source presents them as mutually exclusive alternatives ("If there is a 'Construct Approve Response'... Otherwise, if there is a 'Construct Reject Response'..."), violating SMC3/SMC4.
+- `branch(b5)`, `action(n17, "End of procedure")`, `end(e5)`: Hallucinates an additional decision branch and termination node after the rejection path; the source specifies the process simply ends with a "Reject Message", violating SMC1/SMC5.
+- `defines(v3, "Check Creditworthiness", {"Yes"})`, `defines(v4, "Construct Approve Response", {"Yes"})`: Restrict XOR branch variables to a single-value range `{"Yes"}`, which cannot represent the implicit alternative choices required by the branching guards, violating SMC6.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes'` on `b3 -> n11` uses undefined variable `v3`. | Guard `v4 = 'Yes'` on `b4 -> n14` uses undefined variable `v4`. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n15` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | Guard `v4 = 'Yes'` on `b4 -> n14` cannot be evaluated: `v4` has no declared range. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range.

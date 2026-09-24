@@ -1,0 +1,64 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Initialize rental return workflow;
+:v1: Return method ({Customer, Delivery}); <<objectSignal>>
+if () then ([v1 = 'Customer'])
+:Verify customer return method;
+:Process customer return confirmation;
+else ([v1 = 'Delivery'])
+:Verify delivery crew pickup method;
+:Process delivery crew pickup confirmation;
+endif
+:Count items and compare to original contract;
+:Assess order completeness and status;
+:v3: Order status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v3 = 'Complete'])
+:Proceed with complete order workflow;
+case ([v3 = 'Incomplete'])
+:Initiate incomplete order handling;
+:Execute incomplete order procedures;
+case ([v3 = 'Damaged'])
+:Initiate damaged item handling;
+:Email customer about damage and charges;
+endswitch
+:Prepare items for packing or storage;
+:v6: Packing/Storage choice ({Packed, Stored}); <<objectSignal>>
+if () then ([v6 = 'Packed'])
+:Process items packed for existing order;
+else ([v6 = 'Stored'])
+:Process items stored for future orders;
+endif
+:Evaluate missing items and charges;
+:Email customer regarding missing items;
+:Verify customer return status for missing items;
+:v10: Missing return status ({true, false}); <<objectSignal>>
+if () then ([v10 = true])
+:Process confirmed return of missing items;
+else ([v10 = false])
+:Process non-return of missing items;
+endif
+:Evaluate damaged items and charges;
+:Temporarily remove damaged items from inventory;
+:v11: Repair/Discard status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v11 = 'Repaired'])
+:Initiate item repair and inventory update;
+:Process repaired items back into inventory;
+else ([v11 = 'Discarded'])
+:Initiate item discard procedure;
+:Email customer with replacement charges for discarded items;
+endif
+:Finalize packing preparation for existing order;
+:v13: Final packing/storage ({Packed, Stored}); <<objectSignal>>
+if () then ([v13 = 'Packed'])
+:Execute final packing for existing order;
+else ([v13 = 'Stored'])
+:Execute final storage for future orders;
+endif
+:Send final replacement charges notification;
+:Conclude rental items return process;
+stop
+@enduml

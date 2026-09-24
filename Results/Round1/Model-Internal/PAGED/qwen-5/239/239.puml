@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Examine Order;
+:Is Order Rejected?;
+:v1: Is Order Rejected? ({true, false}); <<objectSignal>>
+switch ()
+case (["v1 = true"])
+:Reject Order;
+:End;
+stop
+case (["v1 = false"])
+:Prepare Assembling Order;
+:Is Backorder Required?;
+:v2: Is Backorder Required? ({true, false}); <<objectSignal>>
+if () then (["v2 = true"])
+:End;
+stop
+else (["v2 = false"])
+:Assemble Bike;
+-> 12;
+:Ship Product;
+:End;
+stop
+endif
+case (["v1 = false"])
+:Check Availability;
+endswitch
+@enduml

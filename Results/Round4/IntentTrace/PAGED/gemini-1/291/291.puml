@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start and enter the metadata;
+:Proceed to the IN-Patient step;
+:v2: Branch 2 ({Supplier, Handle, Claim}); <<objectSignal>>
+switch ()
+case ([v2 = 'Supplier'])
+:Send data to suppliers;
+:Extract data from suppliers;
+:Transfer data to doctor phone;
+:Confirm the GOP;
+:Process ends after confirming GOP;
+stop
+case ([v2 = 'Claim'])
+:Create a claim;
+:v3: Branch 3 ({Handle, Register}); <<objectSignal>>
+if () then ([v3 = 'Register'])
+:Register the case;
+else ([v3 = 'Handle'])
+->;
+endif
+:Handle the claim;
+:v4: Branch 4 ({Extract, Receive}); <<objectSignal>>
+if () then ([v4 = 'Extract'])
+:Extract data from suppliers;
+:Enter data on patient record or confirm IN-Patient status;
+:v1: Enter data on patient record or confirm IN-Patient status ({Enter, Confirm}); <<objectSignal>>
+if () then ([v1 = 'Enter'])
+:Enter data on patient record;
+:Register the case;
+:Handle the claim;
+:Receive the payment;
+else ([v1 = 'Confirm'])
+:Confirm IN-Patient status;
+:Send data back to suppliers;
+:Receive the payment;
+endif
+:Process ends after receiving payment;
+stop
+else ([v4 = 'Receive'])
+->;
+endif
+case ([v2 = 'Handle'])
+endswitch
+@enduml

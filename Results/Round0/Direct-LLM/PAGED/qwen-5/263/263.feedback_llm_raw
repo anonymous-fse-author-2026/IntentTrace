@@ -1,0 +1,9 @@
+
+
+- `action(n2, "Is the informational meeting successful?")`: Misrepresents the documented activity "starts with an informational meeting that lasts half a day" as a decision question, omitting the meeting task itself.
+- `precedence(n3, b4)`: Omits the documented condition "If the storyboard is successful, the next steps are...", creating a direct flow from the storyboard action to the parallel split without a required decision point.
+- `action(n11, "Approval stage (half a day)")`, `action(n12, "End Process")`, `end(e2)`: Fails to model the documented branching "If the approval is complete, the process ends. However, if the approval is rejected, the site needs to be rebuilt...", routing unconditionally to termination and dropping the rejection path.
+- `action(n4, "End Process")`, `action(n12, "End Process")`, `action(n15, "End Process")`, `action(n17, "End Process")`: Hallucinates explicit process steps not present in the source, which only uses "the process ends" as a terminal state indicator.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Lack corresponding `guard(...)` statements to evaluate decision variables, breaking the control-flow representation of exclusive choices for the meeting, review, and rebuild outcomes.
+- `defines(v1, "Is the informational meeting successful?", {})`, `defines(v2, "Is the review successful?", {})`, `defines(v3, "Is the rebuild approved?", {})`: Use invalid empty ranges `{}` instead of specifying value spaces (e.g., `{true, false}`), failing to reflect the binary decision options in the text.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a single generic participant, completely omitting the source-specified responsibilities allocated to "the customer" and "the web design team".

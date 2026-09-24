@@ -1,0 +1,9 @@
+- `branch(b1,...)` / `branch(b2,...)`: Both XOR branches lack corresponding `guard` statements to specify the routing conditions (URN vs. URL) for their outgoing edges, leaving the exclusive-choice logic undefined and unconnected to the source decision criteria (violates SMC4).
+- `defines(v1,...,{})` / `defines(v2,...,{})`: The decision variables are assigned empty value ranges `{}`, which fails to capture the expected input types ("URN", "URL") required to evaluate the branch conditions described in the text (violates SMC6).
+- `defines(v1,...)` / `defines(v2,...)`: Variables `v1` and `v2` are declared but never referenced in any `guard` statement or node payload, decoupling the decision data from the control-flow execution (violates SMC4/SMC6).
+- `action(n1, "start process to find a DS through ONS Bootstrapping")`: The source uses this phrasing as introductory context for the overall goal, not as a discrete procedural step; modeling it as `action(n1)` hallucinates an initial step that does not occur in the described workflow (violates SMC1).
+- `action(n10,...)` / `action(n11,...)`: The source describes a single concluding activity ("link to a designated DS. Finally, we link to the designated DS"), but the model splits it into two sequential actions (`n10` and `n11`), incorrectly duplicating the behavior without textual justification (violates SMC1).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

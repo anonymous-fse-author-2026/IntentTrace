@@ -1,0 +1,9 @@
+- `action(n1, "start inventory check process")`: Hallucinates a step; the source begins directly with "To begin the process, the inventory needs to be checked" without any preliminary startup action.
+- `branch(b1, XOR)` edges to `n5` and `n6`: Lacks `guard` statements to enforce the source's explicit conditional routing ("If the inventory level is high... However, if the inventory level is low...").
+- `defines(v1, "is inventory level high", {})`: Declares a decision variable with an empty range `{}`, failing to reflect the source's implicit value domain (high/low), and the variable is never referenced in any edge condition.
+- `actor(a_default, "Default", [...])`: Misattributes execution responsibility; the source explicitly assigns the comparison, counting, listing, supplier selection, and ordering steps to "Mac", but the model assigns all nodes to a generic "Default" actor.
+- `precedence(c1, n11)`: Incorrectly forces both decision paths into `action(n11, "received the order")`; the source only links receiving the order to the completion of the ordering phase ("After receiving the order, the process comes to an end"), not to the high-inventory path that skips ordering.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

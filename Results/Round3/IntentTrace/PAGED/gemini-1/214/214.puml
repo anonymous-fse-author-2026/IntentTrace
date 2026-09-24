@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:At the beginning,;
+:if we can capture data from FMA,;
+:v1: capture data ({FMA, Otherwise}); <<objectSignal>>
+if () then ([v1 = 'FMA'])
+->;
+else ([v1 = 'Otherwise'])
+:Otherwise,;
+:if we can capture data from Jamendo,;
+endif
+:we should continue the process.;
+:we need to get music ids for the genre.;
+:v2: genre ({missing, no additional genres}); <<objectSignal>>
+if () then ([v2 = 'missing'])
+:If the genre is missing,;
+:we should continue the process. If the genre is missing, we should continue the process.;
+else ([v2 = 'no additional genres'])
+:However, if there are no additional genres, we should continue the process.;
+:if there are no additional genres,;
+repeat :;
+:If there are no additional genres, we should continue the process.;
+:v3: sample ({missing, download, no additional samples}); <<objectSignal>>
+backward:We should download the sample.;
+repeat while () is ([v3 = 'download']) not ([v3 = 'missing'])
+:If the sample is missing,;
+:If the sample is missing, we should continue the process.;
+endif
+@enduml

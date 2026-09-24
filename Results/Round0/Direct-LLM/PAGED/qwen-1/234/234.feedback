@@ -1,0 +1,12 @@
+- `branch(b6, AND)` with `precedence(b6, n8)` and `precedence(b6, n9)`: Models database entry and order control as concurrent, violating source chronology which states control begins "Once the database is completed".
+- `precedence(n19, n20)`: Omits the documented step "the goods will be produced" that explicitly occurs between PPC initiating production and checking issue solvability.
+- `action(n15, "release order (<5k€)")` and `precedence(n15, e1)`: Prematurely terminates the process via `end(e1)` for low-value orders, contradicting the source progression which mandates continuing through production, quality verification, and final closure.
+- `branch(b7, AND)` and `precedence(b7, c3)`: Hallucinates a parallel split immediately after `n12` that converges without executing any tasks, introducing unsupported concurrency not present in the description.
+- `precedence(b8, c4)`: Invalidly directs a control-flow edge from a parallel split `b8` directly to a converge node `c4` without an intervening action, breaking control-flow semantics.
+- `action(n27, "release order via memo")` and `action(n30, "sign and send memo to logistic")`: Merge or omit distinct source verification steps "ensure that the memo is achieved in the warehouse" and "ensure that the signed memo is achieved in the logistic department".
+- `precedence(n13, n14)`: Skips the documented prerequisite "upon receiving the actual issue" when routing from contacting the agency to the sign-off path, instead inserting an unrelated value assessment.
+- `defines(v3, "check order value", {"<= 5000 €", "> 5000 €"})`: Misrepresents the source thresholds "less than 5.000 €" and "more than 5.000 €" by using an inclusive boundary ("<=") rather than a strict inequality.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"contact selling agency (incorrect)")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"contact selling agency (incorrect)")

@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process, the customer makes an enquiry. -> i2:we check if the article is in stock. -> i3:If the article is available -> i5:First, we reserve the article, and once it is reserved, we calculate the price. -> i6:After that, we send the offer, and once the offer is sent, we wait for the customer to accept it. -> i7:we dispatch the article. -> i8:the process comes to an end.
+- [N2] Omitted trace (input 1): i1:To begin the process, the customer makes an enquiry. -> i2:we check if the article is in stock. -> i4:if the article is not available, we abort the enquiry and end the process.
+
+Addition
+- [N3] Node-level addition: action(n1,"start") (reason: Invents a generic 'start' step absent from the source text; the source directly binds process initiation to the customer enquiry without an intermediate standalone start action.)
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"customer makes an enquiry") -> action(n3,"check if article is in stock") -> branch(b1,XOR) -> action(n4,"end process due to no stock") -> end(e1)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"customer makes an enquiry") -> action(n3,"check if article is in stock") -> branch(b1,XOR) -> action(n5,"reserve article") -> action(n6,"calculate price") -> action(n7,"send offer") -> action(n8,"wait for customer to accept offer") -> action(n9,"dispatch article") -> action(n10,"process end") -> end(e2)
+
+Mutation
+- [N6] Node-level mutation: element=action(n4,"end process due to no stock"); source=i4: if the article is not available, we abort the enquiry and end the process.; reason=Distorts the explicit instruction by dropping the required action 'abort the enquiry' and substituting 'end process due to no stock', thereby altering the specified workflow behavior.

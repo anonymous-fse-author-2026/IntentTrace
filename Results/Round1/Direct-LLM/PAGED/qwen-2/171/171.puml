@@ -1,0 +1,19 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+repeat :enter expenses;
+:generate spreadsheet;
+:v1: is request approved? ({No, Yes}); <<objectSignal>>
+backward:enter expenses;
+repeat while () is ([v1 = 'No']) not ([v1 = 'Yes'])
+:pay out expenses;
+:v2: is request approved? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:enter expenses;
+else ([v2 = 'Yes'])
+:pay out expenses;
+stop
+endif
+@enduml

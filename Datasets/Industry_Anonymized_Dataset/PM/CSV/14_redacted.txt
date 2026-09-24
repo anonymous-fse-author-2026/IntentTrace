@@ -1,0 +1,102 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=50;spacingLeft=50;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label
+1,"Start the procedure","start","","",""
+2,"Ensure the [NETWORK_SERVER] and [FILE_SERVER] are set up and available","entity","1",""
+3,"Set up the [NETWORK_SERVER] configuration file with the required [EQUIPMENT] details","entity","2",""
+4,"Refer to [DOCUMENT_A]","entity","3",""
+5,"Set up the boot file on the [NETWORK_SERVER] for the required [EQUIPMENT]","entity","3",""
+6,"Refer to [DATA_SOURCE_A]","entity","5",""
+7,"Load the required files for the [EQUIPMENT] to the required location on the [FILE_SERVER]","entity","5",""
+8,"Connect the [EQUIPMENT] to the [NETWORK_SERVER] on the [NETWORK_INFRA] using the [NETWORK_PORT]","entity","7",""
+9,"Power up the [EQUIPMENT]","entity","8",""
+10,"The [CONTROL_MODULE] status LEDs ([LED_A], [LED_B], [LED_C]) sequentially indicate initialization progress.","entity","9",""
+11,"Would you like to monitor the software upgrade?","condition","10",""
+12,"Wait until the [LOCAL_ACCESS_LED] on one of the [CONTROL_MODULES] is on","entity","11","[Monitor upgrade]"
+13,"Connect the [LOCAL_COMPUTER] to the [LOCAL_ACCESS_PORT] on the primary [CONTROL_MODULE]","entity","12",""
+14,"On the primary [CONTROL_MODULE], check that the status LEDs on the [LOCAL_ACCESS_PORT] are both on","entity","13",""
+15,"Periodically poll the [LOCAL_COMPUTER] using the [COMMAND] until the display confirms that the [NETWORK_SERVER] has configured it with a new [IP_ADDRESS]","entity","14",""
+16,"Refer to [DOCUMENT_B]","entity","15",""
+77,"Use the [TERMINAL_APPLICATION] to log in to the primary [CONTROL_MODULE] using [SECURE_PROTOCOL]","entity","15",""
+17,"What slot is the primary [CONTROL_MODULE] located in?","condition","77",""
+18,"Enter [COMMAND] to connect to [IP_ADDRESS_A] with user [USERNAME] and password [PASSWORD]","entity","17","[Primary module in SLOT_A]"
+19,"Enter [COMMAND] to connect to [IP_ADDRESS_B] with user [USERNAME] and password [PASSWORD]","entity","17","[Primary module in SLOT_B]"
+20,"Check the software active version, enter: [COMMAND]","entity","18",""
+20,"Check the software active version, enter: [COMMAND]","entity","19",""
+21,"Check that the active version is [STATUS_A]","condition","20",""
+22,"Contact your next level of support","end","21","[Version is not STATUS_A]"
+23,"Check the software committed version, enter: [COMMAND]","entity","21","[Version is STATUS_A]"
+24,"Check that the committed version is [STATUS_A]","condition","23",""
+25,"Contact your next level of support","end","24","[Version is not STATUS_A]"
+26,"Check the software upgrade state, enter: [COMMAND]","entity","24","[Version is STATUS_A]"
+27,"Check that the upgrade state is [STATUS_B]","condition","26",""
+28,"Contact your next level of support","end","27","[State is not STATUS_B]"
+31,"Check the software active version on the primary [CONTROL_MODULE]","condition","27","[State is STATUS_B]"
+32,"Enter [COMMAND] to check software version for component in [SLOT_A]","entity","31","[Primary module in SLOT_A]"
+33,"Enter [COMMAND] to check software version for component in [SLOT_B]","entity","31","[Primary module in SLOT_B]"
+34,"Is the active version as expected?","condition","32",""
+34,"Is the active version as expected?","condition","33",""
+35,"Contact your next level of support","end","34","[Version not as expected]"
+36,"Is there a secondary [CONTROL_MODULE] applicable?","condition","34","[Version is as expected]"
+38,"Check the software active version on the secondary [CONTROL_MODULE]","condition","36","[Secondary module is present]"
+39,"Enter [COMMAND] to check software version for component in [SLOT_B]","entity","38","[Secondary module in SLOT_B]"
+40,"Enter [COMMAND] to check software version for component in [SLOT_A]","entity","38","[Secondary module in SLOT_A]"
+41,"Wait 10 minutes for the secondary [CONTROL_MODULE] to power up","entity","39",""
+41,"Wait 10 minutes for the secondary [CONTROL_MODULE] to power up","entity","40",""
+42,"Check that the active version is as expected","condition","41",""
+43,"Contact your next level of support","end","42","[Version not as expected]"
+44,"Wait 10 minutes for the secondary [CONTROL_MODULE] to restart","entity","42","[Version is as expected]"
+45,"How would you like to log in?","condition","11,36","[Do not monitor upgrade]"
+45,"How would you like to log in?","condition","44",""
+46,"Wait for the [LED_B] on both [CONTROL_MODULES] to be permanently on","entity","45","[Log in locally]"
+47,"Connect the [LOCAL_COMPUTER] to the [LOCAL_ACCESS_PORT] on the primary [CONTROL_MODULE]","entity","46",""
+48,"On the primary [CONTROL_MODULE], check that the status LEDs on the [LOCAL_ACCESS_PORT] are both on","entity","47",""
+49,"Periodically poll the [LOCAL_COMPUTER] using [COMMAND] until the display confirms it has a new [IP_ADDRESS]","entity","48",""
+50,"Refer to [DOCUMENT_C]","entity","49",""
+78,"Use the [TERMINAL_APPLICATION] to log in to the primary [CONTROL_MODULE] using [SECURE_PROTOCOL]","entity","49",""
+51,"What slot is the primary [CONTROL_MODULE] located in?","condition","78",""
+52,"Enter [COMMAND] to connect to [IP_ADDRESS_A] with user [USERNAME] and password [PASSWORD]","entity","51","[Primary module in SLOT_A]"
+53,"Enter [COMMAND] to connect to [IP_ADDRESS_B] with user [USERNAME] and password [PASSWORD]","entity","51","[Primary module in SLOT_B]"
+54,"Periodically ping the [EQUIPMENT] [IP_ADDRESS], and log in once the IP is pingable","entity","45","[Log in remotely]"
+55,"Check the software active version, enter: [COMMAND]","entity","54",""
+55,"Check the software active version, enter: [COMMAND]","entity","53",""
+55,"Check the software active version, enter: [COMMAND]","entity","52",""
+56,"Check that the active version is as expected","condition","55",""
+57,"Contact your next level of support","end","56","[Version not as expected]"
+58,"Check the software committed version, enter: [COMMAND]","entity","56","[Version is as expected]"
+59,"Check that the committed version is as expected","condition","58",""
+60,"Contact your next level of support","end","59","[Version not as expected]",""
+61,"Check the software upgrade operational state, enter: [COMMAND]","entity","59","[Version is as expected]"
+62,"Check that the upgrade state is [STATUS_C]","condition","61",""
+63,"Contact your next level of support","end","62","[State is not STATUS_C]"
+64,"Check the software upgrade state on the [CONTROL_MODULE] in [SLOT_A]: [COMMAND]","entity","62","[State is STATUS_C]"
+65,"Check that the upgrade state is [STATUS_C]","condition","64",""
+66,"Contact your next level of support","end","65","[State is not STATUS_C]"
+67,"Check the software active version on the [CONTROL_MODULE] in [SLOT_A], enter: [COMMAND]","entity","65","[State is STATUS_C]"
+68,"Check that the active version is as expected","condition","67",""
+69,"Contact your next level of support","end","68","[Version not as expected]"
+79,"Is there a secondary [CONTROL_MODULE] in [SLOT_B]?","condition","68","[Version is as expected]"
+70,"Enter: [COMMAND] to check upgrade state for component in [SLOT_B]","entity","79","[Secondary module is present]"
+71,"Check that the upgrade state is [STATUS_C]","condition","70",""
+72,"Contact your next level of support","end","71","[State is not STATUS_C]"
+73,"Check the software active version on the [CONTROL_MODULE] in [SLOT_B], enter: [COMMAND]","entity","71","[State is STATUS_C]"
+74,"Check that the active version is as expected","condition","73",""
+75,"Contact your next level of support","end","74","[Version not as expected]"
+76,"You have completed the procedure","end","74","[Version is as expected]"
+76,"You have completed the procedure","end","79","[No secondary module]"

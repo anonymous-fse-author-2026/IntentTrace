@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Evaluate Order Decision;
+split
+:Prepare Assembling Order;
+split again
+:Check Availability;
+end split
+:v_availability: Availability Status ({Backorder, Reserved}); <<objectSignal>>
+if () then ([v_availability = 'Backorder'])
+:Check Availability Again;
+stop
+else ([v_availability = 'Reserved'])
+:Assemble Bike;
+:Ship Product;
+stop
+endif
+@enduml

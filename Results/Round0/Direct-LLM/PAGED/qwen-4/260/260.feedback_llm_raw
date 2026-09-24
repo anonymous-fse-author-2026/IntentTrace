@@ -1,0 +1,8 @@
+
+
+- action(n1, "start"): Hallucinated step; the source process begins directly with receiving the invoice.
+- branch(b1, XOR), branch(b2, XOR), branch(b3, XOR): Missing guard(...) statements to define routing conditions (e.g., invoice completeness, priority level, compliance status), leaving the control-flow logic undefined against the source's explicit decision criteria.
+- defines(v1, "check completeness of invoice", {}), defines(v2, "check priority level", {}), defines(v3, "check compliance status", {}): Empty value ranges violate SMC6; must reflect the finite option sets from the source (e.g., {complete, incomplete}, {high, low}, {needs experienced staff, normal, other}).
+- action(n9, "enter sla information date and check priority") and action(n10, "check priority level"): Payload duplication and chronology distortion; the source describes entering SLA info, entering the completion date, and checking priority as a linear progression, not a merged action followed by a redundant priority check.
+- action(n8, "end process: incomplete invoice"): Unwarranted intermediate action node; the source states the process ends immediately upon incompleteness, requiring a direct precedence(b1, e1).
+- action(n14, "call client") and the path through converge(c2): Omits the documented subsequent step "information is requested"; additionally, restricting the client call to the "normal case" branch misaligns with the source's concluding sequence where the client is contacted before batching and allocation.

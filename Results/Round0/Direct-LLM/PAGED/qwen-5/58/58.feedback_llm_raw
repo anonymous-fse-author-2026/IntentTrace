@@ -1,0 +1,8 @@
+
+
+- `guard` statements (missing for b1–b6): The model omits guard conditions for every XOR branch, despite the source explicitly defining routing criteria such as "If the customer exists", "If the payment history is good", "if the customer is a private customer", "If the products are not available", "If payment has been received", and "if there are less than three reminders".
+- `defines(v1, ...)` through `defines(v6, ...)`: All decision variables are declared with empty ranges `{}`, failing to capture the actual value spaces required by the source (e.g., boolean states, customer categories like Private/Wholesaler, or numeric comparisons).
+- `action(n6, "Send customer declining message")` on the `b2` path: Hallucinates a workflow step; the source only states "If the payment history is good, we can continue with the process" and provides no prescribed action for a negative payment history.
+- `actor(a_default, "Default", [...])`: Assigns every node to a single generic participant, ignoring the source's explicit assignment of notification responsibilities to the "stock and accounting departments".
+- `action(n30, "End process after continuing process")` following `branch(b6)`: Incorrectly terminates the flow at `end(e4)`, contradicting the source instruction "we continue with the process" for the <3 reminders case, which implies progression to subsequent steps or iterative handling rather than immediate completion.
+- `branch(b8, AND)` and `branch(b9, AND)`: Introduce unnecessary parallel splits between notifying departments and the packing/invoicing phase, adding concurrency logic not supported by the source's direct transition: "After packing the goods and writing the invoice, the goods are ready for delivery".

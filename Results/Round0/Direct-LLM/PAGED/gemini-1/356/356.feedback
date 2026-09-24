@@ -1,0 +1,10 @@
+- `action(n1, "start the process")`: The source text uses "To start the process" as an introductory clause for the first step ("make sure the Freights are ready..."), not as a distinct, executable action.
+- `branch(b2, AND)` and `precedence(b2, n6)`: The source specifies "At the same time, complete the following steps: deliver the freight and notify the delivery", but the model incorrectly includes `n6` ("Check for Merchandise Return Request") as a third concurrent branch alongside delivery and notification.
+- `action(n4, "Deliver Freight")`: The model contains no outgoing precedence for this node, leaving the path deadlocked without convergence or termination.
+- `precedence(n5, b3)`: The model restricts the conditional checks for "5 days" and "loss claim" to occur strictly sequentially after `n5` ("Notify Delivery"), which is not supported by the source text.
+- `branch(b3, AND)`: The source describes conditional alternative events ("If it has been 5 days...", "If a loss claim report is lodged..."), but the model incorrectly executes both paths concurrently using an AND gateway.
+- `guard(b1, n7, v1 = 'Yes (Return Requested)')` and `guard(b1, n8, v1 = 'No (No Return Request)')`: The source indicates the process branches based on "If the return is accepted" and "If the return is rejected", but the model incorrectly restricts the logic to evaluate whether a return request was lodged or not.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"Deliver Freight")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"Deliver Freight")

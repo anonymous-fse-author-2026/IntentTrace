@@ -1,0 +1,10 @@
+- `action(n1, "Start")`: Hallucinates an initial step not documented in the source, which explicitly begins with "providing the requested shipping information."
+- `action(n5, "Confirm shipping address")` and `action(n6, "Confirm shipping address")`: Duplicates a single source step into two separate nodes. The description specifies one unified follow-up: "Once that is done, confirm the shipping address...", which applies identically after either choice.
+- `precedence(b1, n6)` and absent outgoing precedence from `n6`: Terminates the "New shipping address" path prematurely, breaking chronological continuity and preventing process completion for that branch.
+- Control flow after `branch(b1, XOR)`: Omits a required `converge` node to merge the two conditional paths, misrepresenting the source's linear progression where both options simply "continue with the process" to the exact same next step.
+- `action(n8, "End")`: Hallucinates a task for termination; per DSL semantics, `end(e1)` exclusively marks the process finish, making this action redundant and structurally incorrect.
+- `action(n4, "Is the shipping address saved or new?")`: Misrepresents the conditional evaluation as a standalone process activity rather than modeling it natively through the `branch` split and associated `guard` conditions.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"Confirm shipping address")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"Confirm shipping address")

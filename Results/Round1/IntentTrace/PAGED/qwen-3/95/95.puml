@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start WIGGO process;
+:Place Order;
+:Check Customer Credit Limit;
+:v1: Credit response okay ({No, Okay}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Send Denial to Customer;
+stop
+else ([v1 = 'Okay'])
+repeat :Check Availability of Article;
+:v2: Availability okay first check ({Okay, No}); <<objectSignal>>
+backward:Check Availability of Article again;
+repeat while () is ([v2 = 'Okay']) not ([v2 = 'No'])
+:Send Denial to Customer;
+stop
+endif
+@enduml

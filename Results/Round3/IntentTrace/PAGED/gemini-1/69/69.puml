@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:trigger resupply cycle for ACME Company;
+:check inventory level;
+:create purchase order;
+:v1: is purchase order good? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "No"])
+:If the purchase order is not good;
+:reject purchase order;
+:rework purchase order;
+:After reworking the purchase order;
+:review purchase order again;
+else ([v1 = "Yes"])
+:approve purchase order;
+:reserve funds for purchase;
+:send purchase order to supplier;
+split
+:receive packing slip;
+:record packing slip;
+split again
+:receive invoice;
+:record invoice;
+end split
+:release funds for payment;
+:issue payment;
+:Finally, the process ends;
+stop
+endif
+@enduml

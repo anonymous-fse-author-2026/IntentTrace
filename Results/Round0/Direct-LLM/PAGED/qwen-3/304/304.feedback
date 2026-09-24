@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates a preliminary step; the description begins directly with "acquire a new customer".
+- `action(n5, "is the contract okay?")`: Models a decision criterion as an executable action node rather than a routing condition, introducing a step not documented in the source.
+- `precedence(b1, n6)` and `precedence(b1, n7)`: Lack corresponding `guard` statements, omitting the source's explicit routing conditions ("If the contract is deemed okay" and "if there are any missing details").
+- `defines(v1, "is the contract okay?", {})`: Declares an empty value range `{}` and is never referenced in any guard, failing to capture the decision outcomes implied by the text.
+- `action(n8, "end process: team organized")` and `action(n9, "end process: contact customer")`: Hallucinate extra termination steps; the description states the process simply "will come to an end" in both branches without further actions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

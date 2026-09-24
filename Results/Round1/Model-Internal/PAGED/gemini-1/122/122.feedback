@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i6:we again check if the input is a "URN" or a "URL" and take the corresponding action. (reason: The model completely omits this second check and its resulting branching logic.)
+- [N2] Node-level omission: i8:The result of this query is a list of URLs, which we then use to link to a designated DS. (reason: The model fails to include the step of receiving the list of URLs and using them to link, jumping straight to the final link step.)
+- [N3] Omitted trace (input 1): i1:we start -> i2:checking if the input is a "URN" -> i4:If the input is a "URL" -> i5:continue with the process. After this -> i6:we again check if the input is a "URN" or a "URL" and take the corresponding action. -> i3:ONS-Resolving URN to a domain-name -> i7:we send a DNS query -> i8:The result of this query is a list of URLs, which we then use to link to a designated DS. -> i9:link to the designated DS and the process comes to an end.
+- [N4] Omitted trace (input 2): i1:we start -> i2:checking if the input is a "URN" -> i4:If the input is a "URL" -> i5:continue with the process. After this -> i6:we again check if the input is a "URN" or a "URL" and take the corresponding action. -> i4:If the input is a "URL"
+- [N5] Within matched traces (0->0) omitted: i8:The result of this query is a list of URLs, which we then use to link to a designated DS.
+- [N6] Within matched traces (0->1) omitted: i3:ONS-Resolving URN to a domain-name
+- [N7] Within matched traces (0->1) omitted: i8:The result of this query is a list of URLs, which we then use to link to a designated DS.
+
+Addition
+- [N8] Node-level addition: action(n2,"Is input a URN or URL?") (reason: This action invents a combined question that generalizes two distinct source checks, failing to correspond to a single source unit's granularity.)
+- [N9] Node-level addition: label(n1,n2,"Yes No") (reason: The label 'Yes No' has no supporting text in the source.)
+- [N10] Within matched traces (0->0) added: action(n2,"Is input a URN or URL?")
+- [N11] Within matched traces (0->1) added: action(n2,"Is input a URN or URL?")
+
+Mutation
+- [N12] Node-level mutation: element=action(n3,"Resolve URN to domain-name"); source=i3:ONS-Resolving URN to a domain-name; reason=The model element drops the specific 'ONS-' qualifier from the resolving action, altering the specificity of the step.

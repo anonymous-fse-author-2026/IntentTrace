@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start BPMN execution TDD process")`: Hallucinates an introductory step not present in the source, which begins directly with "the first step is to understand the BPMN Model." (SMC1)
+- `defines(v1, "is the test green", {})`, `defines(v2, ...)`, `defines(v3, ...)`: Variable ranges are empty `{}` instead of boolean domains (e.g., `{true, false}`), failing to represent the binary decisions described in the source. (SMC6)
+- `branch(b1)`, `branch(b2)`, `branch(b3)`: Completely lack `guard(...)` statements, leaving outgoing edges unmapped to the source conditions "If it does", "If not", and "If the test is not green". (SMC4, SMC5)
+- `action(n5, "is the test green")`, `action(n7, "does the level satisfy the project requirements")`, `action(n12, "does the level satisfy the project requirements")`: Decision points are incorrectly modeled as executable `action` nodes rather than being captured by variables/guards attached to the `branch` nodes. (SMC2)
+- `precedence(n9, n9)`: Incorrectly models "continue the process" as a self-loop on node `n9`; the source implies iterating back to an earlier stage (e.g., "write a failing test"). (SMC3, SMC4)
+- `action(n8, "end process")`, `action(n13, "end process")`, `action(n15, "end process")`: Unnecessarily insert explicit action nodes before termination; the source simply states "the process ends", which maps directly to the `end(...)` elements without intermediate steps. (SMC2)

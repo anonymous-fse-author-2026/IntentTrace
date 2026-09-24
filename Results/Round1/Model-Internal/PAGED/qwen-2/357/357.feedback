@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i2:they should search for a book (reason: The mandatory search step is entirely absent; the model skips directly from visiting the marketplace to evaluating whether the book was found.)
+- [N2] Node-level omission: i3:After finding the desired book (reason: No element faithfully implements this temporal transition; the only candidate (action:n3) mutates it into a question, leaving the intended sequential logic uncovered.)
+- [N3] Within matched traces (0->0) omitted: i2:they should search for a book
+
+Addition
+- [N4] Node-level addition: action(n1,"start the process") (reason: Invented generic initialization step with no corresponding source instruction.)
+- [N5] Node-level addition: guard(b1,n4,"v1 = 'Yes'") (reason: Fabricated conditional guards ('Yes'/'No') that support artificial decision branches not described in the source text.)
+- [N6] Node-level addition: guard(b1,n8,"v1 = 'No'") (reason: Fabricated conditional guards ('Yes'/'No') that support artificial decision branches not described in the source text.)
+- [N7] Node-level addition: guard(b2,n6,"v2 = 'Yes'") (reason: Fabricated conditional guards ('Yes'/'No') that support artificial decision branches not described in the source text.)
+- [N8] Node-level addition: guard(b2,n9,"v2 = 'No'") (reason: Fabricated conditional guards ('Yes'/'No') that support artificial decision branches not described in the source text.)
+- [N9] Node-level addition: action(n8,"end of process") (reason: Invented fallback and exit actions tied to the artificially created negative branches, lacking any textual basis.)
+- [N10] Node-level addition: action(n9,"contact support or end process") (reason: Invented fallback and exit actions tied to the artificially created negative branches, lacking any textual basis.)
+- [N11] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n4,"add used copy to cart") -> action(n5,"can you proceed with purchase?") -> branch(b2,XOR) -> action(n9,"contact support or end process") -> end(e3)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n8,"end of process") -> end(e2)
+- [N13] Within matched traces (0->0) added: init(i1)
+- [N14] Within matched traces (0->0) added: action(n1,"start the process")
+
+Mutation
+- [N15] Node-level mutation: element=action(n3,"did you find the book?"); source=i3:After finding the desired book; reason=Transforms a temporal sequence marker into an interactive yes/no question, distorting a linear flow step into a decision prompt not present in the source.
+- [N16] Node-level mutation: element=action(n5,"can you proceed with purchase?"); source=i5:proceed to complete the purchase; reason=Alters a direct procedural instruction into a confirmation question, injecting an unrequested branching decision point.

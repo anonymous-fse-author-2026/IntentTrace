@@ -1,0 +1,8 @@
+- branch(b1, XOR): Missing `guard` declarations for outgoing edges to `n7` and `n8`, failing to capture the documented conditional routing: "If the applicant is eligible... If the applicant is not eligible...".
+- defines(v1, "Is applicant eligible", {}): Specifies an empty value range `{}` instead of a meaningful set (e.g., `{true, false}`), violating SMC6 since it cannot represent the binary decision required by: "If the applicant is eligible... If the applicant is not eligible...".
+- action(n4, "All assessments completed"): Hallucinates an explicit intermediate step not found in the description, which transitions directly from the parallel tasks to the next phase: "After that, the eligibility of the applicant is assessed."
+- action(n6, "Is applicant eligible"): Introduces a redundant decision-action node before the XOR branch, contradicting the source's direct flow: "the eligibility of the applicant is assessed. If the applicant is eligible, the acceptance pack is prepared."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

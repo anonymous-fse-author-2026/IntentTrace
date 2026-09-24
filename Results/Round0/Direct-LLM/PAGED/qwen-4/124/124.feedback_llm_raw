@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)`: Incorrectly models an exclusive choice instead of concurrent execution. The source explicitly states "At the same time, two steps need to be completed", requiring an AND gateway.
+- `defines(v1, "order rejected?", {"Accepted"})`: Omits "Rejected" from the value space. The source explicitly identifies both rejection and acceptance as valid conditions that allow the process to continue.
+- `guard(b1, n4, v1 = 'Accepted')` and `guard(b1, n5, v1 = 'Accepted')`: Restrict flow progression to only accepted orders. The source states "If the order is to be rejected, the process should continue... [and] if accepted, the process should also continue", meaning both outcomes must trigger the subsequent parallel steps.
+- `action(n8, "end")` and `action(n11, "end")`: Hallucinates explicit processing steps named "end". The source only describes process termination implicitly ("the process ends"), not as distinct executable actions.
+- `precedence(n3, b1)` with `branch(b1, XOR)`: Imposes a mandatory routing decision immediately after reviewing the order, contradicting the source which indicates that both rejection and acceptance follow identical subsequent progression without divergent paths.

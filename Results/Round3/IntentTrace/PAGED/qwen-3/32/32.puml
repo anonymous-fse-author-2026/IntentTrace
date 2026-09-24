@@ -1,0 +1,19 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+repeat :;
+:Enter Expenses;
+:Generate Spreadsheet;
+:Approval Check 1;
+:v1: Approval Check 1 ({Approved, Disapproved}); <<objectSignal>>
+repeat while () is ([v1 = 'Disapproved'] If the request is not approved, the process goes back to entering expenses.) not ([v1 = 'Approved'] However, if the request is approved, the expenses can be paid out.)
+:Payout;
+:Approval Check 2;
+:v2: Approval Check 2 ({Approved, Disapproved}); <<objectSignal>>
+if () then ([v2 = 'Disapproved'] If it is not approved, the process goes back to entering expenses.)
+else ([v2 = 'Approved'] But if it is approved, the expenses can be paid out.)
+stop
+endif
+@enduml

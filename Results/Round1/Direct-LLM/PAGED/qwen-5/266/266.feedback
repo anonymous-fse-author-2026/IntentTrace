@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: i2:an informational meeting that lasts half a day (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N2] Node-level omission: i5:work on the storyboard (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N3] Node-level omission: i9:site design (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N4] Node-level omission: i11:site development (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N5] Node-level omission: i12:review process (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N6] Node-level omission: i14:approval stage (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N7] Node-level omission: i19:site needs to be rebuilt (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N8] Node-level omission: i23:site needs to be rebuilt again (reason: Per strict coverage audit, these units carry explicit durations and/or participant assignments that are entirely absent from the model. Because the corresponding actions mutate/drop this data, no element faithfully implements these source units.)
+- [N9] Within matched traces (1->3) omitted: i9:site design
+- [N10] Within matched traces (1->3) omitted: i7:the process ends
+- [N11] Within matched traces (2->3) omitted: i7:the process ends
+- [N12] Within matched traces (3->3) omitted: i9:site design
+- [N13] Within matched traces (3->3) omitted: i19:site needs to be rebuilt
+- [N14] Within matched traces (3->3) omitted: i20:If the rebuild is complete
+- [N15] Within matched traces (3->3) omitted: i7:the process ends
+- [N16] Within matched traces (4->5) omitted: i9:site design
+- [N17] Within matched traces (5->3) omitted: i19:site needs to be rebuilt
+- [N18] Within matched traces (5->3) omitted: i20:If the rebuild is complete
+- [N19] Within matched traces (5->3) omitted: i7:the process ends
+
+Addition
+- [N20] Node-level addition: guard(b_sb,e_sb_fail,"v_sb = 'No'") (reason: Invents a termination path for a failed storyboard. The source text only specifies subsequent steps if the storyboard is successful, implying continuation rather than immediate termination.)
+- [N21] Node-level addition: guard(b2,n9,"v2 = 'Not successful'") (reason: Invents a failure path and termination action for the review step. The source provides no instruction for handling an unsuccessful review.)
+- [N22] Node-level addition: action(n9,"End process") (reason: Invents a failure path and termination action for the review step. The source provides no instruction for handling an unsuccessful review.)
+- [N23] Added trace (model 1): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> end(e_sb_fail)
+- [N24] Added trace (model 2): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N25] Added trace (model 4): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n5,"Prepare content") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> branch(b_rb,XOR) -> end(e_rb_complete)
+- [N26] Added trace (model 6): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n9,"End process") -> end(e2)
+- [N27] Added trace (model 7): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n11,"End process") -> end(e3)
+- [N28] Added trace (model 8): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> branch(b_rb,XOR) -> end(e_rb_complete)
+- [N29] Added trace (model 9): init(i1) -> action(n1,"Informational meeting") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b_sb,XOR) -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n7,"Develop site") -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n12,"Rebuild site") -> branch(b_rb,XOR) -> action(n17,"Rebuild site again") -> end(e_rb_again_complete)
+
+Mutation
+- [N30] Node-level mutation: element=action(n1,"Informational meeting"); source=i2:an informational meeting that lasts half a day; reason=Drops explicit duration ('half a day') and participant list ('customer and web design team').
+- [N31] Node-level mutation: element=action(n4,"Create storyboard"); source=i5:work on the storyboard; reason=Drops explicit duration ('full day') and participant list.
+- [N32] Node-level mutation: element=action(n6,"Design site"); source=i9:site design; reason=Drops explicit duration ('10 days') and assigned actor ('web design team').
+- [N33] Node-level mutation: element=action(n7,"Develop site"); source=i11:site development; reason=Drops explicit duration ('2 days') and assigned actor.
+- [N34] Node-level mutation: element=action(n8,"Review site"); source=i12:review process; reason=Drops explicit duration ('1 day').
+- [N35] Node-level mutation: element=action(n10,"Approve site"); source=i14:approval stage; reason=Drops explicit duration ('half a day').
+- [N36] Node-level mutation: element=action(n12,"Rebuild site"); source=i19:site needs to be rebuilt; reason=Drops explicit duration ('3 days').
+- [N37] Node-level mutation: element=action(n17,"Rebuild site again"); source=i23:site needs to be rebuilt again; reason=Drops explicit duration ('3 days').

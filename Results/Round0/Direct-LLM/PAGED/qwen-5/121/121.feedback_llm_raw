@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start passenger process")`: Hallucinated step; the source states "the process begins by filling in their information" without mentioning any preliminary action.
+- `action(n4, "Payment successful?")` and `branch(b1, XOR)`: Hallucinates a conditional decision and split; the source describes a strictly linear sequence ("After completing the payment, the process comes to an end") with no success validation or branching logic.
+- `action(n6, "Contact support")`, `action(n7, "End of process with support contact")`, and `end(e2)`: Hallucinates an alternative support/failure pathway entirely absent from the source description.
+- `action(n5, "End of successful process")` and `end(e1)`: Hallucinates a success-specific termination point; the source simply states "the process comes to an end" unconditionally.
+- `defines(v1, "Payment successful?", {})`: Hallucinates a decision variable tied to the invented branch condition; no such variable or condition exists in the source.
+- Omission of "completing the payment": The model fails to include this explicit step from the source, substituting it with a query node (`n4`) and a branch instead of a direct action leading to termination.
+- `precedence(n4, b1)`, `precedence(b1, n5)`, and `precedence(b1, n6)`: These control-flow edges enforce an XOR-split structure that violates the uninterrupted sequential chronology specified in the source text.

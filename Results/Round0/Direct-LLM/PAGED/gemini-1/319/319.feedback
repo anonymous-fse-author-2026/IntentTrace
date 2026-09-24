@@ -1,0 +1,10 @@
+- `actor(a_default, "Default", ...)`: The source text explicitly states the process is "For buyers", but the model assigns all responsibilities to a hallucinated "Default" actor.
+- `branch(b2, AND)`: The text describes an exclusive or inclusive choice after selecting a book ("either... or...", "Alternatively..."), but the model uses a parallel `AND` gateway, incorrectly forcing these paths to execute concurrently.
+- `precedence(b2, n4)` and `precedence(b2, n9)`: The model omits the direct option to "see a list of new copies" immediately after choosing a book, providing only paths to view book details (`n4`) or view used copies (`n9`).
+- `precedence(n8, c1)` and `precedence(c1, n10)`: The model incorrectly routes the "view: new copies" path (`n8`) into "evaluate and select a copy from the list" (`n10`). The source text only associates evaluating the list with the used copies path ("If they choose to view a list of used copies, they can evaluate the list...").
+- `action(n3, "do you want to view book details")` and `action(n5, "do you want to select a copy or view new copies?")`: The model improperly hallucinates decision questions as explicit sequential actions rather than handling them as branching logic.
+- `action(n1, "start procedure")`, `action(n7, "end procedure")`, and `action(n11, "end procedure")`: The model hallucinates literal start and end steps as process actions, which do not exist in the described source behavior.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

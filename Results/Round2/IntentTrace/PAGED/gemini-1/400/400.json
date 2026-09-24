@@ -1,0 +1,412 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "if the answer is \"No\""
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "If the answer is \"No\" again"
+    },
+    {
+      "id": "c0",
+      "type": "converge"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "we continue the process"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "we look up the Vendor on SAP"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "OR"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "If the answer is \"No\""
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "we need a Vendor master record"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "But if the answer is \"Yes\""
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "And if the answer is \"Yes\" again"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "then we enter the invoice in SAP"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "However, if the answer is \"Yes\""
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "then we give it priority"
+    },
+    {
+      "id": "c3",
+      "type": "converge"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "we place the entered invoices in the normal Outbox"
+    },
+    {
+      "id": "c4",
+      "type": "converge"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "and the process ends"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Answer 1",
+      "R_X": [
+        "No",
+        "No again",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Answer 2",
+      "R_X": [
+        "No",
+        "Yes",
+        "Yes again"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Continue from priority",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "b1",
+        "i2",
+        "i4",
+        "c0",
+        "i3",
+        "i7",
+        "c1",
+        "i11",
+        "b2",
+        "i5",
+        "i12",
+        "i14",
+        "i16",
+        "c2",
+        "i15",
+        "i6",
+        "i9",
+        "c3",
+        "i17",
+        "c4",
+        "i13",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "c0"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "c0"
+    },
+    {
+      "type": "precedence",
+      "A": "c0",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "c4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "c3",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "c4"
+    },
+    {
+      "type": "precedence",
+      "A": "c4",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i4",
+      "condition": "v1 = 'No again'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i7",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i5",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i14",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i6",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i16",
+      "condition": "v2 = 'Yes again'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning,"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\""
+    },
+    {
+      "id": "i3",
+      "content": "we continue the process"
+    },
+    {
+      "id": "i4",
+      "content": "If the answer is \"No\" again"
+    },
+    {
+      "id": "i5",
+      "content": "If the answer is \"No\""
+    },
+    {
+      "id": "i6",
+      "content": "However, if the answer is \"Yes\""
+    },
+    {
+      "id": "i7",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "i9",
+      "content": "then we give it priority"
+    },
+    {
+      "id": "i11",
+      "content": "we look up the Vendor on SAP"
+    },
+    {
+      "id": "i12",
+      "content": "we need a Vendor master record"
+    },
+    {
+      "id": "i13",
+      "content": "and the process ends"
+    },
+    {
+      "id": "i14",
+      "content": "But if the answer is \"Yes\""
+    },
+    {
+      "id": "i15",
+      "content": "then we enter the invoice in SAP"
+    },
+    {
+      "id": "i16",
+      "content": "And if the answer is \"Yes\" again"
+    },
+    {
+      "id": "i17",
+      "content": "we place the entered invoices in the normal Outbox"
+    }
+  ]
+}

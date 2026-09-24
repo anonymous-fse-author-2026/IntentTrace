@@ -1,0 +1,220 @@
+{
+  "elements": [
+    {
+      "id": "s_start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "Look at the order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "Preparing the assembling order"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "Checking availability"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "Check for Backorder"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "Checking availability again"
+    },
+    {
+      "id": "i6",
+      "type": "end"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "Confirm Reservation"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "Assemble the bike"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "Ship the product"
+    },
+    {
+      "id": "e_final",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v2",
+      "name": "Order Status",
+      "R_X": [
+        "Backorder",
+        "Reserved"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_company",
+      "name": "Company",
+      "assigned_nodes": [
+        "s_start",
+        "i1",
+        "b1",
+        "i2",
+        "i3",
+        "c1",
+        "i4",
+        "b2",
+        "i5",
+        "i6",
+        "i7",
+        "i8",
+        "i9",
+        "e_final"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "s_start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "e_final"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i5",
+      "condition": "v2 = \"Backorder\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i7",
+      "condition": "v2 = \"Reserved\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the company, the first step is to look at the order."
+    },
+    {
+      "id": "i3",
+      "content": "preparing the assembling order"
+    },
+    {
+      "id": "i4",
+      "content": "checking availability"
+    },
+    {
+      "id": "i5",
+      "content": "If there is a backorder,"
+    },
+    {
+      "id": "i6",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "i7",
+      "content": "and the process ends."
+    },
+    {
+      "id": "i8",
+      "content": "If the item can be reserved,"
+    },
+    {
+      "id": "i9",
+      "content": "The next steps are to assemble the bike and then ship the product."
+    }
+  ]
+}

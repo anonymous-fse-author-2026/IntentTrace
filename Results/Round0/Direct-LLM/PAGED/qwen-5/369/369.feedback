@@ -1,0 +1,8 @@
+- `defines(v1, "is pesto available?", {})`, `defines(v2, "has tomato sauce been stolen?", {})`: Empty ranges `{}` fail to specify the boolean decision space required by the source conditions "If pesto is available..." and "If tomato sauce is stolen...", violating SMC6.
+- `branch(b1, ...)` & `branch(b2, ...)`: Missing corresponding `guard(...)` statements leaves the XOR splits unconditioned, failing to implement the source's explicit routing rules and violating SMC4/SMC6.
+- `action(n4, "cook spaghetti")`: Precedence edges `precedence(b3, n4)` and `precedence(n4, c1)` isolate this task, causing it to terminate at `c1` and never reach `action(n11, "combine meal components...")`. This contradicts "Once the pesto is obtained, cook the spaghetti." and omits integrating the cooked spaghetti into the final meal (SMC1, SMC3, SMC5).
+- `converge(c1)` flow: Forces mandatory synchronization of the parallel check/cook phase before reaching `action(n6, "is pesto available?")`, artificially delaying the decision and misrepresenting the source's progression where the conditional branch should immediately follow the availability check (SMC3, SMC4).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required.

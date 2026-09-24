@@ -1,0 +1,8 @@
+
+
+- `action(n1, "Start the invoice processing")`: Hallucinates a preliminary step; the description explicitly states, "The first step is to receive and categorize the invoice."
+- `defines(v1, ..., {"Reject invoice", "Return invoice to client for completion", "Process Invoice for SAP Entry"})`: Omits "Forward Invoice to Admin Officer" from the decision variable's value space, contradicting the four documented instruction options.
+- `precedence(b1, n4)`: Lacks a corresponding `guard` statement to route the "Forward Invoice to Admin Officer" instruction, violating XOR branch routing completeness.
+- `action(n4, "Sort the invoice")`: Leaves the branch path dangling with no outgoing `precedence` or `end` node, failing to complete the execution flow after sorting.
+- `action(n6, "Receive and categorize the invoice again")`: Missing an outgoing `precedence` linking back to `n2` (or `n3`) to realize the described feedback loop ("the invoice is received and categorized again").
+- `action(n5, "End process")` and `action(n9, "End process")`: Misrepresents process termination as discrete action steps rather than direct transitions to `end` nodes, contrary to the description stating "the process ends there" and "the process ends."

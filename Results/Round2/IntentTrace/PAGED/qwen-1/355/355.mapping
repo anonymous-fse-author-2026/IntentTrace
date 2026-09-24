@@ -1,0 +1,899 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1",
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin the process, start by checking the customer's order."
+      ],
+      "justification": "Covers process initiation and the first operational step. Redundant/restated phrasing preserves behaviour."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_reg",
+        "action:n_reg"
+      ],
+      "verbatim_texts": [
+        "If the customer is a registered customer, then check their payment morale."
+      ],
+      "justification": "Models the XOR customer-type split and the registered-customer path correctly."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_new",
+        "action:n_new",
+        "guard:b_stat->c_avail"
+      ],
+      "verbatim_texts": [
+        "If they are a new customer, then check their status."
+      ],
+      "justification": "Captures the new-customer branch, status-check action, and subsequent status routing."
+    },
+    {
+      "refs": [
+        "guard:b_morale->c_avail"
+      ],
+      "verbatim_texts": [
+        "If their payment morale is good, continue with the process."
+      ],
+      "justification": "Models the morale decision gateway and the positive continuation path."
+    },
+    {
+      "refs": [
+        "guard:b_morale->c_rej",
+        "guard:b_stat->c_rej",
+        "action:n_rej"
+      ],
+      "verbatim_texts": [
+        "If their payment morale is bad or if they are an end customer, reject the order and end the process."
+      ],
+      "justification": "Accurately routes both rejection conditions to a convergence point, rejection action, and explicit end."
+    },
+    {
+      "refs": [
+        "guard:b_cust->n_whol"
+      ],
+      "verbatim_texts": [
+        "If the customer is a wholesaler,"
+      ],
+      "justification": "Branch guard for the wholesaler path."
+    },
+    {
+      "refs": [
+        "action:n_whol"
+      ],
+      "verbatim_texts": [
+        "enter their data and take the order."
+      ],
+      "justification": "Direct match for the wholesaler processing step."
+    },
+    {
+      "refs": [
+        "action:n_avail"
+      ],
+      "verbatim_texts": [
+        "check the availability of the items."
+      ],
+      "justification": "Joins prior paths and executes the availability check."
+    },
+    {
+      "refs": [
+        "action:n_stock_q",
+        "guard:b_stock->n_outs",
+        "action:n_outs"
+      ],
+      "verbatim_texts": [
+        "If the items are out of stock, start production."
+      ],
+      "justification": "Condition re-typed as action+branch; correctly routes out-of-stock case to production start."
+    },
+    {
+      "refs": [
+        "guard:b_stock->n_ins",
+        "action:n_ins"
+      ],
+      "verbatim_texts": [
+        "If they are in stock, continue with the process."
+      ],
+      "justification": "Correctly routes in-stock case to process continuation."
+    },
+    {
+      "refs": [
+        "action:n_conf"
+      ],
+      "verbatim_texts": [
+        "Once the availability is checked, send the order confirmation."
+      ],
+      "justification": "Direct match for confirmation dispatch after availability check."
+    },
+    {
+      "refs": [
+        "action:n_prod",
+        "action:n_conf_p"
+      ],
+      "verbatim_texts": [
+        "produce the article and send the order confirmation."
+      ],
+      "justification": "Captures production step, second confirmation action, and their convergence with the main confirmation path."
+    },
+    {
+      "refs": [
+        "action:n_inv"
+      ],
+      "verbatim_texts": [
+        "send the invoice and deliver the product."
+      ],
+      "justification": "Direct match for parallel invoicing and delivery."
+    },
+    {
+      "refs": [
+        "action:n_pay_q"
+      ],
+      "verbatim_texts": [
+        "Check the payment status."
+      ],
+      "justification": "Direct match for payment verification step."
+    },
+    {
+      "refs": [
+        "guard:b_pay->n_close",
+        "action:n_close"
+      ],
+      "verbatim_texts": [
+        "If payment is received, close the order."
+      ],
+      "justification": "Models payment decision, closure action, and implicit successful termination."
+    },
+    {
+      "refs": [
+        "guard:b_pay->n_rem_q",
+        "action:n_rem_q"
+      ],
+      "verbatim_texts": [
+        "If no payment is received, check the number of reminders."
+      ],
+      "justification": "Routes unpaid status to reminder-count verification."
+    },
+    {
+      "refs": [
+        "guard:b_rem->n_law",
+        "action:n_law"
+      ],
+      "verbatim_texts": [
+        "If there are more than three reminders, engage a lawyer."
+      ],
+      "justification": "Correctly applies the >3 threshold, engages legal action, and terminates this path."
+    },
+    {
+      "refs": [
+        "guard:b_rem->n_send_rem",
+        "action:n_send_rem"
+      ],
+      "verbatim_texts": [
+        "If there are three or fewer reminders, send a reminder."
+      ],
+      "justification": "Correctly applies the <=3 threshold, sends reminder, and terminates this path."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start process",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start process"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "check customer order",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: check customer order"
+    },
+    {
+      "ref_id": "branch:b_cust",
+      "kind": "branch",
+      "node_id": "b_cust",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_cust",
+        "b_cust"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_cust (XOR)"
+    },
+    {
+      "ref_id": "action:n_reg",
+      "kind": "action",
+      "node_id": "n_reg",
+      "gateway": "",
+      "string_value": "check payment morale",
+      "aliases": [
+        "action:n_reg",
+        "n_reg"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_reg: check payment morale"
+    },
+    {
+      "ref_id": "branch:b_morale",
+      "kind": "branch",
+      "node_id": "b_morale",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_morale",
+        "b_morale"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_morale (XOR)"
+    },
+    {
+      "ref_id": "action:n_new",
+      "kind": "action",
+      "node_id": "n_new",
+      "gateway": "",
+      "string_value": "check customer status",
+      "aliases": [
+        "action:n_new",
+        "n_new"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_new: check customer status"
+    },
+    {
+      "ref_id": "branch:b_stat",
+      "kind": "branch",
+      "node_id": "b_stat",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_stat",
+        "b_stat"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_stat (XOR)"
+    },
+    {
+      "ref_id": "action:n_whol",
+      "kind": "action",
+      "node_id": "n_whol",
+      "gateway": "",
+      "string_value": "enter data and take order",
+      "aliases": [
+        "action:n_whol",
+        "n_whol"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_whol: enter data and take order"
+    },
+    {
+      "ref_id": "converge:c_avail",
+      "kind": "converge",
+      "node_id": "c_avail",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_avail",
+        "c_avail"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_avail"
+    },
+    {
+      "ref_id": "action:n_avail",
+      "kind": "action",
+      "node_id": "n_avail",
+      "gateway": "",
+      "string_value": "check item availability",
+      "aliases": [
+        "action:n_avail",
+        "n_avail"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_avail: check item availability"
+    },
+    {
+      "ref_id": "action:n_stock_q",
+      "kind": "action",
+      "node_id": "n_stock_q",
+      "gateway": "",
+      "string_value": "are items in stock",
+      "aliases": [
+        "action:n_stock_q",
+        "n_stock_q"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_stock_q: are items in stock"
+    },
+    {
+      "ref_id": "branch:b_stock",
+      "kind": "branch",
+      "node_id": "b_stock",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_stock",
+        "b_stock"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_stock (XOR)"
+    },
+    {
+      "ref_id": "action:n_ins",
+      "kind": "action",
+      "node_id": "n_ins",
+      "gateway": "",
+      "string_value": "continue with process",
+      "aliases": [
+        "action:n_ins",
+        "n_ins"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_ins: continue with process"
+    },
+    {
+      "ref_id": "action:n_outs",
+      "kind": "action",
+      "node_id": "n_outs",
+      "gateway": "",
+      "string_value": "start production",
+      "aliases": [
+        "action:n_outs",
+        "n_outs"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_outs: start production"
+    },
+    {
+      "ref_id": "action:n_prod",
+      "kind": "action",
+      "node_id": "n_prod",
+      "gateway": "",
+      "string_value": "produce article",
+      "aliases": [
+        "action:n_prod",
+        "n_prod"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_prod: produce article"
+    },
+    {
+      "ref_id": "action:n_conf",
+      "kind": "action",
+      "node_id": "n_conf",
+      "gateway": "",
+      "string_value": "send order confirmation",
+      "aliases": [
+        "action:n_conf",
+        "n_conf"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_conf: send order confirmation"
+    },
+    {
+      "ref_id": "action:n_conf_p",
+      "kind": "action",
+      "node_id": "n_conf_p",
+      "gateway": "",
+      "string_value": "send order confirmation",
+      "aliases": [
+        "action:n_conf_p",
+        "n_conf_p"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_conf_p: send order confirmation"
+    },
+    {
+      "ref_id": "converge:c_conf",
+      "kind": "converge",
+      "node_id": "c_conf",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_conf",
+        "c_conf"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_conf"
+    },
+    {
+      "ref_id": "action:n_inv",
+      "kind": "action",
+      "node_id": "n_inv",
+      "gateway": "",
+      "string_value": "send invoice and deliver product",
+      "aliases": [
+        "action:n_inv",
+        "n_inv"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_inv: send invoice and deliver product"
+    },
+    {
+      "ref_id": "action:n_pay_q",
+      "kind": "action",
+      "node_id": "n_pay_q",
+      "gateway": "",
+      "string_value": "check payment status",
+      "aliases": [
+        "action:n_pay_q",
+        "n_pay_q"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_pay_q: check payment status"
+    },
+    {
+      "ref_id": "branch:b_pay",
+      "kind": "branch",
+      "node_id": "b_pay",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_pay",
+        "b_pay"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_pay (XOR)"
+    },
+    {
+      "ref_id": "action:n_close",
+      "kind": "action",
+      "node_id": "n_close",
+      "gateway": "",
+      "string_value": "close order",
+      "aliases": [
+        "action:n_close",
+        "n_close"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_close: close order"
+    },
+    {
+      "ref_id": "action:n_rem_q",
+      "kind": "action",
+      "node_id": "n_rem_q",
+      "gateway": "",
+      "string_value": "check number of reminders",
+      "aliases": [
+        "action:n_rem_q",
+        "n_rem_q"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_rem_q: check number of reminders"
+    },
+    {
+      "ref_id": "branch:b_rem",
+      "kind": "branch",
+      "node_id": "b_rem",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_rem",
+        "b_rem"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_rem (XOR)"
+    },
+    {
+      "ref_id": "action:n_law",
+      "kind": "action",
+      "node_id": "n_law",
+      "gateway": "",
+      "string_value": "engage lawyer",
+      "aliases": [
+        "action:n_law",
+        "n_law"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_law: engage lawyer"
+    },
+    {
+      "ref_id": "action:n_send_rem",
+      "kind": "action",
+      "node_id": "n_send_rem",
+      "gateway": "",
+      "string_value": "send reminder",
+      "aliases": [
+        "action:n_send_rem",
+        "n_send_rem"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_send_rem: send reminder"
+    },
+    {
+      "ref_id": "converge:c_rej",
+      "kind": "converge",
+      "node_id": "c_rej",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_rej",
+        "c_rej"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_rej"
+    },
+    {
+      "ref_id": "action:n_rej",
+      "kind": "action",
+      "node_id": "n_rej",
+      "gateway": "",
+      "string_value": "reject order",
+      "aliases": [
+        "action:n_rej",
+        "n_rej"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_rej: reject order"
+    },
+    {
+      "ref_id": "end:e_rej",
+      "kind": "end",
+      "node_id": "e_rej",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_rej",
+        "e_rej"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_rej"
+    },
+    {
+      "ref_id": "end:e_ok",
+      "kind": "end",
+      "node_id": "e_ok",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_ok",
+        "e_ok"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_ok"
+    },
+    {
+      "ref_id": "end:e_law",
+      "kind": "end",
+      "node_id": "e_law",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_law",
+        "e_law"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_law"
+    },
+    {
+      "ref_id": "end:e_rem",
+      "kind": "end",
+      "node_id": "e_rem",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_rem",
+        "e_rem"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_rem"
+    },
+    {
+      "ref_id": "guard:b_cust->n_reg",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'Registered'",
+      "aliases": [
+        "guard:b_cust->n_reg"
+      ],
+      "from": "b_cust",
+      "to": "n_reg",
+      "source_line": "guard b_cust->n_reg: v_cust = 'Registered'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_reg",
+        "condition": "v_cust = 'Registered'"
+      }
+    },
+    {
+      "ref_id": "guard:b_cust->n_new",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'New'",
+      "aliases": [
+        "guard:b_cust->n_new"
+      ],
+      "from": "b_cust",
+      "to": "n_new",
+      "source_line": "guard b_cust->n_new: v_cust = 'New'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_new",
+        "condition": "v_cust = 'New'"
+      }
+    },
+    {
+      "ref_id": "guard:b_cust->n_whol",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cust = 'Wholesaler'",
+      "aliases": [
+        "guard:b_cust->n_whol"
+      ],
+      "from": "b_cust",
+      "to": "n_whol",
+      "source_line": "guard b_cust->n_whol: v_cust = 'Wholesaler'",
+      "guard": {
+        "from": "b_cust",
+        "to": "n_whol",
+        "condition": "v_cust = 'Wholesaler'"
+      }
+    },
+    {
+      "ref_id": "guard:b_morale->c_avail",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_morale = 'Good'",
+      "aliases": [
+        "guard:b_morale->c_avail"
+      ],
+      "from": "b_morale",
+      "to": "c_avail",
+      "source_line": "guard b_morale->c_avail: v_morale = 'Good'",
+      "guard": {
+        "from": "b_morale",
+        "to": "c_avail",
+        "condition": "v_morale = 'Good'"
+      }
+    },
+    {
+      "ref_id": "guard:b_morale->c_rej",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_morale = 'Bad'",
+      "aliases": [
+        "guard:b_morale->c_rej"
+      ],
+      "from": "b_morale",
+      "to": "c_rej",
+      "source_line": "guard b_morale->c_rej: v_morale = 'Bad'",
+      "guard": {
+        "from": "b_morale",
+        "to": "c_rej",
+        "condition": "v_morale = 'Bad'"
+      }
+    },
+    {
+      "ref_id": "guard:b_stat->c_avail",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stat = 'Other'",
+      "aliases": [
+        "guard:b_stat->c_avail"
+      ],
+      "from": "b_stat",
+      "to": "c_avail",
+      "source_line": "guard b_stat->c_avail: v_stat = 'Other'",
+      "guard": {
+        "from": "b_stat",
+        "to": "c_avail",
+        "condition": "v_stat = 'Other'"
+      }
+    },
+    {
+      "ref_id": "guard:b_stat->c_rej",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stat = 'EndCustomer'",
+      "aliases": [
+        "guard:b_stat->c_rej"
+      ],
+      "from": "b_stat",
+      "to": "c_rej",
+      "source_line": "guard b_stat->c_rej: v_stat = 'EndCustomer'",
+      "guard": {
+        "from": "b_stat",
+        "to": "c_rej",
+        "condition": "v_stat = 'EndCustomer'"
+      }
+    },
+    {
+      "ref_id": "guard:b_stock->n_ins",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stock = 'Yes'",
+      "aliases": [
+        "guard:b_stock->n_ins"
+      ],
+      "from": "b_stock",
+      "to": "n_ins",
+      "source_line": "guard b_stock->n_ins: v_stock = 'Yes'",
+      "guard": {
+        "from": "b_stock",
+        "to": "n_ins",
+        "condition": "v_stock = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_stock->n_outs",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stock = 'No'",
+      "aliases": [
+        "guard:b_stock->n_outs"
+      ],
+      "from": "b_stock",
+      "to": "n_outs",
+      "source_line": "guard b_stock->n_outs: v_stock = 'No'",
+      "guard": {
+        "from": "b_stock",
+        "to": "n_outs",
+        "condition": "v_stock = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_pay->n_close",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pay = 'Yes'",
+      "aliases": [
+        "guard:b_pay->n_close"
+      ],
+      "from": "b_pay",
+      "to": "n_close",
+      "source_line": "guard b_pay->n_close: v_pay = 'Yes'",
+      "guard": {
+        "from": "b_pay",
+        "to": "n_close",
+        "condition": "v_pay = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_pay->n_rem_q",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pay = 'No'",
+      "aliases": [
+        "guard:b_pay->n_rem_q"
+      ],
+      "from": "b_pay",
+      "to": "n_rem_q",
+      "source_line": "guard b_pay->n_rem_q: v_pay = 'No'",
+      "guard": {
+        "from": "b_pay",
+        "to": "n_rem_q",
+        "condition": "v_pay = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rem->n_law",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rem = '>3'",
+      "aliases": [
+        "guard:b_rem->n_law"
+      ],
+      "from": "b_rem",
+      "to": "n_law",
+      "source_line": "guard b_rem->n_law: v_rem = '>3'",
+      "guard": {
+        "from": "b_rem",
+        "to": "n_law",
+        "condition": "v_rem = '>3'"
+      }
+    },
+    {
+      "ref_id": "guard:b_rem->n_send_rem",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rem = '<=3'",
+      "aliases": [
+        "guard:b_rem->n_send_rem"
+      ],
+      "from": "b_rem",
+      "to": "n_send_rem",
+      "source_line": "guard b_rem->n_send_rem: v_rem = '<=3'",
+      "guard": {
+        "from": "b_rem",
+        "to": "n_send_rem",
+        "condition": "v_rem = '<=3'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 18,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 32,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 32,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 32,
+    "total_mappable_targets": 46,
+    "input_text_length": 1011,
+    "element_count": 46
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

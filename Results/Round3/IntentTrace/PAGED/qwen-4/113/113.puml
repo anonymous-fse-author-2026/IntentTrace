@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:claim what is requested;
+:check insured status;
+:v1: is claimant insured? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'] if the claimant is not insured)
+:reject claim;
+:notify claimant;
+:end process rejection;
+stop
+else ([v1 = 'Yes'] proceed to evaluate the claim)
+:evaluate claim;
+:is claim simple or complex?;
+:send relevant forms accordingly;
+repeat :check forms for completeness;
+:are all relevant details provided?;
+:v3: are all relevant details provided? ({No, Yes}); <<objectSignal>>
+backward:inform claimant to complete details;
+repeat while () is ([v3 = 'No']) not ([v3 = 'Yes'])
+:register claim;
+stop
+endif
+@enduml

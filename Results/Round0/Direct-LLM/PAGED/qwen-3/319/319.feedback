@@ -1,0 +1,12 @@
+- `action(n1, "start procedure")`, `action(n7, "end procedure")`, `action(n11, "end procedure")`: Hallucinates procedural wrappers; the source states the process "begins by choosing a book" and terminates directly upon selection ("proceed to select a copy and end the process" / "complete the process").
+- `branch(b2, AND)`: Incorrectly enforces parallel execution instead of exclusive choice; the source describes mutually exclusive alternatives: "they can either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies."
+- `precedence(b2, n9)` (and missing `precedence(b2, n8)`): Omits the documented initial alternative to view new copies; the source places it as a primary option after choosing a book, but the model only routes `b2` to details (`n4`) and used copies (`n9`).
+- `precedence(b1, n8)` and `precedence(n5, b1)`: Violates source chronology by placing "view: new copies" downstream of "view: book details"; the source lists viewing new copies as an independent alternative at the first decision point, not conditional on viewing details first.
+- `converge(c1)`: Incorrectly merges the new copies (`n8`) and used copies (`n9`) flows before `n10`; the source restricts evaluation to the used copies path: "if they choose to view a list of used copies, they can evaluate the list and then select their preferred copy".
+- `defines(v1, "do you want to select a copy or view new copies?", {})`: Specifies an empty value range `{}` instead of valid choice values, and lacks `guard` statements to link decisions to branches, failing to model the documented selection mechanics.
+- `actor(a_default, "Default", [...])`: Falsely assigns all tasks to a generic participant; the source explicitly states "For buyers, the process begins...", meaning all steps belong to the buyer role.
+- `action(n3, "do you want to view book details")`, `action(n5, "do you want to select a copy or view new copies?")`: Node payloads are phrased as interrogative prompts rather than declarative process steps, distorting the meaning of actions compared to the source's descriptive progression.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

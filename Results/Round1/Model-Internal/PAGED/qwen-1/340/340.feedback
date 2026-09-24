@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i5:if they already have the availability information, they can proceed with the process. (reason: No action or accurate guard explicitly implements this alternative path. The model routes through a distorted guard/converge instead of faithfully capturing the proceed step.)
+- [N2] Node-level omission: i6:proceed with the process. (reason: No action or accurate guard explicitly implements this alternative path. The model routes through a distorted guard/converge instead of faithfully capturing the proceed step.)
+- [N3] Node-level omission: i7:If the parts are supplied to the customer, the team can also continue with the process. (reason: The alternative condition regarding supplied parts and the explicit 'continue with the process' instruction are entirely absent from the model.)
+- [N4] Node-level omission: i8:the team can also continue with the process. (reason: The alternative condition regarding supplied parts and the explicit 'continue with the process' instruction are entirely absent from the model.)
+- [N5] Node-level omission: i9:continue with the process. (reason: The alternative condition regarding supplied parts and the explicit 'continue with the process' instruction are entirely absent from the model.)
+- [N6] Omitted trace (input 1): i1:the first step is to identify the parts. -> i5:if they already have the availability information, they can proceed with the process. -> i6:proceed with the process. -> i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer. -> i16:After all the necessary parts are collected -> i17:proceed with the payment. -> i18:Once the payment is made -> i19:the process comes to an end.
+- [N7] Omitted trace (input 2): i1:the first step is to identify the parts. -> i7:If the parts are supplied to the customer, the team can also continue with the process. -> i8:the team can also continue with the process. -> i9:continue with the process. -> i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer. -> i16:After all the necessary parts are collected -> i17:proceed with the payment. -> i18:Once the payment is made -> i19:the process comes to an end.
+- [N8] Omitted trace (input 3): i1:the first step is to identify the parts. -> i10:However, if they need to record the customer's details, they should order and receive the part from Disuki. -> i11:if they need to record the customer's details, they should order and receive the part from Disuki. -> i12:record the customer's details -> i13:order and receive the part from Disuki. -> i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer. -> i16:After all the necessary parts are collected -> i17:proceed with the payment. -> i18:Once the payment is made -> i19:the process comes to an end.
+- [N9] Within matched traces (0->2) omitted: i4:check the availability of the parts.
+- [N10] Within matched traces (0->2) omitted: i15:contract the customer.
+
+Addition
+- [N11] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no supporting text in the source; the process begins directly with identifying parts.)
+- [N12] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Content 'Check if parts are available or need ordering' is invented. No source unit supports this combined phrasing or condition.)
+- [N13] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: Content 'Contact the customer or after receiving parts' is an invented flow description with no backing in the source text.)
+- [N14] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: Content 'Contact the customer or after receiving parts' is an invented flow description with no backing in the source text.)
+- [N15] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: Content 'Proceed with process or after contacting customer' invents a transition condition that mixes unrelated steps not described together in the source.)
+- [N16] Within matched traces (0->0) added: init(i1)
+- [N17] Within matched traces (0->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N18] Within matched traces (0->0) added: branch(b2,XOR)
+- [N19] Within matched traces (0->0) added: action(n6,"order part from Disuki")
+- [N20] Within matched traces (0->1) added: init(i1)
+- [N21] Within matched traces (0->1) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N22] Within matched traces (0->1) added: branch(b2,XOR)
+- [N23] Within matched traces (0->1) added: action(n7,"receive part from Disuki")
+- [N24] Within matched traces (0->1) added: action(n8,"record customer details")
+- [N25] Within matched traces (0->2) added: init(i1)
+
+Mutation
+- [N26] Node-level mutation: element=action(n5,"do the parts need to be ordered and received from Disuki?"); source=i10:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=The source conditions on needing to record details, but the model action asks whether parts need to be ordered/received. The decision trigger is fundamentally reversed/distorted.
+- [N27] Node-level mutation: element=action(n9,"contact the customer"); source=i15:contract the customer.; reason=Source specifies 'contract'; model changes it to 'contact'. This alters the specific business instruction.
+- [N28] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer, -> i3:they should then check the availability of the parts.; reason=Invents synthetic variable assignment syntax ('v1 =') and loosely paraphrases the condition, failing to reproduce the source instruction faithfully.
+- [N29] Node-level mutation: element=guard(b2,n6,"v2 = 'Order not needed  proceed'"); source=i5:if they already have the availability information, they can proceed with the process. -> i7:If the parts are supplied to the customer, the team can also continue with the process.; reason=Invents variable syntax and erroneously conflates two distinct alternative paths into a single synthetic guard statement.
+- [N30] Node-level mutation: element=guard(b2,n7,"v2 = 'Order and receive the part'"); source=i13:order and receive the part from Disuki.; reason=Drops the critical qualifier 'from Disuki' and wraps the condition in invented variable syntax, changing the target scope.
+- [N31] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i5:if they already have the availability information, they can proceed with the process. -> i7:If the parts are supplied to the customer, the team can also continue with the process. -> i14:Once the part is received, the team can then contract the customer.; reason=Conflates three separate source clauses into one disjointed guard string. Lacks fidelity to any single input element and introduces invented formatting.

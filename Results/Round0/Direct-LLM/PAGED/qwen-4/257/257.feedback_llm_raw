@@ -1,0 +1,8 @@
+
+
+- `action(n7, "stop process no valid address entered")`, `end(e1)`: Hallucinated behavior and termination path; the source explicitly routes both address options forward ("also continue with the process") and contains no fallback, error handling, or early exit condition.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `precedence(b1, n5)`, `precedence(n5, b2)`: Incorrect control-flow logic; the source describes a single decision gate with two alternative conditions, not a sequential nested tree where evaluating a "New shipping address" depends on the outcome of the "Saved shipping address" check.
+- `action(n3, "is Saved shipping address selected")`, `action(n5, "is New shipping address entered")`: Unfaithful node semantics; the source treats these as conditional gating criteria, not discrete executable activities that precede the split.
+- Missing `guard` declarations for `b1` and `b2`: Omits the conditional routing mechanism entirely; the source states explicit branching criteria ("If a 'Saved shipping address' has been selected... However, if a 'New shipping address' has been entered..."), which requires `guard` statements linking the conditions to the branch edges.
+- `defines(v1, "is Saved shipping address selected", {})`, `defines(v2, "is New shipping address entered", {})`: Unfaithful variable specification; the source does not define formal decision variables, and the empty ranges `{}` provide no valid value domain to satisfy the stated conditions or enable guards.
+- `end(e1)`, `end(e2)`: Diverges from source progression; the description outlines a single linear completion ("once the shipping speed has been chosen, the process comes to an end"), whereas the model incorrectly introduces a dual-endpoint topology.

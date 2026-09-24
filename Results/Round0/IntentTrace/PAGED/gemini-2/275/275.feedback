@@ -1,0 +1,23 @@
+Omission
+- [N1] Within matched traces (1->0) omitted: i9:returned to the client via postal mail
+
+Addition
+- [N2] Within matched traces (0->1) added: action(n4,"are invoices marked uncompleted")
+- [N3] Within matched traces (1->0) added: action(n10,"continue process")
+- [N4] Within matched traces (1->0) added: converge(c1)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b3,n13,"v3 = 'No'"); source=i12:checking if the process has been completed -> i13:Finally, the process ends.; reason=The source text states that after checking if the process is completed, the process ends. It does not conditionally branch to ending only when the answer is 'No', making the guard value an altered logic constraint.
+
+Permutation
+- [N6] Within matched traces (1->0) reordered: expected [i10:receive the completed ones] but observed [action(n7,"receive completed invoices")] elsewhere; in its place the model has [branch(b2,XOR)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"receive completed invoices")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['No']`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n13` uses undefined variable `v3`. | DSL: guard(b3,n13,"v3 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n13` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n13,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

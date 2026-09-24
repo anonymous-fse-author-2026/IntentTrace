@@ -1,0 +1,12 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process, begin by checking if the order has been received. -> i3:if the sum of the order is greater than 2000 -> i4:compute a discount of 4% -> i10:Finally, create the bill and the process will come to an end.
+
+Addition
+- [N2] Within matched traces (4->1) added: branch(b1,XOR)
+- [N3] Within matched traces (4->1) added: action(n3,"compute discount of 4 percent")
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n3,"v1 >= 1501"); source=i3:if the sum of the order is greater than 2000; reason=Obvious value error: the model guard uses a threshold of 1501 (v1 >= 1501) for the 4% discount path, but the source explicitly requires 'greater than 2000'. This shifts the decision boundary and changes process behaviour.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=1500.5].

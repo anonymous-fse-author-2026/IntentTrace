@@ -1,0 +1,10 @@
+- action(n1, "start process"): This action is hallucinated; the source text explicitly states to "start with Orders Required".
+- branch(b1, XOR): Missing `guard` statements for its outgoing paths. The text specifies conditions ("Order with prior internal credit allowance" and "order exceeds the purchaser's credit allowance") which are not modeled as guards.
+- branch(b2, XOR): Missing `guard` statements for its outgoing paths. The text specifies conditions ("Payments are Received" and "no payments are received") which are not modeled as guards.
+- branch(b3, XOR): Missing `guard` statements for its outgoing paths. The text specifies conditions ("installation needs to be scheduled" and "does not require installation") which are not modeled as guards.
+- action(n4, "Order with prior internal credit allowance"), action(n6, "Outstanding Balance"), action(n9, "Payments Received"), and action(n14, "installation required"): These represent conditions or states in the text but are incorrectly modeled as sequential actions rather than being evaluated in branching logic.
+- Omitted behavior: The text explicitly states "the process ends at the Warehouse" after an Outstanding Balance leads to a new order, but this end state/progression is entirely omitted from the model.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.

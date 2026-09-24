@@ -1,0 +1,9 @@
+
+
+- `action(n2, "Is the informational meeting successful?")`: Omits the actual meeting task described as "starts with an informational meeting that lasts half a day"; the model jumps straight to checking its outcome.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a single default participant, contradicting the source which specifies "the customer and the web design team" for the meeting/storyboard and "the web design team" for design/development/rebuild.
+- `defines(v1, "Is the informational meeting successful?", {})`, `defines(v2, ...)`, `defines(v3, ...)`: Value ranges are declared as empty `{}`, failing to capture the required decision space (e.g., `{true, false}`) for the documented conditionals.
+- `guard(...)`: Zero guard statements are defined to associate variables `v1`–`v3` with branches `b1`, `b2`, and `b3`, leaving the "If ... successful/rejected" logic unenforced.
+- `precedence(b2, n13)` & `branch(b2, XOR)`: Incorrectly routes the alternative path of the review decision directly to rebuilding. The source states rebuilding occurs only "if the approval is rejected", and the approval decision gateway is missing entirely.
+- `precedence(n3, b4)`: Proceeds directly from the storyboard task to parallel development steps, omitting the conditional checkpoint "If the storyboard is successful, the next steps are...".
+- `action(n5, "Site design and development preparation (10 days)")`: Payload incorrectly merges two distinct activities; the source separates "site design, which takes 10 days" from "preparing the content".

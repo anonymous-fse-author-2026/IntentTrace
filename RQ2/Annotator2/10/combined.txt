@@ -1,0 +1,55 @@
+Root Cause Analysis
+
+Root Cause 1: Several action nodes were left as unconnected dead ends without outgoing transitions, breaking model reachability and structural integrity.
+- Includes:
+    - [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+    - [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+
+Root Cause 2: The model incorrectly hallucinates explicit data capture execution actions and associated custom flow logic (labels and guards) that are not described in the source text.
+- Includes:
+    - [N5] Node-level addition: action(n3,"capture: data from FMA") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N6] Node-level addition: action(n5,"capture: data from Jamendo") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N9] Node-level addition: label(n3,c1,"No  continue") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N10] Node-level addition: guard(b2,c1,"v2 = 'No  continue'") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+
+Root Cause 3: The model invents an explicit action node and corresponding guard for fetching music ids for the next genre rather than properly looping back to the original action.
+- Includes:
+    - [N7] Node-level addition: action(n10,"get: music ids for the next genre") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N12] Node-level addition: guard(b4,n10,"v4 = 'Yes'") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+
+Root Cause 4: The model improperly alters the generic "continue the process" instruction to specifically target "sample handling" and misplaces it in the execution sequence.
+- Includes:
+    - [N27] Node-level mutation: element=action(n11,"continue: to sample handling"); source=i3:we should continue the process.; reason=The text simply says to continue the process, but the model alters this to specify 'continue to sample handling'.
+    - [N28] Within matched traces (1->0) reordered: expected [i3:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]
+    - [N29] Within matched traces (1->1) reordered: expected [i3:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]
+    - [N30] Within matched traces (4->2) reordered: expected [i3:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]
+    - [N31] Within matched traces (4->3) reordered: expected [i3:we should continue the process.] but observed [action(n11,"continue: to sample handling")] elsewhere; in its place the model has [action(n6,"get: music ids for the genre")]
+
+Root Cause 5: The model forces an evaluation of capturing data from FMA even when the execution trace has already taken the alternative Jamendo path.
+- Includes:
+    - [N19] Within matched traces (4->2) added: action(n2,"can we capture data from FMA?")
+    - [N24] Within matched traces (4->3) added: action(n2,"can we capture data from FMA?")
+
+Root Cause 6: The model invents an explicit "end: process completed" node and event for successful downloads, diverging from the source text's explicitly defined ending conditions.
+- Includes:
+    - [N8] Node-level addition: action(n15,"end: process completed") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N15] Within matched traces (1->0) added: action(n15,"end: process completed")
+    - [N16] Within matched traces (1->0) added: end(e2)
+    - [N22] Within matched traces (4->2) added: action(n15,"end: process completed")
+    - [N23] Within matched traces (4->2) added: end(e2)
+
+Root Cause 7: The model fails to implement the necessary cyclic backward flow for genre and sample processing checks, substituting it with incorrect linear branching that omits valid source traces.
+- Includes:
+    - [N1] Omitted trace (input 0): i1:At the beginning, -> i2:if we can capture data from FMA, -> i3:we should continue the process. -> i6:we need to get music ids for the genre. -> i7:If the genre is missing, -> i8:if there are no additional genres, -> i6:we need to get music ids for the genre.
+    - [N2] Omitted trace (input 2): i1:At the beginning, -> i2:if we can capture data from FMA, -> i3:we should continue the process. -> i6:we need to get music ids for the genre. -> i8:if there are no additional genres, -> i10:We should download the sample. -> i11:if there are no additional samples, the process ends.
+    - [N3] Omitted trace (input 3): i1:At the beginning, -> i4:Otherwise, -> i5:if we can capture data from Jamendo, -> i3:we should continue the process. -> i6:we need to get music ids for the genre. -> i7:If the genre is missing, -> i8:if there are no additional genres, -> i6:we need to get music ids for the genre.
+    - [N4] Omitted trace (input 5): i1:At the beginning, -> i4:Otherwise, -> i5:if we can capture data from Jamendo, -> i3:we should continue the process. -> i6:we need to get music ids for the genre. -> i8:if there are no additional genres, -> i10:We should download the sample. -> i11:if there are no additional samples, the process ends.
+    - [N11] Node-level addition: guard(b3,n9,"v3 = 'No  check next'") (reason: These steps, specific guards, and labels have no supporting text; they invent actions (e.g., getting music ids for the next genre, capturing data directly, completing the process separately) and explicit negative flow paths not described in the raw source text.)
+    - [N13] Within matched traces (1->0) added: action(n7,"is the genre missing?")
+    - [N14] Within matched traces (1->0) added: branch(b3,XOR)
+    - [N17] Within matched traces (1->1) added: action(n7,"is the genre missing?")
+    - [N18] Within matched traces (1->1) added: branch(b3,XOR)
+    - [N20] Within matched traces (4->2) added: action(n7,"is the genre missing?")
+    - [N21] Within matched traces (4->2) added: branch(b3,XOR)
+    - [N25] Within matched traces (4->3) added: action(n7,"is the genre missing?")
+    - [N26] Within matched traces (4->3) added: branch(b3,XOR)

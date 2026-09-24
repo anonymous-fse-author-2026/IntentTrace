@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_miranda| Miranda
+|a_charles| Charles
+|a_default|
+start
+:start the process;
+:empty the mailbox;
+:check if mailbox is empty?;
+:v1: check if mailbox is empty? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v1 = 'Mailbox is empty'])
+:end the process;
+stop
+else ([v1 = 'Mailbox is not empty'])
+:continue the process;
+:check if mailbox is empty again?;
+:v2: check if mailbox is empty again? ({Mailbox is empty, Mailbox is not empty}); <<objectSignal>>
+if () then ([v2 = 'Mailbox is empty'])
+:end the process;
+stop
+else ([v2 = 'Mailbox is not empty'])
+:continue the process;
+:verify if information is complete?;
+:v3: verify if information is complete? ({Information is complete, Information is not complete}); <<objectSignal>>
+if () then ([v3 = 'Information is complete'])
+:add incoming mail number  date and record in letter book;
+else ([v3 = 'Information is not complete'])
+:make a telephone call to sender;
+-> After telephone call;
+:complete data by adding incoming mail number  date and record in letter book;
+endif
+|a_miranda|
+:every wednesday evening: take books to miranda;
+|a_default|
+:v4: membership decision ({Approved, Rejected}); <<objectSignal>>
+if () then ([v4 = 'Approved'])
+:stamp 'new member' on the letter and write date;
+:write data in the letter book;
+split
+:calculate fee;
+split again
+|a_charles|
+:hand the letter to charles and ask to write amount in register;
+end split
+|a_default|
+:print membership card with all data and send to new member;
+stop
+else ([v4 = 'Rejected'])
+:write to applicant and inform decision;
+:end the process;
+stop
+endif
+endif
+endif
+@enduml

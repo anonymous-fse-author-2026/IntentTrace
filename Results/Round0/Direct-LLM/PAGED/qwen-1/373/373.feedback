@@ -1,0 +1,13 @@
+- `defines(v2, "Is claim rejection accepted", {"No"})`: Incomplete value range; the source specifies two outcomes ("accepted" and "not accepted"), but the definition only lists `{"No"}` (SMC6).
+- `branch(b2, XOR)` / `guard(b2, n8, v2 = 'No')`: Missing control-flow edge and guard for the "accepted" outcome; the source states `"If the claim rejection is accepted, continue the process. But if the claim rejection is not accepted, also continue the process,"` requiring coverage for both branches (SMC4).
+- `precedence(n5, n9)`: Omits documented step; the source explicitly states `"if the claim is to be accepted, offer the benefit"` before discharge preparation, but the model jumps directly from `action(n5)` to `action(n9)` (SMC1).
+- `action(n11, "Merge after benefit recording and rejection continue")` & `action(n14, "End")`: Hallucinated actions absent from the source text; flow convergence is already modeled by `converge(c1)`/`c2` and process termination by `end(e1)` (SMC1/SMC2).
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | DSL: branch(b2,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n8` uses undefined variable `v2`. | DSL: guard(b2,n8,"v2 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n8,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

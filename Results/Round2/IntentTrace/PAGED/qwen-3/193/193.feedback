@@ -1,0 +1,10 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i12:Next, check if "Digitalization?" is required again.
+
+Addition
+- [N2] Added trace (model 2): init(i1) -> action(n1,"Start with Gross pathology request arrived") -> action(n2,"Registration gross pathology request") -> action(n3,"create barcode scan at start of Registration") -> action(n4,"Assign container to gross pathology request") -> action(n5,"Specimen description") -> action(n6,"pay attention to scan start at Specimen description") -> action(n7,"pay attention to scan end at Specimen description") -> action(n8,"pay attention to scan start for Registration gross pathology request cont") -> branch(b3,AND) -> action(n10,"Tissue processing") -> action(n11,"Digitalization check after Tissue processing") -> branch(b1,XOR) -> action(n13,"continue without digitalization after Tissue processing") -> converge(c1) -> action(n17,"Assign cases to pathologist") -> action(n18,"Microscopic examination and diagnosis") -> action(n19,"Write pathology report") -> action(n20,"Confirm report") -> action(n21,"Deliver pathology report") -> action(n22,"Post report processing") -> action(n23,"Close pathology procedure") -> action(n24,"Deliver pathology report again") -> action(n25,"Complete post report processing") -> end(e1)
+- [N3] Within matched traces (1->1) added: branch(b3,AND)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=0 and out=1. | Node `n17` has in=3 and out=1. | DSL: action(n14,"Digitalization check second time"); action(n17,"Assign cases to pathologist")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b2, c2, n14, n15, n16 | DSL: branch(b2,XOR); converge(c2); action(n14,"Digitalization check second time"); action(n15,"digitalization process second time"); action(n16,"continue without digitalization second time")

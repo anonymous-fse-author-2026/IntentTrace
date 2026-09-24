@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:look at the order;
+:order rejected?;
+:v1: order rejected? ({Rejected, Accepted}); <<objectSignal>>
+if () then ([v1 = 'Accepted'])
+:prepare assembling order;
+else ([v1 = 'Accepted'])
+:check availability;
+endif
+:backorder?;
+:v2: backorder? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:check availability again;
+:end;
+stop
+else ([v2 = 'No'])
+:assemble bike;
+:ship product;
+:end;
+stop
+endif
+@enduml

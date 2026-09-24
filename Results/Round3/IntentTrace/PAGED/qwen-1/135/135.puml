@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Low Inventory;
+:Create P.R.;
+:Create P.R.;
+:Submit P.O.;
+:Ship Material;
+:Shipment okay;
+:v2: Shipment okay ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:Send Payment;
+:proceed to Send Payment;
+:End;
+stop
+else ([v2 = 'No'])
+:Communicate shipment problems;
+:v3: Shipment okay ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:Otherwise, communicate any shipment problems.;
+:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.;
+else ([v3 = 'Yes'])
+:If it is, then proceed to Send Payment.;
+:proceed to Send Payment.;
+:End;
+stop
+endif
+endif
+@enduml

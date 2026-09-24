@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Receive and Categorize Invoice;
+:Is the instruction to Forward Reject Return or Process for SAP?;
+:v1: Is the instruction to Forward Reject Return or Process for SAP? ({Forward, Reject, Return, SAP}); <<objectSignal>>
+switch ()
+case ([v1 = 'Forward'])
+:Sort Invoice;
+stop
+case ([v1 = 'Reject'])
+:Reject Invoice;
+:End Process;
+stop
+case ([v1 = 'Return'])
+:Return Invoice to Client for Completion;
+:Receive and Categorize Invoice;
+case ([v1 = 'SAP'])
+:Process Invoice for SAP Entry;
+:Forward Invoice for Validation;
+:Validate Invoice;
+:End Process;
+endswitch
+@enduml

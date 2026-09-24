@@ -1,0 +1,29 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i4:take a shower
+
+Addition
+- [N2] Node-level addition: action(n6,"take a shower (B)") (reason: These elements represent actions for a second branch sequence ('take a shower (B)', 'have breakfast (B)') and a negative fallback guard ('v2 == false') which are entirely absent from the provided segmented input text.)
+- [N3] Node-level addition: action(n7,"have breakfast (B)") (reason: These elements represent actions for a second branch sequence ('take a shower (B)', 'have breakfast (B)') and a negative fallback guard ('v2 == false') which are entirely absent from the provided segmented input text.)
+- [N4] Node-level addition: guard(b2,n7,"v2 == false") (reason: These elements represent actions for a second branch sequence ('take a shower (B)', 'have breakfast (B)') and a negative fallback guard ('v2 == false') which are entirely absent from the provided segmented input text.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n3,"take a shower (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N6] Added trace (model 3): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast (A)") -> converge(c1) -> action(n5,"still not hungry after first action?") -> branch(b2,XOR) -> action(n7,"have breakfast (B)") -> converge(c2) -> action(n8,"get on the bus and complete process") -> end(e1)
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (0->0) added: action(n5,"still not hungry after first action?")
+- [N9] Within matched traces (0->0) added: branch(b2,XOR)
+- [N10] Within matched traces (0->0) added: action(n6,"take a shower (B)")
+- [N11] Within matched traces (0->0) added: converge(c2)
+- [N12] Within matched traces (1->2) added: action(n2,"are you hungry?")
+- [N13] Within matched traces (1->2) added: converge(c1)
+- [N14] Within matched traces (2->0) added: action(n2,"are you hungry?")
+- [N15] Within matched traces (2->0) added: action(n3,"take a shower (A)")
+- [N16] Within matched traces (2->0) added: converge(c1)
+- [N17] Within matched traces (2->0) added: converge(c2)
+- [N18] Within matched traces (2->0) added: action(n8,"get on the bus and complete process")
+- [N19] Within matched traces (2->0) added: end(e1)
+
+Mutation
+- [N20] Node-level mutation: element=action(n2,"are you hungry?") -> guard(b1,n3,"v1 == false"); source=i3:If you are not hungry; reason=The condition is distorted into an action node phrased as an invented question ('are you hungry?'), and the guard drops the descriptive state entirely in favor of a generic variable check ('v1 == false').
+- [N21] Node-level mutation: element=action(n3,"take a shower (A)"); source=i4:take a shower; reason=The action distorts the text by appending an invented qualifier '(A)' not present in the source.
+- [N22] Node-level mutation: element=guard(b1,n4,"v1 == true") -> action(n4,"have breakfast (A)"); source=i5:Otherwise, have breakfast; reason=The guard simplifies the fallback to a generic boolean 'v1 == true', and the action appends an invented qualifier '(A)'.
+- [N23] Node-level mutation: element=action(n5,"still not hungry after first action?") -> guard(b2,n6,"v2 == true"); source=i6:If you are still not hungry; reason=The condition is modelled as an action containing invented text ('after first action?'), and the guard drops the state for a generic 'v2 == true' check.
+- [N24] Node-level mutation: element=action(n8,"get on the bus and complete process"); source=i7:get on the bus and the process will be complete.; reason=The action changes a statement of fact ('the process will be complete') into an imperative ('complete process') and drops exact source words.

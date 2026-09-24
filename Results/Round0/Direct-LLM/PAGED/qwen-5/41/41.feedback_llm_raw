@@ -1,0 +1,9 @@
+
+
+- `branch(b5, AND)`: Incorrectly models the method selection as parallel execution; the source specifies an exclusive choice ("If the passenger chooses... However, if the passenger prefers...").
+- `action(n6, "is permission granted after exit control checks")`, `action(n7, "...")`, `action(n12, "is the exit control check outcome successful")`, `action(n13, "...")`: Incorrectly declare conditional evaluations as `action` nodes instead of `branch` nodes, misrepresenting control-flow logic.
+- `b1`, `b2`, `b3`, `b4`: Lack required `guard` statements to enforce the source conditions (e.g., "if the passenger is denied permission", "if the outcome is unsuccessful").
+- `defines(v1, "is permission granted after exit control checks", {})`, `v2`, `v3`, `v4`: Value ranges are empty `{}`; they must specify valid domains (e.g., `{true, false}` or explicit status strings) to faithfully reflect the source outcomes.
+- Precedence edges originating from `b5`: Omit a `converge` node, causing the biometrics and ID document streams to remain permanently parallel instead of rejoining for the sequential permission and outcome checks described in the source.
+- `end(e1)`–`e6` and `action(n18)`–`n23`: Hallucinates six distinct termination points and redundant "process ends" steps; the source describes a single process conclusion after the final outcome.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a generic "Default" actor, failing to reflect the source's explicitly stated responsible party ("Passengers").

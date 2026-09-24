@@ -1,0 +1,42 @@
+Omission
+- [N1] Node-level omission: Hand the letter to Charles (reason: The first clause of the unit is completely missing from the model; only the registration step was captured.)
+- [N2] Node-level omission: Ask Charles to write the amount in the register and write the fee amount to the register. (reason: The entire final sentence describing mandatory post-invoice steps is absent from the generated model.)
+- [N3] Within matched traces (2->7) omitted: i12:The process ends.
+- [N4] Within matched traces (5->4) omitted: i12:The process ends.
+
+Addition
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty?") -> branch(b1,XOR) -> action(n4,"end the process") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty?") -> branch(b1,XOR) -> action(n5,"continue the process") -> action(n6,"check if mailbox is empty again?") -> branch(b2,XOR) -> action(n7,"end the process") -> end(e2)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty?") -> branch(b1,XOR) -> action(n5,"continue the process") -> action(n6,"check if mailbox is empty again?") -> branch(b2,XOR) -> action(n8,"continue the process") -> action(n9,"verify if information is complete?") -> branch(b3,XOR) -> action(n10,"add incoming mail number  date and record in letter book") -> converge(c1) -> action(n13,"every wednesday evening: take the letter book and member register to Miranda") -> branch(b4,XOR) -> action(n15,"stamp 'new member' on the letter and write date") -> action(n16,"write data in the letter book") -> branch(b7,AND) -> action(n18,"hand the letter to charles and ask to write amount in register") -> converge(c2) -> action(n19,"print membership card with all data and send to new member") -> action(n20,"add new member to register") -> action(n21,"prepare invoice for new members") -> action(n22,"end the process") -> end(e3)
+- [N8] Added trace (model 6): init(i1) -> action(n1,"start the process at 8:00 am") -> action(n2,"empty the mailbox") -> action(n3,"check if mailbox is empty?") -> branch(b1,XOR) -> action(n5,"continue the process") -> action(n6,"check if mailbox is empty again?") -> branch(b2,XOR) -> action(n8,"continue the process") -> action(n9,"verify if information is complete?") -> branch(b3,XOR) -> action(n11,"make a telephone call to sender") -> action(n12,"complete data by adding incoming mail number  date and record in letter book") -> converge(c1) -> action(n13,"every wednesday evening: take the letter book and member register to Miranda") -> branch(b4,XOR) -> action(n15,"stamp 'new member' on the letter and write date") -> action(n16,"write data in the letter book") -> branch(b7,AND) -> action(n18,"hand the letter to charles and ask to write amount in register") -> converge(c2) -> action(n19,"print membership card with all data and send to new member") -> action(n20,"add new member to register") -> action(n21,"prepare invoice for new members") -> action(n22,"end the process") -> end(e3)
+- [N9] Within matched traces (0->5) added: init(i1)
+- [N10] Within matched traces (0->5) added: branch(b7,AND)
+- [N11] Within matched traces (0->5) added: action(n17,"calculate fee")
+- [N12] Within matched traces (0->5) added: converge(c2)
+- [N13] Within matched traces (0->5) added: action(n20,"add new member to register")
+- [N14] Within matched traces (0->5) added: action(n21,"prepare invoice for new members")
+- [N15] Within matched traces (1->5) added: init(i1)
+- [N16] Within matched traces (1->5) added: action(n16,"write data in the letter book")
+- [N17] Within matched traces (1->5) added: branch(b7,AND)
+- [N18] Within matched traces (1->5) added: action(n20,"add new member to register")
+- [N19] Within matched traces (1->5) added: action(n21,"prepare invoice for new members")
+- [N20] Within matched traces (2->7) added: init(i1)
+- [N21] Within matched traces (2->7) added: branch(b4,XOR)
+- [N22] Within matched traces (3->2) added: init(i1)
+- [N23] Within matched traces (3->2) added: branch(b7,AND)
+- [N24] Within matched traces (3->2) added: action(n17,"calculate fee")
+- [N25] Within matched traces (3->2) added: converge(c2)
+- [N26] Within matched traces (3->2) added: action(n20,"add new member to register")
+- [N27] Within matched traces (3->2) added: action(n21,"prepare invoice for new members")
+- [N28] Within matched traces (4->2) added: init(i1)
+- [N29] Within matched traces (4->2) added: action(n16,"write data in the letter book")
+- [N30] Within matched traces (4->2) added: branch(b7,AND)
+- [N31] Within matched traces (4->2) added: action(n20,"add new member to register")
+- [N32] Within matched traces (4->2) added: action(n21,"prepare invoice for new members")
+- [N33] Within matched traces (5->4) added: init(i1)
+- [N34] Within matched traces (5->4) added: branch(b4,XOR)
+
+Mutation
+- [N35] Node-level mutation: element=guard(b4,n15,"v5 = 'Yes'"); source=If the applicant becomes a member; reason=Guard content uses generic boolean 'v5 = Yes' instead of the explicit source condition 'applicant becomes a member', distorting the specific logic.
+- [N36] Node-level mutation: element=guard(b4,n24,"v5 = 'No'"); source=If the applicant cannot become a member; reason=Guard content uses generic boolean 'v5 = No' instead of the explicit source condition 'applicant cannot become a member'.
+- [N37] Node-level mutation: element=action(n16,"write data in the letter book"); source=i9:After stamping "new Member" on the letter and writing the date on it, write the data.; reason=Element adds the location qualifier 'in the letter book' which is absent from the source unit, altering the target of the action.

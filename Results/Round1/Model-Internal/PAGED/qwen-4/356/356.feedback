@@ -1,0 +1,15 @@
+Omission
+- [N1] Within matched traces (0->3) omitted: i2:At the same time, complete the following steps: deliver the freight and notify the delivery.
+- [N2] Within matched traces (1->4) omitted: i2:At the same time, complete the following steps: deliver the freight and notify the delivery.
+- [N3] Within matched traces (2->1) omitted: i8:Invoice the customer and the process ends with the customer being invoiced.
+
+Addition
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n4,"Deliver Freight") -> end(e5)
+- [N5] Within matched traces (0->3) added: init(i1)
+- [N6] Within matched traces (1->4) added: init(i1)
+- [N7] Within matched traces (2->1) added: init(i1)
+- [N8] Within matched traces (3->2) added: init(i1)
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes (Return Requested)'"); source=i5:If the return is accepted, proceed with accepting the merchandise return.; reason=The guard payload evaluates 'Return Requested' instead of the source's explicit condition 'accepted', distorting the branching logic for the positive arm.
+- [N10] Node-level mutation: element=guard(b1,n8,"v1 = 'No (No Return Request)'"); source=i6:If the return is rejected, reject the merchandise return.; reason=The guard payload evaluates 'No Return Request' instead of the source's explicit condition 'rejected', distorting the branching logic for the negative arm.

@@ -1,0 +1,8 @@
+- action(n1, "Start Metal Works Process"): Payload does not faithfully reflect the source text, which specifies "obtaining the raw material from the received list".
+- defines(v1, "Is raw material available in stock?", {}): The variable range is empty, failing to reflect the possible outcomes (available / not available) for the stock check.
+- branch(b1, XOR): Missing guards on the outgoing edges to represent the source conditions "if the raw material is available in stock" and "If the raw material is not available in stock".
+- action(n4, "Conclude process with available stock"), action(n5, "End"), action(n9, "Conclude process with purchased stock"), action(n10, "End"): The source text simply states to "conclude the process", but the model hallucinates distinct actions for concluding and ending instead of routing directly to the end nodes.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

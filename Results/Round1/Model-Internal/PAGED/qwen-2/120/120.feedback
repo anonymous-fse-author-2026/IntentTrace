@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: provide feedback for the 1st Level support. (reason: No model element implements this mandatory step, despite it appearing multiple times in the source.)
+- [N2] Node-level omission: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager. (reason: The complete sequential workflow described in this unit is absent; the model incorrectly diverts to an unsupported tertiary branch instead.)
+- [N3] Node-level omission: i10:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager. (reason: Final closure sequence targeting 1st Level Support followed by Account Manager is not represented in the diagram.)
+- [N4] Omitted trace (input 1): i1:To start, ask the 1st Level Support if there is an issue. -> i5:If it is a 1st Level issue, ask the developer for assistance. -> i6:Then, check the result again. If the issue is resolved, -> i3:provide feedback for the account manager.
+- [N5] Within matched traces (2->1) omitted: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+- [N6] Within matched traces (2->1) omitted: i10:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+
+Addition
+- [N7] Node-level addition: action(n1,"start") (reason: Invents a standalone 'start' task; the source uses 'To start' solely as a temporal lead-in, not a distinct executable step.)
+- [N8] Node-level addition: action(n11,"Is the issue resolved after re-assistance?") (reason: No source unit describes a post-escalation resolution verification or re-evaluation step.)
+- [N9] Node-level addition: guard(b3,n12,"v3 = true") (reason: Routing conditions for the third branch have zero textual basis.)
+- [N10] Node-level addition: guard(b3,e3,"v3 = false") (reason: Routing conditions for the third branch have zero textual basis.)
+- [N11] Node-level addition: action(n13,"End process") (reason: Tertiary termination path is unsupported; the source specifies a single process conclusion point.)
+- [N12] Node-level addition: action(n5,"End process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: action(n12,"Provide feedback for account manager") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Ask 1st Level Support if there is an issue") -> action(n3,"Is the issue resolved?") -> branch(b1,XOR) -> action(n6,"Ask developer for assistance") -> action(n7,"Is the issue resolved now?") -> branch(b2,XOR) -> action(n10,"Ask developer for help again") -> action(n11,"Is the issue resolved after re-assistance?") -> branch(b3,XOR) -> action(n12,"Provide feedback for account manager") -> action(n13,"End process") -> end(e3)
+- [N15] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Ask 1st Level Support if there is an issue") -> action(n3,"Is the issue resolved?") -> branch(b1,XOR) -> action(n6,"Ask developer for assistance") -> action(n7,"Is the issue resolved now?") -> branch(b2,XOR) -> action(n10,"Ask developer for help again") -> action(n11,"Is the issue resolved after re-assistance?") -> branch(b3,XOR) -> end(e3)
+- [N16] Within matched traces (0->0) added: init(i1)
+- [N17] Within matched traces (0->0) added: action(n1,"start")
+- [N18] Within matched traces (0->0) added: action(n5,"End process")
+- [N19] Within matched traces (0->0) added: end(e1)
+- [N20] Within matched traces (2->1) added: init(i1)
+- [N21] Within matched traces (2->1) added: action(n1,"start")
+- [N22] Within matched traces (2->1) added: action(n3,"Is the issue resolved?")
+
+Mutation
+- [N23] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i5:If it is a 1st Level issue, ask the developer for assistance.; reason=Reduces the specific condition '1st Level issue' to a generic boolean false, dropping the required domain qualifier.
+- [N24] Node-level mutation: element=action(n7,"Is the issue resolved now?"); source=i6:Then, check the result again. If the issue is resolved,; reason=Transforms the imperative instruction 'check the result again' into an interrogative 'Is the issue resolved now?' and omits the temporal marker 'again'.
+- [N25] Node-level mutation: element=guard(b2,n10,"v2 = false"); source=i7:If it is still a 1st Level issue, ask the developer for help.; reason=Strips the explicit condition 'still a 1st Level issue' and replaces it with a bare false outcome.
+- [N26] Node-level mutation: element=action(n10,"Ask developer for help again"); source=i7:If it is still a 1st Level issue, ask the developer for help.; reason=Injects the unsource qualifier 'again', altering the instruction from the original text.

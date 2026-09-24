@@ -1,0 +1,14 @@
+Addition
+- [N1] Node-level addition: guard(b1,n4,"v1 == false") (reason: This guard represents a negative condition ('v1 == false') but there is no source text in the provided input elements to justify this specific decision path, as the segment for the 'less than 2' condition was omitted from the first half of the source.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n3,"Continue the process") -> converge(c1) -> action(n6,"Is x greater than 2?") -> branch(b2,XOR) -> action(n8,"Continue the process") -> converge(c2) -> end(e1)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n6,"Is x greater than 2?") -> branch(b2,XOR) -> action(n8,"Continue the process") -> converge(c2) -> end(e1)
+- [N4] Within matched traces (0->0) added: converge(c2)
+- [N5] Within matched traces (0->0) added: end(e1)
+- [N6] Within matched traces (1->2) added: action(n2,"Is x greater than 2?")
+- [N7] Within matched traces (1->2) added: branch(b1,XOR)
+- [N8] Within matched traces (1->2) added: converge(c2)
+- [N9] Within matched traces (1->2) added: end(e1)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n3,"v1 == true"); source=i2:If the value of "x" is greater than 2; reason=The guard substitutes the specific operator and value ('greater than' and '2') with a generic boolean check ('v1 == true'), violating the requirement that the operator and value must agree with the source.
+- [N11] Node-level mutation: element=guard(b2,n7,"v1 == true") -> guard(b2,n8,"v1 == false"); source=i5:Similarly, if the value of "x" is greater than 2, the process should be continued. On the other hand, if the value of "x" is less than 2, the process should still be continued.; reason=Both guards drop the explicit operators and thresholds ('greater than 2' and 'less than 2') in favor of boolean checks. Additionally, 'v1 == false' incorrectly models 'less than 2' since it would logically include 'x == 2', distorting the exact threshold.

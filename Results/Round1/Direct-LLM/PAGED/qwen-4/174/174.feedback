@@ -1,0 +1,37 @@
+Omission
+- [N1] Omitted trace (input 0): i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. -> i2:If the invoice is incomplete, it is returned.
+
+Addition
+- [N2] Node-level addition: action(n6,"End Process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N3] Added trace (model 0): init(i1) -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Conduct Further Checks") -> action(n9,"Issue Can Be Resolved With Phone Call?") -> branch(b3,XOR) -> action(n10,"Resolve Non-Compliance") -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> action(n15,"Resolve Non-Compliance") -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> converge(c3) -> end(e3)
+- [N4] Added trace (model 3): init(i1) -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Conduct Further Checks") -> action(n9,"Issue Can Be Resolved With Phone Call?") -> branch(b3,XOR) -> action(n10,"Resolve Non-Compliance") -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n18,"Bill Client") -> action(n19,"Client Responded?") -> branch(b5,XOR) -> action(n23,"Client Satisfied?") -> branch(b6,XOR) -> action(n24,"Resolve Payment Discrepancy") -> action(n25,"End Process") -> converge(c3) -> end(e3)
+- [N5] Added trace (model 4): init(i1) -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> action(n15,"Resolve Non-Compliance") -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> converge(c3) -> end(e3)
+- [N6] Added trace (model 5): init(i1) -> action(n2,"Bill for Purchased Goods/Services") -> action(n3,"Receive Invoice") -> action(n4,"Invoice Complete?") -> branch(b1,XOR) -> action(n7,"Invoice Compliant?") -> branch(b2,XOR) -> converge(c1) -> action(n13,"Pay Invoice") -> branch(b7,AND) -> action(n14,"Invoice Returned After Payment?") -> branch(b4,XOR) -> converge(c2) -> action(n16,"Notify Client Of Payment") -> action(n17,"End Process") -> converge(c3) -> end(e3)
+- [N7] Within matched traces (1->2) added: init(i1)
+- [N8] Within matched traces (1->2) added: converge(c3)
+- [N9] Within matched traces (1->2) added: end(e3)
+- [N10] Within matched traces (2->1) added: init(i1)
+- [N11] Within matched traces (2->1) added: action(n13,"Pay Invoice")
+- [N12] Within matched traces (2->1) added: branch(b7,AND)
+- [N13] Within matched traces (2->1) added: action(n14,"Invoice Returned After Payment?")
+- [N14] Within matched traces (2->1) added: branch(b4,XOR)
+- [N15] Within matched traces (2->1) added: converge(c2)
+- [N16] Within matched traces (2->1) added: action(n16,"Notify Client Of Payment")
+- [N17] Within matched traces (2->1) added: action(n17,"End Process")
+- [N18] Within matched traces (2->1) added: converge(c3)
+- [N19] Within matched traces (2->1) added: end(e3)
+- [N20] Within matched traces (3->6) added: init(i1)
+- [N21] Within matched traces (3->6) added: converge(c3)
+- [N22] Within matched traces (3->6) added: end(e3)
+- [N23] Within matched traces (4->7) added: init(i1)
+- [N24] Within matched traces (4->7) added: converge(c3)
+- [N25] Within matched traces (4->7) added: end(e3)
+- [N26] Within matched traces (5->7) added: init(i1)
+- [N27] Within matched traces (5->7) added: converge(c3)
+- [N28] Within matched traces (5->7) added: end(e3)
+
+Mutation
+- [N29] Node-level mutation: element=action(n26,"End Process"); source=i14:However, if the client is satisfied, the process continues.; reason=Element content reads 'End Process', which directly contradicts the source text that explicitly states the process continues upon client satisfaction.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=2 and out=1. | Node `n3` has in=3 and out=1. | DSL: action(n13,"Pay Invoice"); action(n3,"Receive Invoice")

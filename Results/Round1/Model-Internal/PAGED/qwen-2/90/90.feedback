@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i5:It takes approximately 20 minutes for every 100 invoices, (reason: No element faithfully captures this as contextual information; the only candidate (n8) distorts it into a procedural step, leaving the original fact unimplemented.)
+- [N2] Node-level omission: i6:once you have entered the invoice data (reason: Missing precondition or action step for invoice data entry, which the source explicitly requires before proceeding to tick the 'invoice entered' box.)
+- [N3] Within matched traces (0->0) omitted: i6:once you have entered the invoice data
+- [N4] Within matched traces (1->0) omitted: i6:once you have entered the invoice data
+
+Addition
+- [N5] Node-level addition: action(n1,"Start") (reason: Redundant initiator step; source begins directly with the vendor number instruction without defining a discrete 'Start' action.)
+- [N6] Node-level addition: action(n3,"Sort by Vendor or Amount?") (reason: Unnecessary decision-action node; source uses direct conditional branching ('If you choose...') without a preceding inquiry or selection step.)
+- [N7] Node-level addition: action(n6,"Process Invoices (Vendor)") (reason: Invented step; source only contains the structural announcer phrase 'proceed with the process' for this path, offering no concrete task to model.)
+- [N8] Node-level addition: action(n7,"Process Invoices (Amount)") (reason: Invented step; source only contains the structural announcer phrase 'continue with the process' for this path, offering no concrete task to model.)
+- [N9] Node-level addition: action(n12,"End of Process") (reason: Invented step; source mentions 'end of the overall process' purely as a temporal limit for the collection cycle, not as an actionable task.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Note Vendor Number on Invoice Entry Form") -> action(n3,"Sort by Vendor or Amount?") -> branch(b1,XOR) -> action(n5,"Sort Invoices by Amount") -> action(n7,"Process Invoices (Amount)") -> converge(c1) -> action(n8,"Note Time per 100 Invoices") -> action(n9,"Tick 'Invoice Entered' on Form") -> action(n10,"Place Invoice Batch in Urgent Outbox") -> action(n11,"Set Up Hourly Collection") -> action(n12,"End of Process") -> end(e1)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (0->0) added: action(n1,"Start")
+- [N13] Within matched traces (0->0) added: action(n3,"Sort by Vendor or Amount?")
+- [N14] Within matched traces (0->0) added: action(n6,"Process Invoices (Vendor)")
+- [N15] Within matched traces (0->0) added: action(n12,"End of Process")
+- [N16] Within matched traces (1->0) added: init(i1)
+- [N17] Within matched traces (1->0) added: action(n1,"Start")
+- [N18] Within matched traces (1->0) added: action(n3,"Sort by Vendor or Amount?")
+- [N19] Within matched traces (1->0) added: action(n6,"Process Invoices (Vendor)")
+- [N20] Within matched traces (1->0) added: action(n12,"End of Process")
+
+Mutation
+- [N21] Node-level mutation: element=action(n8,"Note Time per 100 Invoices"); source=i5:It takes approximately 20 minutes for every 100 invoices,; reason=Source provides a descriptive factual statement about processing duration, not an instruction. Model incorrectly converts this into an active procedural step 'Note Time per 100 Invoices', distorting a data fact into a user task.
+- [N22] Node-level mutation: element=action(n11,"Set Up Hourly Collection"); source=i8:Once you have placed the invoice batch in the Urgent Outbox, it will be collected every hour. -> i9:The collection process will continue every hour until the end of the overall process.; reason=Source describes a passive, automatic system collection event. Model distorts this into an active manual step 'Set Up Hourly Collection', incorrectly changing a background system behavior into a required user action.

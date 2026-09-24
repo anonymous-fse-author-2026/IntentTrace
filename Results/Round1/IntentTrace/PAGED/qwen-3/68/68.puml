@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process;
+:Items returned by customer or picked up by delivery crew;
+:v1: Items returned by customer or picked up by delivery crew ({Customer returns items to store, Delivery crew picks up items at event site}); <<objectSignal>>
+if () then ([v1 = 'Customer returns items to store'])
+:Continue via customer return;
+else ([v1 = 'Delivery crew picks up items at event site'])
+:Continue via delivery pickup;
+endif
+:Count and compare items to contract;
+:Order status after count;
+:v2: Order status after count ({All items returned, Items missing, Items damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'All items returned'])
+:Items disposition for returned items;
+:v3: Items disposition for returned items ({Packed for existing order, Stored for future orders}); <<objectSignal>>
+if () then ([v3 = 'Packed for existing order'])
+:Process complete;
+else ([v3 = 'Stored for future orders'])
+:Process complete;
+endif
+stop
+case ([v2 = 'Items missing'])
+:Email customer missing items and replacement charges;
+:Customer returns missing items;
+:v4: Customer returns missing items ({Customer returns missing items, Customer does not return missing items}); <<objectSignal>>
+if () then ([v4 = 'Customer does not return missing items'])
+:Customer does not return missing items - process continues;
+else ([v4 = 'Customer returns missing items'])
+:Process continues after return;
+endif
+stop
+case ([v2 = 'Items damaged'])
+:Email customer damage and additional charges;
+:Temporarily remove damaged items from inventory;
+:Can damaged items be repaired;
+:v5: Can damaged items be repaired ({Can be repaired, Cannot be repaired}); <<objectSignal>>
+if () then ([v5 = 'Can be repaired'])
+:Repair items and add to inventory;
+else ([v5 = 'Cannot be repaired'])
+:Discard items and email customer replacement charges;
+endif
+:Items disposition after repair;
+:v6: Items disposition after repair ({Packed for existing order, Stored for future orders}); <<objectSignal>>
+if () then ([v6 = 'Packed for existing order'])
+:Process complete;
+else ([v6 = 'Stored for future orders'])
+:Process complete;
+endif
+stop
+endswitch
+@enduml

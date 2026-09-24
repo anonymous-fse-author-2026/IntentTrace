@@ -1,0 +1,36 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i4:If the inventory level is above the minimum, -> i5:then the process ends.
+- [N2] Omitted trace (input 1): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i6:if the inventory level is below the minimum, -> i7:create a purchase order. -> i8:review it. -> i9:If the purchase order is rejected, -> i10:rework the purchase order. -> i12:review it again. -> i9:If the purchase order is rejected,
+- [N3] Omitted trace (input 2): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i6:if the inventory level is below the minimum, -> i7:create a purchase order. -> i8:review it. -> i11:if the purchase order is accepted, -> i13:At the same time, complete the following steps: -> i14:reserve funds for the purchase and send the purchase order to the supplier. -> i16:Once the packing slip is received, release the reserved funds -> i17:and then the process ends.
+- [N4] Omitted trace (input 3): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i6:if the inventory level is below the minimum, -> i7:create a purchase order. -> i8:review it. -> i11:if the purchase order is accepted, -> i13:At the same time, complete the following steps: -> i15:send the purchase order to the supplier. -> i16:Once the packing slip is received, release the reserved funds -> i17:and then the process ends.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Node-level addition: action(n2,"trigger: resupply cycle") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N7] Node-level addition: action(n3,"check: inventory level") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N8] Node-level addition: action(n4,"end process: above minimum") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Node-level addition: action(n5,"create: purchase order") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Node-level addition: action(n6,"review: purchase order") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Node-level addition: action(n7,"rework: purchase order") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Node-level addition: action(n8,"review: purchase order") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: action(n9,"reserve funds and send PO") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Node-level addition: action(n10,"receive packing slip and release funds") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N15] Node-level addition: action(n11,"end process: completed") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N16] Node-level addition: action(n12,"send to supplier") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N17] Node-level addition: action(n13,"receive packing slip and release funds") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N18] Node-level addition: action(n14,"end process: completed") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N19] Node-level addition: guard(b1,n4,"v1 = 'above_min'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N20] Node-level addition: guard(b1,n5,"v1 = 'below_min'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N21] Node-level addition: guard(b2,n7,"v2 = 'rejected'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N22] Node-level addition: guard(b2,n9,"v2 = 'accepted'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N23] Node-level addition: guard(b2,n12,"v2 = 'accepted'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N24] Node-level addition: guard(b3,e2,"v3 = 'rejected'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N25] Node-level addition: guard(b3,e3,"v3 = 'accepted'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N26] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n4,"end process: above minimum") -> end(e1)
+- [N27] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n7,"rework: purchase order") -> action(n8,"review: purchase order") -> branch(b3,XOR) -> end(e2)
+- [N28] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n7,"rework: purchase order") -> action(n8,"review: purchase order") -> branch(b3,XOR) -> end(e3)
+- [N29] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n9,"reserve funds and send PO") -> action(n10,"receive packing slip and release funds") -> action(n11,"end process: completed") -> end(e2)
+- [N30] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> action(n12,"send to supplier") -> action(n13,"receive packing slip and release funds") -> action(n14,"end process: completed") -> end(e3)
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b2` has overlapping guards at state [v2=accepted].

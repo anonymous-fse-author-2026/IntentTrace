@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i1:To check the account, we start by verifying the amount. (reason: No element faithfully implements the required initial step of 'verifying the amount'; the only corresponding candidate (action:n1) mutates the instruction.)
+
+Addition
+- [N2] Within matched traces (1->1) added: action(n2,"is amount less than 200 euros")
+- [N3] Within matched traces (2->2) added: action(n2,"is amount less than 200 euros")
+- [N4] Within matched traces (2->2) added: action(n5,"is expense report acceptable")
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,n3,"v1 = true"); source=i2:If the amount is less than 200 €; reason=Guard uses abstract boolean assignment (v1 = true) instead of preserving the explicit monetary threshold (< 200 €) from the source.
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=i4:However, if the amount is 200 € or more, we evaluate the expense report.; reason=Guard uses abstract boolean assignment (v1 = false) instead of preserving the explicit monetary threshold (>= 200 €) from the source.
+- [N7] Node-level mutation: element=guard(b2,n6,"v2 = true"); source=i5:If the expense report is deemed acceptable; reason=Guard uses abstract boolean assignment (v2 = true) instead of preserving the explicit qualitative condition (deemed acceptable) from the source.
+- [N8] Node-level mutation: element=guard(b2,e2,"v2 = false"); source=i8:On the other hand, if the expense report is not satisfactory, the process also ends.; reason=Guard uses abstract boolean assignment (v2 = false) instead of preserving the explicit qualitative condition (not satisfactory) from the source.
+- [N9] Node-level mutation: element=action(n1,"start account check"); source=i1:To check the account, we start by verifying the amount.; reason=Element text 'start account check' distorts the source instruction 'verifying the amount', altering the core action described.

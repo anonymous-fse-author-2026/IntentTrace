@@ -1,0 +1,62 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:In the beginning, the process starts with Bill for Purchased Goods/Services;
+:Receive Invoice;
+:v_inv: Invoice completeness ({incomplete, complete}); <<objectSignal>>
+if () then ([v_inv = 'incomplete'])
+:If the invoice is incomplete;
+:it is returned;
+else ([v_inv = 'complete'])
+:if the invoice is complete;
+:the process continues;
+:v_comp: Invoice compliance ({non-compliant, compliant}); <<objectSignal>>
+if () then ([v_comp = 'non-compliant'])
+:If the invoice is non-compliant;
+:further checks are conducted;
+:v_issue: Issue resolution ({mail back, phone call}); <<objectSignal>>
+if () then ([v_issue = 'mail back'])
+:if the issue requires mail back;
+:the invoice is returned;
+else ([v_issue = 'phone call'])
+:If the issue can be resolved with a phone call;
+:non-compliance is resolved;
+:the invoice is paid;
+split
+:v14: Is it returned after payment? ({Yes, No}); <<objectSignal>>
+if () then ([v14 = 'Yes'])
+:if it is returned;
+else ([v14 = 'No'])
+stop
+endif
+split again
+:Bill Client;
+:v_bill: Client response ({no response, returned, paid}); <<objectSignal>>
+switch ()
+case ([v_bill = 'no response'])
+:If there is no response;
+:a period of 10 days is given;
+:After 10 days, a reminder is sent;
+:the process ends;
+stop
+case ([v_bill = 'returned'])
+:If the invoice is returned;
+case ([v_bill = 'paid'])
+:The invoice is paid and the client is notified of the payment;
+:v_client: Client satisfaction ({unsatisfied, satisfied}); <<objectSignal>>
+if () then ([v_client = 'unsatisfied'])
+:If the client is unsatisfied;
+:payment discrepancy is resolved;
+else ([v_client = 'satisfied'])
+:if the client is satisfied;
+endif
+endswitch
+end split
+endif
+else ([v_comp = 'compliant'])
+:if the invoice is compliant;
+endif
+endif
+@enduml

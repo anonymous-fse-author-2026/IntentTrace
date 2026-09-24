@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i4:the process should still be continued. (reason: Per strict audit rules, the only model elements corresponding to this unit (action:n4 and guard:b1->n4) both distort the source content. No element faithfully implements the specific continuation instruction.)
+
+Addition
+- [N2] Node-level addition: action(n5,"End") (reason: Contains the content 'End', but no source span describes an explicit termination step. Since addition_required is true, it lacks source justification.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Is x greater than 2?") -> branch(b1,XOR) -> action(n4,"Continue the process") -> converge(c1) -> action(n5,"End") -> end(e1)
+- [N4] Within matched traces (0->0) added: converge(c1)
+- [N5] Within matched traces (0->0) added: action(n5,"End")
+- [N6] Within matched traces (0->0) added: end(e1)
+- [N7] Within matched traces (1->0) added: converge(c1)
+- [N8] Within matched traces (1->0) added: action(n5,"End")
+- [N9] Within matched traces (1->0) added: end(e1)
+
+Mutation
+- [N10] Node-level mutation: element=action(n1,"start"); source=i1:For testing purposes, the process should be continued from the beginning.; reason=Content 'start' strips the 'testing purposes' context and alters 'continued from the beginning' into a generic initiation action, failing to preserve the source instruction.
+- [N11] Node-level mutation: element=guard(b1,n3,"v1 = true"); source=i2:If the value of "x" is greater than 2; reason=Replaces the explicit variable and numeric threshold ('x' > 2) with an abstract boolean flag ('v1 = true'), completely losing the source's specific comparison logic.
+- [N12] Node-level mutation: element=action(n4,"Continue the process"); source=i4:the process should still be continued.; reason=Drops the qualitative adverb 'still' and simplifies the phrasing, altering the exact granularity and tone of the source unit.
+- [N13] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=i4:the process should still be continued.; reason=Corresponds to the negative conditional branch in the source text but replaces the actual threshold ('less than 2') with a generic 'v1 = false', omitting the required decision data.

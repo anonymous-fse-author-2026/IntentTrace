@@ -1,0 +1,649 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e_cancel",
+      "type": "end"
+    },
+    {
+      "id": "e_finish",
+      "type": "end"
+    },
+    {
+      "id": "b_input",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "If the order is received via fax, input the order into an Excel file."
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "If the order is received via mail or phone, also input the order into an Excel file."
+    },
+    {
+      "id": "c_excel",
+      "type": "converge"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "Once the Excel list is complete after a week, send it to the student."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "Upon receiving the Excel list, type the orders into the MS-Access database."
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "After typing the orders into the database, ensure that it is completed."
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "Once the database is completed, control the incoming order. At the same time, continue to do the check."
+    },
+    {
+      "id": "b_correct",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "If the order is correct, release it."
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "Send the Excel list to the student and upon receiving it, continue with the process."
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "However, if the order is incorrect, contact the selling agency."
+    },
+    {
+      "id": "c_correct",
+      "type": "converge"
+    },
+    {
+      "id": "b_amount",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "If the order is worth less than 5.000 \u20ac, release it."
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "If the order is worth more than 5.000 \u20ac, send it for sign off and continue with the check."
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "Contact the selling agency and upon receiving the actual issue, send the order for sign off."
+    },
+    {
+      "id": "c_amount",
+      "type": "converge"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "Once the order is signed off, contact the client and release the order."
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "Once the order is received by PPC, they will initiate production."
+    },
+    {
+      "id": "b_issue",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "If the issue cannot be solved, cancel the order."
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "If the issue can be solved, release the order."
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "After PPC initiates production, the goods will be produced."
+    },
+    {
+      "id": "i19",
+      "type": "action",
+      "content": "If the order needs to be cancelled, the process ends."
+    },
+    {
+      "id": "i20",
+      "type": "action",
+      "content": "If not, check the quality of the goods."
+    },
+    {
+      "id": "i21",
+      "type": "action",
+      "content": "Once the quality is checked, create and send a quality report to the finance department."
+    },
+    {
+      "id": "i22",
+      "type": "action",
+      "content": "Release the order via memo and ensure that the memo is achieved in the warehouse."
+    },
+    {
+      "id": "b_final",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i23",
+      "type": "action",
+      "content": "Send the invoice and once it is sent, report the achievement to the finance department."
+    },
+    {
+      "id": "i24",
+      "type": "action",
+      "content": "At the same time, commission the goods and sign and send the memo."
+    },
+    {
+      "id": "i25",
+      "type": "action",
+      "content": "Also, send the goods and ensure that the signed memo is achieved in the logistic department."
+    },
+    {
+      "id": "c_final",
+      "type": "converge"
+    },
+    {
+      "id": "i26",
+      "type": "action",
+      "content": "Finally, archive the memo and close order. This marks the end of the process."
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_receive",
+      "name": "receive method",
+      "R_X": [
+        "fax",
+        "mail_or_phone"
+      ]
+    },
+    {
+      "X": "v_correct",
+      "name": "order correctness",
+      "R_X": [
+        "correct",
+        "incorrect"
+      ]
+    },
+    {
+      "X": "v_amount",
+      "name": "order amount",
+      "R_X": [
+        "less_5000",
+        "more_5000"
+      ]
+    },
+    {
+      "X": "v_solved",
+      "name": "issue solved",
+      "R_X": [
+        "no",
+        "yes"
+      ]
+    },
+    {
+      "X": "v_final",
+      "name": "final task",
+      "R_X": [
+        "invoice",
+        "commission",
+        "logistics"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_all",
+      "name": "Default Actor",
+      "assigned_nodes": [
+        "i1",
+        "b_input",
+        "i2",
+        "i3",
+        "c_excel",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "b_correct",
+        "i8",
+        "i9",
+        "i10",
+        "c_correct",
+        "b_amount",
+        "i11",
+        "i12",
+        "i13",
+        "c_amount",
+        "i14",
+        "i15",
+        "b_issue",
+        "i16",
+        "i17",
+        "i18",
+        "i19",
+        "i20",
+        "i21",
+        "i22",
+        "b_final",
+        "i23",
+        "i24",
+        "i25",
+        "c_final",
+        "i26",
+        "e_cancel",
+        "e_finish"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b_input"
+    },
+    {
+      "type": "precedence",
+      "A": "b_input",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_input",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "c_excel"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "c_excel"
+    },
+    {
+      "type": "precedence",
+      "A": "c_excel",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "b_correct"
+    },
+    {
+      "type": "precedence",
+      "A": "b_correct",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "b_correct",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "c_correct"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "c_correct"
+    },
+    {
+      "type": "precedence",
+      "A": "c_correct",
+      "B": "b_amount"
+    },
+    {
+      "type": "precedence",
+      "A": "b_amount",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "b_amount",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "c_amount"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "c_amount"
+    },
+    {
+      "type": "precedence",
+      "A": "c_amount",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "b_issue"
+    },
+    {
+      "type": "precedence",
+      "A": "b_issue",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "b_issue",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "i19"
+    },
+    {
+      "type": "precedence",
+      "A": "i19",
+      "B": "e_cancel"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "i20"
+    },
+    {
+      "type": "precedence",
+      "A": "i20",
+      "B": "i21"
+    },
+    {
+      "type": "precedence",
+      "A": "i21",
+      "B": "i22"
+    },
+    {
+      "type": "precedence",
+      "A": "i22",
+      "B": "b_final"
+    },
+    {
+      "type": "precedence",
+      "A": "b_final",
+      "B": "i23"
+    },
+    {
+      "type": "precedence",
+      "A": "b_final",
+      "B": "i24"
+    },
+    {
+      "type": "precedence",
+      "A": "b_final",
+      "B": "i25"
+    },
+    {
+      "type": "precedence",
+      "A": "i23",
+      "B": "c_final"
+    },
+    {
+      "type": "precedence",
+      "A": "i24",
+      "B": "c_final"
+    },
+    {
+      "type": "precedence",
+      "A": "i25",
+      "B": "c_final"
+    },
+    {
+      "type": "precedence",
+      "A": "c_final",
+      "B": "i26"
+    },
+    {
+      "type": "precedence",
+      "A": "i26",
+      "B": "e_finish"
+    },
+    {
+      "type": "guard",
+      "A": "b_input",
+      "B": "i2",
+      "condition": "v_receive = 'fax'"
+    },
+    {
+      "type": "guard",
+      "A": "b_input",
+      "B": "i3",
+      "condition": "v_receive = 'mail_or_phone'"
+    },
+    {
+      "type": "guard",
+      "A": "b_correct",
+      "B": "i8",
+      "condition": "v_correct = 'correct'"
+    },
+    {
+      "type": "guard",
+      "A": "b_correct",
+      "B": "i10",
+      "condition": "v_correct = 'incorrect'"
+    },
+    {
+      "type": "guard",
+      "A": "b_amount",
+      "B": "i11",
+      "condition": "v_amount = 'less_5000'"
+    },
+    {
+      "type": "guard",
+      "A": "b_amount",
+      "B": "i12",
+      "condition": "v_amount = 'more_5000'"
+    },
+    {
+      "type": "guard",
+      "A": "b_issue",
+      "B": "i16",
+      "condition": "v_solved = 'no'"
+    },
+    {
+      "type": "guard",
+      "A": "b_issue",
+      "B": "i17",
+      "condition": "v_solved = 'yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_final",
+      "B": "i23",
+      "condition": "v_final = 'invoice'"
+    },
+    {
+      "type": "guard",
+      "A": "b_final",
+      "B": "i24",
+      "condition": "v_final = 'commission'"
+    },
+    {
+      "type": "guard",
+      "A": "b_final",
+      "B": "i25",
+      "condition": "v_final = 'logistics'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process, begin by supplying the requirement and then documenting it."
+    },
+    {
+      "id": "i2",
+      "content": "If the order is received via fax, input the order into an Excel file."
+    },
+    {
+      "id": "i3",
+      "content": "If the order is received via mail or phone, also input the order into an Excel file."
+    },
+    {
+      "id": "i4",
+      "content": "Once the Excel list is complete after a week, send it to the student."
+    },
+    {
+      "id": "i5",
+      "content": "Upon receiving the Excel list, type the orders into the MS-Access database."
+    },
+    {
+      "id": "i6",
+      "content": "After typing the orders into the database, ensure that it is completed."
+    },
+    {
+      "id": "i7",
+      "content": "Once the database is completed, control the incoming order. At the same time, continue to do the check."
+    },
+    {
+      "id": "i8",
+      "content": "If the order is correct, release it."
+    },
+    {
+      "id": "i9",
+      "content": "Send the Excel list to the student and upon receiving it, continue with the process."
+    },
+    {
+      "id": "i10",
+      "content": "However, if the order is incorrect, contact the selling agency."
+    },
+    {
+      "id": "i11",
+      "content": "If the order is worth less than 5.000 \u20ac, release it."
+    },
+    {
+      "id": "i12",
+      "content": "If the order is worth more than 5.000 \u20ac, send it for sign off and continue with the check."
+    },
+    {
+      "id": "i13",
+      "content": "Contact the selling agency and upon receiving the actual issue, send the order for sign off."
+    },
+    {
+      "id": "i14",
+      "content": "Once the order is signed off, contact the client and release the order."
+    },
+    {
+      "id": "i15",
+      "content": "Once the order is received by PPC, they will initiate production."
+    },
+    {
+      "id": "i16",
+      "content": "If the issue cannot be solved, cancel the order."
+    },
+    {
+      "id": "i17",
+      "content": "If the issue can be solved, release the order."
+    },
+    {
+      "id": "i18",
+      "content": "After PPC initiates production, the goods will be produced."
+    },
+    {
+      "id": "i19",
+      "content": "If the order needs to be cancelled, the process ends."
+    },
+    {
+      "id": "i20",
+      "content": "If not, check the quality of the goods."
+    },
+    {
+      "id": "i21",
+      "content": "Once the quality is checked, create and send a quality report to the finance department."
+    },
+    {
+      "id": "i22",
+      "content": "Release the order via memo and ensure that the memo is achieved in the warehouse."
+    },
+    {
+      "id": "i23",
+      "content": "Send the invoice and once it is sent, report the achievement to the finance department."
+    },
+    {
+      "id": "i24",
+      "content": "At the same time, commission the goods and sign and send the memo."
+    },
+    {
+      "id": "i25",
+      "content": "Also, send the goods and ensure that the signed memo is achieved in the logistic department."
+    },
+    {
+      "id": "i26",
+      "content": "Finally, archive the memo and close the order. This marks the end of the process."
+    }
+  ]
+}

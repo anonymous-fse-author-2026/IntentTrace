@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:Orders Required;
+:place Bulk order;
+:Order with prior internal credit allowance;
+:v1: Order with prior internal credit allowance ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:process order for delivery;
+else ([v1 = false])
+:Outstanding Balance;
+:place new order;
+:record in Accounts Receivable;
+:Payments Received;
+:v2: Payments Received ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:continue process;
+else ([v2 = false])
+:drop order;
+:end process;
+stop
+endif
+endif
+:identify order for installation;
+:installation required;
+:v3: installation required ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:assign Installer;
+:end process;
+stop
+else ([v3 = false])
+:pack for delivery;
+:end process;
+stop
+endif
+@enduml

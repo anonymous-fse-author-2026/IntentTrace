@@ -1,0 +1,250 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start ACME Resupply Cycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check Inventory Levels"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Generate Above Minimum Report"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End Resupply Cycle"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Generate Equal to or below minimum Report"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Create POs"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Review POs"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Print and release in system"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End Resupply Cycle"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Rework POs"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Create POs"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Check Inventory Levels",
+      "R_X": [
+        "Inventory greater than minimum",
+        "Inventory below or equal to minimum"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Review POs",
+      "R_X": [
+        "Approved",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "e1",
+        "n5",
+        "n6",
+        "n7",
+        "b2",
+        "n8",
+        "n9",
+        "e2",
+        "n10",
+        "n11"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Inventory greater than minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Inventory below or equal to minimum'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 = 'Approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = 'Rejected'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process for ACME, begin with the New Resupply Cycle and then proceed to Check Levels of Inventory."
+    },
+    {
+      "id": "i2",
+      "content": "If the inventory is \"greater than\" the minimum, generate an \"Above Minimum Report\". If it is \"below or equal to\" the minimum, generate an \"Equal to or below minimum Report\"."
+    },
+    {
+      "id": "i3",
+      "content": "If an \"Above Minimum Report\" is generated, then the process ends with the End Resupply Cycle."
+    },
+    {
+      "id": "i4",
+      "content": "If an \"Equal to or below minimum Report\" is generated, then POs are Created. Once the POs are Created, they are subject to POs Review."
+    },
+    {
+      "id": "i5",
+      "content": "If the POs are \"rejected\", they need to be \"reworked\". If they are \"approved\", they are \"Printed and released in the system\" and the process ends."
+    },
+    {
+      "id": "i6",
+      "content": "If the POs are \"reworked\", then POs are Created again."
+    }
+  ]
+}

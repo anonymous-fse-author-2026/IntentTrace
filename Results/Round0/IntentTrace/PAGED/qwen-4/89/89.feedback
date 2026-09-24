@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i4:the Faculty will choose the design. (reason: The source describes this intermediate decision step, but no corresponding action or branch element exists in the model.)
+- [N2] Omitted trace (input 0): i1:To start the process, -> i2:Course Packet Information Received should be sent, -> i3:followed by sending the Design to Faculty. -> i4:the Faculty will choose the design. -> i5:identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i6:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added", then the process should be continued. -> i7:then the process should be continued. -> i4:the Faculty will choose the design.
+- [N3] Within matched traces (2->0) omitted: i4:the Faculty will choose the design.
+- [N4] Within matched traces (1->1) omitted: i4:the Faculty will choose the design.
+
+Addition
+- [N5] Within matched traces (2->0) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N6] Within matched traces (2->0) added: branch(b1,XOR)
+- [N7] Within matched traces (1->1) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N8] Within matched traces (1->1) added: branch(b1,XOR)
+- [N9] Within matched traces (1->1) added: action(n9,"condition: if Price of the Course Packet is finalized")
+- [N10] Within matched traces (1->1) added: branch(b2,XOR)
+- [N11] Within matched traces (1->1) added: action(n13,"end: Reconsider Content")
+- [N12] Within matched traces (1->1) added: end(e2)
+
+Mutation
+- [N13] Node-level mutation: element=action(n13,"end: Reconsider Content"); source=i7:then the process should be continued.; reason=The source explicitly states that the process continues after reconsideration, but the model marks this path as a termination point ('end: Reconsider Content'), altering the intended flow logic.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")

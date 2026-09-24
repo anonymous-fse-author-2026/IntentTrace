@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 2): i1:The first step is to receive and categorize the invoice. -> i2:If the instruction is to -> i5:"Return invoice to client for completion", then the invoice is received and categorized again. -> i1:The first step is to receive and categorize the invoice.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n4,"v1 = 'Forward'"); source=i3:"Forward Invoice to Admin Officer", then the next step is to sort the invoice.; reason=The guard payload uses the truncated value 'Forward' instead of faithfully reproducing the exact instruction string "Forward Invoice to Admin Officer" required by the source.
+- [N3] Node-level mutation: element=guard(b1,n6,"v1 = 'Reject'"); source=i4:"Reject invoice", then the process ends there.; reason=The guard payload uses the truncated value 'Reject' instead of faithfully reproducing the exact instruction string "Reject invoice" required by the source.
+- [N4] Node-level mutation: element=guard(b1,n8,"v1 = 'Return'"); source=i5:"Return invoice to client for completion", then the invoice is received and categorized again.; reason=The guard payload uses the truncated value 'Return' instead of faithfully reproducing the exact instruction string "Return invoice to client for completion" required by the source.
+- [N5] Node-level mutation: element=guard(b1,n10,"v1 = 'SAP'"); source=i6:"Process Invoice for SAP Entry", then the invoice is forwarded for validation.; reason=The guard payload uses the truncated value 'SAP' instead of faithfully reproducing the exact instruction string "Process Invoice for SAP Entry" required by the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=2 and out=1. | DSL: action(n2,"Receive and Categorize Invoice")

@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start the expenses process for MyCorp")` and `action(n10, "end the expenses process")`: Hallucinated steps; the source explicitly states `"the process begins by entering expenses"` and concludes immediately after payout, with no preparatory or termination actions.
+- `action(n6, "enter expenses")` and `action(n9, "enter expenses")`: Unnecessary duplicates of `action(n2)`; the source describes a single loop back to `"entering expenses"`, not multiple distinct entry tasks.
+- `action(n4, "is the request approved")` and `action(n7, "is the request approved")`: Incorrectly models the decision as a sequential task rather than a split point, distorting the source's immediate branching logic: `"the request can be approved or disapproved"`.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Completely lack `guard()` definitions to route flows based on `"If the request is not approved"` or `"if the request is approved"`.
+- `defines(v1, "is the request approved", {})` and `defines(v2, "is the request approved", {})`: Value ranges are empty `{}`, contradicting the source's implied binary choice between approved and disapproved states.
+- `label(n3, n4, "Not Approved")` and `label(n5, n7, "Not Approved")`: Placed on sequential edges instead of branch exits, and incorrectly mark the post-payout continuation as `"Not Approved"` despite the source stating `"The process then checks again if the request is approved or not."`
+- `branch(b3, AND)` and `converge(c1)`: Introduce parallel synchronization and merge constructs not present in the source, which outlines a strictly sequential workflow with conditional returns to `"entering expenses"`.

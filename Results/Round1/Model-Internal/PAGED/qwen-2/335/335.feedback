@@ -1,0 +1,8 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n1,"start Purchase Order-to-Delivery phase") -> action(n2,"formally review the purchase invoice and ensure its accuracy") -> action(n3,"invoice amount greater than $5000") -> branch(b1,XOR) -> action(n5,"continue with the process") -> converge(c1) -> action(n6,"trigger payment") -> action(n7,"process ends") -> end(e1)
+- [N2] Within matched traces (0->0) added: converge(c1)
+- [N3] Within matched traces (1->0) added: converge(c1)
+
+Mutation
+- [N4] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the invoice amount is greater than $5000; reason=The guard replaces the explicit threshold and comparison operator ('greater than $5000') with an abstract boolean assignment ('v1 = Yes'), dropping the critical numerical value from the source.
+- [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:Otherwise, continue with the process.; reason=The guard replaces the explicit fallback logic with an abstract boolean assignment ('v1 = No'), failing to preserve the source condition's relationship to the defined threshold.

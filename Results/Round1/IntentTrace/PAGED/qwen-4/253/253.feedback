@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum" -> i4:then proceed to Create Purchase Order. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i10:On the other hand, if the Purchase Order is rejected -> i11:then rework the order. -> i13:In case the order needs to be reworked, review the Purchase Order again. -> i7:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Mutation
+- [N2] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum"; reason=The guards use generic boolean placeholders ('v1 = Yes', 'v1 = No') instead of preserving the explicit threshold conditions stated in the source text ('at or below the minimum' vs 'above the minimum').
+- [N3] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i5:However, if the "Inventory Level is above the minimum"; reason=The guards use generic boolean placeholders ('v1 = Yes', 'v1 = No') instead of preserving the explicit threshold conditions stated in the source text ('at or below the minimum' vs 'above the minimum').
+- [N4] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i8:If the Purchase Order is approved; reason=The guards use generic boolean placeholders ('v2 = Yes', 'v2 = No') instead of capturing the specific business outcomes ('approved' vs 'rejected') defined in the source.
+- [N5] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i10:On the other hand, if the Purchase Order is rejected; reason=The guards use generic boolean placeholders ('v2 = Yes', 'v2 = No') instead of capturing the specific business outcomes ('approved' vs 'rejected') defined in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"Review Purchase Order")

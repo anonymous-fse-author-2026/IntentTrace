@@ -1,0 +1,8 @@
+- `action(n1, "start buyer process")`: Hallucinates an undocumented step; the source explicitly states "the process begins by choosing a book" with no preceding initialization action.
+- `actor(a_default, "Default", [i1, n1, n2, ...])`: Violates actor fidelity; the source assigns all process responsibilities to "buyers", not a generic "Default" participant.
+- `label(n5, c1, "After selecting preferred copy")` and `label(n8, c1, "After selecting preferred copy")`: Misaligns with source semantics; the text only associates copy selection with the details or used-copies paths ("proceed to select a copy and end the process" / "select their preferred copy"), not with the paths that merely "view list of new copies".
+- `defines(v1, "choose what to do after selecting book", {})` and `defines(v2, "choose what to do after viewing book details", {})`: Value ranges are empty `{}`, failing to faithfully capture the explicit choice options enumerated in the source ("view the book details or see a list of new copies... view a list of used copies").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

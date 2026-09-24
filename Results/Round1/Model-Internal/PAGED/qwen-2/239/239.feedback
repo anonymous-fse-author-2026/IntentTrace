@@ -1,0 +1,33 @@
+Addition
+- [N1] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no corresponding instruction in the source text.)
+- [N2] Node-level addition: action(n3,"Is Order Rejected?") (reason: Explicit decision step 'Is Order Rejected?' is absent from the source; the condition is handled directly by the branch/guard.)
+- [N3] Node-level addition: action(n8,"Is Backorder Required?") (reason: Explicit decision step 'Is Backorder Required?' is absent from the source; the condition is handled directly by the branch/guard.)
+- [N4] Node-level addition: label(n10,n11,"12") (reason: Numeric label '12' lacks any textual or logical basis in the source material.)
+- [N5] Node-level addition: action(n12,"End") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Node-level addition: guard(b2,n10,"v2 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n6,"Prepare Assembling Order") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"End") -> end(e2)
+- [N9] Within matched traces (0->2) added: init(i1)
+- [N10] Within matched traces (0->2) added: action(n1,"start")
+- [N11] Within matched traces (0->2) added: action(n3,"Is Order Rejected?")
+- [N12] Within matched traces (0->2) added: action(n8,"Is Backorder Required?")
+- [N13] Within matched traces (0->2) added: branch(b2,XOR)
+- [N14] Within matched traces (0->2) added: action(n12,"End")
+- [N15] Within matched traces (0->2) added: end(e3)
+- [N16] Within matched traces (1->3) added: init(i1)
+- [N17] Within matched traces (1->3) added: action(n1,"start")
+- [N18] Within matched traces (1->3) added: action(n3,"Is Order Rejected?")
+- [N19] Within matched traces (1->3) added: converge(c1)
+- [N20] Within matched traces (1->3) added: action(n8,"Is Backorder Required?")
+- [N21] Within matched traces (2->4) added: init(i1)
+- [N22] Within matched traces (2->4) added: action(n1,"start")
+- [N23] Within matched traces (2->4) added: action(n3,"Is Order Rejected?")
+- [N24] Within matched traces (2->4) added: action(n8,"Is Backorder Required?")
+- [N25] Within matched traces (2->4) added: action(n12,"End")
+- [N26] Within matched traces (2->4) added: end(e3)
+
+Mutation
+- [N27] Node-level mutation: element=action(n4,"Reject Order") -> action(n5,"End"); source=i2:If the order is to be rejected; reason=The source explicitly states the process should continue upon rejection, but the model incorrectly diverts the flow into a 'Reject Order' action followed by immediate termination ('End'), altering the prescribed outcome.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Accepted].

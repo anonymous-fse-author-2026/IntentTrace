@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i2:If the message "Image upload successful" appears, (reason: No element preserves the exact quoted message trigger; the sole candidate drifts to a generic question format.)
+- [N2] Node-level omission: i4:If the message indicates a successful upload, the process will end. (reason: The specific message-indicator logic is lost in favor of an abstract guard, failing to implement the source condition faithfully.)
+- [N3] Node-level omission: i5:However, if the message indicates an unsuccessful upload, then try again. (reason: The failure condition and explicit retry directive are replaced by abstract variables and a reduced question, leaving the original instruction unimplemented.)
+- [N4] Node-level omission: i6:If the option to try again is selected, the process will continue. (reason: The explicit selection logic is abstracted away in the model, leaving no faithful representation of the continuation trigger.)
+- [N5] Node-level omission: i7:If the option to try again is not selected, then an error will occur and the process will end. (reason: The negative selection condition is replaced by an abstract guard, failing to preserve the source branching logic.)
+- [N6] Omitted trace (input 0): i1:To start the process, begin by adding the image description and uploading the image. -> i2:If the message "Image upload successful" appears, -> i3:then the process will end.
+- [N7] Omitted trace (input 2): i1:To start the process, begin by adding the image description and uploading the image. -> i5:However, if the message indicates an unsuccessful upload, then try again. -> i6:If the option to try again is selected, the process will continue. -> i1:To start the process, begin by adding the image description and uploading the image.
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Invents a standalone 'start' action step with no behavioral requirement or distinct instruction in the source text; purely redundant.)
+- [N9] Within matched traces (1->0) added: init(i1)
+- [N10] Within matched traces (1->0) added: action(n1,"start")
+- [N11] Within matched traces (1->0) added: converge(c1)
+- [N12] Within matched traces (1->0) added: action(n3,"Was image upload successful?")
+- [N13] Within matched traces (3->1) added: init(i1)
+- [N14] Within matched traces (3->1) added: action(n1,"start")
+- [N15] Within matched traces (3->1) added: converge(c1)
+- [N16] Within matched traces (3->1) added: action(n3,"Was image upload successful?")
+
+Mutation
+- [N17] Node-level mutation: element=action(n3,"Was image upload successful?"); source=i2:If the message "Image upload successful" appears,; reason=Converts the declarative conditional into a question format and strips the exact quoted success message required by the source.
+- [N18] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the message "Image upload successful" appears, -> i4:If the message indicates a successful upload, the process will end.; reason=Replaces the specific textual message condition with an abstract boolean assignment (v1 = 'Yes'), dropping the required indicator text.
+- [N19] Node-level mutation: element=guard(b1,n5,"v1 = 'No'") -> action(n5,"Try again?"); source=i5:However, if the message indicates an unsuccessful upload, then try again.; reason=Abstracts the failure condition to v1 = 'No' and reduces the explicit retry instruction to a bare question, losing both the context and the directive.
+- [N20] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:If the option to try again is selected, the process will continue.; reason=Substitutes the explicit user-selection condition with an opaque variable assignment (v2 = 'Yes').
+- [N21] Node-level mutation: element=guard(b2,n6,"v2 = 'No'"); source=i7:If the option to try again is not selected, then an error will occur and the process will end.; reason=Substitutes the explicit negative-selection condition with an opaque variable assignment (v2 = 'No').

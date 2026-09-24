@@ -1,0 +1,18 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step, followed by checking the Inventory Level. -> i2:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i4:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i6:On the other hand, if the Purchase Order is rejected, then rework the order. -> i8:In case the order needs to be reworked, review the Purchase Order again. -> i4:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Resupply Cycle Triggered") -> action(n2,"Check Inventory Level") -> action(n3,"Inventory Level at or below minimum") -> branch(b1,XOR) -> action(n4,"Create Purchase Order") -> action(n6,"Reviewing Purchase Order") -> action(n7,"Purchase Order Approved") -> branch(b2,XOR) -> action(n8,"Reserve Funds for Purchase") -> action(n10,"Send Order to Suppliers") -> branch(b3,AND) -> action(n13,"Supplier sends invoice") -> action(n15,"Record invoice") -> converge(c1) -> action(n16,"Release reserved funds") -> action(n17,"Issue payment to supplier") -> action(n18,"End Process") -> end(e2)
+- [N3] Within matched traces (0->2) added: init(i1)
+- [N4] Within matched traces (0->2) added: action(n3,"Inventory Level at or below minimum")
+- [N5] Within matched traces (2->0) added: init(i1)
+- [N6] Within matched traces (2->0) added: converge(c1)
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order.; reason=Replaces the explicit inventory threshold condition ('at or below the minimum') with a generic placeholder ('v1 = Yes'), dropping the specific business logic qualifier.
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:However, if the "Inventory Level is above the minimum", then the process ends.; reason=Replaces the explicit inventory threshold condition ('above the minimum') with a generic placeholder ('v1 = No'), dropping the specific business logic qualifier.
+- [N9] Node-level mutation: element=guard(b2,n8,"v2 = 'Yes'"); source=i5:If the Purchase Order is approved, then reserve the funds for the purchase.; reason=Replaces the explicit approval status condition with a generic boolean flag ('v2 = Yes'), obscuring the actual decision criterion.
+- [N10] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i6:On the other hand, if the Purchase Order is rejected, then rework the order.; reason=Replaces the explicit rejection status condition with a generic boolean flag ('v2 = No'), obscuring the actual decision criterion.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=2 and out=2. | DSL: branch(b2,XOR)

@@ -1,0 +1,15 @@
+- `defines(v2, "Is there another filter to apply", {"no"})`: Range omits an affirmative value; source text implies a binary decision ("If there is, continue... If not, continue"), requiring both outcomes in the variable range.
+- `defines(v3, "Is submit option true", {"false"})`: Range omits "true"; source text explicitly checks whether the option is set to "true", making the current range unfaithful to the documented behavior.
+- `guard(b3, n9, v3 = 'false')`: Condition contradicts source text "if the option to submit is set to 'true', continue with the process"; the guard should evaluate to `'true'` to allow progression under the stated condition.
+- `branch(b2, XOR)` with `precedence(b2, n8)`: Control-flow logic is incomplete; the XOR gateway has only one outgoing edge, failing to model the source's conditional split ("If there is... If not...") and leaving the positive case without a traversable path.
+- `branch(b3, XOR)` with `precedence(b3, n9)`: Control-flow logic is incomplete; the single outgoing edge causes a dead-end when the stated condition (submit option = "true") is met, violating faithful initiation-to-end path mirroring.
+- `guard(b2, n8, v2 = 'no')`: Restricts progression exclusively to the "no" outcome, contradicting source text which states "If there is, continue... If not, continue" (both branches should proceed).
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b3` has in=1 and out=1. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['no']`. | Variable `v3` has an invalid range `['false']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'no'` on `b2 -> n8` uses undefined variable `v2`. | Guard `v3 = 'false'` on `b3 -> n9` uses undefined variable `v3`. | DSL: guard(b2,n8,"v2 = 'no'"); guard(b3,n9,"v3 = 'false'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'no'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'false'` on `b3 -> n9` cannot be evaluated: `v3` has no declared range. | DSL: guard(b2,n8,"v2 = 'no'"); guard(b3,n9,"v3 = 'false'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

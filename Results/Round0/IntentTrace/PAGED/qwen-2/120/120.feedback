@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager. (reason: The model fails to include the distinct developer escalation step and completely omits both instructions to provide feedback specifically to 1st Level Support.)
+- [N2] Within matched traces (2->2) omitted: i8:and end the process.
+- [N3] Within matched traces (2->2) omitted: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+
+Addition
+- [N4] Node-level addition: action(n5,"End process") (reason: The source does not instruct to end the process at this stage; termination is only explicitly stated later in the flow.)
+- [N5] Node-level addition: action(n11,"Is the issue resolved after re-assistance?") (reason: No source text describes a third resolution check ('after re-assistance'); the narrative proceeds directly to the final feedback steps.)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n5,"End process")
+- [N8] Within matched traces (0->0) added: end(e1)
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: action(n3,"Is the issue resolved?")
+- [N11] Within matched traces (1->1) added: branch(b1,XOR)
+- [N12] Within matched traces (1->1) added: action(n9,"End process")
+- [N13] Within matched traces (1->1) added: end(e2)
+- [N14] Within matched traces (2->2) added: init(i1)
+- [N15] Within matched traces (2->2) added: action(n3,"Is the issue resolved?")
+- [N16] Within matched traces (2->2) added: branch(b1,XOR)
+- [N17] Within matched traces (2->2) added: action(n11,"Is the issue resolved after re-assistance?")
+- [N18] Within matched traces (2->2) added: branch(b3,XOR)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.

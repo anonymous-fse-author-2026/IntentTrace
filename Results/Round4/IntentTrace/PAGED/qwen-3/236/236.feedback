@@ -1,0 +1,47 @@
+Omission
+- [N1] Node-level omission: i7:In the case of a wholesaler, we create a new customer and check for product availability. (reason: The 'create a new customer' step is plainly required by the source but has no corresponding action in the model.)
+- [N2] Within matched traces (2->7) omitted: i7:In the case of a wholesaler, we create a new customer and check for product availability.
+- [N3] Within matched traces (2->7) omitted: i8:If the products are not available, we produce the missing goods and send a decline message, thus ending the process.
+- [N4] Within matched traces (3->1) omitted: i7:In the case of a wholesaler, we create a new customer and check for product availability.
+- [N5] Within matched traces (3->1) omitted: i9:If the products are available, we continue with the process and send an order confirmation.
+- [N6] Within matched traces (6->2) omitted: i7:In the case of a wholesaler, we create a new customer and check for product availability.
+- [N7] Within matched traces (6->2) omitted: i9:If the products are available, we continue with the process and send an order confirmation.
+- [N8] Within matched traces (7->3) omitted: i7:In the case of a wholesaler, we create a new customer and check for product availability.
+- [N9] Within matched traces (7->3) omitted: i9:If the products are available, we continue with the process and send an order confirmation.
+
+Addition
+- [N10] Node-level addition: guard(b3,n13,"v3 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Added trace (model 0): init(i1) -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> action(n8,"Send decline message") -> end(e1)
+- [N12] Added trace (model 4): init(i1) -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> converge(c1) -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> action(n26,"Deliver goods and invoice to customer") -> branch(b5,XOR) -> converge(c3) -> action(n25,"Close order") -> end(e4)
+- [N13] Added trace (model 5): init(i1) -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> converge(c1) -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> action(n26,"Deliver goods and invoice to customer") -> branch(b5,XOR) -> branch(b6,XOR) -> action(n29,"Continue with process") -> converge(c3) -> action(n25,"Close order") -> end(e4)
+- [N14] Added trace (model 6): init(i1) -> action(n2,"Prioritize orders based on received time") -> action(n3,"Check customer's information") -> branch(b1,XOR) -> action(n5,"Check payment history") -> branch(b2,XOR) -> converge(c1) -> branch(b7,AND) -> action(n21,"Inform accounting department") -> converge(c2) -> action(n22,"Pack goods and write invoice") -> action(n23,"Goods ready for delivery and invoice sent") -> action(n26,"Deliver goods and invoice to customer") -> branch(b5,XOR) -> branch(b6,XOR) -> action(n30,"Activate donning process") -> end(e5)
+- [N15] Within matched traces (0->1) added: converge(c2)
+- [N16] Within matched traces (2->7) added: branch(b3,XOR)
+- [N17] Within matched traces (2->7) added: action(n11,"Send decline message")
+- [N18] Within matched traces (2->7) added: end(e2)
+- [N19] Within matched traces (3->1) added: action(n5,"Check payment history")
+- [N20] Within matched traces (3->1) added: branch(b2,XOR)
+- [N21] Within matched traces (3->1) added: converge(c1)
+- [N22] Within matched traces (3->1) added: branch(b7,AND)
+- [N23] Within matched traces (3->1) added: converge(c2)
+- [N24] Within matched traces (4->2) added: converge(c2)
+- [N25] Within matched traces (5->3) added: converge(c2)
+- [N26] Within matched traces (6->2) added: action(n5,"Check payment history")
+- [N27] Within matched traces (6->2) added: branch(b2,XOR)
+- [N28] Within matched traces (6->2) added: converge(c1)
+- [N29] Within matched traces (6->2) added: branch(b7,AND)
+- [N30] Within matched traces (6->2) added: converge(c2)
+- [N31] Within matched traces (7->3) added: action(n5,"Check payment history")
+- [N32] Within matched traces (7->3) added: branch(b2,XOR)
+- [N33] Within matched traces (7->3) added: converge(c1)
+- [N34] Within matched traces (7->3) added: branch(b7,AND)
+- [N35] Within matched traces (7->3) added: converge(c2)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | Node `b4` has in=0 and out=2. | DSL: branch(b3,XOR); branch(b4,XOR)
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `b3 -> n13` references unknown node(s). | Precedence edge `n13 -> n14` references unknown node(s). | Precedence edge `n14 -> b4` references unknown node(s). | DSL: guard(b3,n13,"v3 = 'No'"); branch(b4,XOR)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b4, e3, n16, n17, n19 | DSL: branch(b4,XOR); end(e3); action(n16,"Produce missing goods"); action(n17,"Send decline message"); action(n19,"Send order confirmation")
+- [S4] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `n13` in assigned_nodes. | Actor `a_default` references unknown node `n14` in assigned_nodes.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` has no enabled outgoing guard at state [v3=No].

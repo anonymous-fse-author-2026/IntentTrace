@@ -1,0 +1,7 @@
+- `branch(b1, XOR)`: Missing `guard` statements for its outgoing edges (`b1` → `n6` and `b1` → `n7`). The source explicitly defines conditional routing (“If the test results indicate that everything is functioning properly… However, if the test results indicate that there are still issues…”), which must be formalized using `guard` directives to faithfully represent the exclusive choice logic. (SMC4)
+- `defines(v1, "Is system functioning properly after test", {})`: Specifies an empty value range `{}`. The source describes a binary evaluation outcome (functioning properly vs. remaining issues), so the range must contain explicit values (e.g., `{true, false}` or `{"Yes", "No"}`) to accurately reflect the decision space. (SMC6)
+- `action(n5, "Is system functioning properly after test")`: Incorrectly models a decision condition as a discrete procedural action. Per the DSL semantics, the test-result condition should be evaluated directly at the gateway via `guard` statements on `branch(b1)`, making `n5` a hallucinated intermediate step that severs the logical link between the test and the branch. (SMC2)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

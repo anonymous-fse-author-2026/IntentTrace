@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start stadium classification")`: Hallucinated step; the source text contains no mention of initiating a classification phase, only stating the process begins with specific clinical states.
+- `action(n2, "is Primärtumor alle T present")`, `action(n3, "is Lymphknotenstatus N3 present")`, `action(n4, "is Fernmetastasen M0 present")`: Misrepresent the source's declarative sequence ("begins with the presence of Primärtumor alle T, followed by Lymphknotenstatus N3 and then Fernmetastasen M0") as interrogative checks rather than sequential process states.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Incorrectly introduce exclusive choice logic; the source describes a strict chronological sequence with no conditional splits.
+- `guard(b1, n3, v1 = 'Yes')`, `guard(b1, n6, v1 = 'No')`, `guard(b2, n4, v2 = 'Yes')`, `guard(b2, n7, v2 = 'No')`, `guard(b3, n5, v3 = 'Yes')`, `guard(b3, n8, v3 = 'No')`: Hallucinated routing conditions; the source provides no boolean variables or conditional rules dictating flow continuation or deviation.
+- `precedence(b1, n6)` / `end(e2)`, `precedence(b2, n7)` / `end(e3)`, `precedence(b3, n8)` / `end(e4)`: Create premature termination paths that contradict the source's explicit instruction that all stages must occur before completion ("Finally, the process comes to an end").
+- `defines(v1, "is Primärtumor alle T present", {"Yes", "No"})`, `defines(v2, "is Lymphknotenstatus N3 present", {"Yes", "No"})`, `defines(v3, "is Fernmetastasen M0 present", {"Yes", "No"})`: Invent decision variables and value spaces with zero basis in the source text.
+- Init-to-end paths (e.g., `i1 → n1 → n2 → b1 → n6 → e2`): Violate SMC5 by permitting skipped stages and multiple endpoints, whereas the source mandates exactly one linear progression ("followed by... and then... Finally...").

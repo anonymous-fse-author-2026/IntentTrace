@@ -1,0 +1,80 @@
+@startuml
+!theme plain
+|a_store| Store Staff
+|a_customer| Customer
+|a_crew| Delivery Crew
+|a_store|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({returned, picked_up}); <<objectSignal>>
+if () then ([v1 = 'returned'] Customer returns the items to the store)
+|a_customer|
+:customer returns items to store;
+|a_store|
+else ([v1 = 'picked_up'] Delivery Crew picks-up items at the event site)
+|a_crew|
+:delivery crew picks up items at event site;
+|a_store|
+endif
+:items counted and compared to contract;
+:order is complete and all items were returned;
+:v2: order status ({incomplete, damaged}); <<objectSignal>>
+if () then ([v2 = 'incomplete'] Order is incomplete and items are missing)
+:order is incomplete and items are missing;
+:v3: missing items status ({present, needs_email, other}); <<objectSignal>>
+switch ()
+case ([v3 = 'needs_email'] Missing items and replacement charges)
+:email customer with replacement charges;
+split
+:items are repaired and added into inventory;
+:v6: repair outcome ({repaired, discarded}); <<objectSignal>>
+if () then ([v6 = 'discarded'] Items can't be repaired and are discarded)
+:items can't be repaired and are discarded;
+stop
+else ([v6 = 'repaired'] Items are repaired and added into inventory)
+:email customer with replacement charges;
+endif
+split again
+|a_customer|
+:customer returns missing items;
+split
+|a_store|
+:v7: customer action 1 ({returns, does_not_return}); <<objectSignal>>
+if () then ([v7 = 'does_not_return'] Non-return confirmation)
+->;
+else ([v7 = 'returns'] Customer returns the missing items)
+endif
+split again
+:end process;
+end split
+stop
+end split
+case ([v3 = 'other'] Customer does not return the missing items)
+:customer does not return missing items;
+:v8: customer action 2 ({returns, does_not_return}); <<objectSignal>>
+if () then ([v8 = 'does_not_return'] Non-return alternative)
+->;
+else ([v8 = 'returns'] Customer does not return missing items)
+endif
+case ([v3 = 'present'] Items processed normally)
+endswitch
+else ([v2 = 'damaged'] Order is complete but items are damaged)
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:v4: packing option ({packed, stored}); <<objectSignal>>
+if () then ([v4 = 'stored'] Alternative packing route)
+->;
+else ([v4 = 'packed'] Items are packed for an existing order)
+endif
+split again
+:items stored for future orders;
+:v5: storage option ({packed, stored}); <<objectSignal>>
+if () then ([v5 = 'stored'] Alternative storage route)
+->;
+else ([v5 = 'packed'] Items are stored for future orders)
+endif
+end split
+endif
+@enduml

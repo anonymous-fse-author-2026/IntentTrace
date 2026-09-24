@@ -1,0 +1,8 @@
+- `action(n1, "start")`: Hallucinates an initial step not present in the source; description begins directly with "acquire a new customer".
+- `action(n8, "end process: team organized")` and `action(n9, "end process: contact customer")`: Hallucinates post-task steps before termination; source explicitly states the process ends immediately after these activities ("...organize a suitable team and the process will come to an end... however... contact the customer directly and the process will also come to an end.").
+- `precedence(b1, n6)` and `precedence(b1, n7)`: Missing `guard()` statements to enforce the documented conditional routing; source explicitly links paths to specific states ("If the contract is deemed okay..." → organize team, "...if there are any missing details..." → contact customer).
+- `defines(v1, "is the contract okay?", {})`: Empty value range `{}` does not reflect the binary decision space described in the source ("deemed okay" vs "missing details"), failing to support the intended guard conditions.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

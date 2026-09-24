@@ -1,0 +1,11 @@
+Omission
+- [N1] Node-level omission: i10:Upon receiving the invoice (reason: No element corresponds to this transitional step/state that precedes the payment action in the source text.)
+- [N2] Within matched traces (0->1) omitted: i10:Upon receiving the invoice
+
+Addition
+- [N3] Node-level addition: action(n11,"check if purchase invoice and shipment are received after waiting") (reason: This step invents additional verification logic not described in the input.)
+- [N4] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"gather the required items") -> action(n3,"inquire about the availability of products") -> action(n4,"wait for the invoice") -> action(n5,"review the pricing and terms of the items") -> action(n6,"send a purchase requisition") -> action(n7,"wait for the purchase invoice and shipment") -> action(n8,"check if purchase invoice and shipment are received") -> branch(b1,XOR) -> action(n9,"receive the invoice") -> converge(c1) -> action(n14,"make the payment") -> action(n15,"transaction is complete") -> end(e2)
+- [N5] Within matched traces (0->1) added: action(n11,"check if purchase invoice and shipment are received after waiting")
+
+Mutation
+- [N6] Node-level mutation: element=action(n8,"check if purchase invoice and shipment are received") -> guard(b1,n9,"v1 = true") -> guard(b1,n10,"v1 = false"); source=i8:Once the purchase invoice and shipment are received; reason=The source describes a temporal/event-driven transition. The model mutates this into an explicit checking step ('check if...') and replaces the natural language condition with abstract boolean guards ('v1 = true', 'v1 = false'), altering both the data representation and control flow logic.

@@ -1,0 +1,554 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "n_check_order",
+      "type": "action",
+      "content": "check customer order"
+    },
+    {
+      "id": "n_check_morale",
+      "type": "action",
+      "content": "check payment morale"
+    },
+    {
+      "id": "n_check_status",
+      "type": "action",
+      "content": "check customer status"
+    },
+    {
+      "id": "n_whole_data",
+      "type": "action",
+      "content": "enter data and take order"
+    },
+    {
+      "id": "n_check_avail",
+      "type": "action",
+      "content": "check item availability"
+    },
+    {
+      "id": "n_in_stock",
+      "type": "action",
+      "content": "items in stock"
+    },
+    {
+      "id": "n_out_stock",
+      "type": "action",
+      "content": "start production"
+    },
+    {
+      "id": "n_produce",
+      "type": "action",
+      "content": "produce article"
+    },
+    {
+      "id": "n_conf",
+      "type": "action",
+      "content": "send order confirmation"
+    },
+    {
+      "id": "n_inv_del",
+      "type": "action",
+      "content": "send invoice and deliver product"
+    },
+    {
+      "id": "n_check_pay",
+      "type": "action",
+      "content": "check payment status"
+    },
+    {
+      "id": "n_close",
+      "type": "action",
+      "content": "close order"
+    },
+    {
+      "id": "n_check_rem",
+      "type": "action",
+      "content": "check number of reminders"
+    },
+    {
+      "id": "n_engage_lawyer",
+      "type": "action",
+      "content": "engage lawyer"
+    },
+    {
+      "id": "n_send_reminder",
+      "type": "action",
+      "content": "send reminder"
+    },
+    {
+      "id": "n_reject",
+      "type": "action",
+      "content": "reject order"
+    },
+    {
+      "id": "b_cust",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_morale",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_status",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_avail",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_pay",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_rem",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c_continue",
+      "type": "converge"
+    },
+    {
+      "id": "c_product_ready",
+      "type": "converge"
+    },
+    {
+      "id": "c_reject",
+      "type": "converge"
+    },
+    {
+      "id": "e_ok",
+      "type": "end"
+    },
+    {
+      "id": "e_rejected",
+      "type": "end"
+    },
+    {
+      "id": "e_lawyer",
+      "type": "end"
+    },
+    {
+      "id": "e_reminder",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_cust",
+      "name": "customer type",
+      "R_X": [
+        "Registered",
+        "New",
+        "Wholesaler"
+      ]
+    },
+    {
+      "X": "v_morale",
+      "name": "payment morale",
+      "R_X": [
+        "Good",
+        "Bad"
+      ]
+    },
+    {
+      "X": "v_status",
+      "name": "customer status",
+      "R_X": [
+        "EndCustomer",
+        "Other"
+      ]
+    },
+    {
+      "X": "v_avail",
+      "name": "item availability",
+      "R_X": [
+        "InStock",
+        "OutOfStock"
+      ]
+    },
+    {
+      "X": "v_pay",
+      "name": "payment received",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_rem",
+      "name": "reminders count",
+      "R_X": [
+        ">3",
+        "<=3"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "n_check_order",
+        "n_check_morale",
+        "n_check_status",
+        "n_whole_data",
+        "n_check_avail",
+        "n_in_stock",
+        "n_out_stock",
+        "n_produce",
+        "n_conf",
+        "n_inv_del",
+        "n_check_pay",
+        "n_close",
+        "n_check_rem",
+        "n_engage_lawyer",
+        "n_send_reminder",
+        "n_reject",
+        "b_cust",
+        "b_morale",
+        "b_status",
+        "b_avail",
+        "b_pay",
+        "b_rem",
+        "c_continue",
+        "c_product_ready",
+        "c_reject",
+        "e_ok",
+        "e_rejected",
+        "e_lawyer",
+        "e_reminder"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "n_check_order"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_order",
+      "B": "b_cust"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_check_morale"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_check_status"
+    },
+    {
+      "type": "precedence",
+      "A": "b_cust",
+      "B": "n_whole_data"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_morale",
+      "B": "b_morale"
+    },
+    {
+      "type": "precedence",
+      "A": "b_morale",
+      "B": "c_continue"
+    },
+    {
+      "type": "precedence",
+      "A": "b_morale",
+      "B": "c_reject"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_status",
+      "B": "b_status"
+    },
+    {
+      "type": "precedence",
+      "A": "b_status",
+      "B": "c_continue"
+    },
+    {
+      "type": "precedence",
+      "A": "b_status",
+      "B": "c_reject"
+    },
+    {
+      "type": "precedence",
+      "A": "n_whole_data",
+      "B": "c_continue"
+    },
+    {
+      "type": "precedence",
+      "A": "c_continue",
+      "B": "n_check_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_avail",
+      "B": "b_avail"
+    },
+    {
+      "type": "precedence",
+      "A": "b_avail",
+      "B": "n_in_stock"
+    },
+    {
+      "type": "precedence",
+      "A": "b_avail",
+      "B": "n_out_stock"
+    },
+    {
+      "type": "precedence",
+      "A": "n_in_stock",
+      "B": "c_product_ready"
+    },
+    {
+      "type": "precedence",
+      "A": "n_out_stock",
+      "B": "n_produce"
+    },
+    {
+      "type": "precedence",
+      "A": "n_produce",
+      "B": "c_product_ready"
+    },
+    {
+      "type": "precedence",
+      "A": "c_product_ready",
+      "B": "n_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "n_conf",
+      "B": "n_inv_del"
+    },
+    {
+      "type": "precedence",
+      "A": "n_inv_del",
+      "B": "n_check_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_pay",
+      "B": "b_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "n_close"
+    },
+    {
+      "type": "precedence",
+      "A": "b_pay",
+      "B": "n_check_rem"
+    },
+    {
+      "type": "precedence",
+      "A": "n_close",
+      "B": "e_ok"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check_rem",
+      "B": "b_rem"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "n_engage_lawyer"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rem",
+      "B": "n_send_reminder"
+    },
+    {
+      "type": "precedence",
+      "A": "n_engage_lawyer",
+      "B": "e_lawyer"
+    },
+    {
+      "type": "precedence",
+      "A": "n_send_reminder",
+      "B": "e_reminder"
+    },
+    {
+      "type": "precedence",
+      "A": "c_reject",
+      "B": "n_reject"
+    },
+    {
+      "type": "precedence",
+      "A": "n_reject",
+      "B": "e_rejected"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_check_morale",
+      "condition": "v_cust = 'Registered'"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_check_status",
+      "condition": "v_cust = 'New'"
+    },
+    {
+      "type": "guard",
+      "A": "b_cust",
+      "B": "n_whole_data",
+      "condition": "v_cust = 'Wholesaler'"
+    },
+    {
+      "type": "guard",
+      "A": "b_morale",
+      "B": "c_continue",
+      "condition": "v_morale = 'Good'"
+    },
+    {
+      "type": "guard",
+      "A": "b_morale",
+      "B": "c_reject",
+      "condition": "v_morale = 'Bad'"
+    },
+    {
+      "type": "guard",
+      "A": "b_status",
+      "B": "c_continue",
+      "condition": "v_status = 'Other'"
+    },
+    {
+      "type": "guard",
+      "A": "b_status",
+      "B": "c_reject",
+      "condition": "v_status = 'EndCustomer'"
+    },
+    {
+      "type": "guard",
+      "A": "b_avail",
+      "B": "n_in_stock",
+      "condition": "v_avail = 'InStock'"
+    },
+    {
+      "type": "guard",
+      "A": "b_avail",
+      "B": "n_out_stock",
+      "condition": "v_avail = 'OutOfStock'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "n_close",
+      "condition": "v_pay = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_pay",
+      "B": "n_check_rem",
+      "condition": "v_pay = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "n_engage_lawyer",
+      "condition": "v_rem = '>3'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rem",
+      "B": "n_send_reminder",
+      "condition": "v_rem = '<=3'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by checking the customer's order."
+    },
+    {
+      "id": "i2",
+      "content": "If the customer is a registered customer, then check their payment morale."
+    },
+    {
+      "id": "i3",
+      "content": "If they are a new customer, then check their status."
+    },
+    {
+      "id": "i4",
+      "content": "If their payment morale is good, continue with the process."
+    },
+    {
+      "id": "i5",
+      "content": "If their payment morale is bad or if they are an end customer, reject the order and end the process."
+    },
+    {
+      "id": "i6",
+      "content": "If the customer is a wholesaler,"
+    },
+    {
+      "id": "i7",
+      "content": "enter their data and take the order."
+    },
+    {
+      "id": "i9",
+      "content": "check the availability of the items."
+    },
+    {
+      "id": "i10",
+      "content": "If the items are out of stock, start production."
+    },
+    {
+      "id": "i11",
+      "content": "If they are in stock, continue with the process."
+    },
+    {
+      "id": "i12",
+      "content": "Once the availability is checked, send the order confirmation."
+    },
+    {
+      "id": "i13",
+      "content": "produce the article and send the order confirmation."
+    },
+    {
+      "id": "i15",
+      "content": "send the invoice and deliver the product."
+    },
+    {
+      "id": "i16",
+      "content": "Check the payment status."
+    },
+    {
+      "id": "i17",
+      "content": "If payment is received, close the order."
+    },
+    {
+      "id": "i18",
+      "content": "If no payment is received, check the number of reminders."
+    },
+    {
+      "id": "i19",
+      "content": "If there are more than three reminders, engage a lawyer."
+    },
+    {
+      "id": "i20",
+      "content": "If there are three or fewer reminders, send a reminder."
+    }
+  ]
+}

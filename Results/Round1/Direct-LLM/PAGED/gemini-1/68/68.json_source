@@ -1,0 +1,537 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Items returned by customer or picked up by delivery crew"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Count and compare items to contract"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Order status after count"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Items disposition for returned items"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Email customer missing items and replacement charges"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Customer returns missing items"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "End process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Email customer damage and additional charges"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Temporarily remove damaged items from inventory"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Can damaged items be repaired"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Repair items and add to inventory"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Discard items and email customer replacement charges"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Items disposition after repair"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "End process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "End process"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Items returned by customer or picked up by delivery crew",
+      "R_X": [
+        "Delivery crew picks up items at event site"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Order status after count",
+      "R_X": [
+        "All items returned",
+        "Items missing",
+        "Items damaged"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Items disposition for returned items",
+      "R_X": [
+        "Stored for future orders"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Customer returns missing items",
+      "R_X": [
+        "Customer does not return missing items"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "Can damaged items be repaired",
+      "R_X": [
+        "Can be repaired",
+        "Cannot be repaired"
+      ]
+    },
+    {
+      "X": "v6",
+      "name": "Items disposition after repair",
+      "R_X": [
+        "Stored for future orders"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "b2",
+        "n5",
+        "b3",
+        "n6",
+        "n7",
+        "b4",
+        "n8",
+        "e1",
+        "n9",
+        "n10",
+        "n11",
+        "b5",
+        "n12",
+        "n13",
+        "n14",
+        "b6",
+        "n15",
+        "e2",
+        "n16",
+        "e3",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n16"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 = 'Delivery crew picks up items at event site'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n5",
+      "condition": "v2 = 'All items returned'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'Items missing'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n8",
+      "condition": "v4 = 'Customer does not return missing items'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'Items damaged'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n12",
+      "condition": "v5 = 'Can be repaired'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n13",
+      "condition": "v5 = 'Cannot be repaired'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n15",
+      "condition": "v3 = 'Stored for future orders'"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "n16",
+      "condition": "v6 = 'Stored for future orders'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process"
+    },
+    {
+      "id": "i2",
+      "content": "Rental Items are Returned to the Store"
+    },
+    {
+      "id": "i3",
+      "content": "If the \"Customer returns the items to the store,\""
+    },
+    {
+      "id": "i4",
+      "content": "However, if the \"Delivery Crew picks-up items at the event site,\""
+    },
+    {
+      "id": "i5",
+      "content": "if the \"Delivery Crew picks-up items at the event site,\""
+    },
+    {
+      "id": "i6",
+      "content": "items are counted and compared to the original contract"
+    },
+    {
+      "id": "i7",
+      "content": "If the \"Order is complete and all items were returned,\""
+    },
+    {
+      "id": "i8",
+      "content": "However, if the \"Order is incomplete and items are missing,\""
+    },
+    {
+      "id": "i9",
+      "content": "if the \"Order is incomplete and items are missing,\""
+    },
+    {
+      "id": "i10",
+      "content": "Similarly, if the \"Order is complete but items are damaged,\""
+    },
+    {
+      "id": "i11",
+      "content": "if the \"Order is complete but items are damaged,\""
+    },
+    {
+      "id": "i12",
+      "content": "we email the customer to inform them of the damage and additional charges"
+    },
+    {
+      "id": "i13",
+      "content": "if the \"Items are packed for an existing order,\""
+    },
+    {
+      "id": "i14",
+      "content": "Alternatively, if the \"Items are stored for future orders,\""
+    },
+    {
+      "id": "i15",
+      "content": "if the \"Items are stored for future orders,\""
+    },
+    {
+      "id": "i16",
+      "content": "missing items and replacement charges, we email the customer to inform them"
+    },
+    {
+      "id": "i17",
+      "content": "we temporarily take them out of inventory"
+    },
+    {
+      "id": "i18",
+      "content": "If the \"Customer returns the missing items,\""
+    },
+    {
+      "id": "i19",
+      "content": "However, if the \"Customer does not return the missing items,\""
+    },
+    {
+      "id": "i20",
+      "content": "if the \"Customer does not return the missing items,\""
+    },
+    {
+      "id": "i21",
+      "content": "Finally, when the process is complete, it ends."
+    },
+    {
+      "id": "i22",
+      "content": "If the \"Items are repaired and added into inventory,\""
+    },
+    {
+      "id": "i23",
+      "content": "If the \"Items are repaired"
+    },
+    {
+      "id": "i24",
+      "content": "Items are repaired and added into inventory"
+    },
+    {
+      "id": "i25",
+      "content": "On the other hand, if the \"Items can't be repaired and are discarded,\""
+    },
+    {
+      "id": "i26",
+      "content": "if the \"Items can't be repaired"
+    },
+    {
+      "id": "i27",
+      "content": "Items can't be repaired and are discarded,\" we email the customer with replacement charges"
+    },
+    {
+      "id": "i28",
+      "content": "If the \"Items are packed for an existing order,\""
+    },
+    {
+      "id": "i29",
+      "content": "If the \"Items are stored for future orders,\""
+    },
+    {
+      "id": "i30",
+      "content": "Once again, when the process is complete, it ends."
+    },
+    {
+      "id": "i31",
+      "content": "The customer is then emailed with replacement charges"
+    },
+    {
+      "id": "i32",
+      "content": "the process is complete."
+    }
+  ]
+}

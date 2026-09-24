@@ -1,0 +1,24 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start process in Admin Office") (reason: The source text uses 'To begin the process...' as contextual framing and explicitly instructs to 'check if it has started'. Modeling 'Start process in Admin Office' as an active step invents an operation not present in the source.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start process in Admin Office") -> action(n2,"Has process started") -> branch(b1,XOR) -> action(n3,"Verify completeness of invoices") -> action(n5,"Are invoices marked as Uncompleted") -> branch(b2,XOR) -> action(n6,"Return invoices to client via postal mail") -> action(n7,"Receive completed invoices") -> converge(c1) -> action(n8,"Mark relevant box on invoice entry form") -> action(n9,"Has process been completed") -> branch(b3,XOR) -> action(n11,"End") -> end(e3)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"Start process in Admin Office") -> action(n2,"Has process started") -> branch(b1,XOR) -> action(n3,"Verify completeness of invoices") -> action(n5,"Are invoices marked as Uncompleted") -> branch(b2,XOR) -> converge(c1) -> action(n8,"Mark relevant box on invoice entry form") -> action(n9,"Has process been completed") -> branch(b3,XOR) -> action(n10,"End") -> end(e2)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"Start process in Admin Office") -> action(n2,"Has process started") -> branch(b1,XOR) -> action(n3,"Verify completeness of invoices") -> action(n5,"Are invoices marked as Uncompleted") -> branch(b2,XOR) -> converge(c1) -> action(n8,"Mark relevant box on invoice entry form") -> action(n9,"Has process been completed") -> branch(b3,XOR) -> action(n11,"End") -> end(e3)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"Start process in Admin Office")
+- [N7] Within matched traces (0->0) added: action(n7,"Receive completed invoices")
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n8,"Mark relevant box on invoice entry form")
+- [N10] Within matched traces (0->0) added: action(n9,"Has process been completed")
+- [N11] Within matched traces (0->0) added: branch(b3,XOR)
+- [N12] Within matched traces (0->0) added: action(n10,"End")
+- [N13] Within matched traces (0->0) added: end(e2)
+- [N14] Within matched traces (1->0) added: init(i1)
+- [N15] Within matched traces (1->0) added: action(n1,"Start process in Admin Office")
+- [N16] Within matched traces (1->0) added: action(n5,"Are invoices marked as Uncompleted")
+- [N17] Within matched traces (1->0) added: action(n6,"Return invoices to client via postal mail")
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=No].

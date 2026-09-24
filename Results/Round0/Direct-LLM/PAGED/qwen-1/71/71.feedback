@@ -1,0 +1,7 @@
+- `action(n1, "start BPMN execution TDD process")`: Hallucinated behavior; the source description begins directly with "understand the BPMN Model" and contains no preliminary initialization step.
+- `action(n7, "process ends")`, `action(n11, "process ends")`, `action(n13, "process ends")`: Hallucinated steps; "the process ends" denotes termination, which is correctly captured by `end` nodes, not as intermediate executable actions.
+- `defines(v2, "does the level satisfy project requirements", ...)` and `defines(v3, "does the level satisfy project requirements", ...)`: Lacks fidelity to source structure; the text describes two distinct sequential evaluations of requirements, but the model assigns them identical descriptive names, rendering them semantically indistinguishable.
+- `precedence(n8, n3)`: Arbitrary control-flow assignment; the source states "continue the process" without specifying a resumption point, yet the model hardcodes a loop back to `n3` ("write a failing test").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"write a failing test")

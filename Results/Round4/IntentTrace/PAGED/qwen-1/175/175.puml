@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|process_handler| ProcessHandler
+|process_handler|
+start
+:Rental Items are Returned to the Store.;
+:v_method: return method ({Customer, Delivery}); <<objectSignal>>
+if () then ([v_method = "Customer"])
+:If the "Customer returns the items to the store," then we can continue the process.;
+else ([v_method = "Delivery"])
+:However, if the "Delivery Crew picks-up items at the event site," then we also continue the process.;
+endif
+:During this step, the items are counted and compared to the original contract.;
+:v_status: order status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v_status = "Complete"])
+:If the "Order is complete and all items were returned," then we proceed with the process.;
+:v_ps1: post complete action ({Pack, Store}); <<objectSignal>>
+if () then ([v_ps1 = "Pack"])
+:After this, if the "Items are packed for an existing order," we continue the process.;
+else ([v_ps1 = "Store"])
+:Alternatively, if the "Items are stored for future orders," we also continue the process.;
+endif
+case ([v_status = "Incomplete"])
+:However, if the "Order is incomplete and items are missing," we still continue the process.;
+:In case of missing items and replacement charges, we email the customer to inform them.;
+:v_miss_ret: missing item return ({Returns, NoReturn}); <<objectSignal>>
+if () then ([v_miss_ret = "Returns"])
+:If the "Customer returns the missing items," we continue the process.;
+else ([v_miss_ret = "NoReturn"])
+:However, if the "Customer does not return the missing items," we still continue the process.;
+endif
+case ([v_status = "Damaged"])
+:Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges.;
+:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.;
+:v_repair: repair status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v_repair = "Repaired"])
+:If the "Items are repaired and added into inventory," we continue the process.;
+else ([v_repair = "Discarded"])
+:On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.;
+:The customer is then emailed with replacement charges, and the process is complete.;
+stop
+endif
+endswitch
+:Lastly, the items are packed for an existing order.;
+:v_final: final action ({Pack, Store}); <<objectSignal>>
+if () then ([v_final = "Pack"])
+:If the "Items are packed for an existing order," we continue the process.;
+else ([v_final = "Store"])
+:If the "Items are stored for future orders," we also continue the process.;
+endif
+stop
+@enduml

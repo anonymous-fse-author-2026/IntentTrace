@@ -1,0 +1,7 @@
+Addition
+- [N1] Added trace (model 2): init(i1) -> action(n2,"pick up order") -> action(n3,"request stock check") -> action(n4,"check inventory") -> action(n5,"is stock rejected?") -> branch(b1,XOR) -> action(n7,"request shipping details") -> action(n8,"receive shipping details") -> branch(b2,AND) -> action(n10,"send invoice") -> converge(c1) -> action(n11,"receive payment") -> end(e2)
+- [N2] Within matched traces (1->1) added: action(n5,"is stock rejected?")
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,e1,"v1 = 'Yes'"); source=i4:If the stock is rejected, then the process ends.; reason=The guard replaces the explicit semantic condition 'stock is rejected' with a generic boolean assignment 'v1 = Yes', stripping the original business context and threshold.
+- [N4] Node-level mutation: element=guard(b1,n7,"v1 = 'No'"); source=i5:Otherwise, the supplier should request shipping details.; reason=The guard replaces the 'Otherwise' (not rejected) logical path with a generic boolean 'v1 = No', failing to preserve the intended outcome distinction or negate the original condition.

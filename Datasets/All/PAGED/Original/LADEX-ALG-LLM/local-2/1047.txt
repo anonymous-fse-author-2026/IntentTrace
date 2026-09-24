@@ -1,0 +1,41 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"start rental process","start","","","",""
+2,"are items returned by customer or delivery crew?","condition","1","Yes;No;","",""
+3,"items returned by customer","entity","2","Customer returns the items to the store;","",""
+4,"items picked up by delivery crew","entity","2","Delivery Crew picks-up items at the event site;","",""
+5,"check if order is complete","incomplete","3,4","Complete;Incomplete;Damaged;","",""
+6,"order is complete and all items returned","entity","5","Order is complete and all items were returned;","",""
+7,"order is incomplete and items are missing","entity","5","Order is incomplete and items are missing;","",""
+8,"order is complete but items are damaged","entity","5","Order is complete but items are damaged;","",""
+9,"email customer about damage and additional charges","entity","8","Email customer about damage and additional charges;","",""
+10,"items packed or stored?","condition","6,7,9","Packed;Stored;","",""
+11,"items packed for existing order","entity","10","Items are packed for an existing order;","",""
+12,"items stored for future use","entity","10","Items are stored for future orders;","",""
+13,"email about missing items and charges","entity","7","Email customer about missing items and replacement charges;","",""
+14,"remove damaged items from inventory","entity","8","Take damaged items out of inventory temporarily;","",""
+15,"customer returns missing items?","condition","7,13","Yes;No;","",""
+16,"missing items returned by customer","entity","15","Customer returns the missing items;","",""
+17,"missing items not returned by customer","entity","15","Customer does not return the missing items;","",""
+18,"repair or discard items?","condition","14,16,17","Repair;Discard;","",""
+19,"items repaired and restocked","entity","18","Items are repaired and restocked;","",""
+20,"items discarded permanently","entity","18","Items are discarded permanently;","",""
+21,"notify customer about replacement charges","entity","11,12,19,20","Email customer with replacement charges;","",""
+22,"end process","end","17,14,16,10,20,19,21","","",""

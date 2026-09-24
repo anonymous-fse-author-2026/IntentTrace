@@ -1,0 +1,8 @@
+
+
+- `action(n9, "Rework PO")`: Lacks an outgoing precedence relation. Source text states: "If the PO needs to be reworked, it needs to be created again." Missing control-flow loop back to `action(n6, "Create Purchase Order (PO)")`.
+- `action(n16, "Receive Invoice")`: Lacks an outgoing precedence relation. Source text states: "If the Invoice is received, proceed to the Three-way match." Missing directed edge to `action(n17, "Three-way Match")`.
+- `precedence(n15, n17)`: Incorrectly connects `action(n15, "Proceed to Receive Packing Slip")` directly to `action(n17, "Three-way Match")`, violating source chronology. Text specifies: "If the inventory is received, proceed to receive the Packing Slip. If the Packing Slip is received, proceed to receive the Invoice. If the Invoice is received, proceed to the Three-way match."
+- `branch(b6, AND)`: Initiates parallel execution but lacks a corresponding `converge` node or synchronization mechanism. Source describes simultaneous execution followed by unified downstream steps, but the model allows the paths to diverge permanently into incompatible sequences.
+- `label(n15, n17, "Invoice Received")`: Applies the label "Invoice Received" to an edge that explicitly bypasses `action(n16, "Receive Invoice")`, contradicting the node payload meaning and the documented process flow.
+- `branch(b3, XOR)` and `branch(b4, XOR)`: Defined as exclusive choice gateways but each possesses only a single outgoing edge. This incorrectly models deterministic conditional triggers ("If funds are reserved...", "If the POs are mailed...") as branching logic and fractures the intended sequential progression into disjoint paths that never reconverge.

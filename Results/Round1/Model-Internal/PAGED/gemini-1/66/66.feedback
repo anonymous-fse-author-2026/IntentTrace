@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i4:If they are marked as "Uncompleted" (reason: The model completely omitted this condition; there are no branches or guards evaluating if the invoices are uncompleted.)
+- [N2] Within matched traces (0->0) omitted: i4:If they are marked as "Uncompleted"
+
+Addition
+- [N3] Node-level addition: guard(b1,n3,"v1 == \"Yes\"") (reason: These elements introduce conditional Yes/No logic and an alternative 'End' path based on whether the process has started, which are not described in the source text.)
+- [N4] Node-level addition: guard(b1,n4,"v1 == \"No\"") (reason: These elements introduce conditional Yes/No logic and an alternative 'End' path based on whether the process has started, which are not described in the source text.)
+- [N5] Node-level addition: action(n4,"End") (reason: These elements introduce conditional Yes/No logic and an alternative 'End' path based on whether the process has started, which are not described in the source text.)
+- [N6] Node-level addition: guard(b2,n9,"v2 == \"Yes\"") (reason: These elements invent conditional Yes/No paths and a loop back to verifying invoices, altering the process behavior without support from the source text.)
+- [N7] Node-level addition: guard(b2,n10,"v2 == \"No\"") (reason: These elements invent conditional Yes/No paths and a loop back to verifying invoices, altering the process behavior without support from the source text.)
+- [N8] Node-level addition: action(n10,"Proceed to verify completeness of invoices") (reason: These elements invent conditional Yes/No paths and a loop back to verifying invoices, altering the process behavior without support from the source text.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n3,"Proceed to verify completeness of invoices") -> action(n5,"Return uncompleted invoices to client via postal mail") -> action(n6,"Receive completed invoices from client") -> action(n7,"Mark relevant box on invoice entry form") -> action(n8,"Check if process has been completed") -> branch(b2,XOR) -> action(n10,"Proceed to verify completeness of invoices") -> end(e2)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> end(e1)
+- [N11] Within matched traces (1->0) added: action(n5,"Return uncompleted invoices to client via postal mail")
+- [N12] Within matched traces (1->0) added: action(n6,"Receive completed invoices from client")

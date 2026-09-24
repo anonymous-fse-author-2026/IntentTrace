@@ -1,0 +1,9 @@
+- `action(n1, "start")`, `action(n17, "end")`, `action(n18, "end")`: Hallucinated steps not present in the description; the process initiation and termination are fully captured by `init(i1)`, `end(e1/e2)`, and the explicit textual steps "clicking on 'Start'" and "processes the expense and then ending it."
+- `precedence(n8, c1)`, `precedence(c1, n14)`: Omits documented behavior and violates chronology; the description states "After this, evaluate the review decision" following the translation check for both expense paths, but the ≤1000 branch bypasses this step and routes directly to `n14`.
+- `action(n14, "evaluate receipt decision")`: Payload and chronology mismatch; at this position in the flow, the source requires "evaluate the review decision", while "evaluate the receipts decision" is explicitly reserved for the final step ("Finally, evaluate the receipts decision.").
+- `converge(c1)`: Incorrect control-flow logic; it improperly merges the first translation check outputs (`n7`, `n8`) with the second (`n12`, `n13`), creating a structural crossover that contradicts the source's linear progression.
+- `branch(b4, XOR)`, `guard(b4, n12, v4 = 'Yes')`, `guard(b4, n13, v4 = 'No')`: Incorrect control-flow logic; the description specifies a mandatory sequential flow for the approved path ("translate the receipts and then confirm them"), not an exclusive choice governed by a decision variable.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | DSL: action(n10,"edit report")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10 | DSL: action(n10,"edit report")

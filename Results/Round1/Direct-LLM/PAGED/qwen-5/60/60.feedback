@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i13:Once again, evaluate the review decision. If the report is rejected, edit the report. If it is approved, translate the receipts and then confirm them. (reason: The model lacks a node or branch representing the second evaluation of the review decision. The flow proceeds directly from checking translation need to translating and confirming receipts, skipping the stated decision point.)
+- [N2] Node-level omission: i14:Once again, evaluate the review decision. (reason: The model lacks a node or branch representing the second evaluation of the review decision. The flow proceeds directly from checking translation need to translating and confirming receipts, skipping the stated decision point.)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:greater than 1000; reason=Guards replace explicit source conditions and thresholds with abstract boolean variables ('Yes'/'No'), altering the explicit data and granularity described in the source.
+- [N4] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:less than or equal to 1000; reason=Guards replace explicit source conditions and thresholds with abstract boolean variables ('Yes'/'No'), altering the explicit data and granularity described in the source.
+- [N5] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i7:translation is required; reason=Guards replace explicit source conditions and thresholds with abstract boolean variables ('Yes'/'No'), altering the explicit data and granularity described in the source.
+- [N6] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i8:If not; reason=Guards replace explicit source conditions and thresholds with abstract boolean variables ('Yes'/'No'), altering the explicit data and granularity described in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=0 and out=1. | DSL: action(n12,"translate receipts again")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b5, e1, n12, n13, n14, n15, n16, n17 | DSL: branch(b5,XOR); end(e1); action(n12,"translate receipts again"); action(n13,"confirm receipts again"); action(n14,"evaluate receipt decision"); action(n15,"process expense"); action(n16,"edit report"); action(n17,"end")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b1, b2, b3, c1, i1, n10, n11, n16, n2, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,XOR); converge(c1); init(i1); action(n10,"edit report"); action(n11,"check translation need again"); action(n16,"edit report") (+8 more)

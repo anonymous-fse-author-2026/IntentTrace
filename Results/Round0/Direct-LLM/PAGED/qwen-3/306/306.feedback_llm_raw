@@ -1,0 +1,8 @@
+
+
+- `action(n3, "inventory at or below minimum")`: Hallucinates an executable task for a conditional clause; the source treats this as a decision criterion ("If the inventory level is at or below the minimum..."), not a process activity.
+- `action(n7, "purchase status approved")`: Hallucinates an executable task for a decision context; the source uses this phrase as a routing condition ("if the purchase status is approved..."), not a discrete step.
+- `action(n5, "process ends")`, `action(n16, "process ends")`, `action(n17, "process ends")`: Model termination as unnecessary activities; the source simply states "the process ends" at these points, which should connect directly to `end` nodes without intermediary actions.
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Omit required `guard` statements on outgoing edges. The source explicitly defines routing criteria ("inventory level is at or below the minimum"/"above the minimum"; "status is rejected"/"approved"), which must be captured via guards to faithfully represent control-flow logic.
+- `defines(v1, "inventory at or below minimum", {})`, `defines(v2, "purchase status approved", {})`: Specify empty value ranges `{}` while the source implies binary/categorical domains (below/above threshold, rejected/approved), failing to capture variable semantics.
+- `precedence(n10, n7)`: Breaks intended chronology by forcing the feedback loop through action `n7`; the source sequence ("Rework the purchase order and then review it.") implies immediate re-evaluation at the gateway without an intervening task.

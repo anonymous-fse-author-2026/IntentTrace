@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+if () then ( )
+:customer returns items to store;
+else ( )
+:delivery crew picks up items at event site;
+endif
+:order is complete and all items were returned;
+if () then ( )
+:order is incomplete and items are missing;
+switch ()
+case (case 1)
+:customer returns missing items;
+if () then ( )
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+if () then ( )
+->;
+endif
+split again
+:items stored for future orders;
+if () then ( )
+->;
+endif
+end split
+:end process;
+stop
+endif
+case (case 2)
+:customer does not return missing items;
+if () then ( )
+endif
+case (else)
+endswitch
+else ( )
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+if () then ( )
+->;
+endif
+split again
+:items stored for future orders;
+if () then ( )
+->;
+endif
+end split
+endif
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+if () then ( )
+:items can't be repaired and are discarded;
+stop
+else ( )
+:email customer with replacement charges;
+endif
+:end process;
+stop
+@enduml

@@ -1,0 +1,9 @@
+Addition
+- [N1] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,AND) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n8,"End process as declaration check needed") -> end(e2)
+- [N2] Added trace (model 4): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,AND) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n9,"End process as invitation needed") -> end(e3)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n3,"v1 = 'No'"); source=i3:If it needs to be sent back, the process ends.; reason=The guard replaces the explicit natural-language condition 'needs to be sent back' with the abstract placeholder 'v1 = "No"', distorting the logical payload.
+- [N4] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i4:if we need to check the income, we continue with the process; reason=The guard substitutes the actual source condition 'need to check the income' with 'v1 = "Yes"', failing to preserve the intended branching criterion.
+- [N5] Node-level mutation: element=guard(b3,n8,"v3 = 'Declaration'"); source=i7:If we need to check the declaration, the process ends.; reason=Uses the generic token 'v3 = "Declaration"' instead of faithfully encoding the specific textual condition 'need to check the declaration'.
+- [N6] Node-level mutation: element=guard(b3,n9,"v3 = 'Invitation'"); source=i8:Otherwise, if we need to invite the declarant, the process also ends.; reason=Replaces the precise source logic 'need to invite the declarant' with the abstract assignment 'v3 = "Invitation"', altering the guard's semantic meaning.

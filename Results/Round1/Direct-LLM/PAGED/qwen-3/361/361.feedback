@@ -1,0 +1,21 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i6:if the inventory level is below the minimum, -> i7:create a purchase order. -> i8:review it. -> i9:If the purchase order is rejected, -> i10:rework the purchase order. -> i12:review it again. -> i9:If the purchase order is rejected,
+- [N2] Omitted trace (input 3): i1:To begin the process -> i2:trigger the resupply cycle. -> i3:check the current inventory level. -> i6:if the inventory level is below the minimum, -> i7:create a purchase order. -> i8:review it. -> i11:if the purchase order is accepted, -> i13:At the same time, complete the following steps: -> i15:send the purchase order to the supplier. -> i16:Once the packing slip is received, release the reserved funds -> i17:and then the process ends.
+- [N3] Within matched traces (2->1) omitted: i13:At the same time, complete the following steps:
+- [N4] Within matched traces (2->2) omitted: i13:At the same time, complete the following steps:
+
+Addition
+- [N5] Node-level addition: guard(b3,c1,"v3 = 'rejected'") (reason: These guards inject 'rejected' and 'accepted' conditions onto branch b3. The source text at this position ('At the same time, complete the following steps:') describes unconditional concurrent work. No decision logic or branching criteria exist in the source to justify these guards, making them unsupported additions.)
+- [N6] Node-level addition: guard(b3,c2,"v3 = 'accepted'") (reason: These guards inject 'rejected' and 'accepted' conditions onto branch b3. The source text at this position ('At the same time, complete the following steps:') describes unconditional concurrent work. No decision logic or branching criteria exist in the source to justify these guards, making them unsupported additions.)
+- [N7] Within matched traces (2->1) added: converge(c1)
+- [N8] Within matched traces (2->1) added: action(n7,"rework: purchase order")
+- [N9] Within matched traces (2->1) added: action(n8,"review: purchase order")
+- [N10] Within matched traces (2->1) added: branch(b3,XOR)
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'above'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'below'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v2 = 'rejected'` on `b2 -> c1` uses undefined variable `v2`. | Guard `v2 = 'accepted'` on `b2 -> c2` uses undefined variable `v2`. | Guard `v3 = 'rejected'` on `b3 -> c1` uses undefined variable `v3`. | Guard `v3 = 'accepted'` on `b3 -> c2` uses undefined variable `v3`. | DSL: guard(b1,n4,"v1 = 'above'"); guard(b1,n5,"v1 = 'below'"); guard(b2,c1,"v2 = 'rejected'"); guard(b2,c2,"v2 = 'accepted'"); guard(b3,c1,"v3 = 'rejected'"); guard(b3,c2,"v3 = 'accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'above'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'below'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'rejected'` on `b2 -> c1` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'accepted'` on `b2 -> c2` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'rejected'` on `b3 -> c1` cannot be evaluated: `v3` has no declared range. | Guard `v3 = 'accepted'` on `b3 -> c2` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n4,"v1 = 'above'"); guard(b1,n5,"v1 = 'below'"); guard(b2,c1,"v2 = 'rejected'"); guard(b2,c2,"v2 = 'accepted'"); guard(b3,c1,"v3 = 'rejected'"); guard(b3,c2,"v3 = 'accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

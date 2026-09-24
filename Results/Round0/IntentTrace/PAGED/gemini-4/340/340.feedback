@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i5:On the other hand, if they already have the availability information, they can proceed with the process. (reason: The specific condition and action step to 'proceed with the process' when availability information is already known is missing from the model.)
+- [N2] Node-level omission: i8:If the parts are supplied to the customer, the team can also continue with the process. (reason: The explicit action to 'continue with the process' when parts are supplied is omitted.)
+- [N3] Omitted trace (input 1): i1:the first step is -> i2:identify the parts -> i6:if they already have the availability information -> i5:On the other hand, if they already have the availability information, they can proceed with the process. -> i13:After all the necessary parts are collected -> i14:proceed with the payment -> i15:process comes to an end
+- [N4] Omitted trace (input 2): i1:the first step is -> i2:identify the parts -> i7:If the parts are supplied to the customer -> i8:If the parts are supplied to the customer, the team can also continue with the process. -> i13:After all the necessary parts are collected -> i14:proceed with the payment -> i15:process comes to an end
+- [N5] Within matched traces (3->0) omitted: i10:record the customer's details
+- [N6] Within matched traces (0->2) omitted: i4:check the availability of the parts
+
+Addition
+- [N7] Node-level addition: action(n5,"do the parts need to be ordered and received from Disuki?") (reason: The text does not mention an explicit check 'do the parts need to be ordered and received'; the condition is based on needing to record customer details.)
+- [N8] Node-level addition: label(n2,n3,"Check if information needs to be elicited") (reason: No text justifies this label specifically.)
+- [N9] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: No text justifies this label specifically.)
+- [N10] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: No text justifies this label specifically.)
+- [N11] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: No text justifies this label specifically.)
+- [N12] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: No text justifies this label specifically.)
+- [N13] Within matched traces (3->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N14] Within matched traces (3->0) added: branch(b1,XOR)
+- [N15] Within matched traces (3->0) added: action(n4,"check availability of the parts")
+- [N16] Within matched traces (3->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N17] Within matched traces (3->1) added: action(n3,"does the team need to elicit information from the customer?")
+- [N18] Within matched traces (3->1) added: branch(b1,XOR)
+- [N19] Within matched traces (3->1) added: action(n4,"check availability of the parts")
+- [N20] Within matched traces (3->1) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+
+Mutation
+- [N21] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i3:If the team needs to elicit information from the customer; reason=The text bases this branch on needing to elicit information from the customer, but the guard incorrectly states 'Need to check availability'.
+- [N22] Node-level mutation: element=guard(b2,n6,"v2 = 'Order not needed  proceed'"); source=i7:If the parts are supplied to the customer; reason=The text states the condition as parts being supplied to the customer, but the guard says 'Order not needed proceed'.
+- [N23] Node-level mutation: element=guard(b2,n7,"v2 = 'Order and receive the part'"); source=i9:if they need to record the customer's details; reason=The text conditions ordering the part on the need to record customer details, but the guard alters this to 'Order and receive the part'.
+- [N24] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i6:if they already have the availability information; reason=The text specifies having the availability information, but the guard checks for 'Proceed with process or after contacting customer'.

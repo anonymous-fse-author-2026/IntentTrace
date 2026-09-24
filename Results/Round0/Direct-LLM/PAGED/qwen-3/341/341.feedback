@@ -1,0 +1,10 @@
+- `action(n4, "All assessments completed")`: Hallucinates an intermediate synchronization step; the source proceeds directly from the parallel checks to the next phase ("After that, the eligibility of the applicant is assessed.").
+- `action(n6, "Is applicant eligible")`: Introduces a redundant action before `branch(b1, XOR)`; the source presents eligibility verification as a direct decision gateway immediately following the assessment ("If the applicant is eligible...").
+- `action(n10, "End process after rejection")` and `action(n11, "End process after acceptance pack sent")`: Misrepresents process termination as discrete task steps instead of immediate endpoint transitions, contradicting "the loan application process ends" and "the process ends".
+- `defines(v1, "Is applicant eligible", {})`: Specifies an empty value range `{}`, failing to declare the expected categorical outcomes needed for the decision logic.
+- `branch(b1, XOR)`: Missing `guard` statements to implement the source's conditional routing ("If the applicant is eligible... If the applicant is not eligible..."), leaving the exclusive choice logically unconstrained.
+- `precedence(c1, n4)` and `precedence(n4, n5)`: Breaks the exact source chronology by inserting `n4` between the convergence of parallel tasks and the eligibility assessment, violating "After that, the eligibility of the applicant is assessed."
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,23 @@
+Omission
+- [N1] Node-level omission: i3:If there is a "Construct Error Response" (reason: The explicit condition/response text is completely absent from the model. The decision flow bypasses this specific label and proceeds directly to generic guards and the error message action.)
+- [N2] Within matched traces (0->0) omitted: i3:If there is a "Construct Error Response"
+
+Addition
+- [N3] Node-level addition: guard(b1,n5,"v1 = 'Yes'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N4] Node-level addition: guard(b1,n6,"v1 = 'No'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N5] Node-level addition: guard(b2,n8,"v2 = 'Yes'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N6] Node-level addition: guard(b2,n9,"v2 = 'No'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N7] Node-level addition: guard(b4,n14,"v4 = 'Yes'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N8] Node-level addition: guard(b4,n15,"v4 = 'No'") (reason: All six guards contain invented variable assignments (e.g., v1='Yes', v2='No', v4='Yes') that do not appear anywhere in the source text. They replace the explicit textual conditions and outcomes described in the input units.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Check Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Check fulfillment of loan conditions") -> branch(b2,XOR) -> action(n8,"Error Message") -> end(e2)
+- [N10] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Loan Application") -> action(n3,"Receive Loan Application") -> action(n4,"Check Banking Privilege Status") -> branch(b1,XOR) -> action(n6,"Retrieve Customer Information") -> action(n7,"Check fulfillment of loan conditions") -> branch(b2,XOR) -> action(n9,"Calculate threshold amount") -> action(n10,"Check Creditworthiness") -> action(n11,"Designate Status") -> action(n12,"Initialize Loan Form") -> branch(b4,XOR) -> action(n14,"Approved Message") -> end(e3)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (1->2) added: init(i1)
+- [N13] Within matched traces (2->3) added: init(i1)
+
+Structural Check
+- [S1] STC13 failed: Every guard must be attached to an existing precedence edge. | Guard `v4 = 'Yes'` is attached to `b4 -> n14` without a precedence edge. | DSL: guard(b4,n14,"v4 = 'Yes'")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b4 -> n13` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` has no enabled outgoing guard at state [v4=Yes].

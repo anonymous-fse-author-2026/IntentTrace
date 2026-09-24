@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i6:Simultaneously (reason: Source mandates concurrent execution for the subsequent tasks, but the model routes them linearly from a single branch without any parallel split or synchronization mechanism.)
+- [N2] Within matched traces (1->1) omitted: i6:Simultaneously
+- [N3] Within matched traces (2->1) omitted: i6:Simultaneously
+- [N4] Within matched traces (2->1) omitted: i7:highlight any errors on the invoice entry form and keep a record of the DEO's performance
+
+Addition
+- [N5] Node-level addition: guard(b1,n5,"v1 = 'Yes'") (reason: Invents a conditional guard (v1 = 'Yes') for the highlighting/recording step, whereas the source explicitly states it occurs simultaneously/unconditionally without any prerequisite variable check.)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"check for errors") -> branch(b1,OR) -> action(n5,"highlight errors on form and record DEO performance") -> converge(c1) -> action(n6,"end of process") -> end(e1)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n6,"end of process")
+- [N9] Within matched traces (0->0) added: end(e1)
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (2->1) added: init(i1)
+
+Mutation
+- [N12] Node-level mutation: element=branch(b1,OR); source=i2:If any errors are found -> i4:If no errors are found; reason=Models a mutually exclusive conditional split (XOR) as an inclusive OR gateway, altering the decision logic.
+- [N13] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:If any errors are found; reason=Replaces the explicit textual condition with an abstract variable assignment (v1 = 'Yes'), dropping the original semantic qualifier.
+- [N14] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:If no errors are found; reason=Replaces the explicit textual condition with an abstract variable assignment (v1 = 'No'), dropping the original semantic qualifier.

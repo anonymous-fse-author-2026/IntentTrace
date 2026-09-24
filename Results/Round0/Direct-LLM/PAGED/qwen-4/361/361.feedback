@@ -1,0 +1,14 @@
+- `action(n1, "start")`: Hallucinates an initial step; the source begins directly with "trigger the resupply cycle."
+- `branch(b2, XOR)`: Routes to three alternatives (`n7`, `n9`, `n12`) via `precedence`, contradicting the source which only specifies two outcomes from the review: "rejected" or "accepted".
+- `branch(b2, XOR)`: Uses an exclusive choice gateway for steps the source explicitly mandates concurrently: "At the same time, complete the following steps: reserve funds... and send...". Requires an AND gateway split after the acceptance path.
+- `action(n9, "reserve funds and send PO")`: Merges two distinct concurrent activities into a single sequential action, violating the source's "At the same time..." instruction.
+- `precedence` edges from `branch(b3, XOR)`: No outgoing `precedence` statements exist, creating a dead-end that breaks the intended loop described as "After reworking the purchase order, review it again."
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Declare empty value ranges `{}`, failing to capture the source-specified decision domains ("above/below the minimum", "rejected/accepted").
+- `guard` statements for `b1`, `b2`, `b3`: Entirely omitted despite explicit conditional routing logic in the source ("If the inventory level is above/below...", "If the purchase order is rejected/accepted...").
+- `end(e2)` and `end(e3)`: Permit independent termination of disjoint paths, violating the source's synchronized conclusion: "Once the packing slip is received, release the reserved funds and then the process ends." Requires a `converge` node preceding a single termination point.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=0. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, n7, n8 | DSL: branch(b3,XOR); action(n7,"rework: purchase order"); action(n8,"review: purchase order")

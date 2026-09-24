@@ -1,0 +1,52 @@
+@startuml
+!theme plain
+|a_all| Processor
+|a_all|
+start
+:Bill for Purchased Goods/Services and then Receive Invoice;
+:v_inc: Invoice Status ({Incomplete, Complete, Client}); <<objectSignal>>
+fork
+if () then ([v_inc = 'Incomplete'] If incomplete)
+:Return invoice due to incompleteness;
+stop
+endif
+fork again
+if () then ([v_inc = 'Complete'] If complete)
+:Process continues for complete invoice;
+:v_comp: Compliance Check ({Non-compliant, Compliant}); <<objectSignal>>
+if () then ([v_comp = 'Non-compliant'] If non-compliant)
+:Conduct further checks for non-compliant invoice;
+:v_res: Resolution Method ({Phone call, Mail back}); <<objectSignal>>
+if () then ([v_res = 'Phone call'] If phone resolves)
+:Resolve non-compliance via phone call;
+else ([v_res = 'Mail back'] If mail back)
+:Return invoice due to mail back requirement;
+stop
+endif
+else ([v_comp = 'Compliant'] If compliant)
+:Process continues for compliant invoice;
+endif
+:Pay invoice and resolve non-compliance if returned;
+:Pay invoice and notify client of payment;
+:v_sat: Client Satisfaction ({Unsatisfied, Satisfied}); <<objectSignal>>
+if () then ([v_sat = 'Unsatisfied'] If unsatisfied)
+:Resolve payment discrepancy if client is unsatisfied;
+stop
+else ([v_sat = 'Satisfied'] If satisfied)
+:Continue process if client is satisfied;
+stop
+endif
+endif
+fork again
+if () then ([v_inc = 'Client'] Bill client)
+:Bill Client;
+:v_resp: Client Response ({No response, Response}); <<objectSignal>>
+if () then ([v_resp = 'No response'] If no response)
+:Give 10 days waiting period;
+:Send reminder after 10 days and end process;
+stop
+else ([v_resp = 'Response'] If response)
+endif
+endif
+end fork
+@enduml

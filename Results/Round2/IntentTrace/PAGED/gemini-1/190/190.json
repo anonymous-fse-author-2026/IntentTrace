@@ -1,0 +1,382 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "In the beginning,"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "if the answer is \"No\","
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "then we continue the process."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "If the answer is \"No\" again,"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "we continue the process."
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "However, if the answer is \"Yes\","
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "then we give it priority."
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "If the answer is \"No\","
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "then we need a Vendor master record"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "and the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "But if the answer is \"Yes\","
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "And if the answer is \"Yes\" again,"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "then we enter the invoice in SAP."
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "Once the invoice is entered in SAP,"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "we place the entered invoices in the normal Outbox"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Initial Answer",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Vendor in SAP",
+      "R_X": [
+        "No",
+        "Yes",
+        "Yes again"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "b1",
+        "i2",
+        "i3",
+        "i5",
+        "i4",
+        "i6",
+        "i7",
+        "c1",
+        "i8",
+        "b2",
+        "i9",
+        "i10",
+        "i11",
+        "e1",
+        "i12",
+        "i14",
+        "c2",
+        "i13",
+        "i15",
+        "i16",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i6",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i9",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i12",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i14",
+      "condition": "v2 = 'Yes again'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning,"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\","
+    },
+    {
+      "id": "i3",
+      "content": "then we continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "we continue the process."
+    },
+    {
+      "id": "i5",
+      "content": "If the answer is \"No\" again,"
+    },
+    {
+      "id": "i6",
+      "content": "However, if the answer is \"Yes\","
+    },
+    {
+      "id": "i7",
+      "content": "then we give it priority."
+    },
+    {
+      "id": "i8",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "i9",
+      "content": "If the answer is \"No\","
+    },
+    {
+      "id": "i10",
+      "content": "then we need a Vendor master record"
+    },
+    {
+      "id": "i11",
+      "content": "and the process ends."
+    },
+    {
+      "id": "i12",
+      "content": "But if the answer is \"Yes\","
+    },
+    {
+      "id": "i13",
+      "content": "then we enter the invoice in SAP."
+    },
+    {
+      "id": "i14",
+      "content": "And if the answer is \"Yes\" again,"
+    },
+    {
+      "id": "i15",
+      "content": "Once the invoice is entered in SAP,"
+    },
+    {
+      "id": "i16",
+      "content": "we place the entered invoices in the normal Outbox"
+    }
+  ]
+}

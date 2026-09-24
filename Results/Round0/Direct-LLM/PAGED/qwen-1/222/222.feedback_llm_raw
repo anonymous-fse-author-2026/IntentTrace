@@ -1,0 +1,7 @@
+
+
+- Missing `init` declaration: No `init(...)` node is declared despite grammar requirements, preventing a valid process start even though the source states "To start the SSP process..." (SMC1, SMC5).
+- `branch(b1, XOR)`, `precedence(b1, n9)`, `branch(b2, XOR)`, `precedence(b2, n12)`: The model lacks backward precedence edges to form cycles, failing to capture that processing should be "repeated until all invoices are processed" and clearing is "done every hour until the outbox is completely cleared" (SMC1, SMC4).
+- `defines(v1, "More batches to process?", {"No"})` and `defines(v2, "Outbox completely cleared?", {"Yes"})`: Variable ranges are restricted to single values, making it impossible to evaluate the positive/negative decision outcomes required for loop continuation implied by the source's "until..." conditions (SMC6).
+- `actor(a_default, "Default", [n1, n2, n3, n4, n5, n6, n7, n8, b1, n9, n10, n11, b2, n12, e1])`: All nodes are assigned to a generic participant, contradicting the source which explicitly designates the "Data Entry Officer" to receive allocated invoices and own the outbox being cleared (SMC7).
+- `label(n1, n2, "Yes")`, `label(n2, n3, "Yes")`, `label(n3, n4, "Yes")`, `label(n4, n5, "Yes")`, `label(n5, n6, "Yes")`, `label(n9, n10, "Yes")`: These labels hallucinate explicit conditional gates on sequential edges, whereas the source describes a straightforward chronological progression ("After that...", "Once... confirmed...", "Once... checked...") without requiring labeled decision points (SMC1, SMC2).

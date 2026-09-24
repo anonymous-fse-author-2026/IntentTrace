@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start acme resupply cycle;
+:check levels of inventory;
+:is inventory below or equal to minimum?;
+:v1: is inventory below or equal to minimum? ({BelowOrEqual, AboveMinimum}); <<objectSignal>>
+if () then ([v1 = 'BelowOrEqual'])
+:generate: below or equal to minimum report;
+repeat :;
+:create purchase orders (pos);
+:review pos;
+:is po approved?;
+:v2: is po approved? ({Approved, Rejected}); <<objectSignal>>
+backward:rework po;
+repeat while () is ([v2 = 'Rejected']) not ([v2 = 'Approved'])
+:print and release pos in system;
+split
+:reserve funds for released pos;
+:receive packing slip;
+split again
+:mail pos to supplier;
+:receive inventory;
+end split
+:receive invoice;
+:proceed to three-way match;
+:perform three-way match;
+:release funds if successful;
+:issue payment;
+:end process;
+stop
+else ([v1 = 'AboveMinimum'])
+:generate: above minimum report;
+:end process: above minimum;
+stop
+endif
+@enduml

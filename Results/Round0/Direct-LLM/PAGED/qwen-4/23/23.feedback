@@ -1,0 +1,10 @@
+- action(n1, "start DMS Parts Provision Process"): Hallucinates a step; the description explicitly states "the first step is to gather information about the part from the customer".
+- action(n4, "is part available locally"): Misrepresents a decision trigger as a distinct action; the source flows directly from "check the availability of the part in the local inventory" to conditional routing without an intervening node.
+- action(n6, "end process after retrieving part") and action(n9, "end process after ordering part"): Hallucinates transitional steps; the description states "After retrieving the part from the local inventory, the process comes to an end" (and similarly for ordering), requiring no additional action before termination.
+- precedence(b1, n5) and precedence(b1, n7): Omits guard statements to implement the source's explicit conditional routing ("If the part is found to be available locally... However, if the part is not available locally..."), leaving the XOR branch logically unconstrained.
+- defines(v1, "is part available locally", {}): Declares an empty range {}; the source describes a binary condition (available vs. not available), necessitating a range such as {true, false}.
+- precedence(n3, n4) and precedence(n4, b1): Distorts chronological flow by inserting n4 between n3 and the branch; the source transitions directly from checking availability to evaluating the result.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.

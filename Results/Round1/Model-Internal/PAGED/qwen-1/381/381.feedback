@@ -1,0 +1,33 @@
+Omission
+- [N1] Node-level omission: i10:the process will end along with the hotel reservation. (reason: The model completely ignores the hotel reservation context and fails to implement the associated process termination step described in the source.)
+- [N2] Node-level omission: i11:along with the hotel reservation. (reason: The model completely ignores the hotel reservation context and fails to implement the associated process termination step described in the source.)
+- [N3] Node-level omission: i12:if a code is not available, you should cancel your journey. (reason: No element implements the cancellation action triggered by unavailable codes or its explicit consequence of ending the process.)
+- [N4] Node-level omission: i13:the process will end as well. (reason: No element implements the cancellation action triggered by unavailable codes or its explicit consequence of ending the process.)
+- [N5] Within matched traces (0->0) omitted: i10:the process will end along with the hotel reservation.
+- [N6] Within matched traces (0->0) omitted: i11:along with the hotel reservation.
+- [N7] Within matched traces (1->0) omitted: i12:if a code is not available, you should cancel your journey.
+- [N8] Within matched traces (1->0) omitted: i13:the process will end as well.
+- [N9] Within matched traces (2->2) omitted: i10:the process will end along with the hotel reservation.
+- [N10] Within matched traces (2->2) omitted: i11:along with the hotel reservation.
+- [N11] Within matched traces (3->2) omitted: i12:if a code is not available, you should cancel your journey.
+- [N12] Within matched traces (3->2) omitted: i13:the process will end as well.
+
+Addition
+- [N13] Node-level addition: action(n1,"start") (reason: The 'start' action duplicates the implicit process initiation already handled by init:i1 and lacks any independent source text.)
+- [N14] Node-level addition: action(n9,"end of process after calling travel agency (train)") (reason: Invents an explicit termination step for the train path after calling the agency, which contradicts the source flow and has no textual backing.)
+- [N15] Node-level addition: action(n13,"end of process after calling travel agency (flight)") (reason: Mirrors n9 for the flight path, adding an unsupported intermediate termination node not described in the text.)
+- [N16] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"choose destination and calculate distance") -> action(n3,"check if need to book train or flight") -> branch(b1,XOR) -> action(n4,"book a train") -> action(n6,"check if code is available within 24 hours (train)") -> branch(b2,XOR) -> action(n8,"call travel agency (train)") -> action(n9,"end of process after calling travel agency (train)") -> end(e2)
+- [N17] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"choose destination and calculate distance") -> action(n3,"check if need to book train or flight") -> branch(b1,XOR) -> action(n5,"book a flight") -> action(n10,"check if code is available within 24 hours (flight)") -> branch(b3,XOR) -> action(n12,"call travel agency (flight)") -> action(n13,"end of process after calling travel agency (flight)") -> end(e4)
+- [N18] Within matched traces (0->0) added: init(i1)
+- [N19] Within matched traces (0->0) added: action(n1,"start")
+- [N20] Within matched traces (1->0) added: init(i1)
+- [N21] Within matched traces (1->0) added: action(n1,"start")
+- [N22] Within matched traces (2->2) added: init(i1)
+- [N23] Within matched traces (2->2) added: action(n1,"start")
+- [N24] Within matched traces (3->2) added: init(i1)
+- [N25] Within matched traces (3->2) added: action(n1,"start")
+
+Mutation
+- [N26] Node-level mutation: element=action(n6,"check if code is available within 24 hours (train)") -> guard(b2,n7,"v2 = 'Yes'") -> action(n10,"check if code is available within 24 hours (flight)") -> guard(b3,n11,"v3 = 'Yes'"); source=i7:If a code is available within 24 hours; reason=The guards drop the explicit temporal constraint ('within 24 hours') and replace it with a generic boolean 'Yes'. The action nodes inject invented path-specific qualifiers ('(train)', '(flight)') not present in the source.
+- [N27] Node-level mutation: element=action(n7,"code available within 24 hours (train)") -> action(n11,"code available within 24 hours (flight)"); source=i8:a code is available within 24 hours; reason=Both nodes add fabricated contextual tags ('(train)', '(flight)') to the state description, altering the original unqualified instruction.
+- [N28] Node-level mutation: element=action(n8,"call travel agency (train)") -> guard(b2,n8,"v2 = 'No'") -> action(n12,"call travel agency (flight)") -> guard(b3,n12,"v3 = 'No'"); source=i9:you should call a travel agency.; reason=The action nodes incorrectly append '(train)' or '(flight)' qualifiers. The guards leading to them discard the original negative/temporal condition and substitute a generic boolean 'No', losing the required decision logic.

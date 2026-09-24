@@ -1,0 +1,920 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:i1"
+      ],
+      "verbatim_texts": [
+        "To start the ExpenseReport process, begin by clicking on \"Start\" and then selecting \"Edit Report\""
+      ],
+      "justification": "Captures the initial action and structural starting point of the process."
+    },
+    {
+      "refs": [
+        "guard:b_expense->i2",
+        "action:i2"
+      ],
+      "verbatim_texts": [
+        "If the expense is greater than 1000"
+      ],
+      "justification": "Correctly models the threshold condition for expenses over 1000."
+    },
+    {
+      "refs": [
+        "action:i3"
+      ],
+      "verbatim_texts": [
+        "the report should be reviewed"
+      ],
+      "justification": "Matches the review step."
+    },
+    {
+      "refs": [
+        "guard:b_expense->i4",
+        "action:i4"
+      ],
+      "verbatim_texts": [
+        "if the expense is less than or equal to 1000"
+      ],
+      "justification": "Correctly models the threshold condition for expenses up to 1000."
+    },
+    {
+      "refs": [
+        "action:i5"
+      ],
+      "verbatim_texts": [
+        "proceed to check if there is a need for translation"
+      ],
+      "justification": "Matches the translation checking step."
+    },
+    {
+      "refs": [
+        "guard:b_trans->i6",
+        "action:i6"
+      ],
+      "verbatim_texts": [
+        "If translation is required"
+      ],
+      "justification": "Models the positive translation condition."
+    },
+    {
+      "refs": [
+        "action:i7"
+      ],
+      "verbatim_texts": [
+        "translate the receipts"
+      ],
+      "justification": "Matches the receipt translation action."
+    },
+    {
+      "refs": [
+        "guard:b_trans->i8",
+        "action:i8"
+      ],
+      "verbatim_texts": [
+        "If not"
+      ],
+      "justification": "Models the negative translation condition."
+    },
+    {
+      "refs": [
+        "action:i9"
+      ],
+      "verbatim_texts": [
+        "confirm the receipts"
+      ],
+      "justification": "Matches the receipt confirmation step."
+    },
+    {
+      "refs": [
+        "action:i10"
+      ],
+      "verbatim_texts": [
+        "evaluate the review decision"
+      ],
+      "justification": "Matches evaluating the review decision."
+    },
+    {
+      "refs": [
+        "guard:b_review->i11",
+        "guard:b_after_trans_i7->c_eval_rev",
+        "guard:b_after_trans_i9->c_eval_rev",
+        "action:i11"
+      ],
+      "verbatim_texts": [
+        "If the report is rejected"
+      ],
+      "justification": "Models the rejection condition. The model uses duplicated path-specific routing, which preserves behaviour and is a valid MATCH."
+    },
+    {
+      "refs": [
+        "action:i12"
+      ],
+      "verbatim_texts": [
+        "edit the report"
+      ],
+      "justification": "Matches the report editing step."
+    },
+    {
+      "refs": [
+        "guard:b_review->i13",
+        "guard:b_after_trans_i7->i15",
+        "guard:b_after_trans_i9->c_eval_rec",
+        "action:i13"
+      ],
+      "verbatim_texts": [
+        "If it is approved"
+      ],
+      "justification": "Models the approval condition across multiple branches to capture the complex flow correctly."
+    },
+    {
+      "refs": [
+        "action:i14"
+      ],
+      "verbatim_texts": [
+        "continue to check if there is a need for translation"
+      ],
+      "justification": "Matches the translation check continuation step."
+    },
+    {
+      "refs": [
+        "action:i15"
+      ],
+      "verbatim_texts": [
+        "confirm them"
+      ],
+      "justification": "Matches the confirmation step."
+    },
+    {
+      "refs": [
+        "action:i16"
+      ],
+      "verbatim_texts": [
+        "evaluate the receipts decision"
+      ],
+      "justification": "Matches the receipt evaluation step."
+    },
+    {
+      "refs": [
+        "guard:b_receipts->i17",
+        "action:i17"
+      ],
+      "verbatim_texts": [
+        "If the receipts are accepted"
+      ],
+      "justification": "Models the condition where receipts are accepted."
+    },
+    {
+      "refs": [
+        "action:i18"
+      ],
+      "verbatim_texts": [
+        "process the expense"
+      ],
+      "justification": "Matches processing the expense."
+    },
+    {
+      "refs": [
+        "guard:b_receipts->i19",
+        "action:i19"
+      ],
+      "verbatim_texts": [
+        "If they are rejected"
+      ],
+      "justification": "Models the condition where receipts are rejected."
+    },
+    {
+      "refs": [
+        "action:i20"
+      ],
+      "verbatim_texts": [
+        "The process ends"
+      ],
+      "justification": "Matches the ending announcement step."
+    },
+    {
+      "refs": [
+        "action:i21"
+      ],
+      "verbatim_texts": [
+        "ending it"
+      ],
+      "justification": "Matches the final termination of the process."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:start_node",
+      "kind": "init",
+      "node_id": "start_node",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:start_node",
+        "start_node"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init start_node"
+    },
+    {
+      "ref_id": "end:end_node",
+      "kind": "end",
+      "node_id": "end_node",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:end_node",
+        "end_node"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end end_node"
+    },
+    {
+      "ref_id": "converge:c_start",
+      "kind": "converge",
+      "node_id": "c_start",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_start",
+        "c_start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_start"
+    },
+    {
+      "ref_id": "converge:c_eval_rev",
+      "kind": "converge",
+      "node_id": "c_eval_rev",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_eval_rev",
+        "c_eval_rev"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_eval_rev"
+    },
+    {
+      "ref_id": "converge:c_eval_rec",
+      "kind": "converge",
+      "node_id": "c_eval_rec",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_eval_rec",
+        "c_eval_rec"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_eval_rec"
+    },
+    {
+      "ref_id": "converge:c_edit",
+      "kind": "converge",
+      "node_id": "c_edit",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_edit",
+        "c_edit"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_edit"
+    },
+    {
+      "ref_id": "converge:c_trans",
+      "kind": "converge",
+      "node_id": "c_trans",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_trans",
+        "c_trans"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_trans"
+    },
+    {
+      "ref_id": "branch:b_expense",
+      "kind": "branch",
+      "node_id": "b_expense",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_expense",
+        "b_expense"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_expense (XOR)"
+    },
+    {
+      "ref_id": "branch:b_review",
+      "kind": "branch",
+      "node_id": "b_review",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_review",
+        "b_review"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_review (XOR)"
+    },
+    {
+      "ref_id": "branch:b_receipts",
+      "kind": "branch",
+      "node_id": "b_receipts",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_receipts",
+        "b_receipts"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_receipts (XOR)"
+    },
+    {
+      "ref_id": "branch:b_trans",
+      "kind": "branch",
+      "node_id": "b_trans",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_trans",
+        "b_trans"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_trans (XOR)"
+    },
+    {
+      "ref_id": "branch:b_after_trans_i7",
+      "kind": "branch",
+      "node_id": "b_after_trans_i7",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_after_trans_i7",
+        "b_after_trans_i7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_after_trans_i7 (XOR)"
+    },
+    {
+      "ref_id": "branch:b_after_trans_i9",
+      "kind": "branch",
+      "node_id": "b_after_trans_i9",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_after_trans_i9",
+        "b_after_trans_i9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_after_trans_i9 (XOR)"
+    },
+    {
+      "ref_id": "action:i1",
+      "kind": "action",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "To start the ExpenseReport process, begin by clicking on \"Start\" and then selecting \"Edit Report\"",
+      "aliases": [
+        "action:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i1: To start the ExpenseReport process, begin by clicking on \"Start\" and then selecting \"Edit Report\""
+    },
+    {
+      "ref_id": "action:i2",
+      "kind": "action",
+      "node_id": "i2",
+      "gateway": "",
+      "string_value": "If the expense is greater than 1000",
+      "aliases": [
+        "action:i2",
+        "i2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i2: If the expense is greater than 1000"
+    },
+    {
+      "ref_id": "action:i3",
+      "kind": "action",
+      "node_id": "i3",
+      "gateway": "",
+      "string_value": "the report should be reviewed",
+      "aliases": [
+        "action:i3",
+        "i3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i3: the report should be reviewed"
+    },
+    {
+      "ref_id": "action:i4",
+      "kind": "action",
+      "node_id": "i4",
+      "gateway": "",
+      "string_value": "if the expense is less than or equal to 1000",
+      "aliases": [
+        "action:i4",
+        "i4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i4: if the expense is less than or equal to 1000"
+    },
+    {
+      "ref_id": "action:i5",
+      "kind": "action",
+      "node_id": "i5",
+      "gateway": "",
+      "string_value": "proceed to check if there is a need for translation",
+      "aliases": [
+        "action:i5",
+        "i5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i5: proceed to check if there is a need for translation"
+    },
+    {
+      "ref_id": "action:i6",
+      "kind": "action",
+      "node_id": "i6",
+      "gateway": "",
+      "string_value": "If translation is required",
+      "aliases": [
+        "action:i6",
+        "i6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i6: If translation is required"
+    },
+    {
+      "ref_id": "action:i7",
+      "kind": "action",
+      "node_id": "i7",
+      "gateway": "",
+      "string_value": "translate the receipts",
+      "aliases": [
+        "action:i7",
+        "i7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i7: translate the receipts"
+    },
+    {
+      "ref_id": "action:i8",
+      "kind": "action",
+      "node_id": "i8",
+      "gateway": "",
+      "string_value": "If not",
+      "aliases": [
+        "action:i8",
+        "i8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i8: If not"
+    },
+    {
+      "ref_id": "action:i9",
+      "kind": "action",
+      "node_id": "i9",
+      "gateway": "",
+      "string_value": "confirm the receipts",
+      "aliases": [
+        "action:i9",
+        "i9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i9: confirm the receipts"
+    },
+    {
+      "ref_id": "action:i10",
+      "kind": "action",
+      "node_id": "i10",
+      "gateway": "",
+      "string_value": "evaluate the review decision",
+      "aliases": [
+        "action:i10",
+        "i10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i10: evaluate the review decision"
+    },
+    {
+      "ref_id": "action:i11",
+      "kind": "action",
+      "node_id": "i11",
+      "gateway": "",
+      "string_value": "If the report is rejected",
+      "aliases": [
+        "action:i11",
+        "i11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i11: If the report is rejected"
+    },
+    {
+      "ref_id": "action:i12",
+      "kind": "action",
+      "node_id": "i12",
+      "gateway": "",
+      "string_value": "edit the report",
+      "aliases": [
+        "action:i12",
+        "i12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i12: edit the report"
+    },
+    {
+      "ref_id": "action:i13",
+      "kind": "action",
+      "node_id": "i13",
+      "gateway": "",
+      "string_value": "If it is approved",
+      "aliases": [
+        "action:i13",
+        "i13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i13: If it is approved"
+    },
+    {
+      "ref_id": "action:i14",
+      "kind": "action",
+      "node_id": "i14",
+      "gateway": "",
+      "string_value": "continue to check if there is a need for translation",
+      "aliases": [
+        "action:i14",
+        "i14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i14: continue to check if there is a need for translation"
+    },
+    {
+      "ref_id": "action:i15",
+      "kind": "action",
+      "node_id": "i15",
+      "gateway": "",
+      "string_value": "confirm them",
+      "aliases": [
+        "action:i15",
+        "i15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i15: confirm them"
+    },
+    {
+      "ref_id": "action:i16",
+      "kind": "action",
+      "node_id": "i16",
+      "gateway": "",
+      "string_value": "evaluate the receipts decision",
+      "aliases": [
+        "action:i16",
+        "i16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i16: evaluate the receipts decision"
+    },
+    {
+      "ref_id": "action:i17",
+      "kind": "action",
+      "node_id": "i17",
+      "gateway": "",
+      "string_value": "If the receipts are accepted",
+      "aliases": [
+        "action:i17",
+        "i17"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i17: If the receipts are accepted"
+    },
+    {
+      "ref_id": "action:i18",
+      "kind": "action",
+      "node_id": "i18",
+      "gateway": "",
+      "string_value": "process the expense",
+      "aliases": [
+        "action:i18",
+        "i18"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i18: process the expense"
+    },
+    {
+      "ref_id": "action:i19",
+      "kind": "action",
+      "node_id": "i19",
+      "gateway": "",
+      "string_value": "If they are rejected",
+      "aliases": [
+        "action:i19",
+        "i19"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i19: If they are rejected"
+    },
+    {
+      "ref_id": "action:i20",
+      "kind": "action",
+      "node_id": "i20",
+      "gateway": "",
+      "string_value": "The process ends",
+      "aliases": [
+        "action:i20",
+        "i20"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i20: The process ends"
+    },
+    {
+      "ref_id": "action:i21",
+      "kind": "action",
+      "node_id": "i21",
+      "gateway": "",
+      "string_value": "ending it",
+      "aliases": [
+        "action:i21",
+        "i21"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i21: ending it"
+    },
+    {
+      "ref_id": "guard:b_expense->i2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 > 1000",
+      "aliases": [
+        "guard:b_expense->i2"
+      ],
+      "from": "b_expense",
+      "to": "i2",
+      "source_line": "guard b_expense->i2: v1 > 1000",
+      "guard": {
+        "from": "b_expense",
+        "to": "i2",
+        "condition": "v1 > 1000"
+      }
+    },
+    {
+      "ref_id": "guard:b_expense->i4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 <= 1000",
+      "aliases": [
+        "guard:b_expense->i4"
+      ],
+      "from": "b_expense",
+      "to": "i4",
+      "source_line": "guard b_expense->i4: v1 <= 1000",
+      "guard": {
+        "from": "b_expense",
+        "to": "i4",
+        "condition": "v1 <= 1000"
+      }
+    },
+    {
+      "ref_id": "guard:b_trans->i6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b_trans->i6"
+      ],
+      "from": "b_trans",
+      "to": "i6",
+      "source_line": "guard b_trans->i6: v3 = 'Yes'",
+      "guard": {
+        "from": "b_trans",
+        "to": "i6",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_trans->i8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b_trans->i8"
+      ],
+      "from": "b_trans",
+      "to": "i8",
+      "source_line": "guard b_trans->i8: v3 = 'No'",
+      "guard": {
+        "from": "b_trans",
+        "to": "i8",
+        "condition": "v3 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_after_trans_i7->c_eval_rev",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Rejected'",
+      "aliases": [
+        "guard:b_after_trans_i7->c_eval_rev"
+      ],
+      "from": "b_after_trans_i7",
+      "to": "c_eval_rev",
+      "source_line": "guard b_after_trans_i7->c_eval_rev: v2 = 'Rejected'",
+      "guard": {
+        "from": "b_after_trans_i7",
+        "to": "c_eval_rev",
+        "condition": "v2 = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_after_trans_i7->i15",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Approved'",
+      "aliases": [
+        "guard:b_after_trans_i7->i15"
+      ],
+      "from": "b_after_trans_i7",
+      "to": "i15",
+      "source_line": "guard b_after_trans_i7->i15: v2 = 'Approved'",
+      "guard": {
+        "from": "b_after_trans_i7",
+        "to": "i15",
+        "condition": "v2 = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_after_trans_i9->c_eval_rev",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Rejected'",
+      "aliases": [
+        "guard:b_after_trans_i9->c_eval_rev"
+      ],
+      "from": "b_after_trans_i9",
+      "to": "c_eval_rev",
+      "source_line": "guard b_after_trans_i9->c_eval_rev: v2 = 'Rejected'",
+      "guard": {
+        "from": "b_after_trans_i9",
+        "to": "c_eval_rev",
+        "condition": "v2 = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_after_trans_i9->c_eval_rec",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Approved'",
+      "aliases": [
+        "guard:b_after_trans_i9->c_eval_rec"
+      ],
+      "from": "b_after_trans_i9",
+      "to": "c_eval_rec",
+      "source_line": "guard b_after_trans_i9->c_eval_rec: v2 = 'Approved'",
+      "guard": {
+        "from": "b_after_trans_i9",
+        "to": "c_eval_rec",
+        "condition": "v2 = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_review->i11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Rejected'",
+      "aliases": [
+        "guard:b_review->i11"
+      ],
+      "from": "b_review",
+      "to": "i11",
+      "source_line": "guard b_review->i11: v2 = 'Rejected'",
+      "guard": {
+        "from": "b_review",
+        "to": "i11",
+        "condition": "v2 = 'Rejected'"
+      }
+    },
+    {
+      "ref_id": "guard:b_review->i13",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Approved'",
+      "aliases": [
+        "guard:b_review->i13"
+      ],
+      "from": "b_review",
+      "to": "i13",
+      "source_line": "guard b_review->i13: v2 = 'Approved'",
+      "guard": {
+        "from": "b_review",
+        "to": "i13",
+        "condition": "v2 = 'Approved'"
+      }
+    },
+    {
+      "ref_id": "guard:b_receipts->i17",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v5 = 'Accepted'",
+      "aliases": [
+        "guard:b_receipts->i17"
+      ],
+      "from": "b_receipts",
+      "to": "i17",
+      "source_line": "guard b_receipts->i17: v5 = 'Accepted'",
+      "guard": {
+        "from": "b_receipts",
+        "to": "i17",
+        "condition": "v5 = 'Accepted'"
+      }
+    },
+    {
+      "ref_id": "guard:b_receipts->i19",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v5 = 'Rejected'",
+      "aliases": [
+        "guard:b_receipts->i19"
+      ],
+      "from": "b_receipts",
+      "to": "i19",
+      "source_line": "guard b_receipts->i19: v5 = 'Rejected'",
+      "guard": {
+        "from": "b_receipts",
+        "to": "i19",
+        "condition": "v5 = 'Rejected'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 21,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 33,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 33,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 33,
+    "total_mappable_targets": 46,
+    "input_text_length": 893,
+    "element_count": 46
+  },
+  "model_id": "vertex_ai/gemini-3.1-pro-preview",
+  "reasoning_effort": "medium"
+}

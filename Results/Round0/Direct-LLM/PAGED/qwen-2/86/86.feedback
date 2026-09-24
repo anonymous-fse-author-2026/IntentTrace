@@ -1,0 +1,8 @@
+- `defines(v1, "Is raw material available in stock?", {})`: The value range is empty `{}`, contradicting the source's implicit binary decision condition (“available in stock” vs “not available”) which requires a populated range such as `{true, false}` or `{"Yes", "No"}`.
+- `branch(b1, XOR)` / missing `guard` statements: The model lacks `guard(b1, n4, ...)` and `guard(b1, n6, ...)` to associate the decision variable `v1` with the source's routing conditions (“if the raw material is available in stock…” and “not available in stock…”), leaving the exclusive choice logic semantically undefined.
+- `action(n1, "Start")`, `action(n5, "End")`, `action(n9, "End")`: Hallucinates explicit step names not present in the source text (“To begin the process... start by obtaining...” and “conclude the process”). Process boundaries are already correctly captured by `init(i1)` and `end(e1/e2)`.
+- `action(n4, "...(If Available)")`, `action(n8, "...(After PO)")`: Payloads append contextual qualifiers not found in the source, which uniformly instructs only to “check the raw material and conclude the process” regardless of the branch taken.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

@@ -1,0 +1,49 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"Start Rental Items Return Process","start","","","",""
+2,"Customer returns the items to the store","condition","1","Yes|No","",""
+3,"Delivery Crew picks up items at the event site","condition","1","Yes|No","",""
+4,"Continue process if customer returns items","entity","2","","",""
+5,"Continue process if delivery crew picks up items","entity","3","","",""
+6,"Count and compare items to the original contract","entity","4,5","","",""
+7,"Is order complete and all items returned","condition","6","Complete|Incomplete|Damaged","",""
+8,"Proceed with process for complete order","entity","7","","",""
+9,"Proceed with process for incomplete order","entity","7","","",""
+10,"Email customer about damaged items and additional charges","entity","7","","",""
+11,"Email customer about missing items replacement charges","entity","9","","",""
+12,"Temporarily take damaged items out of inventory","entity","10","","",""
+13,"Are items packed for an existing order","condition","8,9,10","Yes|No","",""
+14,"Are items stored for future orders","condition","8,9,10","Yes|No","",""
+15,"Continue process if items packed for existing order","entity","13","","",""
+16,"Continue process if items stored for future orders","entity","14","","",""
+17,"Check if customer returns missing items","condition","11","Yes|No","",""
+18,"Continue process after customer returns missing items","entity","17","","",""
+19,"Continue process if customer does not return missing items","entity","17","","",""
+20,"Are there damaged items to process","condition","12","Yes|No","",""
+21,"Items repaired and added into inventory","entity","20","","",""
+22,"Items cannot be repaired and are discarded","entity","20","","",""
+23,"Email customer with replacement charges for discarded items","entity","22","","",""
+24,"Are items packed for an existing order after repair or discard","condition","21,23","Yes|No","",""
+25,"Are items stored for future orders after repair or discard","condition","21,23","Yes|No","",""
+26,"Continue process if items packed for existing order after repair or discard","entity","24","","",""
+27,"Continue process if items stored for future orders after repair or discard","entity","25","","",""
+28,"Merge after checking packing and storage and missing items processing","entity","15,16,18,19,26,27","","",""
+29,"Email customer with replacement charges after process complete","entity","28","","",""
+30,"End process","end","29","","",""

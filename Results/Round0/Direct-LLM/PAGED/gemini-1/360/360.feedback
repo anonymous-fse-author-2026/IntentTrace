@@ -1,0 +1,9 @@
+- `defines(v1, "is the input a URN", {})` and `defines(v2, "is the input a URN or URL", {})`: The variables have empty ranges `{}` and fail to define the values (URN, URL) present in the text.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements on their outgoing edges to specify which path maps to the "URN" or "URL" conditions.
+- `precedence(c2, n8)`: Routing the merged flow (which includes the URL path) to `n8` ("send DNS query") forces the DNS query to execute regardless of input type, contradicting the source text which states "Once we have resolved the URN to a domain-name, we send a DNS query."
+- `action(n10, "link to designated DS using URLs")` and `action(n11, "link to designated DS")`: The model incorrectly duplicates a single logical operation into two redundant sequential actions based on the sentences "which we then use to link to a designated DS" and "Finally, we link to the designated DS".
+- `action(n12, "process ends")`: The end of the process is incorrectly modeled as an explicit action step rather than terminating directly at the `end(e1)` event.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

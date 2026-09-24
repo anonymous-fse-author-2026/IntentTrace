@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: At the same time, we complete the following steps simultaneously: reserving the article and calculating the price. (reason: Source explicitly mandates concurrent execution for reservation and pricing, but the model lacks a parallel branch/converge structure and sequences them linearly instead.)
+
+Addition
+- [N2] Node-level addition: action(n11,"abort the enquiry and end process") (reason: Introduces an entire rejection/abort branch for customer non-acceptance ('abort the enquiry and end process' triggered by 'v2 = false') which has zero support in the source text.)
+- [N3] Node-level addition: guard(b2,n11,"v2 = false") (reason: Introduces an entire rejection/abort branch for customer non-acceptance ('abort the enquiry and end process' triggered by 'v2 = false') which has zero support in the source text.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"customer makes an enquiry") -> action(n2,"is the article in stock") -> branch(b1,XOR) -> action(n3,"continue with the process") -> action(n5,"reserve the article") -> action(n6,"calculate the price") -> action(n7,"send the offer") -> action(n8,"wait for the customer to accept the offer") -> action(n9,"has the customer accepted the offer") -> branch(b2,XOR) -> action(n11,"abort the enquiry and end process") -> end(e2)
+- [N5] Within matched traces (1->0) added: action(n6,"calculate the price")
+- [N6] Within matched traces (2->0) added: action(n5,"reserve the article")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = true"); source=i3:If the article is available,; reason=Guard substitutes the semantic business condition with an abstract boolean variable ('v1 = true'), completely dropping the original domain meaning.
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = false"); source=i5:if the article is not available; reason=Guard substitutes the semantic business condition with an abstract boolean variable ('v1 = false'), completely dropping the original domain meaning.
+- [N9] Node-level mutation: element=guard(b2,n10,"v2 = true"); source=i13:Once the customer accepts the offer,; reason=Guard substitutes the semantic acceptance condition with an abstract boolean variable ('v2 = true'), losing the original trigger context.
+- [N10] Node-level mutation: element=action(n9,"has the customer accepted the offer"); source=i13:Once the customer accepts the offer,; reason=Distorts the conditional/temporal trigger into a standalone action step ('has the customer accepted the offer'), incorrectly changing control-flow granularity and creating redundancy with the downstream gateway.

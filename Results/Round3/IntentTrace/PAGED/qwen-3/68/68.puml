@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+|a1| Operator
+|a1|
+start
+:Rental Items are Returned to the Store;
+:v1: Return method ({Customer returns items, Delivery picks up}); <<objectSignal>>
+if () then ([v1 = 'Customer returns items'])
+:Customer returns the items to the store;
+else ([v1 = 'Delivery picks up'])
+:Delivery Crew picks-up items at the event site;
+endif
+:Items are counted and compared to the original contract;
+:v2: Order status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'Complete'])
+:Order is complete and all items were returned;
+:Items are packed for an existing order;
+:Email customer missing items and replacement charges;
+:Customer returns the missing items;
+case ([v2 = 'Incomplete'])
+:Order is incomplete and items are missing;
+:Items are stored for future orders;
+:Temporarily take damaged items out of inventory;
+:Customer does not return the missing items;
+case ([v2 = 'Damaged'])
+:Order is complete but items are damaged;
+:Items are packed for an existing order;
+:Email customer damaged items and additional charges;
+endswitch
+:Finally, when the process is complete, it ends;
+:v3: Repair status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v3 = 'Repaired'])
+:Items are repaired and added into inventory;
+else ([v3 = 'Discarded'])
+:Items can't be repaired and are discarded;
+endif
+:Lastly, the items are packed for an existing order;
+:v4: Disposition ({Packed, Stored}); <<objectSignal>>
+if () then ([v4 = 'Packed'])
+:Items are packed for an existing order;
+else ([v4 = 'Stored'])
+:Items are stored for future orders;
+endif
+:Once again, when the process is complete, it ends;
+:Email customer with replacement charges;
+stop
+@enduml

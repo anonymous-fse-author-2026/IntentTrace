@@ -1,0 +1,71 @@
+init(i1)
+action(n1, "start the process")
+action(n2, "undergoing immigration checks")
+action(n3, "select the method for exit control checks")
+branch(b1, XOR)
+action(n4, "If the passenger chooses to use biometrics")
+action(n5, "undergo a check using biometrics")
+action(n6, "undergo checks using identity documents")
+converge(c1)
+action(n7, "After the exit control checks")
+branch(b2, XOR)
+action(n8, "if the passenger is denied permission")
+action(n9, "they should leave the area")
+end(e1)
+action(n10, "On the other hand, if the passenger is allowed to continue")
+action(n11, "proceed to the next step")
+end(e2)
+action(n12, "If the exit control check outcome is unsuccessful")
+action(n13, "the passenger should leave the area")
+converge(c2)
+action(n14, "the process ends")
+end(e3)
+action(n15, "Conversely, if the outcome is successful")
+action(n16, "continue to the next step")
+
+defines(v1, "method", {"biometrics", "ID documents"})
+defines(v2, "outcome", {"denied", "allowed", "unsuccessful", "successful"})
+
+actor(a1, "Passenger", [i1, n1, n2, n3, b1, n4, n5, n6, c1, n7, b2, n8, n9, e1, n10, n11, e2, n12, n13, c2, n14, e3, n15, n16])
+
+precedence(i1, n1)
+precedence(n1, n2)
+precedence(n2, n3)
+precedence(n3, b1)
+
+precedence(b1, n4)
+precedence(n4, n5)
+precedence(n5, c1)
+
+precedence(b1, n6)
+precedence(n6, c1)
+
+precedence(c1, n7)
+precedence(n7, b2)
+
+precedence(b2, n8)
+precedence(n8, n9)
+precedence(n9, e1)
+
+precedence(b2, n10)
+precedence(n10, n11)
+precedence(n11, e2)
+
+precedence(b2, n12)
+precedence(n12, n13)
+precedence(n13, c2)
+
+precedence(b2, n15)
+precedence(n15, n16)
+precedence(n16, c2)
+
+precedence(c2, n14)
+precedence(n14, e3)
+
+guard(b1, n4, v1 = "biometrics")
+guard(b1, n6, v1 = "ID documents")
+
+guard(b2, n8, v2 = "denied")
+guard(b2, n10, v2 = "allowed")
+guard(b2, n12, v2 = "unsuccessful")
+guard(b2, n15, v2 = "successful")

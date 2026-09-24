@@ -1,0 +1,8 @@
+
+
+- action(n1, "start pathology process"): Hallucinated step; the source text begins with "begin with the Gross pathology request that has arrived", making this initial action extraneous.
+- action(n26, "end pathology process"): Hallucinated step; the source text concludes with "close it. Finally, deliver the pathology report and complete the post-report processing", with no separate ending action described.
+- action(n17, "complete tissue processing tasks"): Hallucinated step; the source text mentions "Tissue processing" only once, and splitting it into multiple nodes violates documented behaviors.
+- precedence(b3, n9), precedence(b3, n10), precedence(n10, n11): Incorrect control-flow logic and chronology; the source states "Simultaneously, complete the following steps: Tissue processing, check if 'Digitalization?' is required" alongside macroscopic description, but the model limits the AND-split to two paths and forces the digitalization check (n11) to execute sequentially after tissue processing (n10) rather than in parallel.
+- action(n13, "skip digitalization"), action(n16, "skip digitalization"): Payload faithfulness issue; the source instructs to "continue the process" when the answer is "no", whereas the model introduces explicit "skip" actions not present in the description.
+- defines(v1, ..., {"Yes", "No"}), defines(v2, ..., {"Yes", "No"}): Variable ranges use capitalized values, contradicting the source's explicit lowercase "yes" and "no" quoted in the decision questions.

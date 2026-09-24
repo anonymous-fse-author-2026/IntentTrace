@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start acme process")`: Hallucinated step; the source begins directly with `"start by receiving the customer request"` without an initial startup action.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements to encode the documented decision criteria (`"If the inventory level is at or below the minimum..."`, `"If the purchase order is rejected/approved..."`), leaving the exclusive choice logic underspecified.
+- `defines(v1, "check inventory level", {})` & `defines(v2, "review purchase order", {})`: Value ranges are empty `{}`, failing to reflect the source's implied numeric/status domains, and the variables are never referenced in any guards.
+- `action(n7, "rework purchase order")`: Lacks an outgoing precedence edge returning to `n6` or `b2`, creating a dead-end path that contradicts the source requirement to `"review it again"` after reworking.
+- `action(n15, "end process")`: Redundant step; the source indicates termination occurs immediately after `"issue the payment"` (`n12`), making an intermediate "end process" action unnecessary before `end(e2)`.

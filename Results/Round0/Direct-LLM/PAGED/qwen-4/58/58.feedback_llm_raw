@@ -1,0 +1,9 @@
+
+
+- `branch(b1)` through `branch(b6)`: Missing `guard` statements linking decision variables to outgoing edges, failing to specify the explicit choice conditions required by the source text's decision points.
+- `defines(v1, ..., {})` through `defines(v6, ..., {})`: Declares empty value ranges `{}`, violating SMC6 as the source implies explicit categorical/boolean outcomes (e.g., `"if the customer exists"`, `"private customer"`, `"less than three reminders"`).
+- `action(n20, "Close order")` with `precedence(n19, n20)` → `precedence(n20, n21)`: Violates SMC3 by sequencing order closure before payment verification, directly contradicting `"If payment has been received, we close the order."`
+- `branch(b2)` → `action(n6, "Send customer declining message")`: Hallucinates a decline path for unfavorable payment history; the source only stipulates `"If the payment history is good, we can continue with the process"`, providing no instructed behavior for poor history.
+- `branch(b7)`, `branch(b8)`, `branch(b9)`, `converge(c3)`, `converge(c4)`: Introduces an unjustified cross-join concurrency mesh absent in the source, which simply describes straightforward subsequent steps: `"Simultaneously, we inform the stock and accounting departments. After packing the goods and writing the invoice..."`
+- `action(n26, "Continue process")` → `end(e4)`: Incorrectly terminates the flow at an end node, violating SMC5; the source implies iterative continuation: `"If there are less than three reminders, we continue with the process."`
+- `action(n20, "Close order")` & `action(n23, "Close order")`: Duplicatively and inconsistently models order closure; the source binds closure strictly to successful payment receipt, making the unconditional pre-delivery `n20` placement semantically contradictory.

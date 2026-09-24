@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v1: First answer ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:if the answer is No at the beginning;
+:If the answer is No again, we continue the process;
+else ([v1 = 'Yes'])
+:give it priority;
+endif
+:look up the Vendor on SAP;
+:v2: Lookup result ({No, YesInvoice, YesPriority})
+v1: First answer ({No, Yes}); <<objectSignal>>
+switch ()
+case ([v2 = 'No'])
+:need a Vendor master record;
+case ([v2 = 'YesInvoice'])
+:enter the invoice in SAP;
+:place the entered invoices in the normal Outbox;
+case ([v1 = 'Yes'])
+:enter the invoice in SAP again;
+endswitch
+stop
+@enduml

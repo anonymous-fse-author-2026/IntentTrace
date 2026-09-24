@@ -1,0 +1,216 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Request information about organization"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Schedule an appointment"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Proceed with Control and measurement"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "End process - Potential client"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Revisit after two weeks"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End process - Target reached"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "End process - Dissatisfied or other reason"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Is the customer in Intake stage?",
+      "R_X": [
+        "Intake",
+        "Potential client"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Has target been reached?",
+      "R_X": [
+        "Target reached",
+        "Dissatisfied or other reason"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Customer",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "b1",
+        "n5",
+        "n6",
+        "e1",
+        "n7",
+        "b2",
+        "n9",
+        "e2",
+        "n10",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"Intake\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = \"Potential client\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = \"Target reached\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = \"Dissatisfied or other reason\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, the customer should first request information about the organization and then schedule an appointment."
+    },
+    {
+      "id": "i2",
+      "content": "If the customer is in the \"Intake\" stage, they should proceed with \"Control and measurement\"."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the customer is a \"Potential client\", the process will come to an end."
+    },
+    {
+      "id": "i4",
+      "content": "After the \"Control and measurement\" stage, the customer should revisit after two weeks."
+    },
+    {
+      "id": "i5",
+      "content": "If the target has been reached, the process will come to an end."
+    },
+    {
+      "id": "i6",
+      "content": "However, if the customer is dissatisfied or for any other reason, the process will also come to an end."
+    }
+  ]
+}

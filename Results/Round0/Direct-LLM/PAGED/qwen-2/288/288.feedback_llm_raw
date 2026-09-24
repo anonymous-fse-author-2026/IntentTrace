@@ -1,0 +1,8 @@
+
+
+- action(n1, "start the process"): Hallucinated step; the source text states "the review clerk should start by reviewing the received application" without defining a distinct initialization action.
+- action(n12, "end the process"): Hallucinated step; the source states "the process will come to an end" immediately after writing back data, which should connect directly to end(e1) without an intermediate action node.
+- action(n5, "are there any new findings") and action(n8, "are there any new findings"): Incorrectly model conditional checks as standalone actions; the source describes decisions ("If the answer is yes... if the answer is no...") that should be implemented as guards on the outgoing edges of b1 and b2, not separate action nodes.
+- branch(b1, XOR) and branch(b2, XOR): Lack guard statements to differentiate the "yes" and "no" outcomes, failing to faithfully represent the conditional branching logic described in the source.
+- defines(v1, "are there any new findings", {}) and defines(v2, "are there any new findings", {}): Variable ranges are empty {}; they must define a value space like {true, false} to reflect the binary "yes/no" decision in the source.
+- actor(a_default, "Default", [...] ): Misidentifies the responsible party; the source explicitly assigns all tasks to the "review clerk", not a "Default" actor.

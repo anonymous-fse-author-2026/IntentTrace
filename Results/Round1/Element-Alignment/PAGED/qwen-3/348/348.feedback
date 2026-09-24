@@ -1,0 +1,60 @@
+Omission
+- [N1] Node-level omission: i1:In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice. (reason: The initial step 'Bill for Purchased Goods/Services' is completely absent from the model, leaving this portion of the source unimplemented.)
+- [N2] Node-level omission: i8:If there is no response, a period of 10 days is given. (reason: Neither the triggering condition ('If there is no response') nor the combined instruction is faithfully implemented; the model drops the condition entirely.)
+- [N3] Node-level omission: i10:After 10 days, a reminder is sent and the process ends. (reason: The critical temporal precondition 'After 10 days' is omitted, breaking the causal link required by the source text.)
+- [N4] Within matched traces (2->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N5] Within matched traces (2->1) omitted: i10:After 10 days, a reminder is sent and the process ends.
+- [N6] Within matched traces (3->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N7] Within matched traces (3->1) omitted: i11:If the client is unsatisfied, payment discrepancy is resolved. However, if the client is satisfied, the process continues.
+- [N8] Within matched traces (4->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N9] Within matched traces (4->1) omitted: i10:After 10 days, a reminder is sent and the process ends.
+- [N10] Within matched traces (5->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N11] Within matched traces (5->1) omitted: i11:If the client is unsatisfied, payment discrepancy is resolved. However, if the client is satisfied, the process continues.
+
+Addition
+- [N12] Node-level addition: action(n1,"start") (reason: Generic 'start' action lacks any specific supporting source text and redundantly overlaps with the structural init node.)
+- [N13] Node-level addition: action(n14,"Wait for 10 Days") (reason: Standalone wait action is added without its required preceding condition from the source, making it unsupported in isolation.)
+- [N14] Node-level addition: action(n15,"Send Reminder") (reason: These steps implement the reminder and process end but lack the specified 'After 10 days' precondition, rendering them unjustified additions relative to the strict source requirements.)
+- [N15] Node-level addition: action(n17,"End Billing Process") (reason: These steps implement the reminder and process end but lack the specified 'After 10 days' precondition, rendering them unjustified additions relative to the strict source requirements.)
+- [N16] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n4,"Is Invoice Complete?") -> branch(b1,XOR) -> action(n6,"Is Invoice Compliant?") -> branch(b2,XOR) -> action(n8,"Return Invoice via Mail") -> end(e2)
+- [N17] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n17,"End Billing Process") -> end(e5)
+- [N18] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n19,"Resolve Payment Discrepancy") -> end(e6)
+- [N19] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n20,"Continue Process") -> end(e7)
+- [N20] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> end(e4)
+- [N21] Within matched traces (0->0) added: init(i1)
+- [N22] Within matched traces (0->0) added: action(n1,"start")
+- [N23] Within matched traces (0->0) added: action(n2,"Bill Client")
+- [N24] Within matched traces (0->0) added: branch(b4,AND)
+- [N25] Within matched traces (0->0) added: branch(b5,AND)
+- [N26] Within matched traces (1->1) added: init(i1)
+- [N27] Within matched traces (1->1) added: action(n1,"start")
+- [N28] Within matched traces (1->1) added: action(n2,"Bill Client")
+- [N29] Within matched traces (1->1) added: branch(b4,AND)
+- [N30] Within matched traces (1->1) added: branch(b5,AND)
+- [N31] Within matched traces (1->1) added: action(n9,"Resolve Compliance Issue")
+- [N32] Within matched traces (1->1) added: action(n10,"Pay Invoice")
+- [N33] Within matched traces (1->1) added: end(e3)
+- [N34] Within matched traces (2->1) added: init(i1)
+- [N35] Within matched traces (2->1) added: action(n1,"start")
+- [N36] Within matched traces (2->1) added: branch(b5,AND)
+- [N37] Within matched traces (2->1) added: action(n7,"Resolve Non-Compliance via Phone")
+- [N38] Within matched traces (3->1) added: init(i1)
+- [N39] Within matched traces (3->1) added: action(n1,"start")
+- [N40] Within matched traces (3->1) added: branch(b5,AND)
+- [N41] Within matched traces (3->1) added: action(n7,"Resolve Non-Compliance via Phone")
+- [N42] Within matched traces (4->1) added: init(i1)
+- [N43] Within matched traces (4->1) added: action(n1,"start")
+- [N44] Within matched traces (4->1) added: branch(b5,AND)
+- [N45] Within matched traces (5->1) added: init(i1)
+- [N46] Within matched traces (5->1) added: action(n1,"start")
+- [N47] Within matched traces (5->1) added: branch(b5,AND)
+
+Mutation
+- [N48] Node-level mutation: element=action(n9,"Resolve Compliance Issue"); source=i6:After that, the invoice is paid and if it is returned, non-compliance is resolved.; reason=The element content states 'Resolve Compliance Issue', which directly contradicts the source text specifying that 'non-compliance is resolved'. This reverses the target of the resolution.
+- [N49] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i3:If the invoice is non-compliant, further checks are conducted. On the other hand, if the invoice is compliant, the process continues.; reason=This guard routes the 'compliant' outcome to 'Return Invoice via Mail', whereas the source explicitly states that compliant invoices simply continue the process. The routing logic alters the intended flow.
+
+Permutation
+- [N50] Within matched traces (2->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n10,"Pay Invoice")]
+- [N51] Within matched traces (3->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n9,"Resolve Compliance Issue")]
+- [N52] Within matched traces (4->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n10,"Pay Invoice")]
+- [N53] Within matched traces (5->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n9,"Resolve Compliance Issue")]

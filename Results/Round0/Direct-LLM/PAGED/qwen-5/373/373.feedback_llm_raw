@@ -1,0 +1,6 @@
+
+
+- `defines(v2, "Is claim rejection accepted", {"No"})`: Value space omits the positive outcome, contradicting the source which details both scenarios: "If the claim rejection is accepted... But if the claim rejection is not accepted..." (SMC6)
+- `branch(b2, XOR)` / `guard(b2, n8, v2 = 'No')`: Only models the negative trajectory. The source specifies both outcomes lead to the same next step: "If the claim rejection is accepted, continue the process. But if the claim rejection is not accepted, also continue the process." The missing edge and guard for the accepted case omits a documented path. (SMC1, SMC4)
+- `action(n5, "Accept the claim")` to `action(n9, "Prepare the claim discharge")`: Skips the explicit intermediate step stated in the source: "if the claim is to be accepted, offer the benefit." (SMC1)
+- `branch(b2, XOR)` with single `precedence(b2, n8)`: Using an exclusive split to route to a single target node misrepresents the control-flow logic for a dual-condition convergence; it should be a direct precedence or a split with two edges that immediately join. (SMC4)

@@ -1,0 +1,341 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "trigger Resupply Cycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check inventory level"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "create purchase order"
+    },
+    {
+      "id": "n4",
+      "type": "converge"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "reject purchase order"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "approve purchase order"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "rework purchase order"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "review purchase order"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "reserve funds for purchase"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "send purchase order to supplier"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "receive packing slip"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "receive invoice"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "record packing slip"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "record invoice"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "release funds for payment"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "issue payment"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "End process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is purchase order good?",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "b1",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "e1",
+        "c1",
+        "b2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n17"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process for ACME Company, we first trigger the Resupply Cycle."
+    },
+    {
+      "id": "i2",
+      "content": "After that, we check the inventory level."
+    },
+    {
+      "id": "i3",
+      "content": "Once the inventory level is checked, we proceed to create a purchase order."
+    },
+    {
+      "id": "i4",
+      "content": "If the purchase order is not good, we reject it. However, if the purchase order is good, we approve it."
+    },
+    {
+      "id": "i5",
+      "content": "If the purchase order is not good, we reject it."
+    },
+    {
+      "id": "i6",
+      "content": "if the purchase order is good, we approve it."
+    },
+    {
+      "id": "i7",
+      "content": "In case the purchase order is rejected, we rework it."
+    },
+    {
+      "id": "i8",
+      "content": "On the other hand, if the purchase order is approved, we reserve funds for the purchase."
+    },
+    {
+      "id": "i9",
+      "content": "After reworking the purchase order, we review it again."
+    },
+    {
+      "id": "i10",
+      "content": "Once the funds are reserved, we send the purchase order to the supplier."
+    },
+    {
+      "id": "i11",
+      "content": "Simultaneously, we complete the following steps: receive the packing slip and receive the invoice."
+    },
+    {
+      "id": "i12",
+      "content": "After receiving the packing slip, we record it."
+    },
+    {
+      "id": "i13",
+      "content": "Similarly, after receiving the invoice, we record it as well."
+    },
+    {
+      "id": "i14",
+      "content": "Next, we release funds for payment and issue the payment."
+    },
+    {
+      "id": "i15",
+      "content": "Finally, the process ends after the payment is issued."
+    }
+  ]
+}

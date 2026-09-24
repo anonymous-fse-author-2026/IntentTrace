@@ -1,0 +1,156 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "review incoming CV"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "schedule interview"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "conduct interview"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "invite candidate decision",
+      "R_X": [
+        "Invite candidate",
+        "Send negative email"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "n6",
+        "e1",
+        "n7",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Invite candidate'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = 'Send negative email'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by reviewing the incoming CV."
+    },
+    {
+      "id": "i2",
+      "content": "If the decision is to send a negative email, then the process ends."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the decision is to invite the candidate, proceed with scheduling an interview."
+    },
+    {
+      "id": "i4",
+      "content": "Once the interview is conducted, the process comes to an end."
+    }
+  ]
+}

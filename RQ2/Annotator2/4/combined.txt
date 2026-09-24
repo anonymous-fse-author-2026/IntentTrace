@@ -1,0 +1,14 @@
+Root Cause Analysis
+
+Root Cause 1: The model omits the action of searching for a book described in the source text.
+- Includes:
+    - [N1] Node-level omission: i3:they should search for a book. (reason: The model omitted the action step of searching for a book.)
+    - [N2] Within matched traces (0->0) omitted: i3:they should search for a book.
+
+Root Cause 2: The model hallucinates conditional decision branches and alternative failure paths not present in the strictly sequential source text, resulting in structural errors such as empty variable ranges and missing guards.
+- Includes:
+    - [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+    - [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.
+    - [N3] Node-level addition: action(n9,"contact support or end process") (reason: There is no mention of contacting support in the source text.)
+    - [N4] Added trace (model 1): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n4,"add used copy to cart") -> action(n5,"can you proceed with purchase?") -> branch(b2,XOR) -> action(n9,"contact support or end process") -> end(e3)
+    - [N5] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"visit Amazon.com Marketplace") -> action(n3,"did you find the book?") -> branch(b1,XOR) -> action(n8,"end of process") -> end(e2)

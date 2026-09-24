@@ -1,0 +1,7 @@
+
+
+- `action(n3)`, `action(n6)`, `branch(b1)`, `branch(b2)`: Source explicitly lists four sequential checks ("greater than 2", "less than 2", "greater than 2", "less than 2"). The model only implements two nodes for `"is x greater than 2"`, omitting the two explicit "less than 2" steps. (SMC1, SMC3)
+- `action(n9, "end procedure")`, `end(e1)`: Source repeatedly states `"the process should be continued"` under all conditions and never mentions finishing. These elements hallucinate a termination step. (SMC1)
+- `guard(b1, n5, v1 = 'No')`, `guard(b2, n8, v2 = 'No')`, `defines(v1, ...)`, `defines(v2, ...)`: Source treats "greater than 2" and "less than 2" as separate, sequential evaluation conditions. The model incorrectly models "less than 2" as the `"No"` value of a single `"is x greater than 2"` variable, collapsing sequential independent checks into mutually exclusive alternatives. (SMC4, SMC6)
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `converge(c1)`, `converge(c2)`: Source describes a flat linear progression where every condition unconditionally leads to continuation. The model imposes XOR splitting and converging joins, introducing exclusive-choice control flow not supported by the sequential description. (SMC4)
+- `precedence` edges (overall graph structure), `action(n2, "restart process for testing")`: Source opens with `"the process should be continued from the beginning"`, implying an iterative or reset loop. The model enforces a strictly linear init-to-end progression with a one-time restart step and no feedback edge back to the start. (SMC4, SMC5)

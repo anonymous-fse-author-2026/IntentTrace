@@ -1,0 +1,70 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process;
+:Prioritize orders based on received time;
+:Check customer's information;
+:Does customer exist?;
+:v1: Does customer exist? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Check payment history;
+:Verify payment history;
+:v2: Is payment history good? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Terminate order;
+:Process ends;
+stop
+else ([v2 = 'Yes'])
+->;
+endif
+else ([v1 = 'No'])
+:Verify customer status;
+:Is customer a private customer?;
+:v3: Is customer a private customer? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Send decline message;
+:End;
+stop
+else ([v3 = 'No'])
+:Create new customer;
+:Check product availability;
+:Are products available?;
+:v4: Are products available? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:Produce missing goods;
+:Send decline message;
+:End;
+stop
+else ([v4 = 'Yes'])
+->;
+endif
+endif
+endif
+:Send order confirmation;
+split
+:Inform stock department;
+split again
+:Inform accounting department;
+end split
+:Pack goods and write invoice;
+:Goods ready for delivery and invoice sent;
+:v5: Payment received? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:Close order;
+:Deliver goods and invoice to customer;
+:End;
+stop
+else ([v5 = 'No'])
+:Reminders less than three?;
+:v6: Reminders less than three? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:Continue with process;
+else ([v6 = 'No'])
+:Activate donning process;
+:End;
+stop
+endif
+endif
+@enduml

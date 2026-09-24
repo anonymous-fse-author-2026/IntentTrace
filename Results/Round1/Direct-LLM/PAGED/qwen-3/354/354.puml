@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+|a_passenger| Passenger
+|a_passenger|
+start
+:Start immigration checks;
+:Select exit control check method;
+:v1: Select exit control check method ({biometrics, id_documents}); <<objectSignal>>
+if () then ([v1 = 'biometrics'])
+:Undergo biometrics check;
+else ([v1 = 'id_documents'])
+:Undergo ID documents check;
+endif
+:Evaluate exit control check permission;
+:v2: Evaluate exit control check permission ({denied, allowed}); <<objectSignal>>
+if () then ([v2 = 'denied'])
+:Passenger denied permission leave area;
+else ([v2 = 'allowed'])
+:Passenger allowed to continue proceed to next step;
+:Check exit control check outcome;
+:v3: Check exit control check outcome ({unsuccessful, successful}); <<objectSignal>>
+if () then ([v3 = 'unsuccessful'])
+:Passenger leave area and end process;
+else ([v3 = 'successful'])
+:Passenger continue next step and end process;
+endif
+endif
+stop
+@enduml

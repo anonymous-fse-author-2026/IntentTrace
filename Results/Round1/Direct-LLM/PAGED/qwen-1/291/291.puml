@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start and enter the metadata;
+:Proceed to the IN-Patient step;
+split
+:Send data to suppliers;
+:Extract data from suppliers;
+:Transfer data to doctor phone;
+:Confirm the GOP;
+:Process ends after confirming GOP;
+stop
+split again
+:Create a claim;
+:Register the case;
+:Handle the claim;
+:Extract data from suppliers;
+:v1: Enter data on patient record or confirm IN-Patient status ({record, status}); <<objectSignal>>
+if () then ([v1 = 'record'])
+:Enter data on patient record;
+else ([v1 = 'status'])
+:Confirm IN-Patient status;
+endif
+:Send data back to suppliers;
+:Receive the payment;
+:Process ends after receiving payment;
+stop
+end split
+@enduml

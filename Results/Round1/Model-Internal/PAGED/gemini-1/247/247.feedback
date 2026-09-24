@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i5: If the input is a "URL" (reason: Because its only candidate was mutated into a generic 'No' guard, the explicit condition checking for 'URL' is omitted.)
+- [N2] Node-level omission: i6: After this, we again check if the input is a "URN" or a "URL" (reason: The model completely misses this secondary condition checking phase.)
+- [N3] Node-level omission: i7: we send a DNS query (reason: The unqualified 'send a DNS query' action is not faithfully implemented due to invented qualifiers in the candidate elements.)
+- [N4] Omitted trace (input 0): i1:To find a DS through ONS Bootstrapping, we start -> i2:checking if the input is a "URN" -> i3:If it is -> i4:ONS-Resolving URN to a domain-name -> i6:After this, we again check if the input is a "URN" or a "URL" -> i7:we send a DNS query -> i8:The result of this query is a list of URLs -> i9:link to a designated DS -> i10:the process comes to an end
+- [N5] Omitted trace (input 1): i1:To find a DS through ONS Bootstrapping, we start -> i2:checking if the input is a "URN" -> i5:If the input is a "URL" -> i6:After this, we again check if the input is a "URN" or a "URL" -> i9:link to a designated DS -> i10:the process comes to an end
+
+Addition
+- [N6] Added trace (model 0): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n3,"Resolve URN to domain-name") -> action(n4,"Send DNS query for the domain-name") -> action(n5,"Get list of URLs from DNS query") -> action(n6,"Link to designated DS") -> action(n7,"End of process") -> end(e1)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n8,"Send DNS query for the URL") -> action(n9,"Get list of URLs from DNS query") -> action(n10,"Link to designated DS") -> action(n11,"End of process") -> end(e2)
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n8,"v1 = 'No'"); source=i5: If the input is a "URL"; reason=The model distorts the logic by using a simple negation ('No' to URN) instead of explicitly checking if the input is a 'URL' as instructed by the text.
+- [N9] Node-level mutation: element=action(n4,"Send DNS query for the domain-name") -> action(n8,"Send DNS query for the URL"); source=i7: we send a DNS query; reason=The model invents and appends unstated qualifiers ('for the domain-name' and 'for the URL') not present in the input text unit.

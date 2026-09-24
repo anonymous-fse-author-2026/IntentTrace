@@ -1,0 +1,15 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process for ACME Company, -> i2:we first trigger the Resupply Cycle. -> i3:After that, we check the inventory level. -> i4:Once the inventory level is checked, we proceed to create a purchase order. -> i5:If the purchase order is not good, we reject it. -> i6:If the purchase order is not good, -> i9:In case the purchase order is rejected, we rework it. -> i11:After reworking the purchase order, we review it again. -> i5:If the purchase order is not good, we reject it.
+- [N2] Within matched traces (1->2) omitted: i8:However, if the purchase order is good,
+- [N3] Within matched traces (2->3) omitted: i8:However, if the purchase order is good,
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Content 'start' drops the specific entity 'ACME Company' and procedural context, failing to faithfully reproduce the source unit's granularity and qualifiers.)
+- [N5] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"trigger resupply cycle") -> action(n3,"check inventory level") -> action(n4,"create purchase order") -> action(n5,"is purchase order good?") -> branch(b1,XOR) -> action(n6,"reject purchase order") -> action(n8,"rework purchase order") -> action(n9,"review reworked purchase order") -> converge(c1) -> action(n11,"send purchase order to supplier") -> branch(b2,AND) -> action(n12,"receive packing slip") -> action(n13,"record packing slip") -> converge(c2) -> action(n16,"release funds for payment") -> action(n17,"issue payment") -> action(n18,"end process") -> end(e1)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"trigger resupply cycle") -> action(n3,"check inventory level") -> action(n4,"create purchase order") -> action(n5,"is purchase order good?") -> branch(b1,XOR) -> action(n6,"reject purchase order") -> action(n8,"rework purchase order") -> action(n9,"review reworked purchase order") -> converge(c1) -> action(n11,"send purchase order to supplier") -> branch(b2,AND) -> action(n14,"receive invoice") -> action(n15,"record invoice") -> converge(c2) -> action(n16,"release funds for payment") -> action(n17,"issue payment") -> action(n18,"end process") -> end(e1)
+- [N7] Within matched traces (1->2) added: action(n1,"start")
+- [N8] Within matched traces (1->2) added: action(n5,"is purchase order good?")
+- [N9] Within matched traces (1->2) added: converge(c2)
+- [N10] Within matched traces (2->3) added: action(n1,"start")
+- [N11] Within matched traces (2->3) added: action(n5,"is purchase order good?")
+- [N12] Within matched traces (2->3) added: converge(c2)

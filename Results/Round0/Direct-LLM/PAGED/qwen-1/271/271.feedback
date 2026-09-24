@@ -1,0 +1,7 @@
+- `action(n1, "start process")`: Hallucinates a preliminary step; the description explicitly states to "begin with the arrival of the customer order."
+- `branch(b1, XOR)`, `defines(v1, "payment received", {"Yes", "No"})`, `guard(b1, n7, v1 = 'Yes')`, `guard(b1, n5, v1 = 'No')`: Hallucinates a conditional split and decision variable; the text describes a strictly linear sequence with no exclusive choices or payment-status evaluations.
+- `precedence(b1, n5)`: Introduces an unsupported control-flow cycle; the description contains no retry logic or path to re-await payment.
+- `action(n6, "payment received")`, `action(n8, "end process")`: Unfaithfully fragments the conclusion into separate action nodes; the source progresses directly from awaiting payment to marking it as received and concluding ("Upon receipt of the payment, mark it as received, and conclude the process").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"await payment")

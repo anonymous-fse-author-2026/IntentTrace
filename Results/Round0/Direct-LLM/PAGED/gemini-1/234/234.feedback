@@ -1,0 +1,17 @@
+- `actor(a_default, "Default", [...])`: Fails to reflect the actor responsibilities described in the source text, entirely omitting the specific roles mentioned (e.g., "student", "selling agency", "client", "PPC", "finance department", "warehouse", "logistic department").
+- `action(n6, "send Excel list to student")`: Omits the prerequisite chronological condition specified in the text: "Once the Excel list is complete after a week".
+- `branch(b6, AND)`: Incorrectly places typing into the database (`n8`) and controlling the order (`n9`) in parallel. The source text explicitly defines a sequence: "After typing the orders into the database... Once the database is completed, control the incoming order."
+- Missing action after `n8`: The model omits the explicit instruction to "ensure that it is completed" after typing orders into the database.
+- `action(n9, "control incoming order and check")`: Fails to properly model the explicit concurrency described in the text: "control the incoming order. At the same time, continue to do the check."
+- Missing actions after `n12`: Omits the subsequent steps for a correct order: "Send the Excel list to the student and upon receiving it, continue with the process."
+- Control flow for `action(n13, "contact selling agency (incorrect)")`: `n13` is modeled as a dead end with no outgoing `precedence`. Additionally, it omits the explicitly stated follow-up actions: "upon receiving the actual issue, send the order for sign off."
+- `precedence(b7, c3)`: Introduces a hallucinated, empty parallel path bypassing the order value check (`n14`) and its downstream logic, which does not exist in the source text.
+- Missing actions for > 5000 € path (`n16`): The model omits the parallel/subsequent actions "continue with the check", "Contact the selling agency", and "upon receiving the actual issue".
+- `action(n19, "PPC initiates production")`: Omits the prerequisite step "Once the order is received by PPC" and the subsequent step "the goods will be produced".
+- `action(n27, "release order via memo")`: Omits the subsequent requirement to "ensure that the memo is achieved in the warehouse".
+- `precedence(b8, c4)`: Introduces an unfaithful empty parallel path from the AND-split `b8` directly to `c4`, effectively allowing the process to bypass the release memo, invoicing, and commissioning steps (`n27` and `b9`).
+- `branch(b9, AND)` and its successors (`n28`, `n29`, `n30`): Omit several concurrent steps explicitly required by the text: "report the achievement to the finance department" (after the invoice), "send the goods", and "ensure that the signed memo is achieved in the logistic department".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"contact selling agency (incorrect)")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"contact selling agency (incorrect)")

@@ -1,0 +1,21 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start the process -> i2:Course Packet Information Received should be sent -> i3:sending the Design to Faculty -> i4:the Faculty will choose the design -> i5:identify the content that requires copyright clearance and contact the publisher to obtain clearance -> i6:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added" -> i4:the Faculty will choose the design
+- [N2] Omitted trace (input 1): i1:To start the process -> i2:Course Packet Information Received should be sent -> i3:sending the Design to Faculty -> i4:the Faculty will choose the design -> i5:identify the content that requires copyright clearance and contact the publisher to obtain clearance -> i7:Calculate the Course Packet Cost -> i8:add the Bookstore margin to determine the retail price -> i9:If the Faculty needs to reconsider the course packet content to decrease the price -> i10:reconsider the course packet content to decrease the price -> i4:the Faculty will choose the design
+- [N3] Within matched traces (2->0) omitted: i4:the Faculty will choose the design
+
+Addition
+- [N4] Node-level addition: guard(b1,n6,"v1 == \"Yes\"") (reason: These guard conditions invent variable names (v1, v2) and exact boolean string values ("Yes", "No") that have no basis in the source text.)
+- [N5] Node-level addition: guard(b1,n7,"v1 == \"No\"") (reason: These guard conditions invent variable names (v1, v2) and exact boolean string values ("Yes", "No") that have no basis in the source text.)
+- [N6] Node-level addition: guard(b2,n10,"v2 == \"Yes\"") (reason: These guard conditions invent variable names (v1, v2) and exact boolean string values ("Yes", "No") that have no basis in the source text.)
+- [N7] Node-level addition: guard(b2,n12,"v2 == \"No\"") (reason: These guard conditions invent variable names (v1, v2) and exact boolean string values ("Yes", "No") that have no basis in the source text.)
+- [N8] Within matched traces (2->0) added: action(n_choose,"the Faculty will choose the design")
+- [N9] Within matched traces (2->0) added: converge(c1)
+- [N10] Within matched traces (2->0) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N11] Within matched traces (2->0) added: branch(b1,XOR)
+
+Mutation
+- [N12] Node-level mutation: element=action(n4,"identify content requiring copyright clearance and contact publisher"); source=i5:identify the content that requires copyright clearance and contact the publisher to obtain clearance; reason=The generated action drops the required explicit purpose qualifier ('to obtain clearance') from the end of the step.
+- [N13] Node-level mutation: element=action(n12,"reconsider content to decrease price"); source=i10:reconsider the course packet content to decrease the price; reason=The generated action drops the noun qualifier 'course packet', referring ambiguously only to 'content'.
+
+Permutation
+- [N14] Within matched traces (2->0) reordered: expected [i12:if the Price of the Course Packet is finalized] but observed [action(n9,"condition: if Price of the Course Packet is finalized")] elsewhere; in its place the model has [branch(b2,XOR)]

@@ -1,0 +1,17 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To initiate the process for ACME Company, the Resupply Cycle is triggered -> i2:checking the Inventory Level -> i6:Otherwise, -> i7:a Purchase Order is created. -> i8:The Purchase Order is then reviewed. -> i9:If the Purchase Order is rejected, it is reworked. However, if the Purchase Order is accepted, funds are reserved for payment. -> i10:If the Purchase Order is rejected -> i11:it is reworked. -> i8:The Purchase Order is then reviewed.
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: Content 'start' is a generic placeholder that lacks the specific context and instruction ('ACME Company', 'Resupply Cycle') provided in the source unit.)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"start")
+- [N5] Within matched traces (2->1) added: init(i1)
+- [N6] Within matched traces (2->1) added: action(n1,"start")
+- [N7] Within matched traces (2->1) added: action(n4,"Inventory greater than Minimum Level?")
+- [N8] Within matched traces (3->2) added: init(i1)
+- [N9] Within matched traces (3->2) added: action(n1,"start")
+- [N10] Within matched traces (3->2) added: action(n4,"Inventory greater than Minimum Level?")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the Inventory is greater than the Minimum Level, -> i4:greater than the Minimum Level -> i6:Otherwise,; reason=Guards use abstract boolean assignments ('v1 = Yes' / 'v1 = No') instead of preserving the explicit threshold condition ('greater than the Minimum Level') or the textual fallback ('Otherwise'), dropping required qualifiers per strict standard.
+- [N12] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i3:If the Inventory is greater than the Minimum Level, -> i4:greater than the Minimum Level -> i6:Otherwise,; reason=Guards use abstract boolean assignments ('v1 = Yes' / 'v1 = No') instead of preserving the explicit threshold condition ('greater than the Minimum Level') or the textual fallback ('Otherwise'), dropping required qualifiers per strict standard.

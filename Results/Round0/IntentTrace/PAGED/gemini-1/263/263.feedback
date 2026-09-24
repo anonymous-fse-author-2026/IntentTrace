@@ -1,0 +1,50 @@
+Omission
+- [N1] Node-level omission: i2:an informational meeting that lasts half a day (reason: The model completely missed the action step of actually holding the informational meeting.)
+- [N2] Node-level omission: i7:If the storyboard is successful, (reason: The model missed the conditional branch checking whether the storyboard is successful before proceeding to the next steps.)
+- [N3] Node-level omission: i17:If the approval is complete (reason: The model failed to include a branch node (XOR) for the decision following the approval stage.)
+- [N4] Node-level omission: i18:However, if the approval is rejected (reason: The model failed to include a branch node (XOR) for the decision following the approval stage.)
+- [N5] Within matched traces (0->6) omitted: i2:an informational meeting that lasts half a day
+- [N6] Within matched traces (1->0) omitted: i2:an informational meeting that lasts half a day
+- [N7] Within matched traces (1->0) omitted: i7:If the storyboard is successful,
+- [N8] Within matched traces (1->0) omitted: i17:If the approval is complete
+- [N9] Within matched traces (2->3) omitted: i2:an informational meeting that lasts half a day
+- [N10] Within matched traces (2->3) omitted: i7:If the storyboard is successful,
+- [N11] Within matched traces (2->3) omitted: i17:If the approval is complete
+- [N12] Within matched traces (3->0) omitted: i2:an informational meeting that lasts half a day
+- [N13] Within matched traces (3->0) omitted: i7:If the storyboard is successful,
+- [N14] Within matched traces (3->0) omitted: i18:However, if the approval is rejected
+- [N15] Within matched traces (3->0) omitted: i19:the site needs to be rebuilt, which takes 3 days.
+- [N16] Within matched traces (3->0) omitted: i20:If the rebuild is complete,
+- [N17] Within matched traces (4->3) omitted: i2:an informational meeting that lasts half a day
+- [N18] Within matched traces (4->3) omitted: i7:If the storyboard is successful,
+- [N19] Within matched traces (4->3) omitted: i18:However, if the approval is rejected
+- [N20] Within matched traces (4->3) omitted: i19:the site needs to be rebuilt, which takes 3 days.
+- [N21] Within matched traces (4->3) omitted: i20:If the rebuild is complete,
+- [N22] Within matched traces (5->2) omitted: i2:an informational meeting that lasts half a day
+- [N23] Within matched traces (5->2) omitted: i7:If the storyboard is successful,
+- [N24] Within matched traces (5->2) omitted: i15:approval stage, which takes half a day.
+- [N25] Within matched traces (5->2) omitted: i18:However, if the approval is rejected
+- [N26] Within matched traces (5->2) omitted: i16:If the approval is complete, the process ends.
+- [N27] Within matched traces (6->5) omitted: i2:an informational meeting that lasts half a day
+- [N28] Within matched traces (6->5) omitted: i7:If the storyboard is successful,
+- [N29] Within matched traces (6->5) omitted: i15:approval stage, which takes half a day.
+- [N30] Within matched traces (6->5) omitted: i18:However, if the approval is rejected
+- [N31] Within matched traces (6->5) omitted: i16:If the approval is complete, the process ends.
+
+Addition
+- [N32] Node-level addition: action(n17,"End Process") (reason: The model added an 'End Process' action after the second rebuild, which is not mentioned in the text.)
+- [N33] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N34] Added trace (model 4): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N35] Within matched traces (0->6) added: action(n2,"Is the informational meeting successful?")
+- [N36] Within matched traces (0->6) added: branch(b1,XOR)
+- [N37] Within matched traces (5->2) added: action(n17,"End Process")
+- [N38] Within matched traces (5->2) added: end(e4)
+- [N39] Within matched traces (6->5) added: action(n17,"End Process")
+- [N40] Within matched traces (6->5) added: end(e4)
+
+Mutation
+- [N41] Node-level mutation: element=action(n5,"Site design and development preparation (10 days)"); source=i9:site design, which takes 10 days; reason=The model altered the step by adding 'and development preparation' to site design, which changes the scope of the action described in the text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.

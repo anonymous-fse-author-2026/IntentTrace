@@ -1,0 +1,43 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i3:the items are counted and compared to the original contract -> i4:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. -> i9:when the process is complete, it ends.
+- [N2] Omitted trace (input 3): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i3:the items are counted and compared to the original contract -> i4:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. -> i10:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i11:we email the customer with replacement charges -> i13:The customer is then emailed with replacement charges, and the process is complete.
+- [N3] Within matched traces (0->1) omitted: i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process.
+- [N4] Within matched traces (0->2) omitted: i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process.
+- [N5] Within matched traces (4->3) omitted: i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process.
+- [N6] Within matched traces (4->3) omitted: i10:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.
+
+Addition
+- [N7] Within matched traces (1->0) added: branch(b3,XOR)
+- [N8] Within matched traces (1->0) added: converge(c1)
+- [N9] Within matched traces (1->0) added: action(n13,"Items packed for an existing order?")
+- [N10] Within matched traces (1->0) added: branch(b5,XOR)
+- [N11] Within matched traces (1->0) added: action(n14,"Email customer with replacement charges")
+- [N12] Within matched traces (0->1) added: action(n9,"Items repair status?")
+- [N13] Within matched traces (0->1) added: branch(b4,XOR)
+- [N14] Within matched traces (0->1) added: action(n10,"Items are repaired and added into inventory")
+- [N15] Within matched traces (0->1) added: converge(c1)
+- [N16] Within matched traces (0->1) added: action(n13,"Items packed for an existing order?")
+- [N17] Within matched traces (0->1) added: branch(b5,XOR)
+- [N18] Within matched traces (0->1) added: action(n14,"Email customer with replacement charges")
+- [N19] Within matched traces (0->2) added: action(n9,"Items repair status?")
+- [N20] Within matched traces (0->2) added: branch(b4,XOR)
+- [N21] Within matched traces (0->2) added: action(n11,"Items can't be repaired and are discarded")
+- [N22] Within matched traces (0->2) added: action(n12,"Email customer with replacement charges")
+- [N23] Within matched traces (0->2) added: converge(c1)
+- [N24] Within matched traces (0->2) added: action(n13,"Items packed for an existing order?")
+- [N25] Within matched traces (0->2) added: branch(b5,XOR)
+- [N26] Within matched traces (0->2) added: action(n14,"Email customer with replacement charges")
+- [N27] Within matched traces (4->3) added: branch(b2,XOR)
+- [N28] Within matched traces (4->3) added: converge(c1)
+- [N29] Within matched traces (4->3) added: branch(b5,XOR)
+- [N30] Within matched traces (4->3) added: action(n14,"Email customer with replacement charges")
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b3` has in=1 and out=1. | Node `b5` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b3,XOR); branch(b5,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Delivery Crew picks-up items at the event site']`. | Variable `v3` has an invalid range `['Customer does not return the missing items']`. | Variable `v5` has an invalid range `['Items are stored for future orders']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Delivery Crew picks-up items at the event site'` on `b1 -> n3` uses undefined variable `v1`. | DSL: guard(b1,n3,"v1 = 'Delivery Crew picks-up items at the event site'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Delivery Crew picks-up items at the event site'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n3,"v1 = 'Delivery Crew picks-up items at the event site'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` has no enabled outgoing guard at state [v2=Complete and all items were returned]. | Branch `b4` has no enabled outgoing guard at state [v4=Items can't be repaired and are discarded].

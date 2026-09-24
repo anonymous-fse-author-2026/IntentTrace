@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive form;
+:check if form is complete;
+:v1: check if form is complete ({send_back, check_income}); <<objectSignal>>
+if () then ([v1 = 'send_back'])
+:end process: form needs to be sent back;
+stop
+else ([v1 = 'check_income'])
+:check income;
+:check deductibles and check house;
+:make decision;
+:v2: make decision ({check_declaration, invite_declarant}); <<objectSignal>>
+if () then ([v2 = 'check_declaration'])
+:end process: check declaration;
+stop
+else ([v2 = 'invite_declarant'])
+:invite declarant;
+stop
+endif
+endif
+@enduml

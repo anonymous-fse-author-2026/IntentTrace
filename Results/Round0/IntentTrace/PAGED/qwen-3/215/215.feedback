@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum" -> i4:Inventory Level is at or below the minimum -> i5:then proceed to Create Purchase Order -> i9:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i13:rejected -> i14:rework the order -> i16:review the Purchase Order again. -> i9:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Permutation
+- [N2] Within matched traces (0->2) reordered: expected [i7:Inventory Level is above the minimum] but observed [action(n3,"Inventory level is at or below the minimum")] elsewhere; in its place the model has [branch(b1,XOR)]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"Review Purchase Order")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Inventory Level is above the minimum']`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Inventory Level is above the minimum'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n5,"v1 = 'Inventory Level is above the minimum'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n11, n9 | DSL: action(n11,"Review Purchase Order"); action(n9,"Rework the order")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Inventory Level is above the minimum'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n5,"v1 = 'Inventory Level is above the minimum'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

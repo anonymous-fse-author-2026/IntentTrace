@@ -1,0 +1,47 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the flickr login process;
+:provide userdata for flickr;
+-> No;
+:is the login successful;
+:v1: is the login successful ({Yes}); <<objectSignal>>
+if () then ( )
+:end process successful login;
+stop
+else ([v1 = 'Yes'])
+:do you want to try again;
+if () then ( )
+:provide userdata for flickr again after first failure;
+-> No;
+:is the login successful after retry;
+:v3: is the login successful after retry ({Yes}); <<objectSignal>>
+if () then ( )
+:end process successful login after retry;
+stop
+else ([v3 = 'Yes'])
+:do you want to try again after second failure;
+if () then ( )
+:provide userdata for flickr again after second failure;
+-> No;
+:is the login successful after third try;
+if () then ( )
+:end process successful login after third try;
+stop
+else ( )
+:end process abort after third failure;
+stop
+endif
+else ( )
+:abort process after second failure;
+stop
+endif
+endif
+else ( )
+:abort process after first failure;
+stop
+endif
+endif
+@enduml

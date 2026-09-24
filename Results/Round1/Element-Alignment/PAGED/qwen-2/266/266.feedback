@@ -1,0 +1,41 @@
+Omission
+- [N1] Node-level omission: i1:The process starts with an informational meeting that lasts half a day, involving the customer and the web design team. (reason: The initial meeting step, along with its duration and participating actors, is entirely absent from the model.)
+- [N2] Node-level omission: i4:If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content. (reason: The conditional decision point verifying storyboard success before proceeding is missing from the flow.)
+- [N3] Within matched traces (0->0) omitted: i1:The process starts with an informational meeting that lasts half a day, involving the customer and the web design team.
+- [N4] Within matched traces (1->1) omitted: i1:The process starts with an informational meeting that lasts half a day, involving the customer and the web design team.
+- [N5] Within matched traces (1->1) omitted: i8:If the rebuild is complete, the process ends.
+- [N6] Within matched traces (2->1) omitted: i1:The process starts with an informational meeting that lasts half a day, involving the customer and the web design team.
+- [N7] Within matched traces (2->1) omitted: i9:If the rebuild is rejected again, the site needs to be rebuilt again, which also takes 3 days.
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Generic 'start' action lacks any supporting source text; process initiation is implicitly handled by the init node.)
+- [N9] Node-level addition: action(n2,"Is meeting successful?") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Is meeting successful?") -> branch(b1,XOR) -> action(n4,"Create storyboard") -> branch(b6,AND) -> action(n6,"Design site") -> converge(c1) -> action(n8,"Review site") -> branch(b2,XOR) -> action(n10,"Approve site") -> branch(b3,XOR) -> action(n11,"End process") -> end(e3)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (0->0) added: action(n2,"Is meeting successful?")
+- [N14] Within matched traces (1->1) added: init(i1)
+- [N15] Within matched traces (1->1) added: action(n1,"start")
+- [N16] Within matched traces (1->1) added: action(n2,"Is meeting successful?")
+- [N17] Within matched traces (2->1) added: init(i1)
+- [N18] Within matched traces (2->1) added: action(n1,"start")
+- [N19] Within matched traces (2->1) added: action(n2,"Is meeting successful?")
+
+Mutation
+- [N20] Node-level mutation: element=action(n6,"Design site"); source=i4:If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content.; reason=Drops the explicitly stated duration ('10 days') and responsible actor ('web design team') for the site design step.
+- [N21] Node-level mutation: element=action(n8,"Review site"); source=i5:Once the site is built, it goes through a review process that lasts 1 day.; reason=Omits the mandatory duration ('lasts 1 day') specified in the source.
+- [N22] Node-level mutation: element=action(n10,"Approve site"); source=i6:If the review is successful, it moves on to the approval stage, which takes half a day.; reason=Drops the explicit duration ('half a day') attached to the approval stage.
+- [N23] Node-level mutation: element=guard(b3,n12,"v3 = 'Rejected'") -> action(n12,"Rebuild site"); source=i7:If the approval is complete, the process ends. However, if the approval is rejected, the site needs to be rebuilt, which takes 3 days.; reason=Drops the explicit duration ('3 days') required for the rejection/rebuild path.
+- [N24] Node-level mutation: element=guard(b4,n17,"v4 = 'Incomplete'") -> action(n17,"Rebuild site again"); source=i9:If the rebuild is rejected again, the site needs to be rebuilt again, which also takes 3 days.; reason=Alters condition terminology ('Incomplete' instead of 'rejected again') and omits the duration ('3 days').
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=1 and out=0. | Node `n14` has in=0 and out=1. | Node `n17` has in=0 and out=1. | DSL: action(n12,"Rebuild site"); action(n14,"End process"); action(n17,"Rebuild site again")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | DSL: branch(b2,XOR)
+- [S3] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `n12 -> b4` references unknown node(s). | Precedence edge `b4 -> n14` references unknown node(s). | Precedence edge `b4 -> n17` references unknown node(s). | DSL: action(n12,"Rebuild site"); guard(b4,n14,"v4 = 'Complete'"); guard(b4,n17,"v4 = 'Incomplete'")
+- [S4] STC17 failed: Guards are only allowed on outgoing edges of XOR/OR branches. | Guard `v4 = 'Complete'` starts at `b4`, which is not XOR/OR branch. | Guard `v4 = 'Incomplete'` starts at `b4`, which is not XOR/OR branch. | DSL: guard(b4,n14,"v4 = 'Complete'"); guard(b4,n17,"v4 = 'Incomplete'")
+- [S5] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e4, e6, n14, n17 | DSL: end(e4); end(e6); action(n14,"End process"); action(n17,"Rebuild site again")
+- [S6] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n12 | DSL: action(n12,"Rebuild site")
+- [S7] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `b4` in assigned_nodes.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v2=Not successful].

@@ -1,0 +1,24 @@
+Omission
+- [N1] Omitted trace (input 2): i1:The first step is to receive and categorize the invoice. -> i2:If the instruction is to -> i5:if the instruction is to "Return invoice to client for completion", then the invoice is received and categorized again. -> i1:The first step is to receive and categorize the invoice.
+
+Addition
+- [N2] Node-level addition: action(n1,"start") (reason: action:n1 ('start') is a generic placeholder with no source basis. action:n3 formulates an explicit decision question step not present in the source text.)
+- [N3] Node-level addition: action(n3,"Is the instruction to Forward Reject Return or Process for SAP?") (reason: action:n1 ('start') is a generic placeholder with no source basis. action:n3 formulates an explicit decision question step not present in the source text.)
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (0->0) added: action(n1,"start")
+- [N6] Within matched traces (0->0) added: action(n3,"Is the instruction to Forward Reject Return or Process for SAP?")
+- [N7] Within matched traces (1->1) added: init(i1)
+- [N8] Within matched traces (1->1) added: action(n1,"start")
+- [N9] Within matched traces (1->1) added: action(n3,"Is the instruction to Forward Reject Return or Process for SAP?")
+- [N10] Within matched traces (3->2) added: init(i1)
+- [N11] Within matched traces (3->2) added: action(n1,"start")
+- [N12] Within matched traces (3->2) added: action(n3,"Is the instruction to Forward Reject Return or Process for SAP?")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n4,"v1 = 'Forward'"); source=i3:if the instruction is to "Forward Invoice to Admin Officer", then the next step is to sort the invoice.; reason=Guard condition uses the truncated value 'Forward' instead of the exact instructional string 'Forward Invoice to Admin Officer'.
+- [N14] Node-level mutation: element=guard(b1,n6,"v1 = 'Reject'"); source=i4:if the instruction is to "Reject invoice", then the process ends there.; reason=Guard condition uses the truncated value 'Reject' instead of the exact instructional string 'Reject invoice'.
+- [N15] Node-level mutation: element=guard(b1,n8,"v1 = 'Return'"); source=i5:if the instruction is to "Return invoice to client for completion", then the invoice is received and categorized again.; reason=Guard condition uses the truncated value 'Return' instead of the exact instructional string 'Return invoice to client for completion'.
+- [N16] Node-level mutation: element=guard(b1,n10,"v1 = 'SAP'"); source=i6:if the instruction is to "Process Invoice for SAP Entry", then the invoice is forwarded for validation.; reason=Guard condition uses the altered/acronymized value 'SAP' instead of the exact instructional string 'Process Invoice for SAP Entry'.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=2 and out=4. | DSL: branch(b1,XOR)

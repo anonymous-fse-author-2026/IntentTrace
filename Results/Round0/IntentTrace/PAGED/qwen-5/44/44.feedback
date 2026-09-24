@@ -1,0 +1,35 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i6:continue with the process.
+- [N2] Within matched traces (2->3) omitted: i6:continue with the process.
+
+Addition
+- [N3] Node-level addition: action(n7,"click on Submit button again") (reason: The source instructs to apply another filter when the option is false, but never mentions clicking the Submit button a second time.)
+- [N4] Node-level addition: guard(b3,n14,"v3 = 'No'") (reason: The source contains no condition referencing 'No' or a variable v3 to route to the end; termination is solely stated as occurring when all steps complete.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n6,"apply another filter") -> action(n7,"click on Submit button again") -> converge(c1) -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n11,"continue with process if no more filters") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n14,"end process") -> end(e1)
+- [N6] Within matched traces (0->0) added: init(i1)
+- [N7] Within matched traces (0->0) added: action(n7,"click on Submit button again")
+- [N8] Within matched traces (0->0) added: converge(c1)
+- [N9] Within matched traces (0->0) added: action(n9,"is there another filter to apply")
+- [N10] Within matched traces (0->0) added: branch(b2,XOR)
+- [N11] Within matched traces (0->0) added: action(n10,"continue with process if another filter to apply")
+- [N12] Within matched traces (0->0) added: converge(c2)
+- [N13] Within matched traces (0->0) added: action(n12,"is option to submit true")
+- [N14] Within matched traces (0->0) added: branch(b3,XOR)
+- [N15] Within matched traces (0->0) added: action(n14,"end process")
+- [N16] Within matched traces (0->0) added: end(e1)
+- [N17] Within matched traces (1->2) added: init(i1)
+- [N18] Within matched traces (2->3) added: init(i1)
+
+Mutation
+- [N19] Node-level mutation: element=action(n8,"continue with process after submit false"); source=i5:If the option to submit is set to "true", then continue with the process.; reason=The model content specifies continuation occurs 'after submit false', whereas the source explicitly states it occurs when the option is set to 'true', reversing the conditional logic attached to this step.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"continue with process if option submit true")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n14` uses undefined variable `v3`. | DSL: guard(b3,n14,"v3 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"continue with process if option submit true")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n14` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n14,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

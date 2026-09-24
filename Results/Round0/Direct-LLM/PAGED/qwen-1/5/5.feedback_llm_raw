@@ -1,0 +1,8 @@
+
+
+- `defines(v1, ...)` & `defines(v2, ...)`: Empty value ranges `{}` violate SMC6 by failing to specify the decision states needed to evaluate `"check if the shipment is okay"`.
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Outgoing edges lack `guard` statements, omitting the explicit conditions `"If it is, then proceed to Send Payment. However, if there are any problems with the shipment"` required for correct routing (SMC4).
+- `branch(b3, AND)` & `precedence(n5, b3)`: Incorrectly enforces parallel execution (AND) of the first check and `"communicate shipment problems before shipment"`; the source describes sequential, conditional steps, not concurrent flows (SMC4).
+- `action(n12, "communicate shipment problems before shipment")`: Has no outgoing `precedence`, resulting in a dead-end path that breaks the continuous progression described (SMC1).
+- `action(n11, "communicate shipment problems second time")`: Reached via `b2` but lacks `precedence` to `converge(c1)` or `end(e1)`, leaving a post-check failure path unresolved despite the text stating `"the process comes to an end"` after resolution/payment (SMC5).
+- Control flow around `n5` ("Ship Material"): Omits the backward linkage or precondition implied by `"In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material,"` modeling only a forward-only sequence (SMC3).

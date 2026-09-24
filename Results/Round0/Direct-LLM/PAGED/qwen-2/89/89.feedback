@@ -1,0 +1,16 @@
+- action(n1, "start the process"): Hallucinates an introductory step; the source begins directly with "Course Packet Information Received should be sent".
+- Omitted step "the Faculty will choose the design": Completely absent from the model despite being explicitly documented as a sequential action.
+- action(n5, "condition: if need to Contact Faculty...") and action(n9, "condition: if Price of the Course Packet is finalized"): Incorrectly model decision predicates as executable tasks; conditions should route flows via guards, not appear as linear actions.
+- action(n11, "end: Packet information notified to Bookstore") and action(n13, "end: Reconsider Content"): Payloads redundantly encode termination semantics already captured by end(e1) and end(e2), violating action payload fidelity.
+- branch(b1, XOR) and branch(b2, XOR): Lack guard(...) statements to enforce routing; the source explicitly defines triggers ("If there is a need to...", "if the 'Entire Course Packet Copyright Cleared'", "if the Price ... is finalized", "if the Faculty needs to reconsider...").
+- precedence(n4, n5) and precedence(n8, n9): Place condition-nodes linearly before branches instead of attaching conditions to the branch's outgoing edges, misrepresenting the decision structure.
+- label(n4, n5, "Yes No") and label(n8, n9, "Yes No"): Attach decision labels to straight-line task transitions rather than branch outgoing edges, failing to mark actual choice points.
+- action(n6, ...) and action(n12, ...): Route to dead-ends/termination (e2) instead of providing feedback precedence edges back to upstream steps, contradicting "the process should be continued".
+- defines(v1, ..., {}) and defines(v2, ..., {}): Specify empty value ranges {} and are never referenced in guard statements, failing to define the decision variable spaces required for branch evaluation.
+- actor(a_default, "Default", [i1, n1, ... , e2]): Assigns every node to a single generic actor; the source explicitly distributes responsibilities among specific roles ("Faculty will choose...", "MPC should Calculate...", "MPC should notify...").
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"notify: Contact Faculty to inform of denial and ask if new content should be added")

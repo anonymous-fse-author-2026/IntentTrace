@@ -1,0 +1,454 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start acme resupply cycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check levels of inventory"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "generate: below or equal to minimum report"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "generate: above minimum report"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "end process: above minimum"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "create purchase orders (pos)"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "review pos"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "print and release pos in system"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "rework po"
+    },
+    {
+      "id": "n22",
+      "type": "action",
+      "content": "create po again"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "reserve funds for released pos"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "mail pos to supplier"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "receive packing slip"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "receive inventory"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "receive invoice"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "proceed to three-way match"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "perform three-way match"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "release funds if successful"
+    },
+    {
+      "id": "n20",
+      "type": "action",
+      "content": "issue payment"
+    },
+    {
+      "id": "n21",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is inventory below or equal to minimum?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "is po approved?",
+      "R_X": [
+        "Approved",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "n6",
+        "e1",
+        "c2",
+        "n7",
+        "n8",
+        "b2",
+        "n10",
+        "n11",
+        "n22",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "e2",
+        "c1",
+        "b3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n21",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n22"
+    },
+    {
+      "type": "precedence",
+      "A": "n22",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "n20"
+    },
+    {
+      "type": "precedence",
+      "A": "n20",
+      "B": "n21"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"Yes\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"No\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = \"Approved\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n11",
+      "condition": "v2 = \"Rejected\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process for ACME, begin with the New Resupply Cycle"
+    },
+    {
+      "id": "i2",
+      "content": "Check Levels of Inventory"
+    },
+    {
+      "id": "i3",
+      "content": "If the inventory is below or equal to the minimum"
+    },
+    {
+      "id": "i4",
+      "content": "generate an Equal to or below minimum Report"
+    },
+    {
+      "id": "i5",
+      "content": "generate an Above Minimum Report"
+    },
+    {
+      "id": "i6",
+      "content": "create Purchase Orders (POs)"
+    },
+    {
+      "id": "i7",
+      "content": "If the report indicates that the inventory is above the minimum, the process ends."
+    },
+    {
+      "id": "i8",
+      "content": "If the PO is rejected"
+    },
+    {
+      "id": "i9",
+      "content": "it needs to be reworked"
+    },
+    {
+      "id": "i10",
+      "content": "If the PO is approved"
+    },
+    {
+      "id": "i11",
+      "content": "it is printed and released in the system."
+    },
+    {
+      "id": "i12",
+      "content": "it needs to be reviewed"
+    },
+    {
+      "id": "i13",
+      "content": "If the PO needs to be reworked, it needs to be created again."
+    },
+    {
+      "id": "i15",
+      "content": "reserve funds for the released POs"
+    },
+    {
+      "id": "i16",
+      "content": "mail the POs to the supplier"
+    },
+    {
+      "id": "i17",
+      "content": "receive the Packing Slip"
+    },
+    {
+      "id": "i18",
+      "content": "receive the inventory"
+    },
+    {
+      "id": "i19",
+      "content": "receive the Invoice"
+    },
+    {
+      "id": "i20",
+      "content": "proceed to the Three-way match"
+    },
+    {
+      "id": "i21",
+      "content": "release the funds"
+    },
+    {
+      "id": "i22",
+      "content": "issue the payment"
+    },
+    {
+      "id": "i23",
+      "content": "the Resupply Cycle is complete and the process ends."
+    }
+  ]
+}

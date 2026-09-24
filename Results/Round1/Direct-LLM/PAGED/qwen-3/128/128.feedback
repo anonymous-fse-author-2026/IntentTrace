@@ -1,0 +1,19 @@
+Addition
+- [N1] Within matched traces (0->3) added: action(n15,"End")
+- [N2] Within matched traces (0->3) added: end(e1)
+- [N3] Within matched traces (1->0) added: action(n15,"End")
+- [N4] Within matched traces (1->0) added: end(e1)
+- [N5] Within matched traces (2->1) added: action(n15,"End")
+- [N6] Within matched traces (2->1) added: end(e1)
+- [N7] Within matched traces (3->2) added: action(n11,"Items can't be repaired and are discarded")
+- [N8] Within matched traces (3->2) added: action(n13,"Items packed for an existing order?")
+- [N9] Within matched traces (3->2) added: branch(b5,XOR)
+- [N10] Within matched traces (3->2) added: action(n14,"Email customer with replacement charges")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=2 and out=1. | Node `n3` has in=2 and out=1. | DSL: action(n14,"Email customer with replacement charges"); action(n3,"Count items and compare to original contract")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Delivery Crew picks-up items at the event site]. | XOR branch `b3` has overlapping guards at state [v3=Customer does not return the missing items]. | XOR branch `b5` has overlapping guards at state [v5=Items are stored for future orders].
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b4` has no enabled outgoing guard at state [v4=Items can't be repaired and are discarded].

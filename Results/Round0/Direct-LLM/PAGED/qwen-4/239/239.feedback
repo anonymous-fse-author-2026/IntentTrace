@@ -1,0 +1,9 @@
+- `branch(b1, XOR)`: Incorrectly typed as exclusive choice; source states "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue," indicating sequential flow into parallel execution, not an XOR split. Additionally, splitting into three precedence-defined paths (`n4`, `n6`, `n7`) violates XOR semantics.
+- `action(n4, "Reject Order")` → `end(e1)`: Contradicts source text "If the order is to be rejected, the process should continue"; the model incorrectly terminates this path via `action(n5, "End")`.
+- `precedence` relations around `branch(b2, XOR)`: Omits the documented feedback loop; source requires "If there is a backorder, availability needs to be checked again," yet the model lacks any precedence edge returning to `action(n7, "Check Availability")`.
+- `defines(v1, "Is Order Rejected?", {})` and `defines(v2, "Is Backorder Required?", {})`: Use empty ranges `{}`, failing to faithfully capture the binary decision space implied by the source's conditional branches.
+- `guard` declarations for `b1` and `b2`: Absent; model fails to bind the explicit conditions from the source ("If the order is to be rejected/accepted", "If there is a backorder") to the respective outgoing edges, leaving decision criteria unspecified.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

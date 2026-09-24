@@ -1,0 +1,10 @@
+- `action(n1, "Start the invoice processing")`: Hallucinates a preliminary step; the source explicitly states "The first step is to receive and categorize the invoice."
+- `defines(v1, ...)`: Omits `"Forward Invoice to Admin Officer"` from its finite value set, despite the source listing it as one of four distinct instructional branches.
+- `action(n6, "Receive and categorize the invoice again")`: Lacks a precedence edge looping back to `action(n2)`; fails to capture the source’s cyclic instruction "then the invoice is received and categorized again."
+- `guard(b1, n4, ...)`: Missing guard condition for the edge corresponding to the instruction "Forward Invoice to Admin Officer", leaving the XOR branch reliant on an implicit fallback without the required value defined in `v1`.
+- `action(n4, "Sort the invoice")`: Has no outgoing precedence to a successor or `end` node, leaving the documented branch structurally dangling instead of terminating the flow after "the next step is to sort the invoice."
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4, n6 | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")

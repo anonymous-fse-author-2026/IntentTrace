@@ -1,0 +1,8 @@
+
+
+- `defines(v1, ...)` & `guard(b1, n5, ...)`: The variable range is restricted to `{"mail or phone"}` and the guard only checks this value, completely omitting the "fax" alternative mandated by the source: "If the order is received via fax... If the order is received via mail or phone...".
+- `branch(b1)`: Contains only a single outgoing precedence edge (`to n5`), failing to model the XOR decision structure for differing order receipt methods described in the source.
+- `actor(a_default, ...)`: Assigns every node to a single "Default" actor, violating SMC7 by ignoring the distinct participant responsibilities explicitly stated in the source (e.g., student, selling agency, client, PPC, finance department, warehouse, logistics).
+- `branch(b8)` & `branch(b9)`: Chain AND-gateways sequentially (`n32 → b8 → … → n34 → b9`), which incorrectly enforces a temporal order between invoicing, memo release, and goods commissioning, contradicting the source's explicit concurrency: "At the same time, commission the goods... Also, send the goods...".
+- `action(n38, "sign and send memo")`: Declared in the model but disconnected from the control flow (zero incoming `precedence` statements); the workflow erroneously jumps from `n37` to `n39`, dropping the required step described in the source: "commission the goods and sign and send the memo. Also, send the goods...".
+- `precedence(b9, c4)`: Directly connects an AND-branch to a converge node without an intermediate action, creating a structurally invalid and semantically empty parallel branch that does not correspond to any source behavior.

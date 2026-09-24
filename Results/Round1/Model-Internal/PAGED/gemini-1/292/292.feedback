@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i12:If the claim rejection is accepted (reason: The model completely misses the subsequent XOR decision logic and the corresponding paths for whether the claim rejection is accepted or not.)
+- [N2] Node-level omission: i13:continue the process (reason: The model completely misses the subsequent XOR decision logic and the corresponding paths for whether the claim rejection is accepted or not.)
+- [N3] Node-level omission: i14:if the claim rejection is not accepted (reason: The model completely misses the subsequent XOR decision logic and the corresponding paths for whether the claim rejection is accepted or not.)
+- [N4] Node-level omission: i16:At the same time (reason: The text dictates concurrent execution using parallel paths, but the model omits any parallel (AND) gateway or concurrency structure.)
+- [N5] Omitted trace (input 0): i1:To start the process -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected -> i6:reject it -> i9:review the claim rejection -> i12:If the claim rejection is accepted -> i13:continue the process -> i16:At the same time -> i17:operate outgoing payment -> i15:the process ends
+- [N6] Omitted trace (input 2): i1:To start the process -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected -> i6:reject it -> i9:review the claim rejection -> i14:if the claim rejection is not accepted -> i13:continue the process -> i16:At the same time -> i17:operate outgoing payment -> i15:the process ends
+- [N7] Omitted trace (input 3): i1:To start the process -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected -> i6:reject it -> i9:review the claim rejection -> i14:if the claim rejection is not accepted -> i13:continue the process -> i16:At the same time -> i18:close the claim -> i15:the process ends
+- [N8] Omitted trace (input 4): i1:To start the process -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i7:if the claim is to be accepted -> i8:offer the benefit -> i10:prepare the claim discharge -> i11:record the benefit payment -> i16:At the same time -> i17:operate outgoing payment -> i15:the process ends
+- [N9] Within matched traces (1->0) omitted: i12:If the claim rejection is accepted
+- [N10] Within matched traces (1->0) omitted: i13:continue the process
+- [N11] Within matched traces (1->0) omitted: i16:At the same time
+- [N12] Within matched traces (5->1) omitted: i16:At the same time
+
+Addition
+- [N13] Node-level addition: action(n9,"accept claim") (reason: The action 'accept claim' has no supporting action step in the source text; the source only includes a condition checking if it is accepted, but never dictates an independent action to accept it.)
+- [N14] Within matched traces (1->0) added: action(n7,"operate outgoing payment")
+- [N15] Within matched traces (5->1) added: action(n13,"operate outgoing payment")
+
+Mutation
+- [N16] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:If the claim is to be rejected; reason=The source defines the condition as whether the claim is to be rejected, but the guard incorrectly replaces this with a check for a generic variable 'v1 = No'.
+- [N17] Node-level mutation: element=guard(b1,n9,"v1 = 'Yes'"); source=i7:if the claim is to be accepted; reason=The source defines the condition as whether the claim is to be accepted, but the guard incorrectly replaces this with a check for a generic variable 'v1 = Yes'.

@@ -1,0 +1,92 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_student| Student
+|a_selling_agency| Selling Agency
+|a_PPC| PPC
+|a_finance| Finance Department
+|a_warehouse| Warehouse
+|a_logistics| Logistic Department
+|a_default|
+start
+:start the process;
+:supply the requirement;
+:document the requirement;
+:How was the order received?;
+:input the order into Excel file;
+:complete the Excel list;
+|a_student|
+:send the Excel list to the student;
+|a_default|
+:type the orders into the MS-Access database;
+:finalize the MS-Access database;
+:ensure that database input is completed;
+split
+:control the incoming order;
+split again
+:continue to do the check;
+end split
+:is the order correct?;
+:v2: is the order correct? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:release the order;
+|a_student|
+:send the Excel list to the student;
+|a_default|
+:continue with the process;
+else ([v2 = 'No'])
+|a_selling_agency|
+:contact the selling agency;
+:upon receiving the actual issue;
+|a_default|
+:is the order worth less than 5.000 €?;
+:v3: is the order worth less than 5.000 €? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:release the order;
+else ([v3 = 'No'])
+:send the order for sign off and continue with the check;
+:order signed off;
+:contact the client;
+:release the order;
+endif
+endif
+|a_PPC|
+:order received by PPC;
+:PPC initiate production;
+|a_default|
+:is the issue solvable?;
+:v4: is the issue solvable? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:release the order;
+:goods will be produced;
+:check the quality of the goods;
+|a_finance|
+:create and send quality report to the finance department;
+|a_default|
+:release the order via memo;
+|a_warehouse|
+:ensure that the memo is achieved in the warehouse;
+|a_default|
+:send the invoice;
+|a_finance|
+:report the achievement to the finance department;
+|a_default|
+split
+:commission the goods;
+split again
+:sign and send the memo;
+:send the goods;
+|a_logistics|
+:ensure that the signed memo is achieved in the logistic department;
+|a_default|
+:archive the memo;
+end split
+:close the order;
+:end;
+stop
+else ([v4 = 'No'])
+:cancel the order;
+:end;
+stop
+endif
+@enduml

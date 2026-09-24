@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i8:In case the order needs to be reworked, review the Purchase Order again. (reason: No corresponding action element exists in the model to capture the explicit requirement to review the purchase order again after reworking.)
+- [N2] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step, followed by checking the Inventory Level. -> i2:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i4:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i6:On the other hand, if the Purchase Order is rejected, then rework the order. -> i8:In case the order needs to be reworked, review the Purchase Order again.
+
+Addition
+- [N3] Node-level addition: action(n6,"Purchase Order approved") (reason: This action step ('Purchase Order approved') has no basis in the source text. Approval is exclusively used as a branching condition, not modeled as a distinct process step.)
+- [N4] Within matched traces (2->0) added: init(i1)
+- [N5] Within matched traces (2->0) added: action(n6,"Purchase Order approved")
+- [N6] Within matched traces (3->1) added: init(i1)
+- [N7] Within matched traces (3->1) added: action(n6,"Purchase Order approved")
+- [N8] Within matched traces (0->2) added: init(i1)
+
+Mutation
+- [N9] Node-level mutation: element=action(n4,"End process due to sufficient inventory"); source=i3:However, if the "Inventory Level is above the minimum", then the process ends.; reason=The model adds the explanatory qualifier 'due to sufficient inventory', which is not present in the source text. The source simply states 'the process ends'.
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = 'Inventory level is above the minimum'"); source=i3:However, if the "Inventory Level is above the minimum", then the process ends.; reason=Grouped with the mutated action for completeness, though the guard and end node themselves align with the source logic.

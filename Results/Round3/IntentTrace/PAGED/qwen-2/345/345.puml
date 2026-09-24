@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start ACME Resupply Cycle;
+:Check Inventory Levels;
+:v1: Check Inventory Levels ({Inventory greater than minimum, Inventory below or equal to minimum}); <<objectSignal>>
+if () then ([v1 = 'Inventory greater than minimum'])
+:Generate Above Minimum Report;
+:End Resupply Cycle;
+stop
+else ([v1 = 'Inventory below or equal to minimum'])
+:Generate Equal to or below minimum Report;
+:Create POs;
+:Review POs;
+:v2: Review POs ({Approved, Rejected}); <<objectSignal>>
+if () then ([v2 = 'Approved'])
+:Print and release in system;
+stop
+else ([v2 = 'Rejected'])
+:Rework POs;
+:Create POs;
+endif
+endif
+@enduml

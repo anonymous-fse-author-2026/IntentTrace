@@ -1,0 +1,11 @@
+- `branch(b1, XOR), branch(b2, XOR)`: Incorrect control-flow logic (SMC4). The source describes a strictly linear sequence ("Once the invoice is received, the customer should review...", "Once the purchase invoice and shipment are received, the customer can proceed..."), but the model incorrectly introduces exclusive choice points with no textual basis.
+- `action(n14, "Wait for invoice"), action(n15, "Wait for purchase invoice and shipment")`: Hallucinated behaviors (SMC1). The source text outlines a single forward progression without any retry loops, fallback waits, or alternative paths.
+- `defines(v1, "Invoice received", {...}), defines(v2, "Purchase invoice and shipment received", {...})`: Hallucinated variables (SMC6). The source contains no decision variables, user inputs, or explicit value ranges to drive branching logic.
+- `guard(b1, n7, ...), guard(b1, n14, ...), guard(b2, n11, ...), guard(b2, n15, ...)`: Unjustified conditions (SMC4/SMC1). Guards are attached to nonexistent choice points and evaluate hallucinated variables, whereas the source implies unconditional progression upon event completion.
+- `actor(a_default, "Default", [...])`: Fidelity to responsibility (SMC7). The source explicitly assigns all tasks to "the customer", but the model assigns every node to an actor named "Default".
+- `label(n5, n6, "Invoice not received"), label(n9, n10, "Not received")`: Contradictory edge semantics (SMC2/SMC3). These labels describe failure states on edges that actually represent the successful, intended progression to receipt ("Once the invoice is received...", "Once the purchase invoice and shipment are received...").
+- `precedence(b1, n14), precedence(b2, n15)`: Broken progression paths (SMC5). Nodes `n14` and `n15` are dead ends with no outgoing precedence edges, preventing these modeled paths from reaching an `end` node as required by the source's continuous flow.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=1 and out=0. | Node `n15` has in=1 and out=0. | DSL: action(n14,"Wait for invoice"); action(n15,"Wait for purchase invoice and shipment")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n14, n15 | DSL: action(n14,"Wait for invoice"); action(n15,"Wait for purchase invoice and shipment")

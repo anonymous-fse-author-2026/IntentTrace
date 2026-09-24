@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start the SSP process, first ensure that the Invoice is ready for verification.;
+:check for invoice completeness;
+:check for SLA;
+:checking for invoice compliance;
+:the batched invoices are allocated to the Data Entry Officer and this is done by 9 am on the next working day;
+:process the invoice batch;
+:this should be repeated until all invoices are processed.;
+:v1: More batches to process? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:take it to the outbox;
+:clear the outbox of the Data Entry Officer every hour;
+:until the outbox is completely cleared;
+:v2: Outbox completely cleared? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:which marks the end of the process.;
+stop
+endif
+endif
+@enduml

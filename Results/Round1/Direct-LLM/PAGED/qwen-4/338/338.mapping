@@ -1,0 +1,755 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "guard:b1->n3"
+      ],
+      "verbatim_texts": [
+        "For EC-Lille: Initially, if the option \"research schedule directly\" is selected,"
+      ],
+      "justification": "The opening clause implicitly triggers the process start and XOR decision. The guard captures the positive selection condition, and the action faithfully reproduces the instructed step."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "then the action to be taken is \"Research schedule\"."
+      ],
+      "justification": "The opening clause implicitly triggers the process start and XOR decision. The guard captures the positive selection condition, and the action faithfully reproduces the instructed step."
+    },
+    {
+      "refs": [
+        "guard:b1->n4",
+        "action:n4",
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "If the option is not selected, then \"provide indications\" and proceed with the research schedule."
+      ],
+      "justification": "The guard captures the negative selection condition. Both subsequent actions map directly to the two consecutive instructions in the source."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "After validating the schedule, check if the schedule is satisfactory."
+      ],
+      "justification": "The action matches the validation step, and the branch node captures the ensuing satisfaction check."
+    },
+    {
+      "refs": [
+        "guard:b2->n9",
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "If it is not, then perform the action \"Research schedule\"."
+      ],
+      "justification": "The guard represents the negative satisfaction outcome, leading directly to the stated research action."
+    },
+    {
+      "refs": [
+        "guard:b2->c2",
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "If it is, then proceed with writing a ticket order to SNCF."
+      ],
+      "justification": "The positive guard leads to a convergence point before executing the ticket-ordering action, matching the source flow."
+    },
+    {
+      "refs": [
+        "guard:b3->n11"
+      ],
+      "verbatim_texts": [
+        "If it is still not satisfactory,"
+      ],
+      "justification": "The branch captures the re-evaluation condition, and the guard/action pair faithfully implements the final fallback instruction."
+    },
+    {
+      "refs": [
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "then \"provide indications\"."
+      ],
+      "justification": "The branch captures the re-evaluation condition, and the guard/action pair faithfully implements the final fallback instruction."
+    },
+    {
+      "refs": [
+        "guard:b3->c2",
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "Alternatively, if the schedule is satisfactory, write a ticket order to SNCF."
+      ],
+      "justification": "This alternative positive path converges to the same ticket-ordering action, matching the source's branching logic."
+    },
+    {
+      "refs": [
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "After writing the ticket order, validate it."
+      ],
+      "justification": "Direct correspondence to the post-writing validation step."
+    },
+    {
+      "refs": [
+        "branch:b4"
+      ],
+      "verbatim_texts": [
+        "Check if the ticket order is approved."
+      ],
+      "justification": "The XOR branch accurately models the first approval verification checkpoint."
+    },
+    {
+      "refs": [
+        "guard:b4->e2"
+      ],
+      "verbatim_texts": [
+        "If it is not, then the process ends."
+      ],
+      "justification": "The negative guard and end node directly implement the termination condition for the first check."
+    },
+    {
+      "refs": [
+        "guard:b4->n16",
+        "action:n16"
+      ],
+      "verbatim_texts": [
+        "If it is approved, then validate the ticket order."
+      ],
+      "justification": "The positive guard leads to the second validation action, exactly as stated."
+    },
+    {
+      "refs": [
+        "guard:b5->e3"
+      ],
+      "verbatim_texts": [
+        "Check again if the ticket order is approved."
+      ],
+      "justification": "The branch models the second check. The implicit negative termination aligns with standard process closure when no continuation is specified."
+    },
+    {
+      "refs": [
+        "guard:b5->n19",
+        "action:n19"
+      ],
+      "verbatim_texts": [
+        "If it is approved, then validate the ticket order."
+      ],
+      "justification": "Matches the repeated validation instruction triggered by a positive outcome at the second check."
+    },
+    {
+      "refs": [
+        "branch:b6"
+      ],
+      "verbatim_texts": [
+        "Check once more if the ticket order is approved."
+      ],
+      "justification": "The branch accurately captures the third and final verification checkpoint."
+    },
+    {
+      "refs": [
+        "guard:b6->e4"
+      ],
+      "verbatim_texts": [
+        "If it is, then the process ends."
+      ],
+      "justification": "Positive final check correctly routes to process termination."
+    },
+    {
+      "refs": [
+        "guard:b6->e5"
+      ],
+      "verbatim_texts": [
+        "If it is not, then the process ends."
+      ],
+      "justification": "Negative final check correctly routes to process termination, completing the conditional logic."
+    }
+  ],
+  "mutations": [],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "If the schedule is not satisfactory, perform the action \"Research schedule\"."
+      ],
+      "reason": "The source explicitly instructs performing 'Research schedule' upon the first unsatisfactory re-check, but the model omits this action step entirely, jumping straight to the next satisfaction check."
+    }
+  ],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: Research schedule"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "Provide indications",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: Provide indications"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: Research schedule"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "Validate schedule",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: Validate schedule"
+    },
+    {
+      "ref_id": "branch:b2",
+      "kind": "branch",
+      "node_id": "b2",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b2",
+        "b2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b2 (XOR)"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "Write ticket order to SNCF",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: Write ticket order to SNCF"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "Research schedule",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: Research schedule"
+    },
+    {
+      "ref_id": "branch:b3",
+      "kind": "branch",
+      "node_id": "b3",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b3",
+        "b3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b3 (XOR)"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "Provide indications",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: Provide indications"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "Validate ticket order",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: Validate ticket order"
+    },
+    {
+      "ref_id": "branch:b4",
+      "kind": "branch",
+      "node_id": "b4",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b4",
+        "b4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b4 (XOR)"
+    },
+    {
+      "ref_id": "action:n16",
+      "kind": "action",
+      "node_id": "n16",
+      "gateway": "",
+      "string_value": "Validate ticket order",
+      "aliases": [
+        "action:n16",
+        "n16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n16: Validate ticket order"
+    },
+    {
+      "ref_id": "branch:b5",
+      "kind": "branch",
+      "node_id": "b5",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b5",
+        "b5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b5 (XOR)"
+    },
+    {
+      "ref_id": "action:n19",
+      "kind": "action",
+      "node_id": "n19",
+      "gateway": "",
+      "string_value": "Validate ticket order",
+      "aliases": [
+        "action:n19",
+        "n19"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n19: Validate ticket order"
+    },
+    {
+      "ref_id": "branch:b6",
+      "kind": "branch",
+      "node_id": "b6",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b6",
+        "b6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b6 (XOR)"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "converge:c2",
+      "kind": "converge",
+      "node_id": "c2",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c2",
+        "c2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c2"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "end:e3",
+      "kind": "end",
+      "node_id": "e3",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e3",
+        "e3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e3"
+    },
+    {
+      "ref_id": "end:e4",
+      "kind": "end",
+      "node_id": "e4",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e4",
+        "e4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e4"
+    },
+    {
+      "ref_id": "end:e5",
+      "kind": "end",
+      "node_id": "e5",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e5",
+        "e5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e5"
+    },
+    {
+      "ref_id": "guard:b1->n3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Yes'",
+      "aliases": [
+        "guard:b1->n3"
+      ],
+      "from": "b1",
+      "to": "n3",
+      "source_line": "guard b1->n3: v1 = 'Yes'",
+      "guard": {
+        "from": "b1",
+        "to": "n3",
+        "condition": "v1 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'No'",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = 'No'",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->n9",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'No'",
+      "aliases": [
+        "guard:b2->n9"
+      ],
+      "from": "b2",
+      "to": "n9",
+      "source_line": "guard b2->n9: v2 = 'No'",
+      "guard": {
+        "from": "b2",
+        "to": "n9",
+        "condition": "v2 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b2->c2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Yes'",
+      "aliases": [
+        "guard:b2->c2"
+      ],
+      "from": "b2",
+      "to": "c2",
+      "source_line": "guard b2->c2: v2 = 'Yes'",
+      "guard": {
+        "from": "b2",
+        "to": "c2",
+        "condition": "v2 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->n11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b3->n11"
+      ],
+      "from": "b3",
+      "to": "n11",
+      "source_line": "guard b3->n11: v3 = 'No'",
+      "guard": {
+        "from": "b3",
+        "to": "n11",
+        "condition": "v3 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b3->c2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b3->c2"
+      ],
+      "from": "b3",
+      "to": "c2",
+      "source_line": "guard b3->c2: v3 = 'Yes'",
+      "guard": {
+        "from": "b3",
+        "to": "c2",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b4->e2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v4 = 'No'",
+      "aliases": [
+        "guard:b4->e2"
+      ],
+      "from": "b4",
+      "to": "e2",
+      "source_line": "guard b4->e2: v4 = 'No'",
+      "guard": {
+        "from": "b4",
+        "to": "e2",
+        "condition": "v4 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b4->n16",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v4 = 'Yes'",
+      "aliases": [
+        "guard:b4->n16"
+      ],
+      "from": "b4",
+      "to": "n16",
+      "source_line": "guard b4->n16: v4 = 'Yes'",
+      "guard": {
+        "from": "b4",
+        "to": "n16",
+        "condition": "v4 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b5->e3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v5 = 'No'",
+      "aliases": [
+        "guard:b5->e3"
+      ],
+      "from": "b5",
+      "to": "e3",
+      "source_line": "guard b5->e3: v5 = 'No'",
+      "guard": {
+        "from": "b5",
+        "to": "e3",
+        "condition": "v5 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b5->n19",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v5 = 'Yes'",
+      "aliases": [
+        "guard:b5->n19"
+      ],
+      "from": "b5",
+      "to": "n19",
+      "source_line": "guard b5->n19: v5 = 'Yes'",
+      "guard": {
+        "from": "b5",
+        "to": "n19",
+        "condition": "v5 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b6->e4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v6 = 'Yes'",
+      "aliases": [
+        "guard:b6->e4"
+      ],
+      "from": "b6",
+      "to": "e4",
+      "source_line": "guard b6->e4: v6 = 'Yes'",
+      "guard": {
+        "from": "b6",
+        "to": "e4",
+        "condition": "v6 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b6->e5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v6 = 'No'",
+      "aliases": [
+        "guard:b6->e5"
+      ],
+      "from": "b6",
+      "to": "e5",
+      "source_line": "guard b6->e5: v6 = 'No'",
+      "guard": {
+        "from": "b6",
+        "to": "e5",
+        "condition": "v6 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 18,
+    "mutation_count": 0,
+    "omission_count": 1,
+    "addition_count": 0,
+    "match_relation_count": 25,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 1,
+    "unique_refs_in_matches": 24,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 24,
+    "total_mappable_targets": 36,
+    "input_text_length": 1059,
+    "element_count": 36
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

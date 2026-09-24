@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i9:If the return is accepted, (reason: The only candidate guard mutates the condition to 'Requested'. No element faithfully implements the 'accepted' branch logic, leaving this unit uncovered.)
+- [N2] Node-level omission: i10:If the return is rejected, (reason: The only candidate guard mutates the condition to 'No Return Request'. No element faithfully implements the 'rejected' branch logic, leaving this unit uncovered.)
+- [N3] Within matched traces (0->0) omitted: i5:deliver the freight and notify the delivery.
+- [N4] Within matched traces (0->0) omitted: i6:If the request for merchandise return is lodged,
+- [N5] Within matched traces (0->0) omitted: i15:the process ends with the customer being invoiced.
+- [N6] Within matched traces (1->4) omitted: i4:At the same time, complete the following steps:
+- [N7] Within matched traces (1->4) omitted: i5:deliver the freight and notify the delivery.
+- [N8] Within matched traces (1->4) omitted: i20:the process ends with the merchandise being returned.
+- [N9] Within matched traces (2->5) omitted: i4:At the same time, complete the following steps:
+- [N10] Within matched traces (2->5) omitted: i5:deliver the freight and notify the delivery.
+- [N11] Within matched traces (2->5) omitted: i18:the process ends with the merchandise return request being rejected.
+- [N12] Within matched traces (3->1) omitted: i5:deliver the freight and notify the delivery.
+- [N13] Within matched traces (3->1) omitted: i6:If the request for merchandise return is lodged,
+- [N14] Within matched traces (3->1) omitted: i14:the process ends.
+
+Addition
+- [N15] Added trace (model 2): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> branch(b3,AND) -> action(n10,"Invoice the Customer") -> end(e3)
+- [N16] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"Ensure Freights are ready to be shipped") -> action(n3,"Ship Freight") -> branch(b2,AND) -> action(n5,"Notify Delivery") -> branch(b3,AND) -> action(n11,"Approve Loss Claim and End Process") -> end(e4)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes (Return Requested)'"); source=i9:If the return is accepted,; reason=Guard payload reads 'v1 = Yes (Return Requested)' but the source explicitly states the condition is 'return is accepted'. The decision outcome/logic is altered.
+- [N18] Node-level mutation: element=guard(b1,n8,"v1 = 'No (No Return Request)'"); source=i10:If the return is rejected,; reason=Guard payload reads 'v1 = No (No Return Request)' but the source explicitly states the condition is 'return is rejected'. The decision outcome/logic is altered.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=2 and out=2. | DSL: branch(b3,AND)

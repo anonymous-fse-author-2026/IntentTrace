@@ -1,0 +1,12 @@
+Omission
+- [N1] Node-level omission: i8:Once the parts arrive (reason: The temporal trigger that transitions the process from waiting to resuming is replaced by an invented polling mechanism. No element directly implements this trigger condition.)
+- [N2] Omitted trace (input 1): i1:The Parts Provision Team starts by requesting authorisation for extra Part(s). -> i5:If the authorisation is not given -> i6:work is stopped until the parts arrive. -> i7:until the parts arrive. -> i8:Once the parts arrive -> i9:work resumes
+
+Addition
+- [N3] Node-level addition: action(n1,"start parts provision process") (reason: 'start parts provision process' is an invented initialization step. The source text begins directly with requesting authorisation, without a separate startup action.)
+- [N4] Node-level addition: action(n6,"have parts arrived") (reason: These elements introduce an unauthorized polling loop ('have parts arrived' with v2 Yes/No checks). The source describes a simple temporal wait followed by direct resumption, not an iterative decision branch or variable evaluation.)
+- [N5] Node-level addition: guard(b2,c2,"v2 = 'No'") (reason: These elements introduce an unauthorized polling loop ('have parts arrived' with v2 Yes/No checks). The source describes a simple temporal wait followed by direct resumption, not an iterative decision branch or variable evaluation.)
+- [N6] Node-level addition: guard(b2,n7,"v2 = 'Yes'") (reason: These elements introduce an unauthorized polling loop ('have parts arrived' with v2 Yes/No checks). The source describes a simple temporal wait followed by direct resumption, not an iterative decision branch or variable evaluation.)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start parts provision process") -> action(n2,"request authorisation for extra Parts") -> action(n3,"authorisation given") -> branch(b1,XOR) -> converge(c2) -> action(n5,"stop work and wait for parts") -> action(n6,"have parts arrived") -> branch(b2,XOR) -> action(n7,"resume work") -> converge(c1) -> action(n8,"end process") -> end(e1)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n1,"start parts provision process")

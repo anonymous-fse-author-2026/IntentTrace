@@ -1,0 +1,48 @@
+Omission
+- [N1] Node-level omission: i5:If the order is to be accepted, the process should also continue. (reason: The explicit condition for accepting the order is not faithfully modeled, having been replaced entirely by an ungrounded logic negation and an invented action step.)
+- [N2] Node-level omission: i12:If the item can be reserved, the process should continue. (reason: The explicit condition regarding whether the item can be reserved lacks a faithful implementation, having been replaced entirely by an ungrounded logic negation and an invented action step.)
+- [N3] Within matched traces (0->1) omitted: i6:At the same time
+- [N4] Within matched traces (1->2) omitted: i6:At the same time
+- [N5] Within matched traces (2->3) omitted: i6:At the same time
+- [N6] Within matched traces (3->5) omitted: i6:At the same time
+- [N7] Within matched traces (4->6) omitted: i6:At the same time
+- [N8] Within matched traces (5->7) omitted: i6:At the same time
+
+Addition
+- [N9] Node-level addition: action(n1,"start") (reason: The action 'start' is invented; the source only uses an announcer phrase 'the first step is' but does not describe an executable 'start' action step.)
+- [N10] Node-level addition: action(n4,"Reject Order") (reason: The action 'Reject Order' is an invented step; the source describes a condition ('If the order is to be rejected') but does not dictate an explicit action step to reject the order.)
+- [N11] Node-level addition: action(n13,"Accept Order") (reason: The action 'Accept Order' is an invented step; the source describes a condition ('If the order is to be accepted') but does not dictate an explicit action step to accept the order.)
+- [N12] Node-level addition: action(n15,"Reserve Item") (reason: The action 'Reserve Item' is an invented step; the source describes a condition ('If the item can be reserved') but does not dictate an explicit action step to reserve the item.)
+- [N13] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> converge(c2) -> branch(b_and,AND) -> action(n6,"Prepare Assembling Order") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n14,"Check Availability Again") -> action(n9,"End") -> end(e2)
+- [N14] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n13,"Accept Order") -> converge(c2) -> branch(b_and,AND) -> action(n6,"Prepare Assembling Order") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n14,"Check Availability Again") -> action(n9,"End") -> end(e2)
+- [N15] Within matched traces (0->1) added: action(n1,"start")
+- [N16] Within matched traces (0->1) added: converge(c1)
+- [N17] Within matched traces (0->1) added: action(n8,"Is Backorder Required?")
+- [N18] Within matched traces (0->1) added: branch(b2,XOR)
+- [N19] Within matched traces (0->1) added: action(n15,"Reserve Item")
+- [N20] Within matched traces (1->2) added: action(n1,"start")
+- [N21] Within matched traces (2->3) added: action(n1,"start")
+- [N22] Within matched traces (2->3) added: converge(c1)
+- [N23] Within matched traces (2->3) added: action(n8,"Is Backorder Required?")
+- [N24] Within matched traces (3->5) added: action(n1,"start")
+- [N25] Within matched traces (3->5) added: action(n3,"Is Order Rejected?")
+- [N26] Within matched traces (3->5) added: converge(c2)
+- [N27] Within matched traces (3->5) added: branch(b_and,AND)
+- [N28] Within matched traces (3->5) added: converge(c1)
+- [N29] Within matched traces (3->5) added: action(n8,"Is Backorder Required?")
+- [N30] Within matched traces (3->5) added: branch(b2,XOR)
+- [N31] Within matched traces (3->5) added: action(n15,"Reserve Item")
+- [N32] Within matched traces (4->6) added: action(n1,"start")
+- [N33] Within matched traces (4->6) added: action(n3,"Is Order Rejected?")
+- [N34] Within matched traces (4->6) added: converge(c2)
+- [N35] Within matched traces (4->6) added: branch(b_and,AND)
+- [N36] Within matched traces (5->7) added: action(n1,"start")
+- [N37] Within matched traces (5->7) added: action(n3,"Is Order Rejected?")
+- [N38] Within matched traces (5->7) added: converge(c2)
+- [N39] Within matched traces (5->7) added: branch(b_and,AND)
+- [N40] Within matched traces (5->7) added: converge(c1)
+- [N41] Within matched traces (5->7) added: action(n8,"Is Backorder Required?")
+
+Mutation
+- [N42] Node-level mutation: element=guard(b1,n13,"v1==\"No\""); source=i5:If the order is to be accepted, the process should also continue.; reason=The source specifies the explicit condition 'If the order is to be accepted', but the guard uses the ungrounded logic 'v1=="No"' (implying the order is merely not rejected), altering the explicit condition.
+- [N43] Node-level mutation: element=guard(b2,n15,"v2==\"No\""); source=i12:If the item can be reserved, the process should continue.; reason=The source specifies the condition 'If the item can be reserved', but the guard uses the logic 'v2=="No"' (implying no backorder), substituting the explicit condition with a negation of the previous one.

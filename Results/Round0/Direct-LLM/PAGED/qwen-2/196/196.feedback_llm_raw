@@ -1,0 +1,8 @@
+
+
+- `action(n4, "continue with the process")`: Dead end due to missing outgoing precedence edge; interrupts the stated sequence "After this, we again check if the input is a 'URN' or a 'URL'..." (SMC3).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack `guard` statements to define conditions for their outgoing edges, leaving the exclusive decisions undefined despite the source explicitly conditioning flow on whether the input is a "URN" or "URL" (SMC4).
+- `action(n6, "perform ONS-Resolving URN to a domain name")` through `action(n17, "process ends")` and `end(e2)`: Hallucinates a fully duplicate processing tail branching from `b2`; the description outlines a single sequential workflow with conditional steps, not two parallel identical sub-processes (SMC1).
+- `label(n1, n2, "is not URN")` and `label(n3, n5, "is URL")`: Misplaced on linear transitions instead of decision branch edges, incorrectly mapping the conditional outcomes described in the source text (SMC2).
+- `defines(v1, "check if the input is a URN", {})` and `defines(v2, "check if the input is a URN or a URL", {})`: Declared with empty ranges `{}` and never referenced in any `guard`, failing to capture the source's decision space (e.g., {"URN", "URL"}) and decoupling variables from control flow (SMC4, SMC6).
+- Missing `converge` constructs: Flows split at `b1` and `b2` are never rejoined, contradicting the intended progression "Once we have resolved the URN to a domain-name, we send a DNS query" which implies a unified subsequent step regardless of the earlier branch taken (SMC3, SMC4).

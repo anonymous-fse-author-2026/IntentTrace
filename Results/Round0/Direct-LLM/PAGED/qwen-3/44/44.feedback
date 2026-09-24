@@ -1,0 +1,19 @@
+- `action(n1, "start")`: Hallucinates an introductory step; source begins directly with "begin by selecting a filter".
+- `action(n7, "click on Submit button again")`: Hallucinates a step; source only specifies "apply another filter" when the submit option is false.
+- `branch(b1)` & `action(n8, "continue with process after submit false")`: Misrepresents source logic "If it is [false], then apply another filter. If the option to submit is set to "true", then continue with the process."; missing guards leave routing undefined, and n8's label incorrectly associates "continue" with the false condition.
+- `defines(v1, "is option to submit false", {})` & `defines(v2, "is there another filter to apply", {})`: Declare empty ranges `{}` instead of valid decision values (e.g., `{true, false}` or `{Yes, No}`), failing to capture the value spaces for source conditions.
+- `defines(v3, "is option to submit true", {"No"})`: Restricts range to `{"No"}` despite variable naming and source text ("option to submit is set to "true"") indicating a true/positive evaluation.
+- `branch(b1)` & `branch(b2)`: Lack corresponding `guard` statements to enforce the conditional checks described in the source for routing their outgoing edges.
+- `guard(b3, n14, v3 = 'No')` & `action(n14, "end process")`: Directs to termination when `v3 = 'No'`, contradicting source instruction "if the option to submit is set to "true", continue with the process."
+- `action(n13, "continue with process if option submit true")`: Has no outgoing `precedence` statement, creating a dangling path that prevents reaching `end(e1)` and violates source completion requirement "The process ends when all steps have been completed."
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"continue with process if option submit true")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n14` uses undefined variable `v3`. | DSL: guard(b3,n14,"v3 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"continue with process if option submit true")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n14` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n14,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

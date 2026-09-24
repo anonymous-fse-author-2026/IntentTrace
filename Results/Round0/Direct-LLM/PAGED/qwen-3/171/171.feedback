@@ -1,0 +1,7 @@
+- `action(n1, "start")`: Hallucinates a procedural step; the source explicitly states "the process begins by entering expenses" with no prior action.
+- `action(n5, "enter expenses")`, `action(n8, "enter expenses")`, and missing `precedence` edges from them: Breaks the documented feedback cycle; the source states disapproval causes the process to "goes back to entering expenses", which requires a control-flow return to `n2`, but the model routes to disconnected terminal nodes that terminate execution.
+- `action(n10, "End")`: Hallucinates a distinct activity; the source simply concludes that "the process comes to an end", which is already semantically complete with `end(e1)`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"enter expenses"); action(n8,"enter expenses")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"enter expenses"); action(n8,"enter expenses")

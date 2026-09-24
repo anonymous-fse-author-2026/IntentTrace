@@ -1,0 +1,24 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, start with -> i2:Orders Required and then place a Bulk order. -> i3:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i8:if no payments are received, the order is dropped.
+- [N2] Within matched traces (0->0) omitted: i7:If Payments are Received, the process continues.
+- [N3] Within matched traces (1->1) omitted: i7:If Payments are Received, the process continues.
+
+Addition
+- [N4] Node-level addition: action(n17,"end process") (reason: These duplicate 'end process' action nodes have no supporting source text; process termination is already fully covered by i5 and n12/e1.)
+- [N5] Node-level addition: action(n18,"end process") (reason: These duplicate 'end process' action nodes have no supporting source text; process termination is already fully covered by i5 and n12/e1.)
+- [N6] Within matched traces (0->0) added: action(n17,"end process")
+- [N7] Within matched traces (0->0) added: end(e2)
+- [N8] Within matched traces (1->1) added: action(n18,"end process")
+- [N9] Within matched traces (1->1) added: end(e3)
+- [N10] Within matched traces (3->2) added: action(n17,"end process")
+- [N11] Within matched traces (3->2) added: end(e2)
+- [N12] Within matched traces (4->3) added: action(n18,"end process")
+- [N13] Within matched traces (4->3) added: end(e3)
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n5,"v1 = \"Yes\""); source=i3:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.; reason=Guard content uses a generic placeholder v1 = "Yes" instead of preserving the explicit business condition "Order with prior internal credit allowance".
+- [N15] Node-level mutation: element=guard(b1,n6,"v1 = \"No\""); source=i4:if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance.; reason=Guard content uses a generic placeholder v1 = "No" instead of specifying the actual threshold condition regarding credit allowance.
+- [N16] Node-level mutation: element=guard(b2,n10,"v2 = \"Yes\""); source=i7:If Payments are Received, the process continues.; reason=Guard content replaces the specific condition "Payments are Received" with a generic v2 = "Yes".
+- [N17] Node-level mutation: element=guard(b2,n11,"v2 = \"No\""); source=i8:if no payments are received, the order is dropped.; reason=Guard content replaces the specific condition "no payments are received" with a generic v2 = "No".
+- [N18] Node-level mutation: element=guard(b3,n15,"v3 = \"Yes\""); source=i10:If the installation needs to be scheduled, an Installer will be assigned.; reason=Guard content substitutes the explicit scheduling condition with a generic v3 = "Yes".
+- [N19] Node-level mutation: element=guard(b3,n16,"v3 = \"No\""); source=i11:if the order does not require installation, it will be packed for delivery.; reason=Guard content substitutes the explicit non-installation condition with a generic v3 = "No".

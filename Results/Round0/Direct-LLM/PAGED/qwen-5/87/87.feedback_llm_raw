@@ -1,0 +1,8 @@
+
+
+- `branch(b3, AND)`: Uses a parallel gateway to model a mutually exclusive decision point. Source: "If they are marked as 'Uncompleted'... However, if they are marked as 'Completed'..." describes conditional branching, requiring an XOR or OR gateway, violating SMC4.
+- Missing `defines` and `guard` for invoice status: No variable declaration or edge guards correspond to the completeness check following `action(n4, "Check completeness of the invoices")`. Source explicitly routes control flow based on "'Uncompleted'" or "'Completed'" marks, leaving the split at `b3` unconditioned, violating SMC4 and SMC6.
+- `actor(a_default, "Default", [i1, ... , b3])`: Assigns every node to a generic participant. Source explicitly anchors responsibilities to a specific unit: "To begin the process in the Admin Office...", violating SMC7.
+- `action(n6, "Wait for completion of invoices by client")` & `action(n13, "Wait for completion of invoices by client")`: Inserts waiting steps not described in the text. Source transitions directly from mailing to receipt: "Once the invoices are returned to the client, receive the completed ones.", violating SMC1.
+- `precedence(b1, n3)` & `guard(b1, n3, v1 = 'No')`: Routes to an immediate end state when the process hasn't started. Source only instructs to "check if it has started" without prescribing termination or fallback behavior, introducing an unsupported path, violating SMC1.
+- `defines(v1, "Has the process started", {"No"})` & `defines(v2, "Check if the process has been completed", {"Completed"})`: Restricts decision variables to single values, omitting complementary states (e.g., "Yes", "Ongoing") needed to evaluate the binary conditions described in the text, violating SMC6.

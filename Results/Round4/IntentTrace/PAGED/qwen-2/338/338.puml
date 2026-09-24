@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Provide indications;
+:Validate schedule;
+:v_sched: schedule satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v_sched = 'Yes'])
+:Write ticket order to SNCF;
+else ([v_sched = 'No'])
+:Research schedule;
+:Research schedule;
+:v_sched2: schedule still satisfactory ({Yes, No}); <<objectSignal>>
+if () then ([v_sched2 = 'No'])
+:Provide indications;
+else ([v_sched2 = 'Yes'])
+:Write ticket order to SNCF;
+endif
+endif
+:Validate ticket order;
+:Check approval;
+:v_tkt: ticket order approved ({Yes, No}); <<objectSignal>>
+if () then ([v_tkt = 'No'])
+stop
+else ([v_tkt = 'Yes'])
+:Validate ticket order;
+:Check again;
+:Check once more;
+stop
+endif
+@enduml

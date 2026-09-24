@@ -1,0 +1,7 @@
+- `guard` statements for `b1` and `b2` (missing): The model declares XOR branches but omits all `guard` definitions, making it impossible to implement the source's conditional routing: "if someone 'Knows SLA'..." and "If the task is 'Urgent'...".
+- `defines(v1, "Knows SLA", {})` and `defines(v2, "Task is Urgent", {})`: Both decision variables use empty ranges `{}`, whereas the description implies categorical/boolean domains (e.g., yes/no, urgent/non-urgent) required to evaluate the stated conditions.
+- `action(n2, "Knows SLA")` and `action(n6, "Task is Urgent")`: Decision criteria are incorrectly typed as executable `action` nodes; the source text frames them as evaluation conditions ("if someone...", "If the task is...") rather than discrete process steps.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

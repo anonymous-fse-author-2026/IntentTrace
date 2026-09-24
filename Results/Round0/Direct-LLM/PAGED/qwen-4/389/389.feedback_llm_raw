@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start BPMN execution TDD process")`: Hallucinates an introductory step; the source begins directly with "the first step is to understand the BPMN Model."
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Lacks corresponding `guard` statements. The source specifies explicit conditional routing ("Once the test is green...", "If it does...", "If not..."), but the model defines zero guards to evaluate these XOR splits.
+- `defines(v1, "is the test green", {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: Declares empty value ranges `{}`. The source implies binary decision points, requiring explicit boolean ranges (e.g., `{true, false}`) per SMC6.
+- `precedence(n9, n9)` on `action(n9, "continue the process...")`: Misrepresents iteration as an infinite self-loop. The source instructs to "continue the process" (implying a feedback cycle to retry testing), but the model never routes control back to `action(n3, "write a failing test")`, breaking the intended loop.
+- `actor(a_default, "Default", [...])`: Assigns all process nodes to a generic "Default" participant, contradicting the source text which explicitly identifies "developers" as the executing party.
+- `action(n6, ...)`, `action(n7, ...)`, `branch(b2, XOR)`: Artifically splits a single evaluative step into two sequential actions. The source treats "check if the level satisfies the project requirements" as one decision point leading directly to outcomes, not a two-step sequence followed by a split.

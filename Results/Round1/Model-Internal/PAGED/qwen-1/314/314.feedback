@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: start by identifying the vacancy. (reason: The specific identification task is lost because n1 mutates it to 'Start'; no element faithfully implements the vacancy identification step.)
+- [N2] Node-level omission: i9:Once the candidate is appointed (reason: The appointment event/step required before termination is completely unimplemented; the model transitions directly from applicant selection to termination without modeling the appointment.)
+- [N3] Within matched traces (0->3) omitted: i5:advertise the vacancy again
+- [N4] Within matched traces (2->3) omitted: i5:advertise the vacancy again
+
+Addition
+- [N5] Node-level addition: action(n7,"Final check: Any candidates after second advertisement?") (reason: Invents a third verification stage ('Final check: Any candidates after second advertisement?'), a corresponding branch, and gates after the second advertisement. The source text contains no third check.)
+- [N6] Node-level addition: guard(b3,n3,"v3 = 'Yes'") (reason: Invents a third verification stage ('Final check: Any candidates after second advertisement?'), a corresponding branch, and gates after the second advertisement. The source text contains no third check.)
+- [N7] Node-level addition: guard(b3,e1,"v3 = 'No'") (reason: Invents a third verification stage ('Final check: Any candidates after second advertisement?'), a corresponding branch, and gates after the second advertisement. The source text contains no third check.)
+- [N8] Node-level addition: label(n3,n8,"7") (reason: Label content '7' is arbitrary numbering with zero support in the source text.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"Start") -> action(n2,"Any candidates available?") -> branch(b1,XOR) -> action(n3,"Select Applicant") -> action(n8,"End") -> end(e1)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Any candidates available?") -> branch(b1,XOR) -> action(n4,"Advertise Vacancy") -> action(n5,"After advertising  any candidates?") -> branch(b2,XOR) -> action(n6,"Advertise Again") -> action(n7,"Final check: Any candidates after second advertisement?") -> branch(b3,XOR) -> action(n3,"Select Applicant") -> action(n8,"End") -> end(e1)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"Start") -> action(n2,"Any candidates available?") -> branch(b1,XOR) -> action(n4,"Advertise Vacancy") -> action(n5,"After advertising  any candidates?") -> branch(b2,XOR) -> action(n6,"Advertise Again") -> action(n7,"Final check: Any candidates after second advertisement?") -> branch(b3,XOR) -> end(e1)
+
+Mutation
+- [N12] Node-level mutation: element=action(n1,"Start"); source=i1:To begin the process, start by identifying the vacancy.; reason=Content 'Start' strips away the core operational instruction 'identifying the vacancy', fundamentally altering the initial step's purpose.
+- [N13] Node-level mutation: element=action(n8,"End"); source=i8:Once the candidate is appointed, the process comes to an end.; reason=Content 'End' drops the mandatory triggering event 'Once the candidate is appointed', misrepresenting the final transition condition.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=3 and out=1. | DSL: action(n3,"Select Applicant")
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v1 = 'No'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n6` uses undefined variable `v2`. | Guard `v2 = 'Yes'` on `b2 -> n3` uses undefined variable `v2`. | Guard `v3 = 'Yes'` on `b3 -> n3` uses undefined variable `v3`. | Guard `v3 = 'No'` on `b3 -> e1` uses undefined variable `v3`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,n4,"v1 = 'No'"); guard(b2,n6,"v2 = 'No'"); guard(b2,n3,"v2 = 'Yes'"); guard(b3,n3,"v3 = 'Yes'"); guard(b3,e1,"v3 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'No'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n6` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> n3` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'Yes'` on `b3 -> n3` cannot be evaluated: `v3` has no declared range. | Guard `v3 = 'No'` on `b3 -> e1` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b1,n4,"v1 = 'No'"); guard(b2,n6,"v2 = 'No'"); guard(b2,n3,"v2 = 'Yes'"); guard(b3,n3,"v3 = 'Yes'"); guard(b3,e1,"v3 = 'No'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

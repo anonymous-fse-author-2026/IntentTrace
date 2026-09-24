@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i2:checking the Inventory Level (reason: The explicit action to check the inventory level is missing from the model.)
+- [N2] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:checking the Inventory Level -> i3:If the "Inventory level is at or below the minimum" -> i4:Create Purchase Order -> i7:Reviewing the Purchase Order -> i10:if the Purchase Order is rejected -> i11:rework the order -> i13:review the Purchase Order again -> i7:Reviewing the Purchase Order
+- [N3] Within matched traces (2->0) omitted: i2:checking the Inventory Level
+- [N4] Within matched traces (3->1) omitted: i2:checking the Inventory Level
+- [N5] Within matched traces (0->2) omitted: i2:checking the Inventory Level
+
+Addition
+- [N6] Within matched traces (0->2) added: action(n2,"Inventory level at or below the minimum?")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum"; reason=The guard uses an invented variable and value 'v1 = 'Yes'' instead of the actual condition from the source.
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i5:if the "Inventory Level is above the minimum"; reason=The guard uses an invented variable and value 'v1 = 'No'' instead of the actual condition from the source.
+- [N9] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i8:If the Purchase Order is approved; reason=The guard uses an invented variable and value 'v2 = 'Yes'' instead of the actual condition from the source.
+- [N10] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i10:if the Purchase Order is rejected; reason=The guard uses an invented variable and value 'v2 = 'No'' instead of the actual condition from the source.
+- [N11] Node-level mutation: element=action(n10,"Review Purchase Order"); source=i13:review the Purchase Order again; reason=The element drops the qualifier 'again', distorting the repetitive nature of the action.
+
+Permutation
+- [N12] Within matched traces (2->0) reordered: expected [i20:After recording the packing slip and invoice] but observed [converge(c2)] elsewhere; in its place the model has [action(n12,"Receive and record packing slip")]
+- [N13] Within matched traces (3->1) reordered: expected [i20:After recording the packing slip and invoice] but observed [converge(c2)] elsewhere; in its place the model has [action(n13,"Receive and record invoice")]

@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process;
+:Items returned by customer or picked up by delivery crew;
+:v1: Return method ({Customer returns items to store, Delivery crew picks up items at event site}); <<objectSignal>>
+if () then ([v1 = 'Customer returns items to store'])
+:Continue via customer return;
+else ([v1 = 'Delivery crew picks up items at event site'])
+:Continue via delivery pickup;
+endif
+:Count and compare items to contract;
+:Order status after count;
+:v2: Order status ({All items returned, Items missing, Items damaged}); <<objectSignal>>
+switch ()
+case ([v2 = 'Items damaged'])
+:Email customer damage and additional charges;
+:Email customer missing items and replacement charges;
+:v4: Customer return missing ({Customer returns missing items, Customer does not return missing items}); <<objectSignal>>
+if () then ([v4 = 'Customer returns missing items'])
+:Customer returns missing items;
+else ([v4 = 'Customer does not return missing items'])
+:Customer does not return missing items;
+endif
+:Finally, when the process is complete, it ends;
+:v5: Repair status ({Can be repaired, Cannot be repaired}); <<objectSignal>>
+if () then ([v5 = 'Can be repaired'])
+:Repair items and add to inventory;
+else ([v5 = 'Cannot be repaired'])
+:Discard items and email customer replacement charges;
+endif
+:Items disposition after repair;
+:v6: Final disposition ({Packed for existing order, Stored for future orders}); <<objectSignal>>
+if () then ([v6 = 'Packed for existing order'])
+:Items are packed for an existing order;
+else ([v6 = 'Stored for future orders'])
+:Items are stored for future orders;
+endif
+:Once again, when the process is complete, it ends;
+:Email customer with replacement charges;
+stop
+case ([v2 = 'All items returned'])
+:Items are packed for an existing order;
+case ([v2 = 'Items missing'])
+:Items are stored for future orders;
+:Temporarily remove damaged items from inventory;
+endswitch
+@enduml

@@ -1,0 +1,20 @@
+Omission
+- [N1] Node-level omission: i5:book a flight (reason: The source explicitly instructs to book a flight on the positive arm of the first decision, but no corresponding action element exists in the model.)
+- [N2] Omitted trace (input 3): i1:To begin with, you should choose your destination and calculate the distance. -> i2:check if you need to book a train or a flight -> i4:if the answer is "yes" -> i5:book a flight -> i6:If a code is available within 24 hours -> i7:the process will end
+- [N3] Omitted trace (input 4): i1:To begin with, you should choose your destination and calculate the distance. -> i2:check if you need to book a train or a flight -> i4:if the answer is "yes" -> i5:book a flight -> i6:If a code is available within 24 hours -> i9:Otherwise, if 24 hours have passed, you should call a travel agency. -> i10:If a code is available, the process will end along with the hotel reservation.
+- [N4] Omitted trace (input 5): i1:To begin with, you should choose your destination and calculate the distance. -> i2:check if you need to book a train or a flight -> i4:if the answer is "yes" -> i5:book a flight -> i6:If a code is available within 24 hours -> i9:Otherwise, if 24 hours have passed, you should call a travel agency. -> i11:On the other hand, if a code is not available, you should cancel your journey. In that case, the process will end as well.
+- [N5] Within matched traces (0->0) omitted: i6:If a code is available within 24 hours
+- [N6] Within matched traces (0->0) omitted: i7:the process will end
+
+Addition
+- [N7] Node-level addition: action(n5,"end with train booked") (reason: Incorrectly terminates the train-booking path early. The source text continues to evaluate code availability regardless of the transport choice chosen, so this step lacks source support and changes process behavior.)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N10] Within matched traces (0->0) added: end(e1)
+- [N11] Within matched traces (0->1) added: init(i1)
+- [N12] Within matched traces (1->2) added: init(i1)
+- [N13] Within matched traces (2->3) added: init(i1)
+- [N14] Within matched traces (2->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N15] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i8:the process will end.; reason=The model payload adds 'with hotel reservation' to this outcome, but the source explicitly attaches that detail to a later step. This alters the specific result of the 24-hour timeout path.

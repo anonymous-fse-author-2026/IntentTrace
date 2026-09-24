@@ -1,0 +1,220 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "pick up order"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "request stock check"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "check inventory"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "is stock rejected?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "request shipping details"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "receive shipping details"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "send goods"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "send invoice"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "receive payment"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is stock rejected?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Supplier",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "b1",
+        "e1",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "e2",
+        "c1",
+        "b2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "e1",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the supplier, the first step is to pick up the order."
+    },
+    {
+      "id": "i2",
+      "content": "After picking up the order, the next step is to request a stock check."
+    },
+    {
+      "id": "i3",
+      "content": "Once the stock check is requested, the inventory should be checked."
+    },
+    {
+      "id": "i4",
+      "content": "If the stock is rejected, then the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "Otherwise, the supplier should request shipping details."
+    },
+    {
+      "id": "i6",
+      "content": "After requesting the shipping details, they should receive the shipping details."
+    },
+    {
+      "id": "i7",
+      "content": "At the same time"
+    },
+    {
+      "id": "i8",
+      "content": "the supplier should also send the goods and send the invoice."
+    },
+    {
+      "id": "i9",
+      "content": "Once the payment is received, the process ends."
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "review incoming CV"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "send negative email"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "invite candidate and schedule interview"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "conduct interview"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "decision",
+      "R_X": [
+        "Negative",
+        "Positive"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "b1",
+        "i2",
+        "e1",
+        "i3",
+        "i4",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v1 = 'Negative'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'Positive'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by reviewing the incoming CV."
+    },
+    {
+      "id": "i2",
+      "content": "If the decision is to send a negative email,"
+    },
+    {
+      "id": "i3",
+      "content": "send a negative email"
+    },
+    {
+      "id": "i4",
+      "content": "then the process ends."
+    },
+    {
+      "id": "i5",
+      "content": "However, if the decision is to invite the candidate,"
+    },
+    {
+      "id": "i6",
+      "content": "proceed with scheduling an interview."
+    },
+    {
+      "id": "i7",
+      "content": "Once the interview is conducted,"
+    },
+    {
+      "id": "i8",
+      "content": "the process comes to an end."
+    }
+  ]
+}

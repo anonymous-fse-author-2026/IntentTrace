@@ -1,0 +1,6 @@
+- `action(n6, "Process Invoices (Vendor)")` and `action(n7, "Process Invoices (Amount)")`: The model hallucinates distinct processing actions; the source text simply states you should "proceed with the process" or "continue with the process" regardless of the sorting choice.
+- `action(n8, "Note Time per 100 Invoices")`: The model hallucinates an action; the source text ("It takes approximately 20 minutes for every 100 invoices") states a performance metric/duration, not a task to note the time.
+- Missing action: The model omits the task of entering the invoice data prior to ticking the box, as specified in the text ("once you have entered the invoice data").
+- `defines(v1, "Sort by Vendor or Amount?", {})`: The decision variable is defined with an empty range, failing to capture the options described in the text ("Sort Invoice by vendor", "Sort invoice by invoice amount").
+- `branch(b1, XOR)`: Missing `guard` statements on the outgoing precedence edges to `n4` and `n5` to evaluate the sorting choice.
+- `action(n11, "Set Up Hourly Collection")`: The model represents this as a single sequential action, failing to capture the recurring nature of the behavior described in the text ("The collection process will continue every hour until the end of the overall process").

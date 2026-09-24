@@ -1,0 +1,64 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:Bill Client;
+split
+:Receive Invoice;
+split
+:Is Invoice Complete?;
+:v1: Is Invoice Complete? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:Return Invoice: Incomplete;
+stop
+else ([v1 = 'Yes'])
+:Is Invoice Compliant?;
+:v2: Is Invoice Compliant? ({Non-Compliant, Compliant}); <<objectSignal>>
+if () then ([v2 = 'Non-Compliant'])
+:Resolve Non-Compliance via Phone;
+:Resolve Compliance Issue;
+:Pay Invoice;
+:Client Notified of Payment;
+:Invoice Process Complete;
+split
+stop
+split again
+split
+:End Billing Process;
+stop
+split again
+:Check Client Satisfaction;
+:v3: Check Client Satisfaction ({Unsatisfied, Satisfied}); <<objectSignal>>
+if () then ([v3 = 'Unsatisfied'])
+:Resolve Payment Discrepancy;
+:Payment Process Complete;
+stop
+else ([v3 = 'Satisfied'])
+:Continue Process;
+:Finalize Payment Process;
+stop
+endif
+end split
+end split
+else ([v2 = 'Compliant'])
+:Return Invoice via Mail;
+stop
+endif
+endif
+split again
+:After Receiving Invoice;
+:v4: Response Status ({No Response, Response}); <<objectSignal>>
+if () then ([v4 = 'No Response'])
+:Wait for 10 Days;
+:Send Reminder;
+else ([v4 = 'Response'])
+->;
+endif
+end split
+split again
+:Bill Client Process Complete;
+stop
+end split
+@enduml

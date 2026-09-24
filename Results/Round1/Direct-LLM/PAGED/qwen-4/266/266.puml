@@ -1,0 +1,66 @@
+@startuml
+!theme plain
+|a_cust_web| Customer and Web Design Team
+|a_web| Web Design Team
+|a_review| Reviewer
+|a_approve| Approver
+|a_ctrl| Control Flow
+|a_ctrl|
+start
+|a_cust_web|
+:Informational meeting;
+|a_ctrl|
+:v1: Meeting successful? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:End process;
+stop
+else ([v1 = 'Yes'])
+|a_cust_web|
+:Create storyboard;
+|a_ctrl|
+:v_sb: Storyboard successful? ({No, Yes}); <<objectSignal>>
+if () then ([v_sb = 'No'])
+stop
+else ([v_sb = 'Yes'])
+split
+|a_web|
+:Prepare content;
+-> Site ready;
+split again
+:Design site;
+-> Site ready;
+end split
+:Develop site;
+|a_review|
+:Review site;
+|a_ctrl|
+:v2: Review site ({Not successful, Successful}); <<objectSignal>>
+if () then ([v2 = 'Not successful'])
+:End process;
+stop
+else ([v2 = 'Successful'])
+|a_approve|
+:Approve site;
+|a_ctrl|
+:v3: Approve site ({Approved, Rejected}); <<objectSignal>>
+if () then ([v3 = 'Approved'])
+:End process;
+stop
+else ([v3 = 'Rejected'])
+|a_web|
+:Rebuild site;
+|a_ctrl|
+:v_reb: Rebuild outcome ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v_reb = 'Accepted'])
+stop
+else ([v_reb = 'Rejected'])
+|a_web|
+:Rebuild site again;
+|a_ctrl|
+stop
+endif
+endif
+endif
+endif
+endif
+@enduml

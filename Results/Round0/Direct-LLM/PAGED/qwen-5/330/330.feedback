@@ -1,0 +1,8 @@
+- `defines(v1, "Is invoice amount > $5000?", {})`: The range `{}` is empty and does not reflect the decision domain implied by "invoice amount > $5000" (e.g., Boolean `{true, false}` or numeric interval), violating SMC6.
+- Missing `guard` declarations for `branch(b1, XOR)`: The source explicitly defines conditional paths ("If the invoice amount is greater than $5000... Otherwise..."), but the model omits `guard(b1, n5, ...)` and `guard(b1, c1, ...)` to direct the flow, leaving the control logic unguarded, violating SMC4.
+- `action(n4, "Is invoice amount > $5000?")`: Models a conditional gate as a sequential executable action rather than attaching the condition to `branch(b1, XOR)` via `guard`, misrepresenting the source's decision logic, violating SMC2 and SMC4.
+- `action(n1, "Start")`: Introduces a discrete initialization step not described in the source ("start with the Purchase Order-to-Delivery phase"), constituting a hallucinated behavior, violating SMC1.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

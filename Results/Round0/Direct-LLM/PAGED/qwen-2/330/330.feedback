@@ -1,0 +1,8 @@
+- action(n1, "Start"): Hallucinates an extra preliminary step; the source text instructs to simply "start with the Purchase Order-to-Delivery phase," with no intermediary task implied.
+- action(n4, "Is invoice amount > $5000?"): Mischaracterizes a decision criterion as an executable action; the text frames this as a conditional trigger ("If the invoice amount is greater than $5000..."), which should directly inform branch guards rather than standing as a standalone process step.
+- guard(b1, n5, ...) and guard(b1, c1, ...): Completely absent; the XOR branch `b1` lacks edge conditions, failing to encode the explicit source rule "If the invoice amount is greater than $5000, approve the purchase invoice. Otherwise, continue with the process," thus breaking choice logic representation (SMC4).
+- defines(v1, "Is invoice amount > $5000?", {}): Declares an empty value range `{}`; it should be `{true, false}` to accurately model the binary decision variable required by the source condition (SMC6).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

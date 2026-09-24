@@ -1,0 +1,11 @@
+- actor(a_default, "Default", [...]): The source text explicitly identifies the "customer" as performing actions, but the model incorrectly assigns all steps to a generic "Default" actor.
+- action(n1, "start"): Hallucinated action; the source text does not describe a "start" step.
+- action(n2, "make purchase and connect to website"): Combines distinct steps; the source explicitly states "make a purchase and then connect to the website", which requires two sequential actions to preserve exactly the source chronology.
+- action(n4, "add item to cart / continue shopping"): Hallucinated as an action step; the text describes this as a decision for a branch ("If they choose to..."), not a standalone action.
+- branch(b1, XOR): Missing guards on its outgoing edges to evaluate the customer's choice between "Add item to cart" and "Continue Shopping".
+- action(n6, "continue shopping"): Lacks an outgoing control-flow edge; the text specifies "they should continue with the process" (implying a loop), but the model incorrectly leaves this path as a dead end.
+- action(n9, "checkout tasks completed?"), branch(b2, XOR), guard(b2, n17, v2 = 'Checkout Tasks Not Completed'), action(n17, "checkout tasks not completed"), end(e3), and defines(v2, ...): Hallucinated behaviors; the text does not mention a check for whether checkout tasks are completed or ending the process if they are not.
+- action(n10, "credit card approved and inventory in stock?"): Hallucinated as an action step; evaluating these conditions is part of the branching logic based on the checks already performed in action(n8).
+- branch(b3, XOR): Missing guards on its outgoing edges to represent the conditions for credit card approval and inventory status.
+- precedence(n16, e2): Violates the source text "In either case, the order confirmation number should be displayed"; the model inappropriately terminates the process at end(e2) instead of routing the flow to action(n11).
+- defines(v1, "add item to cart / continue shopping", {}) and defines(v3, "credit card approved and inventory in stock?", {}): The variables have empty ranges, failing to faithfully define the value spaces for the decisions described in the source text.

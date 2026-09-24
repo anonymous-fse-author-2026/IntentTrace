@@ -1,0 +1,215 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Add image description and upload image"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End process (success)"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Try again?"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "End process with error"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "The process will continue"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Message",
+      "R_X": [
+        "Image upload successful",
+        "Unsuccessful upload"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Option to try again",
+      "R_X": [
+        "Selected",
+        "Not selected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "c1",
+        "n2",
+        "b1",
+        "n4",
+        "e1",
+        "n5",
+        "b2",
+        "n6",
+        "e2",
+        "n7"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'Image upload successful'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Unsuccessful upload'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n6",
+      "condition": "v2 = 'Not selected'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Selected'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the process"
+    },
+    {
+      "id": "i2",
+      "content": "adding the image description and uploading the image"
+    },
+    {
+      "id": "i3",
+      "content": "If the message \"Image upload successful\" appears"
+    },
+    {
+      "id": "i4",
+      "content": "then the process will end"
+    },
+    {
+      "id": "i5",
+      "content": "if the message indicates an unsuccessful upload"
+    },
+    {
+      "id": "i6",
+      "content": "try again"
+    },
+    {
+      "id": "i7",
+      "content": "If the option to try again is selected"
+    },
+    {
+      "id": "i8",
+      "content": "the process will continue"
+    },
+    {
+      "id": "i9",
+      "content": "If the option to try again is not selected"
+    },
+    {
+      "id": "i10",
+      "content": "an error will occur and the process will end"
+    }
+  ]
+}

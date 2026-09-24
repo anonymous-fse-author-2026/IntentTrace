@@ -1,0 +1,15 @@
+- action(n1, "start the process"): Hallucinates an action; the source text states "To begin the process, trigger the resupply cycle", not a separate step to start.
+- action(n4, "is inventory level at or below minimum"): Inaccurately models a branch condition check as a process action.
+- action(n6, "process ends because inventory above minimum"): Hallucinates an action for ending; the source text simply says "the process ends".
+- branch(b1, XOR): Missing guards on outgoing edges for the conditions "inventory level is at or below the minimum" and "inventory level is above the minimum".
+- action(n8, "is purchase status rejected"): Inaccurately models a branch condition check as a process action.
+- branch(b2, XOR): Missing guards on outgoing edges for the conditions "purchase status is rejected" and "purchase status is approved".
+- action(n10, "is purchase status rejected after rework"), branch(b3, XOR), action(n11, "rework the purchase order again"), action(n12, "review the purchase order after rework"), defines(v3, "is purchase status rejected after rework", {}): Hallucinates a secondary review/rework cycle and variables not present in the text.
+- precedence(n9, n10): Violates the source text "Rework the purchase order and then review it"; control should loop directly back to action(n7, "review the purchase order").
+- action(n19, "process ends after recording packing slip"): Hallucinates an action; the text simply states "Record the packing slip and the process ends".
+- action(n20, "process ends after recording invoice"): Hallucinates an action; the text simply states "Record the invoice and the process ends".
+- defines(v1, "is inventory level at or below minimum", {}) and defines(v2, "is purchase status rejected", {}): The decision variables have empty ranges `{}`, failing to capture their actual value spaces.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 0 guards; exactly one is required.

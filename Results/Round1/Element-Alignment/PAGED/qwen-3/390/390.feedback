@@ -1,0 +1,41 @@
+Omission
+- [N1] Within matched traces (1->4) omitted: i3:proceed with processing the order for delivery
+- [N2] Within matched traces (2->2) omitted: i3:proceed with processing the order for delivery
+- [N3] Within matched traces (3->3) omitted: i3:proceed with processing the order for delivery
+
+Addition
+- [N4] Node-level addition: action(n17,"end process") (reason: The source text never states that the process ends after assigning an installer or packing for delivery. These steps invent termination points not supported by the text.)
+- [N5] Node-level addition: action(n18,"end process") (reason: The source text never states that the process ends after assigning an installer or packing for delivery. These steps invent termination points not supported by the text.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"start process") -> action(n2,"Orders Required") -> action(n3,"place Bulk order") -> action(n4,"Order with prior internal credit allowance") -> branch(b1,XOR) -> action(n5,"process order for delivery") -> converge(c1) -> action(n13,"identify order for installation") -> action(n14,"installation required") -> branch(b3,XOR) -> action(n15,"assign Installer") -> action(n17,"end process") -> end(e2)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"Orders Required") -> action(n3,"place Bulk order") -> action(n4,"Order with prior internal credit allowance") -> branch(b1,XOR) -> action(n5,"process order for delivery") -> converge(c1) -> action(n13,"identify order for installation") -> action(n14,"installation required") -> branch(b3,XOR) -> action(n16,"pack for delivery") -> action(n18,"end process") -> end(e3)
+- [N8] Within matched traces (0->4) added: init(i1)
+- [N9] Within matched traces (0->4) added: action(n4,"Order with prior internal credit allowance")
+- [N10] Within matched traces (0->4) added: action(n8,"record in Accounts Receivable")
+- [N11] Within matched traces (0->4) added: action(n9,"Payments Received")
+- [N12] Within matched traces (0->4) added: branch(b2,XOR)
+- [N13] Within matched traces (0->4) added: action(n11,"drop order")
+- [N14] Within matched traces (1->4) added: init(i1)
+- [N15] Within matched traces (1->4) added: action(n6,"Outstanding Balance")
+- [N16] Within matched traces (1->4) added: action(n7,"place new order")
+- [N17] Within matched traces (1->4) added: action(n12,"end process")
+- [N18] Within matched traces (1->4) added: end(e1)
+- [N19] Within matched traces (2->2) added: init(i1)
+- [N20] Within matched traces (2->2) added: action(n6,"Outstanding Balance")
+- [N21] Within matched traces (2->2) added: action(n7,"place new order")
+- [N22] Within matched traces (2->2) added: action(n17,"end process")
+- [N23] Within matched traces (2->2) added: end(e2)
+- [N24] Within matched traces (3->3) added: init(i1)
+- [N25] Within matched traces (3->3) added: action(n6,"Outstanding Balance")
+- [N26] Within matched traces (3->3) added: action(n7,"place new order")
+- [N27] Within matched traces (3->3) added: action(n14,"installation required")
+- [N28] Within matched traces (3->3) added: action(n18,"end process")
+- [N29] Within matched traces (3->3) added: end(e3)
+
+Mutation
+- [N30] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i2:If the condition is "Order with prior internal credit allowance"; reason=The guards replace the explicit, text-based conditions with generic boolean flags (v1 = 'Yes'/'No'), losing the exact qualifiers and logic described in the source.
+- [N31] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i4:if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance; reason=The guards replace the explicit, text-based conditions with generic boolean flags (v1 = 'Yes'/'No'), losing the exact qualifiers and logic described in the source.
+- [N32] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i7:If Payments are Received; reason=The guards use abstract variables (v2 = 'Yes'/'No') instead of preserving the explicit payment-receipt conditions from the source.
+- [N33] Node-level mutation: element=guard(b2,n11,"v2 = 'No'"); source=i9:if no payments are received, the order is dropped; reason=The guards use abstract variables (v2 = 'Yes'/'No') instead of preserving the explicit payment-receipt conditions from the source.
+- [N34] Node-level mutation: element=guard(b3,n15,"v3 = 'Yes'"); source=i11:If the installation needs to be scheduled; reason=The guards substitute the specific installation-related conditions with generic v3 = 'Yes'/'No' checks, altering the fidelity of the decision logic.
+- [N35] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i13:if the order does not require installation, it will be packed for delivery; reason=The guards substitute the specific installation-related conditions with generic v3 = 'Yes'/'No' checks, altering the fidelity of the decision logic.
+- [N36] Node-level mutation: element=action(n12,"end process"); source=i5:In the case of an Outstanding Balance, a new order is placed and the process ends at the Warehouse.; reason=The element drops the critical location qualifier 'at the Warehouse', changing the termination target defined in the source.

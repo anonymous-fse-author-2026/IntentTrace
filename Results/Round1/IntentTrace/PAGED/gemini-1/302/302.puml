@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start Drop-off tech process;
+:inform customer about canceling the order;
+:has the order already been fulfilled;
+:v1: has the order already been fulfilled ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:check if bag is returned;
+:v2: is bag returned ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:mark scripts as declined by customer in IS;
+:decline script order;
+else ([v2 = 'Yes'])
+:mark bag as returned in IS;
+:return script bag;
+endif
+:process customer notification;
+:end process;
+stop
+else ([v1 = 'No'])
+->;
+endif
+@enduml

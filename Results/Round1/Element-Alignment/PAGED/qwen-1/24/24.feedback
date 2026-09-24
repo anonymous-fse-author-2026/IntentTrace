@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i4:If the availability is "nok" (reason: The precise condition 'is nok' is not faithfully implemented; the corresponding guard mutates the value to 'No', leaving the exact source requirement uncovered.)
+- [N2] Node-level omission: i5:is "nok" (reason: The precise condition 'is nok' is not faithfully implemented; the corresponding guard mutates the value to 'No', leaving the exact source requirement uncovered.)
+- [N3] Node-level omission: i7:However, if the availability is "ok" (reason: The precise condition 'is ok' is not faithfully implemented; the corresponding guard mutates the value to 'Yes', leaving the exact source requirement uncovered.)
+- [N4] Node-level omission: i8:is "ok" (reason: The precise condition 'is ok' is not faithfully implemented; the corresponding guard mutates the value to 'Yes', leaving the exact source requirement uncovered.)
+
+Addition
+- [N5] Node-level addition: action(n1,"start booking service") (reason: Models 'start booking service' as a distinct action step, but the source only uses this phrasing to set process context/initiation, not as a separate executable task.)
+- [N6] Node-level addition: action(n5,"availability ok?") (reason: Inserts an action 'availability ok?' that does not exist in the source; the availability check outcome is handled directly by the branch and guards without an intermediate action.)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n1,"start booking service")
+- [N9] Within matched traces (0->0) added: action(n5,"availability ok?")
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: action(n1,"start booking service")
+- [N12] Within matched traces (1->1) added: action(n5,"availability ok?")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i5:is "nok"; reason=Guard content uses 'v1 = 'No'' but the source explicitly requires the exact string value 'nok'.
+- [N14] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes'"); source=i8:is "ok"; reason=Guard content uses 'v1 = 'Yes'' but the source explicitly requires the exact string value 'ok'.

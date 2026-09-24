@@ -1,0 +1,6 @@
+
+
+- `action(n1, "start")`: Hallucinates an initial task not described in the source; the text explicitly states "the process begins by entering expenses."
+- `defines(v1, "Approval Check 1", {})` and `defines(v2, "Approval Check 2", {})`: Specify empty value ranges `{}`, failing to capture the documented binary decision options ("approved or disapproved").
+- `guard` clauses for outgoing edges of `b1` and `b2`: Entirely omitted; the model does not encode the conditional logic governing the XOR splits according to the source's explicit criteria ("If the request is not approved...", "if it is approved...").
+- `precedence(b2, n7)`: Omits a required intermediate step; after the second check, the source mandates another payout before termination ("if it is approved, the expenses can be paid out. Finally, after the expenses are paid out, the process comes to an end."), whereas the model routes directly to `action(n7, "End Process")`.

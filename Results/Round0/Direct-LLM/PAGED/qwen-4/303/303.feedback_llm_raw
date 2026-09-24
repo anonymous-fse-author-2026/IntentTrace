@@ -1,0 +1,8 @@
+
+
+- `defines(v1, ...)` & `guard(b1, n5, ...)`: Variable `v1` is named "is order received via fax" but its range only contains `{"mail or phone"}`, and the guard restricts execution to `v1 = 'mail or phone'`, omitting the documented fax path ("If the order is received via fax, input the order into an Excel file") and deadlocking that scenario.
+- `precedence(n5, n6)`: Omits the explicit temporal constraint "after a week" from the description ("Once the Excel list is complete after a week, send it to the student"), directly chaining Excel input to student transmission.
+- `action(n38, "sign and send memo")`: Declared but entirely disconnected from the control flow graph (no incoming/outgoing `precedence` edges); the model incorrectly jumps from `n37` to `n39`, violating the requirement to "sign and send the memo" during the dispatch phase.
+- `precedence(b9, c4)`: Creates an invalid bypass from an AND branch that skips `action(n35, "send invoice")` and `action(n36, "report achievement to finance department")`, contradicting the mandatory sequence "Send the invoice and once it is sent, report the achievement to the finance department."
+- `actor(a_default, "Default", [...])`: Assigns every node to a single generic actor, failing to reflect the distinct responsibilities explicitly assigned to specific parties in the text (e.g., student, selling agency, PPC, client, finance department, warehouse, logistics).
+- `action(n17, "split tasks...")` & `action(n20, "merge tasks...")`: Hallucinates artificial split/merge steps not described in the source, while duplicating the "send for sign off" instruction across `n18` and `n21`, distorting the documented progression ("send it for sign off and continue with the check").

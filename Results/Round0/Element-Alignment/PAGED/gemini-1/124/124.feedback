@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i4:the process should continue (reason: The text states the process should continue if the order is rejected, but the model provides no such path or action for the rejection case.)
+- [N2] Node-level omission: i6:At the same time (reason: Explicitly signals parallel execution, but no parallel (AND) branch is provided in the model.)
+
+Addition
+- [N3] Node-level addition: action(n1,"start process") (reason: The action 'start process' has no source justification beyond the structural initiation already covered.)
+- [N4] Node-level addition: action(n11,"end") (reason: There is no second explicit mention of the process ending in the text to justify this separate end action step.)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Accepted']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Accepted'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v1 = 'Accepted'` on `b1 -> n5` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Accepted'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Accepted'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Accepted'"); guard(b1,n5,"v1 = 'Accepted'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i7:it is reworked.
+- [N2] Within matched traces (1->1) omitted: i10:In case the Purchase Order is rejected, it is reworked. On the other hand, if the Purchase Order is accepted, funds are reserved for payment.
+- [N3] Within matched traces (1->1) omitted: i12:Simultaneously, the following steps are completed:
+- [N4] Within matched traces (2->2) omitted: i10:In case the Purchase Order is rejected, it is reworked. On the other hand, if the Purchase Order is accepted, funds are reserved for payment.
+- [N5] Within matched traces (2->2) omitted: i12:Simultaneously, the following steps are completed:
+
+Addition
+- [N6] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Initiate Resupply Cycle for ACME Company") -> action(n3,"Check Inventory Level") -> branch(b1,XOR) -> action(n4,"Create Purchase Order") -> action(n5,"Review Purchase Order") -> branch(b2,XOR) -> action(n6,"Rework Purchase Order") -> converge(c2) -> action(n15,"End of Process") -> end(e1)
+- [N7] Within matched traces (0->3) added: init(i1)
+- [N8] Within matched traces (0->3) added: action(n15,"End of Process")
+- [N9] Within matched traces (0->3) added: end(e1)
+- [N10] Within matched traces (1->1) added: init(i1)
+- [N11] Within matched traces (1->1) added: action(n7,"Reserve Funds for Payment")
+- [N12] Within matched traces (2->2) added: init(i1)
+
+Mutation
+- [N13] Node-level mutation: element=guard(b1,c2,"v1 = 'Yes'") -> guard(b1,n4,"v1 = 'No'"); source=i3:If the Inventory is greater than the Minimum Level; reason=The guards replace the explicit comparative condition ('greater than Minimum Level') with abstract boolean tokens ('Yes'/'No'). This drops the specific threshold logic required by the source text.

@@ -1,0 +1,525 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "Place Order"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "Check Customer's Credit Limit"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "Check Availability of Article"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "Send Denial to Customer"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "Check Availability of Article again"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "Send Denial to Customer"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "Produce the Goods"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "Collect the Goods"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "Send Order Confirmation"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i10a",
+      "type": "action",
+      "content": "Ship the Goods"
+    },
+    {
+      "id": "i10b",
+      "type": "action",
+      "content": "Send the Invoice"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "c_pay",
+      "type": "converge"
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "Check Payment status"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "Close the Order"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "Check Reminder count"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "Write off the Order"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "Send a Reminder"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "Close the Order"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Credit response",
+      "R_X": [
+        "Okay",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Availability check",
+      "R_X": [
+        "Okay",
+        "No"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Second availability check",
+      "R_X": [
+        "Available",
+        "Not Available"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Payment status",
+      "R_X": [
+        "Received",
+        "Not Received"
+      ]
+    },
+    {
+      "X": "v5",
+      "name": "Reminder count check",
+      "R_X": [
+        "Geq3",
+        "Lt3"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "i2",
+        "b1",
+        "i3",
+        "i4",
+        "e1",
+        "b2",
+        "i5",
+        "i6",
+        "e2",
+        "b3",
+        "i7",
+        "i8",
+        "c1",
+        "i9",
+        "b4",
+        "i10a",
+        "i10b",
+        "c2",
+        "c_pay",
+        "i11",
+        "b5",
+        "i12",
+        "e3",
+        "i14",
+        "b6",
+        "i15",
+        "i16",
+        "i17",
+        "e4"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "b1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'Okay'"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i4",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i5",
+      "condition": "v2 = 'Okay'"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i5"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i6",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "b3"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i7",
+      "condition": "v3 = 'Not Available'"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i7"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "i8",
+      "condition": "v3 = 'Available'"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i10a"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "i10b"
+    },
+    {
+      "type": "precedence",
+      "A": "i10a",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "i10b",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "c_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "c_pay"
+    },
+    {
+      "type": "precedence",
+      "A": "c_pay",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "b5"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "i12",
+      "condition": "v4 = 'Received'"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "i12"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "i14",
+      "condition": "v4 = 'Not Received'"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "b6"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "i15",
+      "condition": "v5 = 'Geq3'"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "i15"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "i16",
+      "condition": "v5 = 'Lt3'"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "e4"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process for WIGGO, start by placing an Order"
+    },
+    {
+      "id": "i2",
+      "content": "Check the Customer's Credit Limit"
+    },
+    {
+      "id": "i3",
+      "content": "If the response is \"Okay\", proceed to Check the Availability of the Article."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the response is \"No\", send a Denial to the Customer."
+    },
+    {
+      "id": "i5",
+      "content": "if the response is \"Okay\", proceed to Check the Availability of the Article again."
+    },
+    {
+      "id": "i6",
+      "content": "If the response is \"No\", send a Denial to the Customer."
+    },
+    {
+      "id": "i7",
+      "content": "If the Article is not available, proceed to Produce the Goods."
+    },
+    {
+      "id": "i8",
+      "content": "However, if the Article is available, proceed to Collect the Goods."
+    },
+    {
+      "id": "i9",
+      "content": "After checking the availability of the Article, send an Order Confirmation."
+    },
+    {
+      "id": "i10",
+      "content": "Simultaneously, complete the following steps: Ship the Goods and Send the Invoice."
+    },
+    {
+      "id": "i11",
+      "content": "Check the Payment status."
+    },
+    {
+      "id": "i12",
+      "content": "If the payment has been received, close the Order and end the process."
+    },
+    {
+      "id": "i14",
+      "content": "If the payment has not been received, check if the Reminder count is greater than or equal to 3."
+    },
+    {
+      "id": "i15",
+      "content": "If the Reminder count is greater than or equal to 3, Write off the Order."
+    },
+    {
+      "id": "i16",
+      "content": "Additionally, send a Reminder."
+    },
+    {
+      "id": "i17",
+      "content": "After writing off the Order, close the Order and end the process."
+    }
+  ]
+}

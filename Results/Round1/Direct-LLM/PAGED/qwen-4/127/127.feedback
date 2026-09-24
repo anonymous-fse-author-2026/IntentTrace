@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:If the parts are supplied to the customer (reason: No corresponding branch, guard, or action element exists to model this condition or its associated skip/continue path.)
+
+Addition
+- [N2] Added trace (model 1): init(i1) -> action(n2,"Identify parts") -> branch(b1,XOR) -> action(n4,"Check availability of parts") -> converge(c1) -> branch(b2,XOR) -> action(n8,"Record customer details") -> action(n9,"Order and receive part from Disuki") -> converge(c2) -> action(n7,"Contract customer") -> action(n10,"Proceed with payment") -> end(e1)
+- [N3] Within matched traces (0->0) added: converge(c1)
+- [N4] Within matched traces (0->0) added: branch(b2,XOR)
+- [N5] Within matched traces (0->0) added: converge(c2)
+- [N6] Within matched traces (1->2) added: branch(b2,XOR)
+- [N7] Within matched traces (1->2) added: converge(c2)
+- [N8] Within matched traces (2->2) added: branch(b1,XOR)
+- [N9] Within matched traces (2->2) added: converge(c1)
+- [N10] Within matched traces (3->3) added: branch(b1,XOR)
+- [N11] Within matched traces (3->3) added: converge(c1)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the team needs to elicit information from the customer; reason=All guards use abstract boolean placeholders (e.g., v1 = 'Yes', v2 = 'No') instead of capturing the explicit conditions stated in the source text, completely dropping the actual decision criteria and logic.
+- [N13] Node-level mutation: element=guard(b1,c1,"v1 = 'No'"); source=i4:if they already have the availability information, they can proceed with the process; reason=All guards use abstract boolean placeholders (e.g., v1 = 'Yes', v2 = 'No') instead of capturing the explicit conditions stated in the source text, completely dropping the actual decision criteria and logic.
+- [N14] Node-level mutation: element=guard(b2,c2,"v2 = 'Yes'"); source=i5:If the parts are supplied to the customer; reason=All guards use abstract boolean placeholders (e.g., v1 = 'Yes', v2 = 'No') instead of capturing the explicit conditions stated in the source text, completely dropping the actual decision criteria and logic.
+- [N15] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:if they need to record the customer's details; reason=All guards use abstract boolean placeholders (e.g., v1 = 'Yes', v2 = 'No') instead of capturing the explicit conditions stated in the source text, completely dropping the actual decision criteria and logic.
+- [N16] Node-level mutation: element=action(n8,"Record customer details"); source=i7:if they need to record the customer's details; reason=The source frames this as a conditional trigger for subsequent ordering, but the model converts it into a standalone mandatory action step, altering the control flow logic.
+- [N17] Node-level mutation: element=action(n10,"Proceed with payment"); source=i10:After all the necessary parts are collected, the team can proceed with the payment; reason=The element strips the explicit prerequisite condition ('After all the necessary parts are collected'), transforming a gated step into an unconditional action.

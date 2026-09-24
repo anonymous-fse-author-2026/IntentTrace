@@ -1,0 +1,38 @@
+Omission
+- [N1] Omitted trace (input 1): i1:the first step is to identify the parts. -> i5:if they already have the availability information, they can proceed with the process. -> i6:proceed with the process. -> i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer. -> i16:After all the necessary parts are collected -> i17:proceed with the payment. -> i18:Once the payment is made -> i19:the process comes to an end.
+- [N2] Omitted trace (input 2): i1:the first step is to identify the parts. -> i7:If the parts are supplied to the customer, the team can also continue with the process. -> i8:the team can also continue with the process. -> i9:continue with the process. -> i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer. -> i16:After all the necessary parts are collected -> i17:proceed with the payment. -> i18:Once the payment is made -> i19:the process comes to an end.
+- [N3] Within matched traces (3->0) omitted: i12:record the customer's details
+- [N4] Within matched traces (0->2) omitted: i3:they should then check the availability of the parts.
+- [N5] Within matched traces (0->2) omitted: i4:check the availability of the parts.
+- [N6] Within matched traces (0->2) omitted: i14:Once the part is received, the team can then contract the customer.
+- [N7] Within matched traces (0->2) omitted: i15:contract the customer.
+
+Addition
+- [N8] Node-level addition: guard(b1,n4,"v1 = 'Need to check availability'") (reason: All four guards contain fabricated variable assignments (e.g., v1 = ..., v2 = ...) that have no basis in the source text.)
+- [N9] Node-level addition: guard(b2,n6,"v2 = 'Order not needed  proceed'") (reason: All four guards contain fabricated variable assignments (e.g., v1 = ..., v2 = ...) that have no basis in the source text.)
+- [N10] Node-level addition: guard(b2,n7,"v2 = 'Order and receive the part'") (reason: All four guards contain fabricated variable assignments (e.g., v1 = ..., v2 = ...) that have no basis in the source text.)
+- [N11] Node-level addition: guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'") (reason: All four guards contain fabricated variable assignments (e.g., v1 = ..., v2 = ...) that have no basis in the source text.)
+- [N12] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: These transition labels invent descriptive phrases and logical connectors that do not appear in the source description.)
+- [N13] Node-level addition: label(n6,c1,"Contact the customer or after receiving parts") (reason: These transition labels invent descriptive phrases and logical connectors that do not appear in the source description.)
+- [N14] Node-level addition: label(n8,c1,"Contact the customer or after receiving parts") (reason: These transition labels invent descriptive phrases and logical connectors that do not appear in the source description.)
+- [N15] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: These transition labels invent descriptive phrases and logical connectors that do not appear in the source description.)
+- [N16] Within matched traces (3->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N17] Within matched traces (3->0) added: branch(b1,XOR)
+- [N18] Within matched traces (3->0) added: action(n4,"check availability of the parts")
+- [N19] Within matched traces (3->1) added: action(n3,"does the team need to elicit information from the customer?")
+- [N20] Within matched traces (3->1) added: branch(b1,XOR)
+- [N21] Within matched traces (3->1) added: action(n4,"check availability of the parts")
+- [N22] Within matched traces (0->2) added: branch(b1,XOR)
+- [N23] Within matched traces (0->2) added: converge(c2)
+
+Mutation
+- [N24] Node-level mutation: element=action(n9,"contact the customer"); source=i14:Once the part is received, the team can then contract the customer. -> i15:contract the customer.; reason=The element content incorrectly uses 'contact' instead of 'contract', altering the specified business action.
+
+Permutation
+- [N25] Within matched traces (3->1) reordered: expected [i13:order and receive the part from Disuki.] but observed [action(n7,"receive part from Disuki")] elsewhere; in its place the model has [action(n8,"record customer details")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n2` has in=1 and out=0. | Node `n3` has in=0 and out=1. | DSL: action(n2,"identify parts"); action(n3,"does the team need to elicit information from the customer?")
+- [S2] STC18 failed: Labels are only allowed on existing precedence edges. | Label is attached to non-existing edge `n2 -> n3`. | DSL: label(n2,n3,"Check if information needs to be elicited")
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, b2, c1, c2, e1, n10, n11, n12, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); converge(c1); converge(c2); end(e1); action(n10,"collect all necessary parts"); action(n11,"proceed with payment"); action(n12,"end of process") (+7 more)
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: i1, n2 | DSL: init(i1); action(n2,"identify parts")

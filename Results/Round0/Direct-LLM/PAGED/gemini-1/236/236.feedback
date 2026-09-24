@@ -1,0 +1,16 @@
+- `action(n8, "Send decline message")` and `action(n9, "End")`: Hallucinated behaviors for a negative payment history path; the source text explicitly leaves the case where payment history is not good unspecified.
+- `defines(v2, "Is payment history good?", {"No"})`: Omits the "Yes" value required for the documented condition "If the payment history is good", and hallucinates the "No" value.
+- `precedence(b2, c1)`: Missing a guard on this XOR outgoing edge to represent the documented condition "If the payment history is good".
+- `defines(v4, "Are products available?", {"No"})`: Omits the "Yes" value required for the documented condition "If the products are available".
+- `precedence(b4, c1)`: Missing a guard on this XOR outgoing edge to represent the documented condition "If the products are available".
+- `precedence(n19, b7)`: Incorrectly places `action(n19, "Send order confirmation")` strictly before the AND gateway, violating the source text which states "Simultaneously, we inform the stock and accounting departments," implying the informing actions should be concurrent with sending the confirmation.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n24` has in=2 and out=1. | DSL: action(n24,"Payment received?")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['No']`. | Variable `v4` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n8` uses undefined variable `v2`. | Guard `v4 = 'No'` on `b4 -> n16` uses undefined variable `v4`. | DSL: guard(b2,n8,"v2 = 'No'"); guard(b4,n16,"v4 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n8` cannot be evaluated: `v2` has no declared range. | Guard `v4 = 'No'` on `b4 -> n16` cannot be evaluated: `v4` has no declared range. | DSL: guard(b2,n8,"v2 = 'No'"); guard(b4,n16,"v4 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range.

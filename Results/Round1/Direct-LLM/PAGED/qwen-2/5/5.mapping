@@ -1,0 +1,419 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1"
+      ],
+      "verbatim_texts": [
+        "To begin the process, start with Low Inventory."
+      ],
+      "justification": "The opening clause implicitly defines the process start and explicitly states the first action step."
+    },
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "After that, proceed to Create P.R.."
+      ],
+      "justification": "Directly maps to the first occurrence of creating a purchase request."
+    },
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "Then, move on to Create P.R.,"
+      ],
+      "justification": "Directly maps to the second, redundant occurrence of creating a purchase request."
+    },
+    {
+      "refs": [
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "followed by Submit P.O.."
+      ],
+      "justification": "Faithfully captures the purchase order submission step."
+    },
+    {
+      "refs": [
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "Once the P.O. is submitted, proceed to Ship Material."
+      ],
+      "justification": "Accurately reflects the transition to material shipping upon PO completion."
+    },
+    {
+      "refs": [
+        "branch:n6"
+      ],
+      "verbatim_texts": [
+        "At this point, check if the shipment is okay."
+      ],
+      "justification": "The verification check inherently requires an exclusive decision point, correctly modeled as an XOR branch."
+    },
+    {
+      "refs": [
+        "guard:n6->n7",
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "If it is, then proceed to Send Payment."
+      ],
+      "justification": "The positive evaluation path and its subsequent payment action are correctly captured."
+    },
+    {
+      "refs": [
+        "guard:n6->n8",
+        "action:n8"
+      ],
+      "verbatim_texts": [
+        "However, if there are any problems with the shipment, communicate them accordingly."
+      ],
+      "justification": "The negative evaluation path and the required communication action are faithfully represented."
+    },
+    {
+      "refs": [
+        "guard:n9->n10",
+        "action:n10"
+      ],
+      "verbatim_texts": [
+        "After checking the shipment status again, if it is okay, proceed to Send Payment."
+      ],
+      "justification": "The secondary verification step, its positive branch condition, and the resulting action are all correctly aligned."
+    },
+    {
+      "refs": [
+        "guard:n9->n11",
+        "action:n11"
+      ],
+      "verbatim_texts": [
+        "Otherwise, communicate any shipment problems."
+      ],
+      "justification": "The fallback branch condition and corresponding communication action match the source exactly."
+    },
+    {
+      "refs": [
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "Finally, once the payment is sent, the process comes to an end."
+      ],
+      "justification": "The terminal payment confirmation and process closure are properly modeled together."
+    }
+  ],
+  "mutations": [],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material."
+      ],
+      "reason": "The model implements a strictly linear flow that terminates after payment. It omits the explicit requirement to handle prior shipment issues and loop back or branch before the initial Ship Material step."
+    }
+  ],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start process with Low Inventory",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start process with Low Inventory"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "proceed to Create PR first time",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: proceed to Create PR first time"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "proceed to Create PR second time",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: proceed to Create PR second time"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "proceed to Submit PO",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: proceed to Submit PO"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "proceed to Ship Material",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: proceed to Ship Material"
+    },
+    {
+      "ref_id": "branch:n6",
+      "kind": "branch",
+      "node_id": "n6",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch n6 (XOR)"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "proceed to Send Payment",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: proceed to Send Payment"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "communicate shipment problems first time",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: communicate shipment problems first time"
+    },
+    {
+      "ref_id": "branch:n9",
+      "kind": "branch",
+      "node_id": "n9",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch n9 (XOR)"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "proceed to Send Payment",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: proceed to Send Payment"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "communicate shipment problems second time",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: communicate shipment problems second time"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "end process after payment sent",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: end process after payment sent"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "guard:n6->n7",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = true",
+      "aliases": [
+        "guard:n6->n7"
+      ],
+      "from": "n6",
+      "to": "n7",
+      "source_line": "guard n6->n7: v1 = true",
+      "guard": {
+        "from": "n6",
+        "to": "n7",
+        "condition": "v1 = true"
+      }
+    },
+    {
+      "ref_id": "guard:n6->n8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = false",
+      "aliases": [
+        "guard:n6->n8"
+      ],
+      "from": "n6",
+      "to": "n8",
+      "source_line": "guard n6->n8: v1 = false",
+      "guard": {
+        "from": "n6",
+        "to": "n8",
+        "condition": "v1 = false"
+      }
+    },
+    {
+      "ref_id": "guard:n9->n10",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = true",
+      "aliases": [
+        "guard:n9->n10"
+      ],
+      "from": "n9",
+      "to": "n10",
+      "source_line": "guard n9->n10: v2 = true",
+      "guard": {
+        "from": "n9",
+        "to": "n10",
+        "condition": "v2 = true"
+      }
+    },
+    {
+      "ref_id": "guard:n9->n11",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = false",
+      "aliases": [
+        "guard:n9->n11"
+      ],
+      "from": "n9",
+      "to": "n11",
+      "source_line": "guard n9->n11: v2 = false",
+      "guard": {
+        "from": "n9",
+        "to": "n11",
+        "condition": "v2 = false"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 11,
+    "mutation_count": 0,
+    "omission_count": 1,
+    "addition_count": 0,
+    "match_relation_count": 15,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 1,
+    "unique_refs_in_matches": 15,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 15,
+    "total_mappable_targets": 19,
+    "input_text_length": 662,
+    "element_count": 19
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

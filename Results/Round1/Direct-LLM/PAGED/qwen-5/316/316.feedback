@@ -1,0 +1,31 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin with, the first step is Course registration. -> i2:If an exception is needed -> i3:a Request for the exception should be made -> i5:After the exception is approved -> i6:course enrollment -> i7:followed by seminar group enrollment. -> i8:the homework assignment can be started. -> i9:it should be turned in. -> i10:The homework will then be evaluated -> i11:If it was not the last homework -> i12:another homework assignment will be given. -> i8:the homework assignment can be started.
+- [N2] Omitted trace (input 2): i1:To begin with, the first step is Course registration. -> i2:If an exception is needed -> i3:a Request for the exception should be made -> i5:After the exception is approved -> i6:course enrollment -> i7:followed by seminar group enrollment. -> i8:the homework assignment can be started. -> i9:it should be turned in. -> i10:The homework will then be evaluated -> i13:if it was the last homework -> i14:if it was the last homework, the process can continue. -> i15:At the same time, two additional steps should be completed: granting accreditation and announcing the date of the exam. -> i16:After signing up for the exam, it should be attended. -> i17:Once the exam is attended, it will be evaluated. -> i20:if the exam is failed -> i21:another sign-up for the exam is required. -> i16:After signing up for the exam, it should be attended.
+- [N3] Omitted trace (input 3): i1:To begin with, the first step is Course registration. -> i2:If an exception is needed -> i4:if an exception is not needed, the process can continue -> i6:course enrollment -> i7:followed by seminar group enrollment. -> i8:the homework assignment can be started. -> i9:it should be turned in. -> i10:The homework will then be evaluated -> i11:If it was not the last homework -> i12:another homework assignment will be given. -> i8:the homework assignment can be started.
+- [N4] Omitted trace (input 5): i1:To begin with, the first step is Course registration. -> i2:If an exception is needed -> i4:if an exception is not needed, the process can continue -> i6:course enrollment -> i7:followed by seminar group enrollment. -> i8:the homework assignment can be started. -> i9:it should be turned in. -> i10:The homework will then be evaluated -> i13:if it was the last homework -> i14:if it was the last homework, the process can continue. -> i15:At the same time, two additional steps should be completed: granting accreditation and announcing the date of the exam. -> i16:After signing up for the exam, it should be attended. -> i17:Once the exam is attended, it will be evaluated. -> i20:if the exam is failed -> i21:another sign-up for the exam is required. -> i16:After signing up for the exam, it should be attended.
+
+Addition
+- [N5] Node-level addition: action(n7,"Request exception again") (reason: Invents a denial/rejection path ('Request exception again', 'v2 = Denied') that is not mentioned anywhere in the source text.)
+- [N6] Node-level addition: guard(b2,n7,"v2 = 'Denied'") (reason: Invents a denial/rejection path ('Request exception again', 'v2 = Denied') that is not mentioned anywhere in the source text.)
+- [N7] Node-level addition: action(n18,"Merge accreditation and exam date announcement") (reason: Introduces an explicit action node labeled 'Merge accreditation and exam date announcement' for a structural converge that requires no behavioral step.)
+- [N8] Node-level addition: action(n25,"Return to exam attendance") (reason: Adds a 'Return to exam attendance' step. While looping is implied by the retry, the source only specifies resigning up; the return action is invented.)
+- [N9] Node-level addition: action(n26,"End") (reason: Redundant action node labeled 'End' duplicating the structural termination already handled by end:e1, with no textual step to support it.)
+- [N10] Within matched traces (1->0) added: converge(c2)
+- [N11] Within matched traces (1->0) added: action(n18,"Merge accreditation and exam date announcement")
+- [N12] Within matched traces (1->0) added: action(n26,"End")
+- [N13] Within matched traces (1->0) added: end(e1)
+- [N14] Within matched traces (1->1) added: converge(c2)
+- [N15] Within matched traces (1->1) added: action(n18,"Merge accreditation and exam date announcement")
+- [N16] Within matched traces (1->1) added: action(n26,"End")
+- [N17] Within matched traces (1->1) added: end(e1)
+- [N18] Within matched traces (4->2) added: converge(c2)
+- [N19] Within matched traces (4->2) added: action(n18,"Merge accreditation and exam date announcement")
+- [N20] Within matched traces (4->2) added: action(n26,"End")
+- [N21] Within matched traces (4->2) added: end(e1)
+- [N22] Within matched traces (4->3) added: converge(c2)
+- [N23] Within matched traces (4->3) added: action(n18,"Merge accreditation and exam date announcement")
+- [N24] Within matched traces (4->3) added: action(n26,"End")
+- [N25] Within matched traces (4->3) added: end(e1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=2 and out=1. | Node `n19` has in=2 and out=1. | Node `n3` has in=2 and out=1. | DSL: action(n10,"Turn in homework"); action(n19,"Sign up for the exam"); action(n3,"Make a request for the exception")

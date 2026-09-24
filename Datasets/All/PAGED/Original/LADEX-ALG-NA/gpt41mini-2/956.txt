@@ -1,0 +1,56 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"Start New Resupply Cycle","start","","","",""
+2,"Check Levels of Inventory","entity","1","","",""
+3,"Is inventory equal to or below minimum","condition","2","No","",""
+4,"Generate Equal to or below minimum Report","entity","3","Yes","",""
+5,"Generate Above Minimum Report","entity","3","No","",""
+6,"Does the report indicate inventory equal to or below minimum","condition","4,5","Above minimum","",""
+7,"Create Purchase Orders POs","entity","6","Equal to or below minimum","",""
+8,"End process","end","6","Above minimum","",""
+9,"Review PO","entity","7","","",""
+10,"Is PO approved","condition","9","No","",""
+11,"Rework PO","entity","10","No","",""
+12,"Print and release PO in system","entity","10","Yes","",""
+13,"Is PO created","condition","11","No","",""
+14,"Create PO again","entity","13","No","",""
+15,"Review PO","entity","13","Yes","",""
+16,"Reserve funds for released POs","entity","12","","",""
+17,"Mail POs to supplier","entity","12","","",""
+18,"Are funds reserved for released POs","condition","16","No","",""
+19,"Receive Packing Slip","entity","18","Yes","",""
+31,"Wait until funds are reserved for released POs","entity","18","No","",""
+20,"Is PO mailed to supplier","condition","17","No","",""
+21,"Receive inventory","entity","20","Yes","",""
+32,"Wait until PO is mailed to supplier","entity","20","No","",""
+22,"Has inventory been received","condition","21","No","",""
+23,"Receive Packing Slip","entity","22","Yes","",""
+33,"Wait until inventory is received","entity","22","No","",""
+24,"Has Packing Slip been received","condition","19,23","No","",""
+25,"Receive Invoice","entity","24","Yes","",""
+34,"Wait until packing slip is received","entity","24","No","",""
+26,"Has Invoice been received","condition","25","No","",""
+36,"Wait until invoice is received","entity","26","No","",""
+27,"Three-way match successful","condition","26","No","",""
+28,"Release funds","entity","27","Yes","",""
+35,"Handle three-way match failure","entity","27","No","",""
+29,"Issue payment","entity","28","","",""
+30,"End process","end","29","","",""
+36,"Connect node merge after wait states","entity","31,32,33,34,35,36","","",""

@@ -1,0 +1,9 @@
+- action(n1, "Start process for flickr login"): Hallucinated step not present in the source text (SMC1).
+- action(n4, "End process after successful login"), action(n8, "End process after abort"), and action(n11, "End process after abort"): Hallucinated actions; the source simply states "the process will end", which should be represented directly by `end` nodes (SMC1).
+- action(n6, "Provide userdata for flickr login") and action(n10, "Provide userdata for flickr login"): Both nodes lack outgoing control-flow edges, creating invalid dead ends that do not terminate the process (SMC4).
+- precedence(n7, b3): The source states "if you choose to abort, the process will end", but the model incorrectly routes the abort step (n7) to a new branch (b3) that offers another chance to retry (SMC4).
+- defines(v1, "Is login successful", {"Abort"}) and guard(b1, n5, v1 = 'Abort'): The variable range and guard for the failed login path incorrectly use "Abort" instead of a value reflecting login failure (SMC6, SMC4).
+- guard(b2, n7, v2 = 'Provide userdata'): The condition for the abort path (n7) is incorrectly set to 'Provide userdata' instead of a value representing the choice to abort (SMC4).
+- guard(b3, n9, v3 = 'Abort'): The condition for the retry path (n9) is incorrectly set to 'Abort' (SMC4).
+- label(n2, n3, "Abort"): Hallucinated label on the unconditional sequential edge between providing userdata and checking login success (SMC2).
+- branch(b1, XOR), branch(b2, XOR), and branch(b4, XOR): Missing guard conditions for the outgoing alternative paths to n4 (successful login), n6 (try again), and n10 (try again) respectively (SMC4).

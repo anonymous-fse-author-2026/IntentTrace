@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start talent seek procedure;
+:applicant wishes to discuss the terms and conditions?;
+:v1: applicant wishes to discuss the terms and conditions? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:discuss the terms and conditions with the candidate;
+else ([v1 = 'No'])
+:continue with the process;
+endif
+:continue with the process.;
+:applicant wants to modify the terms and conditions?;
+:v2: applicant wants to modify the terms and conditions? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:change is within set client limits?;
+:v3: change is within set client limits? ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:relay the applicant's changes;
+else ([v3 = 'Yes'])
+:continue with the process;
+endif
+else ([v2 = 'No'])
+->;
+endif
+:After that, relay the applicant's changes and continue with the process.;
+:seek approval for the offer and continue with the process;
+:modify the terms and conditions accordingly;
+:send the appointment approval and mandatory documentation to HR Services;
+:scan and upload the completed approval form to Cloud Source;
+:make a formal offer;
+:changes are acceptable?;
+:v4: changes are acceptable? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:continue with the process;
+:client accepts the changes?;
+:v5: client accepts the changes? ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:process ends;
+stop
+else ([v5 = 'No'])
+:select a new candidate from the list;
+stop
+endif
+else ([v4 = 'No'])
+:select a new applicant from the list;
+stop
+endif
+@enduml

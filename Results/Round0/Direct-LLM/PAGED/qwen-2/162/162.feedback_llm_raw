@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates an introductory step not present in the source text ("To start, please provide the userdata for flickr."), violating SMC1.
+- `action(n3, "is login successful")`: Misclassifies a decision condition as an executable task; the source frames this as a branching criterion ("If the login is successful... if the login fails..."), which should be handled directly by `branch(b1)` and its guards, violating SMC2.
+- `action(n5, "do you want to try again")` & `action(n8, "do you still want to try again")`: Incorrectly models user prompts as tasks; the source presents these as conditional choices ("If you want to try again... if you choose to abort", "If you still want to try again... if you decide to abort"), already correctly represented by `branch(b2)`, `guard(...)`, `branch(b3)`, and `guard(...)`, violating SMC2.
+- `action(n4, "end process")`, `action(n7, "end process")`, `action(n10, "end process")`, `action(n11, "end process")`: The source explicitly states "the process will end" upon success or abort, which must be modeled directly with `end` nodes. Inserting intermediate `action` nodes misrepresents termination as a process step, violating SMC2.
+- `precedence(n1, n2)`: Creates a control-flow edge from a hallucinated start node to the actual first step, distorting the strict chronological sequence described in the source ("To start, please provide the userdata for flickr."), violating SMC3.

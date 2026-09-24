@@ -1,0 +1,10 @@
+
+
+- `action(n1, "start the process")`: Hallucinates an initial step not mentioned in the description, which explicitly begins with "Course Packet Information Received should be sent".
+- Between `action(n3, "send: Design to Faculty")` and `action(n4, ...)`: Omits the documented step "the Faculty will choose the design".
+- `action(n5, ...)` and `action(n9, ...)`: Incorrectly model decision evaluations as executable actions; these should transition directly to `branch` nodes, with routing logic defined by `guard` statements rather than standing alone as actions.
+- `branch(b1)` and `branch(b2)`: Lack required `guard` declarations to define the XOR conditions (e.g., "Entire Course Packet Copyright Cleared" vs. denial, or "Price of the Course Packet is finalized" vs. reconsideration).
+- `precedence(b1, n6)` path: Dead-ends at `action(n6)` with no outgoing edges, contradicting the source mandate that after the denial notification, "the process should be continued" (implying a loop or return to prior clearance steps).
+- `precedence(n12, n13)` path to `end(e2)`: Incorrectly terminates the workflow when faculty decides to reconsider, violating the description which states "the process should be continued" (requiring a feedback cycle rather than process completion).
+- `actor(a_default, "Default", [...])`: Falsely assigns every node to a single generic participant, ignoring explicitly allocated responsibilities for the "Faculty", "MPC", "Publisher", and "Bookstore".
+- `defines(v1, ...)` and `defines(v2, ...)`: Specify empty value ranges `{}` for decision variables, failing to represent the discrete option sets (e.g., cleared/denied, finalized/reconsider) that govern the branching logic.

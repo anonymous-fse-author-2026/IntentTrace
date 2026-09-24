@@ -1,0 +1,21 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i8:continue with the process
+- [N2] Within matched traces (1->2) omitted: i8:continue with the process
+
+Addition
+- [N3] Node-level addition: guard(b3,n14,"v3 = 'false'") (reason: The source text does not describe a negative branch or a resulting outcome for the final check of whether the option to submit is set to true.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n6,"apply another filter") -> converge(c1) -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n10,"continue with process if another filter to apply") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n14,"end process") -> end(e1)
+- [N5] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n6,"apply another filter") -> converge(c1) -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n11,"continue with process if no more filters") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n14,"end process") -> end(e1)
+- [N6] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n15,"continue with the process") -> converge(c1) -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n10,"continue with process if another filter to apply") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n14,"end process") -> end(e1)
+- [N7] Added trace (model 7): init(i1) -> action(n1,"start") -> action(n2,"select a filter") -> action(n3,"apply the selected filter") -> action(n4,"click on Submit button") -> action(n5,"is option to submit false") -> branch(b1,XOR) -> action(n15,"continue with the process") -> converge(c1) -> action(n9,"is there another filter to apply") -> branch(b2,XOR) -> action(n11,"continue with process if no more filters") -> converge(c2) -> action(n12,"is option to submit true") -> branch(b3,XOR) -> action(n14,"end process") -> end(e1)
+- [N8] Within matched traces (0->0) added: converge(c2)
+- [N9] Within matched traces (1->2) added: converge(c2)
+- [N10] Within matched traces (2->4) added: converge(c2)
+- [N11] Within matched traces (3->6) added: converge(c2)
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n15,"v1 = 'false'"); source=i7:If the option to submit is set to "true", then continue with the process.; reason=Instead of explicitly checking if the option is set to 'true' as stated in the text, the guard uses the negative outcome (v1 = 'false') of the previous 'false' check.
+- [N13] Node-level mutation: element=action(n10,"continue with process if another filter to apply"); source=i10:If there is, continue with the process.; reason=The action text distorts the source by appending an invented qualifier 'if another filter to apply' that is not present in the original action description.
+- [N14] Node-level mutation: element=action(n11,"continue with process if no more filters"); source=i11:If not, continue with the process.; reason=The action text distorts the source by appending an invented qualifier 'if no more filters' that is not present in the original action description.
+- [N15] Node-level mutation: element=action(n13,"continue with process if option submit true"); source=i12:if the option to submit is set to "true"; reason=The element transforms the condition into an action step and appends the step 'continue with process', which is completely missing from this input segment.
+- [N16] Node-level mutation: element=action(n14,"end process"); source=i13:The process ends when all steps have been completed.; reason=The element drops the condition 'when all steps have been completed' and alters the meaning by modeling the process ending as an active action step.

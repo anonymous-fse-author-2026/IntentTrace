@@ -1,0 +1,400 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "a_start",
+      "type": "action",
+      "content": "click Start then select Edit Report"
+    },
+    {
+      "id": "a_rev",
+      "type": "action",
+      "content": "review the report"
+    },
+    {
+      "id": "a_chkTrans1",
+      "type": "action",
+      "content": "check if translation is needed"
+    },
+    {
+      "id": "a_trans",
+      "type": "action",
+      "content": "translate the receipts"
+    },
+    {
+      "id": "a_conf",
+      "type": "action",
+      "content": "confirm the receipts"
+    },
+    {
+      "id": "a_edit1",
+      "type": "action",
+      "content": "edit the report"
+    },
+    {
+      "id": "a_chkTrans2",
+      "type": "action",
+      "content": "check if translation is needed"
+    },
+    {
+      "id": "a_edit2",
+      "type": "action",
+      "content": "edit the report"
+    },
+    {
+      "id": "a_transConf",
+      "type": "action",
+      "content": "translate the receipts and then confirm them"
+    },
+    {
+      "id": "a_edit3",
+      "type": "action",
+      "content": "edit the report"
+    },
+    {
+      "id": "a_proc",
+      "type": "action",
+      "content": "process the expense"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "b_exp",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_trans1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_rev1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_rev2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b_rec",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "c3",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_exp",
+      "name": "expense amount",
+      "R_X": [
+        ">1000",
+        "<=1000"
+      ]
+    },
+    {
+      "X": "v_trans",
+      "name": "translation needed",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_rev",
+      "name": "review decision",
+      "R_X": [
+        "Rejected",
+        "Approved"
+      ]
+    },
+    {
+      "X": "v_rec",
+      "name": "receipts decision",
+      "R_X": [
+        "Accepted",
+        "Rejected"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "a_start",
+        "a_rev",
+        "a_chkTrans1",
+        "a_trans",
+        "a_conf",
+        "a_edit1",
+        "a_chkTrans2",
+        "a_edit2",
+        "a_transConf",
+        "a_edit3",
+        "a_proc",
+        "e1",
+        "b_exp",
+        "b_trans1",
+        "b_rev1",
+        "b_rev2",
+        "b_rec",
+        "c1",
+        "c2",
+        "c3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "a_start"
+    },
+    {
+      "type": "precedence",
+      "A": "a_start",
+      "B": "b_exp"
+    },
+    {
+      "type": "precedence",
+      "A": "b_exp",
+      "B": "a_rev"
+    },
+    {
+      "type": "precedence",
+      "A": "b_exp",
+      "B": "a_chkTrans1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_rev",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_chkTrans1",
+      "B": "b_trans1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_trans1",
+      "B": "a_trans"
+    },
+    {
+      "type": "precedence",
+      "A": "b_trans1",
+      "B": "a_conf"
+    },
+    {
+      "type": "precedence",
+      "A": "a_trans",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_conf",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b_rev1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rev1",
+      "B": "a_edit1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rev1",
+      "B": "a_chkTrans2"
+    },
+    {
+      "type": "precedence",
+      "A": "a_edit1",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "a_chkTrans2",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "b_rev2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rev2",
+      "B": "a_edit2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rev2",
+      "B": "a_transConf"
+    },
+    {
+      "type": "precedence",
+      "A": "a_edit2",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "a_transConf",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "a_edit3",
+      "B": "c3"
+    },
+    {
+      "type": "precedence",
+      "A": "c3",
+      "B": "b_rec"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rec",
+      "B": "a_edit3"
+    },
+    {
+      "type": "precedence",
+      "A": "b_rec",
+      "B": "a_proc"
+    },
+    {
+      "type": "precedence",
+      "A": "a_proc",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b_exp",
+      "B": "a_rev",
+      "condition": "v_exp = '>1000'"
+    },
+    {
+      "type": "guard",
+      "A": "b_exp",
+      "B": "a_chkTrans1",
+      "condition": "v_exp = '<=1000'"
+    },
+    {
+      "type": "guard",
+      "A": "b_trans1",
+      "B": "a_trans",
+      "condition": "v_trans = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b_trans1",
+      "B": "a_conf",
+      "condition": "v_trans = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rev1",
+      "B": "a_edit1",
+      "condition": "v_rev = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rev1",
+      "B": "a_chkTrans2",
+      "condition": "v_rev = 'Approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rev2",
+      "B": "a_edit2",
+      "condition": "v_rev = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rev2",
+      "B": "a_transConf",
+      "condition": "v_rev = 'Approved'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rec",
+      "B": "a_edit3",
+      "condition": "v_rec = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b_rec",
+      "B": "a_proc",
+      "condition": "v_rec = 'Accepted'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start the ExpenseReport process, begin by clicking on \"Start\" and then selecting \"Edit Report\"."
+    },
+    {
+      "id": "i2",
+      "content": "If the expense is greater than 1000, the report should be reviewed."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the expense is less than or equal to 1000, you should proceed to check if there is a need for translation."
+    },
+    {
+      "id": "i4",
+      "content": "If translation is required, proceed to translate the receipts."
+    },
+    {
+      "id": "i5",
+      "content": "If not, confirm the receipts."
+    },
+    {
+      "id": "i6",
+      "content": "If the report is rejected, edit the report."
+    },
+    {
+      "id": "i7",
+      "content": "If it is approved, continue to check if there is a need for translation."
+    },
+    {
+      "id": "i8",
+      "content": "If it is approved, translate the receipts and then confirm them."
+    },
+    {
+      "id": "i9",
+      "content": "If the receipts are accepted, proceed to process the expense."
+    },
+    {
+      "id": "i10",
+      "content": "If they are rejected, edit the report."
+    },
+    {
+      "id": "i11",
+      "content": "The process ends by processing the expense and then ending it."
+    }
+  ]
+}

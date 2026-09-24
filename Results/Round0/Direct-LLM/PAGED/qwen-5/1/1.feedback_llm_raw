@@ -1,0 +1,8 @@
+
+
+- defines(v1, "has the order been received", {"Order not received end process", "No"}) & guard(b1, n4, v1 = 'No'): Semantically inverted routing; the guard directs flow to the next check when the answer is 'No', contradicting "begin by checking if the order has been received" (which implies proceeding only upon positive confirmation).
+- defines(v2, ..., {"No"}), defines(v3, ..., {"No"}), defines(v4, ..., {"No"}), defines(v6, ..., {"No"}), defines(v7, ..., {"No"}), defines(v8, ..., {"No"}), defines(v9, ..., {"No"}): Decision variable ranges only contain "No", omitting the affirmative value required to evaluate binary conditions like "If the sum of the order is less than 500...".
+- defines(v5, "is the sum of the order between 500 and 999", {}) & defines(v10, "is the sum of the order between 500 and 999", {}): Ranges are empty, leaving branches b5 and b10 with no valid decision space despite the source explicitly stating "if the sum of the order falls between 500 and 999, compute a discount of 2%".
+- action(n9, "compute discount of 3 percent"), action(n11, "compute discount of 2 percent"), action(n16, "compute discount of 4 percent"): Dangling nodes with no outgoing precedence relations, creating unfinished paths that halt the process prematurely instead of following the described sequential progression.
+- label(n1, n2, "No") & label(n7, n13, "No"): Edge labels are arbitrary and do not correspond to any conditional phrasing in the source text, misrepresenting the control-flow semantics of the transitions.
+- precedence(n20, c1) & converge(c1): Incorrectly routes a mid-process discount computation (n20) directly to the billing stage, bypassing subsequent checks and contradicting "Finally, create the bill and the process will come to an end."

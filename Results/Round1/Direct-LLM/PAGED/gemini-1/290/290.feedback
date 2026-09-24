@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i4:If they don't "Know SLA" (reason: The source defines a distinct negative condition, but it is not faithfully implemented anywhere in the model (represented only as a mutated guard).)
+- [N2] Node-level omission: i9:If it is "Non Urgent" (reason: The source specifies a non-urgent condition, but it is absent from faithful implementation (represented only via mutated boolean guards).)
+- [N3] Within matched traces (2->0) omitted: i5:Look up
+
+Addition
+- [N4] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Know SLA?") -> branch(b1,XOR) -> action(n4,"Look Up") -> action(n10,"Enter Date") -> action(n11,"Is Task Urgent?") -> branch(b3,XOR) -> action(n12,"Red Stamp") -> action(n14,"End") -> end(e3)
+- [N5] Within matched traces (1->1) added: action(n5,"Is Task Urgent?")
+- [N6] Within matched traces (1->1) added: action(n9,"End")
+- [N7] Within matched traces (1->1) added: end(e2)
+- [N8] Within matched traces (2->0) added: action(n2,"Know SLA?")
+- [N9] Within matched traces (2->0) added: action(n16,"Continue the Process")
+- [N10] Within matched traces (3->3) added: action(n2,"Know SLA?")
+- [N11] Within matched traces (3->3) added: action(n11,"Is Task Urgent?")
+
+Mutation
+- [N12] Node-level mutation: element=guard(b1,n16,"v1 = 'Yes'"); source=i2:if someone "Knows SLA"; reason=The guard discards the literal text and invents a variable 'v1' with a boolean check 'Yes', altering the explicit representation.
+- [N13] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4:If they don't "Know SLA"; reason=The guard discards the explicitly detailed negative condition and substitutes an invented variable 'v1' and boolean check 'No'.
+- [N14] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i7:If the task is "Urgent"; reason=The guard drops the literal string and replaces it with an invented variable 'v2' checking for 'Yes'.
+- [N15] Node-level mutation: element=guard(b2,n7,"v2 = 'No'") -> guard(b3,n13,"v3 = 'No'"); source=i9:If it is "Non Urgent"; reason=The guards drop the explicitly specified 'Non Urgent' condition, replacing it with invented variables ('v2', 'v3') checking for 'No'.
+- [N16] Node-level mutation: element=guard(b3,n12,"v3 = 'Yes'"); source=i10:If it is "Urgent"; reason=The guard invents a variable 'v3' and boolean check 'Yes' instead of preserving the exact 'Urgent' check.

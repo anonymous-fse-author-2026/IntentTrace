@@ -1,0 +1,6 @@
+
+
+- `defines(v1, "How was the order received?", {"via mail or phone"})`: Omits `"via fax"` from the variable range despite the source explicitly stating `"If the order is received via fax..."`, violating SMC6.
+- `guard(b1, n5, v1 = 'via mail or phone')` & `branch(b1, XOR)`: The guard restricts execution to only `"mail or phone"`, causing a deadlock for the documented `"via fax"` input; furthermore, `b1` is declared as an XOR branch but possesses only one outgoing precedence (`precedence(b1, n5)`), incorrectly modeling a synonymous convergence as an exclusive split and breaking control-flow integrity (violates SMC1, SMC4).
+- `action(n4, "How was the order received?")`, `action(n13, "is the order correct?")`, `action(n19, "is the order worth less than 5.000 €?")`, `action(n27, "is the issue solvable?")`: Phrased as decision queries but declared as `action` nodes, misrepresenting their semantic role as evaluative gateways rather than executable process steps (violates SMC2).
+- `action(n6, "Excel list")`, `action(n9, "MS-Access database")`: Model passive data repositories/artifacts as active `action` steps, conflating system objects with human/system tasks and distorting node payload meaning (violates SMC2).

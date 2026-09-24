@@ -1,0 +1,6 @@
+
+
+- `branch(b5, AND)` & `precedence(n20, b5)`: Violates SMC3/SMC4 by introducing a concurrent split after `action(n20, "send the memorandum and invoice")`, contradicting the source’s explicit chronological constraint "...followed by the quality report."
+- `action(n25, "sign off on the memorandum")`: Violates SMC3 by detaching this step from `action(n26, "pick the goods")`; the source explicitly groups them ("Sign off on the memo and pick the goods."), whereas the model routes signing off through a divergent branch (`b5`) originating from the invoice step.
+- `defines(v3, "is order worth less than 5000", {"Yes", "No"})`: Violates SMC6 by replacing the source’s explicit numeric thresholds ("value is less than 5000", "greater than or equal to 5000") with a categorical binary range, failing to faithfully preserve the quantitative decision criteria.
+- `action(n21, "send the quality report")` & `action(n23, "send the quality report again")`: Violates SMC1 by hallucinating a duplicated reporting step; the source outlines a single linear workflow ("Check the quality of the production and send the quality report."), while the model fragments it into parallel/disjoint occurrences without textual justification.

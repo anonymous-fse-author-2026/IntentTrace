@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Begin Change Assessment;
+:Assess the change request;
+:Check affected systems for business impact;
+:Determine if change request should be approved;
+:v1: Determine if change request should be approved ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Approve change request in current state;
+:Implement approved change;
+stop
+else ([v1 = 'No'])
+:Evaluate if change acceptable with more information;
+:it is rejected.;
+:Request more information from Change Coordinator;
+:Send email enquiry to Change Coordinator;
+:Update approval register within 3 business days;
+:Forward email enquiry to Change Requester;
+:v3: Check if there are inquiries from CAB ({No, Yes}); <<objectSignal>>
+if () then ([v3 = 'No'])
+:No inquiries from CAB;
+:End process after 3 business days;
+stop
+else ([v3 = 'Yes'])
+:Receive response from requester within 1-3 business days;
+:Forward requester response to CAB for evaluation;
+:Determine final approval of change request;
+stop
+endif
+endif
+@enduml

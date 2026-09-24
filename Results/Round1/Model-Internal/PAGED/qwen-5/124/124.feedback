@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i6:If the item can be reserved (reason: The reservation condition lacks a faithful implementation. Because the only candidate guard mutates the value and logic, this behavioral unit remains unimplemented.)
+- [N2] Within matched traces (0->0) omitted: i3:If the order is to be accepted
+- [N3] Within matched traces (1->1) omitted: i3:If the order is to be accepted
+
+Addition
+- [N4] Node-level addition: action(n1,"start process") (reason: Generic 'start process' action has no supporting instruction, data, or implicit signal in any source unit.)
+- [N5] Node-level addition: action(n11,"end") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> action(n8,"end") -> end(e1)
+- [N7] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> action(n11,"end") -> end(e2)
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (0->0) added: action(n1,"start process")
+- [N10] Within matched traces (0->0) added: converge(c1)
+- [N11] Within matched traces (1->1) added: init(i1)
+- [N12] Within matched traces (1->1) added: action(n1,"start process")
+- [N13] Within matched traces (1->1) added: converge(c1)
+- [N14] Within matched traces (1->1) added: action(n6,"backorder?")
+- [N15] Within matched traces (1->1) added: action(n11,"end")
+- [N16] Within matched traces (1->1) added: end(e2)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=i6:If the item can be reserved; reason=The guard payload 'v2 = No' distorts the source condition. It replaces the reservation status check with an unrelated boolean value, altering the intended logic.

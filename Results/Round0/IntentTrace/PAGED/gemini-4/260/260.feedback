@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i16:If it is not complete, the check continues. If it is complete, the process continues. (reason: The model completely skips the conditions directly following the compliance check.)
+- [N2] Node-level omission: i23:Finally, the client is called and information is requested. (reason: This specific action step prior to batching is not present in the model (n14 calls the client under a different condition).)
+- [N3] Omitted trace (input 3): i1:the process begins -> i2:receiving the invoice -> i3:it is sorted per client -> i4:it is then sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked -> i11:the priority is checked -> i12:If the priority is high -> i13:a red stamp is placed on the entry invoice -> i15:The invoice compliance is then checked -> i16:If it is not complete, the check continues. If it is complete, the process continues. -> i20:If it is a normal case, the client is called -> i23:Finally, the client is called and information is requested. -> i24:The invoice is then batched and allocated to DEO
+- [N4] Omitted trace (input 7): i1:the process begins -> i2:receiving the invoice -> i3:it is sorted per client -> i4:it is then sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked -> i11:the priority is checked -> i14:If it is low, the process continues. -> i15:The invoice compliance is then checked -> i16:If it is not complete, the check continues. If it is complete, the process continues. -> i20:If it is a normal case, the client is called -> i23:Finally, the client is called and information is requested. -> i24:The invoice is then batched and allocated to DEO
+- [N5] Within matched traces (2->1) omitted: i16:If it is not complete, the check continues. If it is complete, the process continues.
+- [N6] Within matched traces (4->3) omitted: i16:If it is not complete, the check continues. If it is complete, the process continues.
+- [N7] Within matched traces (4->3) omitted: i22:and the process ends
+- [N8] Within matched traces (6->4) omitted: i16:If it is not complete, the check continues. If it is complete, the process continues.
+- [N9] Within matched traces (8->6) omitted: i16:If it is not complete, the check continues. If it is complete, the process continues.
+- [N10] Within matched traces (8->6) omitted: i22:and the process ends
+
+Addition
+- [N11] Within matched traces (2->1) added: action(n17,"end process: completed successfully")
+- [N12] Within matched traces (2->1) added: end(e3)
+- [N13] Within matched traces (1->2) added: branch(b3,XOR)
+- [N14] Within matched traces (1->2) added: action(n14,"call client")
+- [N15] Within matched traces (1->2) added: action(n17,"end process: completed successfully")
+- [N16] Within matched traces (1->2) added: end(e3)
+- [N17] Within matched traces (6->4) added: action(n17,"end process: completed successfully")
+- [N18] Within matched traces (6->4) added: end(e3)
+- [N19] Within matched traces (5->5) added: branch(b3,XOR)
+- [N20] Within matched traces (5->5) added: action(n14,"call client")
+- [N21] Within matched traces (5->5) added: action(n17,"end process: completed successfully")
+- [N22] Within matched traces (5->5) added: end(e3)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n13` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 0 guards; exactly one is required.

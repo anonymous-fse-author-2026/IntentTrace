@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_delivery| Delivery Crew
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: return method ({Customer returns the items to the store, Delivery Crew picks-up items at the event site}); <<objectSignal>>
+if () then ([v1 = "Customer returns the items to the store"])
+|a_customer|
+:customer returns items to store;
+|a_default|
+else ([v1 = "Delivery Crew picks-up items at the event site"])
+|a_delivery|
+:delivery crew picks up items at event site;
+|a_default|
+endif
+:count and compare items to original contract;
+:v2: order status ({Order is complete and all items were returned, Order is incomplete and items are missing, Order is complete but items are damaged}); <<objectSignal>>
+switch ()
+case ([v2 = "Order is complete and all items were returned"])
+:order is complete and all items were returned;
+case ([v2 = "Order is incomplete and items are missing"])
+:order is incomplete and items are missing;
+:v3: missing item response ({Customer returns the missing items, Customer does not return the missing items}); <<objectSignal>>
+if () then ([v3 = "Customer returns the missing items"])
+|a_customer|
+:customer returns missing items;
+:handle return yes;
+|a_default|
+else ([v3 = "Customer does not return the missing items"])
+|a_customer|
+:customer does not return missing items;
+:handle return no;
+|a_default|
+endif
+|a_customer|
+:email customer with replacement charges;
+|a_default|
+:items are repaired and added into inventory;
+:v6: repair outcome ({Items are repaired and added into inventory, Items can't be repaired and are discarded}); <<objectSignal>>
+if () then ([v6 = "Items can't be repaired and are discarded"])
+:items can't be repaired and are discarded;
+else ([v6 = "Items are repaired and added into inventory"])
+|a_customer|
+:email customer with replacement charges;
+|a_default|
+endif
+:end process;
+stop
+case ([v2 = "Order is complete but items are damaged"])
+|a_customer|
+:email customer to inform of damage and additional charges;
+|a_default|
+:temporarily take damaged items out of inventory;
+:v4: packing choice ({Items are packed for an existing order, Items are stored for future orders}); <<objectSignal>>
+if () then ([v4 = "Items are packed for an existing order"])
+:items packed for existing order;
+:process packing route;
+else ([v4 = "Items are stored for future orders"])
+:items stored for future orders;
+:process storage route;
+:v5: storage choice ({Items are packed for an existing order, Items are stored for future orders}); <<objectSignal>>
+if () then ([v5 = "Items are packed for an existing order"])
+:items packed for existing order;
+:final pack route;
+else ([v5 = "Items are stored for future orders"])
+:items stored for future orders;
+:final store route;
+endif
+:end process;
+stop
+endif
+endswitch
+@enduml

@@ -1,0 +1,8 @@
+- `defines(v1, "Check Inventory Level", {})` and `defines(v2, "Review Purchase Order", {})`: Ranges are empty `{}`, failing to capture the source's explicit decision criteria ("greater than the Minimum Level", "rejected/accepted").
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Both lack corresponding `guard(...)` statements, leaving the exclusive choices undefined despite the source text specifying exact conditions for each outgoing path.
+- `precedence(b1, c2)`: Creates an unconditional direct link from the inventory check branch to the final convergence, omitting the required gate condition "If the Inventory is greater than the Minimum Level, then the process ends."
+- `precedence(n6, c2)`: Routes "Rework Purchase Order" directly to the final convergence/end node. The source only states the PO "is reworked" and provides no indication of immediate termination, hallucinating an end-state or omitting the expected workflow continuation.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c2` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i4:if they already have the availability information, they can proceed with the process. (reason: No model element faithfully implements this condition; the only candidates mutate the logic into unrelated variable assignments.)
+- [N2] Node-level omission: i5:they can proceed with the process. (reason: Redundant continuation clause lacks a faithful representation in the model.)
+- [N3] Node-level omission: i6:If the parts are supplied to the customer, the team can also continue with the process. (reason: This entire alternative path and its condition are completely absent from the generated model.)
+- [N4] Node-level omission: i7:However, if they need to record the customer's details, they should order and receive the part from Disuki. (reason: The primary trigger for the Disuki workflow is not faithfully covered; corresponding elements distort the condition entirely.)
+- [N5] Node-level omission: i10:Once the part is received, the team can then contract the customer. (reason: The precise post-receipt action 'contract the customer' is not faithfully implemented due to the verb mutation in the corresponding action node.)
+- [N6] Within matched traces (0->0) omitted: i8:record the customer's details
+- [N7] Within matched traces (1->0) omitted: i8:record the customer's details
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no corresponding instruction or explicit step in the source text; the process begins directly with identifying parts.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> action(n4,"check availability of the parts") -> action(n5,"do the parts need to be ordered and received from Disuki?") -> branch(b2,XOR) -> action(n7,"receive part from Disuki") -> action(n8,"record customer details") -> converge(c1) -> action(n9,"contact the customer") -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N10] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (1->0) added: init(i1)
+- [N13] Within matched traces (1->0) added: action(n3,"does the team need to elicit information from the customer?")
+
+Mutation
+- [N14] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer -> i3:they should then check the availability of the parts.; reason=The natural language condition is replaced with an arbitrary variable assignment (v1 = 'Need to check availability'), losing the original causal link and textual precision.
+- [N15] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information, they can proceed with the process.; reason=The straightforward condition is distorted into a convoluted variable string that invents extra steps ('after contacting customer') and alters the control flow logic.
+- [N16] Node-level mutation: element=label(n9,c2,"Proceed with process or after contacting customer"); source=i5:they can proceed with the process.; reason=The straightforward condition is distorted into a convoluted variable string that invents extra steps ('after contacting customer') and alters the control flow logic.
+- [N17] Node-level mutation: element=action(n5,"do the parts need to be ordered and received from Disuki?") -> guard(b2,n6,"v2 = 'Order not needed  proceed'"); source=i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=The trigger condition 'record the customer's details' is fundamentally changed into a question about ordering parts, and the guard incorrectly states 'Order not needed proceed', reversing the intended logic.
+- [N18] Node-level mutation: element=guard(b2,n7,"v2 = 'Order and receive the part'"); source=i9:order and receive the part from Disuki; reason=Drops the critical vendor qualifier 'from Disuki', changing the specificity of the routing condition.
+- [N19] Node-level mutation: element=label(n4,n5,"Check if parts are available or need ordering"); source=i4:if they already have the availability information, they can proceed with the process. -> i6:If the parts are supplied to the customer, the team can also continue with the process.; reason=Invents a combined decision label 'Check if parts are available or need ordering' that merges unsupported concepts and omits the actual source conditions.
+- [N20] Node-level mutation: element=action(n9,"contact the customer"); source=i10:Once the part is received, the team can then contract the customer.; reason=Changes the target verb from 'contract' to 'contact', altering the specified business outcome.
+- [N21] Node-level mutation: element=label(n6,c1,"Contact the customer or after receiving parts") -> label(n8,c1,"Contact the customer or after receiving parts"); source=i10:Once the part is received, the team can then contract the customer.; reason=Combines unrelated fragments into 'Contact the customer or after receiving parts', destroying the direct temporal dependency stated in the source.
+
+Permutation
+- [N22] Within matched traces (0->0) reordered: expected [i5:they can proceed with the process.] but observed [converge(c2)] elsewhere; in its place the model has [action(n5,"do the parts need to be ordered and received from Disuki?")]
+- [N23] Within matched traces (1->0) reordered: expected [i5:they can proceed with the process.] but observed [converge(c2)] elsewhere; in its place the model has [action(n5,"do the parts need to be ordered and received from Disuki?")]

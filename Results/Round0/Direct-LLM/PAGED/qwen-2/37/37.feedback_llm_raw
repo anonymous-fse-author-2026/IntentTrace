@@ -1,0 +1,6 @@
+
+
+- `action(n5, "Send a Denial to the Customer due to Credit Limit")`, `action(n7, "Send a Denial to the Customer due to Article Unavailability")`: Lack outgoing precedence relations, leaving both denial paths as dead ends. The source implies these scenarios should reach a terminal state, violating SMC1/SMC5.
+- `precedence(e1, c3)`: Incorrectly routes control flow out of an `end` node. By definition, `end` nodes must terminate execution; routing `e1` forward corrupts control-flow logic and violates SMC4.
+- `converge(c3)`, `precedence(n20, c3)`, `precedence(c3, n23)`: Merges the "Send a Reminder" path with the closure sequence, forcing it through `action(n23, "End process after Closing Order")`. The source explicitly restricts order closure to the write-off branch ("After writing off the Order, close the Order..."), so merging the reminder into this sequence hallucinates behavior and breaks chronology (SMC1, SMC3, SMC5).
+- `precedence(e1, c3)`, `precedence(c3, n23)`, `precedence(n23, e2)`: Artificially funnels the initial payment-success path (`e1`) through a convergence and mandatory final closure step, contradicting the source's direct instruction to simply "close the Order and end the process" upon payment receipt (SMC5).

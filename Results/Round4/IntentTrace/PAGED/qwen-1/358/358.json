@@ -1,0 +1,209 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "In the beginning"
+    },
+    {
+      "id": "n_cont",
+      "type": "action",
+      "content": "if the answer is \"No\", then we continue the process."
+    },
+    {
+      "id": "n_i3",
+      "type": "action",
+      "content": "If the answer is \"No\" again, we continue the process."
+    },
+    {
+      "id": "n_pri1",
+      "type": "action",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "n_lookup",
+      "type": "action",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_master",
+      "type": "action",
+      "content": "If the answer is \"No\", then we need a Vendor master record and the process ends."
+    },
+    {
+      "id": "n_inv1",
+      "type": "action",
+      "content": "But if the answer is \"Yes\", then we enter the invoice in SAP."
+    },
+    {
+      "id": "n_inv2",
+      "type": "action",
+      "content": "And if the answer is \"Yes\" again, then we enter the invoice in SAP."
+    },
+    {
+      "id": "n_out",
+      "type": "action",
+      "content": "Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v2",
+      "name": "vendor lookup result",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "i1",
+        "n_cont",
+        "n_i3",
+        "n_pri1",
+        "n_lookup",
+        "b2",
+        "n_master",
+        "n_inv1",
+        "n_inv2",
+        "n_out",
+        "e1",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n_cont"
+    },
+    {
+      "type": "precedence",
+      "A": "n_cont",
+      "B": "n_i3"
+    },
+    {
+      "type": "precedence",
+      "A": "n_i3",
+      "B": "n_pri1"
+    },
+    {
+      "type": "precedence",
+      "A": "n_pri1",
+      "B": "n_lookup"
+    },
+    {
+      "type": "precedence",
+      "A": "n_lookup",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n_master"
+    },
+    {
+      "type": "precedence",
+      "A": "n_master",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n_inv1"
+    },
+    {
+      "type": "precedence",
+      "A": "n_inv1",
+      "B": "n_inv2"
+    },
+    {
+      "type": "precedence",
+      "A": "n_inv2",
+      "B": "n_out"
+    },
+    {
+      "type": "precedence",
+      "A": "n_out",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n_master",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n_inv1",
+      "condition": "v2 = 'Yes'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning"
+    },
+    {
+      "id": "i2",
+      "content": "if the answer is \"No\", then we continue the process."
+    },
+    {
+      "id": "i3",
+      "content": "If the answer is \"No\" again, we continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "However, if the answer is \"Yes\", then we give it priority."
+    },
+    {
+      "id": "i5",
+      "content": "After that, we look up the Vendor on SAP."
+    },
+    {
+      "id": "i6",
+      "content": "If the answer is \"No\", then we need a Vendor master record and the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "But if the answer is \"Yes\", then we enter the invoice in SAP."
+    },
+    {
+      "id": "i8",
+      "content": "And if the answer is \"Yes\" again, then we enter the invoice in SAP."
+    },
+    {
+      "id": "i9",
+      "content": "Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox and the process ends."
+    }
+  ]
+}

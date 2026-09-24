@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i2:proceed to Create P.R.. (reason: The step is not faithfully implemented by any element without invented qualifiers.)
+- [N2] Node-level omission: i3:move on to Create P.R., (reason: The step is not faithfully implemented by any element without invented qualifiers.)
+- [N3] Node-level omission: i6:check if the shipment is okay. (reason: The check step is not faithfully implemented by any element without invented qualifiers.)
+- [N4] Node-level omission: i10:if there are any problems with the shipment, communicate them accordingly. (reason: The communication action itself is not faithfully implemented without the invented 'first time' qualifier.)
+- [N5] Node-level omission: i11:After checking the shipment status again, (reason: The status check step is distorted and not faithfully implemented.)
+- [N6] Node-level omission: i13:Otherwise, communicate any shipment problems. (reason: The communication action itself is not faithfully implemented without the invented 'second time' qualifier.)
+- [N7] Node-level omission: i15:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material. (reason: The implicit conditional branch logic is missing from the model, and the communication step is distorted.)
+- [N8] Within matched traces (2->2) omitted: i15:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.
+
+Addition
+- [N9] Added trace (model 3): init(i1) -> action(n1,"start process with Low Inventory") -> action(n2,"proceed to Create PR first time") -> action(n3,"proceed to Create PR second time") -> action(n4,"proceed to Submit PO") -> action(n5,"proceed to Ship Material") -> branch(b3,AND) -> action(n12,"communicate shipment problems before shipment") -> end(e1)
+
+Mutation
+- [N10] Node-level mutation: element=action(n2,"proceed to Create PR first time"); source=i2:proceed to Create P.R..; reason=Adds the invented qualifier 'first time' which is not present in the source text.
+- [N11] Node-level mutation: element=action(n3,"proceed to Create PR second time"); source=i3:move on to Create P.R.,; reason=Adds the invented qualifier 'second time' which is not present in the source text.
+- [N12] Node-level mutation: element=action(n6,"is shipment okay first check"); source=i6:check if the shipment is okay.; reason=Adds the invented qualifier 'first check' which is not present in the source text.
+- [N13] Node-level mutation: element=action(n8,"communicate shipment problems first time"); source=i10:if there are any problems with the shipment, communicate them accordingly.; reason=Adds the invented qualifier 'first time' to the communication step and drops 'accordingly'.
+- [N14] Node-level mutation: element=action(n9,"is shipment okay second check"); source=i11:After checking the shipment status again,; reason=Distorts the active step of checking status into a condition-like phrasing ('is shipment okay') and adds 'second check'.
+- [N15] Node-level mutation: element=action(n11,"communicate shipment problems second time"); source=i13:Otherwise, communicate any shipment problems.; reason=Adds the invented qualifier 'second time' to the communication step.
+- [N16] Node-level mutation: element=action(n12,"communicate shipment problems before shipment"); source=i15:In case there were any shipment problems, make sure to communicate them before proceeding to Ship Material.; reason=Distorts the precise timing constraint by altering 'before proceeding to Ship Material' to a generalized 'before shipment'.

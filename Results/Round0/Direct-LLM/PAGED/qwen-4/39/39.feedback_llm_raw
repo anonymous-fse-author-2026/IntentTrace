@@ -1,0 +1,6 @@
+
+
+- `actor(a_default, ...)`: Violates SMC7. The source explicitly assigns responsibilities to "Mac" ("Mac compares the inventory levels...", "Mac needs to manually count...", "Mac selects suppliers..."), but the model assigns all nodes to a generic "Default" actor.
+- `action(n1, "start")`, `action(n6, "process ends")`, `action(n11, "process ends")`: Violates SMC1/SMC2. These hallucinate steps and meta-status text not present in the source. The description simply begins with "the inventory needs to be checked" and terminates directly after "receiving the order".
+- `action(n4, "is inventory level high")`: Violates SMC2. Models a decision condition as an executable task. The source frames this as a control-flow trigger ("If the inventory level is high..."), which is already semantically captured by `branch(b1, XOR)` and its guards, making this action node a misclassified decision point.
+- `action(n5, "no need to manually count inventory")`: Violates SMC2. Describes a skipped activity/consequence rather than a process step. The source states this as a result of high inventory ("Mac doesn't need to manually count the inventory"), not as an action to be performed within the workflow.

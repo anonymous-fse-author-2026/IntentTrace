@@ -1,0 +1,22 @@
+Omission
+- [N1] Node-level omission: i5:On the other hand, if you choose to abort, the process will end. (reason: The source specifies a distinct 'abort' decision path. Because the only candidate element mutates this to a 'No' response, the unit is not faithfully covered.)
+- [N2] Node-level omission: i7:Alternatively, if you decide to abort, the process will end. (reason: The source specifies a distinct 'abort' decision path. Because the only candidate element mutates this to a 'No' response, the unit is not faithfully covered.)
+
+Addition
+- [N3] Node-level addition: action(n11,"end process") (reason: This 'end process' action has no corresponding support in the input elements or source text.)
+- [N4] Node-level addition: action(n6,"provide userdata for flickr") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N5] Node-level addition: guard(b2,n6,"v2 = 'Yes'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"provide userdata for flickr") -> action(n3,"is login successful") -> branch(b1,XOR) -> action(n5,"do you want to try again") -> branch(b2,XOR) -> action(n6,"provide userdata for flickr") -> action(n8,"do you still want to try again") -> branch(b3,XOR) -> action(n9,"provide userdata for flickr") -> action(n11,"end process") -> end(e4)
+- [N7] Within matched traces (0->0) added: action(n2,"provide userdata for flickr")
+- [N8] Within matched traces (1->3) added: action(n2,"provide userdata for flickr")
+- [N9] Within matched traces (1->3) added: action(n3,"is login successful")
+- [N10] Within matched traces (2->2) added: action(n3,"is login successful")
+- [N11] Within matched traces (2->2) added: branch(b2,XOR)
+- [N12] Within matched traces (2->2) added: action(n6,"provide userdata for flickr")
+
+Mutation
+- [N13] Node-level mutation: element=guard(b2,n7,"v2 = 'No'") -> action(n7,"end process"); source=i5:On the other hand, if you choose to abort, the process will end.; reason=The guard models the condition as v2 = 'No' (a negative reply to retry), but the source explicitly requires an 'abort' choice. The triggering logic/value is altered.
+- [N14] Node-level mutation: element=guard(b3,n10,"v3 = 'No'") -> action(n10,"end process"); source=i7:Alternatively, if you decide to abort, the process will end.; reason=Identical distortion as above; guard uses v3 = 'No' instead of reflecting the explicit 'abort' decision stated in the text.
+
+Permutation
+- [N15] Within matched traces (2->2) reordered: expected [i2:please provide the userdata for flickr.] but observed [action(n2,"provide userdata for flickr")] elsewhere; in its place the model has [action(n5,"do you want to try again")]

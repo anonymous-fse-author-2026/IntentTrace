@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: i11:eliciting information from the customer (reason: Input unit i11 specifies the active step of eliciting information, but the model only includes a diagnostic question (n3). The actual elicitation action is missing from the flow.)
+- [N2] Node-level omission: i8:Once the part is received, the team can then contract the customer. (reason: The explicit temporal precondition 'Once the part is received' is not represented as a condition or checkpoint preceding the contract action; only the contract action itself is present.)
+- [N3] Omitted trace (input 0): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i3:If the team needs to elicit information from the customer, they should then check the availability of the parts. -> i11:eliciting information from the customer -> i4:check the availability of the parts -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N4] Omitted trace (input 2): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i6:If the parts are supplied to the customer, the team can also continue with the process. -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N5] Within matched traces (3->0) omitted: i2:identify the parts
+- [N6] Within matched traces (3->1) omitted: i2:identify the parts
+- [N7] Within matched traces (1->2) omitted: i2:identify the parts
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no corresponding instruction or keyword in the source text.)
+- [N9] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Label introduces 'Check if parts are available or need ordering', which is not described anywhere in the source description.)
+- [N10] Node-level addition: label(n9,c2,"Proceed with process or after contacting customer") (reason: Label invents the path descriptor 'after contacting customer', which does not appear in the source and conflates unrelated steps.)
+- [N11] Within matched traces (3->0) added: init(i1)
+- [N12] Within matched traces (3->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N13] Within matched traces (3->0) added: branch(b1,XOR)
+- [N14] Within matched traces (3->0) added: action(n4,"check availability of the parts")
+- [N15] Within matched traces (3->0) added: converge(c2)
+- [N16] Within matched traces (3->1) added: init(i1)
+- [N17] Within matched traces (3->1) added: action(n3,"does the team need to elicit information from the customer?")
+- [N18] Within matched traces (3->1) added: branch(b1,XOR)
+- [N19] Within matched traces (3->1) added: action(n4,"check availability of the parts")
+- [N20] Within matched traces (3->1) added: action(n8,"parts supplied to customer")
+- [N21] Within matched traces (3->1) added: converge(c1)
+- [N22] Within matched traces (3->1) added: converge(c2)
+- [N23] Within matched traces (1->2) added: init(i1)
+- [N24] Within matched traces (1->2) added: action(n3,"does the team need to elicit information from the customer?")
+
+Mutation
+- [N25] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i3:If the team needs to elicit information from the customer, they should then check the availability of the parts.; reason=Guard condition reads 'Need to check availability', which completely replaces the source condition 'needs to elicit information from the customer'. The routing logic and target are altered.
+- [N26] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i5:On the other hand, if they already have the availability information, they can proceed with the process.; reason=Guard drops the source condition 'already have the availability information' and injects unrelated, invented logic 'Proceed with process or after contacting customer'.

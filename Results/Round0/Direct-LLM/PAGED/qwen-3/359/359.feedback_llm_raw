@@ -1,0 +1,5 @@
+
+
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`: The range `{}` is empty and fails to represent the binary availability condition stated in the source text ("If there is no suitable candidate available...", "if there is a suitable candidate available..."); it should be Boolean or `{Yes, No}`.
+- `branch(b1, ...)`, `branch(b2, ...)`: Missing `guard` statements to link `v1` and `v2` to the outgoing edges. The model omits the explicit conditional routing from the source text ("If there is no suitable candidate available, then advertise...", "if there is a suitable candidate available, then continue/proceed"), leaving the XOR splits unconstrained.
+- `action(n2, "Is there a suitable candidate available initially")`, `action(n4, "Is there a suitable candidate available after advertising")`: The source text frames these as decision checkpoints, not executable process steps. Modeling them as `action` nodes misrepresents their payload meaning; they should be removed and their conditions expressed via `guard` clauses on the adjacent branches.

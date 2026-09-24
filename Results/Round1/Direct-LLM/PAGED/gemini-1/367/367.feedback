@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i7:If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs). (reason: The model completely omits the explicit condition 'If the report indicates that the inventory is equal to or below the minimum' before creating POs.)
+- [N2] Node-level omission: i11:If the PO is created, it needs to be reviewed. If the PO needs to be reworked, it needs to be created again. (reason: The model completely omits the loop condition and instruction 'If the PO needs to be reworked, it needs to be created again'.)
+- [N3] Node-level omission: i13:If funds are reserved for the released POs, receive the Packing Slip. (reason: The explicit dependency/condition 'If funds are reserved for the released POs' is missing.)
+- [N4] Node-level omission: i14:If the POs are mailed to the supplier, receive the inventory. (reason: The explicit dependency/condition 'If the POs are mailed to the supplier' is missing.)
+- [N5] Node-level omission: i15:If the Packing Slip is received, proceed to receive the Invoice. (reason: The explicit condition 'If the Packing Slip is received' is missing.)
+- [N6] Node-level omission: i16:If the inventory is received, proceed to receive the Packing Slip. (reason: The explicit condition 'If the inventory is received' is missing.)
+- [N7] Node-level omission: i17:If the Invoice is received, proceed to the Three-way match. If the Three-way match is successful, release the funds. Once the funds are released, issue the payment. After the payment is issued, the Resupply Cycle is complete and the process ends. (reason: The model fails to implement the explicit conditionals and temporal ordering logic ('If the Invoice is received', 'If the Three-way match is successful', 'Once the funds are released', 'After the payment is issued') and misses the 'Resupply Cycle is complete' state.)
+- [N8] Omitted trace (input 1): i1:To start the process for ACME, -> i2:begin with the New Resupply Cycle -> i3:and then Check Levels of Inventory. -> i4:If the inventory is below or equal to the minimum -> i5:generate an Equal to or below minimum Report. -> i7:If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs). -> i11:If the PO is created, it needs to be reviewed. If the PO needs to be reworked, it needs to be created again. -> i9:If the PO is rejected, it needs to be reworked. -> i7:If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs).
+
+Addition
+- [N9] Within matched traces (0->0) added: action(n4,"is inventory below or equal to minimum?")
+- [N10] Within matched traces (0->0) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n7,"\"v1 == 'Yes'\"") -> guard(b1,n5,"\"v1 == 'No'\""); source=i4:If the inventory is below or equal to the minimum; reason=The guards alter the logic by checking an invented arbitrary variable 'v1' for 'Yes' or 'No' instead of directly evaluating the inventory level against the minimum threshold.
+- [N12] Node-level mutation: element=guard(b2,n11,"\"v2 == 'approved'\""); source=i10:If the PO is approved, it is printed and released in the system.; reason=The guard introduces an invented variable 'v2' to check 'approved' rather than directly evaluating the state of the PO.
+- [N13] Node-level mutation: element=guard(b2,n10,"\"v2 == 'rejected'\""); source=i9:If the PO is rejected, it needs to be reworked.; reason=The guard introduces an invented variable 'v2' to check 'rejected' rather than directly evaluating the state of the PO.

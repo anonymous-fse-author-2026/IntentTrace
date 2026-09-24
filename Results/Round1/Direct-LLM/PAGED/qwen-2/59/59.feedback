@@ -1,0 +1,20 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i5:If a new order is placed, it will be recorded in the Accounts Receivable. -> i7:However, if no payments are received, the order is dropped.
+- [N2] Within matched traces (0->0) omitted: i5:If a new order is placed, it will be recorded in the Accounts Receivable.
+- [N3] Within matched traces (1->1) omitted: i5:If a new order is placed, it will be recorded in the Accounts Receivable.
+
+Addition
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (1->1) added: init(i1)
+- [N6] Within matched traces (5->2) added: init(i1)
+- [N7] Within matched traces (5->2) added: action(n9,"Payments are Received")
+- [N8] Within matched traces (3->3) added: init(i1)
+- [N9] Within matched traces (4->4) added: init(i1)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.; reason=The guard uses a generic boolean flag ('v1 = Yes') instead of the specific textual condition required by the source.
+- [N11] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:However, if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance.; reason=The guard substitutes the explicit credit allowance check with a generic variable assignment ('v1 = No').
+- [N12] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:However, if no payments are received, the order is dropped.; reason=Replaces the specific non-payment condition with a generic boolean flag ('v2 = No').
+- [N13] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:If Payments are Received, the process continues.; reason=Uses a generic variable assignment ('v2 = Yes') instead of the explicit payment receipt condition.
+- [N14] Node-level mutation: element=guard(b3,n14,"v3 = 'Yes'"); source=i9:If the installation needs to be scheduled, an Installer will be assigned.; reason=Substitutes the specific scheduling requirement with a generic boolean flag ('v3 = Yes').
+- [N15] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i10:On the other hand, if the order does not require installation, it will be packed for delivery.; reason=Replaces the explicit installation requirement check with a generic variable assignment ('v3 = No').

@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, -> i2:trigger the resupply cycle -> i3:check the inventory level. -> i4:If the inventory level is at or below the minimum, -> i5:create a purchase order. -> i7:After creating the purchase order, review it. -> i8:If the purchase status is rejected, rework the purchase order. -> i11:Rework the purchase order and then review it. -> i7:After creating the purchase order, review it.
+- [N2] Within matched traces (2->0) omitted: i13:At the same time, complete the following steps:
+- [N3] Within matched traces (3->1) omitted: i13:At the same time, complete the following steps:
+
+Addition
+- [N4] Within matched traces (2->0) added: action(n8,"is purchase status rejected")
+- [N5] Within matched traces (2->0) added: branch(b4,AND)
+- [N6] Within matched traces (2->0) added: action(n15,"receive the packing slip")
+- [N7] Within matched traces (3->1) added: action(n8,"is purchase status rejected")
+- [N8] Within matched traces (3->1) added: branch(b4,AND)
+- [N9] Within matched traces (3->1) added: action(n16,"receive the invoice")
+- [N10] Within matched traces (0->2) added: action(n4,"is inventory level at or below minimum")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n5,"\"v1 = true\""); source=i4:If the inventory level is at or below the minimum,; reason=All four guards replace the explicit conditional logic, operators, and values from the source (e.g., 'at or below the minimum', 'above the minimum', 'rejected', 'approved') with generic boolean variable assignments ('v1 = true/false', 'v2 = true/false'), violating the requirement that guards must preserve the source's operators and values.
+- [N12] Node-level mutation: element=guard(b1,n6,"\"v1 = false\""); source=i6:Otherwise, if the inventory level is above the minimum, the process ends.; reason=All four guards replace the explicit conditional logic, operators, and values from the source (e.g., 'at or below the minimum', 'above the minimum', 'rejected', 'approved') with generic boolean variable assignments ('v1 = true/false', 'v2 = true/false'), violating the requirement that guards must preserve the source's operators and values.
+- [N13] Node-level mutation: element=guard(b2,n9,"\"v2 = true\""); source=i8:If the purchase status is rejected, rework the purchase order.; reason=All four guards replace the explicit conditional logic, operators, and values from the source (e.g., 'at or below the minimum', 'above the minimum', 'rejected', 'approved') with generic boolean variable assignments ('v1 = true/false', 'v2 = true/false'), violating the requirement that guards must preserve the source's operators and values.
+- [N14] Node-level mutation: element=guard(b2,n13,"\"v2 = false\""); source=i9:However, if the purchase status is approved, reserve the funds.; reason=All four guards replace the explicit conditional logic, operators, and values from the source (e.g., 'at or below the minimum', 'above the minimum', 'rejected', 'approved') with generic boolean variable assignments ('v1 = true/false', 'v2 = true/false'), violating the requirement that guards must preserve the source's operators and values.

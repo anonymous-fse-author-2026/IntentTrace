@@ -1,0 +1,12 @@
+- `action(n1, "start the process")`: Hallucinated node; the source begins directly with "visit the Amazon.com Marketplace".
+- `"search for a book"`: Explicitly mandated by the source ("Once there, they should search for a book.") but entirely omitted from the model.
+- `action(n3, "did you find the book?")` & `branch(b1, XOR)`: Hallucinates an interrogative step and exclusive gateway; the source outlines a linear sequence without conditional branching.
+- `action(n5, "can you proceed with purchase?")` & `branch(b2, XOR)`: Hallucinates a second decision point and diverging control flow not supported by the source text.
+- `action(n8, "end of process")`, `end(e2)`, `action(n9, "contact support or end process")`, `end(e3)`: Fabricated nodes and alternative termination paths with no correspondence to the description.
+- `defines(v1, ...{})` & `defines(v2, ...{})`: Decision variables are hallucinated and given empty ranges `{}`, while the source text defines no variables or value domains.
+- `actor(a_default, "Default", [...])`: Falsely assigns all tasks to "Default" rather than "the buyer" as specified in the description.
+- Overall control flow: The model's `XOR` branches generate multiple disjoint init-to-end paths, violating the single, unbranched chronological progression explicitly described in the source.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

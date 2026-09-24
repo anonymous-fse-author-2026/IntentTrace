@@ -1,0 +1,19 @@
+- `action(n4, "add item to cart / continue shopping")` & `branch(b1, XOR)`: Merges two mutually exclusive choices into a single action node, whereas the source treats them as distinct alternatives ("If they choose to 'Add item to cart'... if they select 'Continue Shopping'...").
+- `action(n6, "continue shopping")`: Lacks any outgoing `precedence` relation, creating a dead-end that violates the instruction to "continue with the process".
+- `defines(v1, ...)` & `defines(v3, ...)`: Specify empty ranges `{}`, failing to capture the explicit decision values/options implied by the source (e.g., shopping choices, credit card/inventory statuses).
+- `branch(b1, XOR)` & `branch(b3, XOR)`: Operate without `guard` statements, failing to enforce the documented decision criteria ("Add item to cart" vs "Continue Shopping"; "credit card is approved and there is inventory in stock" vs "denied or no inventory").
+- `action(n9, "checkout tasks completed?")` & `branch(b2, XOR)`: Introduce a decision point not found in the description, which proceeds directly from the parallel checks to evaluating the credit card and inventory status.
+- `branch(b3, XOR)` splitting to `action(n11, ...)` and `action(n16, ...)`: Routes the confirmation steps exclusively to the success path, contradicting the source directive "In either case, the order confirmation number should be displayed, followed by the final order being shown...".
+- `actor(a_default, ...)` assigns all nodes to a single "Default" participant, ignoring the clear separation between customer responsibilities ("customer needs to make...", "they should search...", "they need to enter...") and system/merchant operations (authorization, inventory checks, emailing notices).
+- `action(n10, "credit card approved and inventory in stock?")`: Misrepresents a conditional check as a standalone action node instead of modeling it via edge `guard`s, distorting the control-flow logic described in the text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"continue shopping")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['Checkout Tasks Not Completed']`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` uses undefined variable `v2`. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"continue shopping")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Checkout Tasks Not Completed'` on `b2 -> n17` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n17,"v2 = 'Checkout Tasks Not Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

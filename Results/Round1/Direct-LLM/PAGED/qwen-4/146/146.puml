@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+|customer| Customer
+|company| Company
+|company|
+start
+|customer|
+:customer makes an enquiry;
+|company|
+:check if article is in stock;
+:v1: check if article is in stock ({not available, available}); <<objectSignal>>
+if () then ([v1 = 'not available'])
+:end process due to no stock;
+stop
+else ([v1 = 'available'])
+split
+:reserve article;
+split again
+:calculate price;
+end split
+:send offer;
+-> offer sent;
+:wait for customer to accept offer;
+:dispatch article;
+stop
+endif
+@enduml

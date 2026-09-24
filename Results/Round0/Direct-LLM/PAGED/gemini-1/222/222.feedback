@@ -1,0 +1,17 @@
+- `action(n1, "start")`: The model uses a regular action for the start of the process instead of declaring an `init` node, failing to correctly represent the process start logic (SMC4).
+- `branch(b1, XOR)`: Missing a backward control-flow edge (precedence) from `b1` to `action(n7, "Process invoice batch")` to represent the cycle described as "repeated until all invoices are processed" (SMC4).
+- `defines(v1, "More batches to process?", {"No"})`: The variable range only contains "No" and omits a value (e.g., "Yes") needed to trigger the loop for unprocessed invoices (SMC6).
+- `branch(b2, XOR)`: Missing a backward control-flow edge from `b2` to `action(n10, "Clear outbox every hour until completely cleared")` to represent the cycle "done every hour until the outbox is completely cleared" (SMC4).
+- `defines(v2, "Outbox completely cleared?", {"Yes"})`: The variable range only contains "Yes" and omits a value (e.g., "No") needed to trigger the loop for an uncleared outbox (SMC6).
+- `actor(a_default, "Default", [...])`: The model assigns all nodes to a generic "Default" actor, failing to capture the "Data Entry Officer" explicitly mentioned in the source for invoice allocation and outbox clearing (SMC7).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=0 and out=1. | DSL: action(n1,"start")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | Node `b2` has in=1 and out=1. | DSL: branch(b1,XOR); branch(b2,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['Yes']`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n9` uses undefined variable `v1`. | Guard `v2 = 'Yes'` on `b2 -> n12` uses undefined variable `v2`. | DSL: guard(b1,n9,"v1 = 'No'"); guard(b2,n12,"v2 = 'Yes'")
+- [S5] STC19 failed: Every non-init node must be reachable from the init node. | This reachability check requires exactly one init node. | Violations: b1, b2, e1, n1, n10, n11, n12, n2, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); end(e1); action(n1,"start"); action(n10,"Clear outbox every hour until completely cleared"); action(n11,"Outbox completely cleared?"); action(n12,"End of process"); action(n2,"Ensure invoice is ready for verification") (+7 more)
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n9` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> n12` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n9,"v1 = 'No'"); guard(b2,n12,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

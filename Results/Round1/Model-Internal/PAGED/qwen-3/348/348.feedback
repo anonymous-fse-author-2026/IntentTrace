@@ -1,0 +1,68 @@
+Omission
+- [N1] Node-level omission: Bill for Purchased Goods/Services (reason: This initial billing step mentioned in the opening clause is completely absent from the model.)
+- [N2] Node-level omission: i4:further checks are conducted (reason: The mandatory intermediate step for handling non-compliant invoices is missing; the model bypasses it and routes directly to resolution actions.)
+- [N3] Node-level omission: if it is returned, non-compliance is resolved (reason: The conditional resolution path triggered by a returned invoice after payment is not implemented in the flow.)
+- [N4] Within matched traces (1->2) omitted: i4:further checks are conducted
+- [N5] Within matched traces (2->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N6] Within matched traces (2->1) omitted: i10:After 10 days, a reminder is sent and the process ends.
+- [N7] Within matched traces (3->4) omitted: i2:If the invoice is incomplete, it is returned. However, if the invoice is complete, the process continues.
+- [N8] Within matched traces (3->4) omitted: i3:If the invoice is non-compliant, further checks are conducted. On the other hand, if the invoice is compliant, the process continues.
+- [N9] Within matched traces (3->4) omitted: i6:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+- [N10] Within matched traces (4->1) omitted: i4:further checks are conducted
+- [N11] Within matched traces (4->1) omitted: i8:If there is no response, a period of 10 days is given.
+- [N12] Within matched traces (4->1) omitted: i10:After 10 days, a reminder is sent and the process ends.
+- [N13] Within matched traces (5->4) omitted: i2:If the invoice is incomplete, it is returned. However, if the invoice is complete, the process continues.
+- [N14] Within matched traces (5->4) omitted: i3:If the invoice is non-compliant, further checks are conducted. On the other hand, if the invoice is compliant, the process continues.
+- [N15] Within matched traces (5->4) omitted: i4:further checks are conducted
+- [N16] Within matched traces (5->4) omitted: i5:If the issue can be resolved with a phone call, non-compliance is resolved. But if the issue requires mail back, the invoice is returned.
+- [N17] Within matched traces (5->4) omitted: i6:After that, the invoice is paid and if it is returned, non-compliance is resolved.
+
+Addition
+- [N18] Node-level addition: action(n9,"Resolve Compliance Issue") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N19] Node-level addition: action(n11,"Invoice Process Complete") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N20] Node-level addition: action(n12,"Bill Client Process Complete") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N21] Node-level addition: action(n13,"After Receiving Invoice") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N22] Node-level addition: action(n17,"End Billing Process") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N23] Node-level addition: action(n21,"Payment Process Complete") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N24] Node-level addition: action(n22,"Finalize Payment Process") (reason: These action steps are invented wrappers or status markers (e.g., 'Resolve Compliance Issue', 'Invoice Process Complete', 'Bill Client Process Complete', 'After Receiving Invoice', 'End Billing Process', 'Payment Process Complete', 'Finalize Payment Process') with no supporting source text.)
+- [N25] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n17,"End Billing Process") -> end(e5)
+- [N26] Added trace (model 5): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n3,"Receive Invoice") -> branch(b5,AND) -> action(n13,"After Receiving Invoice") -> action(n14,"Wait for 10 Days") -> action(n15,"Send Reminder") -> action(n16,"Client Notified of Payment") -> branch(b6,AND) -> action(n18,"Check Client Satisfaction") -> branch(b3,XOR) -> action(n20,"Continue Process") -> action(n22,"Finalize Payment Process") -> end(e7)
+- [N27] Added trace (model 6): init(i1) -> action(n1,"start") -> action(n2,"Bill Client") -> branch(b4,AND) -> action(n12,"Bill Client Process Complete") -> end(e4)
+- [N28] Within matched traces (0->0) added: init(i1)
+- [N29] Within matched traces (0->0) added: action(n2,"Bill Client")
+- [N30] Within matched traces (0->0) added: branch(b4,AND)
+- [N31] Within matched traces (0->0) added: branch(b5,AND)
+- [N32] Within matched traces (1->2) added: init(i1)
+- [N33] Within matched traces (1->2) added: action(n2,"Bill Client")
+- [N34] Within matched traces (1->2) added: branch(b4,AND)
+- [N35] Within matched traces (1->2) added: branch(b5,AND)
+- [N36] Within matched traces (2->1) added: init(i1)
+- [N37] Within matched traces (2->1) added: branch(b5,AND)
+- [N38] Within matched traces (2->1) added: action(n9,"Resolve Compliance Issue")
+- [N39] Within matched traces (2->1) added: action(n11,"Invoice Process Complete")
+- [N40] Within matched traces (2->1) added: end(e3)
+- [N41] Within matched traces (3->4) added: branch(b4,AND)
+- [N42] Within matched traces (3->4) added: branch(b5,AND)
+- [N43] Within matched traces (3->4) added: action(n15,"Send Reminder")
+- [N44] Within matched traces (3->4) added: branch(b6,AND)
+- [N45] Within matched traces (3->4) added: action(n21,"Payment Process Complete")
+- [N46] Within matched traces (3->4) added: end(e6)
+- [N47] Within matched traces (4->1) added: init(i1)
+- [N48] Within matched traces (4->1) added: branch(b5,AND)
+- [N49] Within matched traces (4->1) added: action(n9,"Resolve Compliance Issue")
+- [N50] Within matched traces (4->1) added: action(n11,"Invoice Process Complete")
+- [N51] Within matched traces (4->1) added: end(e3)
+- [N52] Within matched traces (5->4) added: branch(b4,AND)
+- [N53] Within matched traces (5->4) added: branch(b5,AND)
+- [N54] Within matched traces (5->4) added: action(n15,"Send Reminder")
+- [N55] Within matched traces (5->4) added: branch(b6,AND)
+- [N56] Within matched traces (5->4) added: action(n21,"Payment Process Complete")
+- [N57] Within matched traces (5->4) added: end(e6)
+
+Mutation
+- [N58] Node-level mutation: element=guard(b2,n7,"v2 = 'Non-Compliant'") -> guard(b2,n8,"v2 = 'No'"); source=i3:If the invoice is non-compliant, further checks are conducted. On the other hand, if the invoice is compliant, the process continues.; reason=These guards are structurally attached to the compliance decision (b2) but contain values/routing targets ('Non-Compliant'/'No' leading to phone/mail actions) that belong to the later resolution step (i5), distorting the intended flow and outcomes for i3.
+- [N59] Node-level mutation: element=label(n13,n14,"Yes"); source=i8:If there is no response, a period of 10 days is given.; reason=The label 'Yes' contradicts the source condition 'If there is no response', inverting the logical trigger for the wait step.
+
+Permutation
+- [N60] Within matched traces (2->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n10,"Pay Invoice")]
+- [N61] Within matched traces (4->1) reordered: expected [i7:Simultaneously, the following steps are completed: Bill Client.] but observed [action(n2,"Bill Client")] elsewhere; in its place the model has [action(n10,"Pay Invoice")]

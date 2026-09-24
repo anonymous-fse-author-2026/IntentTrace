@@ -1,0 +1,10 @@
+
+
+- `branch(b1)`, `branch(b2)`, `branch(b3)`: Missing `guard` statements for all decision points, despite the source explicitly defining routing conditions ("If the inventory level is above the minimum...", "if the inventory level is below the minimum...", "If the purchase order is rejected...", "if the purchase order is accepted...").
+- `branch(b2)` with `precedence(b2, n7)`, `precedence(b2, n9)`, `precedence(b2, n12)`: Incorrectly fans out into three paths instead of two (rework vs. continue), violating exclusive-choice control-flow logic.
+- `branch(b3)`: Has zero outgoing `precedence` edges, causing a structural dead-end after "review it again" and contradicting the source directive to "continue the process".
+- `action(n9, "reserve funds and send PO")`: Merges two distinct activities that the source mandates be performed concurrently ("At the same time, complete the following steps: reserve funds for the purchase and send the purchase order to the supplier."), which requires an AND split/gateway rather than a single sequential action.
+- `action(n9)` through `end(e2)` and `action(n12)` through `end(e3)`: Unwarrantedly duplicates the post-acceptance workflow into two parallel tracks, whereas the description outlines a single unified progression ("Once the packing slip is received, release the reserved funds and then the process ends.").
+- `action(n1)`, `action(n4)`, `action(n11)`, `action(n14)`: Hallucinates artificial placeholder steps ("start", "end process: above minimum", "end process: completed") not documented in the source text.
+- `defines(v1,...)`, `defines(v2,...)`, `defines(v3,...)`: Specifies empty value ranges `{}`, failing to capture the categorical decision options (above/below, rejected/accepted) inherently required to evaluate the documented branching conditions.
+- `precedence(n7, n8)` feeding into `branch(b3)`: Breaks the described iterative feedback loop ("After reworking the purchase order, review it again."), as `b3` terminates the flow instead of routing control back to the initial review decision point (`n6`/`b2`).

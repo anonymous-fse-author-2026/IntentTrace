@@ -1,0 +1,190 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Start User Task"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Continue Process after Service Task 1"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Continue Process after Service Task 2"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "End Process due to Service Task 3"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Is there a Manual Task?"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Task Type",
+      "R_X": [
+        "Service Task 1",
+        "Service Task 2",
+        "Service Task 3"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b1",
+        "n3",
+        "n5",
+        "n6",
+        "c1",
+        "n8",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "\"v1 = 'Service Task 1'\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "\"v1 = 'Service Task 2'\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "\"v1 = 'Service Task 3'\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "Initially, there is a User Task."
+    },
+    {
+      "id": "i2",
+      "content": "If the task is"
+    },
+    {
+      "id": "i3",
+      "content": "is \"Service Task 1\""
+    },
+    {
+      "id": "i4",
+      "content": "then the process should continue."
+    },
+    {
+      "id": "i6",
+      "content": "If it is \"Service Task 2\""
+    },
+    {
+      "id": "i7",
+      "content": "is \"Service Task 2\""
+    },
+    {
+      "id": "i8",
+      "content": "the process should also continue."
+    },
+    {
+      "id": "i9",
+      "content": "if it is \"Service Task 3\""
+    },
+    {
+      "id": "i10",
+      "content": "is \"Service Task 3\""
+    },
+    {
+      "id": "i11",
+      "content": "then the process will come to an end."
+    },
+    {
+      "id": "i12",
+      "content": "After that, if there is a Manual Task, the process will end."
+    }
+  ]
+}

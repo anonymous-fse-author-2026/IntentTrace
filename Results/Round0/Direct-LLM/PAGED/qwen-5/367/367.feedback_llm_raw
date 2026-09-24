@@ -1,0 +1,6 @@
+
+
+- `branch(b1, XOR)` and its outgoing edges: Missing `guard` statements to enforce conditional routing. The source explicitly ties the split to inventory thresholds: "If the inventory is below or equal to the minimum... If the inventory is greater than the minimum...".
+- `action(n7, "generate equal to or below minimum report")`: Terminates without any outgoing `precedence` statements, creating an invalid dead-end path. The source mandates immediate continuation: "If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs)."
+- `defines(v1, "is inventory below or equal to minimum?", {})`: Specifies an empty value range `{}`, violating SMC6. The source describes a binary evaluation that requires a valid domain (e.g., `{true, false}` or `{Yes, No}`).
+- Truncation after `end(e1)` / `action(n7)`: Violates SMC1 and SMC5 by completely omitting all documented downstream behaviors, including PO creation, the mandatory review/approval/rework cycle, simultaneous fund reservation and PO mailing, sequential receipt of packing slips/inventory/invoices, three-way matching, fund release, payment issuance, and the final process completion ("After the payment is issued, the Resupply Cycle is complete and the process ends.").

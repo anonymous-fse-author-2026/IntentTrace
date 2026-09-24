@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements to define edge conditions, omitting the documented decision rules ("if someone 'Knows SLA'", "If they don't 'Know SLA'", "If the task is 'Urgent'", "If it is 'Non Urgent'").
+- `branch(b3, AND)`: Incorrectly introduces concurrent parallel execution for a step that is strictly sequential in the source text, violating the intended control-flow logic.
+- `precedence(b3, c2)`: Establishes an invalid control-flow path where the "Look up" step synchronously routes to `c2` (leading to `end`), bypassing "enter date" and the urgency evaluation, which contradicts the chronological requirement "After that, they should enter the date."
+- `defines(v1, "knows sla?", {})` & `defines(v2, "urgent?", {})`: Variable ranges are defined as empty sets `{}`, failing to capture the explicit value domains implied by the text (e.g., Yes/No or True/False, Urgent/Non Urgent).
+- `action(n2, "knows sla?")` & `action(n4, "urgent?")`: Decision checkpoints are modeled as standalone executable actions rather than being evaluated as predicates at the subsequent `branch` nodes, distorting the faithful mapping of conditional routing described in the source.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required.

@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates an extra initial step; the description begins directly with receiving the form ("At the start, we receive a form.").
+- `branch(b1, XOR)` and precedence edges to `n4`, `n5`, `n6`, `n7`: Violates SMC4/SMC5 by modeling concurrent tasks as mutually exclusive alternatives. The text states that upon continuing, checking income, deductibles, and house occur "at the same time", requiring an AND-split for these three steps rather than grouping them under an XOR with the termination path.
+- `defines(v1, "check if form is complete", {})` and `defines(v2, "make decision", {})`: Violates SMC6 by using empty ranges `{}` instead of faithfully capturing the explicit conditional outcomes in the text (`{"needs to be sent back", "need to check the income"}` for v1; `{"check the declaration", "invite the declarant"}` for v2).
+- Missing `guard` statements on `b1` and `b2` outgoing edges: Violates SMC4 by failing to encode the explicit decision criteria ("if it needs to be sent back", "if we need to check the income", "if we need to check the declaration", "otherwise... invite the declarant") as edge conditions.
+- `action(n4, "end process: ...")`, `action(n9, "end process: ...")`, `action(n10, "invite declarant")`: Violates SMC1/SMC2 by introducing superfluous action nodes for terminal conditions; the description treats these as direct termination events ("the process ends"), which should map directly to `end` nodes via guards/precedence.

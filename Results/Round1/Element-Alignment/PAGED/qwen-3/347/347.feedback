@@ -1,0 +1,43 @@
+Omission
+- [N1] Within matched traces (0->3) omitted: i5:If the report indicates that the inventory is above the minimum, the process ends.
+- [N2] Within matched traces (1->2) omitted: i8:If the PO is created, it needs to be reviewed.
+- [N3] Within matched traces (1->2) omitted: i6:If the PO is rejected, it needs to be reworked.
+- [N4] Within matched traces (1->2) omitted: i9:If the PO needs to be reworked, it needs to be created again.
+
+Addition
+- [N5] Within matched traces (0->3) added: init(i1)
+- [N6] Within matched traces (0->3) added: action(n4,"Is inventory below or equal to minimum")
+- [N7] Within matched traces (0->3) added: branch(b1,XOR)
+- [N8] Within matched traces (1->2) added: init(i1)
+- [N9] Within matched traces (1->2) added: branch(b1,XOR)
+- [N10] Within matched traces (1->2) added: branch(b2,XOR)
+- [N11] Within matched traces (1->2) added: action(n9,"process ends")
+- [N12] Within matched traces (1->2) added: end(e1)
+- [N13] Within matched traces (2->0) added: init(i1)
+- [N14] Within matched traces (2->0) added: branch(b1,XOR)
+- [N15] Within matched traces (2->0) added: branch(b2,XOR)
+- [N16] Within matched traces (2->0) added: converge(c1)
+- [N17] Within matched traces (2->0) added: action(n10,"Is PO rejected")
+- [N18] Within matched traces (2->0) added: branch(b3,XOR)
+- [N19] Within matched traces (3->1) added: init(i1)
+- [N20] Within matched traces (3->1) added: branch(b1,XOR)
+- [N21] Within matched traces (3->1) added: branch(b2,XOR)
+- [N22] Within matched traces (3->1) added: converge(c1)
+- [N23] Within matched traces (3->1) added: action(n10,"Is PO rejected")
+- [N24] Within matched traces (3->1) added: branch(b3,XOR)
+- [N25] Within matched traces (3->1) added: converge(c2)
+- [N26] Within matched traces (3->1) added: action(n24,"Receive Packing Slip")
+
+Mutation
+- [N27] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=If the inventory is below or equal to the minimum; reason=Replaces the explicit comparison threshold and operator with an abstract boolean variable assignment (v1='Yes').
+- [N28] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=If the inventory is greater than the minimum; reason=Substitutes the stated numerical/logical condition with an abstract negation variable (v1='No').
+- [N29] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=If the report indicates that the inventory is equal to or below the minimum; reason=Uses an abstract affirmative variable (v2='Yes') instead of the explicit report-based condition text.
+- [N30] Node-level mutation: element=guard(b2,n9,"v2 = 'No'"); source=If the report indicates that the inventory is above the minimum; reason=Relies on an abstract negative variable (v2='No') rather than the source condition.
+- [N31] Node-level mutation: element=guard(b3,n11,"v3 = 'Yes'"); source=If the PO is rejected; reason=Abstracts the rejection status into a generic boolean (v3='Yes') instead of preserving the explicit status check.
+- [N32] Node-level mutation: element=guard(b3,n12,"v3 = 'No'"); source=If the PO is rejected; reason=Models the negative path using a generic boolean (v3='No') rather than the source's explicit routing logic.
+- [N33] Node-level mutation: element=guard(b4,n13,"v4 = 'Yes'"); source=If the PO is approved; reason=Replaces the explicit approval condition with an abstract boolean (v4='Yes').
+- [N34] Node-level mutation: element=guard(b4,n14,"v4 = 'No'"); source=If the PO is approved; reason=Uses an abstract negative boolean (v4='No') instead of the source's explicit fallback/rework condition.
+
+Permutation
+- [N35] Within matched traces (2->0) reordered: expected [i7:If the PO is approved, it is printed and released in the system.] but observed [action(n13,"print and release PO in system") -> action(n12,"Is PO approved")] elsewhere; in its place the model has [action(n17,"PO needs to be reviewed")]
+- [N36] Within matched traces (3->1) reordered: expected [i7:If the PO is approved, it is printed and released in the system.] but observed [action(n13,"print and release PO in system") -> action(n12,"Is PO approved")] elsewhere; in its place the model has [action(n17,"PO needs to be reviewed")]

@@ -1,0 +1,6 @@
+
+
+- action(n3, "Inventory Level at or below minimum") & action(n7, "Purchase Order Approved"): Incorrectly modeled as executable steps instead of decision conditions; the source text frames them as conditional checks ("If the 'Inventory level is at or below the minimum'", "If the Purchase Order is approved") that should govern branch routing, not standalone activities (SMC2, SMC4).
+- precedence(n2, n3), precedence(n3, b1), precedence(n6, n7), precedence(n7, b2): Forces sequential execution through the condition nodes before the XOR splits, contradicting source chronology where decisions occur immediately after "checking the Inventory Level" and "Reviewing the Purchase Order" without intervening steps (SMC3, SMC4).
+- branch(b1, XOR), branch(b2, XOR): Missing guard statements to associate v1 and v2 with their outgoing paths (b1→n4/n5, b2→n8/n9); the model fails to explicitly encode the conditional logic required by the source text for routing (SMC4, SMC6).
+- action(n11, "Reviewing Purchase Order"): Lacks an outgoing precedence edge, breaking the required feedback loop; the source explicitly states "In case the order needs to be reworked, review the Purchase Order again," necessitating a return path to the review/decision point (SMC1, SMC3, SMC4).

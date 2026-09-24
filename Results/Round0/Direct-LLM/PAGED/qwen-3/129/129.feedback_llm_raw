@@ -1,0 +1,5 @@
+
+
+- `branch(b1, XOR)` / `branch(b2, XOR)`: Missing `guard` statements. The source explicitly defines conditional paths ("If the application is rejected, the process ends", "if special terms are agreed upon, the process continues"), but the model omits the required `guard(...)` declarations to evaluate variables `v1` and `v2` on the outgoing edges, leaving the XOR choices undefined (SMC4).
+- `defines(v1, "is application rejected?", {})` / `defines(v2, "are special terms agreed upon?", {})`: Empty value ranges `{}`. The source implies binary decisions for both checks, so the variables must specify a non-empty domain (e.g., `{true, false}` or `{yes, no}`) to faithfully reflect the decision space (SMC6).
+- `action(n8, "end process: no special terms")` / `precedence(b2, n8)` / `end(e3)`: Hallucinated path. The source text only documents two termination conditions ("process ends" upon rejection or fund disbursement) and gives no stated outcome or instruction for when special terms are not agreed upon (SMC1).

@@ -1,0 +1,6 @@
+
+
+- `action(n1, "start")`: Hallucinates a preliminary step not in the description, which explicitly states: "the process begins by entering expenses."
+- `precedence` edges from `n5` and `n8`: Missing return connections to close the cycles. The text mandates that disapproval means the process "goes back to entering expenses," but the model omits `precedence(n5, n2)` and `precedence(n8, n2)` (or `n3`), causing rejection paths to terminate prematurely instead of looping.
+- `action(n5, "enter expenses")` & `action(n8, "enter expenses")`: Incorrectly duplicates the expense-entry step instead of routing back to the existing `n2`, fracturing the iterative loop structure described in the source.
+- `defines(v1, "is request approved?", ...)` & `defines(v2, "is request approved?", ...)`: Introduces two separate variables for the same single decision criterion. The source describes one recurring check ("checks again if the request is approved or not"), implying repeated evaluation of a single variable rather than two independent ones.

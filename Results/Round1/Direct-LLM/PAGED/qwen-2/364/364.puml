@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:receive form;
+:check if form is complete;
+:v1: check if form is complete ({SentBack, Continue}); <<objectSignal>>
+fork
+if () then ([v1 = 'SentBack'] needs to be sent back)
+:end process: form needs to be sent back;
+stop
+endif
+fork again
+if () then ([v1 = 'Continue'] check income)
+:check income;
+:make decision;
+:v2: make decision ({CheckDeclaration, InviteDeclarant}); <<objectSignal>>
+if () then ([v2 = 'CheckDeclaration'] check declaration)
+:end process: check declaration;
+stop
+else ([v2 = 'InviteDeclarant'] invite declarant)
+:invite declarant;
+stop
+endif
+endif
+fork again
+if () then ([v1 = 'Continue'] check deductibles)
+:check deductibles;
+endif
+fork again
+if () then ([v1 = 'Continue'] check house)
+:check house;
+endif
+end fork
+@enduml

@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Lack corresponding `guard` statements to encode the source's explicit decision conditions ("If the inventory level is at or below the minimum...", "If the purchase status is rejected/approved..."), leaving the choice logic unrepresented. (SMC4)
+- `defines(v1, ...)` & `defines(v2, ...)`: Declared with empty value ranges `{}` and never referenced in any `guard`, failing to reflect the boolean/comparative nature of the source conditions. (SMC4, SMC6)
+- `action(n3, "inventory at or below minimum")` & `action(n7, "purchase status approved")`: Incorrectly modeled as executable tasks. The source text presents these as conditional checks that drive branching, not as sequential process steps. (SMC2, SMC4)
+- `precedence(n10, n7)`: Routes the rework feedback loop back to `action(n7)` instead of directly to `branch(b2)`, misrepresenting the source's cycle back to the status evaluation ("Rework the purchase order and then review it."). (SMC3, SMC4)
+- `action(n5, "process ends")`, `action(n16, "process ends")`, `action(n17, "process ends")`: Misclassified as actions. The source uses "the process ends" to denote termination events, which should map directly to `end()` nodes rather than intermediate tasks. (SMC2)

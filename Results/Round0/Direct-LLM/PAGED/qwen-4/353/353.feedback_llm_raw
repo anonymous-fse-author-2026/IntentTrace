@@ -1,0 +1,9 @@
+
+
+- `branch(b10, AND)`: Introduces parallel/concurrent execution not present in the source text, which outlines a strictly sequential evaluation flow ("After checking the sum of the order... Once again, check the sum of the order.").
+- `defines(v6, "is sum of order greater than 2000", {"No"})`: Constrains a decision variable to a single value `{"No"}`, contradicting the source text's conditional nature where the check can evaluate to true or false.
+- `guard(b6, n13, v6 = 'No')` and `guard(b6, n14, v6 = 'No')`: Both outgoing edges of XOR branch `b6` use the identical guard condition, violating exclusive-choice semantics and making edge differentiation impossible.
+- `precedence(b5, n9)` with `guard(b5, n9, v5 = 'No')`: Creates a self-loop back to action `n9` that is not described in the source text, which proceeds linearly to the next step without iterative re-evaluation.
+- `precedence(b9, n18)` with `guard(b9, n18, v9 = 'No')`: Creates another undocumented self-loop back to action `n18`, deviating from the source's linear progression.
+- `precedence(n5, c1)`, `precedence(n6, c1)`, `precedence(n8, c1)`, `precedence(n10, c1)`: Route early evaluation paths directly to converge node `c1`, prematurely skipping the subsequent rounds of order-sum checks explicitly repeated in the source ("After checking the sum... Once again, check the sum...") before reaching "create the bill".
+- `precedence(b5, c1)` and `precedence(b9, c1)`: Connect XOR branches directly to converge node `c1` without intermediate action nodes, breaking the expected control-flow structure and misaligning with the source's explicit step-by-step descriptions.

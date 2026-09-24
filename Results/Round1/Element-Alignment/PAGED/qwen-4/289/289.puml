@@ -1,0 +1,63 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start ExpenseReport process by clicking Start then selecting Edit Report;
+:Is expense greater than 1000;
+:v1: Is expense greater than 1000 ({Yes, No}); <<objectSignal>>
+if () then ([v1 = "Yes"])
+:review the report;
+else ([v1 = "No"])
+:Is translation needed;
+:v2: Is translation needed ({Yes, No}); <<objectSignal>>
+if () then ([v2 = "Yes"])
+:translate the receipts;
+else ([v2 = "No"])
+:confirm the receipts;
+endif
+endif
+:evaluate review decision;
+:v3: evaluate review decision ({Yes, No}); <<objectSignal>>
+if () then ([v3 = "Yes"])
+:Is report rejected after review;
+:v4: Is report rejected after review ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "Yes"])
+:edit the report;
+endif
+else ([v3 = "No"])
+:Is report approved after review;
+:v5: Is report approved after review ({Yes, No}); <<objectSignal>>
+if () then ([v5 = "Yes"])
+:check if translation is needed;
+:v6: check if translation is needed ({Yes, No}); <<objectSignal>>
+if () then ([v6 = "Yes"])
+:Is report rejected after second review;
+:v7: Is report rejected after second review ({Yes, No}); <<objectSignal>>
+if () then ([v7 = "Yes"])
+:edit the report;
+endif
+else ([v6 = "No"])
+:Is report approved after second review;
+:v8: Is report approved after second review ({Yes, No}); <<objectSignal>>
+if () then ([v8 = "Yes"])
+:translate the receipts;
+:confirm receipts;
+:evaluate receipts decision;
+:v9: evaluate receipts decision ({Yes, No}); <<objectSignal>>
+if () then ([v9 = "Yes"])
+:Are receipts accepted;
+:v10: Are receipts accepted ({Yes, No}); <<objectSignal>>
+if () then ([v10 = "Yes"])
+:process the expense;
+:end process;
+stop
+else ([v10 = "No"])
+:edit the report;
+endif
+endif
+endif
+endif
+endif
+endif
+@enduml

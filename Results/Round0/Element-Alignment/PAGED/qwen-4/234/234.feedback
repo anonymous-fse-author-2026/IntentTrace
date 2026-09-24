@@ -1,0 +1,14 @@
+Omission
+- [N1] Node-level omission: i16:After PPC initiates production, the goods will be produced. (reason: Explicit production execution step is missing from the model between PPC initiation and the subsequent cancellation check.)
+- [N2] Node-level omission: i24:send the goods (reason: Dispatch action for the physical goods is absent in the parallel logistics/commissioning pathway.)
+- [N3] Node-level omission: i21:ensure that the memo is achieved in the warehouse (reason: Verification step confirming warehouse receipt of the release memo is not represented as a distinct action or gate.)
+
+Addition
+- [N4] Node-level addition: action(n15,"release order (<5k€)") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b3,n15,"v3 = '<= 5000 €'"); source=i10:If the order is worth less than 5.000 €, release it.; reason=The guard uses '<=' (less than or equal) while the source explicitly states 'less than' (<). The boundary condition for exactly 5000 € is incorrectly included in the lower branch.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n13` has in=1 and out=0. | DSL: action(n13,"contact selling agency (incorrect)")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n13 | DSL: action(n13,"contact selling agency (incorrect)")

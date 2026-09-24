@@ -1,0 +1,697 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1",
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "To begin with, the first step is Course registration."
+      ],
+      "justification": "Initiates the process and captures the explicit first registration step."
+    },
+    {
+      "refs": [
+        "action:n3",
+        "guard:b_exception->n4",
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "If an exception is needed, then a Request for the exception should be made."
+      ],
+      "justification": "Models the condition, decision point, positive guard, and corresponding request action correctly."
+    },
+    {
+      "refs": [
+        "guard:b_exception->c_exception"
+      ],
+      "verbatim_texts": [
+        "On the other hand, if an exception is not needed, the process can continue."
+      ],
+      "justification": "Covers the negative path and rejoins the flow as described."
+    },
+    {
+      "refs": [
+        "action:n5",
+        "action:n6",
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "After the exception is approved, the next step is course enrollment, followed by seminar group enrollment."
+      ],
+      "justification": "Captures the approval state and the sequential enrollment steps faithfully."
+    },
+    {
+      "refs": [
+        "action:n8",
+        "action:n9",
+        "action:n10"
+      ],
+      "verbatim_texts": [
+        "Once the seminar group enrollment is completed, the homework assignment can be started. After working on the homework, it should be turned in. The homework will then be evaluated, and the process can continue."
+      ],
+      "justification": "Sequentially models starting, submitting, and evaluating homework, with structural convergence representing continuation."
+    },
+    {
+      "refs": [
+        "action:n11",
+        "guard:b_homework->n12",
+        "action:n12"
+      ],
+      "verbatim_texts": [
+        "If it was not the last homework, another homework assignment will be given."
+      ],
+      "justification": "Decision and guard correctly route to assigning another homework when the 'not last' condition applies."
+    },
+    {
+      "refs": [
+        "guard:b_homework->n13",
+        "action:n13"
+      ],
+      "verbatim_texts": [
+        "However, if it was the last homework, the process can continue."
+      ],
+      "justification": "Guard and action handle the final iteration exit correctly."
+    },
+    {
+      "refs": [
+        "action:n14",
+        "action:n15"
+      ],
+      "verbatim_texts": [
+        "At the same time, two additional steps should be completed: granting accreditation and announcing the date of the exam."
+      ],
+      "justification": "Correctly uses an AND gateway to model simultaneous parallel tasks as stated."
+    },
+    {
+      "refs": [
+        "action:n16",
+        "action:n17",
+        "action:n18"
+      ],
+      "verbatim_texts": [
+        "After signing up for the exam, it should be attended. Once the exam is attended, it will be evaluated."
+      ],
+      "justification": "Structural join followed by sequential exam preparation and grading steps."
+    },
+    {
+      "refs": [
+        "action:n19",
+        "guard:b_exam_result->n20",
+        "action:n20"
+      ],
+      "verbatim_texts": [
+        "If the exam is passed, the course is considered passed and the process can continue."
+      ],
+      "justification": "Condition and decision correctly route to the successful outcome."
+    },
+    {
+      "refs": [
+        "guard:b_exam_result->n21",
+        "action:n21"
+      ],
+      "verbatim_texts": [
+        "However, if the exam is failed, another sign-up for the exam is required."
+      ],
+      "justification": "Negative path loops back to re-registration; end node marks process termination for the success path."
+    },
+    {
+      "refs": [
+        "action:n19",
+        "guard:b_exam_result->n20",
+        "action:n20",
+        "guard:b_exam_result->n21",
+        "action:n21"
+      ],
+      "verbatim_texts": [
+        "If the exam is passed, the course is considered passed. If the exam is failed, another sign-up for the exam is required."
+      ],
+      "justification": "Explicit redundancy in the source text is fully captured by the same decision structure, preserving behaviour."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "Course registration",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: Course registration"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "Is exception needed?",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: Is exception needed?"
+    },
+    {
+      "ref_id": "branch:b_exception",
+      "kind": "branch",
+      "node_id": "b_exception",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_exception",
+        "b_exception"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_exception (XOR)"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "Request for exception",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: Request for exception"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "Exception approved",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: Exception approved"
+    },
+    {
+      "ref_id": "converge:c_exception",
+      "kind": "converge",
+      "node_id": "c_exception",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_exception",
+        "c_exception"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_exception"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "Course enrollment",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: Course enrollment"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "Seminar group enrollment",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: Seminar group enrollment"
+    },
+    {
+      "ref_id": "converge:c_homework",
+      "kind": "converge",
+      "node_id": "c_homework",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_homework",
+        "c_homework"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_homework"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "Homework assignment started",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: Homework assignment started"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "Turn in homework",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: Turn in homework"
+    },
+    {
+      "ref_id": "action:n10",
+      "kind": "action",
+      "node_id": "n10",
+      "gateway": "",
+      "string_value": "Homework evaluated",
+      "aliases": [
+        "action:n10",
+        "n10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n10: Homework evaluated"
+    },
+    {
+      "ref_id": "action:n11",
+      "kind": "action",
+      "node_id": "n11",
+      "gateway": "",
+      "string_value": "Is homework the last one?",
+      "aliases": [
+        "action:n11",
+        "n11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n11: Is homework the last one?"
+    },
+    {
+      "ref_id": "branch:b_homework",
+      "kind": "branch",
+      "node_id": "b_homework",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_homework",
+        "b_homework"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_homework (XOR)"
+    },
+    {
+      "ref_id": "action:n12",
+      "kind": "action",
+      "node_id": "n12",
+      "gateway": "",
+      "string_value": "Another homework assigned",
+      "aliases": [
+        "action:n12",
+        "n12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n12: Another homework assigned"
+    },
+    {
+      "ref_id": "action:n13",
+      "kind": "action",
+      "node_id": "n13",
+      "gateway": "",
+      "string_value": "the process can continue",
+      "aliases": [
+        "action:n13",
+        "n13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n13: the process can continue"
+    },
+    {
+      "ref_id": "branch:b_parallel",
+      "kind": "branch",
+      "node_id": "b_parallel",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_parallel",
+        "b_parallel"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_parallel (AND)"
+    },
+    {
+      "ref_id": "action:n14",
+      "kind": "action",
+      "node_id": "n14",
+      "gateway": "",
+      "string_value": "Grant accreditation",
+      "aliases": [
+        "action:n14",
+        "n14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n14: Grant accreditation"
+    },
+    {
+      "ref_id": "action:n15",
+      "kind": "action",
+      "node_id": "n15",
+      "gateway": "",
+      "string_value": "Announce exam date",
+      "aliases": [
+        "action:n15",
+        "n15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n15: Announce exam date"
+    },
+    {
+      "ref_id": "converge:c_parallel",
+      "kind": "converge",
+      "node_id": "c_parallel",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_parallel",
+        "c_parallel"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_parallel"
+    },
+    {
+      "ref_id": "converge:c_exam_signup",
+      "kind": "converge",
+      "node_id": "c_exam_signup",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_exam_signup",
+        "c_exam_signup"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_exam_signup"
+    },
+    {
+      "ref_id": "action:n16",
+      "kind": "action",
+      "node_id": "n16",
+      "gateway": "",
+      "string_value": "Sign up for exam",
+      "aliases": [
+        "action:n16",
+        "n16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n16: Sign up for exam"
+    },
+    {
+      "ref_id": "action:n17",
+      "kind": "action",
+      "node_id": "n17",
+      "gateway": "",
+      "string_value": "Attend exam",
+      "aliases": [
+        "action:n17",
+        "n17"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n17: Attend exam"
+    },
+    {
+      "ref_id": "action:n18",
+      "kind": "action",
+      "node_id": "n18",
+      "gateway": "",
+      "string_value": "Exam evaluation",
+      "aliases": [
+        "action:n18",
+        "n18"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n18: Exam evaluation"
+    },
+    {
+      "ref_id": "action:n19",
+      "kind": "action",
+      "node_id": "n19",
+      "gateway": "",
+      "string_value": "Is exam passed?",
+      "aliases": [
+        "action:n19",
+        "n19"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n19: Is exam passed?"
+    },
+    {
+      "ref_id": "branch:b_exam_result",
+      "kind": "branch",
+      "node_id": "b_exam_result",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_exam_result",
+        "b_exam_result"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_exam_result (XOR)"
+    },
+    {
+      "ref_id": "action:n20",
+      "kind": "action",
+      "node_id": "n20",
+      "gateway": "",
+      "string_value": "Course passed",
+      "aliases": [
+        "action:n20",
+        "n20"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n20: Course passed"
+    },
+    {
+      "ref_id": "action:n21",
+      "kind": "action",
+      "node_id": "n21",
+      "gateway": "",
+      "string_value": "Sign up for exam again",
+      "aliases": [
+        "action:n21",
+        "n21"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n21: Sign up for exam again"
+    },
+    {
+      "ref_id": "guard:b_exception->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Yes'",
+      "aliases": [
+        "guard:b_exception->n4"
+      ],
+      "from": "b_exception",
+      "to": "n4",
+      "source_line": "guard b_exception->n4: v1 = 'Yes'",
+      "guard": {
+        "from": "b_exception",
+        "to": "n4",
+        "condition": "v1 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_exception->c_exception",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'No'",
+      "aliases": [
+        "guard:b_exception->c_exception"
+      ],
+      "from": "b_exception",
+      "to": "c_exception",
+      "source_line": "guard b_exception->c_exception: v1 = 'No'",
+      "guard": {
+        "from": "b_exception",
+        "to": "c_exception",
+        "condition": "v1 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_homework->n12",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'No'",
+      "aliases": [
+        "guard:b_homework->n12"
+      ],
+      "from": "b_homework",
+      "to": "n12",
+      "source_line": "guard b_homework->n12: v2 = 'No'",
+      "guard": {
+        "from": "b_homework",
+        "to": "n12",
+        "condition": "v2 = 'No'"
+      }
+    },
+    {
+      "ref_id": "guard:b_homework->n13",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v2 = 'Yes'",
+      "aliases": [
+        "guard:b_homework->n13"
+      ],
+      "from": "b_homework",
+      "to": "n13",
+      "source_line": "guard b_homework->n13: v2 = 'Yes'",
+      "guard": {
+        "from": "b_homework",
+        "to": "n13",
+        "condition": "v2 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_exam_result->n20",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'Yes'",
+      "aliases": [
+        "guard:b_exam_result->n20"
+      ],
+      "from": "b_exam_result",
+      "to": "n20",
+      "source_line": "guard b_exam_result->n20: v3 = 'Yes'",
+      "guard": {
+        "from": "b_exam_result",
+        "to": "n20",
+        "condition": "v3 = 'Yes'"
+      }
+    },
+    {
+      "ref_id": "guard:b_exam_result->n21",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v3 = 'No'",
+      "aliases": [
+        "guard:b_exam_result->n21"
+      ],
+      "from": "b_exam_result",
+      "to": "n21",
+      "source_line": "guard b_exam_result->n21: v3 = 'No'",
+      "guard": {
+        "from": "b_exam_result",
+        "to": "n21",
+        "condition": "v3 = 'No'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 12,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 32,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 27,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 27,
+    "total_mappable_targets": 37,
+    "input_text_length": 1236,
+    "element_count": 37
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

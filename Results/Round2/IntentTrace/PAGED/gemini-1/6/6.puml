@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:ask the 1st Level Support if there is an issue;
+:v1: is issue resolved ({resolved, 1st Level issue, other}); <<objectSignal>>
+switch ()
+case ([v1 = 'resolved'])
+:provide feedback for the account manager;
+case ([v1 = '1st Level issue'])
+:ask the developer for assistance;
+:check result again is issue resolved;
+:v2: check result again is issue resolved ({resolved, still a 1st Level issue}); <<objectSignal>>
+if () then ([v2 = 'resolved'])
+:provide feedback for the account manager;
+else ([v2 = 'still a 1st Level issue'])
+:ask the developer for help;
+:provide feedback for the account manager;
+endif
+case ([v1 = 'other'])
+:ask the developer;
+:provide feedback for the 1st Level support;
+:provide feedback for the 1st Level support;
+:provide feedback for the account manager;
+endswitch
+:end;
+stop
+@enduml

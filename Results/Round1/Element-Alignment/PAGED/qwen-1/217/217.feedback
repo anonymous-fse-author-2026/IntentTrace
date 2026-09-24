@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i2: If the decision is to send a negative email, (reason: No element faithfully implements this condition; the only corresponding guards distort it into abstract variables, leaving the original logic uncovered.)
+- [N2] Node-level omission: i4: However, if the decision is to invite the candidate, (reason: No element faithfully implements this condition; the only corresponding guards distort it into abstract variables, leaving the original logic uncovered.)
+- [N3] Omitted trace (input 0): i1:To begin the process, start by reviewing the incoming CV. -> i2:If the decision is to send a negative email, -> i3:then the process ends.
+- [N4] Omitted trace (input 1): i1:To begin the process, start by reviewing the incoming CV. -> i4:However, if the decision is to invite the candidate, -> i5:proceed with scheduling an interview. -> i6:Once the interview is conducted -> i7:the process comes to an end.
+
+Addition
+- [N5] Node-level addition: action(n2,"Decision to send a negative email") (reason: Invents a discrete 'Decision' action step not present in the source text, which flows directly from the review step into the conditional split.)
+- [N6] Node-level addition: action(n3,"Send negative email and end process") (reason: Invents an explicit 'Send negative email' activity step; the source only states that the process terminates upon making that decision, without describing the actual sending as a process task.)
+- [N7] Added trace (model 0): init(i1) -> action(n1,"Start reviewing the incoming CV") -> action(n2,"Decision to send a negative email") -> branch(b1,XOR) -> action(n3,"Send negative email and end process") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"Start reviewing the incoming CV") -> action(n2,"Decision to send a negative email") -> branch(b1,XOR) -> action(n4,"Schedule an interview with the candidate") -> action(n5,"Conduct the interview") -> action(n6,"End process after interview") -> end(e2)
+
+Mutation
+- [N9] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2: If the decision is to send a negative email,; reason=Replaces the explicit business condition with a generic placeholder variable 'v1 = Yes', stripping away the specific decision criterion.
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i4: However, if the decision is to invite the candidate,; reason=Replaces the explicit business condition with a generic placeholder variable 'v1 = No', stripping away the specific decision criterion.

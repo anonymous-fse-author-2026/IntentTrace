@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i9:wait for the purchase invoice and shipment. (reason: No element faithfully implements i9; the only candidate (action:n9) mutates it by omitting half the condition, leaving the full instruction unimplemented.)
+
+Addition
+- [N2] Node-level addition: action(n10,"Is purchase invoice received?") (reason: Artificially fragments the single waiting/receiving event into three discrete steps not present in the source.)
+- [N3] Node-level addition: action(n11,"wait for shipment") (reason: Artificially fragments the single waiting/receiving event into three discrete steps not present in the source.)
+- [N4] Node-level addition: action(n12,"Is shipment received?") (reason: Artificially fragments the single waiting/receiving event into three discrete steps not present in the source.)
+- [N5] Node-level addition: guard(b1,c5,"v1 = 'No'") (reason: Introduces negative/looping outcomes ('No') that create retry cycles completely absent from the linear source description.)
+- [N6] Node-level addition: guard(b2,c9,"v2 = 'No'") (reason: Introduces negative/looping outcomes ('No') that create retry cycles completely absent from the linear source description.)
+- [N7] Node-level addition: guard(b3,c11,"v3 = 'No'") (reason: Introduces negative/looping outcomes ('No') that create retry cycles completely absent from the linear source description.)
+- [N8] Node-level addition: guard(b1,n7,"v1 = 'Yes'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"gather required items") -> action(n3,"inquire about availability of products") -> action(n4,"send inquiry") -> converge(c5) -> action(n5,"wait for invoice") -> action(n6,"Is invoice received?") -> branch(b1,XOR) -> action(n7,"review pricing and terms") -> action(n8,"send purchase requisition") -> branch(b4,AND) -> converge(c11) -> action(n11,"wait for shipment") -> action(n12,"Is shipment received?") -> branch(b3,XOR) -> converge(c1) -> action(n13,"receive invoice") -> action(n14,"make payment") -> action(n15,"transaction complete and process ends") -> end(e1)
+- [N10] Within matched traces (0->0) added: branch(b4,AND)
+- [N11] Within matched traces (0->0) added: converge(c9)
+- [N12] Within matched traces (0->0) added: action(n10,"Is purchase invoice received?")
+
+Mutation
+- [N13] Node-level mutation: element=action(n9,"wait for purchase invoice"); source=i9:wait for the purchase invoice and shipment.; reason=Drops the 'and shipment' qualifier, failing to preserve the granularity and completeness of the wait step in i9.

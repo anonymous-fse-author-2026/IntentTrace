@@ -1,0 +1,432 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n1",
+        "label:n1->c1"
+      ],
+      "verbatim_texts": [
+        "To start the process"
+      ],
+      "justification": "All three elements correspond to the process initiation phrase. Structural init captures the start trigger, while the action and label redundantly reinforce it without changing behavior."
+    },
+    {
+      "refs": [
+        "branch:b1"
+      ],
+      "verbatim_texts": [
+        "If the sum of the order"
+      ],
+      "justification": "Branch captures the conditional premise that gates the subsequent evaluation arms."
+    },
+    {
+      "refs": [
+        "guard:b1->n3",
+        "action:n3"
+      ],
+      "verbatim_texts": [
+        "if the sum of the order is greater than 2000, compute a discount of 4%."
+      ],
+      "justification": "Guard faithfully preserves the threshold operator and value; action preserves the exact computational outcome."
+    },
+    {
+      "refs": [
+        "guard:b1->n4",
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "If the sum of the order falls between 1000 and 1500, compute a discount of 3%."
+      ],
+      "justification": "Guard and action accurately reflect the specified numeric range and corresponding discount calculation."
+    },
+    {
+      "refs": [
+        "guard:b1->n5",
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "if the sum of the order falls between 500 and 999, compute a discount of 2%."
+      ],
+      "justification": "Guard and action accurately reflect the specified numeric range and corresponding discount calculation."
+    },
+    {
+      "refs": [
+        "guard:b1->n6"
+      ],
+      "verbatim_texts": [
+        "less than 500, then continue with the process."
+      ],
+      "justification": "Guard precisely matches the lower-bound condition and the continuation directive."
+    },
+    {
+      "refs": [
+        "label:n3->c1",
+        "label:n4->c1",
+        "label:n5->c1"
+      ],
+      "verbatim_texts": [
+        "Once again, check the sum of the order."
+      ],
+      "justification": "Labels semantically align with the iterative re-evaluation instruction described in the source."
+    },
+    {
+      "refs": [
+        "converge:c1"
+      ],
+      "verbatim_texts": [
+        "Once again, check the sum of the order."
+      ],
+      "justification": "Structural convergence marks where the disjoint discount paths rejoin before looping back to the recheck step."
+    },
+    {
+      "refs": [
+        "end:e1"
+      ],
+      "verbatim_texts": [
+        "the process will come to an end."
+      ],
+      "justification": "Structural end node directly corresponds to the closing termination phrase."
+    }
+  ],
+  "mutations": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "begin by checking if the order has been received."
+      ],
+      "reason": "Source specifies verifying order receipt, but the model replaces it with 'check sum of order', fundamentally altering the initial validation step's target and meaning."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "less than 500, then continue with the process.",
+        "create the bill"
+      ],
+      "reason": "Merges two distinct source steps into one. Attaches bill creation directly to the <500 branch outcome, distorting the sequential flow where bill creation is a separate, final unified step executed after all checks complete."
+    }
+  ],
+  "omissions": [
+    {
+      "verbatim_texts": [
+        "begin by checking if the order has been received."
+      ],
+      "reason": "No element correctly implements the initial receipt verification; action:n2 mutates it instead of preserving it."
+    },
+    {
+      "verbatim_texts": [
+        "create the bill"
+      ],
+      "reason": "Absorbed into the mutated action:n6. Not preserved as a distinct, correctly sequenced final action as specified in the source."
+    }
+  ],
+  "additions": [
+    {
+      "refs": [
+        "action:n7"
+      ],
+      "reason": "Contains content 'end'. Process termination is structural and already covered by end:e1/i11. An explicit action node named 'end' invents a step with no supporting source span."
+    }
+  ],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n1",
+      "kind": "action",
+      "node_id": "n1",
+      "gateway": "",
+      "string_value": "start",
+      "aliases": [
+        "action:n1",
+        "n1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n1: start"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "check sum of order",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: check sum of order"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "compute 4% discount",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: compute 4% discount"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "compute 3% discount",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: compute 3% discount"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "compute 2% discount",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: compute 2% discount"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "continue process and create bill",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: continue process and create bill"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: end"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "converge:c1",
+      "kind": "converge",
+      "node_id": "c1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c1",
+        "c1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c1"
+    },
+    {
+      "ref_id": "label:n1->c1",
+      "kind": "label",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "Start",
+      "aliases": [
+        "label:n1->c1"
+      ],
+      "from": "n1",
+      "to": "c1",
+      "source_line": "label n1->c1: Start"
+    },
+    {
+      "ref_id": "label:n3->c1",
+      "kind": "label",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "Recheck",
+      "aliases": [
+        "label:n3->c1"
+      ],
+      "from": "n3",
+      "to": "c1",
+      "source_line": "label n3->c1: Recheck"
+    },
+    {
+      "ref_id": "label:n4->c1",
+      "kind": "label",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "Recheck",
+      "aliases": [
+        "label:n4->c1"
+      ],
+      "from": "n4",
+      "to": "c1",
+      "source_line": "label n4->c1: Recheck"
+    },
+    {
+      "ref_id": "label:n5->c1",
+      "kind": "label",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "Recheck",
+      "aliases": [
+        "label:n5->c1"
+      ],
+      "from": "n5",
+      "to": "c1",
+      "source_line": "label n5->c1: Recheck"
+    },
+    {
+      "ref_id": "guard:b1->n3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = '>2000'",
+      "aliases": [
+        "guard:b1->n3"
+      ],
+      "from": "b1",
+      "to": "n3",
+      "source_line": "guard b1->n3: v1 = '>2000'",
+      "guard": {
+        "from": "b1",
+        "to": "n3",
+        "condition": "v1 = '>2000'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = '1000-1500'",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = '1000-1500'",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = '1000-1500'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = '500-999'",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: v1 = '500-999'",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "v1 = '500-999'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = '<500'",
+      "aliases": [
+        "guard:b1->n6"
+      ],
+      "from": "b1",
+      "to": "n6",
+      "source_line": "guard b1->n6: v1 = '<500'",
+      "guard": {
+        "from": "b1",
+        "to": "n6",
+        "condition": "v1 = '<500'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 9,
+    "mutation_count": 2,
+    "omission_count": 2,
+    "addition_count": 1,
+    "match_relation_count": 15,
+    "mutation_relation_count": 3,
+    "omission_relation_count": 2,
+    "unique_refs_in_matches": 15,
+    "unique_refs_in_mutations": 2,
+    "unique_refs_in_additions": 1,
+    "unique_refs_covered": 18,
+    "total_mappable_targets": 19,
+    "input_text_length": 878,
+    "element_count": 19
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

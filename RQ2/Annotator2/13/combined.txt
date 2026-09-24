@@ -1,0 +1,22 @@
+Root Cause Analysis
+
+Root Cause 1: The model incorrectly structures the rework loop by merging paths directly into an action node without a converge gateway and omitting the distinct "review it again" step.
+- Includes:
+    - [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n9` has in=2 and out=1. | DSL: action(n9,"review purchase order")
+    - [N1] Omitted trace (input 1): i1:To begin the process for ACME Company -> i2:receiving the customer request -> i3:check the current inventory level -> i4:If the inventory level is at or below the minimum -> i5:is at or below the minimum -> i6:accept the customer request -> i9:create a purchase order -> i11:is rejected -> i12:rework the purchase order -> i16:review it again -> i11:is rejected
+
+Root Cause 2: The model includes an unmapped action node for reviewing the purchase order that lacks a corresponding input element in the standard execution traces.
+- Includes:
+    - [N2] Within matched traces (2->0) added: action(n9,"review purchase order")
+    - [N3] Within matched traces (3->1) added: action(n9,"review purchase order")
+
+Root Cause 3: The model inserts a redundant, unmapped action node for evaluating the inventory condition prior to the branching gateway.
+- Includes:
+    - [N4] Within matched traces (0->2) added: action(n4,"is inventory at or below minimum level?")
+
+Root Cause 4: The model abstracts specific condition thresholds from the source text into generic boolean variables for its branch guards.
+- Includes:
+    - [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i5:is at or below the minimum; reason=The source specifies a clear threshold/operator ('at or below the minimum'), but the model abstracts this into a generic boolean 'v1 = Yes'.
+    - [N6] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i7:is above the minimum; reason=The source specifies a clear threshold ('above the minimum'), but the model abstracts this into a generic boolean 'v1 = No'.
+    - [N7] Node-level mutation: element=guard(b2,n11,"v2 = 'Yes'"); source=i14:is approved; reason=The source specifies the 'approved' condition, but the model alters this to a generic 'v2 = Yes'.
+    - [N8] Node-level mutation: element=guard(b2,n12,"v2 = 'No'"); source=i11:is rejected; reason=The source specifies the 'rejected' condition, but the model alters this to a generic 'v2 = No'.

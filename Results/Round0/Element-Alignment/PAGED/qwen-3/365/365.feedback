@@ -1,0 +1,12 @@
+Mutation
+- [N1] Node-level mutation: element=guard(b2,n7,"v2 = 'No'"); source=i6:if the passenger is denied permission; reason=The guard condition `v2 = 'No'` routes the flow to 'Leave the area', but the text specifies leaving occurs when permission IS denied. Given the preceding question 'Is permission denied?', 'No' means not denied, making the routing logic inverted.
+- [N2] Node-level mutation: element=guard(b3,n11,"v3 = 'No'"); source=i9:If the exit control check outcome is unsuccessful; reason=The guard condition `v3 = 'No'` routes the flow to 'Leave the area', contradicting the text which ties leaving to an unsuccessful/denied outcome. The condition value should reflect a positive/negative match aligned with 'unsuccessful'.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['No']`. | Variable `v3` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'No'` on `b3 -> n11` uses undefined variable `v3`. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'No'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

@@ -1,0 +1,268 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check if the input is a URN"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "perform ONS-Resolving URN to a domain name"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "continue with the process"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "check if the input is a URN or a URL"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "send a DNS query"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "receive a list of URLs from the DNS query"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "use the list of URLs to link to a designated DS"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "continue with the process"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "link to the designated DS"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check if the input is a URN",
+      "R_X": [
+        "URN",
+        "URL"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "check if the input is a URN or a URL",
+      "R_X": [
+        "URN",
+        "URL"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "c2",
+        "n5",
+        "b2",
+        "n8",
+        "n10",
+        "n12",
+        "n7",
+        "c1",
+        "n14",
+        "e1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v1 == \"URN\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 == \"URL\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n8",
+      "condition": "v2 == \"URN\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 == \"URL\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "we start by"
+    },
+    {
+      "id": "i2",
+      "content": "checking if the input is a \"URN\""
+    },
+    {
+      "id": "i3",
+      "content": "ONS-Resolving URN to a domain-name"
+    },
+    {
+      "id": "i4",
+      "content": "is a \"URL\""
+    },
+    {
+      "id": "i5",
+      "content": "continue with the process"
+    },
+    {
+      "id": "i6",
+      "content": "check if the input is a \"URN\" or a \"URL\""
+    },
+    {
+      "id": "i7",
+      "content": "we send a DNS query"
+    },
+    {
+      "id": "i8",
+      "content": "The result of this query is a list of URLs"
+    },
+    {
+      "id": "i9",
+      "content": "which we then use to link to a designated DS"
+    },
+    {
+      "id": "i10",
+      "content": "Finally, we link to the designated DS"
+    },
+    {
+      "id": "i11",
+      "content": "and the process comes to an end"
+    }
+  ]
+}

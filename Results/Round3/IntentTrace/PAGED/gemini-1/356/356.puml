@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:Ensure Freights are ready to be shipped;
+:Ship Freight;
+split
+:Deliver Freight;
+stop
+split again
+:Notify Delivery;
+:v2: Condition ({Return Lodged, 5 Days Passed, Loss Claim Lodged}); <<objectSignal>>
+switch ()
+case ([v2 = 'Return Lodged'])
+:Check for Merchandise Return Request;
+:v1: Check for Merchandise Return Request ({Accepted, Rejected}); <<objectSignal>>
+if () then ([v1 = 'Accepted'])
+:Accept Merchandise Return;
+:Proceed with Returning Merchandise;
+stop
+else ([v1 = 'Rejected'])
+:Reject Merchandise Return;
+stop
+endif
+case ([v2 = '5 Days Passed'])
+:Invoice the Customer;
+stop
+case ([v2 = 'Loss Claim Lodged'])
+:Approve Loss Claim and End Process;
+stop
+endswitch
+end split
+@enduml

@@ -1,0 +1,271 @@
+You are an expert behavioral process model refiner. Your only task is to improve a process model represented in a DSL based on a provided feedback to better match the provided process description.
+
+### 1. DSL Grammar and Element Definitions
+The process model is written in this DSL. Every statement must conform to the
+following grammar (EBNF; braces { } are literal terminals):
+
+    <PROCESS>     ::= <DECL_BLOCK> <REL_BLOCK>
+    <DECL_BLOCK>  ::= ( <NODE_DECL> | <VAR_DECL> | <ACTOR_DECL> )+
+    <NODE_DECL>   ::= ( "init" | "end" | "converge" ) "(" <ID> ")"
+                    | "branch" "(" <ID> "," ( "AND" | "OR" | "XOR" ) ")"
+                    | "action" "(" <ID> "," <STR> ")"
+    <VAR_DECL>    ::= "defines" "(" <VAR> "," <STR> "," <RANGE> ")"
+    <ACTOR_DECL>  ::= "actor" "(" <ID> "," <STR> "," "[" <ID> ( "," <ID> )* "]" ")"
+    <REL_BLOCK>   ::= ( <PRECEDENCE> | <GUARD> | <LABEL> )+
+    <PRECEDENCE>  ::= "precedence" "(" <ID> "," <ID> ")"
+    <GUARD>       ::= "guard" "(" <ID> "," <ID> "," <CONDITION> ")"
+    <LABEL>       ::= "label" "(" <ID> "," <ID> "," <STR> ")"
+    <RANGE>       ::= "{" ( <VAL> ( "," <VAL> )* | "[" <NUM>? "-" <NUM>? "]" )? "}"
+    <ID>/<VAR>    ::= <LETTER> ( <LETTER> | <DIGIT> | "_" )*
+    <STR>         ::= '"' <CHAR>* '"' | "'" <CHAR>* "'"
+    <VAL>         ::= <STR> | <BOOL> | <NUM>
+    <BOOL>        ::= "true" | "false"
+    <NUM>         ::= "-"? <DIGIT>+ ( "." <DIGIT>+ )?
+
+Element meanings:
+- init(id)            : the single start of the process.
+- end(id)             : a finishing point (there may be several).
+- action(id, "text")  : one step the process performs.
+- branch(id, GATEWAY) : a split point; gateway is AND (parallel), XOR (exclusive
+                        choice) or OR (inclusive choice).
+- converge(id)        : a point where split flows rejoin.
+- defines(v, "name", {range}) : a decision variable and its value space. Ranges:
+                        {a, b, c} finite set; {[lo-hi]} numeric interval;
+                        {[-]}, {[lo-]}, {[-hi]} unbounded/half-bounded.
+- actor(id, "name", [nodes]) : a participant and the node ids it owns.
+- precedence(from, to): a directed control-flow edge between two nodes.
+- guard(branch, to, condition) : a boolean condition on an outgoing edge of an
+                        XOR/OR branch (e.g. v1 = 'Yes', v2 >= 18).
+- label(from, to, "text") : descriptive text on an edge.
+
+### 2. Constraints
+A refined model is validated against these constraints. Feedback items tagged
+[S*] are Structural (STC) violations, [L*] are Logical-Sanity (LSC) violations,
+and [N*] are neuro-symbolic findings about how faithfully the model reflects the
+source (the Semantic constraints, SMC). Make sure your refined model satisfies
+all of them.
+
+Structural Constraints (STC):
+- STC1: identifiers are unique/disjoint across nodes, variables, actors.
+- STC2: each node has exactly one valid type.
+- STC3: exactly one init node.
+- STC4: init has no incoming transitions.
+- STC5: at least one end node exists.
+- STC6: end has no outgoing transitions.
+- STC7: action/actor/variable textual declarations are non-empty.
+- STC8: each action has exactly one incoming and one outgoing transition.
+- STC9: each branch has exactly one incoming and at least two outgoing transitions.
+- STC10: each converge has at least two incoming and exactly one outgoing transition.
+- STC11: each variable range has at least two distinct values.
+- STC12: precedence endpoints must be valid nodes.
+- STC13: each guard is attached to an existing transition.
+- STC14: each guard expression is syntactically valid.
+- STC15: every variable used in a guard is formally defined.
+- STC16: each outgoing edge of XOR/OR branches has exactly one guard.
+- STC17: guards appear only on outgoing edges of XOR/OR branches.
+- STC18: labels appear only on existing transitions.
+- STC19: every non-init node is reachable from init.
+- STC20: every non-end node can reach an end node.
+- STC21: each actor declaration has non-empty assigned responsibilities.
+- STC22: each node is assigned to exactly one actor.
+
+Logical Sanity Checks (LSC):
+- LSC1: Each guard is satisfiable within its variables' declared domains. This means every condition must actually be possible to trigger based on the range of the variable.
+- LSC2: XOR outgoing guards are mutually exclusive. This means no two conditions can ever be true at the exact same time.
+- LSC3: XOR/OR outgoing guards are exhaustive over their domains. This means all possible variable values must be covered by at least one path so the system never gets stuck.
+
+Semantic Constraints (SMC) — these underlie the [N*] feedback:
+- SMC1: no omitted or hallucinated documented behaviors.
+- SMC2: node payload meaning is faithful to source text.
+- SMC3: precedence preserves source chronology exactly.
+- SMC4: control-flow logic (choices, concurrency, cycles, joins) is correctly represented.
+- SMC5: each init-to-end path mirrors an intended source progression.
+- SMC6: variables and ranges faithfully reflect the source.
+- SMC7: actor assignments faithfully reflect responsibilities in the source.
+
+### 3. Source Process
+3a. Process Description:
+To begin the process for WIGGO, start by placing an Order and then proceed to Check the Customer's Credit Limit. If the response is "Okay", proceed to Check the Availability of the Article. However, if the response is "No", send a Denial to the Customer. After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer. If the Article is not available, proceed to Produce the Goods. However, if the Article is available, proceed to Collect the Goods. After checking the availability of the Article, send an Order Confirmation. Simultaneously, complete the following steps: Ship the Goods and Send the Invoice. Check the Payment status. If the payment has been received, close the Order and end the process. If the payment has not been received, check if the Reminder count is greater than or equal to 3. If the payment has been received, close the Order and end the process. If the payment has not been received, check if the Reminder count is greater than or equal to 3. If the Reminder count is greater than or equal to 3, Write off the Order. Additionally, send a Reminder. After writing off the Order, close the Order and end the process.
+
+3b. Source-Text Elements:
+None
+
+### 4. Current Process Model (the DSL to refine)
+4a. DSL Process Model (defines the model node ids: i1, n1, b1, c1, ...):
+init(i1)
+action(n1, "start WIGGO process")
+action(n2, "Place Order")
+action(n3, "Check Customers Credit Limit")
+action(n4, "Credit Limit Okay")
+branch(b1, XOR)
+action(n5, "Send Denial To Customer")
+action(n6, "Check Availability Of Article")
+action(n7, "Article Available")
+branch(b2, XOR)
+action(n8, "Produce the Goods")
+action(n9, "Collect the Goods")
+action(n10, "Send Order Confirmation")
+action(n11, "Ship the Goods")
+action(n12, "Send Invoice")
+action(n13, "Check Payment Status")
+action(n14, "Payment Received")
+branch(b3, XOR)
+action(n15, "Close the Order")
+action(n16, "End")
+end(e1)
+action(n17, "Reminder Count Ge 3")
+branch(b4, XOR)
+action(n18, "Write Off the Order")
+action(n19, "End")
+end(e2)
+action(n20, "Send Reminder")
+action(n21, "Close the Order")
+action(n22, "End")
+end(e3)
+converge(c1)
+converge(c2)
+branch(b5, AND)
+defines(v1, "Credit Limit Okay", {"No", "Yes"})
+defines(v2, "Article Available", {"No", "Yes"})
+defines(v3, "Payment Received", {"Yes", "No"})
+defines(v4, "Reminder Count Ge 3", {"Yes", "No"})
+actor(a_default, "Default", [i1, n1, n2, n3, n4, b1, n5, n6, n7, b2, n8, n9, n10, n11, n12, n13, n14, b3, n15, n16, e1, n17, b4, n18, n19, e2, n20, n21, n22, e3, c1, c2, b5])
+precedence(i1, n1)
+precedence(n4, b1)
+precedence(n7, b2)
+precedence(n14, b3)
+precedence(n16, e1)
+precedence(n17, b4)
+precedence(n19, e2)
+precedence(n22, e3)
+precedence(c1, n10)
+precedence(c2, n13)
+precedence(n10, b5)
+precedence(n1, n2)
+precedence(n2, n3)
+precedence(n3, n4)
+precedence(b1, n5)
+precedence(b1, n6)
+precedence(n6, n7)
+precedence(b2, n8)
+precedence(b2, n9)
+precedence(n8, c1)
+precedence(n9, c1)
+precedence(b5, n11)
+precedence(b5, n12)
+precedence(n11, c2)
+precedence(n12, c2)
+precedence(n13, n14)
+precedence(b3, n15)
+precedence(n15, n16)
+precedence(b3, n17)
+precedence(b4, n18)
+precedence(b4, n19)
+precedence(n18, n20)
+precedence(n20, n21)
+precedence(n21, n22)
+guard(b1, n5, v1 = 'No')
+guard(b1, n6, v1 = 'Yes')
+guard(b2, n8, v2 = 'No')
+guard(b2, n9, v2 = 'Yes')
+guard(b3, n15, v3 = 'Yes')
+guard(b3, n17, v3 = 'No')
+guard(b4, n18, v4 = 'Yes')
+guard(b4, n19, v4 = 'No')
+
+### 5. Revision Feedback
+The feedback compares the source against the model. Use sections 3 and 4 to interpret every reference in the feedback below.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")
+
+--- REFINEMENT INSTRUCTIONS ---
+1. Address all listed issues, all individual issues, by making edits that resolves them, and touch nothing else. Do not hunt for, introduce, or fix any problem the feedback does not mention, and leave every unreferenced element (its id, text, and position in the flow) exactly as it is.
+2. Ensure the refined process model conforms to the DSL grammar, and constraints described above.
+3. Output ONLY the finalized, refined DSL model inside a standard markdown code block, with no introduction, reasoning, or explanation.
+
+--- ADDITIONAL GUIDANCE ---
+Be extremely cautious and conservative: only change the model when a feedback item is completely unambiguous and you are absolutely certain of the single correct fix from the description alone. If there is any doubt, vagueness, or more than one plausible interpretation, do NOT act on that item and leave that part of the model exactly as it is. Prefer making no change over risking an incorrect one; keep edits to an absolute minimum and never add, rename, merge, split, or reorder elements unless strictly and explicitly required. Returning the model unchanged is an acceptable and often preferred outcome.<|im_end|>assistant
+```dsl
+init(i1)
+action(n1, "start WIGGO process")
+action(n2, "Place Order")
+action(n3, "Check Customers Credit Limit")
+action(n4, "Credit Limit Okay")
+branch(b1, XOR)
+action(n5, "Send Denial To Customer")
+action(n6, "Check Availability Of Article")
+action(n7, "Article Available")
+branch(b2, XOR)
+action(n8, "Produce the Goods")
+action(n9, "Collect the Goods")
+action(n10, "Send Order Confirmation")
+action(n11, "Ship the Goods")
+action(n12, "Send Invoice")
+action(n13, "Check Payment Status")
+action(n14, "Payment Received")
+branch(b3, XOR)
+action(n15, "Close the Order")
+action(n16, "End")
+end(e1)
+action(n17, "Reminder Count Ge 3")
+branch(b4, XOR)
+action(n18, "Write Off the Order")
+action(n19, "End")
+end(e2)
+action(n20, "Send Reminder")
+action(n21, "Close the Order")
+action(n22, "End")
+end(e3)
+converge(c1)
+converge(c2)
+branch(b5, AND)
+defines(v1, "Credit Limit Okay", {"No", "Yes"})
+defines(v2, "Article Available", {"No", "Yes"})
+defines(v3, "Payment Received", {"Yes", "No"})
+defines(v4, "Reminder Count Ge 3", {"Yes", "No"})
+actor(a_default, "Default", [i1, n1, n2, n3, n4, b1, n5, n6, n7, b2, n8, n9, n10, n11, n12, n13, n14, b3, n15, n16, e1, n17, b4, n18, n19, e2, n20, n21, n22, e3, c1, c2, b5])
+precedence(i1, n1)
+precedence(n4, b1)
+precedence(n7, b2)
+precedence(n14, b3)
+precedence(n16, e1)
+precedence(n17, b4)
+precedence(n19, e2)
+precedence(n22, e3)
+precedence(c1, n10)
+precedence(c2, n13)
+precedence(n10, b5)
+precedence(n1, n2)
+precedence(n2, n3)
+precedence(n3, n4)
+precedence(b1, n5)
+precedence(b1, n6)
+precedence(n6, n7)
+precedence(b2, n8)
+precedence(b2, n9)
+precedence(n8, c1)
+precedence(n9, c1)
+precedence(b5, n11)
+precedence(b5, n12)
+precedence(n11, c2)
+precedence(n12, c2)
+precedence(n13, n14)
+precedence(b3, n15)
+precedence(n15, n16)
+precedence(b3, n17)
+precedence(b4, n18)
+precedence(b4, n19)
+precedence(n18, n20)
+precedence(n20, n21)
+precedence(n21, n22)
+precedence(n5, e1)
+guard(b1, n5, v1 = 'No')
+guard(b1, n6, v1 = 'Yes')
+guard(b2, n8, v2 = 'No')
+guard(b2, n9, v2 = 'Yes')
+guard(b3, n15, v3 = 'Yes')
+guard(b3, n17, v3 = 'No')
+guard(b4, n18, v4 = 'Yes')
+guard(b4, n19, v4 = 'No')

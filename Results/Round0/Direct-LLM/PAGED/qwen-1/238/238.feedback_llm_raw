@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start WIGGO process")`: Hallucinates an undocumented step; the source explicitly states to "start by placing an Order" with no intervening initiation action.
+- `action(n4, "Credit Limit Okay")`, `action(n7, "Article Available")`, `action(n14, "Payment Received")`, `action(n17, "Reminder Count Ge 3")`: Misclassifies conditional responses as standalone `action` nodes inserted between checks and branches (`b1`-`b4`); the source treats these as direct decision outcomes governing flow, distorting node payload meaning and source chronology.
+- `action(n5, "Send Denial To Customer")`: Lacks an outgoing `precedence` edge; the path dangles and never reaches a terminal `end` node, despite the source implying process completion after denial.
+- `action(n16, "End")`, `action(n19, "End")`, `action(n22, "End")`: Redundantly encode termination as `action` nodes while `end(e1)`, `end(e2)`, and `end(e3)` already serve as formal finishing points, violating faithful node payload representation.
+- `guard(b4, n19, v4 = 'No')` → `action(n19, "End")`: Incorrectly terminates the process when the reminder count is below 3; the source only specifies closure/termination after writing off the order and provides no instruction to exit early, omitting intended progression.
+- `defines(v1, ..., {"No", "Yes"})`, `defines(v2, ..., {"No", "Yes"})`, etc. paired with `guard(..., v = 'Yes')`: Mismatches source terminology by using `"Yes"`/`"No"` ranges and conditions, whereas the description explicitly specifies responses as `"Okay"` and `"No"`.

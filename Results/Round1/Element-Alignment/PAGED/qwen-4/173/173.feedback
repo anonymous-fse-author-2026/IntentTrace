@@ -1,0 +1,19 @@
+Addition
+- [N1] Added trace (model 2): init(i1) -> action(n1,"start the process by identifying the vacancy") -> action(n2,"Is there a suitable candidate available") -> branch(b1,XOR) -> action(n4,"Is there a suitable candidate available") -> branch(b2,XOR) -> converge(c1) -> action(n7,"select the appropriate applicant") -> action(n8,"appoint the candidate") -> action(n9,"process ends") -> end(e1)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"start the process by identifying the vacancy") -> action(n2,"Is there a suitable candidate available") -> branch(b1,XOR) -> action(n4,"Is there a suitable candidate available") -> branch(b2,XOR) -> action(n6,"advertise the vacancy again") -> action(n10,"process ends") -> end(e2)
+- [N3] Within matched traces (0->0) added: action(n5,"Is there a suitable candidate available")
+- [N4] Within matched traces (0->0) added: action(n10,"process ends")
+- [N5] Within matched traces (0->0) added: end(e2)
+
+Mutation
+- [N6] Node-level mutation: element=action(n2,"Is there a suitable candidate available"); source=i2:If there is no suitable candidate available; reason=Replaces the source's explicit negative premise ('no suitable candidate') with a neutral interrogative form, dropping the specified negative orientation required by the text.
+- [N7] Node-level mutation: element=action(n4,"Is there a suitable candidate available"); source=i4:If there is still no suitable candidate available; reason=Drops the temporal qualifier 'still', which mandates that this check occurs sequentially after a prior failure, thereby altering the precise procedural context.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"advertise the vacancy again")
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | Guard `v2 = 'Yes'` on `b2 -> c1` uses undefined variable `v2`. | Guard `v2 = 'No'` on `b2 -> n6` uses undefined variable `v2`. | Guard `v3 = 'No'` on `b3 -> n6` uses undefined variable `v3`. | Guard `v3 = 'Yes'` on `b3 -> c1` uses undefined variable `v3`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b1,n4,"v1 = 'Yes'"); guard(b2,c1,"v2 = 'Yes'"); guard(b2,n6,"v2 = 'No'"); guard(b3,n6,"v3 = 'No'"); guard(b3,c1,"v3 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> c1` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'No'` on `b2 -> n6` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'No'` on `b3 -> n6` cannot be evaluated: `v3` has no declared range. | Guard `v3 = 'Yes'` on `b3 -> c1` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b1,n4,"v1 = 'Yes'"); guard(b2,c1,"v2 = 'Yes'"); guard(b2,n6,"v2 = 'No'"); guard(b3,n6,"v3 = 'No'"); guard(b3,c1,"v3 = 'Yes'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

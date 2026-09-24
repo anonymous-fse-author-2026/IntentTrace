@@ -1,0 +1,39 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To begin the process for WIGGO, start by placing an Order -> i2:Check the Customer's Credit Limit -> i5:if the response is "No" -> i6:send a Denial to the Customer
+- [N2] Omitted trace (input 1): i1:To begin the process for WIGGO, start by placing an Order -> i2:Check the Customer's Credit Limit -> i3:If the response is "Okay" -> i4:Check the Availability of the Article -> i9:If the response is "No" -> i6:send a Denial to the Customer
+
+Addition
+- [N3] Within matched traces (4->1) added: action(n16,"Has Payment been received")
+- [N4] Within matched traces (4->1) added: converge(c3)
+- [N5] Within matched traces (4->1) added: action(n23,"End process after Closing Order")
+- [N6] Within matched traces (4->1) added: end(e2)
+- [N7] Within matched traces (3->2) added: action(n16,"Has Payment been received")
+- [N8] Within matched traces (7->4) added: action(n16,"Has Payment been received")
+- [N9] Within matched traces (7->4) added: converge(c3)
+- [N10] Within matched traces (7->4) added: action(n23,"End process after Closing Order")
+- [N11] Within matched traces (7->4) added: end(e2)
+- [N12] Within matched traces (6->5) added: action(n16,"Has Payment been received")
+- [N13] Within matched traces (8->6) added: action(n9,"Is Article Available second time")
+- [N14] Within matched traces (10->7) added: action(n9,"Is Article Available second time")
+- [N15] Within matched traces (10->7) added: action(n16,"Has Payment been received")
+- [N16] Within matched traces (10->7) added: converge(c3)
+- [N17] Within matched traces (10->7) added: action(n23,"End process after Closing Order")
+- [N18] Within matched traces (10->7) added: end(e2)
+- [N19] Within matched traces (9->8) added: action(n9,"Is Article Available second time")
+- [N20] Within matched traces (9->8) added: action(n16,"Has Payment been received")
+- [N21] Within matched traces (11->9) added: action(n9,"Is Article Available second time")
+- [N22] Within matched traces (13->10) added: action(n9,"Is Article Available second time")
+- [N23] Within matched traces (13->10) added: action(n16,"Has Payment been received")
+- [N24] Within matched traces (13->10) added: converge(c3)
+- [N25] Within matched traces (13->10) added: action(n23,"End process after Closing Order")
+- [N26] Within matched traces (13->10) added: end(e2)
+- [N27] Within matched traces (12->11) added: action(n9,"Is Article Available second time")
+- [N28] Within matched traces (12->11) added: action(n16,"Has Payment been received")
+
+Mutation
+- [N29] Node-level mutation: element=guard(b5,n20,"v5 = 'No'"); source=i25:Additionally, send a Reminder.; reason=The source specifies 'Additionally' (implying an unconditional or parallel action alongside another step), but the model models this as an exclusive 'No' branch (v5 = 'No') for the reminder count.
+
+Structural Check
+- [S1] STC6 failed: End nodes must not have outgoing precedence edges. | Violations: e1 | DSL: end(e1)
+- [S2] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n7` has in=1 and out=0. | DSL: action(n5,"Send a Denial to the Customer due to Credit Limit"); action(n7,"Send a Denial to the Customer due to Article Unavailability")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n7 | DSL: action(n5,"Send a Denial to the Customer due to Credit Limit"); action(n7,"Send a Denial to the Customer due to Article Unavailability")

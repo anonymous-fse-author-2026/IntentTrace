@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i14:At the same time, (reason: The source specifies concurrent execution, but there is no parallel branch (AND gateway) in the model.)
+- [N2] Omitted trace (input 1): i1:To start the process, -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i5:If the claim is to be rejected, -> i6:reject it -> i9:review the claim rejection -> i12:continue the process -> i14:At the same time, -> i16:close the claim -> i13:Finally, the process ends.
+- [N3] Omitted trace (input 2): i1:To start the process, -> i2:receiving the claim -> i3:create the claim and record it -> i4:make a decision on the claim -> i7:if the claim is to be accepted, -> i8:offer the benefit -> i10:prepare the claim discharge -> i11:record the benefit payment -> i14:At the same time, -> i15:operate outgoing payment -> i13:Finally, the process ends.
+- [N4] Within matched traces (0->0) omitted: i14:At the same time,
+- [N5] Within matched traces (3->1) omitted: i14:At the same time,
+
+Addition
+- [N6] Within matched traces (0->0) added: action(n8,"close the claim")
+- [N7] Within matched traces (3->1) added: action(n13,"operate outgoing payment")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i5:If the claim is to be rejected,; reason=The source specifies the claim being rejected, but the guard uses an arbitrary 'v1 = No' condition.
+- [N9] Node-level mutation: element=guard(b1,n9,"v1 = 'Yes'"); source=i7:if the claim is to be accepted,; reason=The source specifies the claim being accepted, but the guard uses an arbitrary 'v1 = Yes' condition.
+
+Permutation
+- [N10] Within matched traces (0->0) reordered: expected [i15:operate outgoing payment] but observed [action(n7,"operate outgoing payment")] elsewhere; in its place the model has [converge(c1)]

@@ -1,0 +1,8 @@
+- branch(b1, XOR), guard(b1, n4, ...), guard(b1, n5, ...): The source describes a linear sequence ("check if the user has already liked the company and save the action. Finally, redirect...") with no conditional divergence based on the check result. The model hallucinates an exclusive choice split and edge guards not supported by the text.
+- precedence(b1, n5), action(n5, "Save action"): The "No" branch lacks an outgoing precedence edge to reach `action(n6, "Redirect")` and `end(e1)`, creating a dead-end path that contradicts the source instruction that redirection and termination unconditionally follow the check/save steps.
+- action(n1, "start"): Not documented in the source description ("first, Like the Company"); hallucinated initial step.
+- action(n7, "End"), precedence(n6, n7): The source states "redirect and the process will come to an end," implying direct termination after redirection. Modeling "End" as a separate action preceding `end(e1)` introduces an undocumented intermediate step.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Save action")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Save action")

@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start")`: Omits the initial documented step "placing an order" before checking the customer.
+- `defines(v1, ...)` through `defines(v4, ...)`: All value ranges are `{}`, failing to reflect documented decision domains such as "eligible"/"not eligible", "available", payment receipt status, or reminder thresholds ("< 3", "= 3").
+- `branch(b1, ...)` / `branch(b2, ...)` / `branch(b3, ...)` / `branch(b4, ...)`: Completely missing `guard` statements to direct XOR splits based on variable states, breaking the conditional logic required by "If the customer is...", "If it is not...", "If the payment is received...", and "If the number of reminders is...".
+- `precedence(n3, b5)` / `precedence(b5, n4)` / `precedence(b5, c5)`: Routes the "not eligible" outcome through an AND split and merges into converges that feed late-stage reminder/lawyer steps, contradicting "After informing the customer, the process ends."
+- `action(n8, "prepare products for shipment")` / `action(n9, "prepare products for shipment")`: Duplicates the preparation step and incorrectly embeds it within divergent/split paths, whereas the source states preparation occurs once sequentially before "Simultaneously, complete the following steps...".
+- `precedence(b4, c5)` / `precedence(c5, n17)`: Lacks a feedback edge to re-evaluate payment after sending a reminder when the count is low, contradicting "continue the process"; instead forces a linear progression to lawyer notification without cycling back.
+- `branch(b6, AND)` / `branch(b7, AND)` / `converge(c1)-converge(c3)`: Uses redundant parallel splits and joins for the post-preparation phase, distorting the single concurrent block described as "Simultaneously, complete the following steps: ship the products and send the invoice while checking for payment."

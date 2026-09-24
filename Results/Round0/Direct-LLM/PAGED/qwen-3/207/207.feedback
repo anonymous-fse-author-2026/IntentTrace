@@ -1,0 +1,9 @@
+- `action(n1, "Begin Change Assessment")`: Hallucinates a step not documented in the source text.
+- `branch(b2)`, `guard(b2, n9, v2 = 'No')`, `action(n9, "Reject change request due to unacceptability")`: Omits the source-stated progression "If the change request is ultimately approved, the change is implemented" after further evaluation, and incorrectly routes the rejection condition to a terminal path instead of linking it to the information request workflow as stated ("if the change is deemed unacceptable, it is rejected. In this case, a request for more information is made...").
+- `branch(b5, AND)`, `precedence(b5, n12)`, `precedence(b5, n13)`, `precedence(b5, n14)`: Violates source chronology by modeling sequentially described steps ("followed by", "After that") as concurrent; additionally, `n12` and `n13` lack outgoing precedence relations, breaking valid init-to-end paths.
+- `actor(a_default, "Default", [...])`: Fails to assign explicitly named participants ("Change Coordinator", "Change Requester", "CAB") to their respective responsible nodes, incorrectly assigning all activities to a single generic actor.
+- `action(n16, "No inquiries from CAB")`: Misrepresents a negative decision condition as an executable action node rather than a branch path governed by `branch(b3)`.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n12` has in=1 and out=0. | Node `n13` has in=1 and out=0. | DSL: action(n12,"Send email enquiry to Change Coordinator"); action(n13,"Update approval register within 3 business days")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n12, n13 | DSL: action(n12,"Send email enquiry to Change Coordinator"); action(n13,"Update approval register within 3 business days")

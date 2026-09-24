@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i7:book a flight (reason: The action to book a flight when the answer is 'yes' was completely omitted from the model.)
+- [N2] Omitted trace (input 1): i1:To begin with, -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i11:Otherwise, if 24 hours have passed -> i12:call a travel agency -> i9:If a code is available -> i13:the process will end along with the hotel reservation
+- [N3] Omitted trace (input 2): i1:To begin with, -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i4:If the answer is "no" -> i5:proceed to book a train -> i11:Otherwise, if 24 hours have passed -> i12:call a travel agency -> i14:if a code is not available -> i15:cancel your journey -> i16:the process will end as well
+- [N4] Omitted trace (input 3): i1:To begin with, -> i2:choose your destination and calculate the distance -> i3:check if you need to book a train or a flight -> i6:if the answer is "yes" -> i7:book a flight -> i8:If a code is available within 24 hours -> i10:the process will end
+- [N5] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours
+- [N6] Within matched traces (0->0) omitted: i10:the process will end
+- [N7] Within matched traces (0->1) omitted: i5:proceed to book a train
+- [N8] Within matched traces (4->2) omitted: i7:book a flight
+- [N9] Within matched traces (5->3) omitted: i7:book a flight
+
+Addition
+- [N10] Node-level addition: action(n5,"end with train booked") (reason: The source does not specify an action 'end with train booked'; it only says to proceed to book a train.)
+- [N11] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N12] Within matched traces (0->0) added: end(e1)
+- [N13] Within matched traces (5->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N14] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i10:the process will end; reason=The text states the process will end, but the model incorrectly specifies 'with hotel reservation' here, which belongs to a later step.

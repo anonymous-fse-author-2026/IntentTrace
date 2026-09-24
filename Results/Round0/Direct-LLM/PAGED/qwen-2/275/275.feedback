@@ -1,0 +1,14 @@
+- `defines(v3, "is process completed", {"No"})`: The variable range is truncated to a single negative value, omitting the expected positive/completion state required for a functional decision variable. Source: "proceed with checking if the process has been completed."
+- `guard(b3, n13, v3 = 'No')`: The process terminates when the completion check evaluates to 'No', contradicting standard progression logic where termination occurs upon confirmed completion. Source: "checking if the process has been completed. Finally, the process ends."
+- `actor(a_default, "Default", [i1, n1, ...])`: The actor name is hardcoded as "Default", failing to reflect the explicitly stated responsible unit/location. Source: "To begin the process in the Admin Office".
+- `action(n4, "are invoices marked uncompleted")` & `action(n8, "are invoices still marked uncompleted")`: Conditional evaluations are incorrectly typed as executable `action` work steps rather than being represented as decision logic intrinsic to the `branch` and `guard` constructs. Source: "If they are marked as...", "If the invoices are still marked as...".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"receive completed invoices")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['No']`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n13` uses undefined variable `v3`. | DSL: guard(b3,n13,"v3 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n13` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n13,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

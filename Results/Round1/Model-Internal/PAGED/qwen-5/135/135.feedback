@@ -1,0 +1,38 @@
+Omission
+- [N1] Node-level omission: i6:At this point, check if the shipment is okay. (reason: No element faithfully implements this inspection step; the only candidate (action:n8) mutates it into a static state label, stripping the required decision/verb.)
+- [N2] Node-level omission: i11:After checking the shipment status again, if it is okay (reason: No element faithfully implements this second inspection; the only candidate (action:n11) mutates it into a static label, omitting the conditional check.)
+- [N3] Node-level omission: i14:In case there were any previous shipment problems, make sure to communicate them (reason: No element faithfully implements this directive; the only candidate (action:n5) truncates the instruction, dropping the mandatory action 'make sure to communicate them'.)
+- [N4] Within matched traces (0->1) omitted: i6:At this point, check if the shipment is okay.
+- [N5] Within matched traces (1->2) omitted: i6:At this point, check if the shipment is okay.
+- [N6] Within matched traces (2->2) omitted: i6:At this point, check if the shipment is okay.
+- [N7] Within matched traces (2->2) omitted: i14:In case there were any previous shipment problems, make sure to communicate them
+
+Addition
+- [N8] Node-level addition: action(n5,"Any previous shipment problems") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N9] Node-level addition: action(n8,"Shipment okay") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N10] Node-level addition: action(n11,"Shipment okay") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Node-level addition: guard(b1,c1,"v1 = 'No'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> action(n14,"End") -> end(e1)
+- [N13] Added trace (model 3): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> action(n14,"End") -> end(e1)
+- [N14] Added trace (model 4): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> action(n15,"End") -> end(e2)
+- [N15] Added trace (model 5): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n13,"Communicate shipment problems") -> action(n16,"End") -> end(e3)
+- [N16] Within matched traces (0->1) added: action(n5,"Any previous shipment problems")
+- [N17] Within matched traces (0->1) added: action(n8,"Shipment okay")
+- [N18] Within matched traces (0->1) added: action(n10,"Communicate shipment problems")
+- [N19] Within matched traces (0->1) added: action(n11,"Shipment okay")
+- [N20] Within matched traces (1->2) added: action(n5,"Any previous shipment problems")
+- [N21] Within matched traces (1->2) added: branch(b1,XOR)
+- [N22] Within matched traces (1->2) added: action(n8,"Shipment okay")
+- [N23] Within matched traces (1->2) added: action(n11,"Shipment okay")
+- [N24] Within matched traces (2->2) added: action(n5,"Any previous shipment problems")
+- [N25] Within matched traces (2->2) added: branch(b1,XOR)
+- [N26] Within matched traces (2->2) added: action(n8,"Shipment okay")
+- [N27] Within matched traces (2->2) added: action(n11,"Shipment okay")
+- [N28] Within matched traces (2->2) added: action(n16,"End")
+- [N29] Within matched traces (2->2) added: end(e3)
+
+Mutation
+- [N30] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i7:If it is, then proceed to Send Payment.; reason=Routes the affirmative guard value ('v1 = Yes') to a problem-communication action, reversing the source logic where an affirmative shipment check should lead to payment.
+
+Permutation
+- [N31] Within matched traces (2->2) reordered: expected [i11:After checking the shipment status again, if it is okay] but observed [branch(b2,XOR)] elsewhere; in its place the model has [branch(b3,XOR)]

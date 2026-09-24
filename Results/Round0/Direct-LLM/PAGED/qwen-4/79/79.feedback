@@ -1,0 +1,9 @@
+- `action(n1, "start the purchase process")`: Hallucinates a step not present in the source, which states the process begins directly with "make a purchase". (SMC1)
+- `branch(b1, XOR)` / missing `guard` statements: Omits edge conditions needed to differentiate the two paths, failing to model the explicit logic "If they choose to 'Add Items to cart'" versus "if they decide not to add items to the cart". (SMC4)
+- `defines(v1, "add items to cart?", {})`: Declares an empty value range `{}` that does not capture the binary decision space (e.g., yes/no) implied by the description. (SMC6)
+- `actor(a_default, "Default", [...])`: Uses a generic placeholder name instead of the explicitly mentioned responsibility holder, "the customer". (SMC7)
+- `action(n7, "End of process")` & `action(n9, "End of process")`: Introduces explicit termination actions not stated in the text, which simply notes "the process will end". (SMC1)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (2->3) omitted: i9:ask the developer for help
+
+Addition
+- [N2] Node-level addition: guard(b3,e3,"v3 = \"done\"") (reason: These guards introduce specific decision logic ('done' vs 'end_process') to split the flow, which has no support anywhere in the source text.)
+- [N3] Node-level addition: guard(b3,n10,"v3 = \"end_process\"") (reason: These guards introduce specific decision logic ('done' vs 'end_process') to split the flow, which has no support anywhere in the source text.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"To start") -> action(n2,"ask the 1st Level Support if there is an issue") -> branch(b1,XOR) -> converge(c2) -> action(n3,"If the issue is resolved") -> converge(c3) -> action(n4,"provide feedback for the account manager") -> branch(b3,XOR) -> action(n10,"end the process") -> end(e2)
+- [N5] Within matched traces (0->0) added: branch(b3,XOR)
+- [N6] Within matched traces (0->0) added: end(e3)
+- [N7] Within matched traces (1->2) added: branch(b3,XOR)
+- [N8] Within matched traces (1->2) added: end(e3)
+- [N9] Within matched traces (2->3) added: converge(c2)
+- [N10] Within matched traces (2->3) added: action(n3,"If the issue is resolved")
+- [N11] Within matched traces (2->3) added: converge(c3)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n8` has in=1 and out=0. | Node `n9` has in=0 and out=1. | DSL: action(n8,"If it is still a 1st Level issue"); action(n9,"ask the developer for help")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: n9 | DSL: action(n9,"ask the developer for help")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n8 | DSL: action(n8,"If it is still a 1st Level issue")

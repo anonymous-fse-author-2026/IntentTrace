@@ -1,0 +1,63 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start ExpenseReport process by clicking Start then selecting Edit Report;
+:Is expense greater than 1000;
+:v1: Is expense greater than 1000 ({>1000, <=1000}); <<objectSignal>>
+if () then (["v1 = '>1000'"])
+:review the report;
+else (["v1 = '<=1000'"])
+:Is translation needed;
+:v2: Is translation needed ({Required, Not Required}); <<objectSignal>>
+if () then (["v2 = 'Required'"])
+:translate the receipts;
+else (["v2 = 'Not Required'"])
+:confirm the receipts;
+endif
+endif
+:evaluate review decision;
+:v3: evaluate review decision ({Rejected, Approved}); <<objectSignal>>
+if () then (["v3 = 'Rejected'"])
+:Is report rejected after review;
+:v4: Is report rejected after review ({Rejected, Approved}); <<objectSignal>>
+if () then (["v4 = 'Rejected'"])
+:edit the report;
+endif
+else (["v3 = 'Approved'"])
+:Is report approved after review;
+:v5: Is report approved after review ({Approved, Rejected}); <<objectSignal>>
+if () then (["v5 = 'Approved'"])
+:check if translation is needed;
+:v6: check if translation is needed ({Rejected, Approved}); <<objectSignal>>
+if () then (["v6 = 'Rejected'"])
+:Is report rejected after second review;
+:v7: Is report rejected after second review ({Rejected, Approved}); <<objectSignal>>
+if () then (["v7 = 'Rejected'"])
+:edit the report;
+endif
+else (["v6 = 'Approved'"])
+:Is report approved after second review;
+:v8: Is report approved after second review ({Approved, Rejected}); <<objectSignal>>
+if () then (["v8 = 'Approved'"])
+:translate the receipts;
+:confirm receipts;
+:evaluate receipts decision;
+:v9: evaluate receipts decision ({Proceed, Skip}); <<objectSignal>>
+if () then (["v9 = 'Proceed'"])
+:Are receipts accepted;
+:v10: Are receipts accepted ({Accepted, Rejected}); <<objectSignal>>
+if () then (["v10 = 'Accepted'"])
+:process the expense;
+:end process;
+stop
+else (["v10 = 'Rejected'"])
+:edit the report;
+endif
+endif
+endif
+endif
+endif
+endif
+@enduml

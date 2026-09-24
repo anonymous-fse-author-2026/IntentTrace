@@ -1,0 +1,24 @@
+Addition
+- [N1] Node-level addition: action(n2,"are you hungry?") (reason: Invents a question-based action step not described in the source; the condition is already structurally handled by branch:b1.)
+- [N2] Node-level addition: action(n6,"are you still hungry after breakfast?") (reason: Invents a question-based action step with extra context not described in the source; the condition is already structurally handled by branch:b2.)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast") -> converge(c1) -> action(n6,"are you still hungry after breakfast?") -> branch(b2,XOR) -> action(n7,"take a shower") -> converge(c2) -> action(n5,"get on the bus") -> action(n10,"end process") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"wake up") -> action(n2,"are you hungry?") -> branch(b1,XOR) -> action(n4,"have breakfast") -> converge(c1) -> action(n6,"are you still hungry after breakfast?") -> branch(b2,XOR) -> action(n8,"have breakfast") -> converge(c2) -> action(n5,"get on the bus") -> action(n10,"end process") -> end(e1)
+- [N5] Within matched traces (0->1) added: converge(c1)
+- [N6] Within matched traces (0->1) added: converge(c2)
+- [N7] Within matched traces (0->1) added: action(n5,"get on the bus")
+- [N8] Within matched traces (0->1) added: action(n10,"end process")
+- [N9] Within matched traces (0->1) added: end(e1)
+- [N10] Within matched traces (1->0) added: converge(c1)
+- [N11] Within matched traces (2->0) added: converge(c1)
+- [N12] Within matched traces (3->0) added: converge(c1)
+- [N13] Within matched traces (3->0) added: converge(c2)
+- [N14] Within matched traces (3->0) added: action(n5,"get on the bus")
+- [N15] Within matched traces (3->0) added: action(n10,"end process")
+- [N16] Within matched traces (3->0) added: end(e1)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b1,n3,"v1 = false"); source=i2:If you are not hungry; reason=Guards replace the explicit natural-language hunger condition with undefined boolean variables (v1 = false/true), dropping the original semantic qualifiers and altering the payload.
+- [N18] Node-level mutation: element=guard(b1,n4,"v1 = true"); source=i4:Otherwise, have breakfast.; reason=Guards replace the explicit natural-language hunger condition with undefined boolean variables (v1 = false/true), dropping the original semantic qualifiers and altering the payload.
+- [N19] Node-level mutation: element=guard(b2,n7,"v2 = false") -> guard(b2,n8,"v2 = true"); source=i5:If you are still not hungry; reason=Guards replace the explicit natural-language hunger condition with undefined boolean variables (v2 = false/true), dropping the original semantic qualifiers and altering the payload.
+- [N20] Node-level mutation: element=action(n2,"are you hungry?"); source=i2:If you are not hungry; reason=Distorts the declarative conditional clause into an interrogative action step ('are you hungry?'), changing both the grammatical form and execution semantics.
+- [N21] Node-level mutation: element=action(n6,"are you still hungry after breakfast?"); source=i5:If you are still not hungry; reason=Distorts the declarative conditional clause into an interrogative action step with invented trailing context ('are you still hungry after breakfast?'), changing the form and adding unsupported details.

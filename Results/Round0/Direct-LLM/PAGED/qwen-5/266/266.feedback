@@ -1,0 +1,10 @@
+- `action(n1, "start")`: Payload is unfaithful to the source, which explicitly states the process begins with an "informational meeting that lasts half a day", not a generic "start" action. (SMC2)
+- `actor(a_default, "Default", [...])`: Fails to reflect documented responsibilities; the source explicitly distinguishes "the customer and the web design team" for the meeting/storyboard and "the web design team" for site design/development, whereas all nodes are lumped under a single default actor. (SMC7)
+- Precedence from `action(n4, "Create storyboard")` to `branch(b6, AND)`: Omits a documented conditional check; the source specifies "If the storyboard is successful, the next steps are...", but the model flows unconditionally into parallel tasks without evaluating storyboard success. (SMC1, SMC4)
+- `action(n13, "Review rebuilt site")`, `action(n15, "Approve rebuilt site")`, `branch(b4, XOR)`, `branch(b5, XOR)`, `defines(v4, ...)`, `defines(v5, ...)`: Hallucinated elements; the source only mentions that a rejected approval leads to a rebuild, after which "the process ends" or it is "rebuilt again", with no review or approval stages documented for the rebuilt site. (SMC1)
+- `guard(b4, n14, v4 = 'Not successful')` and `guard(b4, n15, v4 = 'Successful')`: Inverts the documented rebuild outcome logic; the source states "If the rebuild is complete, the process ends. If the rebuild is rejected again...", but the model terminates on "Not successful" and proceeds to approval on "Successful". (SMC3, SMC4)
+- `action(n2, "Is meeting successful?")`: Structurally unfaithful and redundant; the conditional decision after the meeting is fully captured by `branch(b1)` and its guards, making a separate action node named as a question semantically invalid per the source's straightforward conditional flow. (SMC2, SMC4)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n17` has in=1 and out=0. | DSL: action(n17,"Rebuild site again")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n17 | DSL: action(n17,"Rebuild site again")

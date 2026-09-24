@@ -1,0 +1,46 @@
+Omission
+- [N1] Node-level omission: i24:The customer is then emailed with replacement charges, and the process is complete. (reason: The model lacks a dedicated step or guard to execute the final customer email regarding replacement charges. The closest candidate (action:n16) only states 'End process', dropping the required notification action.)
+- [N2] Omitted trace (input 1): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i4:During this step, the items are counted and compared to the original contract. -> i5:If the "Order is complete and all items were returned," -> i6:Order is complete and all items were returned -> i11:Items are stored for future orders -> i16:Finally, when the process is complete, it ends.
+- [N3] Omitted trace (input 2): i1:To begin the process -> i3:However, if the "Delivery Crew picks-up items at the event site," -> i4:During this step, the items are counted and compared to the original contract. -> i5:If the "Order is complete and all items were returned," -> i6:Order is complete and all items were returned -> i10:After this, if the "Items are packed for an existing order," -> i16:Finally, when the process is complete, it ends.
+- [N4] Omitted trace (input 3): i1:To begin the process -> i3:However, if the "Delivery Crew picks-up items at the event site," -> i4:During this step, the items are counted and compared to the original contract. -> i5:If the "Order is complete and all items were returned," -> i6:Order is complete and all items were returned -> i11:Items are stored for future orders -> i16:Finally, when the process is complete, it ends.
+- [N5] Omitted trace (input 5): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i4:During this step, the items are counted and compared to the original contract. -> i7:Order is incomplete and items are missing -> i12:In case of missing items and replacement charges, we email the customer to inform them. -> i15:Customer does not return the missing items -> i16:Finally, when the process is complete, it ends.
+- [N6] Omitted trace (input 7): i1:To begin the process -> i2:Rental Items are Returned to the Store. -> i4:During this step, the items are counted and compared to the original contract. -> i8:Order is complete but items are damaged -> i9:we email the customer to inform them of the damage and additional charges. -> i13:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory. -> i20:"Items can't be repaired and are discarded," we email the customer with replacement charges. -> i21:Items can't be repaired and are discarded -> i22:Lastly, the items are packed for an existing order. -> i23:Once again, when the process is complete, it ends. -> i24:The customer is then emailed with replacement charges, and the process is complete.
+- [N7] Within matched traces (0->0) omitted: i16:Finally, when the process is complete, it ends.
+- [N8] Within matched traces (6->2) omitted: i23:Once again, when the process is complete, it ends.
+- [N9] Within matched traces (6->2) omitted: i24:The customer is then emailed with replacement charges, and the process is complete.
+- [N10] Within matched traces (6->3) omitted: i23:Once again, when the process is complete, it ends.
+- [N11] Within matched traces (6->3) omitted: i24:The customer is then emailed with replacement charges, and the process is complete.
+
+Addition
+- [N12] Node-level addition: action(n1,"Start process") (reason: 'Start process' is a generic placeholder not present in or justified by the source text.)
+- [N13] Node-level addition: action(n4,"Order status after count") (reason: 'Order status after count' is a vague conceptual label with no corresponding instruction or data in the source.)
+- [N14] Node-level addition: action(n5,"Items disposition for returned items") (reason: 'Items disposition for returned items' is an ungrounded placeholder that does not align with any specific source unit.)
+- [N15] Node-level addition: action(n14,"Items disposition after repair") (reason: 'Items disposition after repair' is an invented intermediate node lacking source support.)
+- [N16] Node-level addition: action(n16,"End process") (reason: While positioned near the end, 'End process' alone fails to capture the email instruction in i24 and acts as a redundant terminal step without independent source backing.)
+- [N17] Within matched traces (0->0) added: action(n1,"Start process")
+- [N18] Within matched traces (0->0) added: action(n4,"Order status after count")
+- [N19] Within matched traces (4->1) added: action(n1,"Start process")
+- [N20] Within matched traces (4->1) added: action(n4,"Order status after count")
+- [N21] Within matched traces (6->2) added: action(n1,"Start process")
+- [N22] Within matched traces (6->2) added: action(n4,"Order status after count")
+- [N23] Within matched traces (6->2) added: converge(c1)
+- [N24] Within matched traces (6->2) added: action(n14,"Items disposition after repair")
+- [N25] Within matched traces (6->3) added: action(n1,"Start process")
+- [N26] Within matched traces (6->3) added: action(n4,"Order status after count")
+- [N27] Within matched traces (6->3) added: action(n13,"Discard items and email customer replacement charges")
+- [N28] Within matched traces (6->3) added: converge(c1)
+- [N29] Within matched traces (6->3) added: action(n14,"Items disposition after repair")
+
+Mutation
+- [N30] Node-level mutation: element=guard(b2,n5,"v2 = 'All items returned'"); source=i6:Order is complete and all items were returned; reason=Drops the critical qualifier 'Order is complete', reducing precision and altering the guarded condition.
+- [N31] Node-level mutation: element=guard(b2,n6,"v2 = 'Items missing'"); source=i7:Order is incomplete and items are missing; reason=Drops the qualifier 'Order is incomplete', changing the exact logical trigger for the missing-items path.
+- [N32] Node-level mutation: element=guard(b2,n9,"v2 = 'Items damaged'"); source=i8:Order is complete but items are damaged; reason=Drops 'Order is complete but', stripping essential context from the damage condition.
+- [N33] Node-level mutation: element=guard(b5,n12,"v5 = 'Can be repaired'"); source=i18:"Items are repaired and added into inventory," -> i19:Items are repaired and added into inventory; reason=Transforms a concrete state/action ('repaired and added') into a vague capability check ('Can be repaired'), distorting the intended logic.
+- [N34] Node-level mutation: element=guard(b5,n13,"v5 = 'Cannot be repaired'"); source=i21:Items can't be repaired and are discarded; reason=Omits the consequential action 'and are discarded', leaving the guard semantically incomplete relative to the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n15` has in=2 and out=1. | Node `n16` has in=2 and out=1. | Node `n3` has in=2 and out=1. | Node `n8` has in=2 and out=1. | DSL: action(n15,"End process"); action(n16,"End process"); action(n3,"Count and compare items to contract"); action(n8,"End process")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> n15` has 2 guards; exactly one is required. | XOR/OR edge `b4 -> n8` has 2 guards; exactly one is required. | XOR/OR edge `b4 -> n8` has 2 guards; exactly one is required. | XOR/OR edge `b6 -> n16` has 2 guards; exactly one is required. | XOR/OR edge `b6 -> n16` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Delivery crew picks up items at event site]. | XOR branch `b3` has overlapping guards at state [v3=Items are stored for future orders]. | XOR branch `b4` has overlapping guards at state [v4=Customer does not return the missing items]. | XOR branch `b6` has overlapping guards at state [v6=Items are stored for future orders].

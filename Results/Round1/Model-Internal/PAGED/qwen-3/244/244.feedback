@@ -1,0 +1,16 @@
+Addition
+- [N1] Node-level addition: action(n1,"start loan application process") (reason: Content 'start loan application process' is not described anywhere in the source text.)
+- [N2] Node-level addition: guard(b2,n6,"v2 = 'No'") (reason: Introduces a negative-branch termination path ('v2 = "No"' leading to 'end process') that has no basis in the source description.)
+- [N3] Node-level addition: action(n6,"end process") (reason: Introduces a negative-branch termination path ('v2 = "No"' leading to 'end process') that has no basis in the source description.)
+- [N4] Added trace (model 1): init(i1) -> action(n1,"start loan application process") -> action(n2,"check loan application") -> action(n3,"is application rejected") -> branch(b1,XOR) -> action(n5,"are special terms agreed upon") -> branch(b2,XOR) -> action(n6,"end process") -> end(e2)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start loan application process")
+- [N7] Within matched traces (1->2) added: init(i1)
+- [N8] Within matched traces (1->2) added: action(n1,"start loan application process")
+- [N9] Within matched traces (1->2) added: action(n3,"is application rejected")
+- [N10] Within matched traces (1->2) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the application is rejected; reason=Replaces the explicit textual condition 'rejected' with a generic variable assignment 'v1 = "Yes"', altering the semantic payload and violating strict fidelity.
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i2:If the application is rejected; reason=Models the implicit continuation path using a generic variable 'v1 = "No"' instead of preserving the logical flow context described in the source.
+- [N13] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i4:if special terms are agreed upon; reason=Substitutes the explicit agreement condition with a generic variable 'v2 = "Yes"', failing to reproduce the source constraint faithfully.

@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates an initial step not documented in the source; the text explicitly states "the first step is to check the SLA", so the flow should begin directly with that task.
+- `defines(v1, "are SLA details known from memory", {})`: Specifies an empty value range `{}`; the source describes a binary decision, requiring a defined range such as `{true, false}` or `{'Known', 'Not Known'}`.
+- `branch(b1, XOR)` / missing `guard(...)`: Lacks explicit guard conditions for the branch's outgoing edges; the model fails to encode the source decision rules "if the SLA details are not known from memory" and "if the SLA details are known from memory".
+- `actor(a_default, "Default", [...])`: Misassigns process ownership; the source clearly identifies the "Admin Office" as the responsible party, not "Default".
+- `action(n6, "end process")`: Hallucinates a terminal action not present in the source; the text indicates that entering the processing date "marks the end of the process", meaning execution should transition directly from the entry action to the `end` node.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required.

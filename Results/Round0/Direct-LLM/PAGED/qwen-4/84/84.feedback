@@ -1,0 +1,12 @@
+- `action(n1, "Start Process on stockdooWeb")`: Hallucinates a step; the source text ("To begin the process on stockdooWeb, first, Like the Company") treats this phrase as introductory context, making "Like the Company" the first actual process step.
+- `branch(b1, XOR)`, `guard(b1, n4, v1 = 'No')`, `defines(v1, "Has user already liked the company", {"No"})`: Introduces unjustified conditional logic and a decision variable; the description ("check if the user has already liked the company and save the action") dictates a straightforward sequential check-and-save operation, not a choice point with alternatives.
+- `precedence(n3, b1)`, `precedence(b1, n4)`: Violates exact source chronology by inserting an XOR gateway between the check and save actions, breaking the direct linear flow explicitly stated in the text.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

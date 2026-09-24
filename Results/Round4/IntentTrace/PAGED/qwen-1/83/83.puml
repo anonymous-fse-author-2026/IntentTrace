@@ -1,0 +1,51 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Rental Items Returned to Store;
+:v1: Return Method ({Customer, Crew}); <<objectSignal>>
+if () then ([v1 = "Customer"])
+:Customer returns the items to the store;
+else ([v1 = "Crew"])
+:Delivery Crew picks-up items at the event site;
+endif
+:Count items and compare to original contract;
+:v2: Order Status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v2 = "Complete"])
+:Order is complete and all items returned;
+:v3: First Destination ({Packed, Stored}); <<objectSignal>>
+if () then ([v3 = "Packed"])
+:Items are packed for an existing order;
+else ([v3 = "Stored"])
+:Items are stored for future orders;
+endif
+stop
+case ([v2 = "Incomplete"])
+:Order is incomplete and items missing;
+:Email customer for missing items;
+:v4: Missing Return ({Yes, No}); <<objectSignal>>
+if () then ([v4 = "Yes"])
+:Customer returns the missing items;
+else ([v4 = "No"])
+:Customer does not return the missing items;
+endif
+case ([v2 = "Damaged"])
+:Order is complete but items damaged;
+:Temporarily take damaged items out of inventory;
+:v5: Repair Status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v5 = "Repaired"])
+:Items are repaired and added into inventory;
+else ([v5 = "Discarded"])
+:Items can't be repaired and are discarded;
+endif
+:v6: Second Destination ({Packed, Stored}); <<objectSignal>>
+if () then ([v6 = "Packed"])
+:Items are packed for an existing order;
+else ([v6 = "Stored"])
+:Items are stored for future orders;
+endif
+stop
+endswitch
+@enduml

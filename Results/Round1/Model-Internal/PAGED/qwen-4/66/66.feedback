@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i5:if they are marked as "Completed" (reason: The source explicitly defines a condition and an action for completed invoices at this stage, but the model contains no corresponding branch, guard, or action to handle it.)
+- [N2] Node-level omission: i6:they should be returned to the client via postal mail. (reason: The source explicitly defines a condition and an action for completed invoices at this stage, but the model contains no corresponding branch, guard, or action to handle it.)
+- [N3] Within matched traces (0->0) omitted: i6:they should be returned to the client via postal mail.
+- [N4] Within matched traces (1->0) omitted: i5:if they are marked as "Completed"
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: The content 'start' invents a discrete operational step not present in the source; the opening clause is correctly handled by the structural init node and the check action.)
+- [N6] Node-level addition: action(n4,"End") (reason: The source text only specifies checking if the process has started but provides no instruction for the negative outcome; modeling an 'End' action and a 'No' guard here introduces unsupported logic.)
+- [N7] Node-level addition: guard(b1,n4,"v1 = 'No'") (reason: The source text only specifies checking if the process has started but provides no instruction for the negative outcome; modeling an 'End' action and a 'No' guard here introduces unsupported logic.)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> end(e1)
+- [N9] Within matched traces (0->0) added: init(i1)
+- [N10] Within matched traces (0->0) added: action(n1,"start")
+- [N11] Within matched traces (1->0) added: init(i1)
+- [N12] Within matched traces (1->0) added: action(n1,"start")
+- [N13] Within matched traces (1->0) added: action(n5,"Return uncompleted invoices to client via postal mail")
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"Proceed to verify completeness of invoices")

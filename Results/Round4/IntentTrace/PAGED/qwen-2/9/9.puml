@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start with Bill for Purchased Goods or Services;
+:Receive Invoice;
+:Is the invoice incomplete?;
+:v1: Is the invoice incomplete? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:Return Invoice;
+:If the invoice is returned, non-compliance is resolved;
+else ([v1 = 'No'])
+:Is the invoice non compliant?;
+:v2: Is the invoice non compliant? ({No, Yes}); <<objectSignal>>
+if () then ([v2 = 'No'])
+:Continue with compliant invoice process;
+else ([v2 = 'Yes'])
+:Conduct further checks on non compliant invoice;
+:Can the issue be resolved with phone call?;
+:v3: Can the issue be resolved with phone call? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:Resolve non compliance with phone call;
+else ([v3 = 'No'])
+:Does issue require mail back?;
+:v4: Does issue require mail back? ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:Return Invoice;
+else ([v4 = 'No'])
+->;
+endif
+endif
+:Pay Invoice;
+:v8: Is the invoice returned after payment? ({Yes, No}); <<objectSignal>>
+if () then ([v8 = 'Yes'])
+:Non compliance resolved;
+else ([v8 = 'No'])
+->;
+endif
+endif
+:Bill Client;
+:v9: Is there response from client? ({No, Yes}); <<objectSignal>>
+if () then ([v9 = 'No'])
+:Wait period of 10 days;
+else ([v9 = 'Yes'])
+:v12: Is client unsatisfied? ({Yes, No}); <<objectSignal>>
+if () then ([v12 = 'No'])
+:Pay Invoice and notify client of payment;
+:Continue process;
+else ([v12 = 'Yes'])
+:Resolve payment discrepancy;
+endif
+endif
+:Send reminder after 10 days;
+endif
+stop
+@enduml

@@ -1,0 +1,13 @@
+- `defines(v1, "Is loan application rejected", {"Yes"})`: Variable range is incomplete; it lacks a "No" value, making it impossible to represent the non-rejection alternative required by "If the application is rejected, the process ends.", violating SMC6.
+- `defines(v2, "Are special terms agreed upon", {"No"})`: Variable range is incomplete; it lacks a "Yes" value, making it impossible to evaluate the condition for "if special terms are agreed upon, the process continues.", violating SMC6.
+- `action(n7, "End process without disbursal")` and `end(e3)`: Hallucinates a termination path for unagreed special terms; the source only specifies continuation upon agreement and documents no behavior for disagreement, violating SMC1.
+- `guard(b2, n7, v2 = 'No')`: Associates a condition with a hallucinated path and a malformed variable, diverging from the source which only governs the positive agreement case, violating SMC1/SMC4.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n7` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,n7,"v2 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'Yes'"); guard(b2,n7,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

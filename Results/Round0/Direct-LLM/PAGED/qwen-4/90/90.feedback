@@ -1,0 +1,9 @@
+- `action(n8, "Note Time per 100 Invoices")`: Converts the source's factual context ("It takes approximately 20 minutes for every 100 invoices,") into a prescriptive task, violating SMC1 and SMC2.
+- Sequence preceding `action(n9, "Tick 'Invoice Entered' on Form")`: Omits the explicit source requirement that the participant must have "entered the invoice data" before ticking the box, breaking documented chronology (SMC1, SMC3).
+- `action(n6, "Process Invoices (Vendor)")` and `action(n7, "Process Invoices (Amount)")`: Hallucinated steps. The source simply states to "proceed with the process" after sorting, with no mention of distinct processing actions per sort type (SMC1).
+- `defines(v1, "Sort by Vendor or Amount?", {})`: Specifies an empty value range `{}`, failing to represent the two documented sorting options ("vendor", "amount") that should drive the decision variable (SMC6).
+- Linear precedence chain `n10` → `n11` → `n12` → `e1`: Represents the outbox handling as a single terminating step, whereas the source explicitly requires a repetitive control-flow cycle ("collected every hour... continue every hour until the end of the overall process") (SMC4, SMC5).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.

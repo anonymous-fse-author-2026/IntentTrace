@@ -1,0 +1,33 @@
+Omission
+- [N1] Node-level omission: i5:if the login fails (reason: This condition is not faithfully implemented by any element; it is only addressed by a mutated guard.)
+- [N2] Node-level omission: i7:if you choose to abort (reason: No element faithfully implements this condition, as both its associated guard and action are mutated.)
+- [N3] Node-level omission: i9:if you decide to abort (reason: No element faithfully implements this condition, as both its associated guard and action are mutated.)
+- [N4] Omitted trace (input 4): i1:To start -> i2:please provide the userdata for flickr -> i5:if the login fails -> i9:if you decide to abort -> i4:the process will end
+- [N5] Within matched traces (2->3) omitted: i4:the process will end
+
+Addition
+- [N6] Node-level addition: action(n1,"start the flickr login process") (reason: This action lacks direct support; the source text only indicates an initialization ('To start') without explicitly calling out a start process action.)
+- [N7] Node-level addition: action(n6,"provide userdata for flickr again after first failure") (reason: These actions refer to repeated prompts for userdata which were not extracted as input elements from the original text, leaving them unsupported.)
+- [N8] Node-level addition: action(n11,"provide userdata for flickr again after second failure") (reason: These actions refer to repeated prompts for userdata which were not extracted as input elements from the original text, leaving them unsupported.)
+- [N9] Within matched traces (0->0) added: action(n1,"start the flickr login process")
+- [N10] Within matched traces (3->1) added: action(n1,"start the flickr login process")
+- [N11] Within matched traces (3->1) added: action(n3,"is the login successful")
+- [N12] Within matched traces (3->1) added: branch(b2,XOR)
+- [N13] Within matched traces (3->1) added: action(n6,"provide userdata for flickr again after first failure")
+- [N14] Within matched traces (1->2) added: action(n1,"start the flickr login process")
+- [N15] Within matched traces (1->2) added: action(n3,"is the login successful")
+- [N16] Within matched traces (1->2) added: action(n10,"do you want to try again after second failure")
+- [N17] Within matched traces (1->2) added: branch(b4,XOR)
+- [N18] Within matched traces (1->2) added: action(n12,"abort process after second failure")
+- [N19] Within matched traces (1->2) added: end(e4)
+- [N20] Within matched traces (2->3) added: action(n1,"start the flickr login process")
+- [N21] Within matched traces (2->3) added: action(n3,"is the login successful")
+
+Mutation
+- [N22] Node-level mutation: element=guard(b1,n4,"\"v1 = 'Yes'\""); source=i3:If the login is successful; reason=The guard invents a variable and a 'Yes' value instead of preserving the source text's condition.
+- [N23] Node-level mutation: element=action(n4,"end process successful login"); source=i4:the process will end; reason=The action adds the phrase 'successful login' which is not present in this segment.
+- [N24] Node-level mutation: element=guard(b1,n5,"\"v1 = 'No'\""); source=i5:if the login fails; reason=The guard changes the condition to a variable check ('v1 = No') instead of keeping the source condition.
+- [N25] Node-level mutation: element=guard(b2,n6,"\"v2 = 'Yes'\""); source=i6:If you want to try again; reason=The guard invents a variable ('v2 = Yes') rather than faithfully capturing the textual condition.
+- [N26] Node-level mutation: element=guard(b2,n7,"\"v2 = 'No'\"") -> action(n7,"abort process after first failure"); source=i7:if you choose to abort; reason=The guard invents a variable ('v2 = No'), and the action modifies the source by adding 'after first failure' and changing the condition to an imperative command.
+- [N27] Node-level mutation: element=action(n10,"do you want to try again after second failure") -> guard(b4,n11,"\"v4 = 'Yes'\""); source=i8:If you still want to try again; reason=The action alters the text by injecting 'after second failure' and dropping 'still', while the guard invents a variable ('v4 = Yes').
+- [N28] Node-level mutation: element=action(n12,"abort process after second failure") -> guard(b4,n12,"\"v4 = 'No'\""); source=i9:if you decide to abort; reason=The action modifies the text into an imperative and adds 'after second failure', while the guard invents a variable ('v4 = No').

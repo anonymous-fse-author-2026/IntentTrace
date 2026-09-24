@@ -1,0 +1,9 @@
+
+
+- action(n7, "click on Submit button again"): Hallucinates a step not present in the source, which only instructs to "apply another filter" when the submit option is false.
+- action(n8, "continue with process after submit false"): Payload incorrectly ties continuation to the false condition; the source explicitly links continuation to the option being set to "true".
+- branch(b1) and branch(b2) outgoing edges: Missing guard statements, failing to bind the source conditions (submit option false/true, existence of another filter) to their respective execution paths.
+- defines(v1, "is option to submit false", {}) and defines(v2, "is there another filter to apply", {}): Specified with empty value ranges {}, preventing evaluation of the required decision variables.
+- defines(v3, "is option to submit true", {"No"}): Value range only includes "No", omitting the "true"/"Yes" option required by the source's conditional check.
+- guard(b3, n14, v3 = 'No') and action(n14, "end process"): Control-flow logic misrepresents the source; the text directs continuation when the option is "true", but the model forces termination on 'No'.
+- action(n13, "continue with process if option submit true"): Lacks an outgoing precedence statement, creating a dead-end path that violates valid init-to-end progression.

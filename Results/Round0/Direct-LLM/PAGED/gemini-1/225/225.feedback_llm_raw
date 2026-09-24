@@ -1,0 +1,10 @@
+- action(n1, "start acme process"): Hallucinated action step. The source text states "To begin the process for ACME Company, start by receiving the customer request", which is mapped to action(n2, "receive customer request").
+- action(n4, "accept request and create PO"): Improperly groups two distinct sequential steps from the text: "accept the customer request" and "create a purchase order".
+- action(n5, "reject request - end process"): Improperly includes process termination within the action payload; the text specifies "reject the customer request" as the action, with termination represented by `end(e1)`.
+- branch(b1, XOR): Missing guards on its outgoing edges to represent the source text conditions "If the inventory level is at or below the minimum" and "if the inventory level is above the minimum".
+- action(n7, "rework purchase order"): Missing an outgoing control-flow edge (precedence) returning to action(n6, "review purchase order") to reflect the required loop in the source text: "In case the purchase order needs to be reworked, review it again."
+- branch(b2, XOR): Missing guards on its outgoing edges to represent the source text conditions "If the purchase order is rejected" and "if the purchase order is approved".
+- action(n8, "approve purchase order and reserve funds"): Improperly combines the gateway condition ("purchase order is approved") with the subsequent action step ("reserve the funds").
+- action(n12, "release reserved funds and issue payment"): Improperly groups two distinct steps into a single action: "Release the reserved funds" and "issue the payment".
+- action(n15, "end process"): Hallucinated action step. The source text "the process ends" signifies reaching a terminal state (`end(e2)`), not performing a discrete action.
+- defines(v1, "check inventory level", {}) and defines(v2, "review purchase order", {}): Both decision variables are missing their value ranges (value spaces are empty), failing to reflect the conditional outcomes documented in the source text.

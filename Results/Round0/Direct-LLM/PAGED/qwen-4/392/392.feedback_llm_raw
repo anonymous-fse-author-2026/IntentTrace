@@ -1,0 +1,8 @@
+
+
+- `branch(b1)` and `branch(b2)`: The model forces sequential filtering for task types, contradicting the source which describes a single conditional evaluation on the initial task ("If the task is 'Service Task 1'... If it is 'Service Task 2'... if it is 'Service Task 3'..."), misrepresenting control-flow logic and chronology (SMC3, SMC4).
+- Missing `guard(...)` statements for `branch(b1)`, `branch(b2)`, and `branch(b3)`: The model fails to declare conditions for the outgoing edges, omitting the explicit routing rules from the source ("If the task is...", "if there is a Manual Task...") (SMC4).
+- `defines(v1, ..., {})`, `defines(v2, ..., {})`, `defines(v3, ..., {})`: All variable ranges are empty `{}`, failing to faithfully represent the value spaces or decision criteria implied by the source text (SMC6).
+- `action(n10, "Continue Process if no Manual Task")`, `action(n11, "End Process")`, `end(e3)`: The source only specifies termination when a task is present ("if there is a Manual Task, the process will end"); modeling a fallback continuation and alternate end path hallucinates undocumented behavior (SMC1).
+- `action(n2, "Is User Task Service Task 1?")`, `action(n4, "Is User Task Service Task 2?")`, `action(n8, "Is there a Manual Task?")`: These are declared as executable `action` nodes, whereas the source presents them purely as conditional checks/gateways, misrepresenting their semantic role (SMC2).
+- `precedence(b1, n4)`, `precedence(n4, b2)`, `precedence(b2, n6)`: Routing "Service Task 3" through intermediate checkpoints before reaching `n6` deviates from the source's direct instruction ("if it is 'Service Task 3', then the process will come to an end"), breaking intended path progression (SMC5).

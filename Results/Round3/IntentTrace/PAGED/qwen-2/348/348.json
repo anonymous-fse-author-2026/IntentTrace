@@ -1,0 +1,484 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Bill for Purchased Goods/Services and Receive Invoice"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Check Invoice Completeness"
+    },
+    {
+      "id": "n_ret1",
+      "type": "action",
+      "content": "Return Invoice (Incomplete)"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Check Invoice Compliance"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Conduct Further Checks"
+    },
+    {
+      "id": "n5_phone",
+      "type": "action",
+      "content": "Resolve via Phone Call"
+    },
+    {
+      "id": "n5_mail",
+      "type": "action",
+      "content": "Return Invoice via Mail"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Pay Invoice and Resolve Returned Issues"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Bill Client"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Wait 10 Days"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Send Reminder and End"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Check Client Satisfaction"
+    },
+    {
+      "id": "n10_unsat",
+      "type": "action",
+      "content": "Resolve Payment Discrepancy"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    },
+    {
+      "id": "n10_sat",
+      "type": "action",
+      "content": "Continue Process"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Notify Client of Payment"
+    },
+    {
+      "id": "e5",
+      "type": "end"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b5",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b6",
+      "type": "branch",
+      "gateway": "XOR"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_split",
+      "name": "Process Stream",
+      "R_X": [
+        "Invoice",
+        "Client"
+      ]
+    },
+    {
+      "X": "v_comp",
+      "name": "Invoice Complete?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v_comp2",
+      "name": "Invoice Compliant?",
+      "R_X": [
+        "Compliant",
+        "Non-Compliant"
+      ]
+    },
+    {
+      "X": "v_res",
+      "name": "Resolution Method",
+      "R_X": [
+        "Phone",
+        "Mail"
+      ]
+    },
+    {
+      "X": "v_resp",
+      "name": "Client Response?",
+      "R_X": [
+        "No Response",
+        "Response"
+      ]
+    },
+    {
+      "X": "v_sat",
+      "name": "Client Satisfied?",
+      "R_X": [
+        "Satisfied",
+        "Unsatisfied"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_proc",
+      "name": "Process Actor",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "n3",
+        "b2",
+        "n_ret1",
+        "e1",
+        "n4",
+        "b3",
+        "n5",
+        "b4",
+        "n5_phone",
+        "n5_mail",
+        "c1",
+        "n6",
+        "e2",
+        "n7",
+        "b5",
+        "n8",
+        "n9",
+        "e3",
+        "n10",
+        "b6",
+        "n10_unsat",
+        "e4",
+        "n10_sat",
+        "n11",
+        "e5"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n_ret1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n_ret1",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n5_phone"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n5_mail"
+    },
+    {
+      "type": "precedence",
+      "A": "n5_phone",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5_mail",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "b5"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b5",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "b6"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n10_unsat"
+    },
+    {
+      "type": "precedence",
+      "A": "b6",
+      "B": "n10_sat"
+    },
+    {
+      "type": "precedence",
+      "A": "n10_unsat",
+      "B": "e4"
+    },
+    {
+      "type": "precedence",
+      "A": "n10_sat",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e5"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "v_split = 'Invoice'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v_split = 'Client'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n_ret1",
+      "condition": "v_comp = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n4",
+      "condition": "v_comp = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n5",
+      "condition": "v_comp2 = 'Non-Compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "c1",
+      "condition": "v_comp2 = 'Compliant'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n5_phone",
+      "condition": "v_res = 'Phone'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n5_mail",
+      "condition": "v_res = 'Mail'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n8",
+      "condition": "v_resp = 'No Response'"
+    },
+    {
+      "type": "guard",
+      "A": "b5",
+      "B": "n10",
+      "condition": "v_resp = 'Response'"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "n10_unsat",
+      "condition": "v_sat = 'Unsatisfied'"
+    },
+    {
+      "type": "guard",
+      "A": "b6",
+      "B": "n10_sat",
+      "condition": "v_sat = 'Satisfied'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "In the beginning, the process starts with Bill for Purchased Goods/Services and then Receive Invoice."
+    },
+    {
+      "id": "i2",
+      "content": "If the invoice is incomplete, it is returned. However, if the invoice is complete, the process continues."
+    },
+    {
+      "id": "i3",
+      "content": "If the invoice is non-compliant, further checks are conducted. On the other hand, if the invoice is compliant, the process continues."
+    },
+    {
+      "id": "i4",
+      "content": "If the issue can be resolved with a phone call, non-compliance is resolved. But if the issue requires mail back, the invoice is returned."
+    },
+    {
+      "id": "i5",
+      "content": "After that, the invoice is paid and if it is returned, non-compliance is resolved."
+    },
+    {
+      "id": "i6",
+      "content": "Simultaneously, the following steps are completed: Bill Client."
+    },
+    {
+      "id": "i7",
+      "content": "If there is no response, a period of 10 days is given."
+    },
+    {
+      "id": "i8",
+      "content": "the client is notified of the payment."
+    },
+    {
+      "id": "i9",
+      "content": "After 10 days, a reminder is sent and the process ends."
+    },
+    {
+      "id": "i10",
+      "content": "If the client is unsatisfied, payment discrepancy is resolved. However, if the client is satisfied, the process continues."
+    }
+  ]
+}

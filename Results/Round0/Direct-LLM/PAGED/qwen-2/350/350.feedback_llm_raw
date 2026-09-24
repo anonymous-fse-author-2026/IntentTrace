@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start the flickr login process")`: Hallucinates a preliminary step not present in the source, which begins directly with "please provide the userdata for flickr." (SMC1)
+- `guard(b1, n5, v1 = 'Yes')`: Inverts control-flow logic by routing a successful login to the retry decision `n5`; the source states "If the login is successful, the process will end" and continues only on failure. (SMC4)
+- `guard(b3, n10, v3 = 'Yes')`: Inverts control-flow logic by routing a successful retry login to the next retry decision `n10`; success should terminate the process, not trigger another retry prompt. (SMC4)
+- `branch(b2, XOR)` and `branch(b4, XOR)`: Lack guards on their outgoing edges despite representing explicit conditional choices in the source ("If you want to try again... On the other hand, if you choose to abort"); edges require conditions linking to `v2` and `v4`. (SMC4)
+- `defines(v1, "is the login successful", {"Yes"})`, `defines(v3, "is the login successful after retry", {"Yes"})`, `defines(v5, "is the login successful after third try", {})`: Ranges are incomplete or empty, omitting `"No"` which is necessary to evaluate the failed login scenarios explicitly described in the source. (SMC6)
+- `defines(v2, "do you want to try again", {})`, `defines(v4, "do you want to try again after second failure", {})`: Ranges are empty `{}`, failing to capture the expected response values (e.g., `{"Yes", "No"}`) implied by the source's retry/abort questions. (SMC6)
+- `label(n2, n3, "No")`, `label(n6, n8, "No")`, `label(n11, n13, "No")`: Labels are attached to mandatory sequential control-flow edges, incorrectly implying the transition only occurs on a negative outcome, whereas the source treats these steps as unconditional precursors to the success/failure evaluation. (SMC2)

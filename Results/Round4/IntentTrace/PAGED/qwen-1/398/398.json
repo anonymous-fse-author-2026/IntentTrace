@@ -1,0 +1,234 @@
+{
+  "elements": [
+    {
+      "id": "s0",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "i1",
+      "type": "action",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "On the other hand, if you choose to abort, the process will end."
+    },
+    {
+      "id": "e5",
+      "type": "end"
+    },
+    {
+      "id": "e6",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is login successful",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "retry decision",
+      "R_X": [
+        "Yes",
+        "No",
+        "Direct",
+        "Exit"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "s0",
+        "c1",
+        "c2",
+        "i1",
+        "b1",
+        "i2",
+        "e1",
+        "i3",
+        "b2",
+        "i4",
+        "i5",
+        "e5",
+        "e6"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "s0",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "e6"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "i1"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "e5"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i2",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i4",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i5",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c1",
+      "condition": "v2 = 'Direct'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "e6",
+      "condition": "v2 = 'Exit'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To start, please provide the userdata for flickr."
+    },
+    {
+      "id": "i2",
+      "content": "If the login is successful, the process will end."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the login fails, we will continue with the process."
+    },
+    {
+      "id": "i4",
+      "content": "If you want to try again, please provide the userdata for flickr."
+    },
+    {
+      "id": "i5",
+      "content": "On the other hand, if you choose to abort, the process will end."
+    }
+  ]
+}

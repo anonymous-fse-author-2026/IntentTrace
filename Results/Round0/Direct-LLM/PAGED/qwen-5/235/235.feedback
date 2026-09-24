@@ -1,0 +1,11 @@
+- action(n11): Lacks an outgoing `precedence` edge, creating a dead end. The source describes a cycle ("If they choose to continue shopping, they return to the desired item page. From there, they add the item to their cart"), requiring a link from `n11` to `n8` or `n7` to preserve chronology (SMC3/SMC5).
+- branch(b2, XOR): Splits into paths that never converge or loop back, misrepresenting the source's cyclical flow where the "continue shopping" option returns to the cart-adding step (SMC4).
+- actor(a_default, "Default", [...] ): Misnamed "Default" instead of "customer", contradicting the description which exclusively attributes all steps to "the customer" (SMC7).
+- defines(v1, ...), defines(v2, ...), defines(v3, ...): Contain empty ranges `{}`, omitting the decision value domains required to evaluate the branch alternatives described in the source (SMC6).
+- Missing guard statements: No `guard` clauses link `v1`–`v3` to the outgoing edges of `b1`, `b2`, or `b3`, leaving conditional logic undefined despite the source explicitly framing each split as a choice (e.g., "If they choose to view the quantity amount...") (SMC4).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n11` has in=1 and out=0. | DSL: action(n11,"return to desired item page")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n16` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n18` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n11 | DSL: action(n10,"continue shopping"); action(n11,"return to desired item page")

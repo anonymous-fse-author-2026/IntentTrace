@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i18:Similarly, when the invoice is received, record it as well.
+- [N2] Within matched traces (1->0) omitted: i14:In case the order needs to be reworked, review the Purchase Order again.
+
+Addition
+- [N3] Added trace (model 1): init(i1) -> action(n1,"start with Resupply Cycle Triggered") -> action(n2,"check Inventory Level") -> branch(b1,XOR) -> action(n4,"Create Purchase Order") -> action(n6,"Review Purchase Order") -> branch(b2,XOR) -> action(n8,"Reserve funds for purchase") -> action(n10,"Send Order to Suppliers") -> branch(b3,AND) -> action(n13,"Supplier sends invoice") -> action(n15,"record invoice") -> converge(c1) -> action(n16,"Release reserved funds and issue payment to supplier") -> action(n17,"End process after payment is issued") -> end(e2)
+- [N4] Within matched traces (1->0) added: action(n8,"Reserve funds for purchase")
+- [N5] Within matched traces (1->0) added: action(n10,"Send Order to Suppliers")
+- [N6] Within matched traces (1->0) added: branch(b3,AND)
+- [N7] Within matched traces (1->0) added: action(n12,"Supplier sends packing slip")
+- [N8] Within matched traces (1->0) added: action(n14,"record packing slip")
+- [N9] Within matched traces (1->0) added: converge(c1)
+- [N10] Within matched traces (1->0) added: action(n16,"Release reserved funds and issue payment to supplier")
+- [N11] Within matched traces (1->0) added: action(n17,"End process after payment is issued")
+- [N12] Within matched traces (1->0) added: end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=2 and out=1. | DSL: action(n6,"Review Purchase Order")

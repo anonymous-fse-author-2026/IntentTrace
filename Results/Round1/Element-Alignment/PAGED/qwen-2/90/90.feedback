@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:It takes approximately 20 minutes for every 100 invoices, (reason: No element faithfully preserves the descriptive nature and specific '20 minutes' metric of this unit; the only related element mutates it into an unrelated action.)
+- [N2] Node-level omission: i6:once you have entered the invoice data (reason: No element faithfully represents this as a temporal precondition; the sole candidate mutates it into an action step.)
+- [N3] Within matched traces (0->0) omitted: i3:you should proceed with the process.
+- [N4] Within matched traces (1->0) omitted: i4:you should also continue with the process.
+
+Addition
+- [N5] Node-level addition: action(n1,"Start") (reason: Invents a 'Start' action step from the announcer phrase 'To start', which is already correctly handled structurally by init:i1.)
+- [N6] Node-level addition: action(n3,"Sort by Vendor or Amount?") (reason: Adds an explicit decision/prompt step ('Sort by Vendor or Amount?') that does not appear in the source text.)
+- [N7] Node-level addition: action(n6,"Process Invoices (Vendor)") (reason: Invents detailed processing steps for each branch path, whereas the source simply instructs to 'proceed'/'continue with the process' without specifying further actions.)
+- [N8] Node-level addition: action(n7,"Process Invoices (Amount)") (reason: Invents detailed processing steps for each branch path, whereas the source simply instructs to 'proceed'/'continue with the process' without specifying further actions.)
+- [N9] Node-level addition: action(n12,"End of Process") (reason: Adds a terminal 'End of Process' action step derived from the concluding phrase, which is better and solely modeled by the structural end:e1.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Note Vendor Number on Invoice Entry Form") -> action(n3,"Sort by Vendor or Amount?") -> branch(b1,XOR) -> action(n5,"Sort Invoices by Amount") -> action(n7,"Process Invoices (Amount)") -> converge(c1) -> action(n8,"Note Time per 100 Invoices") -> action(n13,"Enter Invoice Data") -> action(n9,"Tick 'Invoice Entered' on Form") -> action(n10,"Place Invoice Batch in Urgent Outbox") -> action(n11,"Set Up Hourly Collection") -> action(n12,"End of Process") -> end(e1)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (0->0) added: action(n1,"Start")
+- [N13] Within matched traces (0->0) added: action(n3,"Sort by Vendor or Amount?")
+- [N14] Within matched traces (0->0) added: action(n6,"Process Invoices (Vendor)")
+- [N15] Within matched traces (0->0) added: converge(c1)
+- [N16] Within matched traces (0->0) added: action(n12,"End of Process")
+- [N17] Within matched traces (1->0) added: init(i1)
+- [N18] Within matched traces (1->0) added: action(n1,"Start")
+- [N19] Within matched traces (1->0) added: action(n3,"Sort by Vendor or Amount?")
+- [N20] Within matched traces (1->0) added: action(n6,"Process Invoices (Vendor)")
+- [N21] Within matched traces (1->0) added: converge(c1)
+- [N22] Within matched traces (1->0) added: action(n12,"End of Process")
+
+Mutation
+- [N23] Node-level mutation: element=action(n8,"Note Time per 100 Invoices"); source=i5:It takes approximately 20 minutes for every 100 invoices,; reason=Alters a descriptive timeframe statement into an active instructional step ('Note Time...') and completely drops the specific '20 minutes' value.
+- [N24] Node-level mutation: element=action(n13,"Enter Invoice Data"); source=i6:once you have entered the invoice data; reason=Converts a temporal precondition clause into a standalone mandatory action step, changing the logical role and flow dependency of the text.
+- [N25] Node-level mutation: element=action(n11,"Set Up Hourly Collection"); source=i8:Once you have placed the invoice batch in the Urgent Outbox, it will be collected every hour.; reason=Transforms a passive system outcome ('it will be collected every hour') into an active user instruction ('Set Up Hourly Collection'), incorrectly assigning agency and inventing a setup task.

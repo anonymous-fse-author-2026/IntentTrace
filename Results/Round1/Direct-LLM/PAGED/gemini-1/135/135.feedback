@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i6:check if the shipment is okay (reason: The action to check the shipment is not faithfully implemented; it was improperly substituted with a state.)
+- [N2] Node-level omission: i12:checking the shipment status again (reason: The action to check the shipment status again is not faithfully implemented; the model dropped the instruction and qualifier.)
+- [N3] Node-level omission: i9:if there are any problems with the shipment, (reason: This explicit condition is not faithfully implemented, as the model substituted a generic 'v2 = No' guard.)
+- [N4] Within matched traces (0->2) omitted: i16:the process comes to an end
+- [N5] Within matched traces (1->3) omitted: i16:the process comes to an end
+- [N6] Within matched traces (2->3) omitted: i15:communicate any shipment problems.
+- [N7] Within matched traces (2->3) omitted: i11:communicate them
+
+Addition
+- [N8] Node-level addition: guard(b1,c1,"v1 = 'No'") (reason: The 'No' branch for previous shipment problems lacks explicit support in the source text.)
+- [N9] Added trace (model 0): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n9,"Send Payment") -> end(e1)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"Low Inventory") -> action(n2,"Create P.R.") -> action(n3,"Create P.R.") -> action(n4,"Submit P.O.") -> action(n5,"Any previous shipment problems") -> branch(b1,XOR) -> action(n6,"Communicate shipment problems") -> converge(c1) -> action(n7,"Ship Material") -> action(n8,"Shipment okay") -> branch(b2,XOR) -> action(n10,"Communicate shipment problems") -> action(n11,"Shipment okay") -> branch(b3,XOR) -> action(n12,"Send Payment") -> end(e2)
+- [N11] Within matched traces (0->2) added: action(n5,"Any previous shipment problems")
+- [N12] Within matched traces (0->2) added: branch(b1,XOR)
+- [N13] Within matched traces (0->2) added: converge(c1)
+- [N14] Within matched traces (1->3) added: action(n5,"Any previous shipment problems")
+- [N15] Within matched traces (1->3) added: branch(b1,XOR)
+- [N16] Within matched traces (1->3) added: converge(c1)
+- [N17] Within matched traces (2->3) added: action(n12,"Send Payment")
+- [N18] Within matched traces (2->3) added: end(e2)
+
+Mutation
+- [N19] Node-level mutation: element=action(n8,"Shipment okay"); source=i6:check if the shipment is okay; reason=The source instruction is to 'check if' the shipment is okay, but the model drops the action verb and only records the state 'Shipment okay'.
+- [N20] Node-level mutation: element=action(n11,"Shipment okay"); source=i12:checking the shipment status again; reason=The source describes an action of 'checking... again', but the model drops the instruction and qualifier, recording only 'Shipment okay'.
+- [N21] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i17:In case there were any shipment problems; reason=The specific condition 'any shipment problems' is dropped and replaced with a generic boolean 'v1 = Yes'.
+- [N22] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i9:if there are any problems with the shipment,; reason=The explicit condition 'if there are any problems with the shipment' is dropped and replaced with a generic 'v2 = No'.
+
+Permutation
+- [N23] Within matched traces (2->3) reordered: expected [i17:In case there were any shipment problems] but observed [action(n5,"Any previous shipment problems") -> branch(b1,XOR)] elsewhere; in its place the model has [branch(b3,XOR)]

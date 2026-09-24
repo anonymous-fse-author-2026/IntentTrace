@@ -1,0 +1,15 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start the loan process") (reason: Invents a 'Start the loan process' action that does not appear in the source; the text begins directly with the application check.)
+- [N2] Node-level addition: guard(b2,n8,"v2 = 'No'") (reason: Invents an else-condition guard (v2 = 'No') linking to an extra termination path; the source only specifies a positive condition for special terms and gives no alternative outcome.)
+- [N3] Node-level addition: action(n8,"Process ends") (reason: Adds a third 'Process ends' step with no supporting source span; only two termination points are described in the text.)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"Start the loan process") -> action(n2,"Check loan application") -> action(n3,"Application rejected") -> branch(b1,XOR) -> action(n5,"Special terms agreed upon") -> branch(b2,XOR) -> action(n8,"Process ends") -> end(e3)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"Start the loan process")
+- [N7] Within matched traces (1->1) added: init(i1)
+- [N8] Within matched traces (1->1) added: action(n1,"Start the loan process")
+- [N9] Within matched traces (1->1) added: action(n3,"Application rejected")
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the application is rejected,; reason=The guard replaces the explicit textual condition with a generic variable assignment (v1 = 'Yes'), dropping the specific qualifier and altering the data representation.
+- [N11] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:However, if special terms are agreed upon, the process continues.; reason=The guard substitutes the source condition with a generic negation (v1 = 'No'), distorting the original logic and omitting the specific business qualifier.
+- [N12] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i4:However, if special terms are agreed upon, the process continues.; reason=The guard replaces the explicit condition with a generic variable check (v2 = 'Yes'), failing to preserve the original instruction and data granularity.

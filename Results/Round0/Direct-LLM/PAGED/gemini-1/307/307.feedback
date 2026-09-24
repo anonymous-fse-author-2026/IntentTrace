@@ -1,0 +1,5 @@
+- action(n1, "start"): This action is hallucinated as a separate step; the source text simply states to "start by checking the received invoice", which is already covered by action n2.
+- precedence(n4, c1) and precedence(c1, n5): The model routes the "no errors are found" path (n4) to converge(c1) which precedes action(n5, "highlight errors..."). This incorrectly requires highlighting errors even when no errors were found.
+- Control-flow logic: The model executes action(n3, "continue with process") and action(n5, "highlight errors...") sequentially (via c1), failing to capture the source text's instruction that they should occur "Simultaneously" (which requires an AND gateway on the errors-found path).
+- Omitted behavior: The model completely misses the step where "the invoice is checked", which the source text explicitly states must happen after the "invoice entered correctly" box is ticked.
+- action(n6, "end of process"): This is a hallucinated action step; the source text stating "the process ends" refers to the termination of the process, which is correctly represented by end(e1) alone.

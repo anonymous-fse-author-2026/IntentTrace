@@ -1,0 +1,10 @@
+- `action(n1, "start")`: The model hallucinates an explicit "start" step that is not described in the source text.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: The model is missing `guard` statements to evaluate the conditional pathways explicitly stated in the text (e.g., "If the issue is resolved", "If it is a 1st Level issue").
+- `action(n11, "Is the issue resolved after re-assistance?")` and `branch(b3, XOR)`: The model hallucinates a third conditional check. The source text unconditionally states "After that, provide feedback for the account manager and end the process."
+- `defines(v1, ...)`, `defines(v2, ...)`, and `defines(v3, ...)`: The decision variables are declared with empty value ranges `{}` rather than proper value spaces.
+- Omitted behavior: The model completely fails to represent the final documented sequences "Ask the developer and then provide feedback for the 1st Level support" and "Finally, provide feedback for the 1st Level support and then provide feedback for the account manager."
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.

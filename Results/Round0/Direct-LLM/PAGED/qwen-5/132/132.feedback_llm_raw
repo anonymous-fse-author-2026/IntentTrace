@@ -1,0 +1,8 @@
+
+
+- `branch(b1, XOR)`, `branch(b2, XOR)`: Missing `guard` statements to constrain outgoing edges, despite the source explicitly defining branching conditions ("If the article is available...", "Once the customer accepts the offer...").
+- `defines(v1, "is the article in stock", {})`, `defines(v2, "has the customer accepted the offer", {})`: Value ranges are empty (`{}`) instead of reflecting the binary/boolean domains required by the source's conditional logic.
+- `action(n11, "abort the enquiry and end process")`, `precedence(b2, n11)`: Hallucinates a rejection pathway; the source only describes the acceptance progression ("Once the customer accepts the offer, we dispatch the article") and provides no behavior for non-acceptance.
+- `action(n12, "end process")`, `precedence(n10, n12)`, `precedence(n12, e3)`: Inserts an unnecessary intermediate action, contradicting the source which states termination occurs immediately after dispatch ("once the article is dispatched, the process comes to an end").
+- `action(n3, "continue with the process")`: Represents a filler step absent in the source; the text transitions directly from the availability decision to subsequent operations without a discrete continuation action.
+- `actor(a_default, "Default", [...])`: Assigns all nodes to a single participant, misrepresenting the source's clear responsibility split between "the customer" (makes enquiry, accepts offer) and "we" (checks stock, reserves, calculates, sends, waits, dispatches).

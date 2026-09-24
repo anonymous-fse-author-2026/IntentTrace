@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive customer request;
+:check current inventory level;
+:v1: inventory_status ({at or below minimum, above minimum}); <<objectSignal>>
+if () then ([v1 = 'at or below minimum'])
+:accept customer request;
+:create purchase order;
+repeat :;
+:review purchase order;
+:is purchase order approved?;
+:v2: purchase_order_status ({approved, rejected}); <<objectSignal>>
+backward:rework purchase order;
+repeat while () is ([v2 = 'rejected']) not ([v2 = 'approved'])
+:reserve funds;
+:send purchase order;
+split
+:receive packing slip;
+:record packing slip;
+split again
+:receive invoice;
+:record invoice;
+end split
+:release reserved funds and issue payment;
+:end process;
+stop
+else ([v1 = 'above minimum'])
+:reject customer request;
+:end process for rejected request;
+stop
+endif
+@enduml

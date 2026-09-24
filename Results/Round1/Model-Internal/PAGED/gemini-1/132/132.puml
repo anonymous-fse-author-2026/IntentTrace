@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:customer makes an enquiry;
+:is the article in stock;
+:v1: is the article in stock ({Yes, No}); <<objectSignal>>
+if () then ([v1 == 'Yes'])
+:continue with the process;
+:reserve the article;
+:calculate the price;
+:send the offer;
+:wait for the customer to accept the offer;
+:has the customer accepted the offer;
+:v2: has the customer accepted the offer ({Yes, No}); <<objectSignal>>
+if () then ([v2 == 'Yes'])
+:dispatch the article;
+:end process;
+stop
+else ([v2 == 'No'])
+:abort the enquiry and end process;
+stop
+endif
+else ([v1 == 'No'])
+:abort the enquiry and end process;
+stop
+endif
+@enduml

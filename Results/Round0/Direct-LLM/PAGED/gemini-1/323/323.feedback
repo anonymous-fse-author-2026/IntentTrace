@@ -1,0 +1,8 @@
+- action(n6, "Confirm shipping address"): This node has no outgoing precedence edge, causing the "New shipping address" path to dead-end instead of proceeding to select the shipping speed and reaching the end (violates SMC4 and SMC5).
+- action(n5, "Confirm shipping address") and action(n6, "Confirm shipping address"): The model duplicates this action on both branches rather than using a converge gateway to a single confirmation step, misrepresenting the source text "Once that is done, confirm the shipping address".
+- action(n1, "Start") and action(n8, "End"): These are hallucinated action steps; the phrases "start by" and "comes to an end" in the text merely describe the process's initialization and termination, which are properly handled by init(i1) and end(e1).
+- action(n4, "Is the shipping address saved or new?"): Hallucinated as a discrete action task; the source text describes this as a conditional evaluation immediately following "determine the shipping details".
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"Confirm shipping address")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"Confirm shipping address")

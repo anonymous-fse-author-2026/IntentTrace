@@ -1,0 +1,19 @@
+- guard(b1, n4, v1 = 'No'): The model routes to `n4` ("is sum of order greater than 2000") if the order has not been received, which is a hallucinated behavior not supported by the text.
+- guard(b2, n11, v2 = 'No'): Routing to `n11` ("continue with the process") when the sum is not less than 500 (`v2 = 'No'`) contradicts the text, which only states to "continue with the process" if the sum *is* less than 500.
+- guard(b6, n13, v6 = 'No') and guard(b6, n14, v6 = 'No'): Both outgoing edges from the XOR gateway `b6` share the exact same condition, creating an invalid non-deterministic choice.
+- defines(v6, "is sum of order greater than 2000", {"No"}): The definition for `v6` only allows the value "No", making it impossible to evaluate the required condition "If the sum of the order is greater than 2000".
+- precedence(b5, n9) and precedence(b9, n18): The model contains cyclic control-flow edges returning to `n9` and `n18`, introducing loops that are entirely unstated in the source text.
+- precedence(b5, c1) and precedence(b9, c1): These outgoing edges from the XOR gateways `b5` and `b9` to the converge node `c1` completely lack necessary guard conditions.
+- branch(b10, AND): The model uses a parallel AND gateway (`b10`) to concurrently route to `n12` and `c1`, which contradicts the strictly sequential logic described in the source text.
+- action(n1, "start the process") and action(n21, "process end"): The model hallucinates these as explicit action steps, whereas in the text they merely indicate the structural start and end of the process (which are already captured by `init` and `end`).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n18` has in=2 and out=1. | Node `n9` has in=2 and out=1. | DSL: action(n18,"is sum of order between 500 and 999"); action(n9,"is sum of order between 500 and 999")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v6` has an invalid range `['No']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v6 = 'No'` on `b6 -> n13` uses undefined variable `v6`. | Guard `v6 = 'No'` on `b6 -> n14` uses undefined variable `v6`. | DSL: guard(b6,n13,"v6 = 'No'"); guard(b6,n14,"v6 = 'No'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b5 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b9 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v6 = 'No'` on `b6 -> n13` cannot be evaluated: `v6` has no declared range. | Guard `v6 = 'No'` on `b6 -> n14` cannot be evaluated: `v6` has no declared range. | DSL: guard(b6,n13,"v6 = 'No'"); guard(b6,n14,"v6 = 'No'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b6` cannot be evaluated: `v6` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b6` cannot be evaluated: `v6` has no declared range.

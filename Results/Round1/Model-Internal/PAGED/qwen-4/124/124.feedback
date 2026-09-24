@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i3:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue. At the same time (reason: The explicit directive for concurrent execution ('At the same time') is completely missing from the model; the expected AND-split or parallel gateway is replaced by an incorrect exclusive split.)
+
+Addition
+- [N2] Node-level addition: action(n1,"start process") (reason: The 'start process' action invents an initial step that has no corresponding instruction or support in the source text.)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n7,"check availability again") -> action(n8,"end") -> end(e1)
+- [N4] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"look at the order") -> action(n3,"order rejected?") -> branch(b1,XOR) -> action(n5,"check availability") -> converge(c1) -> action(n6,"backorder?") -> branch(b2,XOR) -> action(n9,"assemble bike") -> action(n10,"ship product") -> action(n11,"end") -> end(e2)
+- [N5] Within matched traces (0->0) added: init(i1)
+- [N6] Within matched traces (0->0) added: action(n1,"start process")
+- [N7] Within matched traces (1->1) added: init(i1)
+- [N8] Within matched traces (1->1) added: action(n1,"start process")
+- [N9] Within matched traces (1->1) added: action(n6,"backorder?")
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n4,"v1 = 'Rejected'") -> guard(b1,n5,"v1 = 'Accepted'"); source=i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.; reason=The source specifies that both subsequent tasks occur simultaneously regardless of the accept/reject outcome. The model incorrectly implements an exclusive choice that routes 'Rejected' solely to preparation and 'Accepted' solely to availability checking, altering the execution flow and logical dependency.
+
+Permutation
+- [N11] Within matched traces (0->0) reordered: expected [i4:preparing the assembling order and checking availability] but observed [action(n4,"prepare assembling order")] elsewhere; in its place the model has [converge(c1)]
+- [N12] Within matched traces (1->1) reordered: expected [i4:preparing the assembling order and checking availability] but observed [action(n4,"prepare assembling order")] elsewhere; in its place the model has [converge(c1)]

@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v_ret: return method ({customer, crew}); <<objectSignal>>
+if () then ([v_ret = "customer"])
+:Customer returns the items to the store;
+else ([v_ret = "crew"])
+:Delivery Crew picks-up items at the event site;
+endif
+:items are counted and compared to the original contract;
+:v_status: order status ({complete, incomplete, damaged}); <<objectSignal>>
+switch ()
+case ([v_status = "complete"])
+:Order is complete and all items were returned;
+case ([v_status = "incomplete"])
+:Order is incomplete and items are missing;
+case ([v_status = "damaged"])
+:Order is complete but items are damaged, email customer;
+endswitch
+:v_dest1: destination 1 ({existing, future}); <<objectSignal>>
+if () then ([v_dest1 = "existing"])
+:Items are packed for an existing order;
+else ([v_dest1 = "future"])
+:Items are stored for future orders;
+endif
+:v_status: order status ({complete, incomplete, damaged}); <<objectSignal>>
+switch ()
+case ([v_status = "incomplete"])
+:email customer to inform them of missing items and replacement charges;
+:v_cust: customer returns ({yes, no}); <<objectSignal>>
+if () then ([v_cust = "yes"])
+:Customer returns the missing items;
+else ([v_cust = "no"])
+:Customer does not return the missing items;
+endif
+case ([v_status = "complete"])
+:proceed with the process;
+:v_dest1: destination 1 ({existing, future}); <<objectSignal>>
+if () then ([v_dest1 = "existing"])
+:Items are packed for an existing order;
+else ([v_dest1 = "future"])
+:Items are stored for future orders;
+stop
+endif
+case ([v_status = "damaged"])
+:temporarily take damaged items out of inventory;
+:v_repair: reparable ({yes, no}); <<objectSignal>>
+if () then ([v_repair = "yes"])
+:Items are repaired and added into inventory;
+else ([v_repair = "no"])
+:Items can't be repaired and are discarded;
+:email customer with replacement charges;
+stop
+endif
+endswitch
+stop
+@enduml

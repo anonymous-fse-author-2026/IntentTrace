@@ -1,0 +1,320 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "start process"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "enter kitchen"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "check pesto availability"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "cook spaghetti"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "is pesto available?"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "retrieve pesto from cupboard"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "take tomato sauce from roommate"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "has tomato sauce been stolen?"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "cook tomato sauce"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "combine meal components and prepare meal"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "end process"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "cook the spaghetti"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is pesto available?",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "has tomato sauce been stolen?",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n6",
+        "b1",
+        "n7",
+        "n8",
+        "n9",
+        "b2",
+        "n10",
+        "n11",
+        "n12",
+        "e1",
+        "c1",
+        "c2",
+        "b3",
+        "n13"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n7",
+      "condition": "v1 = true"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v1 = false"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "v2 = true"
+    },
+    {
+      "type": "label",
+      "A": "n8",
+      "B": "n9",
+      "str": "Stolen?"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, enter the kitchen."
+    },
+    {
+      "id": "i3",
+      "content": "check if pesto is available"
+    },
+    {
+      "id": "i4",
+      "content": "cook spaghetti."
+    },
+    {
+      "id": "i5",
+      "content": "If pesto is available"
+    },
+    {
+      "id": "i6",
+      "content": "retrieve it from the cupboard."
+    },
+    {
+      "id": "i7",
+      "content": "If pesto is not available"
+    },
+    {
+      "id": "i8",
+      "content": "take tomato sauce from your roommate."
+    },
+    {
+      "id": "i9",
+      "content": "Once the pesto is obtained,"
+    },
+    {
+      "id": "i10",
+      "content": "cook the spaghetti."
+    },
+    {
+      "id": "i11",
+      "content": "If tomato sauce is stolen,"
+    },
+    {
+      "id": "i12",
+      "content": "cook it."
+    },
+    {
+      "id": "i13",
+      "content": "After the sauce is cooked, combine all the meal components and prepare the meal."
+    },
+    {
+      "id": "i14",
+      "content": "This concludes the process."
+    }
+  ]
+}

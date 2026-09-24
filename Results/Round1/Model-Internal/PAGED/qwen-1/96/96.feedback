@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i4:After sending the inquiry,
+
+Addition
+- [N2] Node-level addition: action(n4,"Send the inquiry") (reason: Models the transitional phrase 'After sending the inquiry,' as a distinct action step, inventing redundant content not instructed in the source.)
+- [N3] Node-level addition: action(n6,"Invoice received") (reason: Introduces a fallback path, negative guard, and retry wait loop for the invoice step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N4] Node-level addition: guard(b1,n14,"v1 = 'Invoice not received'") (reason: Introduces a fallback path, negative guard, and retry wait loop for the invoice step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N5] Node-level addition: action(n14,"Wait for invoice") (reason: Introduces a fallback path, negative guard, and retry wait loop for the invoice step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N6] Node-level addition: label(n5,n6,"Invoice not received") (reason: Introduces a fallback path, negative guard, and retry wait loop for the invoice step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N7] Node-level addition: action(n10,"Purchase invoice and shipment received") (reason: Introduces a fallback path, negative guard, and retry wait loop for the purchase invoice/shipment step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N8] Node-level addition: guard(b2,n15,"v2 = 'Not received'") (reason: Introduces a fallback path, negative guard, and retry wait loop for the purchase invoice/shipment step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N9] Node-level addition: action(n15,"Wait for purchase invoice and shipment") (reason: Introduces a fallback path, negative guard, and retry wait loop for the purchase invoice/shipment step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N10] Node-level addition: label(n9,n10,"Not received") (reason: Introduces a fallback path, negative guard, and retry wait loop for the purchase invoice/shipment step. The source describes a strictly linear flow without conditional branching or re-wait steps.)
+- [N11] Added trace (model 1): init(i1) -> action(n1,"Start the process") -> action(n2,"Gather the required items") -> action(n3,"Inquire about the availability of products") -> action(n4,"Send the inquiry") -> action(n5,"Wait for the invoice") -> action(n6,"Invoice received") -> branch(b1,XOR) -> action(n7,"Review the pricing and terms of the items") -> action(n8,"Send a purchase requisition") -> action(n9,"Wait for the purchase invoice and shipment") -> action(n10,"Purchase invoice and shipment received") -> branch(b2,XOR) -> action(n15,"Wait for purchase invoice and shipment") -> end(e1)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"Start the process") -> action(n2,"Gather the required items") -> action(n3,"Inquire about the availability of products") -> action(n4,"Send the inquiry") -> action(n5,"Wait for the invoice") -> action(n6,"Invoice received") -> branch(b1,XOR) -> action(n14,"Wait for invoice") -> end(e1)
+- [N13] Within matched traces (0->0) added: action(n4,"Send the inquiry")
+- [N14] Within matched traces (0->0) added: action(n6,"Invoice received")
+- [N15] Within matched traces (0->0) added: action(n10,"Purchase invoice and shipment received")

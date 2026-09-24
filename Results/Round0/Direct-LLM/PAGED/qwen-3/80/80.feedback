@@ -1,0 +1,8 @@
+- `defines(v1, "is availability ok?", {})`: The defined value range is empty `{}`, but the source explicitly states the availability outcomes are `"nok"` and `"ok"`. The range must reflect these documented values (SMC6).
+- `branch(b1, XOR)` and outgoing edges `(b1, n5)` / `(b1, n6)`: Missing `guard` statements to implement the documented conditional logic. The source specifies `If the availability is "nok"...` and `if the availability is "ok"...`, but the model leaves the exclusive choice completely unconstrained (SMC4, SMC5).
+- Source segment `After checking the availability, you will receive the necessary information.`: This documented behavioral step is entirely omitted; the model transitions directly from `action(n3, "check bus availability")` to `action(n4, "is availability ok?")` (SMC1).
+- `action(n4, "is availability ok?")`: Incorrectly frames a logical condition as a standalone process activity. The source treats the availability result as a direct decision trigger, not a discrete task step, making the payload semantically misaligned (SMC2).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required.

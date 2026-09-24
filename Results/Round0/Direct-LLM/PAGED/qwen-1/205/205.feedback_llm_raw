@@ -1,0 +1,5 @@
+
+
+- branch(b1, XOR) and branch(b2, XOR): Missing `guard()` statements for conditional edges. The source explicitly specifies decision criteria ("If the Inventory is greater than the Minimum Level, then the process ends"; "If the Purchase Order is rejected, it is reworked. However, if the Purchase Order is accepted, funds are reserved"), but the model declares zero guards, leaving the branching logic unconstrained and violating SMC4.
+- defines(v1, "Check Inventory Level", {}) and defines(v2, "Review Purchase Order", {}): Ranges are specified as empty `{}`, failing to represent the possible decision values/outcomes implied by the source text (e.g., above/below threshold, accepted/rejected status), violating SMC6.
+- precedence(b1, c2): The early termination path incorrectly routes through `converge(c2)` and `action(n15, "End of Process")` instead of connecting directly to `end(e1)`. This introduces an unnecessary synchronization point and additional step for a scenario where the source states the process should immediately end ("then the process ends"), distorting the intended chronology and violating SMC3/SMC5.

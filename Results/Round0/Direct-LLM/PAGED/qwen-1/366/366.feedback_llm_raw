@@ -1,0 +1,7 @@
+
+
+- `action(n1, "Start process")`: Hallucinates an initial step; the source explicitly begins with "start by checking the order received" (SMC1).
+- `precedence(n5, c1)`, `precedence(b1, c1)`, `precedence(c1, n6)`: Incorrectly converges the "not available" and "available" branches, causing `n6` ("Ship article") to execute unconditionally after the first check. The source restricts shipping to cases where "the article is available" (SMC4, SMC5).
+- `precedence(n9, c2)`, `precedence(b2, c2)`, `precedence(c2, n10)`: Incorrectly converges the second availability check outcomes, forcing `n10` ("Ship article") even when availability is "No". The source states shipping proceeds only "Otherwise" (i.e., if available) (SMC4, SMC5).
+- `action(n4, "Article available?")`, `action(n8, "Article available after shipping?")`: Payloads are phrased as decision questions rather than executable steps, conflicting with the `action` element semantics; these represent conditions evaluated at `branch(b1)` and `branch(b2)` (SMC2).
+- `converge(c1)`, `converge(c2)`: Artificially join mutually exclusive branches into a single continuation, violating the source's conditional divergence and intended process progression (SMC4, SMC5).

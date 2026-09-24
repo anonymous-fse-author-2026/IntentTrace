@@ -1,0 +1,20 @@
+- action(n1, "Start process for flickr login"): Hallucinated step not present in the source text (SMC1).
+- action(n4, "End process after successful login"), action(n8, "End process after abort"), and action(n11, "End process after abort"): Hallucinated actions; the source simply states "the process will end", which should be represented directly by `end` nodes (SMC1).
+- action(n6, "Provide userdata for flickr login") and action(n10, "Provide userdata for flickr login"): Both nodes lack outgoing control-flow edges, creating invalid dead ends that do not terminate the process (SMC4).
+- precedence(n7, b3): The source states "if you choose to abort, the process will end", but the model incorrectly routes the abort step (n7) to a new branch (b3) that offers another chance to retry (SMC4).
+- defines(v1, "Is login successful", {"Abort"}) and guard(b1, n5, v1 = 'Abort'): The variable range and guard for the failed login path incorrectly use "Abort" instead of a value reflecting login failure (SMC6, SMC4).
+- guard(b2, n7, v2 = 'Provide userdata'): The condition for the abort path (n7) is incorrectly set to 'Provide userdata' instead of a value representing the choice to abort (SMC4).
+- guard(b3, n9, v3 = 'Abort'): The condition for the retry path (n9) is incorrectly set to 'Abort' (SMC4).
+- label(n2, n3, "Abort"): Hallucinated label on the unconditional sequential edge between providing userdata and checking login success (SMC2).
+- branch(b1, XOR), branch(b2, XOR), and branch(b4, XOR): Missing guard conditions for the outgoing alternative paths to n4 (successful login), n6 (try again), and n10 (try again) respectively (SMC4).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Abort']`. | Variable `v2` has an invalid range `['Provide userdata']`. | Variable `v3` has an invalid range `['Abort']`. | Variable `v4` has an invalid range `[]`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Abort'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'Abort'` on `b3 -> n9` uses undefined variable `v3`. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n6 | DSL: action(n10,"Provide userdata for flickr login"); action(n6,"Provide userdata for flickr login")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Abort'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Provide userdata'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'Abort'` on `b3 -> n9` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n5,"v1 = 'Abort'"); guard(b2,n7,"v2 = 'Provide userdata'"); guard(b3,n9,"v3 = 'Abort'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

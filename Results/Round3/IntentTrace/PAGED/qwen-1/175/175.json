@@ -1,0 +1,601 @@
+{
+  "elements": [
+    {
+      "id": "i_start",
+      "type": "init"
+    },
+    {
+      "id": "a_return",
+      "type": "action",
+      "content": "Rental Items are Returned to the Store."
+    },
+    {
+      "id": "b_method",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_cust_ret",
+      "type": "action",
+      "content": "If the \"Customer returns the items to the store,\" then we can continue the process."
+    },
+    {
+      "id": "a_crew_pick",
+      "type": "action",
+      "content": "However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process."
+    },
+    {
+      "id": "c_method",
+      "type": "converge"
+    },
+    {
+      "id": "a_compare",
+      "type": "action",
+      "content": "During this step, the items are counted and compared to the original contract."
+    },
+    {
+      "id": "b_status",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_complete",
+      "type": "action",
+      "content": "If the \"Order is complete and all items were returned,\" then we proceed with the process."
+    },
+    {
+      "id": "a_incomplete",
+      "type": "action",
+      "content": "However, if the \"Order is incomplete and items are missing,\" we still continue the process."
+    },
+    {
+      "id": "a_damaged",
+      "type": "action",
+      "content": "Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges."
+    },
+    {
+      "id": "b_ps1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_pack_cond1",
+      "type": "action",
+      "content": "After this, if the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "id": "a_store_cond1",
+      "type": "action",
+      "content": "Alternatively, if the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "id": "c_ps1",
+      "type": "converge"
+    },
+    {
+      "id": "a_email_miss",
+      "type": "action",
+      "content": "In case of missing items and replacement charges, we email the customer to inform them."
+    },
+    {
+      "id": "b_miss_ret",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_miss_yes",
+      "type": "action",
+      "content": "If the \"Customer returns the missing items,\" we continue the process."
+    },
+    {
+      "id": "a_miss_no",
+      "type": "action",
+      "content": "However, if the \"Customer does not return the missing items,\" we still continue the process."
+    },
+    {
+      "id": "c_miss_ret",
+      "type": "converge"
+    },
+    {
+      "id": "a_take_inv",
+      "type": "action",
+      "content": "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+    },
+    {
+      "id": "b_repair",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_repaired",
+      "type": "action",
+      "content": "If the \"Items are repaired and added into inventory,\" we continue the process."
+    },
+    {
+      "id": "a_discarded",
+      "type": "action",
+      "content": "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+    },
+    {
+      "id": "c_pre_lastly",
+      "type": "converge"
+    },
+    {
+      "id": "a_pack_lastly",
+      "type": "action",
+      "content": "Lastly, the items are packed for an existing order."
+    },
+    {
+      "id": "b_final_cond",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "a_pack_check",
+      "type": "action",
+      "content": "If the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "id": "a_store_check",
+      "type": "action",
+      "content": "If the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "id": "c_final_cond",
+      "type": "converge"
+    },
+    {
+      "id": "e_process",
+      "type": "end"
+    },
+    {
+      "id": "a_email_rep",
+      "type": "action",
+      "content": "The customer is then emailed with replacement charges, and the process is complete."
+    },
+    {
+      "id": "e_discard",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_method",
+      "name": "return method",
+      "R_X": [
+        "Customer",
+        "Delivery"
+      ]
+    },
+    {
+      "X": "v_status",
+      "name": "order status",
+      "R_X": [
+        "Complete",
+        "Incomplete",
+        "Damaged"
+      ]
+    },
+    {
+      "X": "v_ps1",
+      "name": "post complete action",
+      "R_X": [
+        "Pack",
+        "Store"
+      ]
+    },
+    {
+      "X": "v_miss_ret",
+      "name": "missing item return",
+      "R_X": [
+        "Returns",
+        "NoReturn"
+      ]
+    },
+    {
+      "X": "v_repair",
+      "name": "repair status",
+      "R_X": [
+        "Repaired",
+        "Discarded"
+      ]
+    },
+    {
+      "X": "v_final",
+      "name": "final action",
+      "R_X": [
+        "Pack",
+        "Store"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "process_handler",
+      "name": "ProcessHandler",
+      "assigned_nodes": [
+        "i_start",
+        "a_return",
+        "b_method",
+        "a_cust_ret",
+        "a_crew_pick",
+        "c_method",
+        "a_compare",
+        "b_status",
+        "a_complete",
+        "a_incomplete",
+        "a_damaged",
+        "b_ps1",
+        "a_pack_cond1",
+        "a_store_cond1",
+        "c_ps1",
+        "a_email_miss",
+        "b_miss_ret",
+        "a_miss_yes",
+        "a_miss_no",
+        "c_miss_ret",
+        "a_take_inv",
+        "b_repair",
+        "a_repaired",
+        "a_discarded",
+        "c_pre_lastly",
+        "a_pack_lastly",
+        "b_final_cond",
+        "a_pack_check",
+        "a_store_check",
+        "c_final_cond",
+        "e_process",
+        "a_email_rep",
+        "e_discard"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i_start",
+      "B": "a_return"
+    },
+    {
+      "type": "precedence",
+      "A": "a_return",
+      "B": "b_method"
+    },
+    {
+      "type": "precedence",
+      "A": "b_method",
+      "B": "a_cust_ret"
+    },
+    {
+      "type": "precedence",
+      "A": "b_method",
+      "B": "a_crew_pick"
+    },
+    {
+      "type": "precedence",
+      "A": "a_cust_ret",
+      "B": "c_method"
+    },
+    {
+      "type": "precedence",
+      "A": "a_crew_pick",
+      "B": "c_method"
+    },
+    {
+      "type": "precedence",
+      "A": "c_method",
+      "B": "a_compare"
+    },
+    {
+      "type": "precedence",
+      "A": "a_compare",
+      "B": "b_status"
+    },
+    {
+      "type": "precedence",
+      "A": "b_status",
+      "B": "a_complete"
+    },
+    {
+      "type": "precedence",
+      "A": "b_status",
+      "B": "a_incomplete"
+    },
+    {
+      "type": "precedence",
+      "A": "b_status",
+      "B": "a_damaged"
+    },
+    {
+      "type": "precedence",
+      "A": "a_complete",
+      "B": "b_ps1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_ps1",
+      "B": "a_pack_cond1"
+    },
+    {
+      "type": "precedence",
+      "A": "b_ps1",
+      "B": "a_store_cond1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_pack_cond1",
+      "B": "c_ps1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_store_cond1",
+      "B": "c_ps1"
+    },
+    {
+      "type": "precedence",
+      "A": "a_incomplete",
+      "B": "a_email_miss"
+    },
+    {
+      "type": "precedence",
+      "A": "a_email_miss",
+      "B": "b_miss_ret"
+    },
+    {
+      "type": "precedence",
+      "A": "b_miss_ret",
+      "B": "a_miss_yes"
+    },
+    {
+      "type": "precedence",
+      "A": "b_miss_ret",
+      "B": "a_miss_no"
+    },
+    {
+      "type": "precedence",
+      "A": "a_miss_yes",
+      "B": "c_miss_ret"
+    },
+    {
+      "type": "precedence",
+      "A": "a_miss_no",
+      "B": "c_miss_ret"
+    },
+    {
+      "type": "precedence",
+      "A": "a_damaged",
+      "B": "a_take_inv"
+    },
+    {
+      "type": "precedence",
+      "A": "a_take_inv",
+      "B": "b_repair"
+    },
+    {
+      "type": "precedence",
+      "A": "b_repair",
+      "B": "a_repaired"
+    },
+    {
+      "type": "precedence",
+      "A": "b_repair",
+      "B": "a_discarded"
+    },
+    {
+      "type": "precedence",
+      "A": "c_ps1",
+      "B": "c_pre_lastly"
+    },
+    {
+      "type": "precedence",
+      "A": "c_miss_ret",
+      "B": "c_pre_lastly"
+    },
+    {
+      "type": "precedence",
+      "A": "a_repaired",
+      "B": "c_pre_lastly"
+    },
+    {
+      "type": "precedence",
+      "A": "c_pre_lastly",
+      "B": "a_pack_lastly"
+    },
+    {
+      "type": "precedence",
+      "A": "a_pack_lastly",
+      "B": "b_final_cond"
+    },
+    {
+      "type": "precedence",
+      "A": "b_final_cond",
+      "B": "a_pack_check"
+    },
+    {
+      "type": "precedence",
+      "A": "b_final_cond",
+      "B": "a_store_check"
+    },
+    {
+      "type": "precedence",
+      "A": "a_pack_check",
+      "B": "c_final_cond"
+    },
+    {
+      "type": "precedence",
+      "A": "a_store_check",
+      "B": "c_final_cond"
+    },
+    {
+      "type": "precedence",
+      "A": "c_final_cond",
+      "B": "e_process"
+    },
+    {
+      "type": "precedence",
+      "A": "a_discarded",
+      "B": "a_email_rep"
+    },
+    {
+      "type": "precedence",
+      "A": "a_email_rep",
+      "B": "e_discard"
+    },
+    {
+      "type": "guard",
+      "A": "b_method",
+      "B": "a_cust_ret",
+      "condition": "v_method = \"Customer\""
+    },
+    {
+      "type": "guard",
+      "A": "b_method",
+      "B": "a_crew_pick",
+      "condition": "v_method = \"Delivery\""
+    },
+    {
+      "type": "guard",
+      "A": "b_status",
+      "B": "a_complete",
+      "condition": "v_status = \"Complete\""
+    },
+    {
+      "type": "guard",
+      "A": "b_status",
+      "B": "a_incomplete",
+      "condition": "v_status = \"Incomplete\""
+    },
+    {
+      "type": "guard",
+      "A": "b_status",
+      "B": "a_damaged",
+      "condition": "v_status = \"Damaged\""
+    },
+    {
+      "type": "guard",
+      "A": "b_ps1",
+      "B": "a_pack_cond1",
+      "condition": "v_ps1 = \"Pack\""
+    },
+    {
+      "type": "guard",
+      "A": "b_ps1",
+      "B": "a_store_cond1",
+      "condition": "v_ps1 = \"Store\""
+    },
+    {
+      "type": "guard",
+      "A": "b_miss_ret",
+      "B": "a_miss_yes",
+      "condition": "v_miss_ret = \"Returns\""
+    },
+    {
+      "type": "guard",
+      "A": "b_miss_ret",
+      "B": "a_miss_no",
+      "condition": "v_miss_ret = \"NoReturn\""
+    },
+    {
+      "type": "guard",
+      "A": "b_repair",
+      "B": "a_repaired",
+      "condition": "v_repair = \"Repaired\""
+    },
+    {
+      "type": "guard",
+      "A": "b_repair",
+      "B": "a_discarded",
+      "condition": "v_repair = \"Discarded\""
+    },
+    {
+      "type": "guard",
+      "A": "b_final_cond",
+      "B": "a_pack_check",
+      "condition": "v_final = \"Pack\""
+    },
+    {
+      "type": "guard",
+      "A": "b_final_cond",
+      "B": "a_store_check",
+      "condition": "v_final = \"Store\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, Rental Items are Returned to the Store."
+    },
+    {
+      "id": "i2",
+      "content": "If the \"Customer returns the items to the store,\" then we can continue the process."
+    },
+    {
+      "id": "i3",
+      "content": "However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "During this step, the items are counted and compared to the original contract."
+    },
+    {
+      "id": "i5",
+      "content": "If the \"Order is complete and all items were returned,\" then we proceed with the process."
+    },
+    {
+      "id": "i6",
+      "content": "However, if the \"Order is incomplete and items are missing,\" we still continue the process."
+    },
+    {
+      "id": "i7",
+      "content": "Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges."
+    },
+    {
+      "id": "i8",
+      "content": "After this, if the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "id": "i9",
+      "content": "Alternatively, if the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "id": "i10",
+      "content": "In case of missing items and replacement charges, we email the customer to inform them."
+    },
+    {
+      "id": "i11",
+      "content": "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+    },
+    {
+      "id": "i12",
+      "content": "If the \"Customer returns the missing items,\" we continue the process."
+    },
+    {
+      "id": "i13",
+      "content": "However, if the \"Customer does not return the missing items,\" we still continue the process."
+    },
+    {
+      "id": "i14",
+      "content": "If the \"Items are repaired and added into inventory,\" we continue the process."
+    },
+    {
+      "id": "i15",
+      "content": "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+    },
+    {
+      "id": "i16",
+      "content": "Lastly, the items are packed for an existing order."
+    },
+    {
+      "id": "i17",
+      "content": "If the \"Items are packed for an existing order,\" we continue the process."
+    },
+    {
+      "id": "i18",
+      "content": "If the \"Items are stored for future orders,\" we also continue the process."
+    },
+    {
+      "id": "i20",
+      "content": "The customer is then emailed with replacement charges, and the process is complete."
+    }
+  ]
+}

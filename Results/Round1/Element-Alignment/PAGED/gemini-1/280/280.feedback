@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i11:If the PO needs to be reworked, it needs to be created again. (reason: The model completely omits the instruction to 'create again' or an actionable loop back for the reworked PO.)
+- [N2] Node-level omission: i15:If the Packing Slip is received, proceed to receive the Invoice. (reason: While the action was modeled, the requisite condition 'If the Packing Slip is received' was not. There is no guard or label enforcing this prerequisite.)
+- [N3] Node-level omission: i16:If the inventory is received, proceed to receive the Packing Slip. (reason: The structural condition 'If the inventory is received' is completely absent from the flow logic; no label or guard ensures this check.)
+- [N4] Node-level omission: i18:If the Three-way match is successful, release the funds. (reason: The logical condition 'If the Three-way match is successful' is entirely ignored, lacking any guard or label to evaluate the match outcome before releasing funds.)
+- [N5] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum, generate an Equal to or below minimum Report. -> i5:If the report indicates that the inventory is equal to or below the minimum -> i6:create Purchase Orders (POs) -> i10:If the PO is created, it needs to be reviewed. -> i8:If the PO is rejected, it needs to be reworked. -> i11:If the PO needs to be reworked, it needs to be created again. -> i6:create Purchase Orders (POs)
+- [N6] Within matched traces (3->1) omitted: i15:If the Packing Slip is received, proceed to receive the Invoice.
+
+Addition
+- [N7] Node-level addition: action(n16,"Receive Invoice") (reason: The discrete action 'Receive Invoice' lacks explicit source support. The text only mandates to 'proceed to receive the Invoice', which is exclusively and fully handled by action:n14.)
+- [N8] Within matched traces (2->0) added: action(n16,"Receive Invoice")
+
+Mutation
+- [N9] Node-level mutation: element=label(n10,n12,"Funds Reserved"); source=i13:If funds are reserved for the released POs, receive the Packing Slip.; reason=The label 'Funds Reserved' drops the critical target phrase 'for the released POs', generalizing the condition and failing strict correspondence.
+- [N10] Node-level mutation: element=label(n11,n13,"POs Mailed"); source=i14:If the POs are mailed to the supplier, receive the inventory.; reason=The label 'POs Mailed' fails strict matching by omitting the specific target 'to the supplier'.

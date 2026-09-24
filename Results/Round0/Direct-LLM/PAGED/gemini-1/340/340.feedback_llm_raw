@@ -1,0 +1,8 @@
+- `actor(a_default, "Default", [...])`: The actor is incorrectly named "Default", failing to reflect the "Part Provision Team" specified in the source text.
+- `action(n1, "start")` and `action(n12, "end of process")`: Hallucinates start and end events as manual process actions.
+- Omitted behaviors: The model completely misses the explicit alternative conditions "if they already have the availability information" and "If the parts are supplied to the customer".
+- `action(n5, "do the parts need to be ordered and received from Disuki?")`: Replaces the actual source condition ("if they need to record the customer's details") with a hallucinated check.
+- `branch(b2, XOR)`: Incorrectly models `n6` ("order part from Disuki") and `n7` ("receive part from Disuki") as mutually exclusive paths, directly contradicting the text "order and receive the part".
+- `guard(b2, n6, v2 = 'Order not needed  proceed')`: Illogically routes the negative condition "Order not needed" to trigger `n6` ("order part from Disuki").
+- `precedence(n7, n8)`: Places `n8` ("record customer details") sequentially after receiving the part, whereas the text frames needing to record the customer's details as the condition that precedes/triggers the ordering of the part.
+- `action(n9, "contact the customer")`: Alters the payload meaning of the source text, which explicitly instructs to "contract the customer".

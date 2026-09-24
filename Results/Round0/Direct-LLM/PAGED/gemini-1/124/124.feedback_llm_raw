@@ -1,0 +1,6 @@
+- `actor(a_default, "Default", [...])`: The source explicitly states the process is "For the company", but the model assigns responsibilities to a generic "Default" actor instead of the company.
+- `action(n1, "start process")`: This action is hallucinated; the source explicitly states "the first step is to look at the order".
+- `action(n8, "end")` and `action(n11, "end")`: These actions are hallucinated; the source text describes the process ending, but does not dictate explicit "end" action steps before the actual termination.
+- `defines(v1, "order rejected?", {"Accepted"})`: The variable range fails to include a rejection value, ignoring the source text "If the order is to be rejected".
+- `branch(b1, XOR)`: The source specifies that preparing the assembling order and checking availability happen "At the same time", but the model incorrectly uses an exclusive XOR gateway to split the flow to `n4` and `n5` rather than an AND gateway.
+- Control-flow missing path: The model completely omits a continuing path for rejected orders, violating the source requirement that "If the order is to be rejected, the process should continue." Both outgoing guards from `b1` only handle the `v1 = 'Accepted'` condition.

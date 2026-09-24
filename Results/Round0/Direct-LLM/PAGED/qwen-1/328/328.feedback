@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinated step; the source begins directly with "request information about the organization" and does not mention a preliminary start task.
+- `defines(v1, "Is the customer in Intake stage?", {})` and `defines(v2, "Has target been reached?", {})`: Empty ranges `{}` violate SMC6; the source specifies distinct decision states (e.g., "Intake" vs "Potential client", and "target reached" vs "dissatisfied or for any other reason") that must define the variable value spaces.
+- `branch(b1, XOR)`: Lacks `guard` statements on its outgoing edges to `n5` and `n6`; the source explicitly routes flow based on whether "the customer is in the 'Intake' stage" or is a "Potential client".
+- `branch(b2, XOR)`: Lacks `guard` statements on its outgoing edges to `n9` and `n10`; the source explicitly routes flow based on "If the target has been reached" versus "if the customer is dissatisfied or for any other reason".
+- `action(n4, "Is the customer in Intake stage?")` and `action(n8, "Has target been reached?")`: Decision checkpoints are incorrectly modeled as executable action nodes preceding branches instead of using the `defines`/`guard` mechanism, severing the logical connection between the source's conditional statements and the control-flow splits (violates SMC2/SMC4).
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required.

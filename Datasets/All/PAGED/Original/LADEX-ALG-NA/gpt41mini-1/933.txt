@@ -1,0 +1,70 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"Start receiving order","start","","","",""
+2,"Check the order","entity","1","","",""
+3,"Check the customer","entity","1","","",""
+4,"Are order and customer checks completed","condition","2,3","No","",""
+50,"Wait until order and customer checks completed","entity","4","","",""
+51,"Go back to check the order","entity","50","","",""
+52,"Go back to check the customer","entity","50","","",""
+5,"Is the order okay","condition","4","No","",""
+6,"Is the customer permitted","condition","5","No","",""
+7,"Continue process","entity","6","","",""
+8,"Send refusal - customer not permitted","entity","6","","",""
+9,"End process after refusal","end","8","","",""
+10,"Send refusal - order not okay","entity","5","","",""
+11,"End process after refusal","end","10","","",""
+12,"Release the order","entity","7","","",""
+13,"Transfer data in database","entity","12","","",""
+14,"Check worth of order","entity","13","","",""
+15,"Is worth greater than 10.000 Euro","condition","14","No","",""
+16,"Sign off on the order","entity","15","","",""
+17,"Continue process after worth check","entity","15","","",""
+18,"Sign off on the order","entity","17","","",""
+19,"Forward order to production","entity","16,18","","",""
+20,"Start parallel production steps","condition","19","No","",""
+21,"Check product quality","entity","20","","",""
+22,"Start production","entity","20","","",""
+23,"Produce the product","entity","20","","",""
+24,"Production started and order received","entity","19","","",""
+25,"Create material report","entity","24","","",""
+26,"Check product quality","entity","21","","",""
+27,"Create material report","entity","25","","",""
+28,"Send report to warehouse","entity","27","","",""
+29,"Is report sent to warehouse complete","condition","28","No","",""
+30,"End process after sending report to warehouse","end","29","","",""
+53,"Reattempt sending report to warehouse","entity","29","","",""
+54,"Go back to send report to warehouse","entity","53","","",""
+31,"Create quality report","entity","20","","",""
+32,"Send product to shipment","entity","20","","",""
+33,"Send order to accounting","entity","20","","",""
+34,"Create quality report","entity","31","","",""
+35,"Send report to Finance","entity","34","","",""
+38,"Archive report","entity","35","","",""
+39,"Check the payment","entity","38","","",""
+40,"Is payment received","condition","39","No","",""
+41,"Close the order","entity","40","","",""
+42,"End process after closing order","end","41","","",""
+44,"Is reminder sent more than three times","condition","40","Yes","",""
+45,"Send reminder","entity","44","","",""
+46,"Send reminder again","entity","45","","",""
+47,"Acquire a lawyer","entity","44","","",""
+48,"Complete court proceedings","entity","47","","",""
+49,"End process after court proceedings","end","48","","",""

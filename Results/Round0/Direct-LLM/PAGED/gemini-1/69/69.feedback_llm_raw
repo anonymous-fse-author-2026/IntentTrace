@@ -1,0 +1,6 @@
+- `action(n1, "start")`: hallucinated action; the text states "To start the process for ACME Company, we first trigger the Resupply Cycle", meaning triggering the resupply cycle is the first actual step, not a separate "start" action.
+- `action(n5, "is purchase order good?")`: hallucinated action; the source text describes a conditional outcome ("If the purchase order is not good"), not a distinct action step.
+- `action(n18, "end of process")`: hallucinated action; the text states "the process ends", which corresponds to the `end` node (`e1`), not a task.
+- `branch(b1, XOR)`: missing `guard` definitions on the outgoing edges to `n6` and `n7` to reflect the conditions "if the purchase order is good" and "If the purchase order is not good".
+- `defines(v1, "is purchase order good?", {})`: the variable declares an empty range `{}`, which fails to faithfully reflect the boolean/categorical nature of the decision in the source text.
+- `precedence(n11, c2)`: incorrectly routes "review purchase order again" directly to the process end, contradicting the source text which explicitly states "the process ends after the payment is issued".

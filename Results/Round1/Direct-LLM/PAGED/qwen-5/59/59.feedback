@@ -1,0 +1,25 @@
+Omission
+- [N1] Omitted trace (input 2): i1:To begin the process, start with Orders Required and then place a Bulk order. -> i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery. -> i5:If a new order is placed, it will be recorded in the Accounts Receivable. -> i7:However, if no payments are received, the order is dropped.
+- [N2] Within matched traces (0->0) omitted: i5:If a new order is placed, it will be recorded in the Accounts Receivable.
+- [N3] Within matched traces (1->1) omitted: i5:If a new order is placed, it will be recorded in the Accounts Receivable.
+
+Addition
+- [N4] Within matched traces (0->0) added: init(i1)
+- [N5] Within matched traces (1->1) added: init(i1)
+- [N6] Within matched traces (1->1) added: action(n13,"installation needs to be scheduled")
+- [N7] Within matched traces (5->2) added: init(i1)
+- [N8] Within matched traces (5->2) added: action(n3,"Order with prior internal credit allowance")
+- [N9] Within matched traces (5->2) added: action(n9,"Payments are Received")
+- [N10] Within matched traces (3->3) added: init(i1)
+- [N11] Within matched traces (3->3) added: action(n3,"Order with prior internal credit allowance")
+- [N12] Within matched traces (4->4) added: init(i1)
+- [N13] Within matched traces (4->4) added: action(n3,"Order with prior internal credit allowance")
+- [N14] Within matched traces (4->4) added: action(n13,"installation needs to be scheduled")
+
+Mutation
+- [N15] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i2:If the condition is "Order with prior internal credit allowance", proceed with processing the order for delivery.; reason=Replaces the explicit natural-language condition with a generic abstract boolean variable (v1 = 'Yes'), dropping the actual condition semantics.
+- [N16] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i3:However, if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance.; reason=Replaces the explicit natural-language condition with a generic abstract boolean variable (v1 = 'No'), dropping the actual condition semantics.
+- [N17] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i6:If Payments are Received, the process continues.; reason=Replaces the payment condition with a generic abstract boolean variable (v2 = 'Yes'), losing the specific business logic.
+- [N18] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i7:However, if no payments are received, the order is dropped.; reason=Replaces the non-payment condition with a generic abstract boolean variable (v2 = 'No'), losing the specific business logic.
+- [N19] Node-level mutation: element=guard(b3,n14,"v3 = 'Yes'"); source=i9:If the installation needs to be scheduled, an Installer will be assigned.; reason=Replaces the scheduling requirement with a generic abstract boolean variable (v3 = 'Yes'), dropping the actual condition content.
+- [N20] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i10:On the other hand, if the order does not require installation, it will be packed for delivery.; reason=Replaces the non-installation condition with a generic abstract boolean variable (v3 = 'No'), dropping the actual condition content.

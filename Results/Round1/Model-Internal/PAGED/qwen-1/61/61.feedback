@@ -1,0 +1,25 @@
+Addition
+- [N1] Node-level addition: action(n4,"Have you received the invoice") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N2] Node-level addition: action(n5,"Wait until invoice is received") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N3] Node-level addition: action(n6,"Have you received the invoice") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N4] Node-level addition: guard(b1,n5,"v1 = 'No'") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N5] Node-level addition: guard(b1,c1,"v1 = 'Yes'") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N6] Node-level addition: guard(b2,c1,"v2 = 'Yes'") (reason: Invents a conditional checking loop and associated guards for the invoice step. The source text only states a linear expectation to receive an invoice, with no waiting, polling, or decision branches.)
+- [N7] Node-level addition: action(n11,"Have you left feedback") (reason: Invents a conditional checking loop and associated guards for the feedback step. The source text describes a linear progression to conclusion without any validation or waiting cycles.)
+- [N8] Node-level addition: action(n12,"Wait to leave feedback") (reason: Invents a conditional checking loop and associated guards for the feedback step. The source text describes a linear progression to conclusion without any validation or waiting cycles.)
+- [N9] Node-level addition: guard(b3,n12,"v3 = 'No'") (reason: Invents a conditional checking loop and associated guards for the feedback step. The source text describes a linear progression to conclusion without any validation or waiting cycles.)
+- [N10] Node-level addition: guard(b3,n13,"v3 = 'Yes'") (reason: Invents a conditional checking loop and associated guards for the feedback step. The source text describes a linear progression to conclusion without any validation or waiting cycles.)
+- [N11] Added trace (model 0): init(i1) -> action(n1,"Start the buying process") -> action(n2,"Make payment through the L2 bpmn process") -> action(n3,"Receive invoice") -> action(n4,"Have you received the invoice") -> branch(b1,XOR) -> action(n5,"Wait until invoice is received") -> action(n6,"Have you received the invoice") -> branch(b2,XOR) -> converge(c1) -> action(n7,"Proceed with the rest of the process") -> action(n8,"Receive the book") -> action(n9,"Consider the Amazon user record before leaving feedback") -> action(n10,"Leave seller a feedback") -> action(n11,"Have you left feedback") -> branch(b3,XOR) -> action(n13,"Process concludes") -> end(e1)
+- [N12] Within matched traces (0->1) added: init(i1)
+- [N13] Within matched traces (0->1) added: action(n4,"Have you received the invoice")
+- [N14] Within matched traces (0->1) added: branch(b1,XOR)
+- [N15] Within matched traces (0->1) added: converge(c1)
+- [N16] Within matched traces (0->1) added: action(n11,"Have you left feedback")
+- [N17] Within matched traces (0->1) added: branch(b3,XOR)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=1 and out=1. | Node `b4` has in=1 and out=0. | DSL: branch(b2,XOR); branch(b4,AND)
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b4, n12 | DSL: branch(b4,AND); action(n12,"Wait to leave feedback")
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v2=No].

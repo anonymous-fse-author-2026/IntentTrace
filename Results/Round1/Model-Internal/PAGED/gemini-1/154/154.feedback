@@ -1,0 +1,27 @@
+Omission
+- [N1] Node-level omission: i3:Mac compares the inventory levels in the spreadsheet with the sales (reason: Not implemented faithfully; the modeled action drops the actor and spreadsheet qualifier.)
+- [N2] Node-level omission: i5:Mac doesn't need to manually count the inventory (reason: Not implemented faithfully; the modeled action drops the actor and truncates the target.)
+- [N3] Node-level omission: i6:if the inventory level is low, Mac needs to manually count the inventory of items (reason: Not implemented faithfully; the modeled guard uses an invented boolean, and the action drops the actor.)
+- [N4] Node-level omission: i7:Once Mac counts each item individually (reason: Not implemented faithfully; the modeled action changes the phrasing and drops the actor.)
+- [N5] Node-level omission: i8:they make a list of items that have a low stock count (reason: Not implemented faithfully; the modeled action drops the actor.)
+- [N6] Node-level omission: i9:Mac selects suppliers for the needed products (reason: Not implemented faithfully; the modeled action alters the target and drops the actor.)
+- [N7] Node-level omission: i10:and places the order(s) (reason: Not implemented faithfully; the modeled action adds an invented qualifier.)
+
+Addition
+- [N8] Node-level addition: action(n1,"start inventory check process") (reason: Adds an invented action step ('start inventory check process') derived from announcer phrasing, which does not independently mandate an explicit action.)
+- [N9] Within matched traces (0->0) added: action(n1,"start inventory check process")
+- [N10] Within matched traces (0->0) added: converge(c1)
+- [N11] Within matched traces (0->0) added: action(n11,"received the order")
+- [N12] Within matched traces (1->1) added: action(n1,"start inventory check process")
+- [N13] Within matched traces (1->1) added: action(n4,"is inventory level high")
+
+Mutation
+- [N14] Node-level mutation: element=action(n3,"compare inventory levels with sales"); source=i3:Mac compares the inventory levels in the spreadsheet with the sales; reason=Drops the actor 'Mac' and the location qualifier 'in the spreadsheet'.
+- [N15] Node-level mutation: element=guard(b1,n5,"v1 = true"); source=i4:If the inventory level is high; reason=Replaces the specific threshold 'high' with a generic boolean 'v1 = true'.
+- [N16] Node-level mutation: element=action(n5,"no manual count needed"); source=i5:Mac doesn't need to manually count the inventory; reason=Drops the actor 'Mac' and truncates the specific target 'the inventory'.
+- [N17] Node-level mutation: element=guard(b1,n6,"v1 = false"); source=i6:if the inventory level is low, Mac needs to manually count the inventory of items; reason=Replaces the expected condition value 'low' with a generic boolean 'v1 = false'.
+- [N18] Node-level mutation: element=action(n6,"need manual inventory count"); source=i6:if the inventory level is low, Mac needs to manually count the inventory of items; reason=Drops the actor 'Mac' and the qualifier 'of items'.
+- [N19] Node-level mutation: element=action(n7,"count each item manually"); source=i7:Once Mac counts each item individually; reason=Drops the actor 'Mac' and alters the qualifier from 'individually' to 'manually'.
+- [N20] Node-level mutation: element=action(n8,"make list of low stock items"); source=i8:they make a list of items that have a low stock count; reason=Drops the actor 'they' (referring to Mac).
+- [N21] Node-level mutation: element=action(n9,"select suppliers for low stock items"); source=i9:Mac selects suppliers for the needed products; reason=Drops the actor 'Mac' and alters the target from 'the needed products' to 'low stock items'.
+- [N22] Node-level mutation: element=action(n10,"place orders for needed products"); source=i10:and places the order(s); reason=Adds the invented qualifier 'for needed products' which is absent in the source phrase.

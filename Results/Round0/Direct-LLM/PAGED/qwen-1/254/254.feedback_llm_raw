@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start election process")`: Payload misrepresents the source requirement to "begin with the rector's final year in their current position."
+- `action(n11, "publicize candidate list")`: Hallucinated step; the source already states the list "should be made public" upon formation, with no mention of a separate later publicity action.
+- `precedence(n15, c2)`: Incorrectly linearizes the failure path. The source mandates that "If the voting fails, another election should be conducted," which requires a cyclic precedence back to `n13`, not a forward flow to `c2`.
+- `defines(v1, "check if candidate meets criteria", {})` and `defines(v2, "check if voting was successful", {})`: Ranges are empty `{}`. They must specify valid decision values (e.g., `{true, false}`) to operationalize the checks described.
+- Missing `guard(...)` statements for `b1` and `b2`: The XOR branches lack conditions linking variables `v1` and `v2` to outgoing edges, failing to represent the source's conditional logic ("If a candidate meets the required criteria..." and "If the voting fails/successful...").
+- `actor(a_default, "Default", [...])`: Maps every node to a single generic participant, contradicting the source’s distinct responsibilities assigned to the rector, candidates, Academic Senate, and public.
+- `branch(b3, AND)` / `precedence(b3, n11)`: Adds a spurious third parallel task. The source only specifies two simultaneous actions: "candidates should promote their ideas to the public and organize a public meeting of the Academic Senate."

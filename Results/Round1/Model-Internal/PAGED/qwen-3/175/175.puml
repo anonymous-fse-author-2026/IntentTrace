@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:customer returns items to store;
+else ([v1 = false])
+:delivery crew picks up items at event site;
+endif
+:order is complete and all items were returned;
+:v2: order is complete and all items were returned ({true, false}); <<objectSignal>>
+if () then ([v2 = false])
+:order is incomplete and items are missing;
+:v3: order is incomplete and items are missing ({true, false}); <<objectSignal>>
+switch ()
+case ([v3 = false])
+:customer returns missing items;
+:b7;
+:temporarily take damaged items out of inventory;
+split
+:items packed for existing order;
+:b9;
+split again
+:items stored for future orders;
+:b10;
+end split
+:end process;
+stop
+case ([v3 = true])
+:customer does not return missing items;
+:b8;
+case ([v3 = true])
+endswitch
+else ([v2 = true])
+:email customer to inform of damage and additional charges;
+split
+:items packed for existing order;
+:b4;
+split again
+:items stored for future orders;
+:b5;
+end split
+endif
+:email customer with replacement charges;
+:items are repaired and added into inventory;
+:v6: items are repaired and added into inventory ({true, false}); <<objectSignal>>
+if () then ([v6 = false])
+:items can't be repaired and are discarded;
+stop
+else ([v6 = true])
+:email customer with replacement charges;
+:end process;
+stop
+endif
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:ensure Freights are ready to be shipped;
+:ship the freight;
+split
+:deliver the freight;
+split again
+:notify the delivery;
+end split
+:is request for merchandise return lodged?;
+:v1: is request for merchandise return lodged? ({Yes, No}); <<objectSignal>>
+fork
+if () then ([v1 = 'Yes'])
+:has it been 5 days?;
+:v2: has it been 5 days? ({Yes, No}); <<objectSignal>>
+fork
+if () then ([v2 = 'Yes'])
+:invoice the customer;
+endif
+fork again
+if () then ([v2 = 'No'])
+:is return accepted?;
+:v3: is return accepted? ({Yes, No}); <<objectSignal>>
+fork
+if () then ([v3 = 'Yes'])
+:accept the merchandise return;
+:return the merchandise;
+:end with merchandise being returned;
+stop
+endif
+fork again
+if () then ([v3 = 'No'])
+:reject the merchandise return;
+:end with merchandise return request being rejected;
+stop
+endif
+end fork
+endif
+end fork
+endif
+fork again
+if () then ([v1 = 'No'])
+:is loss claim report lodged?;
+:approve the loss claim;
+:end with loss claim approved;
+stop
+endif
+end fork
+@enduml

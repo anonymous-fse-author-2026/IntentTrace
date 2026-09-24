@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To start;
+:ask the 1st Level Support if there is an issue;
+:v1: status1 ({resolved, issue, developer}); <<objectSignal>>
+switch ()
+case ([v1 = "resolved"])
+:If the issue is resolved;
+:provide feedback for the account manager;
+:v4: end_path ({direct, explicit}); <<objectSignal>>
+if () then ([v4 = "direct"])
+stop
+else ([v4 = "explicit"])
+:end the process;
+stop
+endif
+case ([v1 = "issue"])
+:If it is a 1st Level issue;
+:ask the developer for assistance;
+:check the result again.;
+:v2: status2 ({resolved, issue}); <<objectSignal>>
+if () then ([v2 = "resolved"])
+else ([v2 = "issue"])
+:If it is still a 1st Level issue;
+:ask the developer for help;
+endif
+case ([v1 = "developer"])
+:Ask the developer and then provide feedback for the 1st Level support.;
+:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.;
+stop
+endswitch
+@enduml

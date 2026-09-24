@@ -1,0 +1,5 @@
+
+
+- `defines(v1, "Is applicant eligible", {})`: The value range is empty `{}`, but the source specifies a binary decision space ("If the applicant is eligible... If the applicant is not eligible..."), violating SMC6.
+- `branch(b1, XOR)` with edges `precedence(b1, n7)` and `precedence(b1, n8)`: Lacks `guard` declarations to route flows based on the eligibility variable. The source explicitly provides the routing conditions ("If the applicant is eligible, the acceptance pack is prepared. If the applicant is not eligible, the application is rejected."), leaving the exclusive choice logic underspecified per SMC4.
+- `action(n4, "Both assessments complete")`, `action(n10, "End process after rejection")`, `action(n11, "End process after sending acceptance pack")`: These nodes introduce undocumented intermediate steps that fracture the direct transitions described in the source ("After that, the eligibility of the applicant is assessed." and "...the loan application process ends."), constituting hallucinated behaviors under SMC1.

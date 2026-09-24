@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Ensure invoice is ready for verification;
+:Check invoice completeness;
+:Check SLA;
+:Check compliance;
+:Allocate invoices to Data Entry Officer by 9 am next working day;
+:Process invoice batch;
+:v_continue: All invoices processed? ({true, false}); <<objectSignal>>
+if () then ([v_continue = false])
+:Take batch to outbox;
+:Clear outbox every hour until completely cleared;
+:Outbox completely cleared?;
+:End of process;
+stop
+endif
+@enduml

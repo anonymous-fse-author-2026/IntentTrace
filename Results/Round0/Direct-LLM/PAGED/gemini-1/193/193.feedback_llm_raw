@@ -1,0 +1,6 @@
+- `actor(a_default, "Default", [...])`: The model assigns all steps to a single default actor, failing to capture the "Pathology Department" and "pathologist" actors mentioned in the source (SMC7).
+- `defines(v1, "Digitalization check after Tissue processing", {})` and `defines(v2, "Digitalization check second time", {})`: The variables have empty ranges `{}`, missing the 'yes' and 'no' values specified in the description (SMC6).
+- `branch(b1, XOR)` and `branch(b2, XOR)`: The model is missing `guard` conditions on the outgoing edges of these gateways to represent the "If the answer is 'no'" and "If the answer is 'yes'" logic (SMC4).
+- `converge(c1)`: This node incorrectly merges both a parallel branch (`n9` from AND-split `b3`) and exclusive branches (`n12`, `n13` from XOR-split `b1`) into a single gateway, which violates correct synchronization and choice control-flow logic (SMC4).
+- `precedence(n2, n3)`: The model places the barcode scan (`n3`) strictly after the registration (`n2`), whereas the text dictates to create the scan "at the start" during the registration step (SMC3).
+- `action(n26, "You have completed this procedure")`: This step is hallucinated and does not correspond to any behavior described in the source text (SMC1).

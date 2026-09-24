@@ -1,0 +1,14 @@
+- `defines(v2, "check answer again", {"Yes"})`: Source explicitly covers both outcomes for this decision ("If the answer is "No" again... However, if the answer is "Yes""); the declared range omits `"No"`.
+- `guard(b2, n5, v2 = 'Yes')` / `precedence(b2, c1)`: Source specifies a conditional split here, but the model lacks a guard for the `"No"` continuation edge (`b2` → `c1`).
+- `guard(b1, n3, v1 = 'Yes')` and `action(n3, "give it priority")`: Source ties the priority step exclusively to the second check's `"Yes"` outcome ("However, if the answer is "Yes", then we give it priority."), not the initial check.
+- `guard(b5, n14, v5 = 'No')` and `action(n14, "need Vendor master record")`: Source only describes a `"Yes"` outcome at this stage ("And if the answer is "Yes" again, then we enter the invoice in SAP."); the `"No"` branch and associated termination are hallucinated.
+- `action(n17, "end")`: Source concludes immediately after placing invoices in the Outbox ("place the entered invoices in the normal Outbox and the process ends"); inserting a separate action step named `"end"` before the terminal node is unsupported.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v2` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'Yes'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b2,n5,"v2 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'Yes'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b2,n5,"v2 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range.

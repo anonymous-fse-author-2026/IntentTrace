@@ -1,0 +1,6 @@
+- `action(n1, "start the process")`: Hallucinated action; the source text describes starting by making an appointment, not performing a distinct "start" action (SMC1).
+- `action(n11, "You have completed this procedure")`: Hallucinated action not present in the source text (SMC1).
+- `action(n4, "do you need your hair washed")`, `action(n6, "do you want your hair dyed")`, `action(n8, "do you need a haircut")`: The source describes these as conditions ("If you need/want..."), not as explicit process actions; they should be modeled via branch evaluations (SMC2).
+- `defines(v1, ...)`, `defines(v2, ...)`, `defines(v3, ...)`: The variable ranges `{}` are empty instead of specifying valid options like true/false or yes/no (SMC6).
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: Missing `guard` statements on their outgoing edges to evaluate the conditions described in the text (SMC4).
+- `precedence(n5, c1)` and `precedence(n7, c1)`: Taking an earlier optional action (washing or dyeing) incorrectly routes the flow directly to `c1` and "pay the hairdresser", bypassing the subsequent optional steps (dyeing, cutting). The text describes these as independent sequential choices, not mutually exclusive ones (SMC4).

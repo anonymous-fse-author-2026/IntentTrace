@@ -1,0 +1,9 @@
+
+
+- `action(n1, "start WIGGO process")`: Hallucinated step; the source explicitly states `start by placing an Order` with no preliminary initialization action.
+- `action(n4, "Credit Limit Okay")`, `action(n7, "Article Available")`, `action(n14, "Payment Received")`, `action(n17, "Reminder Count Ge 3")`: Incorrectly modeled as sequential tasks; these represent boolean evaluation outcomes handled directly by the branches (`b1`, `b2`, `b3`, `b4`), not distinct process activities. Inserting them as actions artificially inflates chronology and violates SMC2/SMC3.
+- `guard(b1, n6, v1 = 'Yes')`: Uses `'Yes'` as the guard value, conflicting with the source text's explicit decision label `"Okay"` (`If the response is "Okay", proceed to Check the Availability...`).
+- `precedence(b1, n5)`: The `Send Denial To Customer` path lacks any outgoing precedence or `end` node, creating a dangling flow that fails to mirror a complete intended progression (SMC5).
+- `action(n16, "End")`, `action(n19, "End")`, `action(n22, "End")`: `"End"` denotes process termination, not an executable task. Modeling it as an action preceding actual `end()` nodes (`e1`, `e2`, `e3`) corrupts node payload semantics and control-flow structure (SMC2).
+- `precedence(n18, n20)` / `action(n20, "Send Reminder")`: The source states `If the Reminder count is greater than or equal to 3, Write off the Order. Additionally, send a Reminder.` Sequencing the reminder strictly after write-off misrepresents the conditional logic; contextually, reminders are triggered when the count is below the threshold (or concurrently), not exclusively post-write-off (SMC1/SMC4).
+- `guard(b4, n19, v4 = 'No')` / `precedence(n19, e2)`: Abruptly terminating the process when the reminder count is below 3 omits expected iterative behavior (re-checking payment after reminding), contradicting the continuous monitoring implied by the source text (SMC1).

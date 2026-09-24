@@ -1,0 +1,8 @@
+- `actor(a_default, "Default", [...])`: The source explicitly states the process is "For buyers", but the model incorrectly assigns responsibilities to a generic "Default" actor.
+- `action(n1, "start buyer process")`: Hallucinated action; the source states that "the process begins by choosing a book" (`n2`), without a separate preceding start action.
+- `action(n12, "End")`: Hallucinated action; the text states that selecting a copy will "complete the process" or "end the process", which should be modeled by a direct transition to the end event (`e1`) rather than an explicit intermediate "End" action step.
+- `label(n5, c1, "After selecting preferred copy")` and `label(n8, c1, "After selecting preferred copy")`: Hallucinated labels; the source mentions viewing a list of new copies (`n5` and `n8`), but does not describe selecting a preferred copy after those specific steps.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

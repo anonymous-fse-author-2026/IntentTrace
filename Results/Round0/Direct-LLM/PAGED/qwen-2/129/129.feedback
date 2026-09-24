@@ -1,0 +1,9 @@
+- `action(n1, "start")`: Hallucinates a distinct initial step; the source text begins directly with "At the start, the loan application is checked." (SMC1)
+- `defines(v1, "is application rejected?", {})` and `defines(v2, "are special terms agreed upon?", {})`: Specify empty value ranges `{}` instead of explicit decision domains (e.g., `{true, false}`), failing to faithfully represent the variable spaces. (SMC6)
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Lack required `guard(...)` statements to associate variable conditions with outgoing edges, rendering the exclusive choice logic undefined. (SMC4)
+- `precedence(b1, n4)` / `precedence(b1, n5)` and `precedence(b2, n6)` / `precedence(b2, n8)`: Connect branch nodes directly to downstream actions without guards or labels, obscuring which path corresponds to the documented conditions "If the application is rejected" and "if special terms are agreed upon". (SMC4)
+- `action(n8, "end process: no special terms")` and `end(e3)`: Add an undocumented termination scenario; the source only specifies that "if special terms are agreed upon, the process continues" and subsequently ends after disbursement. (SMC1)
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

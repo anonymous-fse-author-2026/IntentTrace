@@ -1,0 +1,256 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Request to purchase a motorcycle"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Production order received"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Materials unavailable"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Order materials from supplier"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Available goods for production"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Place manufacturing order"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Update stock and sales information"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Dispatch motorcycles and update stock"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "End process"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v2",
+      "name": "Materials unavailable",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v_outcome",
+      "name": "Ending Scenario",
+      "R_X": [
+        "dispatch",
+        "sales_update"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "e1",
+        "n1",
+        "n2",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n13",
+        "n14",
+        "n17",
+        "b1",
+        "b2",
+        "c1",
+        "c2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v2 = true"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v2 = false"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n14",
+      "condition": "v_outcome = 'dispatch'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n13",
+      "condition": "v_outcome = 'sales_update'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "For the customer, the process begins with a request to purchase a motorcycle."
+    },
+    {
+      "id": "i2",
+      "content": "Once the request is received, the next step is to either continue the process if a production order is received or update the sales information and proceed to order dispatch."
+    },
+    {
+      "id": "i3",
+      "content": "If there are unavailable materials, they are ordered from the supplier."
+    },
+    {
+      "id": "i4",
+      "content": "Alternatively, if there are available goods for production, a manufacturing order is placed."
+    },
+    {
+      "id": "i5",
+      "content": "Once the materials are received from the supplier, the goods are issued and the motorcycles are produced."
+    },
+    {
+      "id": "i6",
+      "content": "At the same time, the stock is updated and the motorcycles are dispatched."
+    },
+    {
+      "id": "i7",
+      "content": "After the goods are issued and the motorcycles are produced, the stock is updated and the process ends."
+    },
+    {
+      "id": "i8",
+      "content": "Simultaneously, the stock is updated and the sales information is updated."
+    }
+  ]
+}

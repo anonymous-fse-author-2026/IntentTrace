@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start processing incoming orders;
+:order received;
+:send the collected order list;
+:implement collected order list in database;
+:gather all information in one excel file;
+:check the order and customer details;
+:v1: permit_data_option ({permit data, not permit data}); <<objectSignal>>
+if () then ([v1 = 'permit data'])
+:permit the data;
+:release the data if permitted;
+stop
+else ([v1 = 'not permit data'])
+:not permit the data;
+:contact the selling agency if not permitted;
+:check the worth of the orders;
+:v2: should_orders_be_released ({Release, Cancel}); <<objectSignal>>
+if () then ([v2 = 'Release'])
+:continue with the process;
+:v3: order_worth ({[-]}); <<objectSignal>>
+if () then ([v3 < 5000])
+:continue with process;
+else ([v3 >= 5000])
+:order signed off by board of directors;
+endif
+:collect the order and start production;
+:send the memorandum and invoice;
+:send the quality report;
+:check the quality of production;
+:send the quality report again;
+:collect the goods;
+:sign off on the memorandum;
+:pick the goods;
+:send the goods to complete the process;
+:end of process;
+stop
+else ([v2 = 'Cancel'])
+:end process;
+stop
+endif
+endif
+@enduml

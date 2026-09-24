@@ -1,0 +1,268 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "customer makes an enquiry"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "check if article is in stock"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "abort the enquiry"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "reserve article"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "calculate price"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "send offer"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "wait for customer to accept offer"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "dispatch article"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "check if article is in stock",
+      "R_X": [
+        "not available",
+        "available"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_customer",
+      "name": "customer",
+      "assigned_nodes": [
+        "n2"
+      ]
+    },
+    {
+      "id": "a_we",
+      "name": "we",
+      "assigned_nodes": [
+        "i1",
+        "n3",
+        "b1",
+        "n4",
+        "e1",
+        "b2",
+        "n5",
+        "n6",
+        "c1",
+        "n7",
+        "n8",
+        "n9",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = 'not available'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "b2",
+      "condition": "v1 = 'available'"
+    },
+    {
+      "type": "label",
+      "A": "n7",
+      "B": "n8",
+      "str": "offer sent"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process"
+    },
+    {
+      "id": "i2",
+      "content": "the customer makes an enquiry"
+    },
+    {
+      "id": "i3",
+      "content": "check if the article is in stock"
+    },
+    {
+      "id": "i4",
+      "content": "If the article is available"
+    },
+    {
+      "id": "i5",
+      "content": "if the article is not available"
+    },
+    {
+      "id": "i6",
+      "content": "abort the enquiry and end the process"
+    },
+    {
+      "id": "i7",
+      "content": "At the same time, we complete the following steps simultaneously"
+    },
+    {
+      "id": "i8",
+      "content": "reserve the article"
+    },
+    {
+      "id": "i9",
+      "content": "once it is reserved"
+    },
+    {
+      "id": "i10",
+      "content": "calculate the price"
+    },
+    {
+      "id": "i11",
+      "content": "send the offer"
+    },
+    {
+      "id": "i12",
+      "content": "once the offer is sent"
+    },
+    {
+      "id": "i13",
+      "content": "wait for the customer to accept it"
+    },
+    {
+      "id": "i14",
+      "content": "Once the customer accepts the offer"
+    },
+    {
+      "id": "i15",
+      "content": "dispatch the article"
+    },
+    {
+      "id": "i16",
+      "content": "once the article is dispatched"
+    },
+    {
+      "id": "i17",
+      "content": "the process comes to an end"
+    }
+  ]
+}

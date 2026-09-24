@@ -1,0 +1,527 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Assess the change request"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Check affected systems for business impact"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Determine if change request should be approved"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Approve change request in current state"
+    },
+    {
+      "id": "c6",
+      "type": "converge"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Implement approved change"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "End process after implementation"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Evaluate if change acceptable with more information"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "Reject change request due to unacceptability"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "Request more information from Change Coordinator"
+    },
+    {
+      "id": "n12",
+      "type": "action",
+      "content": "Send email enquiry to Change Coordinator"
+    },
+    {
+      "id": "n13",
+      "type": "action",
+      "content": "Update approval register within 3 business days"
+    },
+    {
+      "id": "n14",
+      "type": "action",
+      "content": "Forward email enquiry to Change Requester"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Check if there are inquiries from CAB"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "content": "Confirm no further inquiries"
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "content": "End process after 3 business days"
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "content": "Receive response from requester within 1-3 business days"
+    },
+    {
+      "id": "n19",
+      "type": "action",
+      "content": "Forward requester response to CAB for evaluation"
+    },
+    {
+      "id": "n20",
+      "type": "action",
+      "content": "Determine final approval of change request"
+    },
+    {
+      "id": "b4",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n21",
+      "type": "action",
+      "content": "Final approval of change request"
+    },
+    {
+      "id": "n22",
+      "type": "action",
+      "content": "Implement approved change"
+    },
+    {
+      "id": "n23",
+      "type": "action",
+      "content": "End process after implementation"
+    },
+    {
+      "id": "e4",
+      "type": "end"
+    },
+    {
+      "id": "n24",
+      "type": "action",
+      "content": "Reject change request due to unacceptability"
+    },
+    {
+      "id": "n25",
+      "type": "action",
+      "content": "End process after rejection"
+    },
+    {
+      "id": "e5",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Determine if change request should be approved",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Evaluate if change acceptable with more information",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v3",
+      "name": "Check if there are inquiries from CAB",
+      "R_X": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "X": "v4",
+      "name": "Determine final approval of change request",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_cab",
+      "name": "CAB",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "n3",
+        "n4",
+        "b1",
+        "n5",
+        "c6",
+        "n6",
+        "n7",
+        "e1",
+        "n8",
+        "b2",
+        "n9",
+        "n15",
+        "b3",
+        "n16",
+        "n17",
+        "e3",
+        "n19",
+        "n20",
+        "b4",
+        "n21",
+        "n22",
+        "n23",
+        "e4",
+        "n24",
+        "n25",
+        "e5"
+      ]
+    },
+    {
+      "id": "a_cc",
+      "name": "Change Coordinator",
+      "assigned_nodes": [
+        "n11",
+        "n12",
+        "n13"
+      ]
+    },
+    {
+      "id": "a_cr",
+      "name": "Change Requester",
+      "assigned_nodes": [
+        "n14",
+        "n18"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "n17",
+      "B": "e3"
+    },
+    {
+      "type": "precedence",
+      "A": "n20",
+      "B": "b4"
+    },
+    {
+      "type": "precedence",
+      "A": "n23",
+      "B": "e4"
+    },
+    {
+      "type": "precedence",
+      "A": "n25",
+      "B": "e5"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c6"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c6"
+    },
+    {
+      "type": "precedence",
+      "A": "c6",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "n12"
+    },
+    {
+      "type": "precedence",
+      "A": "n12",
+      "B": "n13"
+    },
+    {
+      "type": "precedence",
+      "A": "n13",
+      "B": "n14"
+    },
+    {
+      "type": "precedence",
+      "A": "n14",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n16"
+    },
+    {
+      "type": "precedence",
+      "A": "n16",
+      "B": "n17"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "n18"
+    },
+    {
+      "type": "precedence",
+      "A": "n18",
+      "B": "n19"
+    },
+    {
+      "type": "precedence",
+      "A": "n19",
+      "B": "n20"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n21"
+    },
+    {
+      "type": "precedence",
+      "A": "n21",
+      "B": "n22"
+    },
+    {
+      "type": "precedence",
+      "A": "n22",
+      "B": "n23"
+    },
+    {
+      "type": "precedence",
+      "A": "b4",
+      "B": "n24"
+    },
+    {
+      "type": "precedence",
+      "A": "n24",
+      "B": "n25"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n8",
+      "condition": "v1 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "v2 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c6",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n16",
+      "condition": "v3 = 'No'"
+    },
+    {
+      "type": "guard",
+      "A": "b3",
+      "B": "n18",
+      "condition": "v3 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n21",
+      "condition": "v4 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b4",
+      "B": "n24",
+      "condition": "v4 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin with, for CAB, the first step is to assess the change request."
+    },
+    {
+      "id": "i2",
+      "content": "the next step is to check the affected systems for any impacts on the business unit."
+    },
+    {
+      "id": "i3",
+      "content": "the next task is to determine whether the change request should be approved or not."
+    },
+    {
+      "id": "i4",
+      "content": "If the change request should be approved in its current state, then it is approved."
+    },
+    {
+      "id": "i5",
+      "content": "if the change request should not be approved in its current state, further evaluation is needed to determine if the change will be acceptable with more information provided."
+    },
+    {
+      "id": "i6",
+      "content": "If the change request is ultimately approved, the change is implemented."
+    },
+    {
+      "id": "i7",
+      "content": "On the other hand, if the change is deemed unacceptable, it is rejected."
+    },
+    {
+      "id": "i8",
+      "content": "In this case, a request for more information is made to the Change Coordinator."
+    },
+    {
+      "id": "i9",
+      "content": "The request is then followed by an email enquiry to the Change Coordinator."
+    },
+    {
+      "id": "i10",
+      "content": "the approval register is updated within a timeframe of 3 business days."
+    },
+    {
+      "id": "i11",
+      "content": "The email enquiry is also forwarded to the Change Requester."
+    },
+    {
+      "id": "i12",
+      "content": "If there are no further inquiries or issues, the process concludes after 3 business days."
+    },
+    {
+      "id": "i13",
+      "content": "However, if there are inquiries from the CAB, a response is expected within 1-3 business days."
+    },
+    {
+      "id": "i14",
+      "content": "Once the response is received from the requester, it is forwarded to the CAB for further evaluation."
+    },
+    {
+      "id": "i15",
+      "content": "Based on the response, a final determination is made regarding the approval of the change request."
+    }
+  ]
+}

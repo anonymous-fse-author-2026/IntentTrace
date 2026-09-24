@@ -1,0 +1,10 @@
+Addition
+- [N1] Node-level addition: action(n3,"does the invoice need to be re-sent  posted  or blocked?") (reason: Models a decision-check question not present in the source text; invents an intermediate step preceding the actual branch.)
+- [N2] Node-level addition: action(n8,"You have completed this procedure") (reason: Invents a completion message 'You have completed this procedure' that does not correspond to any source instruction or closing statement.)
+- [N3] Added trace (model 1): init(i1) -> action(n1,"receive the invoice") -> action(n2,"check for mismatches") -> action(n3,"does the invoice need to be re-sent  posted  or blocked?") -> branch(b1,XOR) -> action(n5,"post the invoice") -> converge(c1) -> action(n7,"park the invoice") -> action(n8,"You have completed this procedure") -> end(e1)
+- [N4] Added trace (model 2): init(i1) -> action(n1,"receive the invoice") -> action(n2,"check for mismatches") -> action(n3,"does the invoice need to be re-sent  posted  or blocked?") -> branch(b1,XOR) -> action(n6,"block the invoice") -> converge(c1) -> action(n7,"park the invoice") -> action(n8,"You have completed this procedure") -> end(e1)
+- [N5] Within matched traces (0->0) added: action(n3,"does the invoice need to be re-sent  posted  or blocked?")
+- [N6] Within matched traces (0->0) added: action(n8,"You have completed this procedure")
+
+Mutation
+- [N7] Node-level mutation: element=action(n4,"re-send the invoice"); source=i3:If there is a need to "re-send the invoice to the customer", then proceed with continuing the process. If the option is to "post the invoice", then also continue the process. Alternatively, if the decision is to "block the invoice", then again continue the process.; reason=The action content 're-send the invoice' drops the required target qualifier 'to the customer', violating the strict granularity requirement and altering the instruction's specificity.

@@ -1,0 +1,42 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i3:contact with TS to clarify the timing
+- [N2] Within matched traces (1->2) omitted: i3:contact with TS to clarify the timing
+- [N3] Within matched traces (1->2) omitted: i15:a business case is completed
+- [N4] Within matched traces (2->4) omitted: i3:contact with TS to clarify the timing
+- [N5] Within matched traces (3->5) omitted: i3:contact with TS to clarify the timing
+- [N6] Within matched traces (3->5) omitted: i15:a business case is completed
+
+Addition
+- [N7] Node-level addition: action(n1,"start the process") (reason: The explicit action 'start the process' is not present in the source text; the text simply begins with the first step.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"start the process") -> action(n2,"send appointment approval form") -> action(n3,"receive approval") -> branch(b4,AND) -> action(n5,"check approval") -> action(n6,"is resource internal?") -> branch(b1,XOR) -> action(n7,"authorize appointment for internal resource") -> converge(c1) -> action(n9,"send approval and mandatory documentation to HR services") -> action(n10,"scan and record form into GovSource system") -> action(n11,"check approval again") -> action(n12,"send approval and mandatory documentation to HR services again") -> action(n13,"HR services receive documentations") -> action(n14,"are there variations?") -> branch(b2,XOR) -> action(n15,"continue process without variations") -> action(n16,"is there another variation?") -> branch(b3,XOR) -> action(n18,"complete business case") -> converge(c2) -> action(n20,"process end") -> end(e1)
+- [N9] Added trace (model 3): init(i1) -> action(n1,"start the process") -> action(n2,"send appointment approval form") -> action(n3,"receive approval") -> branch(b4,AND) -> action(n5,"check approval") -> action(n6,"is resource internal?") -> branch(b1,XOR) -> action(n8,"authorize appointment for external resource") -> converge(c1) -> action(n9,"send approval and mandatory documentation to HR services") -> action(n10,"scan and record form into GovSource system") -> action(n11,"check approval again") -> action(n12,"send approval and mandatory documentation to HR services again") -> action(n13,"HR services receive documentations") -> action(n14,"are there variations?") -> branch(b2,XOR) -> action(n15,"continue process without variations") -> action(n16,"is there another variation?") -> branch(b3,XOR) -> action(n18,"complete business case") -> converge(c2) -> action(n20,"process end") -> end(e1)
+- [N10] Within matched traces (0->1) added: init(i1)
+- [N11] Within matched traces (0->1) added: action(n1,"start the process")
+- [N12] Within matched traces (1->2) added: init(i1)
+- [N13] Within matched traces (1->2) added: action(n1,"start the process")
+- [N14] Within matched traces (1->2) added: action(n14,"are there variations?")
+- [N15] Within matched traces (1->2) added: branch(b2,XOR)
+- [N16] Within matched traces (2->4) added: init(i1)
+- [N17] Within matched traces (2->4) added: action(n1,"start the process")
+- [N18] Within matched traces (2->4) added: action(n6,"is resource internal?")
+- [N19] Within matched traces (2->4) added: branch(b1,XOR)
+- [N20] Within matched traces (3->5) added: init(i1)
+- [N21] Within matched traces (3->5) added: action(n1,"start the process")
+- [N22] Within matched traces (3->5) added: action(n6,"is resource internal?")
+- [N23] Within matched traces (3->5) added: branch(b1,XOR)
+- [N24] Within matched traces (3->5) added: action(n14,"are there variations?")
+- [N25] Within matched traces (3->5) added: branch(b2,XOR)
+
+Permutation
+- [N26] Within matched traces (0->1) reordered: expected [i13:If there are no variations] but observed [action(n14,"are there variations?") -> action(n16,"is there another variation?")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+- [N27] Within matched traces (0->1) reordered: expected [i14:the process continues] but observed [action(n19,"continue process without second variations") -> action(n15,"continue process without variations")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+- [N28] Within matched traces (1->2) reordered: expected [i16:a business case is completed and attached] but observed [action(n17,"complete and attach business case")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+- [N29] Within matched traces (2->4) reordered: expected [i13:If there are no variations] but observed [action(n14,"are there variations?") -> action(n16,"is there another variation?")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+- [N30] Within matched traces (2->4) reordered: expected [i14:the process continues] but observed [action(n19,"continue process without second variations") -> action(n15,"continue process without variations")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+- [N31] Within matched traces (3->5) reordered: expected [i16:a business case is completed and attached] but observed [action(n17,"complete and attach business case")] elsewhere; in its place the model has [action(n9,"send approval and mandatory documentation to HR services")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | DSL: action(n4,"contact TS to clarify timing")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n18` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n19` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4 | DSL: action(n4,"contact TS to clarify timing")

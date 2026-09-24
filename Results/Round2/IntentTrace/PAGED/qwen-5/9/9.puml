@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Bill for Purchased Goods/Services and Receive Invoice;
+:v_status: Invoice Status ({Incomplete, Complete}); <<objectSignal>>
+if () then ([v_status = 'Incomplete'])
+:Invoice is incomplete, return it;
+else ([v_status = 'Complete'])
+:Invoice is complete, check compliance;
+:Conduct further checks on non-compliant invoice;
+:v_res: Resolution Type ({Compliant, Phone, Mail}); <<objectSignal>>
+switch ()
+case ([v_res = 'Compliant'])
+:Invoice is compliant, process continues;
+case ([v_res = 'Phone'])
+:Issue resolved with phone call, non-compliance resolved;
+case ([v_res = 'Mail'])
+:Issue requires mail back, invoice returned;
+:Invoice returned, non-compliance resolved;
+endswitch
+:v_path: Next Path ({Payment, Billing}); <<objectSignal>>
+if () then ([v_path = 'Payment'])
+:Invoice paid and returned non-compliance resolved;
+:Invoice paid and client notified;
+:Check client satisfaction;
+stop
+else ([v_path = 'Billing'])
+:Bill Client;
+:Wait period of 10 days due to no response;
+:Send reminder after 10 days and end process;
+stop
+endif
+endif
+@enduml

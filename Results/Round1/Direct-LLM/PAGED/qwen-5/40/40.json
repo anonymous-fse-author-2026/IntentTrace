@@ -1,0 +1,177 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "receive the invoice"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "check for mismatches"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "re-send the invoice to the customer"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "post the invoice"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "block the invoice"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "park the invoice"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "invoice decision",
+      "R_X": [
+        "re-send",
+        "post",
+        "block"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "n2",
+        "b1",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "e1",
+        "c1"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "e1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"re-send\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "v1 = \"post\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n6",
+      "condition": "v1 = \"block\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process, start by receiving the invoice."
+    },
+    {
+      "id": "i2",
+      "content": "Next, check the invoice for any mismatches."
+    },
+    {
+      "id": "i3",
+      "content": "If there is a need to \"re-send the invoice to the customer\", then proceed with continuing the process. If the option is to \"post the invoice\", then also continue the process. Alternatively, if the decision is to \"block the invoice\", then again continue the process."
+    },
+    {
+      "id": "i4",
+      "content": "Once these steps are completed, park the invoice."
+    },
+    {
+      "id": "i5",
+      "content": "After the invoice has been handled, the process comes to an end."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+Omission
+- [N1] Omitted trace (input 0): i1:In the beginning -> i2:if the answer is "No" -> i2:if the answer is "No"
+- [N2] Within matched traces (2->1) omitted: i9:And if the answer is "Yes" again, then we enter the invoice in SAP.
+- [N3] Within matched traces (2->1) omitted: i10:Once the invoice is entered in SAP, we place the entered invoices in the normal Outbox
+
+Addition
+- [N4] Node-level addition: action(n1,"start process") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N5] Node-level addition: action(n2,"initial decision") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N6] Node-level addition: action(n4,"second decision") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N7] Node-level addition: action(n7,"vendor exists in SAP") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N8] Node-level addition: action(n11,"invoice entry decision") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N9] Node-level addition: action(n15,"priority decision again") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N10] Node-level addition: action(n19,"end process") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N11] Node-level addition: guard(b2,c1,"v2 = 'No'") (reason: These elements contain abstract labels, invented steps, or ungrounded guards ('start process', 'initial decision', 'second decision', 'vendor exists in SAP', 'invoice entry decision', 'priority decision again', 'end process', and v2='No') that do not correspond to any provided Input Element.)
+- [N12] Added trace (model 2): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N13] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N14] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> action(n9,"end due to missing vendor master") -> end(e1)
+- [N15] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> action(n13,"end due to missing vendor master") -> end(e2)
+- [N16] Within matched traces (1->0) added: action(n1,"start process")
+- [N17] Within matched traces (1->0) added: action(n2,"initial decision")
+- [N18] Within matched traces (1->0) added: action(n7,"vendor exists in SAP")
+- [N19] Within matched traces (2->1) added: action(n1,"start process")
+- [N20] Within matched traces (2->1) added: action(n2,"initial decision")
+- [N21] Within matched traces (2->1) added: action(n7,"vendor exists in SAP")
+- [N22] Within matched traces (2->1) added: action(n11,"invoice entry decision")
+- [N23] Within matched traces (2->1) added: action(n12,"need vendor master record")
+- [N24] Within matched traces (2->1) added: action(n13,"end due to missing vendor master")
+- [N25] Within matched traces (2->1) added: end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n19` has in=1 and out=0. | DSL: action(n19,"end process")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e4 | DSL: end(e4)
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n14, n15, n16, n18, n19 | DSL: action(n14,"give priority"); action(n15,"priority decision again"); action(n16,"enter invoice in SAP"); action(n18,"place invoices in normal Outbox"); action(n19,"end process")

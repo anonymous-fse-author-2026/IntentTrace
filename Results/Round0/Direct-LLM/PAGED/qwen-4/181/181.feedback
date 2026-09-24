@@ -1,0 +1,10 @@
+- `action(n1, "start the appointment approval process")`: hallucinated initial step; the description begins directly with sending the appointment approval form.
+- `defines(v1, "is resource internal", {})`, `defines(v2, "check for variations", {})`, `defines(v3, "are there variations after business case", {})`: specify empty ranges `{}`, violating SMC6 by omitting the actual value domains (e.g., `{true, false}`) required for the decision variables.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)`: completely lack `guard(...)` statements, failing SMC4 to represent the conditional logic governing the exclusive splits.
+- `precedence(n12, n13)`: incorrectly sequences the variation check after `action(n12, "HR services receive documentation")`, contradicting SMC3/SMC5 since the source explicitly states that HR receiving the documents "marks the end of the process."
+- `action(n16, "are there variations after business case")`, `branch(b3, XOR)`, `action(n17, "continue process")`, `action(n18, "complete and attach business case")`: hallucinated nested decision tree; the source merely repeats the same variation/business-case rule and does not describe a secondary verification or a distinct "attach" workflow.
+- `action(n19, "process end")`: redundant and undocumented task; `end(e1)` alone correctly denotes process termination per the description.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n17` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n18` has 0 guards; exactly one is required.

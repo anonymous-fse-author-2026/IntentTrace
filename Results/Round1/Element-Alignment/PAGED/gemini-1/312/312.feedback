@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i2: verifying the amount (reason: The specific step to verify the amount is completely missing from the model.)
+- [N2] Node-level omission: i5: if the amount is 200 € or more (reason: The only element corresponding to this unit is a mutated guard, leaving the original source unit without a faithful implementation.)
+- [N3] Node-level omission: i10: if the expense report is not satisfactory (reason: The only element corresponding to this unit is a mutated guard, leaving the original source unit without a faithful implementation.)
+- [N4] Omitted trace (input 0): i1:To check the account, we start -> i2:verifying the amount -> i3:If the amount is less than 200 € -> i4:approve the expense report
+- [N5] Omitted trace (input 1): i1:To check the account, we start -> i2:verifying the amount -> i5:if the amount is 200 € or more -> i6:evaluate the expense report -> i7:If the expense report is deemed acceptable -> i8:it is approved -> i9:the process comes to an end
+- [N6] Omitted trace (input 2): i1:To check the account, we start -> i2:verifying the amount -> i5:if the amount is 200 € or more -> i6:evaluate the expense report -> i10:if the expense report is not satisfactory -> i11:the process also ends
+
+Addition
+- [N7] Added trace (model 0): init(i1) -> action(n1,"start account check") -> action(n2,"is amount less than 200 euros") -> branch(b1,XOR) -> action(n3,"approve expense report") -> end(e1)
+- [N8] Added trace (model 1): init(i1) -> action(n1,"start account check") -> action(n2,"is amount less than 200 euros") -> branch(b1,XOR) -> action(n4,"evaluate expense report") -> action(n5,"is expense report acceptable") -> branch(b2,XOR) -> action(n6,"approve expense report") -> action(n7,"end process") -> end(e1)
+- [N9] Added trace (model 2): init(i1) -> action(n1,"start account check") -> action(n2,"is amount less than 200 euros") -> branch(b1,XOR) -> action(n4,"evaluate expense report") -> action(n5,"is expense report acceptable") -> branch(b2,XOR) -> action(n8,"end process") -> end(e2)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b1,n3,"v1 < 200"); source=i3: If the amount is less than 200 €; reason=The guard condition drops the currency unit (€) explicitly stated in the source text.
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 >= 200"); source=i5: if the amount is 200 € or more; reason=The guard condition drops the currency unit (€) explicitly stated in the source text.
+- [N12] Node-level mutation: element=guard(b2,n6,"v2 = true"); source=i7: If the expense report is deemed acceptable; reason=The guard replaces the specific contextual state 'acceptable' with a generic boolean value 'true'.
+- [N13] Node-level mutation: element=guard(b2,n8,"v2 = false"); source=i10: if the expense report is not satisfactory; reason=The guard replaces the specific contextual state 'not satisfactory' with a generic boolean value 'false'.

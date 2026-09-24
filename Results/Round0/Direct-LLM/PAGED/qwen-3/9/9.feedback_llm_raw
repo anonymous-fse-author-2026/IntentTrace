@@ -1,0 +1,7 @@
+
+
+- `defines(v11, "Is there response from client after 10 days?", {})`: Declares an empty value range `{}`, which is semantically invalid and hallucinates a decision variable/condition absent from the source text.
+- `defines(v4, "Does issue require mail back?", {"Yes"})` and `defines(v7, "Does issue still require mail back?", {"Yes"})`: Both use a single-value range. The source presents these as conditional checks ("if the issue requires mail back"), requiring a binary domain to support the corresponding XOR branches (`b4`, `b7`). A single value makes the exclusive choice logic semantically broken.
+- `guard(b8, n35, v8 = 'No')`: Routes the negative condition to `action(n35, "Non compliance resolved")`. The source explicitly ties resolution only to the positive case ("if it is returned, non-compliance is resolved"), so routing the 'No' case to resolution hallucinates documented behavior.
+- `action(n4, "Return Invoice")`, `action(n11, "Return Invoice")`, `action(n13, "Return Invoice")`, `action(n17, "Return Invoice")`: None of these nodes have outgoing `precedence` relations. This severs four distinct control-flow paths, causing them to terminate prematurely without reaching any `end` node, violating intended process progression.
+- `branch(b11, XOR)`: Declared as an exclusive choice but only has one outgoing edge (`precedence(b11, n27)`) and zero `guard` statements. This violates XOR gateway semantics and omits the alternative decision path required by the branching construct.

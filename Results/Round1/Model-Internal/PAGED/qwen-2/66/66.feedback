@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail. (reason: The source explicitly describes a conditional split based on invoice status ('Uncompleted' vs 'Completed') with defined routing paths, but the model lacks a corresponding XOR branch node and routing guards to implement this decision logic.)
+- [N2] Node-level omission: i4:However, if they are marked as "Completed", the process should be continued. (reason: The source explicitly describes a conditional split based on invoice status ('Uncompleted' vs 'Completed') with defined routing paths, but the model lacks a corresponding XOR branch node and routing guards to implement this decision logic.)
+- [N3] Node-level omission: i5:If the invoices are still marked as "Uncompleted" (reason: The source explicitly describes a conditional split based on invoice status ('Uncompleted' vs 'Completed') with defined routing paths, but the model lacks a corresponding XOR branch node and routing guards to implement this decision logic.)
+- [N4] Node-level omission: i6:On the other hand, if they are marked as "Completed" (reason: The source explicitly describes a conditional split based on invoice status ('Uncompleted' vs 'Completed') with defined routing paths, but the model lacks a corresponding XOR branch node and routing guards to implement this decision logic.)
+- [N5] Omitted trace (input 1): i1:To begin the process in the Admin Office, first check if it has started. -> i2:After that, verify the completeness of the invoices. -> i3:If they are marked as "Uncompleted", they should be returned to the client through postal mail. -> i6:On the other hand, if they are marked as "Completed" -> i7:Once the invoices are returned to the client, receive the completed ones. -> i8:Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed. -> i9:Finally, the process ends.
+- [N6] Omitted trace (input 2): i1:To begin the process in the Admin Office, first check if it has started. -> i2:After that, verify the completeness of the invoices. -> i4:However, if they are marked as "Completed", the process should be continued. -> i5:If the invoices are still marked as "Uncompleted" -> i7:Once the invoices are returned to the client, receive the completed ones. -> i8:Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed. -> i9:Finally, the process ends.
+- [N7] Omitted trace (input 3): i1:To begin the process in the Admin Office, first check if it has started. -> i2:After that, verify the completeness of the invoices. -> i4:However, if they are marked as "Completed", the process should be continued. -> i6:On the other hand, if they are marked as "Completed" -> i7:Once the invoices are returned to the client, receive the completed ones. -> i8:Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed. -> i9:Finally, the process ends.
+- [N8] Within matched traces (0->0) omitted: i5:If the invoices are still marked as "Uncompleted"
+- [N9] Within matched traces (0->1) omitted: i5:If the invoices are still marked as "Uncompleted"
+- [N10] Within matched traces (0->1) omitted: i9:Finally, the process ends.
+
+Addition
+- [N11] Node-level addition: action(n1,"start") (reason: Content 'start' has no basis in the source, which only instructs to 'check if it has started' rather than perform a start action.)
+- [N12] Node-level addition: guard(b1,n3,"v1 = \"Yes\"") (reason: Guards assign explicit 'Yes'/'No' outcomes to the initial check, but the source text provides no branching conditions, variables, or outcome labels for this step.)
+- [N13] Node-level addition: guard(b1,n4,"v1 = \"No\"") (reason: Guards assign explicit 'Yes'/'No' outcomes to the initial check, but the source text provides no branching conditions, variables, or outcome labels for this step.)
+- [N14] Node-level addition: guard(b2,n9,"v2 = \"Yes\"") (reason: Guards assign explicit 'Yes'/'No' outcomes to the completion check, but the source text does not define explicit branch targets, variables, or logical values for this condition.)
+- [N15] Node-level addition: guard(b2,n10,"v2 = \"No\"") (reason: Guards assign explicit 'Yes'/'No' outcomes to the completion check, but the source text does not define explicit branch targets, variables, or logical values for this condition.)
+- [N16] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> end(e1)
+- [N17] Within matched traces (0->0) added: init(i1)
+- [N18] Within matched traces (0->0) added: action(n1,"start")
+- [N19] Within matched traces (0->1) added: init(i1)
+- [N20] Within matched traces (0->1) added: action(n1,"start")
+- [N21] Within matched traces (0->1) added: branch(b2,XOR)

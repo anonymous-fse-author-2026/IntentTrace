@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i2:After that, Mac compares the inventory levels in the spreadsheet with the sales. (reason: No model element faithfully preserves the actor 'Mac' and the mandatory 'spreadsheet' qualifier.)
+- [N2] Node-level omission: i4:Mac doesn't need to manually count the inventory. (reason: Lacks a faithful implementation; the nearest candidate drops both the actor and the target object.)
+- [N3] Node-level omission: i5:However, if the inventory level is low, Mac needs to manually count the inventory of items. (reason: Condition and subsequent action are fragmented and overly generalized; actor and precise inventory scope are entirely lost.)
+- [N4] Node-level omission: i8:Using this list, Mac selects suppliers for the needed products and places the order(s). (reason: Supplier selection directive is altered regarding target products and lacks contextual grounding; no element implements it faithfully.)
+- [N5] Within matched traces (0->0) omitted: i9:After receiving the order, the process comes to an end.
+
+Addition
+- [N6] Node-level addition: guard(b1,n6,"v1 = false") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N7] Within matched traces (1->1) added: action(n4,"is inventory level high")
+- [N8] Within matched traces (1->1) added: branch(b1,XOR)
+
+Mutation
+- [N9] Node-level mutation: element=action(n3,"compare inventory levels with sales"); source=i2:After that, Mac compares the inventory levels in the spreadsheet with the sales.; reason=Drops the actor 'Mac' and the critical location qualifier 'in the spreadsheet', violating granularity requirements.
+- [N10] Node-level mutation: element=action(n5,"no manual count needed"); source=i4:Mac doesn't need to manually count the inventory.; reason=Strips the actor 'Mac' and the explicit target 'inventory', reducing the instruction to a vague state label.
+- [N11] Node-level mutation: element=action(n6,"need manual inventory count"); source=i5:However, if the inventory level is low, Mac needs to manually count the inventory of items.; reason=Over-generalizes the requirement, omitting the actor 'Mac', the specific scope 'inventory of items', and conflating conditional context into an imprecise action label.
+- [N12] Node-level mutation: element=action(n9,"select suppliers for low stock items"); source=i8:Using this list, Mac selects suppliers for the needed products and places the order(s).; reason=Alters the selection target from 'needed products' to 'low stock items' and omits the directional phrase 'Using this list', distorting the supplier selection criteria.

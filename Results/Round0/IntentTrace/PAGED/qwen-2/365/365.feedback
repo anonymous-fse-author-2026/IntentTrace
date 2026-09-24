@@ -1,0 +1,31 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i8:If the exit control check outcome is unsuccessful
+- [N2] Within matched traces (0->0) omitted: i9:the passenger should leave the area and the process ends.
+- [N3] Within matched traces (1->1) omitted: i10:if the outcome is successful, the passenger should continue to the next step and the process ends.
+- [N4] Within matched traces (2->2) omitted: i4:After the exit control checks, if the passenger is denied permission
+- [N5] Within matched traces (2->2) omitted: i5:if the passenger is denied permission
+- [N6] Within matched traces (2->2) omitted: i6:they should leave the area.
+- [N7] Within matched traces (3->3) omitted: i7:if the passenger is allowed to continue, they should proceed to the next step.
+
+Addition
+- [N8] Within matched traces (0->0) added: init(i1)
+- [N9] Within matched traces (1->1) added: init(i1)
+- [N10] Within matched traces (1->1) added: action(n6,"Is permission denied after biometric check?")
+- [N11] Within matched traces (1->1) added: branch(b2,XOR)
+- [N12] Within matched traces (2->2) added: init(i1)
+- [N13] Within matched traces (3->3) added: init(i1)
+- [N14] Within matched traces (3->3) added: action(n10,"Is permission denied after ID document check?")
+- [N15] Within matched traces (3->3) added: branch(b3,XOR)
+
+Mutation
+- [N16] Node-level mutation: element=guard(b2,n7,"v2 = 'No'"); source=i5:if the passenger is denied permission; reason=The guards specify v2 = 'No' and v3 = 'No' to trigger the 'leave the area' actions, which directly contradicts the source text stating passengers leave when permission is 'denied' or the outcome is 'unsuccessful'. The condition logic/value is inverted.
+- [N17] Node-level mutation: element=guard(b3,n11,"v3 = 'No'"); source=i8:If the exit control check outcome is unsuccessful; reason=The guards specify v2 = 'No' and v3 = 'No' to trigger the 'leave the area' actions, which directly contradicts the source text stating passengers leave when permission is 'denied' or the outcome is 'unsuccessful'. The condition logic/value is inverted.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `['No']`. | Variable `v3` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v2 = 'No'` on `b2 -> n7` uses undefined variable `v2`. | Guard `v3 = 'No'` on `b3 -> n11` uses undefined variable `v3`. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n12` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v2 = 'No'` on `b2 -> n7` cannot be evaluated: `v2` has no declared range. | Guard `v3 = 'No'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | DSL: guard(b2,n7,"v2 = 'No'"); guard(b3,n11,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` cannot be evaluated: `v2` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

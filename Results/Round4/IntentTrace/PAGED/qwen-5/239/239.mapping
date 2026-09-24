@@ -1,0 +1,302 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:i1"
+      ],
+      "verbatim_texts": [
+        "For the company, the first step is to look at the order."
+      ],
+      "justification": "Initiates the process and performs the first action exactly as stated."
+    },
+    {
+      "refs": [
+        "action:i2"
+      ],
+      "verbatim_texts": [
+        "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue."
+      ],
+      "justification": "Models the conditional statement as a single action step. Since both outcomes explicitly state the process should continue, treating it as a pass-through action preserves behaviour."
+    },
+    {
+      "refs": [
+        "action:n_prepare",
+        "action:n_check_avail"
+      ],
+      "verbatim_texts": [
+        "At the same time, two steps need to be completed: preparing the assembling order and checking availability."
+      ],
+      "justification": "Correctly splits the flow into an AND gateway for the two parallel preparation steps and merges them back upon completion."
+    },
+    {
+      "refs": [
+        "guard:b_availability->n_check_again",
+        "action:n_check_again"
+      ],
+      "verbatim_texts": [
+        "If there is a backorder, availability needs to be checked again and the process ends."
+      ],
+      "justification": "Captures the decision split for the backorder case, the re-check action, and the subsequent process termination."
+    },
+    {
+      "refs": [
+        "guard:b_availability->i5",
+        "action:i5"
+      ],
+      "verbatim_texts": [
+        "If the item can be reserved, the process should continue."
+      ],
+      "justification": "Captures the alternative reservation path. The action redundantly restates the condition after the guard, but this does not change behaviour."
+    },
+    {
+      "refs": [
+        "action:i6"
+      ],
+      "verbatim_texts": [
+        "The next steps are to assemble the bike and then ship the product."
+      ],
+      "justification": "Executes the final assembly and shipping steps followed by process completion."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:start",
+      "kind": "init",
+      "node_id": "start",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:start",
+        "start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init start"
+    },
+    {
+      "ref_id": "action:i1",
+      "kind": "action",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "For the company, the first step is to look at the order.",
+      "aliases": [
+        "action:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i1: For the company, the first step is to look at the order."
+    },
+    {
+      "ref_id": "action:i2",
+      "kind": "action",
+      "node_id": "i2",
+      "gateway": "",
+      "string_value": "If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue.",
+      "aliases": [
+        "action:i2",
+        "i2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i2: If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue."
+    },
+    {
+      "ref_id": "branch:i3",
+      "kind": "branch",
+      "node_id": "i3",
+      "gateway": "AND",
+      "string_value": "branch",
+      "aliases": [
+        "branch:i3",
+        "i3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch i3 (AND)"
+    },
+    {
+      "ref_id": "action:n_prepare",
+      "kind": "action",
+      "node_id": "n_prepare",
+      "gateway": "",
+      "string_value": "Preparing the assembling order",
+      "aliases": [
+        "action:n_prepare",
+        "n_prepare"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_prepare: Preparing the assembling order"
+    },
+    {
+      "ref_id": "action:n_check_avail",
+      "kind": "action",
+      "node_id": "n_check_avail",
+      "gateway": "",
+      "string_value": "Checking availability",
+      "aliases": [
+        "action:n_check_avail",
+        "n_check_avail"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_avail: Checking availability"
+    },
+    {
+      "ref_id": "converge:c_parallel",
+      "kind": "converge",
+      "node_id": "c_parallel",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_parallel",
+        "c_parallel"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_parallel"
+    },
+    {
+      "ref_id": "branch:b_availability",
+      "kind": "branch",
+      "node_id": "b_availability",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_availability",
+        "b_availability"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_availability (XOR)"
+    },
+    {
+      "ref_id": "action:n_check_again",
+      "kind": "action",
+      "node_id": "n_check_again",
+      "gateway": "",
+      "string_value": "Availability needs to be checked again",
+      "aliases": [
+        "action:n_check_again",
+        "n_check_again"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n_check_again: Availability needs to be checked again"
+    },
+    {
+      "ref_id": "end:i4",
+      "kind": "end",
+      "node_id": "i4",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:i4",
+        "i4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end i4"
+    },
+    {
+      "ref_id": "action:i5",
+      "kind": "action",
+      "node_id": "i5",
+      "gateway": "",
+      "string_value": "If the item can be reserved, the process should continue.",
+      "aliases": [
+        "action:i5",
+        "i5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i5: If the item can be reserved, the process should continue."
+    },
+    {
+      "ref_id": "action:i6",
+      "kind": "action",
+      "node_id": "i6",
+      "gateway": "",
+      "string_value": "The next steps are to assemble the bike and then ship the product.",
+      "aliases": [
+        "action:i6",
+        "i6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i6: The next steps are to assemble the bike and then ship the product."
+    },
+    {
+      "ref_id": "end:e_final",
+      "kind": "end",
+      "node_id": "e_final",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_final",
+        "e_final"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_final"
+    },
+    {
+      "ref_id": "guard:b_availability->n_check_again",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_availability = 'Backorder'",
+      "aliases": [
+        "guard:b_availability->n_check_again"
+      ],
+      "from": "b_availability",
+      "to": "n_check_again",
+      "source_line": "guard b_availability->n_check_again: v_availability = 'Backorder'",
+      "guard": {
+        "from": "b_availability",
+        "to": "n_check_again",
+        "condition": "v_availability = 'Backorder'"
+      }
+    },
+    {
+      "ref_id": "guard:b_availability->i5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_availability = 'Reserved'",
+      "aliases": [
+        "guard:b_availability->i5"
+      ],
+      "from": "b_availability",
+      "to": "i5",
+      "source_line": "guard b_availability->i5: v_availability = 'Reserved'",
+      "guard": {
+        "from": "b_availability",
+        "to": "i5",
+        "condition": "v_availability = 'Reserved'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 6,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 9,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 9,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 9,
+    "total_mappable_targets": 15,
+    "input_text_length": 502,
+    "element_count": 15
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

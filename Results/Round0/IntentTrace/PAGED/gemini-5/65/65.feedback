@@ -1,0 +1,40 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i8:a response should be requested from the vendors by a set date
+- [N2] Within matched traces (0->2) omitted: i11:they should be scored again
+- [N3] Within matched traces (1->3) omitted: i8:a response should be requested from the vendors by a set date
+- [N4] Within matched traces (1->3) omitted: i11:they should be scored again
+- [N5] Within matched traces (2->2) omitted: i5:create a scorecard
+- [N6] Within matched traces (2->2) omitted: i8:a response should be requested from the vendors by a set date
+- [N7] Within matched traces (2->2) omitted: i11:they should be scored again
+- [N8] Within matched traces (3->3) omitted: i5:create a scorecard
+- [N9] Within matched traces (3->3) omitted: i8:a response should be requested from the vendors by a set date
+- [N10] Within matched traces (3->3) omitted: i11:they should be scored again
+
+Addition
+- [N11] Node-level addition: action(n20,"You have completed this procedure") (reason: The action 'You have completed this procedure' has no supporting text in the source.)
+- [N12] Added trace (model 0): init(i1) -> action(n1,"Start the J and J local contacts process") -> action(n2,"Identify the business need") -> action(n3,"Gather the business requirements") -> branch(b2,AND) -> action(n4,"Create the RFP") -> action(n6,"Submit the RFP to vendors") -> action(n7,"Score the proposals received from vendors") -> branch(b3,AND) -> action(n9,"Downselect vendors based on scored proposals to present their proposals") -> action(n10,"Receive presentations from downselected vendors") -> branch(b4,AND) -> action(n11,"Score the presentations received") -> converge(c1) -> action(n13,"Rescore proposals based on presentations and Q and A") -> action(n14,"Is pricing and scope adjustment necessary") -> branch(b1,XOR) -> action(n15,"Request pricing and scope adjustments") -> action(n16,"Review updated proposals and rescore") -> converge(c2) -> action(n18,"Notify vendors of selection") -> action(n19,"Create contract based on winning proposal") -> action(n20,"You have completed this procedure") -> end(e1)
+- [N13] Added trace (model 1): init(i1) -> action(n1,"Start the J and J local contacts process") -> action(n2,"Identify the business need") -> action(n3,"Gather the business requirements") -> branch(b2,AND) -> action(n4,"Create the RFP") -> action(n6,"Submit the RFP to vendors") -> action(n7,"Score the proposals received from vendors") -> branch(b3,AND) -> action(n9,"Downselect vendors based on scored proposals to present their proposals") -> action(n10,"Receive presentations from downselected vendors") -> branch(b4,AND) -> action(n11,"Score the presentations received") -> converge(c1) -> action(n13,"Rescore proposals based on presentations and Q and A") -> action(n14,"Is pricing and scope adjustment necessary") -> branch(b1,XOR) -> action(n17,"Review updated proposals and rescore") -> converge(c2) -> action(n18,"Notify vendors of selection") -> action(n19,"Create contract based on winning proposal") -> action(n20,"You have completed this procedure") -> end(e1)
+- [N14] Within matched traces (0->2) added: action(n20,"You have completed this procedure")
+- [N15] Within matched traces (1->3) added: branch(b1,XOR)
+- [N16] Within matched traces (1->3) added: action(n17,"Review updated proposals and rescore")
+- [N17] Within matched traces (1->3) added: converge(c2)
+- [N18] Within matched traces (1->3) added: action(n20,"You have completed this procedure")
+- [N19] Within matched traces (2->2) added: branch(b2,AND)
+- [N20] Within matched traces (2->2) added: action(n4,"Create the RFP")
+- [N21] Within matched traces (2->2) added: action(n20,"You have completed this procedure")
+- [N22] Within matched traces (3->3) added: branch(b2,AND)
+- [N23] Within matched traces (3->3) added: action(n4,"Create the RFP")
+- [N24] Within matched traces (3->3) added: branch(b1,XOR)
+- [N25] Within matched traces (3->3) added: action(n17,"Review updated proposals and rescore")
+- [N26] Within matched traces (3->3) added: converge(c2)
+- [N27] Within matched traces (3->3) added: action(n20,"You have completed this procedure")
+
+Mutation
+- [N28] Node-level mutation: element=action(n10,"Receive presentations from downselected vendors"); source=i10:Once the proposals have been received; reason=The model says 'Receive presentations', but the text says 'Once the proposals have been received'. It changed proposals to presentations.
+- [N29] Node-level mutation: element=action(n11,"Score the presentations received"); source=i11:they should be scored again; reason=The model states 'Score the presentations received', whereas the text states the *proposals* should be scored again.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n15` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n17` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5, n8 | DSL: action(n5,"Create a scorecard from the business requirements"); action(n8,"Request a response from vendors by a set date")

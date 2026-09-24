@@ -1,0 +1,12 @@
+- `action(n1, "start loan application process")`: Hallucinates a preparatory step; the source states the workflow begins immediately with the verification ("At the start, the loan application is checked.").
+- `defines(v1, "is application rejected", {"Yes"})`: Incomplete value space; omits the "No" alternative required to faithfully represent the binary decision implied by the source text.
+- `guard(b2, n6, v2 = 'No')` and `action(n6, "end process")`: Introduces an unsupported termination branch; the source only specifies continuity when conditions are met ("if special terms are agreed upon, the process continues") and does not define an outcome for disagreement.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

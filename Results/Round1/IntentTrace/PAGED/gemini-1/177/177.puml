@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:ensure Freights are ready to be shipped;
+:ship the freight;
+split
+:deliver the freight;
+split again
+:notify the delivery;
+end split
+:v1: branch choice ({Return, 5Days, LossClaim}); <<objectSignal>>
+switch ()
+case ([v1 = 'Return'])
+:is request for merchandise return lodged?;
+:is return accepted?;
+:v3: is return accepted? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:accept the merchandise return;
+:return the merchandise;
+:end with merchandise being returned;
+stop
+else ([v3 = 'No'])
+:reject the merchandise return;
+:end with merchandise return request being rejected;
+stop
+endif
+case ([v1 = '5Days'])
+:has it been 5 days?;
+:invoice the customer;
+:end with customer being invoiced;
+stop
+case ([v1 = 'LossClaim'])
+:is loss claim report lodged?;
+:approve the loss claim;
+:end with loss claim approved;
+stop
+endswitch
+@enduml

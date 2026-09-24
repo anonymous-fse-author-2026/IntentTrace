@@ -1,0 +1,7 @@
+
+
+- precedence(c2, n20): The source states "Simultaneously, the following steps are completed: Bill Client," requiring a parallel execution track. The model places action(n20,...) sequentially after converge(c2), delaying it until all preceding invoice workflows finish.
+- guard(b8, n23, v8 = 'Yes') / action(n23, "Resolve non-compliance"): The source explicitly links non-compliance resolution to returns ("if it is returned, non-compliance is resolved"). Routing a positive client response to n23 hallucinates a causal link and action not documented in the text.
+- branch(b4, XOR) / precedence(b4, n12): Two outgoing edges exist from b4, but only one is guarded (guard(b4, n11, v4 = 'Yes')). The missing guard for the transition to n12 leaves the exclusive choice semantically undefined and structurally incomplete.
+- action(n29, "Continue process"): The source states that if the client is satisfied, "the process continues," implying forward progression toward completion. The model leaves n29 as a dead-end node with no outgoing precedence, violating init-to-end path integrity.
+- branch(b10, AND) / precedence(b10, n24) / precedence(b10, c2): The description outlines a natural sequence ("The invoice is paid and the client is notified"), not a concurrent divergence. Using an AND split here incorrectly imposes parallelism and feeds a convergence node (c2) that sits upstream in the logical flow, distorting the control-flow structure.

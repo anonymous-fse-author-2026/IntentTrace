@@ -1,0 +1,25 @@
+Omission
+- [N1] Omitted trace (input 0): i1:To start, please provide the userdata for flickr. -> i2:If the login is successful, -> i3:If the login is successful -> i4:the process will end.
+- [N2] Omitted trace (input 4): i1:To start, please provide the userdata for flickr. -> i5:if the login fails, we will continue with the process. -> i7:If you want to try again, -> i8:If you want to try again -> i1:To start, please provide the userdata for flickr. -> i5:if the login fails, we will continue with the process. -> i11:If you still want to try again, -> i12:If you still want to try again -> i1:To start, please provide the userdata for flickr.
+- [N3] Within matched traces (2->0) omitted: i7:If you want to try again,
+- [N4] Within matched traces (2->0) omitted: i8:If you want to try again
+
+Addition
+- [N5] Within matched traces (2->0) added: init(start)
+- [N6] Within matched traces (2->0) added: converge(c1)
+- [N7] Within matched traces (1->1) added: init(start)
+- [N8] Within matched traces (1->1) added: converge(c1)
+- [N9] Within matched traces (3->2) added: init(start)
+- [N10] Within matched traces (3->2) added: converge(c1)
+
+Permutation
+- [N11] Within matched traces (1->1) reordered: expected [i10:if you choose to abort] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(i10,"if you choose to abort")]
+- [N12] Within matched traces (3->2) reordered: expected [i5:if the login fails, we will continue with the process.] but observed [branch(b1,XOR) -> action(i5,"if the login fails, we will continue with the process.")] elsewhere; in its place the model has [branch(b2,XOR)]
+
+Structural Check
+- [S1] STC15 failed: Every variable used in a guard must be formally defined. | Guard `status = 'success'` on `b1 -> i2` uses undefined variable `status`. | Guard `status = 'fail'` on `b1 -> i5` uses undefined variable `status`. | Guard `decision = 'retry_first'` on `b2 -> i7` uses undefined variable `decision`. | Guard `decision = 'abort_first'` on `b2 -> i9` uses undefined variable `decision`. | Guard `decision = 'retry_second'` on `b2 -> i11` uses undefined variable `decision`. | Guard `decision = 'abort_second'` on `b2 -> i13` uses undefined variable `decision`. | DSL: guard(b1,i2,"status = 'success'"); guard(b1,i5,"status = 'fail'"); guard(b2,i7,"decision = 'retry_first'"); guard(b2,i9,"decision = 'abort_first'"); guard(b2,i11,"decision = 'retry_second'"); guard(b2,i13,"decision = 'abort_second'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `status = 'success'` on `b1 -> i2` cannot be evaluated: `status` has no declared range. | Guard `status = 'fail'` on `b1 -> i5` cannot be evaluated: `status` has no declared range. | Guard `decision = 'retry_first'` on `b2 -> i7` cannot be evaluated: `decision` has no declared range. | Guard `decision = 'abort_first'` on `b2 -> i9` cannot be evaluated: `decision` has no declared range. | Guard `decision = 'retry_second'` on `b2 -> i11` cannot be evaluated: `decision` has no declared range. | Guard `decision = 'abort_second'` on `b2 -> i13` cannot be evaluated: `decision` has no declared range. | DSL: guard(b1,i2,"status = 'success'"); guard(b1,i5,"status = 'fail'"); guard(b2,i7,"decision = 'retry_first'"); guard(b2,i9,"decision = 'abort_first'"); guard(b2,i11,"decision = 'retry_second'"); guard(b2,i13,"decision = 'abort_second'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `status` has no declared range. | Branch `b2` cannot be evaluated: `decision` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `status` has no declared range. | Branch `b2` cannot be evaluated: `decision` has no declared range.

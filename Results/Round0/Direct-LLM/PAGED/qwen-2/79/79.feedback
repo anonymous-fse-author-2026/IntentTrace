@@ -1,0 +1,9 @@
+- `action(n1, "start the purchase process")`: Hallucinates an initial step; the source begins directly with "the customer needs to make a purchase".
+- `action(n7, "End of process")`, `action(n9, "End of process")`: Hallucinates explicit actions for termination; the source only states "the process will end", which should be modeled solely with `end` nodes, not `action` nodes.
+- `defines(v1, "add items to cart?", {})`: Specifies an empty range `{}`; the source describes a binary decision ("If they choose to... However, if they decide not to"), requiring a valid value space such as `{true, false}` or `{"Yes", "No"}`.
+- `actor(a_default, "Default", [...])`: Assigns responsibility to "Default", contradicting the source which explicitly identifies "the customer" as the participating actor.
+- Missing `guard(...)` statements for `branch(b1)`: Omits edge conditions binding `v1` to the outgoing paths (`b1` to `n6` and `b1` to `n8`), failing to explicitly model the conditional routing described in the source.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

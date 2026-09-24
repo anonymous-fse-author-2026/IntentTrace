@@ -1,0 +1,8 @@
+
+
+- `branch(b5, AND)`: Uses a parallel gateway, but the source describes an exclusive choice (“If the passenger chooses to use biometrics... However, if the passenger prefers to use ID documents”), requiring an XOR gateway.
+- `guard` statements: Entirely missing. The model declares `v1`–`v4` but provides no `guard(...)` declarations for branches `b1`–`b4`, failing to encode the source’s conditional logic (“if the passenger is denied permission”, “if allowed to continue”, “if outcome is unsuccessful/successful”).
+- `defines(v1, ..., {})`, `v2`, `v3`, `v4`: All value ranges are empty `{}`. They must specify valid decision values (e.g., `{true, false}`) to faithfully represent the source’s binary conditions.
+- `precedence(n4, n6)` and `precedence(n5, n7)`: Routes each method to a separate decision tree without a `converge` node. The source specifies a single post-check evaluation (“After the exit control checks, if...”), meaning both method paths should merge before the permission/outcome decisions.
+- `action(n18)` through `n23` and `end(e1)` through `e6`: Hallucinates six parallel termination tracks. The source indicates a single process conclusion (“the process ends”) following either outcome, not multiple divergent end points.
+- `action(n6, "is permission granted after exit control checks")` and `action(n12, "is the exit control check outcome successful")`: Incorrectly models decision criteria as sequential steps rather than integrating them into branch/guard logic, distorting the control flow.

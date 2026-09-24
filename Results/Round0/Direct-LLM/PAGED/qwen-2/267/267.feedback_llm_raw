@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)` through `branch(b6, XOR)`: Missing `guard(...)` statements. Explicit routing conditions in the description (e.g., `"if the option ... is selected"`, `"check if the schedule is satisfactory"`, `"Check if the ticket order is approved"`) are not encoded as branch guards, leaving control-flow logic detached from source decisions (SMC1, SMC4).
+- `action(n1, "Start EC-Lille procedure")`: Hallucinated step. The description begins directly with `"Initially, if the option 'research schedule directly' is selected..."`, with no preliminary initialization action mentioned (SMC1).
+- `defines(v1, "...", {})` through `defines(v6, "...", {})`: Empty value ranges `{}` fail to reflect the source's implicit binary choice spaces (selected/not, satisfactory/not, approved/not) that drive the process decisions (SMC6).
+- `precedence(n8, n10)`: Omits a documented behavior. The text states `"If the schedule is not satisfactory, perform the action 'Research schedule'. If it is still not satisfactory..."`, indicating a second research iteration prior to re-evaluation, but the model routes directly from the first research action (`n8`) to the subsequent check node (`n10`) (SMC1).
+- `action(n15, "End process")`, `action(n18, "End process")`, `action(n21, "End process")`, `action(n22, "End process")`: Unwarranted intermediate steps. The source simply states `"the process ends"` at these junctions, which should transition directly to the `end()` nodes rather than passing through undocumented action wrappers (SMC1, SMC5).

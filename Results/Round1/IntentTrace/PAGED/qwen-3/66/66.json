@@ -1,0 +1,267 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Check if process has started in Admin Office"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Proceed to verify completeness of invoices"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "End"
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Return uncompleted invoices to client via postal mail"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Receive completed invoices from client"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Mark relevant box on invoice entry form"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Check if process has been completed"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "End"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Proceed to verify completeness of invoices"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Check if process has started in Admin Office",
+      "R_X": [
+        "Uncompleted",
+        "Completed"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Check if process has been completed",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "c1",
+        "n2",
+        "b1",
+        "n3",
+        "n4",
+        "e1",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "b2",
+        "n9",
+        "e2",
+        "n10"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "\"v1 = 'Completed'\""
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n5",
+      "condition": "\"v1 = 'Uncompleted'\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n9",
+      "condition": "\"v2 = true\""
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n10",
+      "condition": "\"v2 = false\""
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To begin the process in the Admin Office, first check if it has started."
+    },
+    {
+      "id": "i2",
+      "content": "After that, verify the completeness of the invoices."
+    },
+    {
+      "id": "i3",
+      "content": "verify the completeness of the invoices."
+    },
+    {
+      "id": "i4",
+      "content": "If they are marked as"
+    },
+    {
+      "id": "i5",
+      "content": "\"Uncompleted\", they should be returned to the client through postal mail."
+    },
+    {
+      "id": "i6",
+      "content": "However, if they are marked as \"Completed\", the process should be continued."
+    },
+    {
+      "id": "i7",
+      "content": "the process should be continued."
+    },
+    {
+      "id": "i8",
+      "content": "Once the invoices are returned to the client, receive the completed ones."
+    },
+    {
+      "id": "i9",
+      "content": "Then, mark the relevant box on the invoice entry form and proceed with checking if the process has been completed."
+    },
+    {
+      "id": "i10",
+      "content": "checking if the process has been completed."
+    },
+    {
+      "id": "i11",
+      "content": "if the process has been completed"
+    },
+    {
+      "id": "i12",
+      "content": "Finally, the process ends."
+    }
+  ]
+}

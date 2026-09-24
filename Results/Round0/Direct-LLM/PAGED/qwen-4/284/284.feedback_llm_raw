@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`: Hallucinated behavior; the description begins directly with "you sell cars" and contains no preliminary "start" step.
+- `branch(b3, AND)`: Incorrect control-flow logic; the description frames the events as conditional alternatives ("If you 'get a bonus'... If you 'get a paycheck'..."), implying a choice gate, not mandatory concurrent execution.
+- `guard(b1, n5, v1 = 'No')` and `guard(b2, n6, v2 = 'No')`: Hallucinated early termination paths; the source only dictates progression when conditions are met ("then you continue the process"), with no stated outcome or ending for negative cases.
+- `action(n5, "process ends")`, `action(n6, "process ends")`, `action(n8, "process ends")`: Hallucinated nodes; the text explicitly specifies a single termination trigger: "Once you pay the bill, the process ends."
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Misplaced decision semantics; the source treats "get a bonus" and "get a paycheck" as the conditional gates themselves, whereas the model isolates them as discrete actions (`n3`, `n4`) followed by artificial variable-evaluation branches.
+- `converge(c1)`: Faulty join representation; because the preceding `AND` split is semantically incorrect, this convergence erroneously merges parallel task flows instead of uniting alternative conditional paths into a single continuation as implied by "then you continue the process."

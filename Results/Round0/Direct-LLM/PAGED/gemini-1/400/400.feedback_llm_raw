@@ -1,0 +1,7 @@
+- `guard(b2, n18, v2 = 'Yes')`: Routes a 'Yes' answer to a "Continue process" action (`n18`), contradicting the text's explicit instruction that "if the answer is 'Yes', then we give it priority".
+- `action(n20, "Give it priority after first No answers")`: Unconditionally applies priority in the "No" path flow, contradicting the text which states priority is only given "if the answer is 'Yes'".
+- Process duplication (`action(n21, "Look up the Vendor on SAP")` through `end(e6)`): Hallucinates a complete duplication of the downstream process instead of converging the initial paths before the vendor lookup, which contradicts the text's unified "After that, we look up the Vendor on SAP."
+- `action(n10, "Is the invoice entry confirmed?")` and `action(n26, "Is invoice entry confirmed?")`: Hallucinates specific questions about invoice entry confirmation; the text only states "If the answer is 'No'" without specifying this condition.
+- `defines(v5, "Is the answer Yes again after priority?", {"Yes"})` and `defines(v8, "Is answer Yes again?", {"Yes"})`: Artificially restrict the variable ranges to a single value, completely omitting the possibility of any other answer.
+- `branch(b5, XOR)` and `branch(b8, XOR)`: Omit the alternative control-flow paths for when the condition is not 'Yes'.
+- `label(n1, n2, "No")` and `label(n13, n14, "Yes")`: Add descriptive labels on unconditional sequence flows, which is hallucinated and not supported by the source text.

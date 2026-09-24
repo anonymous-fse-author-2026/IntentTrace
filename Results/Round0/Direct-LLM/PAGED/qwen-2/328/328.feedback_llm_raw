@@ -1,0 +1,7 @@
+
+
+- `action(n1, "start")`: Hallucinates a preliminary step not present in the source, which explicitly states the customer should "first request information about the organization". (SMC1)
+- `defines(v1, "Is the customer in Intake stage?", {})` and `defines(v2, "Has target been reached?", {})`: Variable value ranges are empty `{}`, failing to capture the explicit source criteria such as `"Intake"`, `"Potential client"`, and satisfaction/target outcomes. (SMC6)
+- `branch(b1, XOR)` and `branch(b2, XOR)` (and their outgoing `precedence` edges): Completely missing `guard` statements to route flow based on the source's conditional requirements (`"If the customer is in the 'Intake' stage..."`, `"if the customer is a 'Potential client'"`, `"If the target has been reached..."`, `"if the customer is dissatisfied..."`), rendering the control-flow logic unanchored. (SMC4)
+- `actor(a_default, "Default", [...])`: Assigns every node to a generic `"Default"` participant, contradicting the source which consistently attributes the execution of steps to `"the customer"`. (SMC7)
+- `action(n4, "Is the customer in Intake stage?")` and `action(n8, "Has target been reached?")`: Incorrectly models decision queries as sequential task nodes rather than expressing them as conditions on the branch edges, misrepresenting the source's conditional progression. (SMC2)

@@ -1,0 +1,14 @@
+Omission
+- [N1] Omitted trace (input 1): i1:Initially, -> i2:if the answer is "no" -> i3:proceed with the acquisition of the pricing. -> i8:if the answer is "yes" once more, then continue with the process. -> i9:After the margin calculation, -> i10:the next step is the preparation of the offer. -> i11:the transport rate is calculated, -> i12:and the process comes to an end.
+- [N2] Omitted trace (input 2): i1:Initially, -> i4:if the answer is "yes", then continue with the process. -> i5:continue with the process. -> i6:If the answer is "no" again, -> i7:then acquire the pricing. -> i9:After the margin calculation, -> i10:the next step is the preparation of the offer. -> i11:the transport rate is calculated, -> i12:and the process comes to an end.
+- [N3] Within matched traces (0->1) omitted: i7:then acquire the pricing.
+- [N4] Within matched traces (3->2) omitted: i8:if the answer is "yes" once more, then continue with the process.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['No']`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'No'` on `b2 -> n5` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> c1` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c1` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'No'` on `b2 -> n5` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n5,"v2 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

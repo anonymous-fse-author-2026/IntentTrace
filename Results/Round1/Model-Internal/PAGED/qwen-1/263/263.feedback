@@ -1,0 +1,37 @@
+Omission
+- [N1] Node-level omission: i1:The process starts with an informational meeting that lasts half a day (reason: No action element models the half-day informational meeting. The model only includes a generic 'Start' node, completely omitting the substantive first step described in the text.)
+- [N2] Node-level omission: If the storyboard is successful (reason: The model proceeds directly from the storyboard action to the parallel tasks without implementing the conditional check required before proceeding to site design and content preparation.)
+- [N3] Within matched traces (0->6) omitted: i1:The process starts with an informational meeting that lasts half a day
+- [N4] Within matched traces (1->3) omitted: i1:The process starts with an informational meeting that lasts half a day
+- [N5] Within matched traces (2->4) omitted: i1:The process starts with an informational meeting that lasts half a day
+- [N6] Within matched traces (3->5) omitted: i1:The process starts with an informational meeting that lasts half a day
+
+Addition
+- [N7] Node-level addition: action(n1,"Start") (reason: Both elements contain generic or invented labels ('Start', 'Merge: Site design and content preparation completed') that do not appear in the source text and function merely as structural placeholders rather than faithful representations of source steps.)
+- [N8] Node-level addition: action(n7,"Merge: Site design and content preparation completed") (reason: Both elements contain generic or invented labels ('Start', 'Merge: Site design and content preparation completed') that do not appear in the source text and function merely as structural placeholders rather than faithful representations of source steps.)
+- [N9] Added trace (model 0): action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n11,"Approval stage (half a day)") -> action(n12,"End Process") -> end(e2)
+- [N10] Added trace (model 1): action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N11] Added trace (model 2): action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N12] Within matched traces (0->6) added: action(n1,"Start")
+- [N13] Within matched traces (0->6) added: action(n2,"Is the informational meeting successful?")
+- [N14] Within matched traces (1->3) added: action(n1,"Start")
+- [N15] Within matched traces (1->3) added: converge(c1)
+- [N16] Within matched traces (1->3) added: action(n7,"Merge: Site design and content preparation completed")
+- [N17] Within matched traces (2->4) added: action(n1,"Start")
+- [N18] Within matched traces (2->4) added: converge(c1)
+- [N19] Within matched traces (2->4) added: action(n7,"Merge: Site design and content preparation completed")
+- [N20] Within matched traces (3->5) added: action(n1,"Start")
+- [N21] Within matched traces (3->5) added: converge(c1)
+- [N22] Within matched traces (3->5) added: action(n7,"Merge: Site design and content preparation completed")
+- [N23] Within matched traces (3->5) added: action(n14,"Is the rebuild approved?")
+
+Mutation
+- [N24] Node-level mutation: element=action(n5,"Site design and development preparation (10 days)"); source=i4:If the storyboard is successful, the next steps are site design, which takes 10 days and is done by the web design team, and preparing the content.; reason=The model incorrectly renames the task to 'Site design and development preparation', erroneously merging two distinct source steps. The source explicitly assigns the 10-day duration only to site design, while site development occurs later as a separate 2-day step.
+- [N25] Node-level mutation: element=guard(b2,n11,"v2 = true"); source=i7:If the review is successful, it moves on to the approval stage, which takes half a day.; reason=The model incorrectly fuses two separate conditions into a single branch placed immediately after the review step. The source specifies that the rejection condition applies to the approval stage, meaning the split should occur after the approval step completes, not right after the review.
+- [N26] Node-level mutation: element=guard(b2,n13,"v2 = false"); source=i9:However, if the approval is rejected, the site needs to be rebuilt, which takes 3 days.; reason=The model incorrectly fuses two separate conditions into a single branch placed immediately after the review step. The source specifies that the rejection condition applies to the approval stage, meaning the split should occur after the approval step completes, not right after the review.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=0 and out=1. | DSL: action(n1,"Start")
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `i1 -> n1` references unknown node(s). | DSL: action(n1,"Start")
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | This reachability check requires exactly one init node. | Violations: b1, b2, b3, b4, c1, e1, e2, e3, e4, n1, n10, n11, n12, n13, n14, n15, n16, n17, n2, n3, n4, n5, n6, n7, n8, n9 | DSL: branch(b1,XOR); branch(b2,XOR); branch(b3,XOR); branch(b4,AND); converge(c1); end(e1); end(e2); end(e3) (+18 more)
+- [S4] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `i1` in assigned_nodes.

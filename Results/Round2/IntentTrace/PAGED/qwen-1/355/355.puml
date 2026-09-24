@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:check customer order;
+:v_cust: customer type ({Registered, New, Wholesaler}); <<objectSignal>>
+switch ()
+case ([v_cust = 'Registered'])
+:check payment morale;
+:v_morale: payment morale ({Good, Bad}); <<objectSignal>>
+if () then ([v_morale = 'Good'])
+->;
+else ([v_morale = 'Bad'])
+:reject order;
+stop
+endif
+case ([v_cust = 'New'])
+:check customer status;
+:v_stat: customer status ({EndCustomer, Other}); <<objectSignal>>
+if () then ([v_stat = 'Other'])
+->;
+else ([v_stat = 'EndCustomer'])
+endif
+case ([v_cust = 'Wholesaler'])
+:enter data and take order;
+endswitch
+:check item availability;
+:are items in stock;
+:v_stock: items in stock ({Yes, No}); <<objectSignal>>
+if () then ([v_stock = 'Yes'])
+:continue with process;
+:send order confirmation;
+else ([v_stock = 'No'])
+:start production;
+:produce article;
+:send order confirmation;
+endif
+:send invoice and deliver product;
+:check payment status;
+:v_pay: payment received ({Yes, No}); <<objectSignal>>
+if () then ([v_pay = 'Yes'])
+:close order;
+stop
+else ([v_pay = 'No'])
+:check number of reminders;
+:v_rem: reminders count ({>3, <=3}); <<objectSignal>>
+if () then ([v_rem = '>3'])
+:engage lawyer;
+stop
+else ([v_rem = '<=3'])
+:send reminder;
+stop
+endif
+endif
+@enduml

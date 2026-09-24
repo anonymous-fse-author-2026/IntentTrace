@@ -1,0 +1,16 @@
+Omission
+- [N1] Node-level omission: i4:If the input is a "URL", we simply continue with the process. (reason: The model omits the explicit instruction to continue the process when the input is a URL, as well as the mandatory second decision/re-check step that immediately follows it.)
+- [N2] Node-level omission: i5:After this, we again check if the input is a "URN" or a "URL" and take the corresponding action. (reason: The model omits the explicit instruction to continue the process when the input is a URL, as well as the mandatory second decision/re-check step that immediately follows it.)
+- [N3] Within matched traces (0->0) omitted: i5:After this, we again check if the input is a "URN" or a "URL" and take the corresponding action.
+- [N4] Within matched traces (1->0) omitted: i4:If the input is a "URL", we simply continue with the process.
+- [N5] Within matched traces (1->0) omitted: i5:After this, we again check if the input is a "URN" or a "URL" and take the corresponding action.
+
+Addition
+- [N6] Node-level addition: action(n8,"Send DNS query for the URL") (reason: These steps invent a complete secondary workflow for the URL path (querying for a URL, retrieving a list, linking to a DS, and ending). The source text only states that the process continues and undergoes a subsequent re-check; no source unit supports these specific duplicate actions.)
+- [N7] Node-level addition: action(n9,"Get list of URLs from DNS query") (reason: These steps invent a complete secondary workflow for the URL path (querying for a URL, retrieving a list, linking to a DS, and ending). The source text only states that the process continues and undergoes a subsequent re-check; no source unit supports these specific duplicate actions.)
+- [N8] Node-level addition: action(n10,"Link to designated DS") (reason: These steps invent a complete secondary workflow for the URL path (querying for a URL, retrieving a list, linking to a DS, and ending). The source text only states that the process continues and undergoes a subsequent re-check; no source unit supports these specific duplicate actions.)
+- [N9] Node-level addition: action(n11,"End of process") (reason: These steps invent a complete secondary workflow for the URL path (querying for a URL, retrieving a list, linking to a DS, and ending). The source text only states that the process continues and undergoes a subsequent re-check; no source unit supports these specific duplicate actions.)
+- [N10] Added trace (model 1): init(i1) -> action(n1,"Start ONS Bootstrapping process") -> action(n2,"Is input a URN?") -> branch(b1,XOR) -> action(n8,"Send DNS query for the URL") -> action(n9,"Get list of URLs from DNS query") -> action(n10,"Link to designated DS") -> action(n11,"End of process") -> end(e2)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'") -> guard(b1,n8,"v1 = 'No'"); source=i2:checking if the input is a "URN".; reason=The guards replace the source's explicit conditional distinction between the input being a 'URN' or a 'URL' with abstract boolean assignments ('v1 = "Yes"', 'v1 = "No"'), thereby dropping the semantic payload and specific target values of the original decision.

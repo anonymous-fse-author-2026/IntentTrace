@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+|a_main| Process Handler
+|a_main|
+start
+:Prioritize orders based on when received;
+:Check customer's information;
+:v_exists: Customer exists ({true, false}); <<objectSignal>>
+if () then ([v_exists = true])
+:Check payment history;
+:v_good_pay: Payment history good ({true, false}); <<objectSignal>>
+if () then ([v_good_pay = true])
+:Continue with good payment history;
+:Inform stock department;
+:Pack goods;
+:Write invoice;
+:Goods ready for delivery and invoice sent;
+:Deliver goods and invoice to customer;
+:v_paid: Payment received ({true, false}); <<objectSignal>>
+if () then ([v_paid = true])
+:Close order;
+stop
+else ([v_paid = false])
+:Check quantity of reminders;
+:v_rem_low: Reminders less than three ({true, false}); <<objectSignal>>
+if () then ([v_rem_low = true])
+:Continue process;
+stop
+else ([v_rem_low = false])
+:Activate donning process;
+stop
+endif
+endif
+else ([v_good_pay = false])
+->;
+endif
+else ([v_exists = false])
+:Verify customer status;
+:v_is_whole: Is wholesaler ({true, false}); <<objectSignal>>
+if () then ([v_is_whole = false])
+->;
+else ([v_is_whole = true])
+:Create new customer;
+:Check product availability;
+:v_avail: Products available ({true, false}); <<objectSignal>>
+if () then ([v_avail = false])
+:Produce missing goods and send decline message;
+stop
+else ([v_avail = true])
+:Continue process and send order confirmation;
+endif
+endif
+endif
+:Send declining message;
+stop
+@enduml

@@ -1,0 +1,13 @@
+- `precedence(n9, n7)`: Introduces an unintended control-flow cycle (`n7` → `n8` → `b2` → `n9` → `n7`). The source description is strictly linear and sequential (`"If the invoices are still marked as "Uncompleted", they should be returned... On the other hand, if they are marked as "Completed", the process should be continued."`), with no indication of iterative or feedback behavior.
+- `branch(b3, XOR)` & `guard(b3, n13, v3 = 'No')`: Hallucinates a conditional split and guarding condition. The source explicitly sequences these steps without a choice point: `"proceed with checking if the process has been completed. Finally, the process ends."`, which requires direct precedence rather than an XOR gateway.
+- `defines(v3, "is process completed", {"No"})`: Artificially restricts the decision variable to a single value `{"No"}`. The source merely describes `"checking if the process has been completed"` without prescribing limited outcomes, and this constraint illogically forces the hallucinated guard to trigger termination.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"receive completed invoices")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | DSL: branch(b3,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['No']`.
+- [S4] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'No'` on `b3 -> n13` uses undefined variable `v3`. | DSL: guard(b3,n13,"v3 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'No'` on `b3 -> n13` cannot be evaluated: `v3` has no declared range. | DSL: guard(b3,n13,"v3 = 'No'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range.

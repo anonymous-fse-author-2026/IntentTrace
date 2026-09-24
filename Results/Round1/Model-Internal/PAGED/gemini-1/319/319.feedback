@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i2:either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies. (reason: The required branching choice described in the source is not faithfully implemented, as its only candidate element is an incorrect AND gateway (mutation).)
+- [N2] Node-level omission: i5:If they choose to view the book details (reason: While the action to view details exists, the required conditional decision (a branch or guard) for routing this path is entirely missing.)
+- [N3] Omitted trace (input 0): i1:the process begins by choosing a book. -> i2:either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies. -> i3:see a list of new copies
+
+Addition
+- [N4] Node-level addition: action(n1,"start procedure") (reason: This 'start procedure' action lacks direct source justification, as the beginning of the process is fully covered by the init node and the subsequent 'choose a book' action.)
+- [N5] Within matched traces (3->0) added: init(i1)
+- [N6] Within matched traces (3->0) added: action(n1,"start procedure")
+- [N7] Within matched traces (2->1) added: init(i1)
+- [N8] Within matched traces (2->1) added: action(n1,"start procedure")
+- [N9] Within matched traces (2->1) added: converge(c1)
+- [N10] Within matched traces (2->1) added: action(n10,"evaluate and select a copy from the list")
+- [N11] Within matched traces (2->1) added: action(n11,"end procedure")
+- [N12] Within matched traces (2->1) added: end(e2)
+- [N13] Within matched traces (1->2) added: init(i1)
+- [N14] Within matched traces (1->2) added: action(n1,"start procedure")
+- [N15] Within matched traces (1->2) added: action(n3,"do you want to view book details")
+- [N16] Within matched traces (1->2) added: converge(c1)
+
+Mutation
+- [N17] Node-level mutation: element=branch(b2,AND); source=i2:either view the book details or see a list of new copies. Alternatively, they can also view a list of used copies.; reason=The source describes an exclusive or inclusive choice ('either... or', 'Alternatively'), but the model explicitly uses an AND gateway (parallel paths).
+- [N18] Node-level mutation: element=action(n3,"do you want to view book details"); source=i5:If they choose to view the book details; reason=The source specifies a conditional outcome, but the model incorrectly invents a conversational question ('do you want to view book details') as an action step.
+- [N19] Node-level mutation: element=action(n5,"do you want to select a copy or view new copies?"); source=i6:they have the option to then view a list of new copies or proceed to select a copy; reason=The source states an option exists, but the model translates this into an invented conversational question ('do you want to select a copy or view new copies?').

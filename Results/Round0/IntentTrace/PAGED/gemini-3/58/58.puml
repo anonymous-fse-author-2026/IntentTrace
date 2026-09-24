@@ -1,0 +1,71 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start order processing by prioritizing orders based on when received;
+:Check if customer exists;
+if () then ( )
+:Check customer's payment history;
+:Is payment history good;
+if () then ( )
+:Send customer declining message;
+:End process due to no products and decline message;
+stop
+else ( )
+->;
+endif
+else ( )
+:Verify customer status;
+:Is customer a private customer;
+if () then ( )
+:Send customer declining message;
+:End process after sending declining message to private customer;
+stop
+else ( )
+:Create new customer;
+:Check product availability;
+:Are products available;
+if () then ( )
+:Produce missing goods and send declining message;
+else ( )
+->;
+endif
+endif
+endif
+:Continue process and send order confirmation;
+split
+:Inform stock department;
+split
+:Packing goods;
+split again
+:Write invoice;
+end split
+:Goods ready for delivery and invoice sent;
+:Close order;
+:Deliver goods and invoice to customer;
+:Has payment been received;
+if () then ( )
+:Close order;
+:End process after closing order;
+stop
+else ( )
+:Check quantity of reminders for payment;
+:Are reminders less than three;
+if () then ( )
+:Continue process;
+:End process after continuing process;
+stop
+else ( )
+:Activate donning process;
+:End process after activating donning process;
+stop
+endif
+endif
+split again
+:Inform accounting department;
+split
+split again
+end split
+end split
+@enduml

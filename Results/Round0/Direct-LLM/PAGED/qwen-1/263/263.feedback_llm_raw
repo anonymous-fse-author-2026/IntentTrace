@@ -1,0 +1,9 @@
+
+
+- `action(n1, "Start")`, `action(n2, "Is the informational meeting successful?")`: Hallucinates a generic "Start" node and replaces the mandatory initial activity ("starts with an informational meeting that lasts half a day") with a direct decision check, omitting the actual meeting execution step.
+- `branch(b1, XOR)`, `branch(b2, XOR)`, `branch(b3, XOR)` with zero `guard(...)` statements: Fails to bind decision points to their governing conditions or declared variables, omitting the explicit conditional transitions required by the source ("If the meeting is successful...", "If the review is successful...").
+- `precedence(n3, b4)`: Skips the mandatory condition "If the storyboard is successful" before transitioning to the parallel site design and content preparation steps.
+- `precedence(b2, n13)`: Misroutes control flow by connecting the review decision outcome directly to "Rebuild site", contradicting the source which explicitly ties rebuilding to a rejected *approval*; additionally, `action(n11, "Approval stage...")` lacks a subsequent decision node to capture the approval rejection path.
+- `defines(v1, "...", {})`, `defines(v2, "...", {})`, `defines(v3, "...", {})`: Variable value ranges are empty `{}` instead of reflecting the binary/yes-no decision spaces implied by the success and approval checks.
+- `actor(a_default, "Default", [...])`: Assigns every node to a single generic participant, contradicting the source's explicit role allocation ("customer and the web design team" for meeting/storyboard, "web design team" for design/development).
+- `action(n5, "Site design and development preparation (10 days)")`: Label payload conflates distinct steps; the source clearly separates "site design (10 days)" from "preparing the content", but the model incorrectly attaches "development preparation" to the site design label.

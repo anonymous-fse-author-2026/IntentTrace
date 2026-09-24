@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: the transaction will end (reason: The source explicitly states the transaction ends on denial/out-of-stock, but the model lacks a corresponding step or terminal path for this specific branch, routing instead to the general post-process converge.)
+- [N2] Omitted trace (input 1): i1:To begin the process -> i2:make a purchase and then connect to the website -> i3:search for an item -> i4:If they choose to "Add item to cart" -> i5:choose to "Add item to cart", they can proceed to checkout -> i8:enter their address, shipping method, and payment information -> i12:if the credit card is denied or there is no inventory in stock, the transaction will end -> i13:In either case -> i14:the order confirmation number should be displayed -> i15:followed by the final order being shown to the customer -> i16:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer -> i17:Once the order entry is complete, the process will end
+- [N3] Omitted trace (input 3): i1:To begin the process -> i2:make a purchase and then connect to the website -> i3:search for an item -> i4:If they choose to "Add item to cart" -> i5:choose to "Add item to cart", they can proceed to checkout -> i9:At the same time -> i10:authorize the credit card and check the inventory levels -> i12:if the credit card is denied or there is no inventory in stock, the transaction will end -> i13:In either case -> i14:the order confirmation number should be displayed -> i15:followed by the final order being shown to the customer -> i16:Additionally, the order should be confirmed and a confirmation notice should be emailed to the customer -> i17:Once the order entry is complete, the process will end
+- [N4] Omitted trace (input 4): i1:To begin the process -> i2:make a purchase and then connect to the website -> i3:search for an item -> i6:if they select "Continue Shopping" -> i7:select "Continue Shopping", they should continue with the process -> i3:search for an item
+
+Addition
+- [N5] Node-level addition: action(n4,"add item to cart / continue shopping") (reason: Element content 'add item to cart / continue shopping' introduces a selection step not described in any input unit; the text proceeds directly from searching to the conditional choice.)
+- [N6] Within matched traces (0->0) added: action(n4,"add item to cart / continue shopping")
+- [N7] Within matched traces (2->1) added: action(n4,"add item to cart / continue shopping")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b3,c2,"v3 = 'Denied'"); source=i12:if the credit card is denied or there is no inventory in stock, the transaction will end; reason=The guard payload only evaluates card denial ('v3 = Denied') but drops the 'no inventory in stock' condition, altering the branching logic compared to the source.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b3 -> c2` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c2` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b3` has overlapping guards at state [v3=Approved].

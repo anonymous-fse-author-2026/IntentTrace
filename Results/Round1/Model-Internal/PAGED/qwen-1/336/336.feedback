@@ -1,0 +1,8 @@
+Addition
+- [N1] Node-level addition: action(n10,"Proceed to next process or end") (reason: No supporting source text exists. The original description enumerates exactly two outcomes after the final decision, both of which terminate the process. The 'Proceed' path, its guard condition, and the corresponding end node are entirely invented.)
+- [N2] Node-level addition: guard(b3,n10,"v3 = 'Proceed'") (reason: No supporting source text exists. The original description enumerates exactly two outcomes after the final decision, both of which terminate the process. The 'Proceed' path, its guard condition, and the corresponding end node are entirely invented.)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n5,"Complete check deductibles") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+- [N4] Added trace (model 6): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'") -> guard(b2,n6,"v2 = 'No'"); source=i5:At the same time; reason=The source explicitly mandates concurrent execution ('At the same time'), which requires an AND split. The model incorrectly applies an XOR gateway with mutually exclusive Yes/No guards, distorting parallel workflow into an exclusive choice.

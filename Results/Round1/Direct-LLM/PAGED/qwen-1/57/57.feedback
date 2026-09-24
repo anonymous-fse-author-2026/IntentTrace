@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i5:continue with the process (reason: Candidate action:n6 distorts the step to 'continue shopping'; no element faithfully implements the source instruction.)
+- [N2] Node-level omission: i9:there is inventory in stock, they can continue with the process. (reason: Missing guard or action to check inventory availability and route the positive flow accordingly.)
+- [N3] Node-level omission: i11:the transaction will end. (reason: Explicit transaction termination step is not modeled before the final process end.)
+- [N4] Omitted trace (input 0): i1:To begin the process, the customer needs to make a purchase and then connect to the website. -> i2:After that, they should search for an item. -> i3:If they choose to "Add item to cart", they can proceed to checkout. However, if they select "Continue Shopping", they should continue with the process. -> i5:continue with the process -> i2:After that, they should search for an item.
+- [N5] Omitted trace (input 3): i1:To begin the process, the customer needs to make a purchase and then connect to the website. -> i2:After that, they should search for an item. -> i3:If they choose to "Add item to cart", they can proceed to checkout. However, if they select "Continue Shopping", they should continue with the process. -> i4:proceed to checkout -> i6:enter their address, shipping method, and payment information -> i10:if the credit card is denied or there is no inventory in stock -> i11:the transaction will end. -> i12:the order confirmation number should be displayed, -> i13:followed by the final order being shown to the customer. -> i14:the order should be confirmed -> i15:a confirmation notice should be emailed to the customer. -> i16:Once the order entry is complete, the process will end.
+- [N6] Omitted trace (input 4): i1:To begin the process, the customer needs to make a purchase and then connect to the website. -> i2:After that, they should search for an item. -> i3:If they choose to "Add item to cart", they can proceed to checkout. However, if they select "Continue Shopping", they should continue with the process. -> i4:proceed to checkout -> i7:At the same time, they should also authorize the credit card and check the inventory levels. -> i10:if the credit card is denied or there is no inventory in stock -> i11:the transaction will end. -> i12:the order confirmation number should be displayed, -> i13:followed by the final order being shown to the customer. -> i14:the order should be confirmed -> i15:a confirmation notice should be emailed to the customer. -> i16:Once the order entry is complete, the process will end.
+- [N7] Within matched traces (1->0) omitted: i9:there is inventory in stock, they can continue with the process.
+- [N8] Within matched traces (2->1) omitted: i9:there is inventory in stock, they can continue with the process.
+
+Addition
+- [N9] Node-level addition: action(n1,"start") (reason: Generic 'start' action has no supporting text; the source immediately begins with the purchase/connection step.)
+- [N10] Node-level addition: guard(b1,n6,"v1 = 'Continue Shopping'") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Within matched traces (1->0) added: init(i1)
+- [N12] Within matched traces (1->0) added: action(n1,"start")
+- [N13] Within matched traces (1->0) added: converge(c1)
+- [N14] Within matched traces (2->1) added: init(i1)
+- [N15] Within matched traces (2->1) added: action(n1,"start")
+- [N16] Within matched traces (2->1) added: converge(c1)
+
+Mutation
+- [N17] Node-level mutation: element=guard(b1,n5,"v1 = 'Add to cart'"); source=i3:If they choose to "Add item to cart", they can proceed to checkout. However, if they select "Continue Shopping", they should continue with the process.; reason=Dropped the word 'item'; model uses 'Add to cart' instead of source 'Add item to cart'.
+- [N18] Node-level mutation: element=action(n6,"continue shopping"); source=i5:continue with the process; reason=Changed the step description from process continuation ('continue with the process') to 'continue shopping', altering the intended flow outcome.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n3` has in=2 and out=1. | DSL: action(n3,"search for item")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b3 -> c2` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c2` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b3` has overlapping guards at state [v3=Approved].

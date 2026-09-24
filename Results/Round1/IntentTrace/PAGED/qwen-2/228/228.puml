@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the procedure;
+:v1: can capture data from FMA ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:can capture data from FMA;
+:continue process after capturing data from FMA;
+else ([v1 = 'No'])
+:can capture data from Jamendo;
+:continue process after capturing data from Jamendo;
+endif
+:get music ids for the genre;
+:is genre missing;
+:v3: is genre missing ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:continue process if genre missing;
+else ([v3 = 'No'])
+:are there additional genres;
+endif
+:is sample missing;
+:v5: is sample missing ({Yes, No}); <<objectSignal>>
+if () then ([v5 = 'Yes'])
+:continue process if no additional genres;
+else ([v5 = 'No'])
+:continue process if sample missing;
+endif
+:download the sample;
+:are there additional samples;
+:v6: are there additional samples ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'No'])
+:process ends if no additional samples;
+else ([v6 = 'Yes'])
+->;
+endif
+stop
+@enduml

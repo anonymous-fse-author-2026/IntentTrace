@@ -1,0 +1,25 @@
+Addition
+- [N1] Node-level addition: action(n10,"Proceed to next process or end") (reason: Step 'Proceed to next process or end' introduces a continuation path not described anywhere in the source text, which only specifies process termination in all stated branches.)
+- [N2] Added trace (model 3): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n5,"Complete check deductibles") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+- [N3] Added trace (model 4): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n8,"End process as declaration check needed") -> end(e2)
+- [N4] Added trace (model 5): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n9,"End process as invitation needed") -> end(e3)
+- [N5] Added trace (model 6): init(i1) -> action(n1,"Receive form") -> action(n2,"Is form complete") -> branch(b1,XOR) -> action(n4,"Is income check needed") -> branch(b2,XOR) -> action(n6,"Complete check house") -> converge(c1) -> action(n7,"Make decision after completing checks") -> branch(b3,XOR) -> action(n10,"Proceed to next process or end") -> end(e4)
+
+Mutation
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i5:if we need to check the income; reason=Guard payload uses an abstract boolean 'v1 = Yes' instead of reflecting the explicit textual condition regarding income checks.
+- [N7] Node-level mutation: element=branch(b2,XOR); source=i7:At the same time; reason=Gateway is configured as XOR (exclusive), which contradicts the source's explicit instruction for concurrent execution that requires an AND/parallel split.
+
+Permutation
+- [N8] Within matched traces (1->1) reordered: expected [i5:if we need to check the income] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n4,"Is income check needed")]
+- [N9] Within matched traces (1->1) reordered: expected [i7:At the same time] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Complete check deductibles")]
+- [N10] Within matched traces (2->2) reordered: expected [i5:if we need to check the income] but observed [branch(b1,XOR)] elsewhere; in its place the model has [action(n4,"Is income check needed")]
+- [N11] Within matched traces (2->2) reordered: expected [i7:At the same time] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Complete check deductibles")]
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n4` uses undefined variable `v1`. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n10` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n4` cannot be evaluated: `v1` has no declared range. | DSL: guard(b1,n4,"v1 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range.

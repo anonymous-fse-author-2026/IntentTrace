@@ -1,0 +1,15 @@
+Omission
+- [N1] Node-level omission: i2:Once this information is obtained, the team proceeds to check the availability of the part in the local inventory. (reason: No action element implements the step of checking local inventory availability.)
+- [N2] Node-level omission: i4:However, if the part is not available locally, the team records the customer's details. (reason: No action element implements the step of recording the customer's details.)
+- [N3] Within matched traces (0->0) omitted: i2:Once this information is obtained, the team proceeds to check the availability of the part in the local inventory.
+- [N4] Within matched traces (1->1) omitted: i2:Once this information is obtained, the team proceeds to check the availability of the part in the local inventory.
+- [N5] Within matched traces (1->1) omitted: i4:However, if the part is not available locally, the team records the customer's details.
+
+Mutation
+- [N6] Node-level mutation: element=action(n1,"gather information about the part from the customer"); source=i1:For the DMS Parts Provision Team, the first step is to gather information about the part from the customer, including the make, model, and year.; reason=Drops the mandatory data fields 'including the make, model, and year', violating the strict fidelity requirement for instruction granularity.
+- [N7] Node-level mutation: element=action(n5,"retrieve part"); source=i3:If the part is found to be available locally, it is retrieved from the inventory.; reason=Omits the critical source location 'from the inventory', distorting the action's target context.
+- [N8] Node-level mutation: element=action(n8,"order part"); source=i6:and then orders the part from Disuki.; reason=Removes the essential vendor specification 'from Disuki', altering the core instruction.
+
+Structural Check
+- [S1] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.
+- [S2] STC22 failed: Every node must be assigned to exactly one actor. | Node `b1` is not assigned to any actor. | Node `e1` is not assigned to any actor. | Node `e2` is not assigned to any actor. | Node `i1` is not assigned to any actor. | DSL: branch(b1,XOR); end(e1); end(e2); init(i1)

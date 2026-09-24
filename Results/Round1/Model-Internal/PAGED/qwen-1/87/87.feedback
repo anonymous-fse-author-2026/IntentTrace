@@ -1,0 +1,18 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i8:If the invoices are still marked as "Uncompleted"
+- [N2] Within matched traces (0->1) omitted: i9:they should be returned to the client via postal mail.
+- [N3] Within matched traces (0->1) omitted: i15:Finally, the process ends.
+- [N4] Within matched traces (1->2) omitted: i10:Once the invoices are returned to the client, receive the completed ones.
+- [N5] Within matched traces (1->2) omitted: i11:mark the relevant box on the invoice entry form
+- [N6] Within matched traces (1->2) omitted: i15:Finally, the process ends.
+
+Addition
+- [N7] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: Introduces a negative guard condition ('v1 = No') that forces an early exit path not described in the source text.)
+- [N8] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: Invents a waiting step for client completion that is absent from the source description.)
+- [N9] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: Duplicate invented waiting step with no corresponding source unit or instruction.)
+- [N10] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N11] Within matched traces (0->1) added: action(n6,"Wait for completion of invoices by client")
+
+Permutation
+- [N12] Within matched traces (0->1) reordered: expected [i4:If they are marked as "Uncompleted"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Return invoices to client through postal mail")]
+- [N13] Within matched traces (1->2) reordered: expected [i6:if they are marked as "Completed"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"Continue the process")]

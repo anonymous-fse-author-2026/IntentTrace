@@ -1,0 +1,9 @@
+- branch(b1, XOR), branch(b2, XOR), branch(b3, XOR): Hallucinates exclusive choice points. The source describes a strictly linear sequence ("After that, check... Once... verify... After... verify..."), not a process with decisions or alternative paths.
+- action(n4, "end"), end(e1), action(n6, "end"), end(e2): Hallucinates early termination paths. The source states unambiguously: "Once the fee payment has been verified, record the student as registered. This is where the process ends."
+- action(n11, "contact support"): Completely hallucinated action absent from the source description.
+- precedence(b1, n5), precedence(b2, n7), precedence(b3, n9): Violates source chronology by interposing branches between sequential steps instead of preserving direct linear precedence (e.g., n3 should directly precede n5 per "Once the prerequisites have been checked, verify if the student is in good standing").
+- defines(v1, "check: prerequisites", {}), defines(v2, "verify: student standing", {}), defines(v3, "verify: fee payment", {}): Hallucinates decision variables with empty ranges that are not mentioned or implied in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required.

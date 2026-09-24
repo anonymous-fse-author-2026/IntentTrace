@@ -1,0 +1,11 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n2,"receive claim") -> action(n3,"create and record claim") -> action(n4,"decide on claim") -> branch(b1,XOR) -> action(n5,"reject claim") -> action(n6,"review rejection") -> converge(c1) -> branch(b2,AND) -> action(n8,"close the claim") -> converge(c2) -> end(e1)
+- [N2] Added trace (model 3): init(i1) -> action(n2,"receive claim") -> action(n3,"create and record claim") -> action(n4,"decide on claim") -> branch(b1,XOR) -> action(n9,"accept claim") -> action(n10,"offer benefit") -> action(n11,"prepare discharge") -> action(n12,"record payment") -> converge(c1) -> branch(b2,AND) -> action(n8,"close the claim") -> converge(c2) -> end(e1)
+
+Mutation
+- [N3] Node-level mutation: element=guard(b1,n5,"v1 = 'No'"); source=i4:If the claim is to be rejected, then reject it.; reason=The guard uses a generic variable assignment (v1 = 'No') instead of reflecting the explicit textual condition ('rejected'), altering the documented decision logic.
+- [N4] Node-level mutation: element=guard(b1,n9,"v1 = 'Yes'"); source=i5:However, if the claim is to be accepted, offer the benefit.; reason=The guard substitutes the explicit condition ('accepted') with a generic variable assignment (v1 = 'Yes'), distorting the source-specified threshold/outcome.
+
+Permutation
+- [N5] Within matched traces (0->0) reordered: expected [i11:At the same time, complete the following steps: operate outgoing payment and close the claim.] but observed [action(n7,"operate outgoing payment")] elsewhere; in its place the model has [end(e1)]
+- [N6] Within matched traces (1->2) reordered: expected [i11:At the same time, complete the following steps: operate outgoing payment and close the claim.] but observed [action(n7,"operate outgoing payment")] elsewhere; in its place the model has [end(e1)]

@@ -1,0 +1,17 @@
+Omission
+- [N1] Within matched traces (1->1) omitted: i8:At the same time
+- [N2] Within matched traces (2->1) omitted: i7:After reworking the purchase order, review it again.
+- [N3] Within matched traces (2->1) omitted: i8:At the same time
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Introduces a generic 'start' action not described in the source. The initialization is already fully captured by init:i1 and the substantive first action n2.)
+- [N5] Added trace (model 2): init(i1) -> action(n2,"trigger: resupply cycle") -> action(n3,"check: inventory level") -> branch(b1,XOR) -> action(n5,"create: purchase order") -> action(n6,"review: purchase order") -> branch(b2,XOR) -> branch(and1,AND) -> action(n12,"send to supplier") -> converge(c1) -> action(n10,"receive packing slip and release funds") -> end(e2)
+- [N6] Within matched traces (1->1) added: branch(b2,XOR)
+- [N7] Within matched traces (1->1) added: branch(and1,AND)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n1` has in=0 and out=0. | Node `n11` has in=0 and out=0. | Node `n13` has in=0 and out=0. | Node `n14` has in=0 and out=0. | Node `n4` has in=0 and out=0. | DSL: action(n1,"start"); action(n11,"end process: completed"); action(n13,"receive packing slip and release funds"); action(n14,"end process: completed"); action(n4,"end process: above minimum")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b2` has in=2 and out=2. | Node `b3` has in=0 and out=0. | DSL: branch(b2,XOR); branch(b3,XOR)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b3, e3, n1, n11, n13, n14, n4 | DSL: branch(b3,XOR); end(e3); action(n1,"start"); action(n11,"end process: completed"); action(n13,"receive packing slip and release funds"); action(n14,"end process: completed"); action(n4,"end process: above minimum")
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, n1, n11, n13, n14, n4 | DSL: branch(b3,XOR); action(n1,"start"); action(n11,"end process: completed"); action(n13,"receive packing slip and release funds"); action(n14,"end process: completed"); action(n4,"end process: above minimum")
+- [S5] STC22 failed: Every node must be assigned to exactly one actor. | Node `and1` is not assigned to any actor. | Node `c1` is not assigned to any actor. | DSL: branch(and1,AND); converge(c1)

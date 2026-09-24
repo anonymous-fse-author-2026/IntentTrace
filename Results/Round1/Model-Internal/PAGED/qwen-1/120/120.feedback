@@ -1,0 +1,26 @@
+Omission
+- [N1] Node-level omission: i7:Ask the developer and then provide feedback for the 1st Level support. (reason: No corresponding action elements exist to capture this distinct developer inquiry and 1st Level support feedback step.)
+- [N2] Node-level omission: i8:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager. (reason: The closing dual-feedback sequence is completely absent from the model.)
+- [N3] Within matched traces (1->1) omitted: i7:Ask the developer and then provide feedback for the 1st Level support.
+- [N4] Within matched traces (1->1) omitted: i8:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Converts the introductory announcer 'To start' into a standalone action step without specific behavioral instruction.)
+- [N6] Node-level addition: action(n5,"End process") (reason: Duplicate 'End process' steps that lack alignment with the single termination point described in the source.)
+- [N7] Node-level addition: action(n13,"End process") (reason: Duplicate 'End process' steps that lack alignment with the single termination point described in the source.)
+- [N8] Node-level addition: action(n11,"Is the issue resolved after re-assistance?") (reason: Invents a verification step ('Is the issue resolved after re-assistance?') not described anywhere in the source text.)
+- [N9] Node-level addition: guard(b3,n12,"v3 = true") (reason: Guards attached to an unbacked decision structure that introduces logic and branching absent from the source.)
+- [N10] Node-level addition: guard(b3,e3,"v3 = false") (reason: Guards attached to an unbacked decision structure that introduces logic and branching absent from the source.)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Ask 1st Level Support if there is an issue") -> action(n3,"Is the issue resolved?") -> branch(b1,XOR) -> action(n6,"Ask developer for assistance") -> action(n7,"Is the issue resolved now?") -> branch(b2,XOR) -> action(n10,"Ask developer for help again") -> action(n11,"Is the issue resolved after re-assistance?") -> branch(b3,XOR) -> action(n12,"Provide feedback for account manager") -> action(n13,"End process") -> end(e3)
+- [N12] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Ask 1st Level Support if there is an issue") -> action(n3,"Is the issue resolved?") -> branch(b1,XOR) -> action(n6,"Ask developer for assistance") -> action(n7,"Is the issue resolved now?") -> branch(b2,XOR) -> action(n10,"Ask developer for help again") -> action(n11,"Is the issue resolved after re-assistance?") -> branch(b3,XOR) -> end(e3)
+- [N13] Within matched traces (0->0) added: init(i1)
+- [N14] Within matched traces (0->0) added: action(n1,"start")
+- [N15] Within matched traces (0->0) added: action(n5,"End process")
+- [N16] Within matched traces (0->0) added: end(e1)
+- [N17] Within matched traces (1->1) added: init(i1)
+- [N18] Within matched traces (1->1) added: action(n1,"start")
+- [N19] Within matched traces (1->1) added: action(n3,"Is the issue resolved?")
+
+Mutation
+- [N20] Node-level mutation: element=action(n7,"Is the issue resolved now?"); source=i4:Then, check the result again. If the issue is resolved, provide feedback for the account manager.; reason=The element appends 'now' and converts the instruction into a question, altering the original phrasing and focus beyond acceptable paraphrase.
+- [N21] Node-level mutation: element=action(n10,"Ask developer for help again"); source=i5:If it is still a 1st Level issue, ask the developer for help.; reason=The element introduces the qualifier 'again', which is not present in the source and changes the instruction's granularity.

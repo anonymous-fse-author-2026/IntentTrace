@@ -1,0 +1,17 @@
+Omission
+- [N1] Node-level omission: i17:If the Three-way match is successful, release the funds (reason: The text explicitly introduces a conditional split ('If...'), but the model failed to implement a branch node, entirely absorbing the decision into an action step.)
+- [N2] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle -> i2:Check Levels of Inventory -> i3:If the inventory is below or equal to the minimum -> i4:generate an Equal to or below minimum Report -> i6:create Purchase Orders (POs) -> i11:needs to be reviewed -> i8:needs to be reworked -> i6:create Purchase Orders (POs)
+- [N3] Within matched traces (3->1) omitted: i13:receive the Packing Slip
+
+Addition
+- [N4] Node-level addition: guard(b1,n5,"v1 == false") (reason: There is no source text provided in the segmented input for the negative condition leading to the above minimum report ('v1 == false').)
+- [N5] Node-level addition: guard(b2,n11,"v2 == false") (reason: There is no source text provided in the segmented input for the negative condition (rejection) leading to reworking the PO ('v2 == false').)
+- [N6] Node-level addition: action(n18,"perform three-way match") (reason: The explicit action to 'perform three-way match' is invented; the source text only states to proceed to it and checks its success.)
+- [N7] Within matched traces (2->0) added: action(n18,"perform three-way match")
+- [N8] Within matched traces (3->1) added: action(n18,"perform three-way match")
+- [N9] Within matched traces (0->2) added: action(n3,"is inventory below or equal to minimum?")
+- [N10] Within matched traces (0->2) added: branch(b1,XOR)
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 == true"); source=i3:If the inventory is below or equal to the minimum; reason=The guard checks a generic boolean 'v1 == true' instead of explicitly containing the operator and value ('below or equal to the minimum') dictated by the source text.
+- [N12] Node-level mutation: element=guard(b2,n10,"v2 == true"); source=i9:If the PO is approved; reason=The guard checks a generic boolean 'v2 == true' instead of explicitly containing the approval condition.

@@ -1,0 +1,396 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "i2",
+      "type": "action",
+      "content": "trigger the resupply cycle"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "check the inventory level"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i4",
+      "type": "action",
+      "content": "If the inventory level is at or below the minimum,"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "create a purchase order"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "if the inventory level is above the minimum, the process ends."
+    },
+    {
+      "id": "e1",
+      "type": "end"
+    },
+    {
+      "id": "c1",
+      "type": "converge"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "If the purchase status is rejected,"
+    },
+    {
+      "id": "i8",
+      "type": "action",
+      "content": "rework the purchase order"
+    },
+    {
+      "id": "i9",
+      "type": "action",
+      "content": "reserve the funds"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "Rework the purchase order and then review it."
+    },
+    {
+      "id": "i11",
+      "type": "action",
+      "content": "send the order to the supplier"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "At the same time,"
+    },
+    {
+      "id": "b3",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i13",
+      "type": "action",
+      "content": "receive the packing slip"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "receive the invoice"
+    },
+    {
+      "id": "i15",
+      "type": "action",
+      "content": "Receive the packing slip and then record it"
+    },
+    {
+      "id": "i16",
+      "type": "action",
+      "content": "Receive the invoice and then record it"
+    },
+    {
+      "id": "i17",
+      "type": "action",
+      "content": "Record the packing slip and the process ends."
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "i18",
+      "type": "action",
+      "content": "Record the invoice and the process ends."
+    },
+    {
+      "id": "e3",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "is inventory level at or below minimum",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "is purchase status rejected",
+      "R_X": [
+        "true",
+        "false"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "i2",
+        "i3",
+        "b1",
+        "i4",
+        "i5",
+        "i6",
+        "e1",
+        "c1",
+        "b2",
+        "i7",
+        "i8",
+        "i9",
+        "i10",
+        "i11",
+        "i12",
+        "b3",
+        "i13",
+        "i14",
+        "i15",
+        "i16",
+        "i17",
+        "e2",
+        "i18",
+        "e3"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "i2"
+    },
+    {
+      "type": "precedence",
+      "A": "i2",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i4"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "e1"
+    },
+    {
+      "type": "precedence",
+      "A": "i4",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "c1",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i9"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "i8"
+    },
+    {
+      "type": "precedence",
+      "A": "i8",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "c1"
+    },
+    {
+      "type": "precedence",
+      "A": "i9",
+      "B": "i11"
+    },
+    {
+      "type": "precedence",
+      "A": "i11",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "b3"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i13"
+    },
+    {
+      "type": "precedence",
+      "A": "b3",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i13",
+      "B": "i15"
+    },
+    {
+      "type": "precedence",
+      "A": "i15",
+      "B": "i17"
+    },
+    {
+      "type": "precedence",
+      "A": "i17",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "i16"
+    },
+    {
+      "type": "precedence",
+      "A": "i16",
+      "B": "i18"
+    },
+    {
+      "type": "precedence",
+      "A": "i18",
+      "B": "e3"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i4",
+      "condition": "v1 = true"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i6",
+      "condition": "v1 = false"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i7",
+      "condition": "v2 = true"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i9",
+      "condition": "v2 = false"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i2",
+      "content": "trigger the resupply cycle"
+    },
+    {
+      "id": "i3",
+      "content": "check the inventory level"
+    },
+    {
+      "id": "i4",
+      "content": "If the inventory level is at or below the minimum,"
+    },
+    {
+      "id": "i5",
+      "content": "create a purchase order"
+    },
+    {
+      "id": "i6",
+      "content": "if the inventory level is above the minimum, the process ends."
+    },
+    {
+      "id": "i7",
+      "content": "If the purchase status is rejected,"
+    },
+    {
+      "id": "i8",
+      "content": "rework the purchase order"
+    },
+    {
+      "id": "i9",
+      "content": "reserve the funds"
+    },
+    {
+      "id": "i10",
+      "content": "Rework the purchase order and then review it."
+    },
+    {
+      "id": "i11",
+      "content": "send the order to the supplier"
+    },
+    {
+      "id": "i12",
+      "content": "At the same time,"
+    },
+    {
+      "id": "i13",
+      "content": "receive the packing slip"
+    },
+    {
+      "id": "i14",
+      "content": "receive the invoice"
+    },
+    {
+      "id": "i15",
+      "content": "Receive the packing slip and then record it"
+    },
+    {
+      "id": "i16",
+      "content": "Receive the invoice and then record it"
+    },
+    {
+      "id": "i17",
+      "content": "Record the packing slip and the process ends."
+    },
+    {
+      "id": "i18",
+      "content": "Record the invoice and the process ends."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+Omission
+- [N1] Within matched traces (0->2) omitted: i10:mark the relevant box on the invoice entry form
+- [N2] Within matched traces (2->1) omitted: i8:they should be returned to the client via postal mail.
+
+Addition
+- [N3] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: The actions 'Wait for completion of invoices by client' are not described in the source text.)
+- [N4] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: The actions 'Wait for completion of invoices by client' are not described in the source text.)
+- [N5] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: The condition 'v1 = No' directing the process to end has no supporting justification in the text.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N7] Within matched traces (1->1) added: action(n6,"Wait for completion of invoices by client")
+- [N8] Within matched traces (2->1) added: branch(b3,AND)
+- [N9] Within matched traces (2->1) added: action(n5,"Return invoices to client through postal mail")
+- [N10] Within matched traces (2->1) added: action(n6,"Wait for completion of invoices by client")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b2,n11,"v2 = 'Completed'"); source=i6:if they are marked as "Completed"; reason=The model directs the 'Completed' condition to the 'End process' action (n11), but the source text says 'the process should be continued'.
+
+Permutation
+- [N12] Within matched traces (0->2) reordered: expected [i6:if they are marked as "Completed"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n9,"Continue the process")]
+- [N13] Within matched traces (1->1) reordered: expected [i4:If they are marked as "Uncompleted"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n5,"Return invoices to client through postal mail")]
+- [N14] Within matched traces (2->1) reordered: expected [i4:If they are marked as "Uncompleted"] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n8` has in=2 and out=1. | DSL: action(n8,"Mark relevant box on invoice entry form")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['No']`. | Variable `v2` has an invalid range `['Completed']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'No'` on `b1 -> n3` uses undefined variable `v1`. | Guard `v2 = 'Completed'` on `b2 -> n11` uses undefined variable `v2`. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n11,"v2 = 'Completed'")
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'No'` on `b1 -> n3` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Completed'` on `b2 -> n11` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n3,"v1 = 'No'"); guard(b2,n11,"v2 = 'Completed'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

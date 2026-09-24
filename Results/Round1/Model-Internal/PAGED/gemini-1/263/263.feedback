@@ -1,0 +1,49 @@
+Omission
+- [N1] Node-level omission: i2:an informational meeting that lasts half a day (reason: The model omits the step of holding the meeting itself, jumping straight to checking if it was successful.)
+- [N2] Node-level omission: i7:If the storyboard is successful, (reason: The model completely omits the condition and branch checking whether the storyboard is successful.)
+- [N3] Node-level omission: i17:If the approval is complete (reason: The model omits the decision branch for the approval stage entirely.)
+- [N4] Node-level omission: i18:However, if the approval is rejected (reason: The model omits the decision branch for the approval stage entirely.)
+- [N5] Within matched traces (0->6) omitted: i2:an informational meeting that lasts half a day
+- [N6] Within matched traces (1->0) omitted: i2:an informational meeting that lasts half a day
+- [N7] Within matched traces (1->0) omitted: i7:If the storyboard is successful,
+- [N8] Within matched traces (1->0) omitted: i17:If the approval is complete
+- [N9] Within matched traces (2->3) omitted: i2:an informational meeting that lasts half a day
+- [N10] Within matched traces (2->3) omitted: i7:If the storyboard is successful,
+- [N11] Within matched traces (2->3) omitted: i17:If the approval is complete
+- [N12] Within matched traces (3->1) omitted: i2:an informational meeting that lasts half a day
+- [N13] Within matched traces (3->1) omitted: i7:If the storyboard is successful,
+- [N14] Within matched traces (3->1) omitted: i15:approval stage, which takes half a day.
+- [N15] Within matched traces (3->1) omitted: i18:However, if the approval is rejected
+- [N16] Within matched traces (3->1) omitted: i16:If the approval is complete, the process ends.
+- [N17] Within matched traces (4->3) omitted: i2:an informational meeting that lasts half a day
+- [N18] Within matched traces (4->3) omitted: i7:If the storyboard is successful,
+- [N19] Within matched traces (4->3) omitted: i18:However, if the approval is rejected
+- [N20] Within matched traces (4->3) omitted: i19:the site needs to be rebuilt, which takes 3 days.
+- [N21] Within matched traces (4->3) omitted: i20:If the rebuild is complete,
+- [N22] Within matched traces (5->0) omitted: i2:an informational meeting that lasts half a day
+- [N23] Within matched traces (5->0) omitted: i7:If the storyboard is successful,
+- [N24] Within matched traces (5->0) omitted: i18:However, if the approval is rejected
+- [N25] Within matched traces (5->0) omitted: i19:the site needs to be rebuilt, which takes 3 days.
+- [N26] Within matched traces (5->0) omitted: i21:If the rebuild is rejected again,
+- [N27] Within matched traces (5->0) omitted: i22:the site needs to be rebuilt again, which also takes 3 days.
+- [N28] Within matched traces (6->3) omitted: i2:an informational meeting that lasts half a day
+- [N29] Within matched traces (6->3) omitted: i7:If the storyboard is successful,
+- [N30] Within matched traces (6->3) omitted: i18:However, if the approval is rejected
+- [N31] Within matched traces (6->3) omitted: i19:the site needs to be rebuilt, which takes 3 days.
+- [N32] Within matched traces (6->3) omitted: i21:If the rebuild is rejected again,
+- [N33] Within matched traces (6->3) omitted: i22:the site needs to be rebuilt again, which also takes 3 days.
+
+Addition
+- [N34] Node-level addition: guard(b1,n4,"v1 == \"No\"") (reason: There is no provided text segment stating what happens if the meeting is not successful to justify this negative guard.)
+- [N35] Node-level addition: guard(b2,n13,"v2 == \"No\"") (reason: The text does not specify what happens if the review is not successful; this negative guard is invented.)
+- [N36] Node-level addition: action(n15,"End Process") (reason: The model adds an 'End Process' action after the first rebuild is complete, but no text segment supports this ending.)
+- [N37] Node-level addition: action(n17,"End Process") (reason: The model invents an 'End Process' step after the site is rebuilt again; the text does not state the process ends here.)
+- [N38] Added trace (model 2): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n5,"Site design and development preparation (10 days)") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N39] Added trace (model 4): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n15,"End Process") -> end(e3)
+- [N40] Added trace (model 5): init(i1) -> action(n1,"Start") -> action(n2,"Is the informational meeting successful?") -> branch(b1,XOR) -> action(n3,"Work on storyboard (full day)") -> branch(b4,AND) -> action(n6,"Content preparation") -> converge(c1) -> action(n7,"Merge: Site design and content preparation completed") -> action(n8,"Site development (2 days)") -> action(n9,"Review process (1 day)") -> action(n10,"Is the review successful?") -> branch(b2,XOR) -> action(n13,"Rebuild site (3 days)") -> action(n14,"Is the rebuild approved?") -> branch(b3,XOR) -> action(n16,"Rebuild site again (3 days)") -> action(n17,"End Process") -> end(e4)
+- [N41] Within matched traces (0->6) added: action(n2,"Is the informational meeting successful?")
+- [N42] Within matched traces (0->6) added: branch(b1,XOR)
+
+Mutation
+- [N43] Node-level mutation: element=action(n5,"Site design and development preparation (10 days)"); source=i9:site design, which takes 10 days; reason=The model incorrectly adds 'and development preparation' to the action, altering the source text which only specifies 'site design'.
+- [N44] Node-level mutation: element=action(n14,"Is the rebuild approved?"); source=i20:If the rebuild is complete,; reason=The model changes the condition from whether the rebuild is 'complete' to whether it is 'approved'.

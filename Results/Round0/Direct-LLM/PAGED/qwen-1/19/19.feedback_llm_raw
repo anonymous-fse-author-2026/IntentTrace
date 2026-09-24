@@ -1,0 +1,9 @@
+
+
+- `action(n1, "Start client acquisition process")`, `action(n14, "You have completed this procedure")`: Hallucinate process steps not present in the source, which begins directly with "identify the need for a new client" and concludes immediately after "signed, and the process comes to an end."
+- `action(n5, "Have all initial tasks been completed")`: Mischaracterizes a temporal transition as an actionable task; the source states "Once these steps are done, the next step is to send an offer" without specifying an intermediate verification node or task.
+- `action(n10, "Is the client's response positive")`: Incorrectly represents a decision condition as an action node rather than utilizing branch/guard constructs for the source's conditional logic: "If the response is positive... However, if the response is negative..."
+- `branch(b1, XOR)`, `precedence(b1, n6)`: Defines an exclusive split gateway but routes it to only a single succeeding node, violating XOR control-flow semantics and inserting an artificial choice into the linear sequence described.
+- `defines(v2, "Is the client's response positive", {})`, absent `guard` declarations: Declares a variable with an empty value range `{}` and omits `guard` conditions on `branch(b2, XOR)`'s outgoing edges, failing to enforce the source's distinct pathways for positive versus negative outcomes.
+- `precedence(n12, c2)`, `precedence(c2, n14)`: Falsely converges the rejection pathway (`n12`) with the successful contracting pathway; the source implies the negative path terminates after "analyze the reasons for the rejection and learn from the experience" rather than rejoining a shared completion flow.
+- `defines(v1, "Have all initial tasks been completed", {})`: Declares a variable with an empty range `{}` that is functionally unused and artificially tied to the hallucinated `action(n5)`.

@@ -1,0 +1,18 @@
+Addition
+- [N1] Added trace (model 1): init(i1) -> action(n2,"claim what is requested") -> action(n3,"check insured status of claimant") -> branch(b1,XOR) -> action(n5,"evaluate the claim") -> branch(b2,XOR) -> action(n11,"send complex claim forms") -> converge(c1) -> action(n12,"receive returned forms") -> action(n13,"check forms for completeness") -> branch(b3,XOR) -> action(n15,"register the claim") -> action(n17,"end process") -> end(e2)
+- [N2] Within matched traces (2->0) added: action(n15,"register the claim")
+- [N3] Within matched traces (2->0) added: action(n17,"end process")
+- [N4] Within matched traces (2->0) added: end(e2)
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,n5,"v1 = 'Yes'"); source=i3:If the claimant is insured,; reason=Replaces the explicit natural language condition with an abstract variable assignment v1='Yes', losing the original contextual qualifier and data granularity.
+- [N6] Node-level mutation: element=guard(b1,n6,"v1 = 'No'"); source=i5:However, if the claimant is not insured, reject the claim.; reason=Abstracts the explicit negative condition into a generic v1='No' assignment, distorting the source payload.
+- [N7] Node-level mutation: element=guard(b2,n10,"v2 = 'simple'"); source=i8:If the claim is a simple one or a complex one,; reason=Substitutes the natural language category 'simple one' with a technical placeholder v2='simple'.
+- [N8] Node-level mutation: element=guard(b2,n11,"v2 = 'complex'"); source=i8:If the claim is a simple one or a complex one,; reason=Substitutes the natural language category 'complex one' with a technical placeholder v2='complex'.
+- [N9] Node-level mutation: element=guard(b3,n15,"v3 = 'Yes'"); source=i12:If all the relevant details are provided,; reason=Replaces the explicit completeness condition with a generic boolean v3='Yes', altering the guard's data representation.
+- [N10] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i14:However, if not all the relevant details are provided, inform the claimant to complete them.; reason=Abstracts the explicit incomplete-details condition into a generic v3='No' assignment.
+- [N11] Node-level mutation: element=action(n12,"receive returned forms"); source=i10:Once the forms are returned,; reason=Converts a temporal trigger/state clause into an active processing step ('receive returned forms'), inventing an actor-driven action not present in the source unit.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n16` has in=1 and out=0. | DSL: action(n16,"inform claimant to complete details")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n16 | DSL: action(n16,"inform claimant to complete details")

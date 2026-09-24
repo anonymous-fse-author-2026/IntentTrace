@@ -1,0 +1,10 @@
+Omission
+- [N1] Node-level omission: i7: Once the "invoice entered correctly" box is ticked (reason: Specifies a state-check trigger gating the final phase, but no corresponding guard or action exists in the model to implement this condition.)
+- [N2] Omitted trace (input 0): i1:To begin the validation process, start by checking the received invoice for any errors. -> i2:If any errors are found -> i3:continue with the process -> i9:If an error exists -> i10:the process also ends
+- [N3] Omitted trace (input 1): i1:To begin the validation process, start by checking the received invoice for any errors. -> i2:If any errors are found -> i6:highlight any errors on the invoice entry form and keep a record of the DEO's performance -> i9:If an error exists -> i10:the process also ends
+- [N4] Omitted trace (input 2): i1:To begin the validation process, start by checking the received invoice for any errors. -> i4:If no errors are found -> i5:mark the "invoice entered correctly" box -> i7:Once the "invoice entered correctly" box is ticked -> i8:the process ends
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Invented standalone step that fragments the initial instruction; no source unit supports a discrete 'start' action separate from the checking step.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"check for errors") -> branch(b1,XOR) -> action(n3,"continue with process") -> converge(c1) -> action(n5,"highlight errors on form and record DEO performance") -> action(n6,"end of process") -> end(e1)
+- [N7] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"check for errors") -> branch(b1,XOR) -> action(n4,"mark invoice entered correctly") -> converge(c1) -> action(n5,"highlight errors on form and record DEO performance") -> action(n6,"end of process") -> end(e1)

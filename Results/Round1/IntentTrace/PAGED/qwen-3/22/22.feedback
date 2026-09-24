@@ -1,0 +1,11 @@
+Omission
+- [N1] Omitted trace (input 2): i1:the process begins with receiving an order request. -> i2:the order is registered and evaluated. -> i4:if the evaluation result is "ok", then the installation process takes place. -> i6:if the installation is successful, the next step is to check the installation. -> i7:the billing is prepared. -> i8:Finally, if everything is in order, the order is marked as "ok" and the process is completed.
+
+Addition
+- [N2] Within matched traces (0->0) added: init(i1)
+- [N3] Within matched traces (1->1) added: init(i1)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=0 and out=1. | Node `n9` has in=1 and out=0. | DSL: action(n10,"Mark as Ok"); action(n9,"Prepare Billing")
+- [S2] STC19 failed: Every non-init node must be reachable from the init node. | Violations: e3, n10 | DSL: end(e3); action(n10,"Mark as Ok")
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7, n9 | DSL: action(n7,"Installation Check"); action(n9,"Prepare Billing")

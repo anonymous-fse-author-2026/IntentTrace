@@ -1,0 +1,33 @@
+Omission
+- [N1] Node-level omission: i8:a manufacturing order is placed (reason: The model lacks an action node for placing a manufacturing order when goods are available.)
+- [N2] Node-level omission: i16:sales information is updated (reason: The final simultaneous step includes updating sales information, which is missing from the model.)
+- [N3] Omitted trace (input 2): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:Once the request is received, the next step is to either continue the process if a production order is received -> i3:continue the process if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier -> i9:Once the materials are received from the supplier -> i10:the goods are issued and the motorcycles are produced -> i11:At the same time -> i13:the motorcycles are dispatched -> i14:the process ends
+- [N4] Omitted trace (input 3): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:Once the request is received, the next step is to either continue the process if a production order is received -> i3:continue the process if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier -> i9:Once the materials are received from the supplier -> i10:the goods are issued and the motorcycles are produced -> i15:Simultaneously -> i16:sales information is updated -> i14:the process ends
+- [N5] Omitted trace (input 5): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:Once the request is received, the next step is to either continue the process if a production order is received -> i3:continue the process if a production order is received -> i7:Alternatively, if there are available goods for production -> i8:a manufacturing order is placed -> i10:the goods are issued and the motorcycles are produced -> i11:At the same time -> i13:the motorcycles are dispatched -> i14:the process ends
+- [N6] Omitted trace (input 6): i1:For the customer, the process begins with a request to purchase a motorcycle. -> i2:Once the request is received, the next step is to either continue the process if a production order is received -> i3:continue the process if a production order is received -> i7:Alternatively, if there are available goods for production -> i8:a manufacturing order is placed -> i10:the goods are issued and the motorcycles are produced -> i15:Simultaneously -> i16:sales information is updated -> i14:the process ends
+- [N7] Within matched traces (4->1) omitted: i8:a manufacturing order is placed
+- [N8] Within matched traces (1->2) omitted: i3:continue the process if a production order is received
+
+Addition
+- [N9] Within matched traces (1->0) added: action(n10,"Dispatch Motorcycles")
+- [N10] Within matched traces (4->1) added: action(n5,"Check Material Availability")
+- [N11] Within matched traces (4->1) added: action(n10,"Dispatch Motorcycles")
+- [N12] Within matched traces (1->2) added: branch(b1,XOR)
+- [N13] Within matched traces (1->2) added: action(n4,"Update Sales Information and Proceed to Dispatch")
+- [N14] Within matched traces (1->2) added: action(n10,"Dispatch Motorcycles")
+- [N15] Within matched traces (0->3) added: converge(c1)
+- [N16] Within matched traces (0->3) added: action(n5,"Check Material Availability")
+- [N17] Within matched traces (0->3) added: branch(b2,XOR)
+- [N18] Within matched traces (0->3) added: converge(c2)
+- [N19] Within matched traces (0->3) added: action(n8,"Issue Goods and Produce Motorcycles")
+- [N20] Within matched traces (0->3) added: action(n9,"Update Stock Information")
+- [N21] Within matched traces (0->3) added: action(n10,"Dispatch Motorcycles")
+
+Permutation
+- [N22] Within matched traces (1->0) reordered: expected [i11:At the same time] but observed [converge(c1)] elsewhere; in its place the model has [action(n8,"Issue Goods and Produce Motorcycles")]
+- [N23] Within matched traces (4->1) reordered: expected [i11:At the same time] but observed [converge(c1)] elsewhere; in its place the model has [action(n8,"Issue Goods and Produce Motorcycles")]
+- [N24] Within matched traces (1->2) reordered: expected [i11:At the same time] but observed [converge(c1)] elsewhere; in its place the model has [action(n8,"Issue Goods and Produce Motorcycles")]
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> c2` has 0 guards; exactly one is required.

@@ -1,0 +1,47 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i3:the items are counted and compared to the original contract -> i4:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i6:In case of missing items and replacement charges, we email the customer to inform them. -> i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. -> i9:when the process is complete, it ends.
+- [N2] Omitted trace (input 2): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i3:the items are counted and compared to the original contract -> i4:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. -> i9:when the process is complete, it ends.
+- [N3] Omitted trace (input 3): i1:To begin the process, Rental Items are Returned to the Store. -> i2:If the "Customer returns the items to the store," then we can continue the process. However, if the "Delivery Crew picks-up items at the event site," then we also continue the process. -> i3:the items are counted and compared to the original contract -> i4:If the "Order is complete and all items were returned," then we proceed with the process. However, if the "Order is incomplete and items are missing," we still continue the process. Similarly, if the "Order is complete but items are damaged," we email the customer to inform them of the damage and additional charges. -> i8:If the "Customer returns the missing items," we continue the process. However, if the "Customer does not return the missing items," we still continue the process. -> i10:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges. -> i11:we email the customer with replacement charges -> i13:The customer is then emailed with replacement charges, and the process is complete.
+- [N4] Within matched traces (4->0) omitted: i10:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.
+- [N5] Within matched traces (4->3) omitted: i10:If the "Items are repaired and added into inventory," we continue the process. On the other hand, if the "Items can't be repaired and are discarded," we email the customer with replacement charges.
+
+Addition
+- [N6] Node-level addition: action(n2,"How were the items returned?") (reason: Interrogative prompt 'How were the items returned?' lacks any basis in the declarative source text.)
+- [N7] Node-level addition: action(n4,"Order status?") (reason: Interrogative prompt 'Order status?' is invented and not supported by the source.)
+- [N8] Node-level addition: action(n6,"Customer returns the missing items?") (reason: Interrogative prompt 'Customer returns the missing items?' has no source justification.)
+- [N9] Node-level addition: action(n9,"Items repair status?") (reason: Interrogative prompt 'Items repair status?' is completely absent from the source description.)
+- [N10] Node-level addition: action(n13,"Items packed for an existing order?") (reason: Interrogative prompt 'Items packed for an existing order?' lacks source support.)
+- [N11] Within matched traces (4->0) added: action(n2,"How were the items returned?")
+- [N12] Within matched traces (4->0) added: action(n4,"Order status?")
+- [N13] Within matched traces (4->0) added: action(n6,"Customer returns the missing items?")
+- [N14] Within matched traces (4->0) added: action(n13,"Items packed for an existing order?")
+- [N15] Within matched traces (0->1) added: action(n2,"How were the items returned?")
+- [N16] Within matched traces (0->1) added: action(n4,"Order status?")
+- [N17] Within matched traces (0->1) added: action(n9,"Items repair status?")
+- [N18] Within matched traces (0->1) added: branch(b4,XOR)
+- [N19] Within matched traces (0->1) added: action(n10,"Items are repaired and added into inventory")
+- [N20] Within matched traces (0->1) added: action(n13,"Items packed for an existing order?")
+- [N21] Within matched traces (0->1) added: branch(b5,XOR)
+- [N22] Within matched traces (0->1) added: action(n14,"Email customer with replacement charges")
+- [N23] Within matched traces (0->2) added: action(n2,"How were the items returned?")
+- [N24] Within matched traces (0->2) added: action(n4,"Order status?")
+- [N25] Within matched traces (0->2) added: action(n9,"Items repair status?")
+- [N26] Within matched traces (0->2) added: branch(b4,XOR)
+- [N27] Within matched traces (0->2) added: action(n11,"Items can't be repaired and are discarded")
+- [N28] Within matched traces (0->2) added: action(n12,"Email customer with replacement charges")
+- [N29] Within matched traces (0->2) added: action(n13,"Items packed for an existing order?")
+- [N30] Within matched traces (0->2) added: branch(b5,XOR)
+- [N31] Within matched traces (0->2) added: action(n14,"Email customer with replacement charges")
+- [N32] Within matched traces (4->3) added: action(n2,"How were the items returned?")
+- [N33] Within matched traces (4->3) added: action(n4,"Order status?")
+- [N34] Within matched traces (4->3) added: action(n13,"Items packed for an existing order?")
+
+Mutation
+- [N35] Node-level mutation: element=action(n1,"Start rental items return process"); source=i1:To begin the process, Rental Items are Returned to the Store.; reason=The element substitutes the concrete physical activity 'Rental Items are Returned to the Store' with a generic administrative phrase 'Start rental items return process', altering the core operation described in the source.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n14` has in=2 and out=1. | Node `n3` has in=2 and out=1. | DSL: action(n14,"Email customer with replacement charges"); action(n3,"Count items and compare to original contract")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n3` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b3 -> c1` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=Delivery Crew picks-up items at the event site]. | XOR branch `b3` has overlapping guards at state [v3=Customer returns the missing items]. | XOR branch `b5` has overlapping guards at state [v5=Items are packed for an existing order].

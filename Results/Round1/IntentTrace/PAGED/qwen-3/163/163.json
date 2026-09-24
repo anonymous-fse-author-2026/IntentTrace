@@ -1,0 +1,248 @@
+{
+  "elements": [
+    {
+      "id": "start",
+      "type": "init"
+    },
+    {
+      "id": "end_proc",
+      "type": "end"
+    },
+    {
+      "id": "j1",
+      "type": "converge"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "starting and entering the metadata"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "proceed to the IN-Patient step"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "send data to suppliers and create a claim"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "extract the data from the suppliers and transfer it to the doctor's phone"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "confirm the GOP"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "register the case and handle the claim"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "create a claim and handle the claim accordingly"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "extract the data from the suppliers and enter it on the patient's record or confirm the IN-Patient status"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "register the case, handle the claim, and then receive the payment"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "enter the data on the patient's record or confirm the IN-Patient status, and then send the data back to the suppliers"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "receive the payment and conclude the process"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "path_choice",
+      "name": "Process Path",
+      "R_X": [
+        "IN_Patient",
+        "Suppliers_Claim"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "start",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "b1",
+        "j1",
+        "end_proc"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "start",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "j1"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "j1"
+    },
+    {
+      "type": "precedence",
+      "A": "j1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "end_proc"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n2",
+      "condition": "path_choice = 'IN_Patient'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n3",
+      "condition": "path_choice = 'Suppliers_Claim'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "To initiate the process for mobile application and integration with the suppliers network system, begin by starting and entering the metadata."
+    },
+    {
+      "id": "i2",
+      "content": "proceed to the IN-Patient step."
+    },
+    {
+      "id": "i3",
+      "content": "At the same time, complete the following steps:"
+    },
+    {
+      "id": "i4",
+      "content": "send data to suppliers and create a claim."
+    },
+    {
+      "id": "i5",
+      "content": "extract the data from the suppliers and transfer it to the doctor's phone."
+    },
+    {
+      "id": "i6",
+      "content": "confirm the GOP and the process will come to an end."
+    },
+    {
+      "id": "i7",
+      "content": "register the case and handle the claim."
+    },
+    {
+      "id": "i8",
+      "content": "Create a claim and handle the claim accordingly."
+    },
+    {
+      "id": "i9",
+      "content": "Extract the data from the suppliers and enter it on the patient's record or confirm the IN-Patient status."
+    },
+    {
+      "id": "i10",
+      "content": "Register the case, handle the claim, and then receive the payment."
+    },
+    {
+      "id": "i11",
+      "content": "Enter the data on the patient's record or confirm the IN-Patient status, and then send the data back to the suppliers."
+    },
+    {
+      "id": "i12",
+      "content": "receive the payment and conclude the process."
+    }
+  ]
+}

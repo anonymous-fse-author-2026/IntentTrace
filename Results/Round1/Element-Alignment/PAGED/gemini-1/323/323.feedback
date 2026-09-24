@@ -1,0 +1,18 @@
+Omission
+- [N1] Node-level omission: i1:To begin, start by providing the requested shipping information. (reason: The core action is not faithfully implemented because the model dropped the qualifier 'requested'.)
+- [N2] Node-level omission: i5:confirm the shipping address and ensure that it is correct (reason: The step is not faithfully implemented because the model dropped the instruction to ensure that the address is correct.)
+- [N3] Node-level omission: i6:proceed to select the desired shipping speed (reason: The step is not faithfully implemented because the model dropped the qualifier 'desired' for the shipping speed.)
+
+Addition
+- [N4] Node-level addition: action(n1,"Start") (reason: The 'Start' action is an invented, redundant separate step; in the text, 'start' is just an auxiliary verb to providing the information.)
+- [N5] Node-level addition: action(n4,"Is the shipping address saved or new?") (reason: The text contains conditional branches for the address type, but does not describe an explicit action step to ask or check the type beforehand.)
+- [N6] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Provide shipping information") -> action(n3,"Determine shipping details") -> action(n4,"Is the shipping address saved or new?") -> branch(b1,XOR) -> action(n6,"Confirm shipping address") -> converge(c1) -> action(n7,"Select shipping speed") -> action(n8,"End") -> end(e1)
+- [N7] Within matched traces (0->0) added: action(n1,"Start")
+- [N8] Within matched traces (0->0) added: action(n4,"Is the shipping address saved or new?")
+- [N9] Within matched traces (1->0) added: action(n1,"Start")
+- [N10] Within matched traces (1->0) added: action(n4,"Is the shipping address saved or new?")
+
+Mutation
+- [N11] Node-level mutation: element=action(n2,"Provide shipping information"); source=i1:To begin, start by providing the requested shipping information.; reason=Drops the qualifier 'requested' from the shipping information.
+- [N12] Node-level mutation: element=action(n5,"Confirm shipping address") -> action(n6,"Confirm shipping address"); source=i5:confirm the shipping address and ensure that it is correct; reason=Both elements drop the required instruction to 'ensure that it is correct'.
+- [N13] Node-level mutation: element=action(n7,"Select shipping speed"); source=i6:proceed to select the desired shipping speed; reason=Drops the qualifier 'desired' from the shipping speed.

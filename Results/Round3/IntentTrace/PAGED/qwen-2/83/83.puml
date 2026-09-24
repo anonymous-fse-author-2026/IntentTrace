@@ -1,0 +1,105 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+-> Start;
+:Are items returned by Customer to Store;
+-> Check return method;
+:v1: Are items returned by Customer to Store ({true, false}); <<objectSignal>>
+if () then ([v1 = true])
+:Continue process after Customer returns items;
+-> Customer return;
+else ([v1 = false])
+:Are items picked up by Delivery Crew at Event Site;
+-> Delivery crew check;
+:v2: Are items picked up by Delivery Crew at Event Site ({true, false}); <<objectSignal>>
+if () then ([v2 = true])
+:Continue process after Delivery Crew picks up items;
+-> Delivery pick-up;
+else ([v2 = false])
+->;
+endif
+endif
+-> Begin count;
+:Count items and compare to original contract;
+-> Compare contract;
+:Is Order complete and all items returned;
+-> Order status;
+:v3: Is Order complete and all items returned ({true, false}); <<objectSignal>>
+if () then ([v3 = true])
+:Proceed with process for complete order;
+-> Complete order;
+else ([v3 = false])
+:Is the Order incomplete and items missing;
+-> Missing check;
+:v4: Is the Order incomplete and items missing ({true, false}); <<objectSignal>>
+if () then ([v4 = true])
+:Proceed with process for incomplete order;
+-> Incomplete order;
+else ([v4 = false])
+:Is Order complete but items damaged;
+-> Damage check;
+:v5: Is Order complete but items damaged ({true, false}); <<objectSignal>>
+if () then ([v5 = true])
+:Email customer informing about damage and additional charges;
+-> Damage email sent;
+:Temporarily take damaged items out of inventory;
+-> Remove from inventory;
+else ([v5 = false])
+->;
+endif
+endif
+endif
+-> Pack/store check;
+:Do items get packed for existing order;
+-> Routing decision;
+:v8: Are there missing items and replacement charges ({true, false}); <<objectSignal>>
+if () then ([v8 = true])
+:Are there missing items and replacement charges;
+-> Missing email;
+:v8: Are there missing items and replacement charges ({true, false}); <<objectSignal>>
+if () then ([v8 = true])
+:Email customer for missing items and replacement charges;
+-> Email sent;
+:Did customer return missing items;
+-> Return check;
+:v10: Did customer return missing items ({true, false}); <<objectSignal>>
+if () then ([v10 = true])
+:Continue process after customer returns missing items;
+-> Items returned;
+else ([v10 = false])
+:Continue process when customer does not return missing items;
+-> Not returned;
+endif
+else ([v8 = false])
+->;
+endif
+else ([v8 = false])
+->;
+endif
+-> Repair check;
+:Is items repaired and added into inventory;
+-> Inventory update;
+:v11: Is items repaired and added into inventory ({true, false}); <<objectSignal>>
+if () then ([v11 = true])
+:Continue process after items repaired and added into inventory;
+-> Repaired;
+else ([v11 = false])
+:Are items can't be repaired and are discarded;
+-> Discard decision;
+:v12: Are items can't be repaired and are discarded ({true, false}); <<objectSignal>>
+if () then ([v12 = true])
+:Email customer with replacement charges for discarded items;
+-> Replacement email;
+else ([v12 = false])
+->;
+endif
+endif
+-> Charges email;
+:Email customer with replacement charges (final);
+-> Wrap up;
+:End of Rental Items Return Process;
+-> Process complete;
+stop
+@enduml

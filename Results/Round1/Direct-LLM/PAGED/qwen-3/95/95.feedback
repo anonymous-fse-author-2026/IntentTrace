@@ -1,0 +1,36 @@
+Omission
+- [N1] Within matched traces (1->13) omitted: i7:proceed to Check the Availability of the Article again
+- [N2] Within matched traces (5->9) omitted: i17:Additionally, send a Reminder
+- [N3] Within matched traces (8->3) omitted: i17:Additionally, send a Reminder
+
+Addition
+- [N4] Node-level addition: guard(b5,e5,"v5 = 'No'") (reason: The guard routes to an end node on the negative path (reminder count < 3), but the source text specifies no outcome or continuation for this case. The termination path and its condition are invented.)
+- [N5] Added trace (model 4): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n13,"Collect Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> action(n20,"Close Order") -> end(e3)
+- [N6] Added trace (model 5): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n13,"Collect Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> action(n23,"Write off Order") -> action(n24,"Send Reminder") -> action(n25,"Close Order") -> end(e4)
+- [N7] Added trace (model 6): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n13,"Collect Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> end(e5)
+- [N8] Added trace (model 10): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n14,"Produce Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> action(n20,"Close Order") -> end(e3)
+- [N9] Added trace (model 11): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n14,"Produce Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> action(n23,"Write off Order") -> action(n24,"Send Reminder") -> action(n25,"Close Order") -> end(e4)
+- [N10] Added trace (model 12): init(i1) -> action(n2,"Place Order") -> action(n3,"Check Customer Credit Limit") -> branch(b1,XOR) -> action(n7,"Check Availability of Article") -> branch(b2,XOR) -> action(n9,"Check Availability of Article again") -> branch(b3,XOR) -> action(n14,"Produce Goods") -> converge(c1) -> action(n15,"Send Order Confirmation") -> branch(b6,AND) -> action(n17,"Send Invoice") -> converge(c2) -> action(n18,"Check Payment status") -> branch(b4,XOR) -> branch(b5,XOR) -> end(e5)
+- [N11] Within matched traces (1->13) added: action(n10,"Send Denial to Customer")
+- [N12] Within matched traces (1->13) added: end(e2)
+- [N13] Within matched traces (3->7) added: branch(b2,XOR)
+- [N14] Within matched traces (3->7) added: action(n9,"Check Availability of Article again")
+- [N15] Within matched traces (4->8) added: branch(b2,XOR)
+- [N16] Within matched traces (4->8) added: action(n9,"Check Availability of Article again")
+- [N17] Within matched traces (4->8) added: action(n24,"Send Reminder")
+- [N18] Within matched traces (5->9) added: branch(b2,XOR)
+- [N19] Within matched traces (5->9) added: action(n9,"Check Availability of Article again")
+- [N20] Within matched traces (6->1) added: branch(b2,XOR)
+- [N21] Within matched traces (6->1) added: action(n9,"Check Availability of Article again")
+- [N22] Within matched traces (7->2) added: branch(b2,XOR)
+- [N23] Within matched traces (7->2) added: action(n9,"Check Availability of Article again")
+- [N24] Within matched traces (7->2) added: action(n24,"Send Reminder")
+- [N25] Within matched traces (8->3) added: branch(b2,XOR)
+- [N26] Within matched traces (8->3) added: action(n9,"Check Availability of Article again")
+
+Mutation
+- [N27] Node-level mutation: element=guard(b3,n14,"v3 = 'No'"); source=i9:If the Article is not available, proceed to Produce the Goods; reason=Guards substitute the specific availability states ('not available' / 'available') with generic boolean strings ('No' / 'Yes'), altering the exact condition values defined in the source.
+- [N28] Node-level mutation: element=guard(b3,n13,"v3 = 'Yes'"); source=i10:However, if the Article is available, proceed to Collect the Goods; reason=Guards substitute the specific availability states ('not available' / 'available') with generic boolean strings ('No' / 'Yes'), altering the exact condition values defined in the source.
+- [N29] Node-level mutation: element=guard(b4,n20,"v4 = 'Yes'"); source=i14:If the payment has been received, close the Order and end the process; reason=Guards replace the explicit payment status phrases ('has been received' / 'has not been received') with generic 'Yes' / 'No' literals, changing the condition payload.
+- [N30] Node-level mutation: element=guard(b4,b5,"v4 = 'No'"); source=i15:If the payment has not been received, check if the Reminder count is greater than or equal to 3; reason=Guards replace the explicit payment status phrases ('has been received' / 'has not been received') with generic 'Yes' / 'No' literals, changing the condition payload.
+- [N31] Node-level mutation: element=guard(b5,n23,"v5 = 'Yes'"); source=i16:If the Reminder count is greater than or equal to 3, Write off the Order; reason=Guard completely replaces the numeric threshold comparison ('greater than or equal to 3') with a generic string equality check ('Yes'), distorting the evaluation logic and value.

@@ -1,0 +1,19 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To start the process for ACME, begin with the New Resupply Cycle and then Check Levels of Inventory. -> i2:If the inventory is below or equal to the minimum -> i3:generate an Equal to or below minimum Report. -> i6:create Purchase Orders (POs). -> i12:If the PO is created, it needs to be reviewed. -> i8:If the PO is rejected -> i9:it needs to be reworked. -> i6:create Purchase Orders (POs).
+- [N2] Omitted trace (input 3): i1:To start the process for ACME, begin with the New Resupply Cycle and then Check Levels of Inventory. -> i2:If the inventory is below or equal to the minimum -> i3:generate an Equal to or below minimum Report. -> i6:create Purchase Orders (POs). -> i12:If the PO is created, it needs to be reviewed. -> i10:If the PO is approved -> i11:it is printed and released in the system. -> i13:Simultaneously, -> i15:mail the POs to the supplier. -> i17:receive the inventory. -> i20:If the inventory is received -> i21:proceed to the Three-way match. -> i22:If the Three-way match is successful, release the funds. -> i23:issue the payment. -> i24:the Resupply Cycle is complete and the process ends.
+
+Addition
+- [N3] Within matched traces (2->0) added: init(i1)
+- [N4] Within matched traces (2->0) added: action(n17,"proceed to three-way match")
+- [N5] Within matched traces (2->1) added: init(i1)
+- [N6] Within matched traces (2->1) added: action(n15,"receive inventory")
+- [N7] Within matched traces (2->1) added: converge(c1)
+- [N8] Within matched traces (2->1) added: action(n17,"proceed to three-way match")
+- [N9] Within matched traces (0->2) added: init(i1)
+- [N10] Within matched traces (0->2) added: action(n3,"is inventory below or equal to minimum?")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = true"); source=i2:If the inventory is below or equal to the minimum; reason=Guards substitute the explicit inventory comparison thresholds and operators with abstract boolean flags ('v1 = true' / 'v1 = false'), dropping the core quantitative data and relational logic required for faithful reproduction.
+- [N12] Node-level mutation: element=guard(b1,n5,"v1 = false"); source=i4:If the inventory is greater than the minimum; reason=Guards substitute the explicit inventory comparison thresholds and operators with abstract boolean flags ('v1 = true' / 'v1 = false'), dropping the core quantitative data and relational logic required for faithful reproduction.
+- [N13] Node-level mutation: element=guard(b2,n10,"v2 = true"); source=i10:If the PO is approved; reason=Guards replace the specific PO status evaluations with generic boolean flags ('v2 = true' / 'v2 = false'), stripping the semantic condition tied to approval/rejection.
+- [N14] Node-level mutation: element=guard(b2,n11,"v2 = false"); source=i8:If the PO is rejected; reason=Guards replace the specific PO status evaluations with generic boolean flags ('v2 = true' / 'v2 = false'), stripping the semantic condition tied to approval/rejection.

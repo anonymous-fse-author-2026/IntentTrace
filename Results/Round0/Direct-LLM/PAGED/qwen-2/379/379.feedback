@@ -1,0 +1,9 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Missing `guard` statements to enforce the conditional routing specified in the source (“If the inventory is below or equal to the minimum...”, “If the PO is rejected/approved...”); the exclusive split logic is undefined, omitting documented behavior (SMC1, SMC4).
+- `action(n3, "is inventory below or equal to minimum?")` and `action(n9, "is po approved?")`: Modeled as executable procedural steps rather than decision criteria, misrepresenting their semantic role as conditional triggers in the source (SMC2).
+- `defines(v1, "...", {})` and `defines(v2, "...", {})`: Declare empty ranges `{}` instead of capturing the finite binary/categorical value spaces explicitly implied by the source conditions (e.g., `{true, false}` or `{'<=min', '>min'}`), failing to faithfully reflect the source (SMC6).
+- `precedence(n15, c1)`: Routes “receive inventory” directly to a convergence join, but the source explicitly states “If the inventory is received, proceed to receive the Packing Slip,” indicating a mandatory sequential dependency (`n15` → `n14`) that is omitted, breaking the intended path chronology (SMC3, SMC5).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=2 and out=1. | DSL: action(n7,"create purchase orders (pos)")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.

@@ -1,0 +1,302 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "look at the order"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "i3",
+      "type": "action",
+      "content": "the process should continue"
+    },
+    {
+      "id": "i5",
+      "type": "action",
+      "content": "the process should also continue"
+    },
+    {
+      "id": "i6",
+      "type": "action",
+      "content": "At the same time, two steps need to be completed:"
+    },
+    {
+      "id": "b_and",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "preparing the assembling order"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "checking availability"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "the process ends"
+    },
+    {
+      "id": "e_loop",
+      "type": "end"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "n9",
+      "type": "action",
+      "content": "assemble the bike"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "ship the product"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "order status",
+      "R_X": [
+        "Accepted",
+        "Rejected"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "backorder?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n2",
+        "b1",
+        "i3",
+        "i5",
+        "i6",
+        "b_and",
+        "n4",
+        "n5",
+        "b2",
+        "n7",
+        "n8",
+        "e_loop",
+        "c2",
+        "n9",
+        "n10",
+        "e2"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "b1"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i3"
+    },
+    {
+      "type": "precedence",
+      "A": "i3",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "i5"
+    },
+    {
+      "type": "precedence",
+      "A": "i5",
+      "B": "i6"
+    },
+    {
+      "type": "precedence",
+      "A": "i6",
+      "B": "b_and"
+    },
+    {
+      "type": "precedence",
+      "A": "b_and",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "b_and",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "b2"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "e_loop"
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "n9"
+    },
+    {
+      "type": "precedence",
+      "A": "n9",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i5",
+      "condition": "v1 = 'Accepted'"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "i3",
+      "condition": "v1 = 'Rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n7",
+      "condition": "v2 = 'Yes'"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "c2",
+      "condition": "v2 = 'No'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the first step is to look at the order"
+    },
+    {
+      "id": "i2",
+      "content": "If the order is to be rejected"
+    },
+    {
+      "id": "i3",
+      "content": "the process should continue"
+    },
+    {
+      "id": "i4",
+      "content": "If the order is to be accepted"
+    },
+    {
+      "id": "i5",
+      "content": "the process should also continue"
+    },
+    {
+      "id": "i6",
+      "content": "At the same time, two steps need to be completed:"
+    },
+    {
+      "id": "i7",
+      "content": "preparing the assembling order"
+    },
+    {
+      "id": "i8",
+      "content": "checking availability"
+    },
+    {
+      "id": "i9",
+      "content": "If there is a backorder"
+    },
+    {
+      "id": "i10",
+      "content": "availability needs to be checked again"
+    },
+    {
+      "id": "i11",
+      "content": "the process ends"
+    },
+    {
+      "id": "i12",
+      "content": "If the item can be reserved"
+    },
+    {
+      "id": "i14",
+      "content": "assemble the bike"
+    },
+    {
+      "id": "i15",
+      "content": "ship the product"
+    }
+  ]
+}

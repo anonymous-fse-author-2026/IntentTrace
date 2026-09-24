@@ -1,0 +1,44 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"start Rental Items Returned to Store","start","","","",""
+2,"Customer returns the items to the store","condition","1","Delivery Crew picks-up items at event site","",""
+3,"continue process after customer return","entity","2","","",""
+4,"continue process after delivery crew picks-up","entity","2","","",""
+5,"items counted and compared to original contract","entity","3,4","","",""
+6,"Order is complete and all items were returned","condition","5","Order is complete but items are damaged","",""
+7,"continue process for complete order","entity","6","","",""
+8,"continue process for incomplete order with missing items","entity","6","","",""
+9,"email customer to inform about damage and additional charges","entity","6","","",""
+10,"Items are packed for an existing order","condition","7,8,9","Items are stored for future orders","",""
+11,"continue process packed for existing order","entity","10","","",""
+12,"continue process items stored for future orders","entity","10","","",""
+13,"email customer to inform about replacement charges for missing items","entity","8","","",""
+14,"temporarily take damaged items out of inventory","entity","9","","",""
+15,"Customer returns the missing items","condition","13","Customer does not return the missing items","",""
+16,"continue process after customer returns missing items","entity","15","","",""
+17,"continue process customer does not return missing items","entity","15","","",""
+18,"Items are repaired and added into inventory","condition","14","Items can't be repaired and are discarded","",""
+19,"continue process after items repaired and added to inventory","entity","18","","",""
+20,"email customer with replacement charges for discarded items","entity","18","","",""
+21,"Items are packed for an existing order after repair or discard","condition","19,17,16,12","Items are stored for future orders after repair or discard","",""
+22,"continue process packed for existing order after repair or discard","entity","21","","",""
+23,"continue process items stored for future orders after repair or discard","entity","21","","",""
+24,"email customer with replacement charges final","entity","20","","",""
+25,"end process complete","end","22,23,24","","",""

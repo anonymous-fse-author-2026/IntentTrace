@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start acme process;
+:receive customer request;
+:check inventory level;
+:v1: check inventory level ({at or below minimum, above minimum}); <<objectSignal>>
+if () then ([v1 = 'at or below minimum'])
+:accept request and create PO;
+repeat :;
+:review purchase order;
+:v2: review purchase order ({rejected, approved}); <<objectSignal>>
+backward:rework purchase order;
+repeat while () is ([v2 = 'rejected']) not ([v2 = 'approved'])
+:approve purchase order and reserve funds;
+:send purchase order;
+split
+:receive packing slip;
+:record packing slip;
+split again
+:receive invoice;
+:record invoice;
+end split
+:release reserved funds and issue payment;
+:issue payment and end process;
+stop
+else ([v1 = 'above minimum'])
+:reject request - end process;
+stop
+endif
+@enduml

@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` and `branch(b2, XOR)`: No `guard(...)` statements are provided to specify the conditions for these exclusive splits, leaving the control-flow logic undefined despite the source explicitly stating the criteria ("If it is a 'URN'...", "If the input is a 'URL'...").
+- `defines(v1, "is the input a URN", {})` and `defines(v2, "is the input a URN or URL", {})`: Specify empty value ranges `{}` instead of reflecting the source's implied categorical domains ("URN", "URL") or boolean evaluation space, violating faithful variable representation.
+- `action(n2, "is the input a URN")` and `action(n5, "is the input a URN or URL")`: Incorrectly model decision/check steps as standard `action` nodes rather than integrating them into the branch/guard structure, misrepresenting the conditional evaluation flow described in the source.
+- `precedence(c2, n8)`: Unconditionally routes both the URN-resolution and URL-continuation paths into `action(n8, "send DNS query")`, contradicting the source's conditional progression which explicitly ties the query to a successful resolution ("Once we have resolved the URN to a domain-name, we send a DNS query.").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

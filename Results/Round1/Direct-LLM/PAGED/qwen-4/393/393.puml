@@ -1,0 +1,92 @@
+@startuml
+!theme plain
+|a_rm| Recruitment Manager
+|a_mgr| Next Level Manager
+|a_chr| Client HR
+|a_tshr| TS HR Coordinator
+|a_hrr| HR Representative
+|a_cand| Candidate
+|a_rm|
+start
+:start;
+:advise unsuccessful candidates;
+:are there more candidates?;
+if () then ([v1 = 'No'])
+:re-advertise position;
+else ([v1 = 'Yes'])
+:check if candidate has accepted voluntary redundancy;
+if () then ([v2 = 'No'])
+:send appointment approval form;
+|a_mgr|
+:is the approver an external resource?;
+if () then ([v3 = 'Yes'])
+:continue process (external);
+else ([v3 = 'No'])
+|a_rm|
+:continue process (existing employee);
+|a_chr|
+:client HR receives form and documentation;
+|a_mgr|
+endif
+|a_rm|
+else ([v2 = 'Yes'])
+|a_cand|
+:continue process (no terms needed);
+|a_rm|
+endif
+:inform recruitment manager and liaise with HR representative;
+:are there any variations?;
+if () then ([v5 = 'Yes'])
+:create business case;
+else ([v5 = 'No'])
+:continue process;
+split
+:is medical assessment required (12% rate)?;
+if () then ([v6 = 'Yes'])
+|a_tshr|
+:arrange and complete medical assessment (21 days);
+:inform recruitment manager and liaise with HR representative;
+:is assessment satisfactory?;
+if () then ([v7 = 'No'])
+|a_hrr|
+:contact next candidate on shortlist;
+|a_tshr|
+else ([v7 = 'Yes'])
+|a_hrr|
+:continue process;
+|a_rm|
+:make formal verbal offer to candidate;
+:does candidate accept offer?;
+switch ()
+case ([v8 = 'Yes'])
+:create formal written offer;
+case ([v8 = 'No'])
+:continue process;
+case ([v8 = 'Other'])
+:send commencement pack and letter of appointment;
+endswitch
+:is there a 40% rate?;
+if () then ([v9 = 'Yes'])
+:renegotiate terms;
+:are renegotiations successful?;
+if () then ([v10 = 'No'])
+:identify next candidate on shortlist;
+else ([v10 = 'Yes'])
+:continue process;
+endif
+else ([v9 = 'No'])
+:candidate accepts documents;
+endif
+|a_tshr|
+endif
+|a_rm|
+:end of procedure;
+stop
+else ([v6 = 'No'])
+->;
+endif
+split again
+end split
+endif
+endif
+@enduml

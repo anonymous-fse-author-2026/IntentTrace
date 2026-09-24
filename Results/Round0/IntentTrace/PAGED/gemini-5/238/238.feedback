@@ -1,0 +1,63 @@
+Omission
+- [N1] Node-level omission: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer. (reason: The model completely omitted this entire secondary availability check loop.)
+- [N2] Omitted trace (input 0): i1:To begin the process for WIGGO -> i2:placing an Order -> i3:Check the Customer's Credit Limit -> i7:if the response is "No" -> i8:send a Denial to the Customer
+- [N3] Omitted trace (input 1): i1:To begin the process for WIGGO -> i2:placing an Order -> i3:Check the Customer's Credit Limit -> i4:If the response is "Okay" -> i5:is "Okay" -> i6:proceed to Check the Availability of the Article -> i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer. -> i8:send a Denial to the Customer
+- [N4] Within matched traces (2->0) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N5] Within matched traces (3->1) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N6] Within matched traces (4->2) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N7] Within matched traces (4->2) omitted: i27:Additionally, send a Reminder
+- [N8] Within matched traces (5->3) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N9] Within matched traces (6->4) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N10] Within matched traces (7->5) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N11] Within matched traces (7->5) omitted: i27:Additionally, send a Reminder
+- [N12] Within matched traces (8->6) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N13] Within matched traces (9->7) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N14] Within matched traces (10->8) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N15] Within matched traces (10->8) omitted: i27:Additionally, send a Reminder
+- [N16] Within matched traces (11->9) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N17] Within matched traces (12->10) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N18] Within matched traces (13->11) omitted: i9:After checking the availability, if the response is "Okay", proceed to Check the Availability of the Article again. If the response is "No", send a Denial to the Customer.
+- [N19] Within matched traces (13->11) omitted: i27:Additionally, send a Reminder
+
+Addition
+- [N20] Node-level addition: action(n19,"End") (reason: The source does not explicitly describe an alternative path (End) if the reminder count condition is not met.)
+- [N21] Node-level addition: guard(b4,n19,"v4 = 'No'") (reason: The source does not explicitly describe an alternative path (End) if the reminder count condition is not met.)
+- [N22] Within matched traces (2->0) added: action(n7,"Article Available")
+- [N23] Within matched traces (3->1) added: action(n7,"Article Available")
+- [N24] Within matched traces (3->1) added: action(n14,"Payment Received")
+- [N25] Within matched traces (3->1) added: action(n20,"Send Reminder")
+- [N26] Within matched traces (4->2) added: action(n7,"Article Available")
+- [N27] Within matched traces (4->2) added: action(n14,"Payment Received")
+- [N28] Within matched traces (4->2) added: branch(b4,XOR)
+- [N29] Within matched traces (4->2) added: action(n19,"End")
+- [N30] Within matched traces (4->2) added: end(e2)
+- [N31] Within matched traces (5->3) added: action(n7,"Article Available")
+- [N32] Within matched traces (6->4) added: action(n7,"Article Available")
+- [N33] Within matched traces (6->4) added: action(n14,"Payment Received")
+- [N34] Within matched traces (6->4) added: action(n20,"Send Reminder")
+- [N35] Within matched traces (7->5) added: action(n7,"Article Available")
+- [N36] Within matched traces (7->5) added: action(n14,"Payment Received")
+- [N37] Within matched traces (7->5) added: branch(b4,XOR)
+- [N38] Within matched traces (7->5) added: action(n19,"End")
+- [N39] Within matched traces (7->5) added: end(e2)
+- [N40] Within matched traces (9->7) added: action(n14,"Payment Received")
+- [N41] Within matched traces (9->7) added: action(n20,"Send Reminder")
+- [N42] Within matched traces (10->8) added: action(n14,"Payment Received")
+- [N43] Within matched traces (10->8) added: branch(b4,XOR)
+- [N44] Within matched traces (10->8) added: action(n19,"End")
+- [N45] Within matched traces (10->8) added: end(e2)
+- [N46] Within matched traces (12->10) added: action(n14,"Payment Received")
+- [N47] Within matched traces (12->10) added: action(n20,"Send Reminder")
+- [N48] Within matched traces (13->11) added: action(n14,"Payment Received")
+- [N49] Within matched traces (13->11) added: branch(b4,XOR)
+- [N50] Within matched traces (13->11) added: action(n19,"End")
+- [N51] Within matched traces (13->11) added: end(e2)
+
+Mutation
+- [N52] Node-level mutation: element=guard(b1,n6,"v1 = 'Yes'"); source=i5:is "Okay"; reason=The source specifies 'Okay', but the model uses 'Yes'.
+- [N53] Node-level mutation: element=guard(b3,n15,"v3 = 'Yes'"); source=i20:has been received; reason=The model uses 'Yes' instead of the state 'received'.
+- [N54] Node-level mutation: element=guard(b4,n18,"v4 = 'Yes'"); source=i25:is greater than or equal to 3; reason=The model uses 'Yes' instead of checking the numeric threshold (>= 3).
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Send Denial To Customer")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Send Denial To Customer")

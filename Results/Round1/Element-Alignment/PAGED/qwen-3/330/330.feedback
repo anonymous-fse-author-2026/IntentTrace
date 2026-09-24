@@ -1,0 +1,11 @@
+Addition
+- [N1] Node-level addition: action(n1,"Start") (reason: Generic 'Start' step lacks specific source support and redundantly duplicates the process initiation already fully captured by init:i1 and action:n2.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"Start") -> action(n2,"Initiate Purchase Order-to-Delivery phase") -> action(n3,"Formally review purchase invoice and ensure accuracy") -> action(n4,"Is invoice amount > $5000?") -> branch(b1,XOR) -> converge(c1) -> action(n6,"Trigger payment process") -> action(n7,"End Process") -> end(e1)
+- [N3] Within matched traces (0->0) added: init(i1)
+- [N4] Within matched traces (0->0) added: action(n1,"Start")
+- [N5] Within matched traces (1->0) added: init(i1)
+- [N6] Within matched traces (1->0) added: action(n1,"Start")
+
+Mutation
+- [N7] Node-level mutation: element=guard(b1,n5,"\"v1 = 'Yes'\"") -> guard(b1,c1,"\"v1 = 'No'\""); source=i3:If the invoice amount is greater than $5000,; reason=The guards substitute the explicit financial threshold and operator ('greater than $5000') with abstract boolean labels ('Yes'/'No'), failing to preserve the required comparison value.
+- [N8] Node-level mutation: element=action(n6,"Trigger payment process"); source=i6:Once the payment is triggered, the process comes to an end.; reason=The source specifies a passive temporal condition ('Once the payment is triggered'), but the element distorts this into an active task ('Trigger payment process'), altering the execution logic from a gate/event to a mandatory step.

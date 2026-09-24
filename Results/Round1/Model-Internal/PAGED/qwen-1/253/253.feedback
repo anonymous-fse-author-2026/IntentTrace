@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 1): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. However, if the "Inventory Level is above the minimum", then the process ends. -> i4:"Inventory level is at or below the minimum" -> i5:proceed to Create Purchase Order -> i8:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i10:If the Purchase Order is approved, then reserve the funds for the purchase. On the other hand, if the Purchase Order is rejected, then rework the order. -> i13:Purchase Order is rejected -> i14:rework the order -> i16:In case the order needs to be reworked, review the Purchase Order again. -> i10:If the Purchase Order is approved, then reserve the funds for the purchase. On the other hand, if the Purchase Order is rejected, then rework the order.
+
+Addition
+- [N2] Within matched traces (2->0) added: action(n6,"Purchase Order approved?")
+- [N3] Within matched traces (3->1) added: action(n6,"Purchase Order approved?")
+
+Mutation
+- [N4] Node-level mutation: element=action(n2,"Inventory level at or below the minimum?"); source=i2:followed by checking the Inventory Level.; reason=The action content injects the conditional threshold ('at or below the minimum?') into the step description, altering the original instruction which simply states 'checking the Inventory Level'.
+- [N5] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i4:"Inventory level is at or below the minimum"; reason=Replaces the explicit textual condition with a generic boolean variable assignment (v1 = 'Yes'), completely dropping the original threshold logic and subject.
+- [N6] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i6:"Inventory Level is above the minimum"; reason=Replaces the explicit textual condition with a generic boolean variable assignment (v1 = 'No'), completely dropping the original threshold logic and subject.
+- [N7] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i11:Purchase Order is approved; reason=Replaces the explicit approval condition with a generic boolean variable (v2 = 'Yes'), losing the original semantic guard text.
+- [N8] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i13:Purchase Order is rejected; reason=Replaces the explicit rejection condition with a generic boolean variable (v2 = 'No'), losing the original semantic guard text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"Review Purchase Order")

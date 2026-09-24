@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+|a_customer| Customer
+|a_system| System
+|a_customer|
+start
+:make purchase and connect to website;
+repeat :search for item;
+:add item to cart / continue shopping;
+:v1: shopping choice ({Add to cart, Continue Shopping}); <<objectSignal>>
+backward:continue shopping;
+repeat while () is ([v1 = 'Continue Shopping']) not ([v1 = 'Add to cart'])
+:proceed to checkout;
+|a_system|
+split
+|a_customer|
+:enter address shipping method and payment information;
+split again
+|a_system|
+:authorize credit card and check inventory levels;
+end split
+:v_chk: task status ({Ready, Failed}); <<objectSignal>>
+if () then ([v_chk = 'Ready'])
+:v_app: approval status ({Approved, Denied}); <<objectSignal>>
+if () then ([v_app = 'Approved'])
+->;
+else ([v_app = 'Denied'])
+:transaction denied;
+endif
+:display order confirmation number;
+:show final order to customer;
+:confirm the order;
+:send confirmation notice via email;
+:order entry complete;
+stop
+else ([v_chk = 'Failed'])
+->;
+endif
+@enduml

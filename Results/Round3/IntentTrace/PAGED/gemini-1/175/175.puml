@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:v_return: Return Method ({customer, crew}); <<objectSignal>>
+if () then ([v_return = 'customer'])
+:If the "Customer returns the items to the store,;
+else ([v_return = 'crew'])
+:if the "Delivery Crew picks-up items at the event site,;
+endif
+:During this step, the items are counted and compared to the original contract.;
+:v_condition: Condition ({complete, missing, damaged}); <<objectSignal>>
+switch ()
+case ([v_condition = 'complete'])
+:If the "Order is complete and all items were returned,;
+:v_stock1: Stock ({pack, store}); <<objectSignal>>
+if () then ([v_stock1 = 'pack'])
+:if the "Items are packed for an existing order,;
+else ([v_stock1 = 'store'])
+:if the "Items are stored for future orders,;
+endif
+:when the process is complete, it ends.;
+stop
+case ([v_condition = 'missing'])
+:if the "Order is incomplete and items are missing,;
+:In case of missing items and replacement charges, we email the customer to inform them.;
+:v_missing: Missing Returned ({yes, no}); <<objectSignal>>
+if () then ([v_missing = 'yes'])
+:If the "Customer returns the missing items,;
+else ([v_missing = 'no'])
+:if the "Customer does not return the missing items,;
+:The customer is then emailed with replacement charges;
+:and the process is complete.;
+stop
+endif
+case ([v_condition = 'damaged'])
+:Similarly, if the "Order is complete but items are damaged,;
+:we email the customer to inform them of the damage and additional charges;
+:Additionally, if there are damaged items and additional charges,;
+:temporarily take them out of inventory.;
+:v_repair: Repairable ({yes, no}); <<objectSignal>>
+if () then ([v_repair = 'yes'])
+:If the "Items are repaired and added into inventory,;
+else ([v_repair = 'no'])
+:On the other hand, if the Items can't be repaired and are discarded,;
+:we email the customer with replacement charges.;
+endif
+:Lastly, the items are packed for an existing order.;
+:v_stock2: Stock ({pack, store}); <<objectSignal>>
+if () then ([v_stock2 = 'pack'])
+:If the "Items are packed for an existing order,;
+else ([v_stock2 = 'store'])
+:If the "Items are stored for future orders,;
+endif
+:Once again, when the process is complete, it ends.;
+stop
+endswitch
+@enduml

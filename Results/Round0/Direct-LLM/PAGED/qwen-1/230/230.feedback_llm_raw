@@ -1,0 +1,8 @@
+
+
+- `action(n4, "Both assessments complete")`: Hallucinated behavior; source states "After that, the eligibility of the applicant is assessed." with no intermediate completion acknowledgment step.
+- `action(n6, "Is applicant eligible")` & `precedence(n5, n6)` & `precedence(n6, b1)`: Incorrectly models a conditional decision as an executable action; the eligibility check is a branching condition that should be governed directly by guards on `b1`, not a separate task node.
+- `branch(b1, XOR)` (lacking `guard` statements): Omits required routing logic; fails to capture "If the applicant is eligible... If the applicant is not eligible...", leaving the exclusive choice unconditioned (violates SMC1/SMC4).
+- `action(n10, "End process after rejection")` & `action(n11, "End process after sending acceptance pack")`: Hallucinated transitional steps; source explicitly states the flow terminates immediately upon these events ("the loan application process ends", "Once the acceptance pack is sent, the process ends.").
+- `defines(v1, "Is applicant eligible", {})`: Empty range `{}` violates SMC6; the decision variable must reflect a defined value space (e.g., `{true, false}` or `{'eligible', 'not eligible'}`) to support the documented conditional paths.
+- `precedence(c1, n4)` & `precedence(n4, n5)`: Disrupts exact chronological mapping (SMC3) by inserting the artificial `n4` between the convergence of parallel tasks and the subsequent eligibility assessment.

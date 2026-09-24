@@ -1,0 +1,10 @@
+- action(n1, "start"): Hallucinated action. The source text states "start by recording the registration information", making recording the initial step rather than a separate "start" action.
+- branch(b1, XOR), action(n4, "end"), end(e1): Hallucinated branching and early termination after checking prerequisites. The source text describes a strictly sequential process with no exceptions.
+- branch(b2, XOR), action(n6, "end"), end(e2): Hallucinated branching and early termination after verifying student standing. The source text contains no such alternative path.
+- branch(b3, XOR), action(n11, "contact support"), end(e4): Hallucinated branching and "contact support" action after verifying fee payment. The source text does not mention this alternative path.
+- action(n10, "end"): Hallucinated action. The text specifies "This is where the process ends" after recording the student as registered, which corresponds to an end node, not an explicit action named "end".
+- defines(v1, "check: prerequisites", {}), defines(v2, "verify: student standing", {}), defines(v3, "verify: fee payment", {}): Hallucinated decision variables. The source text does not imply any decisions, conditions, or variables.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n11` has 0 guards; exactly one is required.

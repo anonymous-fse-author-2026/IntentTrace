@@ -1,0 +1,6 @@
+- `branch(b3, XOR)`: Declared as an exclusive choice but assigns the identical guard condition `v3 = 'No'` to two distinct outgoing edges (`c2`, `c3`), violating exclusive routing semantics.
+- `action(n10, "continue with process")` → `branch(b7, AND)`: Omits the documented conditional gate `"If the customer is a wholesaler"`, automatically triggering data entry and availability checks for all continuing customers rather than applying them selectively.
+- `converge(c2)` and `converge(c3)`: Receive incoming precedence edges from both `branch(b3, XOR)` and `branch(b7, AND)`, creating overlapping control-flow paths that redundantly execute `n11` and `n12`, deviating from the source's linear chronological structure.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b3` has overlapping guards at state [v3=No].

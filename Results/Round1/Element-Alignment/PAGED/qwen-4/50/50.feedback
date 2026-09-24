@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i1:At first, the doctor receives a request. (reason: No model element faithfully implements this unit; the sole candidate (action:n1) was flagged as a mutation for dropping the actor and timing context.)
+- [N2] Node-level omission: After receiving the request, the doctor sends an appointment. (reason: No model element faithfully implements this unit; the candidate action strips the conditional trigger and actor.)
+- [N3] Node-level omission: Once the appointment is sent, the doctor receives the symptoms. (reason: No model element faithfully implements this unit; the candidate action drops the preceding condition and actor.)
+- [N4] Node-level omission: Following the receipt of symptoms, the doctor sends a prescription pickup. (reason: No model element faithfully implements this unit; the candidate action omits the sequential trigger and actor.)
+- [N5] Node-level omission: After sending the prescription pickup, the doctor receives a medicine request. (reason: No model element faithfully implements this unit; the candidate action fails to preserve the dependency and actor.)
+- [N6] Node-level omission: Upon receiving the medicine request, the doctor sends the medicine. (reason: No model element faithfully implements this unit; the candidate action lacks the required condition and actor specification.)
+- [N7] Omitted trace (input 0): i1:At first, the doctor receives a request. -> i2:the doctor sends an appointment. -> i3:the doctor receives the symptoms. -> i4:the doctor sends a prescription pickup. -> i5:the doctor receives a medicine request. -> i6:the doctor sends the medicine. -> i7:Finally, the process ends.
+
+Addition
+- [N8] Added trace (model 0): init(i1) -> action(n1,"Receive Request") -> action(n2,"Send Appointment") -> action(n3,"Receive Symptoms") -> action(n4,"Send Prescription Pickup") -> action(n5,"Receive Medicine Request") -> action(n6,"Send Medicine") -> action(n7,"End Process") -> end(e1)
+
+Mutation
+- [N9] Node-level mutation: element=action(n1,"Receive Request"); source=i1:At first, the doctor receives a request.; reason=Drops the explicit actor 'the doctor' and removes the sequencing qualifier 'At first', violating the strict requirement to retain the same actor and granularity.
+- [N10] Node-level mutation: element=action(n2,"Send Appointment"); source=After receiving the request, the doctor sends an appointment.; reason=Strips the temporal/conditional connector 'After receiving the request' and omits the specified actor 'the doctor', altering the instruction's context.
+- [N11] Node-level mutation: element=action(n3,"Receive Symptoms"); source=Once the appointment is sent, the doctor receives the symptoms.; reason=Removes the preceding condition 'Once the appointment is sent' and drops the actor 'the doctor', failing to reproduce the full source unit.
+- [N12] Node-level mutation: element=action(n4,"Send Prescription Pickup"); source=Following the receipt of symptoms, the doctor sends a prescription pickup.; reason=Omits the sequential trigger 'Following the receipt of symptoms' and excludes the actor 'the doctor', changing the specification's completeness.
+- [N13] Node-level mutation: element=action(n5,"Receive Medicine Request"); source=After sending the prescription pickup, the doctor receives a medicine request.; reason=Drops the preceding step reference 'After sending the prescription pickup' and the actor 'the doctor', distorting the granular flow description.
+- [N14] Node-level mutation: element=action(n6,"Send Medicine"); source=Upon receiving the medicine request, the doctor sends the medicine.; reason=Strips the dependency clause 'Upon receiving the medicine request' and omits the actor 'the doctor', deviating from the strict faithful reproduction standard.

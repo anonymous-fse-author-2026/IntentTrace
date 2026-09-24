@@ -1,0 +1,8 @@
+- `branch(b1)` / `branch(b2)`: Missing `guard` statements on outgoing edges to enforce the explicit conditional logic ("If you are not hungry, take a shower. Otherwise, have breakfast." and "If you are still not hungry, take a shower. Otherwise, have breakfast."), leaving the XOR splits semantically undefined.
+- `action(n2, "are you hungry?")` / `action(n5, "still not hungry after first action?")`: Incorrectly models conditional evaluations as standalone executable actions instead of representing them as decision criteria attached to the branches, contradicting the source where these are purely gating conditions, not independent tasks.
+- `defines(v1, "are you hungry?", {})` / `defines(v2, "still not hungry after first action?", {})`: Uses empty ranges `{}` instead of a binary domain (e.g., `{true, false}` or `{"Hungry", "Not Hungry"}`), failing to faithfully reflect the dichotomous value space required by the source conditions.
+- `v1` / `v2`: Declared variables are never referenced in any `guard` statement, severing the logical connection between the data model and the control-flow choices described in the text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required.

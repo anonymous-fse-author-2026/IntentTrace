@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i5:if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance (reason: The conditional part ('if the order exceeds...') is dropped by the action and mutated by the guard, leaving the source logic without a faithful implementation.)
+- [N2] Node-level omission: i11:if no payments are received (reason: This condition is only represented by a mutated guard with an invented boolean variable, failing to faithfully implement the source text.)
+- [N3] Node-level omission: i16:if the order does not require installation (reason: This condition is only represented by a mutated guard with an invented boolean variable, failing to faithfully implement the source text.)
+
+Addition
+- [N4] Within matched traces (1->1) added: action(n13,"installation needs to be scheduled")
+- [N5] Within matched traces (2->5) added: action(n3,"Order with prior internal credit allowance")
+- [N6] Within matched traces (3->2) added: action(n3,"Order with prior internal credit allowance")
+- [N7] Within matched traces (3->2) added: action(n9,"Payments are Received")
+- [N8] Within matched traces (4->3) added: action(n3,"Order with prior internal credit allowance")
+- [N9] Within matched traces (5->4) added: action(n3,"Order with prior internal credit allowance")
+- [N10] Within matched traces (5->4) added: action(n13,"installation needs to be scheduled")
+
+Mutation
+- [N11] Node-level mutation: element=guard(b1,n4,"v1 = 'Yes'"); source=i3:If the condition is "Order with prior internal credit allowance"; reason=The guard replaces the explicit textual condition with an invented boolean logic ('v1 = 'Yes'').
+- [N12] Node-level mutation: element=action(n5,"Outstanding Balance") -> guard(b1,n5,"v1 = 'No'"); source=i5:if the order exceeds the purchaser's credit allowance, there will be an Outstanding Balance; reason=The action drops the 'if the order exceeds the purchaser's credit allowance' qualifier entirely, and the guard replaces it with an invented generic variable ('v1 = 'No'').
+- [N13] Node-level mutation: element=guard(b2,c1,"v2 = 'Yes'"); source=i9:If Payments are Received; reason=The guard replaces the explicit textual condition with an invented boolean logic ('v2 = 'Yes'').
+- [N14] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i11:if no payments are received; reason=The guard replaces the explicit textual condition with an invented boolean logic ('v2 = 'No'').
+- [N15] Node-level mutation: element=guard(b3,n14,"v3 = 'Yes'"); source=i14:If the installation needs to be scheduled; reason=The guard replaces the explicit textual condition with an invented boolean logic ('v3 = 'Yes'').
+- [N16] Node-level mutation: element=guard(b3,n16,"v3 = 'No'"); source=i16:if the order does not require installation; reason=The guard replaces the explicit textual condition with an invented boolean logic ('v3 = 'No'').

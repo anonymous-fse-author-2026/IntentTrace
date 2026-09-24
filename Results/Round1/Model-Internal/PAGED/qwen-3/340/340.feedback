@@ -1,0 +1,30 @@
+Omission
+- [N1] Node-level omission: i8:Once the part is received, the team can then contract the customer. (reason: The only action element mapped to this step (n9) mutates the verb to 'contact', failing to faithfully implement the source instruction. Per strict coverage rules, the unmutated execution of this unit is missing.)
+- [N2] Omitted trace (input 1): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i5:On the other hand, if they already have the availability information, they can proceed with the process. -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N3] Omitted trace (input 2): i1:For the Part Provision Team, the first step is to identify the parts. -> i2:identify the parts -> i6:If the parts are supplied to the customer, the team can also continue with the process. -> i9:After all the necessary parts are collected, the team can proceed with the payment. -> i10:Once the payment is made, the process comes to an end.
+- [N4] Within matched traces (0->2) omitted: i4:check the availability of the parts
+
+Addition
+- [N5] Node-level addition: action(n1,"start") (reason: Generic 'start' action step lacks any corresponding instruction or phrasing in the source text.)
+- [N6] Node-level addition: label(n4,n5,"Check if parts are available or need ordering") (reason: Synthesized transition label 'Check if parts are available or need ordering' is not stated anywhere in the source.)
+- [N7] Within matched traces (0->0) added: init(i1)
+- [N8] Within matched traces (0->0) added: action(n5,"do the parts need to be ordered and received from Disuki?")
+- [N9] Within matched traces (0->0) added: branch(b2,XOR)
+- [N10] Within matched traces (0->0) added: action(n6,"order part from Disuki")
+- [N11] Within matched traces (0->0) added: converge(c1)
+- [N12] Within matched traces (0->0) added: action(n9,"contact the customer")
+- [N13] Within matched traces (0->0) added: converge(c2)
+- [N14] Within matched traces (3->1) added: action(n3,"does the team need to elicit information from the customer?")
+- [N15] Within matched traces (3->1) added: branch(b1,XOR)
+- [N16] Within matched traces (3->1) added: action(n4,"check availability of the parts")
+- [N17] Within matched traces (3->1) added: converge(c2)
+- [N18] Within matched traces (0->2) added: init(i1)
+- [N19] Within matched traces (0->2) added: converge(c2)
+
+Mutation
+- [N20] Node-level mutation: element=action(n5,"do the parts need to be ordered and received from Disuki?"); source=i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=Distorts the source condition by replacing 'need to record customer details' with a question about whether parts need ordering, altering the decision trigger.
+- [N21] Node-level mutation: element=guard(b2,n6,"v2 = 'Order not needed  proceed'"); source=i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.; reason=Guard value 'Order not needed proceed' contradicts the source logic, which mandates ordering when the condition is met rather than skipping it.
+- [N22] Node-level mutation: element=action(n9,"contact the customer"); source=i8:Once the part is received, the team can then contract the customer.; reason=Substitutes the verb 'contact' for the source-specified 'contract', changing the instructed action.
+
+Permutation
+- [N23] Within matched traces (3->1) reordered: expected [i2:identify the parts] but observed [action(n1,"start")] elsewhere; in its place the model has [action(n2,"identify parts")]

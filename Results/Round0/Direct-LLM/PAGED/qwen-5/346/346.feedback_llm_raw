@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start the process")`: Hallucinated element; the source begins directly with "Initially, the appointment approval form is sent." without a generic initialization step.
+- `branch(b4, AND)` with `precedence(b4, n4)` and `precedence(b4, n5)`: Incorrect concurrency modeling; the source describes sequential steps ("Following the approval, there is a contact with TS... Once the approval is received, it is checked."), not parallel execution.
+- `action(n4, "contact TS to clarify timing")`: Dangling control flow; `n4` has no outgoing precedence statement, breaking process chronology and leaving an AND-split thread permanently unresolved.
+- `defines(v1, "is resource internal?", {})`, `defines(v2, "are there variations?", {})`, `defines(v3, "is there another variation?", {})`: Empty ranges `{}` fail to reflect the binary decision space required by the source conditions (should define explicit values like `{true, false}`).
+- `action(n16, "is there another variation?")`, `branch(b3, XOR)`, `action(n18, "complete business case")`, `action(n19, "continue process without second variations")`: Hallucinated branching; the source's near-identical repetition of "If there are no variations, the process continues. However, if there are variations, a business case is completed." does not introduce a secondary check or divergent paths.
+- `converge(c2)`: Misaligned join point; incorrectly merges flows originating from two different decision levels (`b2` and `b3`), distorting the intended progression after the variation decision.

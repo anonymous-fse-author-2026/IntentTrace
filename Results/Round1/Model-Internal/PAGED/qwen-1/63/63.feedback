@@ -1,0 +1,67 @@
+Omission
+- [N1] Within matched traces (0->4) omitted: i12:Finally, enter the password and verify it.
+- [N2] Within matched traces (1->1) omitted: i5:After that, go to iforgot.apple.com and proceed with Reset Password.
+- [N3] Within matched traces (2->2) omitted: i12:Finally, enter the password and verify it.
+- [N4] Within matched traces (4->4) omitted: i12:Finally, enter the password and verify it.
+
+Addition
+- [N5] Node-level addition: action(n3,"choose option") (reason: Generic placeholder 'choose option' lacks direct source support; the text specifies exact labeled choices ('Select Cancel', 'Reset password', 'Retry') rather than a generic selection step.)
+- [N6] Node-level addition: action(n10,"merge password reset steps") (reason: Element describes 'merge password reset steps', which is a modeling/structural artifact with no corresponding action or instruction in the source text.)
+- [N7] Node-level addition: action(n17,"end process") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N8] Added trace (model 0): init(i1) -> action(n1,"start Password Verification") -> action(n2,"verify Password") -> action(n3,"choose option") -> branch(b1,XOR) -> action(n4,"go to iforgot.apple.com") -> converge(c1) -> action(n9,"go to iforgot.apple.com and proceed with Reset Password") -> converge(c2) -> action(n10,"merge password reset steps") -> action(n11,"password reset complete return to iTunes purchases page") -> action(n12,"select price of item") -> action(n13,"prompt to Enter Password or Enter Apple ID") -> branch(b2,XOR) -> action(n14,"verify password") -> converge(c3) -> action(n17,"end process") -> end(e1)
+- [N9] Within matched traces (0->4) added: init(i1)
+- [N10] Within matched traces (0->4) added: action(n3,"choose option")
+- [N11] Within matched traces (0->4) added: action(n6,"re-enter password")
+- [N12] Within matched traces (0->4) added: action(n7,"verify Password again")
+- [N13] Within matched traces (0->4) added: converge(c2)
+- [N14] Within matched traces (0->4) added: action(n10,"merge password reset steps")
+- [N15] Within matched traces (0->4) added: converge(c3)
+- [N16] Within matched traces (0->4) added: action(n17,"end process")
+- [N17] Within matched traces (0->4) added: end(e1)
+- [N18] Within matched traces (1->1) added: init(i1)
+- [N19] Within matched traces (1->1) added: action(n3,"choose option")
+- [N20] Within matched traces (1->1) added: converge(c1)
+- [N21] Within matched traces (1->1) added: action(n9,"go to iforgot.apple.com and proceed with Reset Password")
+- [N22] Within matched traces (1->1) added: converge(c2)
+- [N23] Within matched traces (1->1) added: action(n10,"merge password reset steps")
+- [N24] Within matched traces (1->1) added: action(n13,"prompt to Enter Password or Enter Apple ID")
+- [N25] Within matched traces (1->1) added: converge(c3)
+- [N26] Within matched traces (1->1) added: action(n17,"end process")
+- [N27] Within matched traces (1->1) added: end(e1)
+- [N28] Within matched traces (2->2) added: init(i1)
+- [N29] Within matched traces (2->2) added: action(n3,"choose option")
+- [N30] Within matched traces (2->2) added: converge(c2)
+- [N31] Within matched traces (2->2) added: action(n10,"merge password reset steps")
+- [N32] Within matched traces (2->2) added: converge(c3)
+- [N33] Within matched traces (2->2) added: action(n17,"end process")
+- [N34] Within matched traces (2->2) added: end(e1)
+- [N35] Within matched traces (3->3) added: init(i1)
+- [N36] Within matched traces (3->3) added: action(n3,"choose option")
+- [N37] Within matched traces (3->3) added: converge(c2)
+- [N38] Within matched traces (3->3) added: action(n10,"merge password reset steps")
+- [N39] Within matched traces (3->3) added: action(n13,"prompt to Enter Password or Enter Apple ID")
+- [N40] Within matched traces (3->3) added: converge(c3)
+- [N41] Within matched traces (3->3) added: action(n17,"end process")
+- [N42] Within matched traces (3->3) added: end(e1)
+- [N43] Within matched traces (4->4) added: init(i1)
+- [N44] Within matched traces (4->4) added: action(n3,"choose option")
+- [N45] Within matched traces (4->4) added: action(n8,"go to iforgot.apple.com and proceed with Reset Password after retry")
+- [N46] Within matched traces (4->4) added: converge(c2)
+- [N47] Within matched traces (4->4) added: action(n10,"merge password reset steps")
+- [N48] Within matched traces (4->4) added: converge(c3)
+- [N49] Within matched traces (4->4) added: action(n17,"end process")
+- [N50] Within matched traces (4->4) added: end(e1)
+- [N51] Within matched traces (5->5) added: init(i1)
+- [N52] Within matched traces (5->5) added: action(n3,"choose option")
+- [N53] Within matched traces (5->5) added: action(n8,"go to iforgot.apple.com and proceed with Reset Password after retry")
+- [N54] Within matched traces (5->5) added: converge(c2)
+- [N55] Within matched traces (5->5) added: action(n10,"merge password reset steps")
+- [N56] Within matched traces (5->5) added: action(n13,"prompt to Enter Password or Enter Apple ID")
+- [N57] Within matched traces (5->5) added: converge(c3)
+- [N58] Within matched traces (5->5) added: action(n17,"end process")
+- [N59] Within matched traces (5->5) added: end(e1)
+
+Mutation
+- [N60] Node-level mutation: element=action(n7,"verify Password again"); source=i7:If you need to re-enter your password, do so and then verify it.; reason=The source unit instructs both re-entry and verification conditionally. The element only captures the verification half, dropping the re-entry instruction and conditional context entirely.
+- [N61] Node-level mutation: element=action(n8,"go to iforgot.apple.com and proceed with Reset Password after retry"); source=i5:After that, go to iforgot.apple.com and proceed with Reset Password.; reason=The source provides a straightforward directional instruction. The element invents the qualifier 'after retry', altering the instruction's scope and adding unsupported execution context.
+- [N62] Node-level mutation: element=action(n16,"verify password after entering Apple ID"); source=i12:Finally, enter the password and verify it.; reason=The source instructs a final combined entry-and-verification step. The element mutates this by adding 'after entering Apple ID' and dropping the explicit 'enter the password' directive.

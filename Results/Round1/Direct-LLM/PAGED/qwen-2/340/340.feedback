@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (0->0) omitted: i6:If the parts are supplied to the customer, the team can also continue with the process.
+- [N2] Within matched traces (0->0) omitted: i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.
+- [N3] Within matched traces (1->0) omitted: i7:However, if they need to record the customer's details, they should order and receive the part from Disuki.
+
+Addition
+- [N4] Node-level addition: label(n4,n8,"Check if parts are available or need ordering") (reason: No source supports a transition or decision linking checking availability directly to recording customer details; this label invents a conditional step not present in the text.)
+- [N5] Added trace (model 1): init(i1) -> action(n2,"identify parts") -> action(n3,"does the team need to elicit information from the customer?") -> branch(b1,XOR) -> converge(c2) -> action(n10,"collect all necessary parts") -> action(n11,"proceed with payment") -> action(n12,"end of process") -> end(e1)
+- [N6] Within matched traces (1->0) added: action(n3,"does the team need to elicit information from the customer?")
+- [N7] Within matched traces (1->0) added: action(n4,"check availability of the parts")
+
+Mutation
+- [N8] Node-level mutation: element=guard(b1,n4,"v1 = 'Need to check availability'"); source=i2:If the team needs to elicit information from the customer; reason=Guard value changes the branch condition from needing to elicit customer information to needing to check availability, altering the decision logic.
+- [N9] Node-level mutation: element=guard(b1,c2,"v1 = 'Proceed with process or after contacting customer'"); source=i4:if they already have the availability information, they can proceed with the process. -> i5:they can proceed with the process. -> i6:If the parts are supplied to the customer, the team can also continue with the process.; reason=Guard invents a mixed condition value that conflates proceeding with the process and contacting the customer, failing to capture the distinct source conditions for having availability info or supplied parts.
+- [N10] Node-level mutation: element=action(n9,"contact the customer"); source=i10:Once the part is received, the team can then contract the customer.; reason=Alters the target verb from 'contract' to 'contact', changing the intended business meaning/outcome.
+
+Permutation
+- [N11] Within matched traces (0->0) reordered: expected [i5:they can proceed with the process.] but observed [branch(b1,XOR) -> converge(c2)] elsewhere; in its place the model has [action(n4,"check availability of the parts")]
+- [N12] Within matched traces (1->0) reordered: expected [i5:they can proceed with the process.] but observed [converge(c2)] elsewhere; in its place the model has [action(n8,"record customer details")]

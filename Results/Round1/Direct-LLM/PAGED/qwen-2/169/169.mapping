@@ -1,0 +1,374 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:n2"
+      ],
+      "verbatim_texts": [
+        "The first step is to receive and categorize the invoice."
+      ],
+      "justification": "The opening sentence establishes the implicit process start and explicitly defines the first action step."
+    },
+    {
+      "refs": [
+        "branch:b1"
+      ],
+      "verbatim_texts": [
+        "If the instruction is to \"Forward Invoice to Admin Officer\", then the next step is to sort the invoice. However, if the instruction is to \"Reject invoice\", then the process ends there. On the other hand, if the instruction is to \"Return invoice to client for completion\", then the invoice is received and categorized again. Alternatively, if the instruction is to \"Process Invoice for SAP Entry\", then the invoice is forwarded for validation."
+      ],
+      "justification": "The XOR branch structurally captures the multi-way exclusive decision logic described in the full conditional paragraph."
+    },
+    {
+      "refs": [
+        "guard:b1->n4"
+      ],
+      "verbatim_texts": [
+        "If the instruction is to \"Forward Invoice to Admin Officer\""
+      ],
+      "justification": "Guard faithfully isolates the forward condition; action matches the resulting sorting step with identical wording."
+    },
+    {
+      "refs": [
+        "action:n4"
+      ],
+      "verbatim_texts": [
+        "sort the invoice"
+      ],
+      "justification": "Guard faithfully isolates the forward condition; action matches the resulting sorting step with identical wording."
+    },
+    {
+      "refs": [
+        "guard:b1->n5"
+      ],
+      "verbatim_texts": [
+        "if the instruction is to \"Reject invoice\""
+      ],
+      "justification": "Guard matches the rejection condition; action and structural end node correctly implement immediate termination."
+    },
+    {
+      "refs": [
+        "action:n5"
+      ],
+      "verbatim_texts": [
+        "then the process ends there"
+      ],
+      "justification": "Guard matches the rejection condition; action and structural end node correctly implement immediate termination."
+    },
+    {
+      "refs": [
+        "guard:b1->n6"
+      ],
+      "verbatim_texts": [
+        "if the instruction is to \"Return invoice to client for completion\""
+      ],
+      "justification": "Guard matches the return condition; action accurately restates the loop-back categorization step."
+    },
+    {
+      "refs": [
+        "action:n6"
+      ],
+      "verbatim_texts": [
+        "then the invoice is received and categorized again"
+      ],
+      "justification": "Guard matches the return condition; action accurately restates the loop-back categorization step."
+    },
+    {
+      "refs": [
+        "guard:b1->n7"
+      ],
+      "verbatim_texts": [
+        "if the instruction is to \"Process Invoice for SAP Entry\""
+      ],
+      "justification": "Guard matches the SAP entry condition; action matches the forwarding step."
+    },
+    {
+      "refs": [
+        "action:n7"
+      ],
+      "verbatim_texts": [
+        "then the invoice is forwarded for validation"
+      ],
+      "justification": "Guard matches the SAP entry condition; action matches the forwarding step."
+    },
+    {
+      "refs": [
+        "action:n8",
+        "action:n9"
+      ],
+      "verbatim_texts": [
+        "Once the invoice is forwarded for validation, it is then validated, and the process ends."
+      ],
+      "justification": "Actions and structural end node faithfully decompose the final validation clause and subsequent process termination."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [
+    {
+      "refs": [
+        "action:n3"
+      ],
+      "reason": "Invents a single aggregated question step that combines all four branch conditions into one node. No source unit describes this as a discrete action, and it does not faithfully implement the branching logic itself."
+    }
+  ],
+  "targets": [
+    {
+      "ref_id": "init:i1",
+      "kind": "init",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init i1"
+    },
+    {
+      "ref_id": "action:n2",
+      "kind": "action",
+      "node_id": "n2",
+      "gateway": "",
+      "string_value": "Receive and categorize the invoice",
+      "aliases": [
+        "action:n2",
+        "n2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n2: Receive and categorize the invoice"
+    },
+    {
+      "ref_id": "action:n3",
+      "kind": "action",
+      "node_id": "n3",
+      "gateway": "",
+      "string_value": "Instruction: Forward Invoice to Admin Officer or Reject invoice or Return invoice to client for completion or Process Invoice for SAP Entry?",
+      "aliases": [
+        "action:n3",
+        "n3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n3: Instruction: Forward Invoice to Admin Officer or Reject invoice or Return invoice to client for completion or Process Invoice for SAP Entry?"
+    },
+    {
+      "ref_id": "branch:b1",
+      "kind": "branch",
+      "node_id": "b1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b1",
+        "b1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b1 (XOR)"
+    },
+    {
+      "ref_id": "action:n4",
+      "kind": "action",
+      "node_id": "n4",
+      "gateway": "",
+      "string_value": "Sort the invoice",
+      "aliases": [
+        "action:n4",
+        "n4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n4: Sort the invoice"
+    },
+    {
+      "ref_id": "action:n5",
+      "kind": "action",
+      "node_id": "n5",
+      "gateway": "",
+      "string_value": "End process",
+      "aliases": [
+        "action:n5",
+        "n5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n5: End process"
+    },
+    {
+      "ref_id": "end:e1",
+      "kind": "end",
+      "node_id": "e1",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e1",
+        "e1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e1"
+    },
+    {
+      "ref_id": "action:n6",
+      "kind": "action",
+      "node_id": "n6",
+      "gateway": "",
+      "string_value": "Receive and categorize the invoice again",
+      "aliases": [
+        "action:n6",
+        "n6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n6: Receive and categorize the invoice again"
+    },
+    {
+      "ref_id": "action:n7",
+      "kind": "action",
+      "node_id": "n7",
+      "gateway": "",
+      "string_value": "Forward invoice for validation",
+      "aliases": [
+        "action:n7",
+        "n7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n7: Forward invoice for validation"
+    },
+    {
+      "ref_id": "action:n8",
+      "kind": "action",
+      "node_id": "n8",
+      "gateway": "",
+      "string_value": "Validate the invoice",
+      "aliases": [
+        "action:n8",
+        "n8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n8: Validate the invoice"
+    },
+    {
+      "ref_id": "action:n9",
+      "kind": "action",
+      "node_id": "n9",
+      "gateway": "",
+      "string_value": "End process",
+      "aliases": [
+        "action:n9",
+        "n9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action n9: End process"
+    },
+    {
+      "ref_id": "end:e2",
+      "kind": "end",
+      "node_id": "e2",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e2",
+        "e2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e2"
+    },
+    {
+      "ref_id": "guard:b1->n4",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Forward Invoice to Admin Officer'",
+      "aliases": [
+        "guard:b1->n4"
+      ],
+      "from": "b1",
+      "to": "n4",
+      "source_line": "guard b1->n4: v1 = 'Forward Invoice to Admin Officer'",
+      "guard": {
+        "from": "b1",
+        "to": "n4",
+        "condition": "v1 = 'Forward Invoice to Admin Officer'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Reject invoice'",
+      "aliases": [
+        "guard:b1->n5"
+      ],
+      "from": "b1",
+      "to": "n5",
+      "source_line": "guard b1->n5: v1 = 'Reject invoice'",
+      "guard": {
+        "from": "b1",
+        "to": "n5",
+        "condition": "v1 = 'Reject invoice'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Return invoice to client for completion'",
+      "aliases": [
+        "guard:b1->n6"
+      ],
+      "from": "b1",
+      "to": "n6",
+      "source_line": "guard b1->n6: v1 = 'Return invoice to client for completion'",
+      "guard": {
+        "from": "b1",
+        "to": "n6",
+        "condition": "v1 = 'Return invoice to client for completion'"
+      }
+    },
+    {
+      "ref_id": "guard:b1->n7",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v1 = 'Process Invoice for SAP Entry'",
+      "aliases": [
+        "guard:b1->n7"
+      ],
+      "from": "b1",
+      "to": "n7",
+      "source_line": "guard b1->n7: v1 = 'Process Invoice for SAP Entry'",
+      "guard": {
+        "from": "b1",
+        "to": "n7",
+        "condition": "v1 = 'Process Invoice for SAP Entry'"
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 11,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 1,
+    "match_relation_count": 12,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 12,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 1,
+    "unique_refs_covered": 13,
+    "total_mappable_targets": 16,
+    "input_text_length": 598,
+    "element_count": 16
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

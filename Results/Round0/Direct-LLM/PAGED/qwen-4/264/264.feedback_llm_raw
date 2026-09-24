@@ -1,0 +1,10 @@
+
+
+- action(n5, "is resource internal or external"): Incorrectly typed as an `action` when the source describes a conditional split ("If the resource is internal... If the resource is external..."); should be a `branch(XOR)`.
+- action(n3, "contact TS to clarify the timing"): Has incoming precedence from `b6` but zero outgoing `precedence` statements, creating a dead-end path that severs documented progression.
+- branch(b6, AND): Models parallel execution between `n3` and `n4`, but `n3`'s severed path breaks flow completeness and misrepresents the intended chronology.
+- defines(v1, ..., {}) through defines(v5, ..., {}): All decision variables use empty ranges `{}`, failing to reflect the explicit value spaces in the source (e.g., "internal"/"external", presence/absence of variations).
+- branch(b1), branch(b2), branch(b3), branch(b4), branch(b5): Lack corresponding `guard(...)` declarations to enforce the routing conditions explicitly stated in the text (e.g., "If the resource is internal", "if there are no variations").
+- action(n16, "complete business case"): Reached via `precedence(b4, n16)` but has no outgoing `precedence`, causing an unintended termination that bypasses `end(e1)`.
+- Control-flow chain involving b2, n13, b3, n14, b4, n17, b5: The source describes a single variation decision with two outcomes ("If there are no variations, the process continues. However, if there are variations, a business case is completed..."), but the model hallucinates multiple successive XOR branches and intermediate actions, creating unsupported structural complexity and dead paths.
+- action(n12, "does HR services receive the documentation"): Functions semantically as a decision gateway per the text, yet is modeled as an executable `action` preceding `branch(b2)`, obscuring the control-flow logic.

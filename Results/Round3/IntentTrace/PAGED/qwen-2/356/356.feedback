@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i5:deliver the freight and notify the delivery (reason: Clearly stated parallel step describing delivery and notification that is completely absent from the model, changing process behaviour.)
+- [N2] Omitted trace (input 2): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i6:If the request for merchandise return is lodged -> i10:If the return is accepted -> i11:proceed with accepting the merchandise return -> i18:proceed with returning the merchandise -> i20:the process ends with the merchandise being returned
+- [N3] Omitted trace (input 3): i1:To start the process -> i2:make sure the Freights are ready to be shipped -> i3:ship the freight -> i6:If the request for merchandise return is lodged -> i12:If the return is rejected -> i13:reject the merchandise return -> i19:the process ends with the merchandise return request being rejected
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=0 and out=2. | DSL: branch(b1,XOR)
+- [S2] STC12 failed: Every precedence relation must connect existing nodes. | Precedence edge `b2 -> n6` references unknown node(s). | Precedence edge `n6 -> b1` references unknown node(s). | DSL: guard(b2,n6,"v_cond = 'Return'"); branch(b1,XOR)
+- [S3] STC19 failed: Every non-init node must be reachable from the init node. | Violations: b1, e1, e2, n7, n8, n9 | DSL: branch(b1,XOR); end(e1); end(e2); action(n7,"Accept Merchandise Return"); action(n8,"Reject Merchandise Return"); action(n9,"Proceed with Returning Merchandise")
+- [S4] STC22 failed: Every node must be assigned to exactly one actor. | Actor `a_default` references unknown node `n6` in assigned_nodes.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b2` has no enabled outgoing guard at state [v_cond=Return].

@@ -1,0 +1,16 @@
+Omission
+- [N1] Omitted trace (input 3): i1:To begin the process, start with the Resupply Cycle Triggered step -> i2:followed by checking the Inventory Level. -> i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order. -> i7:On the other hand, if the Purchase Order is rejected, then rework the order. -> i9:In case the order needs to be reworked, review the Purchase Order again. -> i5:After creating the Purchase Order, move on to Reviewing the Purchase Order.
+
+Addition
+- [N2] Node-level addition: action(n6,"Check Purchase Order Approval") (reason: The content 'Check Purchase Order Approval' is invented and does not appear in any source unit. The approval condition is already fully implemented by branch:b2 and its guards, making this action an unsupported insertion.)
+- [N3] Within matched traces (1->0) added: action(n6,"Check Purchase Order Approval")
+- [N4] Within matched traces (2->1) added: action(n6,"Check Purchase Order Approval")
+
+Mutation
+- [N5] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i3:If the "Inventory level is at or below the minimum", then proceed to Create Purchase Order.; reason=The guard payload uses a generic boolean 'v1 = Yes' instead of preserving the explicit threshold condition 'Inventory level is at or below the minimum'.
+- [N6] Node-level mutation: element=guard(b1,e1,"v1 = 'No'"); source=i4:However, if the "Inventory Level is above the minimum", then the process ends.; reason=The guard payload uses 'v1 = No' instead of the explicit alternative condition 'Inventory Level is above the minimum'.
+- [N7] Node-level mutation: element=guard(b2,n7,"v2 = 'Yes'"); source=i6:If the Purchase Order is approved, then reserve the funds for the purchase.; reason=The guard payload uses 'v2 = Yes' instead of the explicit status condition 'Purchase Order is approved'.
+- [N8] Node-level mutation: element=guard(b2,n8,"v2 = 'No'"); source=i7:On the other hand, if the Purchase Order is rejected, then rework the order.; reason=The guard payload uses 'v2 = No' instead of the explicit status condition 'Purchase Order is rejected'.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=2 and out=1. | DSL: action(n5,"Review Purchase Order")

@@ -1,0 +1,9 @@
+
+
+- action(n1, "start WIGGO process"): Hallucinates an initialization step; the source begins directly with "placing an Order".
+- action(n4, "Credit Limit Okay"), action(n7, "Article Available"), action(n14, "Payment Received"), action(n17, "Reminder Count Ge 3"): Incorrectly model conditional decision outcomes as discrete task nodes preceding branches (b1–b4); the source describes these as immediate evaluation points, not separate executable steps.
+- action(n16, "End"), action(n19, "End"), action(n22, "End"): Redundantly introduce performative "End" tasks that duplicate the explicit end(e1), end(e2), end(e3) declarations; the source treats termination as a final state, not an actionable step.
+- action(n5, "Send Denial To Customer"): Left as a dangling node with no outgoing precedence; the path terminates prematurely without reaching a defined end() node, violating source completion expectations.
+- guard(b1, n6, v1 = 'Yes') / defines(v1, "Credit Limit Okay", {"No", "Yes"}): Uses 'Yes' to match the source's "Okay" response for the credit limit check; variable range and guard literals do not faithfully mirror the source terminology.
+- precedence(b3, n17) → b4 → guard(b4, n19, v4 = 'No') → n19 → e2: Abruptly terminates the process when the reminder count is less than 3, omitting the required "send a Reminder" step and any subsequent closure or re-evaluation implied by the source progression.
+- precedence(n18, n20) (action(n18, "Write Off the Order") → action(n20, "Send Reminder")): Forces "Send Reminder" sequentially after "Write Off the Order"; the source context indicates reminders apply to pending unpaid orders, whereas the model places it exclusively on the final write-off path, distorting control-flow logic.

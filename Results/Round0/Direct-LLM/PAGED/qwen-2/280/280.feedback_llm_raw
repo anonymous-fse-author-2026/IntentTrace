@@ -1,0 +1,7 @@
+
+
+- `action(n9)` / missing `precedence(n9, n6)`: Source states "If the PO needs to be reworked, it needs to be created again," but the model omits the feedback edge from `n9` to `action(n6)`, breaking the mandated rework cycle. (SMC3, SMC4, SMC5)
+- `branch(b3, XOR)`, `branch(b4, XOR)`, `defines(v3,...)`, `defines(v4,...)`, and corresponding guards: These elements hallucinate exclusive decision points and variables. The source describes straightforward sequential progression ("If the Packing Slip is received, proceed to receive the Invoice..."), containing no conditional choices or additional decision variables in this section. (SMC1, SMC4, SMC6)
+- `action(n16)` and `precedence(n15, n17)`: Source dictates "If the Invoice is received, proceed to the Three-way match," yet `action(n16)` is a dangling node with no outgoing precedence. The model incorrectly connects `action(n15)` to `n17` instead, severing the intended invoice-to-match dependency. (SMC3, SMC5)
+- `branch(b6, AND)` / missing convergence: The simultaneous funding and mailing steps split at `b6` but lack a `converge` node or synchronized precedence structure before the three-way match, violating the implicit requirement that both parallel tracks complete prior to matching. (SMC4)
+- `label(n15, n17, "Invoice Received")`: The label misrepresents the edge semantics; it annotates a transition originating from `n15` (which follows inventory receipt), whereas the source explicitly ties invoice receipt to proceeding to the three-way match. (SMC2, SMC3)

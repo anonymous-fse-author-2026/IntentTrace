@@ -1,0 +1,21 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i2:verify the completeness of the invoices
+
+Addition
+- [N2] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n3,"Proceed to verify completeness of invoices") -> converge(c1) -> action(n5,"Return uncompleted invoices to client via postal mail") -> action(n6,"Receive completed invoices from client") -> action(n7,"Mark relevant box on invoice entry form") -> action(n8,"Check if process has been completed") -> branch(b2,XOR) -> action(n9,"End") -> converge(c2) -> end(e2)
+- [N3] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Check if process has started in Admin Office") -> branch(b1,XOR) -> action(n4,"End") -> converge(c1) -> action(n5,"Return uncompleted invoices to client via postal mail") -> action(n6,"Receive completed invoices from client") -> action(n7,"Mark relevant box on invoice entry form") -> action(n8,"Check if process has been completed") -> branch(b2,XOR) -> action(n10,"Proceed to verify completeness of invoices") -> converge(c2) -> end(e2)
+- [N4] Within matched traces (0->1) added: init(i1)
+- [N5] Within matched traces (0->1) added: action(n6,"Receive completed invoices from client")
+- [N6] Within matched traces (0->1) added: action(n7,"Mark relevant box on invoice entry form")
+- [N7] Within matched traces (0->1) added: action(n8,"Check if process has been completed")
+- [N8] Within matched traces (0->1) added: branch(b2,XOR)
+- [N9] Within matched traces (0->1) added: converge(c2)
+- [N10] Within matched traces (0->1) added: end(e2)
+- [N11] Within matched traces (1->2) added: init(i1)
+- [N12] Within matched traces (1->2) added: converge(c1)
+- [N13] Within matched traces (1->2) added: action(n5,"Return uncompleted invoices to client via postal mail")
+- [N14] Within matched traces (1->2) added: converge(c2)
+- [N15] Within matched traces (1->2) added: end(e2)
+
+Mutation
+- [N16] Node-level mutation: element=guard(b2,n9,"v2 = 'Completed'") -> guard(b2,n10,"v2 = 'Uncompleted'"); source=i8:checking if the process has been completed; reason=The guards incorrectly reuse the invoice status values ('Completed'/'Uncompleted') for the process completion check, changing the semantic target of the condition.

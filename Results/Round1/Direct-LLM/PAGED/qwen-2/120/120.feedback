@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager. (reason: The source explicitly requires asking the developer before proceeding to the final feedback steps. No action element in the model captures this prerequisite instruction.)
+- [N2] Within matched traces (2->2) omitted: i9:Ask the developer and then provide feedback for the 1st Level support. Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+- [N3] Within matched traces (2->2) omitted: i10:Finally, provide feedback for the 1st Level support and then provide feedback for the account manager.
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Generic 'start' action duplicates the implicit process initiation already handled by init:i1 and lacks independent behavioral support in the source.)
+- [N5] Node-level addition: action(n5,"End process") (reason: Explicit 'End process' steps placed after the first and second resolution paths have no corresponding termination instructions in the source text, which only specifies ending the process once at the final stage.)
+- [N6] Node-level addition: action(n9,"End process") (reason: Explicit 'End process' steps placed after the first and second resolution paths have no corresponding termination instructions in the source text, which only specifies ending the process once at the final stage.)
+- [N7] Node-level addition: action(n11,"Is the issue resolved after re-assistance?") (reason: A third resolution check ('Is the issue resolved after re-assistance?') is entirely invented; the source text moves directly to final feedback and termination after the second developer assistance.)
+- [N8] Node-level addition: guard(b3,n12,"v3 = 'Resolved'") (reason: These guards impose artificial resolution/issue conditions on the final exit path, contradicting the source which states 'After that, provide feedback... and end the process' unconditionally.)
+- [N9] Node-level addition: guard(b3,n14,"v3 = '1st Level Issue'") (reason: These guards impose artificial resolution/issue conditions on the final exit path, contradicting the source which states 'After that, provide feedback... and end the process' unconditionally.)
+- [N10] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Ask 1st Level Support if there is an issue") -> action(n3,"Is the issue resolved?") -> branch(b1,XOR) -> action(n6,"Ask developer for assistance") -> action(n7,"Is the issue resolved now?") -> branch(b2,XOR) -> action(n10,"Ask developer for help again") -> action(n11,"Is the issue resolved after re-assistance?") -> branch(b3,XOR) -> action(n14,"Provide feedback for the 1st Level support") -> action(n15,"Provide feedback for the account manager") -> end(e4)
+- [N11] Within matched traces (0->0) added: init(i1)
+- [N12] Within matched traces (0->0) added: action(n1,"start")
+- [N13] Within matched traces (0->0) added: action(n5,"End process")
+- [N14] Within matched traces (0->0) added: end(e1)
+- [N15] Within matched traces (1->1) added: init(i1)
+- [N16] Within matched traces (1->1) added: action(n1,"start")
+- [N17] Within matched traces (1->1) added: action(n3,"Is the issue resolved?")
+- [N18] Within matched traces (1->1) added: action(n9,"End process")
+- [N19] Within matched traces (1->1) added: end(e2)
+- [N20] Within matched traces (2->2) added: init(i1)
+- [N21] Within matched traces (2->2) added: action(n1,"start")
+- [N22] Within matched traces (2->2) added: action(n3,"Is the issue resolved?")
+- [N23] Within matched traces (2->2) added: action(n11,"Is the issue resolved after re-assistance?")
+- [N24] Within matched traces (2->2) added: branch(b3,XOR)
+
+Mutation
+- [N25] Node-level mutation: element=action(n7,"Is the issue resolved now?"); source=i6:Then, check the result again. If the issue is resolved,; reason=The element content 'Is the issue resolved now?' introduces the temporal qualifier 'now' which is absent from the source text.
+- [N26] Node-level mutation: element=action(n10,"Ask developer for help again"); source=i7:If it is still a 1st Level issue, ask the developer for help.; reason=The element content 'Ask developer for help again' invents the qualifier 'again', altering the exact wording and scope of the original instruction.

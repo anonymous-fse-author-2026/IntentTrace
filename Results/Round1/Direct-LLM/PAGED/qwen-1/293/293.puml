@@ -1,0 +1,140 @@
+@startuml
+!theme plain
+|a_rec_mgr| Recruitment Manager
+|a_nl_mgr| Next Level Manager
+|a_client_hr| Client HR
+|a_ts_hr_coord| TS HR Coordinator
+|a_hr_rep| HR Representative
+|a_candidate| Candidate
+|a_rec_mgr|
+start
+:start TS recruitment;
+:advise unsuccessful candidates;
+:no more candidates?;
+:v1: no more candidates? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:re-advertise position;
+:end process;
+stop
+else ([v1 = 'No'])
+:terms and conditions need sorting?;
+:v2: terms and conditions need sorting? ({Yes, No}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:candidate accepted voluntary redundancy?;
+:v3: candidate accepted voluntary redundancy? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+|a_hr_rep|
+:conduct further investigation;
+|a_rec_mgr|
+else ([v3 = 'No'])
+|a_hr_rep|
+:proceed with recruitment process;
+|a_rec_mgr|
+endif
+else ([v2 = 'No'])
+|a_hr_rep|
+:proceed with recruitment process;
+|a_rec_mgr|
+endif
+:send Appointment Approval form;
+|a_nl_mgr|
+:receive Appointment Approval form by next level manager;
+:approver is existing client employee?;
+:v4: approver is existing client employee? ({No, Yes}); <<objectSignal>>
+if () then ([v4 = 'No'])
+:form not authorized by external resource;
+stop
+else ([v4 = 'Yes'])
+|a_rec_mgr|
+:form approved?;
+:v5: form approved? ({No, Yes}); <<objectSignal>>
+if () then ([v5 = 'No'])
+|a_nl_mgr|
+:form not approved by approver;
+stop
+|a_rec_mgr|
+else ([v5 = 'Yes'])
+:recruitment manager sends form and other documentation;
+|a_client_hr|
+:client HR receives form and documentation;
+:HR scans and records position in GovSource;
+:any variations?;
+:v6: any variations? ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:prepare complete business case;
+else ([v6 = 'No'])
+:continue process;
+endif
+|a_rec_mgr|
+:carry forward Appointment Approval;
+:position requires medical assessment?;
+:v7: position requires medical assessment? ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+|a_ts_hr_coord|
+:medical assessment applicable at 12 percent rate;
+:arrange and complete medical assessment within 21 days;
+|a_rec_mgr|
+else ([v7 = 'No'])
+|a_ts_hr_coord|
+:medical assessment not necessary;
+|a_rec_mgr|
+endif
+|a_ts_hr_coord|
+:TS HR coordinator informs recruitment manager;
+|a_hr_rep|
+:recruitment manager liaises with HR representative to confirm offer to candidate;
+|a_rec_mgr|
+:medical assessment satisfactory?;
+:v8: medical assessment satisfactory? ({No, Yes}); <<objectSignal>>
+if () then ([v8 = 'No'])
+|a_candidate|
+:contact next candidate on shortlist;
+stop
+|a_rec_mgr|
+else ([v8 = 'Yes'])
+:recruitment manager makes formal verbal offer of employment to candidate;
+split
+:candidate accepts verbal offer?;
+:v9: candidate accepts verbal offer? ({Yes, No}); <<objectSignal>>
+if () then ([v9 = 'Yes'])
+:create formal written offer;
+else ([v9 = 'No'])
+:continue process;
+endif
+split again
+:send commencement pack and letter of appointment to candidate;
+end split
+|a_candidate|
+:candidate receives documents;
+|a_rec_mgr|
+:rate is 40 percent?;
+:v10: rate is 40 percent? ({Yes, No}); <<objectSignal>>
+if () then ([v10 = 'Yes'])
+:renegotiation required;
+:renegotiation successful?;
+:v11: renegotiation successful? ({No, Yes}); <<objectSignal>>
+if () then ([v11 = 'No'])
+:identify next candidate on shortlist;
+:end process;
+stop
+else ([v11 = 'Yes'])
+->;
+endif
+else ([v10 = 'No'])
+|a_candidate|
+:v12: candidate accepts documents? ({Yes, No}); <<objectSignal>>
+if () then ([v12 = 'No'])
+stop
+else ([v12 = 'Yes'])
+->;
+endif
+|a_rec_mgr|
+endif
+stop
+endif
+endif
+|a_nl_mgr|
+endif
+|a_rec_mgr|
+endif
+@enduml

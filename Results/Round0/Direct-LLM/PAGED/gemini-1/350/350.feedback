@@ -1,0 +1,17 @@
+- `action(n1, "start the flickr login process")`: hallucinated action; the source text explicitly starts with "To start, please provide the userdata for flickr" without a preceding step.
+- `guard(b1, n5, v1 = 'Yes')`: incorrectly routes a successful login to `n5` ("do you want to try again"), contradicting the text "If the login is successful, the process will end."
+- `guard(b3, n10, v3 = 'Yes')`: incorrectly routes a successful login retry to `n10` ("do you want to try again after second failure").
+- `branch(b1, XOR)` and `branch(b3, XOR)`: missing guards for the outgoing edges to the successful login end states (`n4` and `n9`).
+- `branch(b2, XOR)` and `branch(b4, XOR)`: missing guards for the mutually exclusive outgoing edges representing the choices to "try again" (`n6`, `n11`) or "abort" (`n7`, `n12`).
+- `action(n8, "is the login successful after retry")`, `action(n13, "is the login successful after third try")`, and their respective branches (`b3`, `b5`): hallucinated steps not described in the source text, which only specifies providing userdata or aborting but omits the subsequent login checks.
+- `defines(v2, ...)`, `defines(v4, ...)`, and `defines(v5, ...)`: declared with empty ranges `{}`, failing to provide valid value spaces for the choices they represent.
+- `defines(v1, ...)` and `defines(v3, ...)`: defined with a single value `{"Yes"}`, omitting the necessary negative value to evaluate "if the login fails".
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `['Yes']`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `[]`. | Variable `v5` has an invalid range `[]`.
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n5` uses undefined variable `v1`. | Guard `v3 = 'Yes'` on `b3 -> n10` uses undefined variable `v3`. | DSL: guard(b1,n5,"v1 = 'Yes'"); guard(b3,n10,"v3 = 'Yes'")
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n12` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n14` has 0 guards; exactly one is required. | XOR/OR edge `b5 -> n15` has 0 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n5` cannot be evaluated: `v1` has no declared range. | Guard `v3 = 'Yes'` on `b3 -> n10` cannot be evaluated: `v3` has no declared range. | DSL: guard(b1,n5,"v1 = 'Yes'"); guard(b3,n10,"v3 = 'Yes'")
+- [L2] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b3` cannot be evaluated: `v3` has no declared range.

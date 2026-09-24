@@ -1,0 +1,51 @@
+Omission
+- [N1] Within matched traces (0->1) omitted: i4:At the same time,
+- [N2] Within matched traces (0->1) omitted: i18:Accept the merchandise return
+- [N3] Within matched traces (1->2) omitted: i4:At the same time,
+- [N4] Within matched traces (2->0) omitted: i4:At the same time,
+- [N5] Within matched traces (3->3) omitted: i4:At the same time,
+- [N6] Within matched traces (4->6) omitted: i4:At the same time,
+- [N7] Within matched traces (4->6) omitted: i18:Accept the merchandise return
+- [N8] Within matched traces (5->7) omitted: i4:At the same time,
+- [N9] Within matched traces (6->5) omitted: i4:At the same time,
+- [N10] Within matched traces (7->8) omitted: i4:At the same time,
+
+Addition
+- [N11] Node-level addition: guard(b1,n16,"v4 = 'Yes'") (reason: Invents a variable-based routing condition (v4 = 'Yes') for an implicit OR branch path that has no explicit counterpart in the source text.)
+- [N12] Node-level addition: guard(b4,e1,"v4 = 'No'") (reason: Invents a fallback condition path (v4 = 'No') leading to an unrelated end state not described in the source.)
+- [N13] Node-level addition: action(n18,"end with loss claim approved") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N14] Added trace (model 4): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n4,"deliver the freight") -> converge(c1) -> action(n6,"is request for merchandise return lodged?") -> branch(b1,OR) -> action(n16,"is loss claim report lodged?") -> branch(b4,OR) -> end(e1)
+- [N15] Added trace (model 9): init(i1) -> action(n1,"start the process") -> action(n2,"ensure Freights are ready to be shipped") -> action(n3,"ship the freight") -> branch(b5,AND) -> action(n5,"notify the delivery") -> converge(c1) -> action(n6,"is request for merchandise return lodged?") -> branch(b1,OR) -> action(n16,"is loss claim report lodged?") -> branch(b4,OR) -> end(e1)
+- [N16] Within matched traces (0->1) added: branch(b1,OR)
+- [N17] Within matched traces (0->1) added: action(n7,"has it been 5 days?")
+- [N18] Within matched traces (1->2) added: branch(b1,OR)
+- [N19] Within matched traces (1->2) added: action(n7,"has it been 5 days?")
+- [N20] Within matched traces (1->2) added: branch(b2,OR)
+- [N21] Within matched traces (1->2) added: action(n10,"is return accepted?")
+- [N22] Within matched traces (2->0) added: converge(c1)
+- [N23] Within matched traces (2->0) added: action(n6,"is request for merchandise return lodged?")
+- [N24] Within matched traces (3->3) added: converge(c1)
+- [N25] Within matched traces (3->3) added: action(n6,"is request for merchandise return lodged?")
+- [N26] Within matched traces (3->3) added: branch(b1,OR)
+- [N27] Within matched traces (3->3) added: action(n18,"end with loss claim approved")
+- [N28] Within matched traces (4->6) added: branch(b1,OR)
+- [N29] Within matched traces (4->6) added: action(n7,"has it been 5 days?")
+- [N30] Within matched traces (5->7) added: branch(b1,OR)
+- [N31] Within matched traces (5->7) added: action(n7,"has it been 5 days?")
+- [N32] Within matched traces (5->7) added: branch(b2,OR)
+- [N33] Within matched traces (5->7) added: action(n10,"is return accepted?")
+- [N34] Within matched traces (6->5) added: converge(c1)
+- [N35] Within matched traces (6->5) added: action(n6,"is request for merchandise return lodged?")
+- [N36] Within matched traces (7->8) added: converge(c1)
+- [N37] Within matched traces (7->8) added: action(n6,"is request for merchandise return lodged?")
+- [N38] Within matched traces (7->8) added: branch(b1,OR)
+- [N39] Within matched traces (7->8) added: action(n18,"end with loss claim approved")
+
+Mutation
+- [N40] Node-level mutation: element=guard(b1,n7,"v1 = 'Yes'") -> guard(b2,n8,"v2 = 'Yes'"); source=i8:If it has been 5 days; reason=Guards substitute the actual time-condition with artificial variable checks (v1/v2 = 'Yes'), altering the payload.
+- [N41] Node-level mutation: element=guard(b2,n10,"v1 = 'Yes'") -> guard(b3,n11,"v3 = 'Yes'"); source=i10:If the return is accepted; reason=Guards substitute the acceptance condition with artificial variable checks (v1/v3 = 'Yes'), distorting the source logic.
+- [N42] Node-level mutation: element=guard(b3,n14,"v3 = 'No'"); source=i12:If the return is rejected; reason=Guard substitutes the rejection condition with an artificial variable check (v3 = 'No') instead of faithfully representing the source text.
+- [N43] Node-level mutation: element=guard(b4,n17,"v4 = 'Yes'"); source=i14:If a loss claim report is lodged; reason=Guard substitutes the loss claim condition with an artificial variable check (v4 = 'Yes'), losing the original predicate.
+
+Logical Sanity Check
+- [L1] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` has no enabled outgoing guard at state [v1=No, v4=No]. | Branch `b2` has no enabled outgoing guard at state [v1=No, v2=No].

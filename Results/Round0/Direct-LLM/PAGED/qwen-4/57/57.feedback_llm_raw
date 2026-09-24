@@ -1,0 +1,11 @@
+
+
+- action(n1, "start"): Hallucinates an initial step; the source begins directly with "the customer needs to make a purchase and then connect to the website." (SMC1)
+- action(n6, "continue shopping"): Lacks outgoing precedence edges; the source states selecting this option means the customer should "continue with the process", but the model leaves it as a terminal dead-end. (SMC1, SMC5)
+- action(n9, "checkout tasks completed?") & branch(b2, XOR): Hallucinates a decision gate; the source transitions directly from parallel task completion to the credit card/inventory check without an intermediate verification step. (SMC1, SMC4)
+- guard(b2, n17, ...) & action(n17, "checkout tasks not completed"): Hallucinates a failure path; the source only terminates the process if the "credit card is denied or there is no inventory in stock", not for incomplete checkout tasks. (SMC1, SMC5)
+- action(n10, "credit card approved and inventory in stock?"): Misclassifies a routing condition as an executable action; decision criteria should govern gateway routing via guards or branch logic, not stand as independent actions preceding branch(b3, XOR). (SMC2, SMC4)
+- branch(b3, XOR) splitting to action(n11,...) and action(n16,...): Violates source progression; the text mandates that "In either case, the order confirmation number should be displayed", requiring the approval and denial paths to merge before this step rather than diverge permanently. (SMC1, SMC4, SMC5)
+- defines(v1, ...) and defines(v3, ...): Specify empty ranges {}; these fail to represent any meaningful decision space referenced in the process. (SMC6)
+- defines(v2, "checkout tasks completed?", ...): Uses a hallucinated variable name and incomplete range; neither appears in the source text. (SMC1, SMC2, SMC6)
+- actor(a_default, "Default", [...]): Uniformly assigns all nodes to a generic participant; the source explicitly identifies "the customer" as the responsible actor for the described activities. (SMC7)

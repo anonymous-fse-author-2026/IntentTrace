@@ -1,0 +1,11 @@
+- `branch(b1, XOR)` missing `guard` statements: Lacks conditional logic to route control to `n5` or `n7`. Source requires explicit evaluation: "If the inventory is below or equal to the minimum..." versus "If the inventory is greater than the minimum...".
+- `action(n7, ...)` lacking outgoing `precedence` edges: Functions as a dead end. Source mandates immediate continuation: "If the report indicates that the inventory is equal to or below the minimum, create Purchase Orders (POs)."
+- Omitted PO workflow and concurrency (SMC1/SMC4): Completely missing PO creation, review, approval/rejection decision, rerework loop, and system release. Source explicitly details: "create Purchase Orders (POs)... reviewed... If the PO is rejected, it needs to be reworked... If the PO is approved, it is printed and released... Simultaneously, reserve funds... and mail the POs..."
+- Omitted receiving, matching, and payment sequence (SMC1/SMC5): Fails to model the terminal workflow phase. Source requires: "receive the Packing Slip... receive the inventory... receive the Invoice... proceed to the Three-way match... release the funds... issue the payment... process ends."
+- `defines(v1, "is inventory below or equal to minimum?", {})`: The value range `{}` is empty and non-operational. Source implies a decision domain requiring defined values (e.g., `{true, false}` or numeric intervals) to evaluate the threshold condition.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"generate equal to or below minimum report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"generate equal to or below minimum report")

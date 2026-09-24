@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:To begin the process, Rental Items are Returned to the Store.;
+:If the Customer returns the items to the store, then we can continue the process. However, if the Delivery Crew picks-up items at the event site, then we also continue the process.;
+:v1: How were the items returned? ({Customer returns the items to the store, Delivery Crew picks-up items at the event site}); <<objectSignal>>
+if () then ([v1 = "Customer returns the items to the store"] [v1 = "Delivery Crew picks-up items at the event site"])
+->;
+else ([v1 = "Customer returns the items to the store"] [v1 = "Delivery Crew picks-up items at the event site"])
+->;
+endif
+:During this step, the items are counted and compared to the original contract.;
+:If the Order is complete and all items were returned, then we proceed with the process. However, if the Order is incomplete and items are missing, we still continue the process. Similarly, if the Order is complete but items are damaged, we email the customer to inform them of the damage and additional charges.;
+:v2: Order status? ({Incomplete and items are missing, Complete but items are damaged, Complete and all items were returned}); <<objectSignal>>
+switch ()
+case ([v2 = "Incomplete and items are missing"])
+:In case of missing items and replacement charges, we email the customer to inform them.;
+:If the Customer returns the missing items, we continue the process. However, if the Customer does not return the missing items, we still continue the process.;
+:v3: Customer returns the missing items? ({Customer returns the missing items, Customer does not return the missing items}); <<objectSignal>>
+if () then ([v3 = "Customer returns the missing items"] [v3 = "Customer does not return the missing items"])
+->;
+else ([v3 = "Customer returns the missing items"] [v3 = "Customer does not return the missing items"])
+->;
+endif
+case ([v2 = "Complete but items are damaged"])
+:we email the customer to inform them of the damage and additional charges;
+:Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory.;
+:If the Items are repaired and added into inventory, we continue the process. On the other hand, if the Items can't be repaired and are discarded, we email the customer with replacement charges.;
+:v4: Items repair status? ({Items are repaired and added into inventory, Items can't be repaired and are discarded}); <<objectSignal>>
+if () then ([v4 = "Items are repaired and added into inventory"])
+:If the Items are repaired and added into inventory, we continue the process.;
+else ([v4 = "Items can't be repaired and are discarded"])
+:if the Items can't be repaired and are discarded, we email the customer with replacement charges.;
+:Email customer with replacement charges;
+endif
+case ([v2 = "Complete and all items were returned"])
+endswitch
+:Lastly, the items are packed for an existing order. If the Items are packed for an existing order, we continue the process. If the Items are stored for future orders, we also continue the process.;
+:v5: Items packed for an existing order? ({Items are packed for an existing order, Items are stored for future orders}); <<objectSignal>>
+if () then ([v5 = "Items are packed for an existing order"] [v5 = "Items are stored for future orders"])
+->;
+else ([v5 = "Items are packed for an existing order"] [v5 = "Items are stored for future orders"])
+->;
+endif
+:The customer is then emailed with replacement charges, and the process is complete.;
+:Finally, when the process is complete, it ends.;
+stop
+@enduml

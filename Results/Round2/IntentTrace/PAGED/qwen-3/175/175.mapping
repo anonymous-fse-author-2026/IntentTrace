@@ -1,0 +1,884 @@
+{
+  "matches": [
+    {
+      "refs": [
+        "action:i1"
+      ],
+      "verbatim_texts": [
+        "To begin the process, Rental Items are Returned to the Store."
+      ],
+      "justification": "Start node and initial action directly correspond to the opening unit."
+    },
+    {
+      "refs": [
+        "action:i2",
+        "guard:b_ret->i2"
+      ],
+      "verbatim_texts": [
+        "If the \"Customer returns the items to the store,\" then we can continue the process."
+      ],
+      "justification": "Models the first branch option and its guard condition."
+    },
+    {
+      "refs": [
+        "action:i3",
+        "guard:b_ret->i3"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Delivery Crew picks-up items at the event site,\" then we also continue the process."
+      ],
+      "justification": "Models the alternative branch option, guard, and subsequent flow convergence."
+    },
+    {
+      "refs": [
+        "action:i4"
+      ],
+      "verbatim_texts": [
+        "During this step, the items are counted and compared to the original contract."
+      ],
+      "justification": "Direct match for the inventory verification step."
+    },
+    {
+      "refs": [
+        "action:i5",
+        "guard:b_stat->i5"
+      ],
+      "verbatim_texts": [
+        "If the \"Order is complete and all items were returned,\" then we proceed with the process."
+      ],
+      "justification": "First arm of the order status decision split."
+    },
+    {
+      "refs": [
+        "action:i6",
+        "guard:b_stat->i6"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Order is incomplete and items are missing,\" we still continue the process."
+      ],
+      "justification": "Second arm handling missing items scenario."
+    },
+    {
+      "refs": [
+        "action:i7",
+        "guard:b_stat->i7"
+      ],
+      "verbatim_texts": [
+        "Similarly, if the \"Order is complete but items are damaged,\" we email the customer to inform them of the damage and additional charges."
+      ],
+      "justification": "Third arm handling damaged items, including the email notification."
+    },
+    {
+      "refs": [
+        "action:i8",
+        "guard:b_pck1->i8"
+      ],
+      "verbatim_texts": [
+        "After this, if the \"Items are packed for an existing order,\" we continue the process."
+      ],
+      "justification": "First option for item disposition."
+    },
+    {
+      "refs": [
+        "action:i9",
+        "guard:b_pck1->i9"
+      ],
+      "verbatim_texts": [
+        "Alternatively, if the \"Items are stored for future orders,\" we also continue the process."
+      ],
+      "justification": "Alternative storage option and flow rejoin."
+    },
+    {
+      "refs": [
+        "action:i10"
+      ],
+      "verbatim_texts": [
+        "In case of missing items and replacement charges, we email the customer to inform them."
+      ],
+      "justification": "Captures the notification step for missing items/charges."
+    },
+    {
+      "refs": [
+        "action:i12",
+        "guard:b_cus->i12"
+      ],
+      "verbatim_texts": [
+        "If the \"Customer returns the missing items,\" we continue the process."
+      ],
+      "justification": "Positive branch for customer returning missing items."
+    },
+    {
+      "refs": [
+        "action:i13",
+        "guard:b_cus->i13"
+      ],
+      "verbatim_texts": [
+        "However, if the \"Customer does not return the missing items,\" we still continue the process."
+      ],
+      "justification": "Negative branch for customer not returning items, with flow convergence."
+    },
+    {
+      "refs": [
+        "action:i11"
+      ],
+      "verbatim_texts": [
+        "Additionally, if there are damaged items and additional charges, we temporarily take them out of inventory."
+      ],
+      "justification": "Direct match for removing damaged items from inventory."
+    },
+    {
+      "refs": [
+        "action:i14",
+        "guard:b_rep->i14"
+      ],
+      "verbatim_texts": [
+        "If the \"Items are repaired and added into inventory,\" we continue the process."
+      ],
+      "justification": "Branch arm for successful repair and inventory restoration."
+    },
+    {
+      "refs": [
+        "action:i15",
+        "guard:b_rep->i15"
+      ],
+      "verbatim_texts": [
+        "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+      ],
+      "justification": "Branch arm for discarded items."
+    },
+    {
+      "refs": [
+        "action:i_email_dmg"
+      ],
+      "verbatim_texts": [
+        "On the other hand, if the \"Items can't be repaired and are discarded,\" we email the customer with replacement charges."
+      ],
+      "justification": "Extracts the explicit email action from the discard condition and rejoins the flow."
+    },
+    {
+      "refs": [
+        "action:i17",
+        "guard:b_i16->i17"
+      ],
+      "verbatim_texts": [
+        "Lastly, the items are packed for an existing order."
+      ],
+      "justification": "Final disposition branch for existing orders."
+    },
+    {
+      "refs": [
+        "action:i18",
+        "guard:b_i16->i18"
+      ],
+      "verbatim_texts": [
+        "If the \"Items are stored for future orders,\" we also continue the process."
+      ],
+      "justification": "Final storage option, global convergence, and process termination align with the concluding flow."
+    }
+  ],
+  "mutations": [],
+  "omissions": [],
+  "additions": [],
+  "targets": [
+    {
+      "ref_id": "init:p_start",
+      "kind": "init",
+      "node_id": "p_start",
+      "gateway": "",
+      "string_value": "init",
+      "aliases": [
+        "init:p_start",
+        "p_start"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "init p_start"
+    },
+    {
+      "ref_id": "action:i1",
+      "kind": "action",
+      "node_id": "i1",
+      "gateway": "",
+      "string_value": "Rental Items are Returned to the Store",
+      "aliases": [
+        "action:i1",
+        "i1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i1: Rental Items are Returned to the Store"
+    },
+    {
+      "ref_id": "branch:b_ret",
+      "kind": "branch",
+      "node_id": "b_ret",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_ret",
+        "b_ret"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_ret (XOR)"
+    },
+    {
+      "ref_id": "action:i2",
+      "kind": "action",
+      "node_id": "i2",
+      "gateway": "",
+      "string_value": "Customer returns the items to the store",
+      "aliases": [
+        "action:i2",
+        "i2"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i2: Customer returns the items to the store"
+    },
+    {
+      "ref_id": "action:i3",
+      "kind": "action",
+      "node_id": "i3",
+      "gateway": "",
+      "string_value": "Delivery Crew picks-up items at the event site",
+      "aliases": [
+        "action:i3",
+        "i3"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i3: Delivery Crew picks-up items at the event site"
+    },
+    {
+      "ref_id": "converge:c_ret",
+      "kind": "converge",
+      "node_id": "c_ret",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_ret",
+        "c_ret"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_ret"
+    },
+    {
+      "ref_id": "action:i4",
+      "kind": "action",
+      "node_id": "i4",
+      "gateway": "",
+      "string_value": "During this step, the items are counted and compared to the original contract",
+      "aliases": [
+        "action:i4",
+        "i4"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i4: During this step, the items are counted and compared to the original contract"
+    },
+    {
+      "ref_id": "branch:b_stat",
+      "kind": "branch",
+      "node_id": "b_stat",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_stat",
+        "b_stat"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_stat (XOR)"
+    },
+    {
+      "ref_id": "action:i5",
+      "kind": "action",
+      "node_id": "i5",
+      "gateway": "",
+      "string_value": "Order is complete and all items were returned",
+      "aliases": [
+        "action:i5",
+        "i5"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i5: Order is complete and all items were returned"
+    },
+    {
+      "ref_id": "action:i6",
+      "kind": "action",
+      "node_id": "i6",
+      "gateway": "",
+      "string_value": "Order is incomplete and items are missing",
+      "aliases": [
+        "action:i6",
+        "i6"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i6: Order is incomplete and items are missing"
+    },
+    {
+      "ref_id": "action:i7",
+      "kind": "action",
+      "node_id": "i7",
+      "gateway": "",
+      "string_value": "Order is complete but items are damaged",
+      "aliases": [
+        "action:i7",
+        "i7"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i7: Order is complete but items are damaged"
+    },
+    {
+      "ref_id": "branch:b_pck1",
+      "kind": "branch",
+      "node_id": "b_pck1",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_pck1",
+        "b_pck1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_pck1 (XOR)"
+    },
+    {
+      "ref_id": "action:i8",
+      "kind": "action",
+      "node_id": "i8",
+      "gateway": "",
+      "string_value": "Items are packed for an existing order",
+      "aliases": [
+        "action:i8",
+        "i8"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i8: Items are packed for an existing order"
+    },
+    {
+      "ref_id": "action:i9",
+      "kind": "action",
+      "node_id": "i9",
+      "gateway": "",
+      "string_value": "Items are stored for future orders",
+      "aliases": [
+        "action:i9",
+        "i9"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i9: Items are stored for future orders"
+    },
+    {
+      "ref_id": "converge:c_pck1",
+      "kind": "converge",
+      "node_id": "c_pck1",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_pck1",
+        "c_pck1"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_pck1"
+    },
+    {
+      "ref_id": "action:i10",
+      "kind": "action",
+      "node_id": "i10",
+      "gateway": "",
+      "string_value": "email customer with replacement charges",
+      "aliases": [
+        "action:i10",
+        "i10"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i10: email customer with replacement charges"
+    },
+    {
+      "ref_id": "branch:b_cus",
+      "kind": "branch",
+      "node_id": "b_cus",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_cus",
+        "b_cus"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_cus (XOR)"
+    },
+    {
+      "ref_id": "action:i12",
+      "kind": "action",
+      "node_id": "i12",
+      "gateway": "",
+      "string_value": "Customer returns the missing items",
+      "aliases": [
+        "action:i12",
+        "i12"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i12: Customer returns the missing items"
+    },
+    {
+      "ref_id": "action:i13",
+      "kind": "action",
+      "node_id": "i13",
+      "gateway": "",
+      "string_value": "Customer does not return the missing items",
+      "aliases": [
+        "action:i13",
+        "i13"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i13: Customer does not return the missing items"
+    },
+    {
+      "ref_id": "converge:c_cus",
+      "kind": "converge",
+      "node_id": "c_cus",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_cus",
+        "c_cus"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_cus"
+    },
+    {
+      "ref_id": "action:i11",
+      "kind": "action",
+      "node_id": "i11",
+      "gateway": "",
+      "string_value": "temporarily take damaged items out of inventory",
+      "aliases": [
+        "action:i11",
+        "i11"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i11: temporarily take damaged items out of inventory"
+    },
+    {
+      "ref_id": "branch:b_rep",
+      "kind": "branch",
+      "node_id": "b_rep",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_rep",
+        "b_rep"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_rep (XOR)"
+    },
+    {
+      "ref_id": "action:i14",
+      "kind": "action",
+      "node_id": "i14",
+      "gateway": "",
+      "string_value": "Items are repaired and added into inventory",
+      "aliases": [
+        "action:i14",
+        "i14"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i14: Items are repaired and added into inventory"
+    },
+    {
+      "ref_id": "action:i15",
+      "kind": "action",
+      "node_id": "i15",
+      "gateway": "",
+      "string_value": "Items can't be repaired and are discarded",
+      "aliases": [
+        "action:i15",
+        "i15"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i15: Items can't be repaired and are discarded"
+    },
+    {
+      "ref_id": "action:i_email_dmg",
+      "kind": "action",
+      "node_id": "i_email_dmg",
+      "gateway": "",
+      "string_value": "email customer with replacement charges",
+      "aliases": [
+        "action:i_email_dmg",
+        "i_email_dmg"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i_email_dmg: email customer with replacement charges"
+    },
+    {
+      "ref_id": "converge:c_rep",
+      "kind": "converge",
+      "node_id": "c_rep",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_rep",
+        "c_rep"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_rep"
+    },
+    {
+      "ref_id": "converge:c_all",
+      "kind": "converge",
+      "node_id": "c_all",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_all",
+        "c_all"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_all"
+    },
+    {
+      "ref_id": "branch:b_i16",
+      "kind": "branch",
+      "node_id": "b_i16",
+      "gateway": "XOR",
+      "string_value": "branch",
+      "aliases": [
+        "branch:b_i16",
+        "b_i16"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "branch b_i16 (XOR)"
+    },
+    {
+      "ref_id": "action:i17",
+      "kind": "action",
+      "node_id": "i17",
+      "gateway": "",
+      "string_value": "Items are packed for an existing order",
+      "aliases": [
+        "action:i17",
+        "i17"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i17: Items are packed for an existing order"
+    },
+    {
+      "ref_id": "action:i18",
+      "kind": "action",
+      "node_id": "i18",
+      "gateway": "",
+      "string_value": "Items are stored for future orders",
+      "aliases": [
+        "action:i18",
+        "i18"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "action i18: Items are stored for future orders"
+    },
+    {
+      "ref_id": "converge:c_final",
+      "kind": "converge",
+      "node_id": "c_final",
+      "gateway": "",
+      "string_value": "converge",
+      "aliases": [
+        "converge:c_final",
+        "c_final"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "converge c_final"
+    },
+    {
+      "ref_id": "end:e_end",
+      "kind": "end",
+      "node_id": "e_end",
+      "gateway": "",
+      "string_value": "end",
+      "aliases": [
+        "end:e_end",
+        "e_end"
+      ],
+      "from": null,
+      "to": null,
+      "source_line": "end e_end"
+    },
+    {
+      "ref_id": "guard:b_ret->i2",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_ret = \"store\"",
+      "aliases": [
+        "guard:b_ret->i2"
+      ],
+      "from": "b_ret",
+      "to": "i2",
+      "source_line": "guard b_ret->i2: v_ret = \"store\"",
+      "guard": {
+        "from": "b_ret",
+        "to": "i2",
+        "condition": "v_ret = \"store\""
+      }
+    },
+    {
+      "ref_id": "guard:b_ret->i3",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_ret = \"site\"",
+      "aliases": [
+        "guard:b_ret->i3"
+      ],
+      "from": "b_ret",
+      "to": "i3",
+      "source_line": "guard b_ret->i3: v_ret = \"site\"",
+      "guard": {
+        "from": "b_ret",
+        "to": "i3",
+        "condition": "v_ret = \"site\""
+      }
+    },
+    {
+      "ref_id": "guard:b_stat->i5",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stat = \"complete\"",
+      "aliases": [
+        "guard:b_stat->i5"
+      ],
+      "from": "b_stat",
+      "to": "i5",
+      "source_line": "guard b_stat->i5: v_stat = \"complete\"",
+      "guard": {
+        "from": "b_stat",
+        "to": "i5",
+        "condition": "v_stat = \"complete\""
+      }
+    },
+    {
+      "ref_id": "guard:b_stat->i6",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stat = \"incomplete\"",
+      "aliases": [
+        "guard:b_stat->i6"
+      ],
+      "from": "b_stat",
+      "to": "i6",
+      "source_line": "guard b_stat->i6: v_stat = \"incomplete\"",
+      "guard": {
+        "from": "b_stat",
+        "to": "i6",
+        "condition": "v_stat = \"incomplete\""
+      }
+    },
+    {
+      "ref_id": "guard:b_stat->i7",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_stat = \"damaged\"",
+      "aliases": [
+        "guard:b_stat->i7"
+      ],
+      "from": "b_stat",
+      "to": "i7",
+      "source_line": "guard b_stat->i7: v_stat = \"damaged\"",
+      "guard": {
+        "from": "b_stat",
+        "to": "i7",
+        "condition": "v_stat = \"damaged\""
+      }
+    },
+    {
+      "ref_id": "guard:b_pck1->i8",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pck1 = \"packed\"",
+      "aliases": [
+        "guard:b_pck1->i8"
+      ],
+      "from": "b_pck1",
+      "to": "i8",
+      "source_line": "guard b_pck1->i8: v_pck1 = \"packed\"",
+      "guard": {
+        "from": "b_pck1",
+        "to": "i8",
+        "condition": "v_pck1 = \"packed\""
+      }
+    },
+    {
+      "ref_id": "guard:b_pck1->i9",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_pck1 = \"stored\"",
+      "aliases": [
+        "guard:b_pck1->i9"
+      ],
+      "from": "b_pck1",
+      "to": "i9",
+      "source_line": "guard b_pck1->i9: v_pck1 = \"stored\"",
+      "guard": {
+        "from": "b_pck1",
+        "to": "i9",
+        "condition": "v_pck1 = \"stored\""
+      }
+    },
+    {
+      "ref_id": "guard:b_cus->i12",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cus = \"returns\"",
+      "aliases": [
+        "guard:b_cus->i12"
+      ],
+      "from": "b_cus",
+      "to": "i12",
+      "source_line": "guard b_cus->i12: v_cus = \"returns\"",
+      "guard": {
+        "from": "b_cus",
+        "to": "i12",
+        "condition": "v_cus = \"returns\""
+      }
+    },
+    {
+      "ref_id": "guard:b_cus->i13",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_cus = \"not_returns\"",
+      "aliases": [
+        "guard:b_cus->i13"
+      ],
+      "from": "b_cus",
+      "to": "i13",
+      "source_line": "guard b_cus->i13: v_cus = \"not_returns\"",
+      "guard": {
+        "from": "b_cus",
+        "to": "i13",
+        "condition": "v_cus = \"not_returns\""
+      }
+    },
+    {
+      "ref_id": "guard:b_rep->i14",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rep = \"repaired\"",
+      "aliases": [
+        "guard:b_rep->i14"
+      ],
+      "from": "b_rep",
+      "to": "i14",
+      "source_line": "guard b_rep->i14: v_rep = \"repaired\"",
+      "guard": {
+        "from": "b_rep",
+        "to": "i14",
+        "condition": "v_rep = \"repaired\""
+      }
+    },
+    {
+      "ref_id": "guard:b_rep->i15",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_rep = \"discarded\"",
+      "aliases": [
+        "guard:b_rep->i15"
+      ],
+      "from": "b_rep",
+      "to": "i15",
+      "source_line": "guard b_rep->i15: v_rep = \"discarded\"",
+      "guard": {
+        "from": "b_rep",
+        "to": "i15",
+        "condition": "v_rep = \"discarded\""
+      }
+    },
+    {
+      "ref_id": "guard:b_i16->i17",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_final = \"packed\"",
+      "aliases": [
+        "guard:b_i16->i17"
+      ],
+      "from": "b_i16",
+      "to": "i17",
+      "source_line": "guard b_i16->i17: v_final = \"packed\"",
+      "guard": {
+        "from": "b_i16",
+        "to": "i17",
+        "condition": "v_final = \"packed\""
+      }
+    },
+    {
+      "ref_id": "guard:b_i16->i18",
+      "kind": "guard",
+      "node_id": null,
+      "gateway": "",
+      "string_value": "v_final = \"stored\"",
+      "aliases": [
+        "guard:b_i16->i18"
+      ],
+      "from": "b_i16",
+      "to": "i18",
+      "source_line": "guard b_i16->i18: v_final = \"stored\"",
+      "guard": {
+        "from": "b_i16",
+        "to": "i18",
+        "condition": "v_final = \"stored\""
+      }
+    }
+  ],
+  "metrics": {
+    "match_count": 18,
+    "mutation_count": 0,
+    "omission_count": 0,
+    "addition_count": 0,
+    "match_relation_count": 31,
+    "mutation_relation_count": 0,
+    "omission_relation_count": 0,
+    "unique_refs_in_matches": 31,
+    "unique_refs_in_mutations": 0,
+    "unique_refs_in_additions": 0,
+    "unique_refs_covered": 31,
+    "total_mappable_targets": 45,
+    "input_text_length": 1760,
+    "element_count": 45
+  },
+  "model_id": "openai/qwen-3.6-27b-onprem",
+  "reasoning_effort": "none"
+}

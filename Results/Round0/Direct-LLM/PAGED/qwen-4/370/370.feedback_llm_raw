@@ -1,0 +1,8 @@
+
+
+- `defines(v1, ...), defines(v2, ...), defines(v3, ...), defines(v4, ...)`: Value ranges are empty `{}`, violating SMC6 because they fail to specify the decision domain (e.g., true/false) required to evaluate conditional phrases like `"if you desire new hair"`.
+- `branch(b1, XOR) through branch(b4, XOR)`: All branches lack corresponding `guard` statements, violating SMC4 as the model cannot enforce the source's conditional routing (`"If you want your hair washed, have it washed."`) and leaves path selection non-deterministic.
+- `precedence(b1, n3)` and `precedence(b1, n4)`: Routes the initial decision to either `"visit the hairdresser"` (`n3`) or the next condition (`n4`), incorrectly modeling visiting as mutually exclusive with subsequent service checks, which contradicts the source's intended progression.
+- `precedence(n3, c1)`: Directs `"visit the hairdresser"` (`n3`) straight to convergence, completely bypassing the wash/cut/dry options and violating SMC3/SMC5 since the source lists those services as follow-up possibilities.
+- `action(n2, "do you desire new hair")`, `action(n4, ...)`, `action(n6, ...)`, `action(n8, ...)`: Models conditional prompts as executable task nodes rather than control-flow gates, distorting the process structure and violating SMC2/SMC4.
+- `precedence(n5, c1)`, `precedence(n7, c1)`, `precedence(n9, c1)`, `precedence(b4, c1)`: Collapses all service outcomes and skipped steps into a single mandatory join (`c1`), imposing a rigid serial dependency that misrepresents the independent conditional nature of the source text.

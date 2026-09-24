@@ -1,0 +1,38 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Request to purchase a motorcycle;
+:v1: Production order received ({Yes, No}); <<objectSignal>>
+if () then (["v1 == 'Yes'"])
+:Production order received;
+:Continue the process;
+:v2: Materials unavailable ({Yes, No}); <<objectSignal>>
+if () then (["v2 == 'Yes'"])
+:Materials unavailable;
+:Order materials from supplier;
+:Goods received from supplier;
+else (["v2 == 'No'"])
+:Available goods for production;
+:Place manufacturing order;
+endif
+:Issue goods;
+:Produce motorcycles;
+split
+:Update stock;
+stop
+split again
+:Update stock;
+:Dispatch motorcycles;
+stop
+split again
+:Update sales information;
+stop
+end split
+else (["v1 == 'No'"])
+:Update sales information;
+:Proceed to order dispatch;
+stop
+endif
+@enduml

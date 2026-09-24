@@ -1,0 +1,10 @@
+
+
+- `defines(v1, ...)`: Range only contains `{"Delivery crew picks up items at event site"}`, omitting the source alternative `"Customer returns the items to the store"`.
+- `defines(v3, ...)` and `defines(v6, ...)`: Ranges only contain `{"Stored for future orders"}`, omitting the source alternative `"Items are packed for an existing order"` for both disposition steps.
+- `defines(v4, ...)`: Range only contains `{"Customer does not return missing items"}`, omitting the source alternative `"Customer returns the missing items"`.
+- `guard(b3, n15, ...)` and `guard(b6, n16, ...)`: Only guard the storing option; omit guards and outgoing edges for `"Items are packed for an existing order"`, incorrectly collapsing a documented choice into a single path.
+- `guard(b4, n8, ...)`: Only guards the negative response; omits the guard and outgoing edge for `"Customer returns the missing items"`.
+- `precedence(b4, n8)` terminating at `end(e1)`: Source explicitly states both missing-item responses `"continue the process"`, but the model ends execution prematurely instead of proceeding to subsequent steps.
+- `precedence(n13, c1)` and `converge(c1)`: Source implies discarded items conclude their subflow after `"email the customer with replacement charges"`, but the model forces this path to merge via `c1` and continue to `n14` ("Items disposition after repair"), distorting the chronological flow.
+- `b1`, `b3`, `b4`, `b6`: Declared as XOR branches but only define one guarded outgoing edge each; missing complementary guards/edges violate the mutually exclusive choice semantics required by the source text.

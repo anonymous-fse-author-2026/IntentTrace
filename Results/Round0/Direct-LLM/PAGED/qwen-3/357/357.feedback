@@ -1,0 +1,12 @@
+- `action(n1, "start the process")`: Hallucinated step; not mentioned in the source description.
+- `action(n3, "did you find the book?")`: Omits the documented behavior "search for a book" and incorrectly models it as a decision/question instead of a process action.
+- `branch(b1, XOR)` and `branch(b2, XOR)`: Introduce exclusive choice points that contradict the source's strictly linear progression ("Once there, they should search... After finding... Once the used copy is added...").
+- `action(n5, "can you proceed with purchase?")`: Hallucinated step; source states "proceed to complete the purchase" as a direct next action, not a conditional check.
+- `action(n8, "end of process")`, `action(n9, "contact support or end process")`, `end(e2)`, `end(e3)`: Hallucinated alternative termination paths; the source only specifies a single endpoint ("Finally, the process ends").
+- `defines(v1, "did you find the book?", {})` and `defines(v2, "can you proceed with purchase?", {})`: Model undocumented decisions and use empty ranges `{}`, failing to reflect any valid value space from the source.
+- `actor(a_default, "Default", [...])`: Actor name "Default" contradicts the source's explicit responsibility assignment "For the buyer".
+- `precedence(b1, n8)` and `precedence(b2, n9)`: Route control flow to hallucinated alternate endings, violating the exact chronological sequence ("Once the used copy is added, they can proceed to complete the purchase. Finally, the process ends").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required.

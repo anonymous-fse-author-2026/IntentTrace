@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start process;
+:v2: first decision ({No, No again, Yes}); <<objectSignal>>
+switch ()
+case ([v2 = 'No'])
+:continue the process;
+case ([v2 = 'No again'])
+:continue the process;
+case ([v2 = 'Yes'])
+:give priority;
+endswitch
+:lookup vendor on SAP;
+:v3: vendor lookup ({No, Yes, No again, Yes priority}); <<objectSignal>>
+switch ()
+case ([v3 = 'No'])
+:need vendor master record;
+:end due to missing vendor master;
+stop
+case ([v3 = 'Yes'])
+:enter invoice in SAP;
+:place invoices in normal Outbox;
+:end process;
+stop
+case ([v3 = 'No again'])
+:need vendor master record;
+:end due to missing vendor master;
+stop
+case ([v3 = 'Yes priority'])
+:give priority;
+:v4: priority again ({Yes again, No}); <<objectSignal>>
+if () then ([v4 = 'Yes again'])
+:enter invoice in SAP;
+else ([v4 = 'No'])
+stop
+endif
+endswitch
+@enduml

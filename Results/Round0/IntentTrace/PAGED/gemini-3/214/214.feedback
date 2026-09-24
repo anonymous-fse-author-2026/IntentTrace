@@ -1,0 +1,50 @@
+Omission
+- [N1] Omitted trace (input 1): i1:At the beginning, -> i2:if we can capture data from FMA, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i9:if there are no additional genres, -> i3:we should continue the process.
+- [N2] Omitted trace (input 2): i1:At the beginning, -> i2:if we can capture data from FMA, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i10:If the sample is missing, -> i3:we should continue the process.
+- [N3] Omitted trace (input 3): i1:At the beginning, -> i2:if we can capture data from FMA, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i11:We should download the sample. -> i12:if there are no additional samples, the process ends.
+- [N4] Omitted trace (input 5): i1:At the beginning, -> i4:Otherwise, -> i5:if we can capture data from Jamendo, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i9:if there are no additional genres, -> i3:we should continue the process.
+- [N5] Omitted trace (input 6): i1:At the beginning, -> i4:Otherwise, -> i5:if we can capture data from Jamendo, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i10:If the sample is missing, -> i3:we should continue the process.
+- [N6] Omitted trace (input 7): i1:At the beginning, -> i4:Otherwise, -> i5:if we can capture data from Jamendo, -> i3:we should continue the process. -> i6:After that, -> i7:we need to get music ids for the genre. -> i11:We should download the sample. -> i12:if there are no additional samples, the process ends.
+
+Addition
+- [N7] Node-level addition: action(n10,"get: music ids for the next genre") (reason: The action 'get music ids for the next genre' is not described in the source text.)
+- [N8] Node-level addition: action(n15,"end: process completed") (reason: The text does not specify an explicit 'process completed' end action distinct from the prior ending conditions.)
+- [N9] Node-level addition: guard(b4,n10,"v4 = 'Yes'") (reason: There is no source text supporting a 'Yes' branch leading to getting IDs for the next genre.)
+- [N10] Node-level addition: guard(b3,n9,"v3 = 'No  check next'") (reason: The 'No check next' condition is not present in the text.)
+- [N11] Node-level addition: guard(b2,c1,"v2 = 'No  continue'") (reason: The condition 'No continue' is an addition with no direct source support.)
+- [N12] Node-level addition: label(n3,c1,"No  continue") (reason: The label 'No continue' has no supporting phrase in the text.)
+- [N13] Within matched traces (0->0) added: action(n9,"is there an additional genre?")
+- [N14] Within matched traces (0->0) added: branch(b4,XOR)
+- [N15] Within matched traces (0->0) added: action(n12,"is the sample missing?")
+- [N16] Within matched traces (0->0) added: branch(b5,XOR)
+- [N17] Within matched traces (0->0) added: action(n13,"download: the sample")
+- [N18] Within matched traces (0->0) added: action(n15,"end: process completed")
+- [N19] Within matched traces (0->0) added: end(e2)
+- [N20] Within matched traces (0->1) added: action(n9,"is there an additional genre?")
+- [N21] Within matched traces (0->1) added: branch(b4,XOR)
+- [N22] Within matched traces (0->1) added: action(n12,"is the sample missing?")
+- [N23] Within matched traces (0->1) added: branch(b5,XOR)
+- [N24] Within matched traces (0->1) added: action(n14,"end: no additional samples")
+- [N25] Within matched traces (0->1) added: end(e1)
+- [N26] Within matched traces (4->2) added: action(n2,"can we capture data from FMA?")
+- [N27] Within matched traces (4->2) added: action(n9,"is there an additional genre?")
+- [N28] Within matched traces (4->2) added: branch(b4,XOR)
+- [N29] Within matched traces (4->2) added: action(n12,"is the sample missing?")
+- [N30] Within matched traces (4->2) added: branch(b5,XOR)
+- [N31] Within matched traces (4->2) added: action(n13,"download: the sample")
+- [N32] Within matched traces (4->2) added: action(n15,"end: process completed")
+- [N33] Within matched traces (4->2) added: end(e2)
+- [N34] Within matched traces (4->3) added: action(n2,"can we capture data from FMA?")
+- [N35] Within matched traces (4->3) added: action(n9,"is there an additional genre?")
+- [N36] Within matched traces (4->3) added: branch(b4,XOR)
+- [N37] Within matched traces (4->3) added: action(n12,"is the sample missing?")
+- [N38] Within matched traces (4->3) added: branch(b5,XOR)
+- [N39] Within matched traces (4->3) added: action(n14,"end: no additional samples")
+- [N40] Within matched traces (4->3) added: end(e1)
+
+Mutation
+- [N41] Node-level mutation: element=action(n11,"continue: to sample handling"); source=i3:we should continue the process.; reason=The model says 'continue to sample handling', which changes the generic 'continue the process' instruction to something very specific not found in the text.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n10` has in=1 and out=0. | Node `n5` has in=1 and out=0. | Node `n8` has in=1 and out=0. | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n10, n5, n8 | DSL: action(n10,"get: music ids for the next genre"); action(n5,"capture: data from Jamendo"); action(n8,"continue: with the process")

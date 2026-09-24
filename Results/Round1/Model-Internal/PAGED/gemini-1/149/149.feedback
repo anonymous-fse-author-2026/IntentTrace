@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i7:a manufacturing order is placed. (reason: The generated model completely omits the action step for placing a manufacturing order.)
+- [N2] Node-level omission: i10:At the same time (reason: The text specifies parallel execution, but no parallel branch (AND gateway) was generated to model this concurrency.)
+- [N3] Node-level omission: i14:Simultaneously (reason: The text indicates concurrent operations, but no parallel branch (AND gateway) was generated to implement it.)
+- [N4] Node-level omission: i15:the sales information is updated. (reason: The model omits the action for updating sales information at this point in the process.)
+- [N5] Omitted trace (input 0): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i4:update the sales information and proceed to order dispatch.
+- [N6] Omitted trace (input 2): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier. -> i8:Once the materials are received from the supplier -> i9:the goods are issued and the motorcycles are produced. -> i10:At the same time -> i12:the motorcycles are dispatched. -> i13:the process ends.
+- [N7] Omitted trace (input 3): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier. -> i8:Once the materials are received from the supplier -> i9:the goods are issued and the motorcycles are produced. -> i14:Simultaneously -> i11:the stock is updated -> i13:the process ends.
+- [N8] Omitted trace (input 4): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i5:If there are unavailable materials -> i6:they are ordered from the supplier. -> i8:Once the materials are received from the supplier -> i9:the goods are issued and the motorcycles are produced. -> i14:Simultaneously -> i15:the sales information is updated. -> i13:the process ends.
+- [N9] Omitted trace (input 5): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i7:a manufacturing order is placed. -> i9:the goods are issued and the motorcycles are produced. -> i10:At the same time -> i11:the stock is updated -> i13:the process ends.
+- [N10] Omitted trace (input 6): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i7:a manufacturing order is placed. -> i9:the goods are issued and the motorcycles are produced. -> i10:At the same time -> i12:the motorcycles are dispatched. -> i13:the process ends.
+- [N11] Omitted trace (input 7): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i7:a manufacturing order is placed. -> i9:the goods are issued and the motorcycles are produced. -> i14:Simultaneously -> i11:the stock is updated -> i13:the process ends.
+- [N12] Omitted trace (input 8): i1:the process begins with a request to purchase a motorcycle. -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i3:continue the process if a production order is received -> i7:a manufacturing order is placed. -> i9:the goods are issued and the motorcycles are produced. -> i14:Simultaneously -> i15:the sales information is updated. -> i13:the process ends.
+- [N13] Within matched traces (1->0) omitted: i10:At the same time
+- [N14] Within matched traces (1->1) omitted: i6:they are ordered from the supplier.
+- [N15] Within matched traces (1->1) omitted: i8:Once the materials are received from the supplier
+- [N16] Within matched traces (1->1) omitted: i10:At the same time
+- [N17] Within matched traces (1->2) omitted: i10:At the same time
+- [N18] Within matched traces (1->3) omitted: i6:they are ordered from the supplier.
+- [N19] Within matched traces (1->3) omitted: i8:Once the materials are received from the supplier
+- [N20] Within matched traces (1->3) omitted: i10:At the same time
+
+Addition
+- [N21] Node-level addition: guard(b2,c2,"v2 = 'Available'") (reason: This guard condition for 'Available' goods has no supporting text in the segmented source units.)
+- [N22] Within matched traces (1->0) added: converge(c1)
+- [N23] Within matched traces (1->0) added: action(n10,"Dispatch Motorcycles")
+- [N24] Within matched traces (1->1) added: converge(c1)
+- [N25] Within matched traces (1->1) added: action(n10,"Dispatch Motorcycles")
+- [N26] Within matched traces (1->2) added: converge(c1)
+- [N27] Within matched traces (1->2) added: action(n10,"Dispatch Motorcycles")
+- [N28] Within matched traces (1->3) added: converge(c1)
+- [N29] Within matched traces (1->3) added: action(n10,"Dispatch Motorcycles")
+
+Permutation
+- [N30] Within matched traces (1->2) reordered: expected [i3:continue the process if a production order is received] but observed [action(n2,"Production Order Received?") -> branch(b1,XOR)] elsewhere; in its place the model has [action(n4,"Update Sales Information and Proceed to Dispatch")]
+- [N31] Within matched traces (1->3) reordered: expected [i3:continue the process if a production order is received] but observed [action(n2,"Production Order Received?") -> branch(b1,XOR)] elsewhere; in its place the model has [action(n4,"Update Sales Information and Proceed to Dispatch")]

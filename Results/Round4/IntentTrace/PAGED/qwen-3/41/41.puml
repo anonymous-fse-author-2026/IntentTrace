@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start the process;
+:undergo immigration checks;
+:select method for exit control checks;
+:v_method: exit control method ({biometrics, id}); <<objectSignal>>
+if () then ([v_method = 'biometrics'])
+:use biometrics for exit control checks;
+:v1: is permission granted after exit control checks ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:leave the area due to denied permission;
+:leave the area due to unsuccessful outcome;
+stop
+else ([v1 = true])
+:proceed to the next step upon allowance;
+:continue to the next step due to successful outcome;
+stop
+endif
+else ([v_method = 'id'])
+:use ID documents for exit control checks;
+:v1: is permission granted after exit control checks ({true, false}); <<objectSignal>>
+if () then ([v1 = false])
+:leave the area due to denied permission;
+:leave the area due to unsuccessful outcome;
+stop
+else ([v1 = true])
+:proceed to the next step upon allowance;
+:continue to the next step due to successful outcome;
+stop
+endif
+endif
+@enduml

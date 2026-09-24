@@ -1,0 +1,60 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:items returned to store;
+:v1: items returned to store ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:customer returns items to store;
+else ([v1 = 'No'])
+:delivery crew picks up items at event site;
+endif
+:items counted and compared to original contract;
+:v2: order is complete and all items were returned ({Yes, No})
+v3: order is incomplete and items are missing ({Yes, No})
+v6: items are repaired and added into inventory ({Yes, No}); <<objectSignal>>
+switch ()
+case ([v2 = 'Yes'])
+:order is complete and all items were returned;
+case ([v3 = 'Yes'])
+:order is incomplete and items are missing;
+case ([v6 = 'No'])
+:email customer to inform of damage and additional charges;
+endswitch
+:v4: items packed for existing order ({Yes, No})
+v5: items stored for future orders ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:items packed for existing order;
+else ([v5 = 'Yes'])
+:items stored for future orders;
+endif
+:v1: items returned to store ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:email customer with replacement charges;
+else ([v1 = 'No'])
+:email customer with replacement charges;
+endif
+:v6: items are repaired and added into inventory ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:temporarily take damaged items out of inventory;
+else ([v6 = 'No'])
+:end process;
+endif
+:v7: customer returns missing items ({Yes, No})
+v8: customer does not return missing items ({Yes, No}); <<objectSignal>>
+if () then ([v7 = 'Yes'])
+:customer returns missing items;
+else ([v8 = 'Yes'])
+:customer does not return missing items;
+endif
+:v6: items are repaired and added into inventory ({Yes, No}); <<objectSignal>>
+if () then ([v6 = 'Yes'])
+:items are repaired and added into inventory;
+else ([v6 = 'No'])
+:items can't be repaired and are discarded;
+endif
+:end process;
+stop
+@enduml

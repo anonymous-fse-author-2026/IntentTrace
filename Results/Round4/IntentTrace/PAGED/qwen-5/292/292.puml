@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:receive claim;
+:create and record claim;
+:decide on claim;
+:v1: claim decision ({Reject, Accept}); <<objectSignal>>
+if () then ([v1 = 'Reject'])
+:reject claim;
+:review rejection;
+:continue the process;
+else ([v1 = 'Accept'])
+:accept claim;
+:offer benefit;
+:prepare discharge;
+:record payment;
+endif
+:v2: closing option ({Pay, Skip}); <<objectSignal>>
+fork
+if () then ([v2 = 'Pay'])
+:operate outgoing payment;
+:close the claim;
+endif
+fork again
+if () then ([v2 = 'Skip'])
+endif
+end fork
+stop
+@enduml

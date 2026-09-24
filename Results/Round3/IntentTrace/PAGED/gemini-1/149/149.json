@@ -1,0 +1,372 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n1",
+      "type": "action",
+      "content": "Request to Purchase Motorcycle"
+    },
+    {
+      "id": "b1",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n2",
+      "type": "action",
+      "content": "Production Order Received?"
+    },
+    {
+      "id": "n3",
+      "type": "action",
+      "content": "Continue with Production Order"
+    },
+    {
+      "id": "n4",
+      "type": "action",
+      "content": "Update Sales Information and Proceed to Dispatch"
+    },
+    {
+      "id": "e2",
+      "type": "end"
+    },
+    {
+      "id": "n5",
+      "type": "action",
+      "content": "Check Material Availability"
+    },
+    {
+      "id": "b2",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n6",
+      "type": "action",
+      "content": "Order Materials from Supplier"
+    },
+    {
+      "id": "n7",
+      "type": "action",
+      "content": "Receive Materials from Supplier"
+    },
+    {
+      "id": "i7",
+      "type": "action",
+      "content": "a manufacturing order is placed"
+    },
+    {
+      "id": "c2",
+      "type": "converge"
+    },
+    {
+      "id": "i10",
+      "type": "action",
+      "content": "At the same time"
+    },
+    {
+      "id": "b_parallel",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "n10",
+      "type": "action",
+      "content": "Dispatch Motorcycles"
+    },
+    {
+      "id": "n8",
+      "type": "action",
+      "content": "Issue Goods and Produce Motorcycles"
+    },
+    {
+      "id": "i14",
+      "type": "action",
+      "content": "Simultaneously"
+    },
+    {
+      "id": "b_simul",
+      "type": "branch",
+      "gateway": "AND"
+    },
+    {
+      "id": "i12",
+      "type": "action",
+      "content": "the stock is updated"
+    },
+    {
+      "id": "n11",
+      "type": "action",
+      "content": "End of Process"
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "content": "Update Sales Information"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v1",
+      "name": "Production Order Received?",
+      "R_X": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "X": "v2",
+      "name": "Check Material Availability",
+      "R_X": [
+        "Available",
+        "Unavailable"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n1",
+        "b1",
+        "n2",
+        "n3",
+        "n4",
+        "e2",
+        "n5",
+        "b2",
+        "n6",
+        "n7",
+        "i7",
+        "c2",
+        "i10",
+        "b_parallel",
+        "n10",
+        "n8",
+        "i14",
+        "b_simul",
+        "i12",
+        "n11",
+        "n15"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n1"
+    },
+    {
+      "type": "precedence",
+      "A": "n1",
+      "B": "b1"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n2",
+      "condition": "v1 = \"Yes\""
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n2"
+    },
+    {
+      "type": "precedence",
+      "A": "n2",
+      "B": "n3"
+    },
+    {
+      "type": "precedence",
+      "A": "n3",
+      "B": "b2"
+    },
+    {
+      "type": "guard",
+      "A": "b1",
+      "B": "n4",
+      "condition": "v1 = \"No\""
+    },
+    {
+      "type": "precedence",
+      "A": "b1",
+      "B": "n4"
+    },
+    {
+      "type": "precedence",
+      "A": "n4",
+      "B": "e2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "n5",
+      "condition": "v2 = \"Unavailable\""
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "n5"
+    },
+    {
+      "type": "precedence",
+      "A": "n5",
+      "B": "n6"
+    },
+    {
+      "type": "precedence",
+      "A": "n6",
+      "B": "n7"
+    },
+    {
+      "type": "precedence",
+      "A": "n7",
+      "B": "c2"
+    },
+    {
+      "type": "guard",
+      "A": "b2",
+      "B": "i7",
+      "condition": "v2 = \"Available\""
+    },
+    {
+      "type": "precedence",
+      "A": "b2",
+      "B": "i7"
+    },
+    {
+      "type": "precedence",
+      "A": "i7",
+      "B": "c2"
+    },
+    {
+      "type": "precedence",
+      "A": "c2",
+      "B": "i10"
+    },
+    {
+      "type": "precedence",
+      "A": "i10",
+      "B": "b_parallel"
+    },
+    {
+      "type": "precedence",
+      "A": "b_parallel",
+      "B": "n10"
+    },
+    {
+      "type": "precedence",
+      "A": "n10",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_parallel",
+      "B": "n8"
+    },
+    {
+      "type": "precedence",
+      "A": "n8",
+      "B": "i14"
+    },
+    {
+      "type": "precedence",
+      "A": "i14",
+      "B": "b_simul"
+    },
+    {
+      "type": "precedence",
+      "A": "b_simul",
+      "B": "i12"
+    },
+    {
+      "type": "precedence",
+      "A": "i12",
+      "B": "n11"
+    },
+    {
+      "type": "precedence",
+      "A": "n11",
+      "B": "e2"
+    },
+    {
+      "type": "precedence",
+      "A": "b_simul",
+      "B": "n15"
+    },
+    {
+      "type": "precedence",
+      "A": "n15",
+      "B": "e2"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "the process begins with a request to purchase a motorcycle"
+    },
+    {
+      "id": "i2",
+      "content": "continue the process"
+    },
+    {
+      "id": "i3",
+      "content": "if a production order is received"
+    },
+    {
+      "id": "i4",
+      "content": "update the sales information and proceed to order dispatch"
+    },
+    {
+      "id": "i5",
+      "content": "If there are unavailable materials"
+    },
+    {
+      "id": "i6",
+      "content": "they are ordered from the supplier"
+    },
+    {
+      "id": "i7",
+      "content": "a manufacturing order is placed"
+    },
+    {
+      "id": "i8",
+      "content": "Once the materials are received from the supplier"
+    },
+    {
+      "id": "i9",
+      "content": "the goods are issued and the motorcycles are produced"
+    },
+    {
+      "id": "i10",
+      "content": "At the same time"
+    },
+    {
+      "id": "i11",
+      "content": "the stock is updated and the motorcycles are dispatched"
+    },
+    {
+      "id": "i12",
+      "content": "the stock is updated"
+    },
+    {
+      "id": "i13",
+      "content": "the process ends"
+    },
+    {
+      "id": "i14",
+      "content": "Simultaneously"
+    },
+    {
+      "id": "i15",
+      "content": "the stock is updated and the sales information is updated"
+    }
+  ]
+}

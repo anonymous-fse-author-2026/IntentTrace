@@ -1,0 +1,7 @@
+
+
+- `branch(b1, XOR)` and `precedence(b1, n5)`: The XOR gateway has only one outgoing control-flow edge, violating semantic constraints that require at least two mutually exclusive alternatives; the source explicitly presents two cases ("If the order is received via fax... If the order is received via mail or phone...") but collapses them into a single unconditional path.
+- `defines(v1, "How was the order received?", {"via mail or phone"})`: The variable's value space omits `"via fax"`, contradicting the source documentation: "If the order is received via fax, input the order into an Excel file."
+- `action(n43, "end")` and `action(n44, "end")`: Hallucinates two discrete activity steps labeled "end" that are not described in the source; the text only indicates termination ("the process ends", "This marks the end of the process"), which should be modeled solely via the `end(e1)` and `end(e2)` nodes.
+- `actor(a_default, "Default", [...])`: Assigns every process node to a single generic participant, ignoring the multiple distinct roles and responsibilities explicitly stated in the source text (e.g., "student", "selling agency", "PPC", "client", "finance department", "warehouse", "logistic department").
+- `guard(b1, n5, v1 = 'via mail or phone')`: Routes control flow conditionally only for mail/phone receipts, leaving the "via fax" alternative unguarded and unrouted despite being documented in the source.

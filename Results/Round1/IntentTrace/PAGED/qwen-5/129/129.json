@@ -1,0 +1,112 @@
+{
+  "elements": [
+    {
+      "id": "i1",
+      "type": "init"
+    },
+    {
+      "id": "n_check",
+      "type": "action",
+      "content": "check loan application"
+    },
+    {
+      "id": "b_dec",
+      "type": "branch",
+      "gateway": "XOR"
+    },
+    {
+      "id": "n_disburse",
+      "type": "action",
+      "content": "disburse funds"
+    },
+    {
+      "id": "e_rej",
+      "type": "end"
+    },
+    {
+      "id": "e_end",
+      "type": "end"
+    }
+  ],
+  "variable_definitions": [
+    {
+      "X": "v_res",
+      "name": "result",
+      "R_X": [
+        "rejected",
+        "agreed"
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "id": "a_default",
+      "name": "Default",
+      "assigned_nodes": [
+        "i1",
+        "n_check",
+        "b_dec",
+        "n_disburse",
+        "e_rej",
+        "e_end"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "precedence",
+      "A": "i1",
+      "B": "n_check"
+    },
+    {
+      "type": "precedence",
+      "A": "n_check",
+      "B": "b_dec"
+    },
+    {
+      "type": "precedence",
+      "A": "b_dec",
+      "B": "e_rej"
+    },
+    {
+      "type": "precedence",
+      "A": "b_dec",
+      "B": "n_disburse"
+    },
+    {
+      "type": "precedence",
+      "A": "n_disburse",
+      "B": "e_end"
+    },
+    {
+      "type": "guard",
+      "A": "b_dec",
+      "B": "e_rej",
+      "condition": "v_res = 'rejected'"
+    },
+    {
+      "type": "guard",
+      "A": "b_dec",
+      "B": "n_disburse",
+      "condition": "v_res = 'agreed'"
+    }
+  ],
+  "input_elements": [
+    {
+      "id": "i1",
+      "content": "At the start, the loan application is checked."
+    },
+    {
+      "id": "i2",
+      "content": "If the application is rejected, the process ends."
+    },
+    {
+      "id": "i3",
+      "content": "However, if special terms are agreed upon, the process continues."
+    },
+    {
+      "id": "i4",
+      "content": "Once the funds are disbursed, the process ends."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process;
+:claim what is requested;
+:check insured status;
+:v1: is claimant insured? ({No, Yes}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:reject claim;
+:notify claimant;
+:end process rejection;
+stop
+else ([v1 = 'Yes'])
+:evaluate claim;
+:is claim simple or complex?;
+:v2: is claim simple or complex? ({simple, complex}); <<objectSignal>>
+if () then ([v2 = 'simple'])
+:send relevant forms for simple claim;
+else ([v2 = 'complex'])
+:send relevant forms for complex claim;
+endif
+repeat :;
+:check forms for completeness;
+:v3: are all relevant details provided? ({No, Yes}); <<objectSignal>>
+backward:inform claimant to complete details;
+repeat while () is ([v3 = 'No']) not ([v3 = 'Yes'])
+:register claim;
+:end process registration;
+stop
+endif
+@enduml

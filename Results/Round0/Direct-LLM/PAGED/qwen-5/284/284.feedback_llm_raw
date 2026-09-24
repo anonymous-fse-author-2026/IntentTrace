@@ -1,0 +1,8 @@
+
+
+- `action(n1, "start")`, `precedence(i1, n1)`: Hallucinates an initial step; the source states "In the beginning, you sell cars.", so the flow should go directly to the sales action without an unmentioned intermediate step.
+- `branch(b3, AND)`, `precedence(b3, n3)`, `precedence(b3, n4)`: Incorrect control-flow logic; the source presents bonus and paycheck as alternative triggers for continuation ("If you 'get a bonus'... If you 'get a paycheck'..."), not as parallel mandatory tasks that must both occur.
+- `action(n3, "get a bonus")`, `action(n4, "get a paycheck")`: Misclassifies conditional events as executable tasks; the source frames these as external conditions that enable continuation, not as steps the actor actively performs.
+- `guard(b1, n5, v1 = 'No')`, `guard(b2, n6, v2 = 'No')`, `action(n5, "process ends")`, `action(n6, "process ends")`: Hallucinates termination paths; the source only specifies progression when a bonus or paycheck is received ("then you continue"), providing no instruction on behavior when they are absent.
+- `action(n5, "process ends")`, `action(n6, "process ends")`, `action(n8, "process ends")`: Introduces redundant action nodes for termination; the source simply states "the process ends", which should map directly to `end` elements rather than being preceded by duplicate action steps.
+- `converge(c1)` with `precedence(b1, c1)` and `precedence(b2, c1)`: Combined with the upstream AND split, incorrectly enforces a synchronous join requiring both conditions to resolve before allowing continuation to "pay the bill", contradicting the source's implication that either condition alone permits progression.

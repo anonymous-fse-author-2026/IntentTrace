@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start process in Admin Office;
+:Has process started;
+repeat :;
+:Verify completeness of invoices;
+:Are invoices marked as Uncompleted;
+:v2: Are invoices marked as Uncompleted ({Yes, No}); <<objectSignal>>
+backward:Return invoices to client via postal mail;
+repeat while () is ([v2 = 'Yes']) not ([v2 = 'No'])
+:Receive completed invoices;
+:Mark relevant box on invoice entry form;
+:Has process been completed;
+:v3: Has process been completed ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:End;
+stop
+else ([v3 = 'No'])
+:End;
+stop
+endif
+@enduml

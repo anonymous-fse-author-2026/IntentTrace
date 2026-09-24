@@ -1,0 +1,29 @@
+Omission
+- [N1] Omitted trace (input 2): i1:the process begins with a request to purchase a motorcycle -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i4:a production order is received -> i3:continue the process -> i9:Alternatively, if there are available goods for production -> i10:a manufacturing order is placed -> i12:the goods are issued -> i13:the motorcycles are produced -> i15:the stock is updated -> i17:the process ends
+- [N2] Omitted trace (input 3): i1:the process begins with a request to purchase a motorcycle -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i4:a production order is received -> i3:continue the process -> i9:Alternatively, if there are available goods for production -> i10:a manufacturing order is placed -> i12:the goods are issued -> i13:the motorcycles are produced -> i18:the sales information is updated -> i17:the process ends
+- [N3] Omitted trace (input 4): i1:the process begins with a request to purchase a motorcycle -> i2:either continue the process if a production order is received or update the sales information and proceed to order dispatch. -> i5:update the sales information -> i6:proceed to order dispatch -> i17:the process ends
+- [N4] Within matched traces (1->1) omitted: i7:If there are unavailable materials
+- [N5] Within matched traces (1->1) omitted: i8:ordered from the supplier
+- [N6] Within matched traces (1->1) omitted: i11:Once the materials are received from the supplier
+- [N7] Within matched traces (1->1) omitted: i16:the motorcycles are dispatched
+- [N8] Within matched traces (1->2) omitted: i7:If there are unavailable materials
+- [N9] Within matched traces (1->2) omitted: i8:ordered from the supplier
+- [N10] Within matched traces (1->2) omitted: i11:Once the materials are received from the supplier
+
+Addition
+- [N11] Within matched traces (1->2) added: action(n16,"Update sales information")
+- [N12] Within matched traces (1->2) added: converge(c2)
+
+Permutation
+- [N13] Within matched traces (0->0) reordered: expected [i4:a production order is received] but observed [action(n2,"Production order received")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N14] Within matched traces (0->0) reordered: expected [i14:At the same time] but observed [branch(b5,AND)] elsewhere; in its place the model has [action(n10,"Goods received from supplier")]
+- [N15] Within matched traces (1->1) reordered: expected [i4:a production order is received] but observed [action(n2,"Production order received")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N16] Within matched traces (1->2) reordered: expected [i4:a production order is received] but observed [action(n2,"Production order received")] elsewhere; in its place the model has [branch(b1,XOR)]
+- [N17] Within matched traces (1->2) reordered: expected [i16:the motorcycles are dispatched] but observed [action(n14,"Dispatch motorcycles")] elsewhere; in its place the model has [action(n15,"Update stock")]
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | Node `n9` has in=1 and out=0. | DSL: action(n5,"Proceed to order dispatch"); action(n9,"Place manufacturing order")
+- [S2] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | Node `b4` has in=1 and out=1. | DSL: branch(b3,XOR); branch(b4,XOR)
+- [S3] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`. | Variable `v4` has an invalid range `[]`.
+- [S4] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required. | XOR/OR edge `b3 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b4 -> n11` has 0 guards; exactly one is required.
+- [S5] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, n4, n5, n8, n9 | DSL: branch(b3,XOR); action(n4,"Update sales information"); action(n5,"Proceed to order dispatch"); action(n8,"Available goods for production"); action(n9,"Place manufacturing order")

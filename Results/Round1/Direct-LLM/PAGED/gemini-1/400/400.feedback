@@ -1,0 +1,103 @@
+Omission
+- [N1] Node-level omission: i4:we continue the process (reason: The model only implements this step with distorted qualifiers ('after first No answer', etc.), leaving the exact, unadorned source step omitted.)
+- [N2] Node-level omission: i17:we enter the invoice in SAP (reason: The second occurrence of entering the invoice is only implemented with an invented qualifier ('again'), leaving the exact source step omitted.)
+- [N3] Omitted trace (input 3): i1:In the beginning -> i2:if the answer is "No" -> i4:we continue the process -> i12:we look up the Vendor on SAP -> i18:And if the answer is "Yes" again -> i17:we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N4] Omitted trace (input 4): i1:In the beginning -> i5:If the answer is "No" again -> i4:we continue the process -> i12:we look up the Vendor on SAP -> i6:If the answer is "No" -> i13:we need a Vendor master record -> i14:the process ends
+- [N5] Omitted trace (input 5): i1:In the beginning -> i5:If the answer is "No" again -> i4:we continue the process -> i12:we look up the Vendor on SAP -> i15:But if the answer is "Yes" -> i16:then we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N6] Omitted trace (input 6): i1:In the beginning -> i5:If the answer is "No" again -> i4:we continue the process -> i12:we look up the Vendor on SAP -> i9:if the answer is "Yes" -> i11:then we give it priority -> i17:we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N7] Omitted trace (input 7): i1:In the beginning -> i5:If the answer is "No" again -> i4:we continue the process -> i12:we look up the Vendor on SAP -> i18:And if the answer is "Yes" again -> i17:we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N8] Omitted trace (input 9): i1:In the beginning -> i7:However, if the answer is "Yes" -> i11:then we give it priority -> i12:we look up the Vendor on SAP -> i15:But if the answer is "Yes" -> i16:then we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N9] Omitted trace (input 10): i1:In the beginning -> i7:However, if the answer is "Yes" -> i11:then we give it priority -> i12:we look up the Vendor on SAP -> i9:if the answer is "Yes" -> i11:then we give it priority
+- [N10] Omitted trace (input 13): i1:In the beginning -> i8:However, if the answer is "Yes", then we give it priority. -> i12:we look up the Vendor on SAP -> i15:But if the answer is "Yes" -> i16:then we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N11] Omitted trace (input 14): i1:In the beginning -> i8:However, if the answer is "Yes", then we give it priority. -> i12:we look up the Vendor on SAP -> i9:if the answer is "Yes" -> i11:then we give it priority -> i17:we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N12] Omitted trace (input 15): i1:In the beginning -> i8:However, if the answer is "Yes", then we give it priority. -> i12:we look up the Vendor on SAP -> i18:And if the answer is "Yes" again -> i17:we enter the invoice in SAP -> i19:we place the entered invoices in the normal Outbox -> i14:the process ends
+- [N13] Within matched traces (0->3) omitted: i13:we need a Vendor master record
+- [N14] Within matched traces (0->3) omitted: i14:the process ends
+- [N15] Within matched traces (8->7) omitted: i13:we need a Vendor master record
+- [N16] Within matched traces (8->7) omitted: i14:the process ends
+- [N17] Within matched traces (8->11) omitted: i13:we need a Vendor master record
+- [N18] Within matched traces (8->11) omitted: i14:the process ends
+
+Addition
+- [N19] Node-level addition: action(n1,"start process") (reason: The model invents a 'start process' action step which is not explicitly described in the source text.)
+- [N20] Node-level addition: guard(b5,e7,"v5 = 'No'") (reason: The model invents a negative condition path (v5 = 'No') for the final decision, which is not supported by the source text.)
+- [N21] Within matched traces (0->0) added: action(n1,"start process")
+- [N22] Within matched traces (0->0) added: action(n3,"Is the answer No second time?")
+- [N23] Within matched traces (0->0) added: branch(b2,XOR)
+- [N24] Within matched traces (0->1) added: action(n1,"start process")
+- [N25] Within matched traces (0->1) added: action(n3,"Is the answer No second time?")
+- [N26] Within matched traces (0->1) added: branch(b2,XOR)
+- [N27] Within matched traces (0->1) added: action(n9,"Enter the invoice in SAP")
+- [N28] Within matched traces (1->2) added: action(n1,"start process")
+- [N29] Within matched traces (1->2) added: action(n3,"Is the answer No second time?")
+- [N30] Within matched traces (1->2) added: branch(b2,XOR)
+- [N31] Within matched traces (1->2) added: action(n6,"Is Vendor found on SAP?")
+- [N32] Within matched traces (1->2) added: branch(b4,XOR)
+- [N33] Within matched traces (1->2) added: action(n13,"Give it priority after invoice entry")
+- [N34] Within matched traces (1->2) added: action(n14,"Is the answer Yes again after priority?")
+- [N35] Within matched traces (1->2) added: branch(b5,XOR)
+- [N36] Within matched traces (1->2) added: action(n15,"Enter the invoice in SAP again")
+- [N37] Within matched traces (0->3) added: action(n1,"start process")
+- [N38] Within matched traces (0->3) added: action(n3,"Is the answer No second time?")
+- [N39] Within matched traces (0->3) added: branch(b2,XOR)
+- [N40] Within matched traces (0->3) added: action(n9,"Enter the invoice in SAP")
+- [N41] Within matched traces (0->3) added: action(n13,"Give it priority after invoice entry")
+- [N42] Within matched traces (0->3) added: action(n14,"Is the answer Yes again after priority?")
+- [N43] Within matched traces (0->3) added: branch(b5,XOR)
+- [N44] Within matched traces (0->3) added: end(e7)
+- [N45] Within matched traces (12->4) added: action(n1,"start process")
+- [N46] Within matched traces (12->4) added: action(n2,"Is the answer No at the beginning?")
+- [N47] Within matched traces (12->4) added: branch(b1,XOR)
+- [N48] Within matched traces (12->4) added: action(n18,"Continue process after first No answer")
+- [N49] Within matched traces (12->4) added: action(n3,"Is the answer No second time?")
+- [N50] Within matched traces (12->5) added: action(n1,"start process")
+- [N51] Within matched traces (12->5) added: action(n2,"Is the answer No at the beginning?")
+- [N52] Within matched traces (12->5) added: branch(b1,XOR)
+- [N53] Within matched traces (12->5) added: action(n18,"Continue process after first No answer")
+- [N54] Within matched traces (12->5) added: action(n3,"Is the answer No second time?")
+- [N55] Within matched traces (12->5) added: action(n9,"Enter the invoice in SAP")
+- [N56] Within matched traces (2->6) added: action(n1,"start process")
+- [N57] Within matched traces (2->6) added: action(n3,"Is the answer No second time?")
+- [N58] Within matched traces (2->6) added: branch(b2,XOR)
+- [N59] Within matched traces (2->6) added: action(n6,"Is Vendor found on SAP?")
+- [N60] Within matched traces (2->6) added: branch(b3,XOR)
+- [N61] Within matched traces (2->6) added: action(n9,"Enter the invoice in SAP")
+- [N62] Within matched traces (2->6) added: action(n14,"Is the answer Yes again after priority?")
+- [N63] Within matched traces (2->6) added: branch(b5,XOR)
+- [N64] Within matched traces (8->7) added: action(n1,"start process")
+- [N65] Within matched traces (8->7) added: action(n2,"Is the answer No at the beginning?")
+- [N66] Within matched traces (8->7) added: action(n18,"Continue process after first No answer")
+- [N67] Within matched traces (8->7) added: action(n3,"Is the answer No second time?")
+- [N68] Within matched traces (8->7) added: branch(b2,XOR)
+- [N69] Within matched traces (8->7) added: action(n9,"Enter the invoice in SAP")
+- [N70] Within matched traces (8->7) added: action(n14,"Is the answer Yes again after priority?")
+- [N71] Within matched traces (8->7) added: branch(b5,XOR)
+- [N72] Within matched traces (8->7) added: end(e7)
+- [N73] Within matched traces (8->8) added: action(n1,"start process")
+- [N74] Within matched traces (8->8) added: action(n2,"Is the answer No at the beginning?")
+- [N75] Within matched traces (8->9) added: action(n1,"start process")
+- [N76] Within matched traces (8->9) added: action(n2,"Is the answer No at the beginning?")
+- [N77] Within matched traces (8->9) added: action(n9,"Enter the invoice in SAP")
+- [N78] Within matched traces (11->10) added: action(n1,"start process")
+- [N79] Within matched traces (11->10) added: action(n2,"Is the answer No at the beginning?")
+- [N80] Within matched traces (11->10) added: action(n6,"Is Vendor found on SAP?")
+- [N81] Within matched traces (11->10) added: branch(b3,XOR)
+- [N82] Within matched traces (11->10) added: action(n9,"Enter the invoice in SAP")
+- [N83] Within matched traces (11->10) added: branch(b4,XOR)
+- [N84] Within matched traces (8->11) added: action(n1,"start process")
+- [N85] Within matched traces (8->11) added: action(n2,"Is the answer No at the beginning?")
+- [N86] Within matched traces (8->11) added: action(n9,"Enter the invoice in SAP")
+- [N87] Within matched traces (8->11) added: action(n14,"Is the answer Yes again after priority?")
+- [N88] Within matched traces (8->11) added: branch(b5,XOR)
+- [N89] Within matched traces (8->11) added: end(e7)
+
+Mutation
+- [N90] Node-level mutation: element=action(n2,"Is the answer No at the beginning?"); source=i2:if the answer is "No"; reason=The model improperly models the condition as an action step and adds the invented qualifier 'at the beginning'.
+- [N91] Node-level mutation: element=action(n3,"Is the answer No second time?"); source=i5:If the answer is "No" again; reason=The model improperly models the condition as an action step and adds the invented qualifier 'second time'.
+- [N92] Node-level mutation: element=action(n6,"Is Vendor found on SAP?"); source=i6:If the answer is "No"; reason=The model improperly models the condition as an action step and distorts it with the invented phrasing 'Is Vendor found on SAP?'.
+- [N93] Node-level mutation: element=action(n8,"End process due to missing Vendor master record") -> action(n12,"End process due to missing Vendor master record"); source=i14:the process ends; reason=The model improperly models the process termination as an action step and adds the invented qualifier 'due to missing Vendor master record'.
+- [N94] Node-level mutation: element=action(n17,"End process after placing invoices in Outbox"); source=i14:the process ends; reason=The model improperly models the process termination as an action step and adds the invented qualifier 'after placing invoices in Outbox'.
+- [N95] Node-level mutation: element=action(n13,"Give it priority after invoice entry") -> action(n20,"Give it priority after first No answers"); source=i11:then we give it priority; reason=The model adds the invented qualifiers 'after invoice entry' and 'after first No answers' to the priority step, distorting the exact source instruction.
+- [N96] Node-level mutation: element=action(n14,"Is the answer Yes again after priority?"); source=i18:And if the answer is "Yes" again; reason=The model improperly models the condition as an action step and adds the invented qualifier 'after priority'.
+- [N97] Node-level mutation: element=action(n15,"Enter the invoice in SAP again"); source=i17:we enter the invoice in SAP; reason=The model adds the invented qualifier 'again' to the invoice entry step, which does not appear in the source text for the action itself.
+- [N98] Node-level mutation: element=action(n18,"Continue process after first No answer") -> action(n19,"Continue process after second No answer"); source=i4:we continue the process; reason=The model adds the invented qualifiers 'after first No answer' and 'after second No answer' to the process continuation steps, distorting the exact step.

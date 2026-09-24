@@ -1,0 +1,24 @@
+Addition
+- [N1] Node-level addition: action(n1,"start") (reason: Introduces an explicit 'start' step that is not supported by the source unit 'At the beginning,', which only functions as a temporal opener.)
+- [N2] Added trace (model 1): init(i1) -> action(n1,"start") -> action(n2,"Know SLA?") -> branch(b1,XOR) -> action(n3,"Enter Date") -> action(n5,"Is Task Urgent?") -> branch(b2,XOR) -> action(n7,"Continue the Process") -> action(n9,"End") -> end(e2)
+- [N3] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Know SLA?") -> branch(b1,XOR) -> action(n4,"Look Up") -> action(n10,"Enter Date") -> action(n11,"Is Task Urgent?") -> branch(b3,XOR) -> action(n12,"Red Stamp") -> action(n14,"End") -> end(e3)
+- [N4] Within matched traces (0->0) added: action(n1,"start")
+- [N5] Within matched traces (1->3) added: action(n1,"start")
+- [N6] Within matched traces (1->3) added: action(n4,"Look Up")
+- [N7] Within matched traces (1->3) added: action(n11,"Is Task Urgent?")
+- [N8] Within matched traces (2->0) added: action(n1,"start")
+- [N9] Within matched traces (2->0) added: action(n2,"Know SLA?")
+- [N10] Within matched traces (3->3) added: action(n1,"start")
+- [N11] Within matched traces (3->3) added: action(n2,"Know SLA?")
+- [N12] Within matched traces (3->3) added: action(n11,"Is Task Urgent?")
+
+Mutation
+- [N13] Node-level mutation: element=action(n2,"Know SLA?"); source=i2:if someone "Knows SLA"; reason=Converts a conditional clause into an interrogative action step ('Know SLA?'), altering the syntactic role and dropping the subject 'someone'.
+- [N14] Node-level mutation: element=action(n5,"Is Task Urgent?"); source=i5:If the task is "Urgent", they should "Red Stamp".; reason=Extracts only the condition as a standalone question ('Is Task Urgent?'), stripping the consequent action and changing the phrasing.
+- [N15] Node-level mutation: element=action(n11,"Is Task Urgent?"); source=i7:If it is "Urgent", they should "Red Stamp".; reason=Identical distortion to n5; transforms a full conditional instruction into a fragmented interrogative action.
+- [N16] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:if someone "Knows SLA"; reason=Invents an explicit boolean label ('Yes') for the guard condition, which is absent from the natural-language source clause.
+- [N17] Node-level mutation: element=guard(b1,n4,"v1 = 'No'"); source=i3:If they don't "Know SLA", they should "Look up".; reason=Fabricates a boolean label ('No') instead of preserving the source's explicit negative conditional phrasing.
+- [N18] Node-level mutation: element=guard(b2,n6,"v2 = 'Yes'"); source=i5:If the task is "Urgent", they should "Red Stamp".; reason=Replaces the source condition with a fabricated variable assignment ('v2 = Yes'), altering the logical payload.
+- [N19] Node-level mutation: element=guard(b2,n7,"v2 = 'No'"); source=i6:If it is "Non Urgent", they should "continue the process".; reason=Substitutes the source's non-urgent state with an invented boolean tag ('v2 = No').
+- [N20] Node-level mutation: element=guard(b3,n12,"v3 = 'Yes'"); source=i7:If it is "Urgent", they should "Red Stamp".; reason=Same fabrication as above; replaces natural-language urgency with 'v3 = Yes'.
+- [N21] Node-level mutation: element=guard(b3,n13,"v3 = 'No'"); source=i6:If it is "Non Urgent", they should "continue the process".; reason=Same substitution as above; replaces non-urgent state with 'v3 = No'.

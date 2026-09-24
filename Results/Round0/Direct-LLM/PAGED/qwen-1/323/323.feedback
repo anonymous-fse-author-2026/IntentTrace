@@ -1,0 +1,8 @@
+- action(n6): Missing outgoing precedence to action(n7) or a converge node; this dead-ends the "New shipping address" path, contradicting the source which states that either option should "continue with the process" toward speed selection and termination.
+- branch(b1) / action(n5) & action(n6): Fails to model flow convergence; the source specifies a single rejoined step where "[o]nce that is done, confirm the shipping address", but the model uses two duplicate action nodes without a converge point to merge the split flows.
+- action(n1, "Start"): Hallucinates an extra initial step; the source description begins directly with "providing the requested shipping information", making this node semantically extraneous.
+- action(n4, "Is the shipping address saved or new?"): Mischaracterizes a routing condition as a procedural task; the source treats this as a decision context evaluated by the branch and guards, not a separate executable action.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n6` has in=1 and out=0. | DSL: action(n6,"Confirm shipping address")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n6 | DSL: action(n6,"Confirm shipping address")

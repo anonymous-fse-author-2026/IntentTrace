@@ -1,0 +1,21 @@
+Omission
+- [N1] Node-level omission: i5:check if there are any new findings (reason: No element faithfully implements this action due to the dropped instruction verb.)
+- [N2] Node-level omission: i11:check again if there are any new findings (reason: No element faithfully implements this action due to the dropped instruction verb.)
+- [N3] Node-level omission: i13:If not (reason: The guard condition was not faithfully implemented as it was substituted with an invented 'No' check.)
+
+Addition
+- [N4] Node-level addition: action(n1,"start review process") (reason: The action 'start review process' is an invented step combining concepts without an exact matching segment in the source.)
+- [N5] Added trace (model 1): init(i1) -> action(n1,"start review process") -> action(n2,"review received application") -> action(n3,"load case data") -> action(n4,"review case") -> action(n5,"are there any new findings") -> branch(b1,XOR) -> action(n6,"recalculate the refund") -> converge(c1) -> action(n8,"are there any new findings again") -> branch(b2,XOR) -> action(n10,"send another letter of denial") -> converge(c2) -> action(n11,"write back the case data") -> action(n12,"end") -> end(e1)
+- [N6] Within matched traces (0->0) added: action(n1,"start review process")
+- [N7] Within matched traces (0->0) added: converge(c1)
+- [N8] Within matched traces (0->0) added: action(n8,"are there any new findings again")
+- [N9] Within matched traces (0->0) added: branch(b2,XOR)
+- [N10] Within matched traces (1->2) added: action(n1,"start review process")
+- [N11] Within matched traces (2->3) added: action(n1,"start review process")
+
+Mutation
+- [N12] Node-level mutation: element=action(n5,"are there any new findings"); source=i5:check if there are any new findings; reason=The model dropped the instruction 'check if', turning the action into a pure question.
+- [N13] Node-level mutation: element=action(n8,"are there any new findings again"); source=i11:check again if there are any new findings; reason=The model dropped the instruction 'check', changing the phrasing to just a question.
+- [N14] Node-level mutation: element=guard(b2,n9,"v2 = 'Yes'"); source=i12:If there are; reason=The model changed the existential condition ('there are') into an invented boolean equation 'v2 = Yes'.
+- [N15] Node-level mutation: element=guard(b2,n10,"v2 = 'No'"); source=i13:If not; reason=The model changed the negative condition ('If not') into an invented boolean equation 'v2 = No'.
+- [N16] Node-level mutation: element=action(n12,"end"); source=i17:the process will come to an end; reason=Modeled redundantly as an action step with truncated text 'end', dropping 'the process will come to'.

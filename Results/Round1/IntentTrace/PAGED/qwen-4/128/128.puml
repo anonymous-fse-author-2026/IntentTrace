@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Start rental items return process;
+:How were the items returned?;
+:v1: How were the items returned? ({Delivery Crew picks-up items at the event site, Customer returns the items to the store}); <<objectSignal>>
+if () then ([v1 = 'Customer returns the items to the store'])
+:Count items and compare to original contract;
+:Order status?;
+:v2: Order status? ({Incomplete and items are missing, Complete but items are damaged, Complete and all items were returned}); <<objectSignal>>
+switch ()
+case ([v2 = 'Incomplete and items are missing'])
+:Email customer to inform of missing items and replacement charges;
+:Customer returns the missing items?;
+:v3: Customer returns the missing items? ({Customer does not return the missing items, Customer returns the missing items}); <<objectSignal>>
+if () then ([v3 = 'Customer does not return the missing items'])
+->;
+else ([v3 = 'Customer returns the missing items'])
+:Items packed for an existing order?;
+if () then ( )
+:Email customer with replacement charges;
+else ( )
+->;
+endif
+:End;
+stop
+endif
+case ([v2 = 'Complete but items are damaged'])
+:Email customer to inform of damage and additional charges;
+:Temporarily take damaged items out of inventory;
+:Items repair status?;
+:v4: Items repair status? ({Items are repaired and added into inventory, Items can't be repaired and are discarded}); <<objectSignal>>
+if () then ([v4 = 'Items are repaired and added into inventory'])
+:Items are repaired and added into inventory;
+else ( )
+:Items can't be repaired and are discarded;
+:Email customer with replacement charges;
+endif
+case ([v2 = 'Complete and all items were returned'])
+endswitch
+endif
+@enduml

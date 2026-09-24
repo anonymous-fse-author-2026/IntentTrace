@@ -1,0 +1,70 @@
+@startuml
+!theme plain
+|a_setup| Team Setup
+|a_execution| Assigned Roles
+|a_setup|
+start
+:start;
+-> Completed start;
+:join the team and agree on domain;
+-> Completed join team;
+:create process model and check it;
+-> Completed create process model;
+:is process model NOT OK?;
+:v1: is process model NOT OK? ({Yes, Model OK}); <<objectSignal>>
+if () then ([v1 = 'Yes'])
+:assign negative points;
+-> After assigning negative points;
+:check process model again;
+-> Completed check again;
+:is process model STILL NOT OK?;
+:v2: is process model STILL NOT OK? ({Yes, Model OK}); <<objectSignal>>
+if () then ([v2 = 'Yes'])
+:assign negative points again;
+else ([v2 = 'Model OK'])
+->;
+endif
+else ([v1 = 'Model OK'])
+->;
+endif
+:if process is okay continue with it;
+|a_execution|
+if () then (If there are any issues)
+|a_setup|
+:fix issues in next session and extend to levels 2 and 3;
+-> No (check);After fixing;
+|a_execution|
+else (Need to check/analyze)
+|a_setup|
+:check process and assign points or analyze field of study;
+:v3: check process and assign points or analyze field of study ({Yes, No (check);After fixing}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:assign roles in team;
+else ([v3 = 'No (check);After fixing'])
+->;
+endif
+|a_execution|
+endif
+:continue with process and perform work according role;
+-> Work performed;
+:check progress and consult problems;
+-> Progress checked;
+:is project accepted?;
+:v4: is project accepted? ({Yes, Not accepted}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:present project;
+-> Project accepted;
+:end of process;
+else ([v4 = 'Not accepted'])
+->;
+endif
+:continue working according role;
+-> Continued work;
+repeat :present project again;
+:is project accepted?;
+:v4: is project accepted? ({Yes, Not accepted}); <<objectSignal>>
+backward:continue working according role;
+repeat while () is ([v4 = 'Not accepted']) not ([v4 = 'Yes'])
+:present project and end process;
+stop
+@enduml

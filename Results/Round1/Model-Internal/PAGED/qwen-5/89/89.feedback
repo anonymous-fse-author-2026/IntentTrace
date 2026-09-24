@@ -1,0 +1,29 @@
+Omission
+- [N1] Node-level omission: i4:the Faculty will choose the design. (reason: This distinct step/action described in the source text has no corresponding action, decision, or structural node in the generated model.)
+- [N2] Omitted trace (input 0): i1:To start the process, -> i2:Course Packet Information Received should be sent, -> i3:followed by sending the Design to Faculty. -> i4:the Faculty will choose the design. -> i5:Next, identify the content that requires copyright clearance and contact the publisher to obtain clearance. -> i6:If there is a need to "Contact Faculty to inform of denial and ask if new content should be added", -> i7:"Contact Faculty to inform of denial and ask if new content should be added" -> i8:then the process should be continued. -> i5:Next, identify the content that requires copyright clearance and contact the publisher to obtain clearance.
+- [N3] Within matched traces (2->0) omitted: i4:the Faculty will choose the design.
+- [N4] Within matched traces (1->1) omitted: i4:the Faculty will choose the design.
+
+Addition
+- [N5] Node-level addition: action(n13,"end: Reconsider Content") (reason: Content 'end: Reconsider Content' invents a termination state not supported by the source, which states the process should continue rather than end.)
+- [N6] Node-level addition: label(n4,n5,"Yes No") (reason: Generic 'Yes No' labels are invented and have no corresponding descriptive text in the source.)
+- [N7] Node-level addition: label(n8,n9,"Yes No") (reason: Generic 'Yes No' labels are invented and have no corresponding descriptive text in the source.)
+- [N8] Node-level addition: guard(b1,n6,"v1 = 'Yes'") (reason: Abstract variable assignments ('v1 = Yes/No', 'v2 = Yes/No') replace the explicit natural language conditions found in the source text, introducing unsupported logic.)
+- [N9] Node-level addition: guard(b1,n7,"v1 = 'No'") (reason: Abstract variable assignments ('v1 = Yes/No', 'v2 = Yes/No') replace the explicit natural language conditions found in the source text, introducing unsupported logic.)
+- [N10] Node-level addition: guard(b2,n10,"v2 = 'Yes'") (reason: Abstract variable assignments ('v1 = Yes/No', 'v2 = Yes/No') replace the explicit natural language conditions found in the source text, introducing unsupported logic.)
+- [N11] Node-level addition: guard(b2,n12,"v2 = 'No'") (reason: Abstract variable assignments ('v1 = Yes/No', 'v2 = Yes/No') replace the explicit natural language conditions found in the source text, introducing unsupported logic.)
+- [N12] Within matched traces (2->0) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N13] Within matched traces (1->1) added: action(n5,"condition: if need to Contact Faculty to inform of denial and ask if new content should be added")
+- [N14] Within matched traces (1->1) added: action(n9,"condition: if Price of the Course Packet is finalized")
+- [N15] Within matched traces (1->1) added: branch(b2,XOR)
+- [N16] Within matched traces (1->1) added: action(n13,"end: Reconsider Content")
+- [N17] Within matched traces (1->1) added: end(e2)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"identify content requiring copyright clearance and contact publisher")
+- [S2] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v1 = 'Yes'` on `b1 -> n6` uses undefined variable `v1`. | Guard `v1 = 'No'` on `b1 -> n7` uses undefined variable `v1`. | Guard `v2 = 'Yes'` on `b2 -> n10` uses undefined variable `v2`. | Guard `v2 = 'No'` on `b2 -> n12` uses undefined variable `v2`. | DSL: guard(b1,n6,"v1 = 'Yes'"); guard(b1,n7,"v1 = 'No'"); guard(b2,n10,"v2 = 'Yes'"); guard(b2,n12,"v2 = 'No'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v1 = 'Yes'` on `b1 -> n6` cannot be evaluated: `v1` has no declared range. | Guard `v1 = 'No'` on `b1 -> n7` cannot be evaluated: `v1` has no declared range. | Guard `v2 = 'Yes'` on `b2 -> n10` cannot be evaluated: `v2` has no declared range. | Guard `v2 = 'No'` on `b2 -> n12` cannot be evaluated: `v2` has no declared range. | DSL: guard(b1,n6,"v1 = 'Yes'"); guard(b1,n7,"v1 = 'No'"); guard(b2,n10,"v2 = 'Yes'"); guard(b2,n12,"v2 = 'No'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b1` cannot be evaluated: `v1` has no declared range. | Branch `b2` cannot be evaluated: `v2` has no declared range.

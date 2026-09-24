@@ -1,0 +1,11 @@
+- `action(n1, "Start the invoice processing")`: Hallucinates an initial step; the description explicitly states the process begins directly with "receive and categorize the invoice."
+- `action(n5, "End process")` and `action(n9, "End process")`: Hallucinates explicit procedural steps for termination; the source text only describes logical endpoints, which should be captured directly by the `end` nodes.
+- `defines(v1, ...)`: The enumerated range omits the documented instruction `"Forward Invoice to Admin Officer"`, rendering the decision variable incomplete relative to the four stated options.
+- `branch(b1)` → `n4`: Lacks a `guard` statement for the outgoing edge to `n4`, leaving the XOR control-flow routing under-specified.
+- `precedence` (missing `n6` → `n2`): Omits the required feedback loop; the description states that if instructed to "Return invoice to client for completion", the invoice is "received and categorized again."
+- `action(n4, "Sort the invoice")`: Remains a dangling leaf node with no outgoing precedence or connection to an `end` node, breaking intended path completeness for the "Forward Invoice to Admin Officer" branch.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=1 and out=0. | Node `n6` has in=1 and out=0. | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required.
+- [S3] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n4, n6 | DSL: action(n4,"Sort the invoice"); action(n6,"Receive and categorize the invoice again")

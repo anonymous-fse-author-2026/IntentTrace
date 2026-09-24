@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:Password Verification;
+:Verify Password;
+:v1: Choose option after verify password ({Select Cancel, Reset password, Retry}); <<objectSignal>>
+switch ()
+case ([v1 = 'Select Cancel'])
+:Navigate to iforgot.apple.com;
+:go to iforgot.apple.com;
+:Proceed with Reset Password;
+:Once the password is reset;
+:Return to iTunes purchases page;
+:Select price of item;
+:v3: Prompt type at purchase ({Enter Password, Enter Apple ID}); <<objectSignal>>
+if () then ([v3 = 'Enter Password'])
+:Verify Password;
+else ([v3 = 'Enter Apple ID'])
+:Enter password;
+endif
+:Enter password and verify it;
+stop
+case ([v1 = 'Reset password'])
+:Navigate to iforgot.apple.com;
+case ([v1 = 'Retry'])
+:Re-enter password;
+:If you need to re-enter your password, do so and then verify it.;
+endswitch
+@enduml

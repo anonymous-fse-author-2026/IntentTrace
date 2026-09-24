@@ -1,0 +1,11 @@
+- `action(n1, "Start client acquisition process")`: Hallucinated step; the source description begins directly with "identify the need for a new client" and does not include an explicit initialization action.
+- `action(n5, "Have all initial tasks been completed")` and `branch(b1, XOR)`: Hallucinated control elements; the text specifies a direct chronological progression ("Once these steps are done, the next step is to send an offer...") rather than introducing a verification check or exclusive choice.
+- `branch(b1, XOR)`: Modeled as an exclusive decision gateway but declares only a single outgoing precedence edge (`precedence(b1, n6)`), contradicting the semantic purpose of a split/choice node.
+- `defines(v1, "Have all initial tasks been completed", {})` and `defines(v2, "Is the client's response positive", {})`: Value ranges are empty `{}`, omitting the expected categorical values (e.g., `{true, false}` or `{positive, negative}`) required to evaluate the decision points described in the source.
+- `branch(b2, XOR)` outgoing edges: Missing `guard` statements for transitions to `n11` and `n12`; the model fails to formally bind the source's "positive" and "negative" response conditions to the respective branch paths.
+- `action(n14, "You have completed this procedure")`: Hallucinated administrative node; the source concludes immediately after "it can be signed, and the process comes to an end" without referencing a separate completion confirmation step.
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b1` has in=1 and out=1. | DSL: branch(b1,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n6` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.

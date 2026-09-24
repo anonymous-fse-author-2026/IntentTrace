@@ -1,0 +1,36 @@
+Omission
+- [N1] Node-level omission: i12:Once the installation is verified, the billing is prepared. (reason: The source explicitly requires the installation to be verified before billing preparation, but no corresponding action or condition element models this verification step.)
+- [N2] Within matched traces (1->1) omitted: i9:is not successful
+
+Addition
+- [N3] Node-level addition: action(n1,"start process") (reason: Invents a generic 'start process' action step not present in the source; initiation is already fully covered by the init node and the receiving action.)
+- [N4] Node-level addition: action(n5,"evaluation result ok") (reason: Incorrectly models the evaluation condition as a standalone action step, adding an unsupported process node.)
+- [N5] Node-level addition: action(n7,"end NOK") (reason: Invents an intermediate 'end NOK' action; the source simply transitions to termination without an extra step.)
+- [N6] Node-level addition: action(n9,"installation successful") (reason: Incorrectly models the installation outcome condition as a standalone action step, adding an unsupported process node.)
+- [N7] Node-level addition: action(n12,"everything in order") (reason: Incorrectly models the final condition as a standalone action step, adding an unsupported process node.)
+- [N8] Node-level addition: action(n14,"end ok") (reason: Invents an intermediate 'end ok' action; the source simply states the process completes without an extra step.)
+- [N9] Node-level addition: action(n15,"end no") (reason: Introduces a negative path ('end no' action and 'v3 = No' guard) for the final check that is completely absent from the source text.)
+- [N10] Node-level addition: guard(b3,n15,"v3 = 'No'") (reason: Introduces a negative path ('end no' action and 'v3 = No' guard) for the final check that is completely absent from the source text.)
+- [N11] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"receive order request") -> action(n3,"register order") -> action(n4,"evaluate order") -> action(n5,"evaluation result ok") -> branch(b1,XOR) -> action(n8,"perform installation") -> action(n9,"installation successful") -> branch(b2,XOR) -> action(n10,"check installation") -> action(n11,"prepare billing") -> action(n12,"everything in order") -> branch(b3,XOR) -> action(n15,"end no") -> end(e3)
+- [N12] Within matched traces (0->0) added: init(i1)
+- [N13] Within matched traces (0->0) added: action(n1,"start process")
+- [N14] Within matched traces (0->0) added: action(n5,"evaluation result ok")
+- [N15] Within matched traces (0->0) added: action(n7,"end NOK")
+- [N16] Within matched traces (1->1) added: init(i1)
+- [N17] Within matched traces (1->1) added: action(n1,"start process")
+- [N18] Within matched traces (1->1) added: action(n5,"evaluation result ok")
+- [N19] Within matched traces (1->1) added: action(n9,"installation successful")
+- [N20] Within matched traces (1->1) added: action(n6,"mark order as NOK")
+- [N21] Within matched traces (1->1) added: action(n7,"end NOK")
+- [N22] Within matched traces (1->1) added: end(e1)
+- [N23] Within matched traces (2->2) added: init(i1)
+- [N24] Within matched traces (2->2) added: action(n1,"start process")
+- [N25] Within matched traces (2->2) added: action(n5,"evaluation result ok")
+- [N26] Within matched traces (2->2) added: action(n9,"installation successful")
+- [N27] Within matched traces (2->2) added: action(n12,"everything in order")
+- [N28] Within matched traces (2->2) added: action(n14,"end ok")
+
+Mutation
+- [N29] Node-level mutation: element=guard(b2,c1,"v2 = 'No'"); source=i8:If the installation is not successful; reason=The guard payload uses 'No' instead of the source's explicit 'not successful' condition, altering the stated value.
+- [N30] Node-level mutation: element=guard(b2,n10,"v2 = 'Yes'"); source=i10:if the installation is successful; reason=The guard payload uses 'Yes' instead of the source's explicit 'successful' condition, altering the stated value.
+- [N31] Node-level mutation: element=guard(b3,n13,"v3 = 'Yes'"); source=i13:Finally, if everything is in order; reason=The guard payload uses 'Yes' instead of matching the source's 'everything is in order' phrasing, altering the condition logic.

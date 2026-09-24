@@ -1,0 +1,25 @@
+Addition
+- [N1] Node-level addition: guard(b1,n4,"v1 = 'No'") (reason: These guards invent explicit 'No' negative branches that sequentially chain the decisions together. The source text only defines positive conditions and does not specify any fallback, else-branch, or negative routing logic.)
+- [N2] Node-level addition: guard(b2,n6,"v2 = 'No'") (reason: These guards invent explicit 'No' negative branches that sequentially chain the decisions together. The source text only defines positive conditions and does not specify any fallback, else-branch, or negative routing logic.)
+- [N3] Node-level addition: guard(b3,n8,"v3 = 'No'") (reason: These guards invent explicit 'No' negative branches that sequentially chain the decisions together. The source text only defines positive conditions and does not specify any fallback, else-branch, or negative routing logic.)
+- [N4] Node-level addition: guard(b4,c1,"v4 = 'No'") (reason: These guards invent explicit 'No' negative branches that sequentially chain the decisions together. The source text only defines positive conditions and does not specify any fallback, else-branch, or negative routing logic.)
+- [N5] Added trace (model 3): init(i1) -> branch(b1,XOR) -> action(n3,"visit the hairdresser") -> action(n4,"do you want your hair washed") -> branch(b2,XOR) -> action(n6,"do you want your hair cut") -> branch(b3,XOR) -> action(n8,"do you want your hair dried") -> branch(b4,XOR) -> converge(c1) -> action(n10,"process complete you have obtained new hair") -> end(e1)
+- [N6] Added trace (model 4): init(i1) -> branch(b1,XOR) -> action(n4,"do you want your hair washed") -> branch(b2,XOR) -> action(n5,"have your hair washed") -> converge(c1) -> action(n10,"process complete you have obtained new hair") -> end(e1)
+- [N7] Added trace (model 5): init(i1) -> branch(b1,XOR) -> action(n4,"do you want your hair washed") -> branch(b2,XOR) -> action(n6,"do you want your hair cut") -> branch(b3,XOR) -> action(n7,"have your hair cut") -> converge(c1) -> action(n10,"process complete you have obtained new hair") -> end(e1)
+- [N8] Added trace (model 6): init(i1) -> branch(b1,XOR) -> action(n4,"do you want your hair washed") -> branch(b2,XOR) -> action(n6,"do you want your hair cut") -> branch(b3,XOR) -> action(n8,"do you want your hair dried") -> branch(b4,XOR) -> action(n9,"have your hair dried") -> converge(c1) -> action(n10,"process complete you have obtained new hair") -> end(e1)
+- [N9] Added trace (model 7): init(i1) -> branch(b1,XOR) -> action(n4,"do you want your hair washed") -> branch(b2,XOR) -> action(n6,"do you want your hair cut") -> branch(b3,XOR) -> action(n8,"do you want your hair dried") -> branch(b4,XOR) -> converge(c1) -> action(n10,"process complete you have obtained new hair") -> end(e1)
+- [N10] Within matched traces (1->1) added: action(n4,"do you want your hair washed")
+- [N11] Within matched traces (1->1) added: branch(b2,XOR)
+- [N12] Within matched traces (2->2) added: action(n4,"do you want your hair washed")
+- [N13] Within matched traces (2->2) added: branch(b2,XOR)
+- [N14] Within matched traces (2->2) added: action(n6,"do you want your hair cut")
+- [N15] Within matched traces (2->2) added: branch(b3,XOR)
+
+Mutation
+- [N16] Node-level mutation: element=guard(b1,n3,"v1 = 'Yes'"); source=i2:if you desire new hair, visit the hairdresser.; reason=Replaces the specific source condition 'desire new hair' with a generic boolean check 'v1 = Yes', losing original semantic detail.
+- [N17] Node-level mutation: element=guard(b2,n5,"v2 = 'Yes'"); source=i3:If you want your hair washed, have it washed.; reason=Substitutes the explicit textual condition with an abstract variable equality 'v2 = Yes'.
+- [N18] Node-level mutation: element=guard(b3,n7,"v3 = 'Yes'"); source=i4:If you want your hair cut, have it cut.; reason=Distorts the source condition by replacing it with a non-descriptive generic 'v3 = Yes' guard.
+- [N19] Node-level mutation: element=guard(b4,n9,"v4 = 'Yes'"); source=i5:If you want your hair dried, have it dried.; reason=Changes the original condition to a simplified boolean 'v4 = Yes', dropping the source-specific qualifier.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"do you want your hair washed")

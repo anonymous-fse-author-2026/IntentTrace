@@ -1,0 +1,9 @@
+- `action(n4, "All assessments completed")`: Hallucinates an intermediate step not present in the source; the description transitions directly from the parallel checks to the next phase ("After that, the eligibility of the applicant is assessed.").
+- `action(n6, "Is applicant eligible")`: Misrepresents a conditional decision point as a discrete process action; the source frames this as a direct routing condition ("If the applicant is eligible... If the applicant is not eligible..."), not a standalone task.
+- `branch(b1, XOR)` with `precedence(b1, n7)` and `precedence(b1, n8)`: Omits required `guard` statements to define the routing conditions on the split edges, failing to faithfully encode the explicit eligibility criteria described in the text.
+- `defines(v1, "Is applicant eligible", {})`: Declares an empty value range `{}`, which contradicts the source's implication of a binary/categorical decision space (eligible vs. not eligible).
+- `action(n10, "End process after rejection")` and `action(n11, "End process after acceptance pack sent")`: Hallucinate explicit termination tasks before the `end` nodes; the source states the process simply concludes after these events ("the loan application process ends", "Once the acceptance pack is sent, the process ends.").
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n8` has 0 guards; exactly one is required.

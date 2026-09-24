@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:start;
+:receive claim;
+:create and record the claim;
+:make a decision on the claim;
+:v1: make a decision on the claim ({Rejected, Accepted}); <<objectSignal>>
+if () then ([v1 = 'Rejected'])
+:reject the claim;
+:review the claim rejection;
+else ([v1 = 'Accepted'])
+:offer the benefit;
+:prepare the claim discharge;
+:record the benefit payment;
+endif
+:If the claim rejection is accepted, continue the process. But if the claim rejection is not accepted, also continue the process.;
+:v2: final path selection ({Direct End, Parallel Steps}); <<objectSignal>>
+if () then ([v2 = 'Direct End'])
+:Finally, the process ends.;
+else ([v2 = 'Parallel Steps'])
+split
+:operate outgoing payment;
+split again
+:close the claim;
+end split
+endif
+stop
+@enduml

@@ -1,0 +1,19 @@
+Omission
+- [N1] Within matched traces (1->2) omitted: i8:Once the invoices are returned to the client, receive the completed ones.
+
+Addition
+- [N2] Node-level addition: guard(b1,n3,"v1 = 'No'") (reason: The text only instructs to check if the process has started before moving to verification. It provides no conditional path, termination instruction, or "No" outcome for this check. These elements invent an unauthorized exit route.)
+- [N3] Node-level addition: action(n3,"End process") (reason: The text only instructs to check if the process has started before moving to verification. It provides no conditional path, termination instruction, or "No" outcome for this check. These elements invent an unauthorized exit route.)
+- [N4] Node-level addition: action(n6,"Wait for completion of invoices by client") (reason: The source simply states to "receive the completed ones" after return. It contains no instruction to actively "wait" for client completion. These steps introduce unwarranted waiting phases not grounded in the text.)
+- [N5] Node-level addition: action(n13,"Wait for completion of invoices by client") (reason: The source simply states to "receive the completed ones" after return. It contains no instruction to actively "wait" for client completion. These steps introduce unwarranted waiting phases not grounded in the text.)
+- [N6] Added trace (model 0): init(i1) -> action(n1,"Begin process in Admin Office") -> action(n2,"Has the process started") -> branch(b1,XOR) -> action(n3,"End process") -> end(e1)
+- [N7] Within matched traces (0->1) added: action(n6,"Wait for completion of invoices by client")
+- [N8] Within matched traces (0->1) added: converge(c1)
+- [N9] Within matched traces (1->2) added: converge(c1)
+
+Mutation
+- [N10] Node-level mutation: element=guard(b2,n11,"v2 = 'Completed'"); source=i7:On the other hand, if they are marked as "Completed", the process should be continued.; reason=The source explicitly dictates that a "Completed" status should trigger continuation. The guard instead routes this condition to "End process" (n11), fundamentally reversing the intended flow logic and outcome.
+
+Permutation
+- [N11] Within matched traces (0->1) reordered: expected [i6:If the invoices are still marked as "Uncompleted", they should be returned to the client via postal mail.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n7,"Receive completed invoices")]
+- [N12] Within matched traces (1->2) reordered: expected [i7:On the other hand, if they are marked as "Completed", the process should be continued.] but observed [branch(b2,XOR)] elsewhere; in its place the model has [action(n10,"Check if the process has been completed")]

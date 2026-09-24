@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:make purchase and connect to website;
+:search for item;
+:add item to cart / continue shopping;
+:v1: shopping choice ({Add to cart, Continue Shopping}); <<objectSignal>>
+if () then ([v1 = 'Add to cart'])
+:proceed to checkout;
+else ([v1 = 'Continue Shopping'])
+:continue shopping;
+endif
+split
+:enter address shipping method and payment information;
+split again
+:authorize credit card and check inventory levels;
+end split
+:v3: credit card and inventory status ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+->;
+else ([v3 = 'No'])
+:the transaction will end;
+endif
+:display order confirmation number;
+:show final order to customer;
+:confirm the order;
+:send confirmation notice via email;
+:order entry complete;
+stop
+@enduml

@@ -1,0 +1,36 @@
+Addition
+- [N1] Node-level addition: action(n1,"start process") (reason: Invented or unsupported steps ('start process', 'vendor exists in SAP', 'invoice entry decision', 'need vendor master record', 'priority decision again') that lack corresponding Input Elements.)
+- [N2] Node-level addition: action(n7,"vendor exists in SAP") (reason: Invented or unsupported steps ('start process', 'vendor exists in SAP', 'invoice entry decision', 'need vendor master record', 'priority decision again') that lack corresponding Input Elements.)
+- [N3] Node-level addition: action(n11,"invoice entry decision") (reason: Invented or unsupported steps ('start process', 'vendor exists in SAP', 'invoice entry decision', 'need vendor master record', 'priority decision again') that lack corresponding Input Elements.)
+- [N4] Node-level addition: action(n12,"need vendor master record") (reason: Invented or unsupported steps ('start process', 'vendor exists in SAP', 'invoice entry decision', 'need vendor master record', 'priority decision again') that lack corresponding Input Elements.)
+- [N5] Node-level addition: action(n15,"priority decision again") (reason: Invented or unsupported steps ('start process', 'vendor exists in SAP', 'invoice entry decision', 'need vendor master record', 'priority decision again') that lack corresponding Input Elements.)
+- [N6] Node-level addition: guard(b4,n12,"v4 = 'No'") (reason: Branch guards modeling conditions for an unlisted text segment or phantom paths; none correspond to any provided Input Element.)
+- [N7] Node-level addition: guard(b4,n14,"v4 = 'Yes'") (reason: Branch guards modeling conditions for an unlisted text segment or phantom paths; none correspond to any provided Input Element.)
+- [N8] Node-level addition: guard(b5,e3,"v5 = 'No'") (reason: Branch guards modeling conditions for an unlisted text segment or phantom paths; none correspond to any provided Input Element.)
+- [N9] Node-level addition: guard(b1,n4,"v1 = 'Yes'") (reason: Duplicate guard instance carrying content v1='Yes' has no source justification; the text only specifies a 'No' condition for this transition.)
+- [N10] Node-level addition: action(n14,"give priority") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N11] Added trace (model 1): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> end(e2)
+- [N12] Added trace (model 3): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> action(n5,"give priority") -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> end(e3)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n8,"need vendor master record") -> end(e1)
+- [N14] Added trace (model 5): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n12,"need vendor master record") -> end(e2)
+- [N15] Added trace (model 6): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> action(n16,"enter invoice in SAP") -> action(n18,"place invoices in normal Outbox") -> action(n19,"end process") -> end(e4)
+- [N16] Added trace (model 7): init(i1) -> action(n1,"start process") -> action(n2,"initial decision") -> branch(b1,XOR) -> action(n4,"second decision") -> branch(b2,XOR) -> converge(c1) -> action(n6,"lookup vendor on SAP") -> action(n7,"vendor exists in SAP") -> branch(b3,XOR) -> action(n10,"enter invoice in SAP") -> action(n11,"invoice entry decision") -> branch(b4,XOR) -> action(n14,"give priority") -> action(n15,"priority decision again") -> branch(b5,XOR) -> end(e3)
+- [N17] Within matched traces (0->0) added: action(n1,"start process")
+- [N18] Within matched traces (0->0) added: action(n7,"vendor exists in SAP")
+- [N19] Within matched traces (1->2) added: action(n1,"start process")
+- [N20] Within matched traces (1->2) added: action(n7,"vendor exists in SAP")
+- [N21] Within matched traces (1->2) added: action(n11,"invoice entry decision")
+- [N22] Within matched traces (1->2) added: branch(b4,XOR)
+- [N23] Within matched traces (1->2) added: action(n14,"give priority")
+- [N24] Within matched traces (1->2) added: action(n15,"priority decision again")
+
+Mutation
+- [N25] Node-level mutation: element=action(n2,"initial decision"); source=i2:if the answer is "No", then we continue the process.; reason=Replaces the explicit conditional trigger and continuation directive with a generic placeholder, stripping the specific 'No' value and logical intent.
+- [N26] Node-level mutation: element=action(n4,"second decision"); source=i3:If the answer is "No" again, we continue the process.; reason=Distorts the precise repeated-negative condition into a vague 'second decision' label, losing the core branching criteria.
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n4` has in=2 and out=1. | DSL: action(n4,"second decision")
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 2 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 2 guards; exactly one is required.
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=No].

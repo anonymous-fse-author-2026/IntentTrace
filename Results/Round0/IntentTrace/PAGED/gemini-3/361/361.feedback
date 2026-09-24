@@ -1,0 +1,13 @@
+Omission
+- [N1] Node-level omission: i12:At the same time (reason: The text explicitly specifies that the next steps occur concurrently, but there is no parallel branch (AND gateway) in the model elements to represent this split.)
+- [N2] Omitted trace (input 1): i1:To begin the process, -> i2:trigger the resupply cycle -> i3:check the current inventory level -> i6:create a purchase order -> i7:review it -> i8:If the purchase order is rejected -> i9:rework the purchase order -> i11:review it again -> i7:review it
+- [N3] Within matched traces (2->1) omitted: i10:But if the purchase order is accepted
+- [N4] Within matched traces (2->1) omitted: i12:At the same time
+- [N5] Within matched traces (3->2) omitted: i10:But if the purchase order is accepted
+- [N6] Within matched traces (3->2) omitted: i12:At the same time
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=0. | DSL: branch(b3,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`. | Variable `v3` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n9` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n12` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: b3, n7, n8 | DSL: branch(b3,XOR); action(n7,"rework: purchase order"); action(n8,"review: purchase order")

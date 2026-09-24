@@ -1,0 +1,31 @@
+Omission
+- [N1] Node-level omission: i5:then book a flight. (reason: The source explicitly requires booking a flight when the answer is 'yes', but the model skips directly to the next code-check branch without this action step.)
+- [N2] Omitted trace (input 1): i1:To begin with, you should choose your destination and calculate the distance. -> i2:continue to check if you need to book a train or a flight. -> i4:However, if the answer is "yes" -> i5:then book a flight. -> i6:If a code is available within 24 hours -> i8:If a code is available within 24 hours, the process will end. -> i9:the process will end.
+- [N3] Omitted trace (input 3): i1:To begin with, you should choose your destination and calculate the distance. -> i2:continue to check if you need to book a train or a flight. -> i4:However, if the answer is "yes" -> i5:then book a flight. -> i10:Otherwise, if 24 hours have passed, you should call a travel agency. -> i7:If a code is available -> i11:the process will end along with the hotel reservation.
+- [N4] Omitted trace (input 5): i1:To begin with, you should choose your destination and calculate the distance. -> i2:continue to check if you need to book a train or a flight. -> i4:However, if the answer is "yes" -> i5:then book a flight. -> i10:Otherwise, if 24 hours have passed, you should call a travel agency. -> i12:On the other hand, if a code is not available, you should cancel your journey. -> i13:In that case, the process will end as well.
+- [N5] Within matched traces (0->0) omitted: i6:If a code is available within 24 hours
+- [N6] Within matched traces (0->0) omitted: i8:If a code is available within 24 hours, the process will end.
+- [N7] Within matched traces (0->0) omitted: i9:the process will end.
+
+Addition
+- [N8] Node-level addition: action(n1,"start") (reason: Generic 'start' placeholder step with no specific textual counterpart in the source.)
+- [N9] Node-level addition: action(n5,"end with train booked") (reason: Payload 'end with train booked' describes a termination state not mentioned anywhere in the source text for the train path.)
+- [N10] Within matched traces (0->0) added: init(i1)
+- [N11] Within matched traces (0->0) added: action(n1,"start")
+- [N12] Within matched traces (0->0) added: action(n5,"end with train booked")
+- [N13] Within matched traces (0->0) added: end(e1)
+- [N14] Within matched traces (0->1) added: init(i1)
+- [N15] Within matched traces (0->1) added: action(n1,"start")
+- [N16] Within matched traces (2->2) added: init(i1)
+- [N17] Within matched traces (2->2) added: action(n1,"start")
+- [N18] Within matched traces (2->2) added: action(n6,"is code available within 24 hours?")
+- [N19] Within matched traces (4->3) added: init(i1)
+- [N20] Within matched traces (4->3) added: action(n1,"start")
+- [N21] Within matched traces (4->3) added: action(n6,"is code available within 24 hours?")
+- [N22] Within matched traces (4->3) added: action(n9,"is code now available?")
+
+Mutation
+- [N23] Node-level mutation: element=action(n7,"end with hotel reservation"); source=i8:If a code is available within 24 hours, the process will end.; reason=The action payload incorrectly includes 'hotel reservation', which belongs to a different branch later in the text. This branch only specifies simple process termination.
+
+Permutation
+- [N24] Within matched traces (0->1) reordered: expected [i8:If a code is available within 24 hours, the process will end.] but observed [action(n7,"end with hotel reservation")] elsewhere; in its place the model has [branch(b2,XOR)]

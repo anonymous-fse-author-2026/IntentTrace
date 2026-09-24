@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+|a_default| Default
+|a_default|
+start
+:check referee reports;
+:are referee reports completed?;
+:v1: are referee reports completed? ({Yes, No}); <<objectSignal>>
+if () then ([v1 = 'No'])
+:flag and send reminder;
+repeat :re-check referee reports status;
+:are referee reports completed after re-check?;
+:v2: are referee reports completed after re-check? ({Yes, No}); <<objectSignal>>
+backward:flag it again and send another reminder;
+repeat while () is ([v2 = 'No']) not ([v2 = 'Yes'])
+else ([v1 = 'Yes'])
+->;
+endif
+:organize interviews for selection panel with top candidates;
+:receive feedback from interview candidates;
+:is psychometric test required?;
+:v3: is psychometric test required? ({Yes, No}); <<objectSignal>>
+if () then ([v3 = 'Yes'])
+:check if hr specialist is required;
+:v4: check if hr specialist is required ({Yes, No}); <<objectSignal>>
+if () then ([v4 = 'Yes'])
+:schedule psychometric test with third party;
+else ([v4 = 'No'])
+:complete psychometric test;
+endif
+else ([v3 = 'No'])
+:coordinate second round of selection;
+endif
+:request final candidate ranking and continue process;
+stop
+@enduml

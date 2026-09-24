@@ -1,0 +1,19 @@
+Omission
+- [N1] Node-level omission: i5:create Purchase Orders (POs) (reason: Missing action step triggered when the report indicates inventory is at or below minimum.)
+- [N2] Node-level omission: i7:If the PO is rejected, it needs to be reworked. (reason: Missing conditional branch and associated rework action.)
+- [N3] Node-level omission: i8:If the PO is approved, it is printed and released in the system. (reason: Missing conditional branch and associated printing/release actions.)
+- [N4] Node-level omission: i9:If the PO is created, it needs to be reviewed. (reason: Missing mandatory review step following PO creation.)
+- [N5] Node-level omission: i10:If the PO needs to be reworked, it needs to be created again. (reason: Missing feedback loop/recreation step for rejected POs.)
+- [N6] Node-level omission: i11:Simultaneously, reserve funds for the released POs and mail the POs to the supplier. (reason: Missing parallel execution path (AND split) and the corresponding funding and mailing steps.)
+- [N7] Node-level omission: i12:receive the Packing Slip. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+- [N8] Node-level omission: i13:receive the inventory. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+- [N9] Node-level omission: i14:proceed to receive the Invoice. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+- [N10] Node-level omission: i15:proceed to the Three-way match. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+- [N11] Node-level omission: i16:release the funds. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+- [N12] Node-level omission: i17:issue the payment. (reason: Missing entire final sequence covering receipt of goods/invoices, three-way matching, fund release, and payment issuance.)
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n7` has in=1 and out=0. | DSL: action(n7,"generate equal to or below minimum report")
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`.
+- [S3] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n5` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n7` has 0 guards; exactly one is required.
+- [S4] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n7 | DSL: action(n7,"generate equal to or below minimum report")

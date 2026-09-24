@@ -1,0 +1,8 @@
+- `branch(b1, XOR)`, `guard(b1, n4, v1 = 'Yes')`, `guard(b1, n5, v1 = 'No')`: Hallucinates an exclusive decision split. The source describes a strictly linear progression ("check if the user has already liked the company and save the action"), not a conditional branch that divides the flow.
+- `action(n5, "Save action")` & missing `precedence(n5, ...)`: Creates a dead-end path. When `v1 = 'No'`, control flows to `n5` and halts abruptly, failing to execute the mandated final steps ("Finally, redirect and the process will come to an end").
+- `action(n4, "Save action")` and `action(n5, "Save action")`: Unnecessarily duplicates the save step due to the artificial split. The text specifies a single sequential "save the action" occurrence after the check, not two parallel alternatives.
+- `action(n1, "start")` and `action(n7, "End")`: Hallucinated intermediate steps not mentioned in the description; temporal boundaries are already faithfully captured by `init(i1)` and `end(e1)` per "To begin the process..." and "...come to an end."
+
+Structural Check
+- [S1] STC8 failed: Each action node must have exactly one incoming and one outgoing edge. | Node `n5` has in=1 and out=0. | DSL: action(n5,"Save action")
+- [S2] STC20 failed: Every non-end node must have a path to at least one end node. | Violations: n5 | DSL: action(n5,"Save action")

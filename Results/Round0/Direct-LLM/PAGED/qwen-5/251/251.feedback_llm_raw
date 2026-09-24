@@ -1,0 +1,7 @@
+
+
+- `branch(b1, AND)`: Incorrectly models the item selection as concurrent execution. The source describes a mutually exclusive choice ("If you choose to take a salad... Similarly, if you opt for sausages or meat..."), which requires an XOR (or OR) gateway.
+- `action(n4, "choose salad")` with `precedence(n3, n4)` and `precedence(n4, b1)`: Forces "choose salad" as a mandatory sequential step before the branch. The source presents a single decision point among three options, not a fixed preliminary step that pre-selects salad.
+- `action(n5, "purchase salad")`, `action(n6, "purchase sausages")`, `action(n7, "purchase meat")`: Hallucinates distinct purchase actions. The source only mentions choosing/opting for items, followed later by a single collective step to "paid for the products".
+- `action(n1, "start")`: Hallucinates an initial step. The source explicitly directs to "start by feeling hungry", making `action(n2, "feel hungry")` the effective first activity.
+- Prerequisite "have enough to eat": The source states "Once you have paid for the products and have enough to eat, the process comes to an end," but the model transitions directly from `action(n8, "pay for products")` to the termination nodes, omitting this explicit closing condition.

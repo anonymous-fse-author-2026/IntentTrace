@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+|a_handler| ProcessHandler
+|a_handler|
+start
+:Rental Items are Returned to the Store;
+:v_method: return method ({Customer, Delivery}); <<objectSignal>>
+if () then ([v_method = "Customer"])
+:Customer returns the items to the store;
+else ([v_method = "Delivery"])
+:Delivery Crew picks-up items at the event site;
+endif
+:items counted and compared to the original contract;
+:v_status: order status ({Complete, Incomplete, Damaged}); <<objectSignal>>
+switch ()
+case ([v_status = "Complete"])
+:Order is complete and all items were returned;
+:v_comp_act: complete action ({Pack, Store}); <<objectSignal>>
+if () then ([v_comp_act = "Pack"])
+:Items are packed for an existing order;
+else ([v_comp_act = "Store"])
+:Items are stored for future orders;
+endif
+case ([v_status = "Incomplete"])
+:Order is incomplete and items are missing;
+:email customer to inform them of missing items and replacement charges;
+:v_miss_ret: missing item return ({Returns, NoReturn}); <<objectSignal>>
+if () then ([v_miss_ret = "Returns"])
+:Customer returns the missing items;
+else ([v_miss_ret = "NoReturn"])
+:Customer does not return the missing items;
+endif
+case ([v_status = "Damaged"])
+:Order is complete but items are damaged;
+:temporarily take damaged items out of inventory;
+:v_repair: repair status ({Repaired, Discarded}); <<objectSignal>>
+if () then ([v_repair = "Repaired"])
+:Items are repaired and added into inventory;
+else ([v_repair = "Discarded"])
+:Items can't be repaired and are discarded;
+:email customer with replacement charges;
+stop
+endif
+endswitch
+:Lastly, the items are packed for an existing order;
+:v_final_act: final action ({Pack, Store}); <<objectSignal>>
+if () then ([v_final_act = "Pack"])
+:If the 'Items are packed for an existing order,' we continue the process.;
+else ([v_final_act = "Store"])
+:If the 'Items are stored for future orders,' we also continue the process.;
+endif
+stop
+@enduml

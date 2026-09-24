@@ -1,0 +1,8 @@
+
+
+- action(n13, "give another homework assignment") / precedence(n13, c4): Routes the "not last homework" path to process termination (via c4 → n25 → e1) instead of looping back to homework execution, contradicting "If it was not the last homework, another homework assignment will be given." (SMC1, SMC3, SMC4)
+- action(n23, "sign up again for exam") / precedence(n23, c3): Routes the failed exam path to process termination (via c3 → n24 → c4 → e1) instead of looping back to exam sign-up/attendance, contradicting "if the exam is failed, another sign-up for the exam is required." (SMC1, SMC4)
+- converge(c3) & action(n24, "merge course pass and exam re-sign up"): Incorrectly joins both the passing path (from action(n22)) and failing path (from action(n23)) into a single linear sequence leading to termination, violating the source requirement that passing completes the course while failing triggers repetition. (SMC4, SMC5)
+- action(n6, "contact support or terminate process"): Hallucinates a rejection/support workflow not present in the source text, which only describes continuation after approval or when no exception is needed. (SMC1, SMC2)
+- defines(v1, "is exception needed", {}) through defines(v4, "did pass exam", {}): All decision variables are assigned empty value ranges `{}`, failing to capture the explicit binary conditions (e.g., needed/not needed, passed/failed) described in the source. (SMC6)
+- branch(b1) through branch(b4): Lacks corresponding `guard(...)` statements to bind variables v1–v4 to their respective outgoing edges, leaving the conditional branching logic unspecified against the source requirements. (SMC4)

@@ -1,0 +1,69 @@
+## FlowChart Generator
+# label: %name%
+# style: whiteSpace=wrap;html=1;rounded=1;fillColor=#ffffff;strokeColor=#000000;
+# namespace: csvimport-
+# connect: {"from":"parent", "to":"id", "fromlabel":"transition_label", "invert":true, "style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;"}
+# connect: {"from":"red_parent", "to":"id", "fromlabel":"transition_label", "invert":true,"style":"endArrow=blockThin;endFill=1;fontSize=11;curved=1;strokeColor=#cd2122;fontColor=#cd2122;strokeWidth=3;"}
+# labels: {"label1" : "%transition_label%"}
+# ignore: source,base64_image,transition_label,parent,type,col
+# styles: {"base64_image":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;", "entity":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;", "start":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;", "end":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;", "condition":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;", "base64_image_red":"shape=image;imageAspect=0;image=%base64_image%;fontColor=none;noLabel=1;strokeColor=#cd2122;strokeWidth=3;", "entity_red":"rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "start_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeColor=#cd2122;strokeWidth=3;", "end_red":"ellipse;html=1;shape=endState;fillColor=strokeColor;verticalAlign=middle;fontColor=#FFFFFF;strokeColor=#cd2122;strokeWidth=3;", "condition_red":"strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;align=center;verticalAlign=middle;spacingRight=35;spacingLeft=35;strokeColor=#cd2122;strokeWidth=3;"}
+# stylename: type
+# width: auto
+# height: auto
+# padding: 20
+# nodespacing: 60
+# levelspacing: 150
+# edgespacing: 60
+# layout: verticalflow
+# identity: id
+id,name,type,parent,transition_label,source,base64_image
+1,"start the process for ACME","start","","","",""
+2,"begin New Resupply Cycle","entity","1","","",""
+3,"Check Levels of Inventory","entity","2","","",""
+4,"Is inventory below or equal to minimum","condition","3","","",""
+5,"generate Equal to or below minimum Report","entity","4","Yes","",""
+6,"generate Above Minimum Report","entity","4","No","",""
+7,"Does report indicate inventory equal or below minimum","condition","5","","",""
+8,"create Purchase Orders POs","entity","7","Yes","",""
+9,"process ends","end","7","No","",""
+10,"Is PO rejected","condition","8","","",""
+11,"rework PO","entity","10","Yes","",""
+12,"Is PO approved","condition","10","","",""
+13,"print and release PO in system","entity","12","Yes","",""
+38,"rework PO","entity","12","No","",""
+14,"PO needs to be created again","entity","11","","",""
+39,"PO needs to be created again","entity","38","","",""
+15,"PO needs to be reviewed","entity","13","","",""
+16,"Simultaneously reserve funds for released POs","entity","15","","",""
+17,"Mail POs to supplier","entity","15","","",""
+40,"Merge reserve funds and mail POs","entity","16","","",""
+41,"Merge reserve funds and mail POs","entity","17","","",""
+42,"Merge reserve funds and mail POs","entity","15","","",""
+18,"Are funds reserved for the released POs","condition","40","","",""
+19,"Receive Packing Slip","entity","18","Yes","",""
+50,"Wait for funds reservation or recheck status","entity","18","No","",""
+43,"Merge packing slip received and inventory received","entity","19","","",""
+22,"Has Packing Slip been received","condition","43","","",""
+23,"Receive Invoice","entity","22","Yes","",""
+51,"Wait for packing slip or recheck status","entity","22","No","",""
+47,"Merge packing slip received and inventory received","entity","23","","",""
+26,"Has Invoice been received","condition","47","","",""
+27,"Proceed to Three way match","entity","26","Yes","",""
+52,"Wait for invoice or recheck status","entity","26","No","",""
+46,"Merge packing slip received and inventory received","entity","22","","",""
+44,"Merge packing slip received and inventory received","entity","21","","",""
+21,"Receive Inventory","entity","41","Yes","",""
+53,"Wait for inventory or recheck status","entity","41","No","",""
+24,"Has Inventory been received","condition","44","","",""
+25,"Receive Packing Slip","entity","24","Yes","",""
+54,"Wait for inventory or recheck status","entity","24","No","",""
+45,"Merge packing slip received and inventory received","entity","24","","",""
+28,"Is Three way match successful","condition","27","","",""
+29,"Release funds","entity","28","Yes","",""
+30,"Issue payment","entity","29","","",""
+31,"Resupply Cycle is complete process ends","end","30","","",""
+32,"No match proceed with review and correction","condition","28","No","",""
+48,"After rework PO create again","entity","14","","",""
+49,"After rework PO create again","entity","39","","",""
+55,"Contact support or review process","end","32","Contact support","",""
+56,"Proceed with corrections and recheck","entity","32","Recheck and retry","",""

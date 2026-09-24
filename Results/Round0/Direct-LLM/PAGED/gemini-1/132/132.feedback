@@ -1,0 +1,8 @@
+- `branch(b1, XOR)`: Missing guards on the outgoing edges to `n3` and `n4` to evaluate the conditions "If the article is available" and "if the article is not available".
+- `defines(v1, ...)` and `defines(v2, ...)`: The variables are defined with empty ranges `{}` instead of valid value spaces.
+- `action(n9, "has the customer accepted the offer")`, `branch(b2, XOR)`, `action(n11, "abort the enquiry and end process")`, and `end(e2)`: The model hallucinates an explicit evaluation and a rejection/abort path. The source text only specifies the positive progression ("Once the customer accepts the offer, we dispatch the article") and does not mention a rejection path.
+- `actor(a_default, "Default", ...)`: The model assigns all nodes to a single "Default" actor, failing to distinguish between the responsibilities of the "customer" (e.g., making the enquiry) and "we" (e.g., checking stock, reserving, dispatching) as explicitly differentiated in the source text.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n10` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n11` has 0 guards; exactly one is required.

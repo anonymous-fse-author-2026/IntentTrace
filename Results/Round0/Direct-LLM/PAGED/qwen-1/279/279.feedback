@@ -1,0 +1,8 @@
+- `branch(b1, XOR)` & `branch(b2, XOR)`: Missing `guard` statements to define routing conditions. The source explicitly dictates conditional branching ("if someone 'Knows SLA'...", "If the task is 'Urgent'..."), but the model omits the conditions required to resolve these exclusive choices, violating SMC4.
+- `defines(v1, "Knows SLA", {})` & `defines(v2, "Task is Urgent", {})`: Specify empty ranges `{}`, failing to reflect the implicit binary/categorical domains (e.g., known/unknown, urgent/non-urgent) necessitated by the source's decision points, violating SMC6.
+- `action(n9, "End process")`: Hallucinates an undocumented activity. The source simply states "Finally, the process ends", indicating immediate transition to the `end` node without an intermediate step, violating SMC1.
+- `action(n2, "Knows SLA")` & `action(n6, "Task is Urgent")`: Incorrectly encode decision predicates as executable steps. The source frames these as conditional checks governing subsequent flows, not standalone process tasks, violating SMC2.
+
+Structural Check
+- [S1] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v1` has an invalid range `[]`. | Variable `v2` has an invalid range `[]`.
+- [S2] STC16 failed: Every outgoing edge of XOR/OR branches must have exactly one guard. | XOR/OR edge `b1 -> n3` has 0 guards; exactly one is required. | XOR/OR edge `b1 -> n4` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n7` has 0 guards; exactly one is required. | XOR/OR edge `b2 -> n8` has 0 guards; exactly one is required.

@@ -1,0 +1,24 @@
+Addition
+- [N1] Node-level addition: action(n10,"Is purchase status rejected after rework") (reason: These elements model additional re-evaluation loops and a second rework cycle that are not described in the source text.)
+- [N2] Node-level addition: action(n11,"Rework purchase order again") (reason: These elements model additional re-evaluation loops and a second rework cycle that are not described in the source text.)
+- [N3] Node-level addition: action(n13,"Is purchase status approved after second review") (reason: These elements model additional re-evaluation loops and a second rework cycle that are not described in the source text.)
+- [N4] Node-level addition: action(n14,"Reserve funds after second approval") (reason: These elements model additional re-evaluation loops and a second rework cycle that are not described in the source text.)
+- [N5] Node-level addition: action(n15,"Send order to supplier after second approval") (reason: These elements model additional re-evaluation loops and a second rework cycle that are not described in the source text.)
+- [N6] Node-level addition: label(n2,n3,"Yes") (reason: Generic 'Yes'/'No' labels lack direct textual support in the source.)
+- [N7] Node-level addition: label(n6,n7,"No") (reason: Generic 'Yes'/'No' labels lack direct textual support in the source.)
+- [N8] Node-level addition: label(n9,n10,"No") (reason: Generic 'Yes'/'No' labels lack direct textual support in the source.)
+- [N9] Node-level addition: label(n12,n13,"No") (reason: Generic 'Yes'/'No' labels lack direct textual support in the source.)
+- [N10] Node-level addition: guard(b4,c1,"v4 = 'Yes'") (reason: Guards attached to the unmodeled branch b4 have no supporting source conditions.)
+- [N11] Node-level addition: guard(b4,n14,"v4 = 'Yes'") (reason: Guards attached to the unmodeled branch b4 have no supporting source conditions.)
+- [N12] Node-level addition: action(n12,"Review purchase order again after second rework") (reason: No supporting verbatim portion was mapped from the input text.)
+- [N13] Node-level addition: guard(b3,n11,"v3 = 'Yes'") (reason: No supporting verbatim portion was mapped from the input text.)
+
+Structural Check
+- [S1] STC9 failed: Each branch node must have exactly one incoming and at least two outgoing edges. | Node `b3` has in=1 and out=1. | Node `b5` has in=1 and out=1. | DSL: branch(b3,XOR); branch(b5,XOR)
+- [S2] STC11 failed: Each variable definition must have a valid range with at least two distinct values. | Variable `v3` has an invalid range `['Yes']`. | Variable `v4` has an invalid range `['Yes']`. | Variable `v5` has an invalid range `['Yes']`.
+- [S3] STC15 failed: Every variable used in a guard must be formally defined. | Guard `v3 = 'Yes'` on `b3 -> n11` uses undefined variable `v3`. | Guard `v4 = 'Yes'` on `b4 -> n14` uses undefined variable `v4`. | Guard `v5 = 'Yes'` on `b5 -> c1` uses undefined variable `v5`. | Guard `v4 = 'Yes'` on `b4 -> c1` uses undefined variable `v4`. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'"); guard(b5,c1,"v5 = 'Yes'"); guard(b4,c1,"v4 = 'Yes'")
+
+Logical Sanity Check
+- [L1] LSC1 failed: Every guard must be satisfiable under the declared ranges of its referenced variables. | Guard `v3 = 'Yes'` on `b3 -> n11` cannot be evaluated: `v3` has no declared range. | Guard `v4 = 'Yes'` on `b4 -> n14` cannot be evaluated: `v4` has no declared range. | Guard `v5 = 'Yes'` on `b5 -> c1` cannot be evaluated: `v5` has no declared range. | Guard `v4 = 'Yes'` on `b4 -> c1` cannot be evaluated: `v4` has no declared range. | DSL: guard(b3,n11,"v3 = 'Yes'"); guard(b4,n14,"v4 = 'Yes'"); guard(b5,c1,"v5 = 'Yes'"); guard(b4,c1,"v4 = 'Yes'")
+- [L2] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | Branch `b4` cannot be evaluated: `v4` has no declared range.
+- [L3] LSC3 failed: Guards outgoing from XOR/OR branches must cover the whole evaluated state space. | Branch `b3` cannot be evaluated: `v3` has no declared range. | Branch `b4` cannot be evaluated: `v4` has no declared range. | Branch `b5` cannot be evaluated: `v5` has no declared range.

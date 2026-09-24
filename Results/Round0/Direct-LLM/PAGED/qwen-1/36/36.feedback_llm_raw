@@ -1,0 +1,8 @@
+
+
+- `defines(v1, "applicant wishes to discuss terms and conditions", {"Yes"})`: Range omits "No"; source implies a binary decision ("If the answer is "Yes"... Otherwise..."). (SMC6)
+- `defines(v2, "applicant wants to modify terms and conditions", {"No"})`: Range omits "Yes"; source explicitly conditions on "Yes" ("If the answer is "Yes", then continue..."). (SMC6)
+- `guard` for edge `b2` → `n5`: Missing explicit guard for the affirmative path; source states "If the answer is "Yes", then continue to check...", but the model provides no guard on this transition. (SMC4)
+- `action(n6, "relay applicant changes due to exceeding client limits")`: Payload hallucinates "due to exceeding client limits"; source text only instructs to "relay the applicant's changes". (SMC2)
+- `action(n15, "select new applicant from the list")`: Acts as a dead end with no outgoing `precedence`; source immediately continues with "Check if the client accepts the changes.", breaking intended control flow. (SMC3/SMC5)
+- `action(n17, "End")`, `action(n20, "End")`, `action(n22, "End")`: Unnecessary action steps inserted before `end(e1)/end(e2)/end(e3)`; source simply states "the process ends" without an intermediate action. (SMC1)

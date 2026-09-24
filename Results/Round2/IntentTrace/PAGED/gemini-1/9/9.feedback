@@ -1,0 +1,51 @@
+Omission
+- [N1] Within matched traces (1->7) omitted: i6:the process continues
+- [N2] Within matched traces (2->5) omitted: i6:the process continues
+- [N3] Within matched traces (3->1) omitted: i6:the process continues
+- [N4] Within matched traces (3->1) omitted: i17:If there is no response
+- [N5] Within matched traces (3->1) omitted: i22:the process ends
+- [N6] Within matched traces (4->2) omitted: i6:the process continues
+- [N7] Within matched traces (4->2) omitted: i19:If the invoice is returned
+- [N8] Within matched traces (4->2) omitted: i11:non-compliance is resolved
+- [N9] Within matched traces (5->2) omitted: i6:the process continues
+- [N10] Within matched traces (6->2) omitted: i6:the process continues
+- [N11] Within matched traces (6->2) omitted: i22:the process ends
+
+Addition
+- [N12] Added trace (model 3): init(i1) -> action(n1,"start with Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> branch(b1,XOR) -> action(n_i6,"the process continues") -> action(n5,"Is the invoice non compliant?") -> branch(b2,XOR) -> action(n6,"if the invoice is compliant") -> converge(c1) -> action(n18,"Pay Invoice") -> branch(b14,XOR) -> action(n21,"Bill Client") -> branch(b_after_bill,XOR) -> action(n28,"Pay Invoice and notify client of payment") -> branch(b12,XOR) -> action(n_i25,"if the client is satisfied") -> converge(c_end) -> action(n_i22,"the process ends") -> end(e1)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"start with Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> branch(b1,XOR) -> action(n_i6,"the process continues") -> action(n5,"Is the invoice non compliant?") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non compliant invoice") -> branch(b3,XOR) -> action(n8,"Can the issue be resolved with phone call?") -> action(n9,"Resolve non compliance with phone call") -> converge(c1) -> action(n18,"Pay Invoice") -> branch(b14,XOR) -> action(n21,"Bill Client") -> branch(b_after_bill,XOR) -> action(n_i17,"If there is no response") -> action(n23,"Wait period of 10 days") -> action(n29,"Send reminder after 10 days") -> converge(c_end) -> action(n_i22,"the process ends") -> end(e1)
+- [N14] Added trace (model 6): init(i1) -> action(n1,"start with Bill for Purchased Goods or Services") -> action(n2,"Receive Invoice") -> branch(b1,XOR) -> action(n_i6,"the process continues") -> action(n5,"Is the invoice non compliant?") -> branch(b2,XOR) -> action(n7,"Conduct further checks on non compliant invoice") -> branch(b3,XOR) -> action(n8,"Can the issue be resolved with phone call?") -> action(n9,"Resolve non compliance with phone call") -> converge(c1) -> action(n18,"Pay Invoice") -> branch(b14,XOR) -> action(n21,"Bill Client") -> branch(b_after_bill,XOR) -> action(n28,"Pay Invoice and notify client of payment") -> branch(b12,XOR) -> action(n_i25,"if the client is satisfied") -> converge(c_end) -> action(n_i22,"the process ends") -> end(e1)
+- [N15] Within matched traces (1->7) added: action(n_i6,"the process continues")
+- [N16] Within matched traces (2->5) added: action(n_i6,"the process continues")
+- [N17] Within matched traces (2->5) added: branch(b_after_bill,XOR)
+- [N18] Within matched traces (2->5) added: action(n28,"Pay Invoice and notify client of payment")
+- [N19] Within matched traces (2->5) added: branch(b12,XOR)
+- [N20] Within matched traces (2->5) added: action(n_i23,"If the client is unsatisfied")
+- [N21] Within matched traces (2->5) added: action(n32,"Resolve payment discrepancy")
+- [N22] Within matched traces (2->5) added: end(e1)
+- [N23] Within matched traces (3->1) added: action(n_i6,"the process continues")
+- [N24] Within matched traces (3->1) added: action(n5,"Is the invoice non compliant?")
+- [N25] Within matched traces (3->1) added: branch(b_after_bill,XOR)
+- [N26] Within matched traces (3->1) added: action(n_i17,"If there is no response")
+- [N27] Within matched traces (3->1) added: converge(c_end)
+- [N28] Within matched traces (3->1) added: action(n_i22,"the process ends")
+- [N29] Within matched traces (3->1) added: end(e1)
+- [N30] Within matched traces (4->2) added: action(n_i6,"the process continues")
+- [N31] Within matched traces (4->2) added: action(n5,"Is the invoice non compliant?")
+- [N32] Within matched traces (4->2) added: branch(b_after_bill,XOR)
+- [N33] Within matched traces (4->2) added: action(n28,"Pay Invoice and notify client of payment")
+- [N34] Within matched traces (4->2) added: branch(b12,XOR)
+- [N35] Within matched traces (4->2) added: action(n_i23,"If the client is unsatisfied")
+- [N36] Within matched traces (4->2) added: action(n32,"Resolve payment discrepancy")
+- [N37] Within matched traces (4->2) added: end(e1)
+- [N38] Within matched traces (5->2) added: action(n_i6,"the process continues")
+- [N39] Within matched traces (5->2) added: action(n5,"Is the invoice non compliant?")
+- [N40] Within matched traces (5->2) added: action(n_i23,"If the client is unsatisfied")
+- [N41] Within matched traces (6->2) added: action(n_i6,"the process continues")
+- [N42] Within matched traces (6->2) added: action(n5,"Is the invoice non compliant?")
+- [N43] Within matched traces (6->2) added: action(n_i23,"If the client is unsatisfied")
+- [N44] Within matched traces (6->2) added: action(n32,"Resolve payment discrepancy")
+- [N45] Within matched traces (6->2) added: end(e1)
+
+Mutation
+- [N46] Node-level mutation: element=guard(b14,n21,"v14 = 'billed'"); source=i15:if it is returned -> i16:Bill Client; reason=The model incorrectly places 'Bill Client' and returning the invoice under an XOR branch, modeling them as mutually exclusive conditions instead of executing them in parallel as the raw source implies.

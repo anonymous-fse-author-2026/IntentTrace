@@ -1,0 +1,28 @@
+Omission
+- [N1] Node-level omission: i16:If it is complete, the process continues. (reason: The model completely omits the condition and continuation path for when the invoice compliance check is complete.)
+- [N2] Omitted trace (input 1): i1:the process begins -> i2:receiving the invoice -> i3:sorted per client -> i4:sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked. -> i11:If the priority is high -> i12:a red stamp is placed on the entry invoice -> i14:The invoice compliance is then checked -> i15:If it is not complete, the check continues. -> i14:The invoice compliance is then checked
+- [N3] Omitted trace (input 5): i1:the process begins -> i2:receiving the invoice -> i3:sorted per client -> i4:sorted per vendor -> i5:attach the invoice entry form to the invoice -> i6:the required information is entered onto the form -> i7:the completeness of the invoice is checked -> i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked. -> i13:If it is low, the process continues. -> i14:The invoice compliance is then checked -> i15:If it is not complete, the check continues. -> i14:The invoice compliance is then checked
+- [N4] Within matched traces (2->1) omitted: i16:If it is complete, the process continues.
+- [N5] Within matched traces (3->2) omitted: i16:If it is complete, the process continues.
+- [N6] Within matched traces (4->3) omitted: i16:If it is complete, the process continues.
+- [N7] Within matched traces (6->4) omitted: i16:If it is complete, the process continues.
+- [N8] Within matched traces (7->5) omitted: i16:If it is complete, the process continues.
+- [N9] Within matched traces (8->6) omitted: i16:If it is complete, the process continues.
+
+Addition
+- [N10] Node-level addition: guard(b1,n9,"v1 == \"complete\"") (reason: The guard for 'complete' lacks any corresponding source justification in the provided input segments.)
+- [N11] Node-level addition: guard(b3,n15,"v3 == \"none\"") (reason: The guard condition for 'none' lacks any corresponding source justification in the provided input segments.)
+- [N12] Within matched traces (2->1) added: branch(b1,XOR)
+- [N13] Within matched traces (3->2) added: branch(b1,XOR)
+- [N14] Within matched traces (4->3) added: branch(b1,XOR)
+- [N15] Within matched traces (6->4) added: branch(b1,XOR)
+- [N16] Within matched traces (7->5) added: branch(b1,XOR)
+- [N17] Within matched traces (8->6) added: branch(b1,XOR)
+
+Mutation
+- [N18] Node-level mutation: element=action(n8,"end process: incomplete invoice"); source=i9:the process ends; reason=The element adds the invented qualifier 'incomplete invoice' to the action text, whereas the source merely states the process ends.
+- [N19] Node-level mutation: element=action(n9,"enter sla information date and check priority"); source=i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked.; reason=The element merges and distorts the instruction, changing 'date for completion' and SLA into 'sla information date', reducing granularity and altering the data.
+- [N20] Node-level mutation: element=action(n10,"check priority level"); source=i10:the information for the SLA is entered. The date for completion is also entered and the priority is checked.; reason=The element adds the invented qualifier 'level' to the checking of priority.
+- [N21] Node-level mutation: element=action(n12,"check compliance status"); source=i14:The invoice compliance is then checked; reason=The element adds the invented qualifier 'status' to the compliance check instruction.
+- [N22] Node-level mutation: element=action(n13,"process non-compliance invoice for experienced staff"); source=i18:the non-compliance invoice is processed; reason=The element adds the invented qualifier 'for experienced staff', which merges a condition into the action step without justification from this segment.
+- [N23] Node-level mutation: element=action(n17,"end process: completed successfully"); source=i21:and the process ends.; reason=The element adds the invented qualifier 'completed successfully', asserting a specific outcome state not present in the source segment.

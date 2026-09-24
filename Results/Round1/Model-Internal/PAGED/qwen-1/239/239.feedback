@@ -1,0 +1,24 @@
+Omission
+- [N1] Node-level omission: i5:availability needs to be checked again (reason: The model completely omits the required step to re-evaluate availability when a backorder is detected.)
+- [N2] Node-level omission: i2:If the order is to be rejected, the process should continue. If the order is to be accepted, the process should also continue. (reason: While the decision branch is present, the model fails to implement the explicit instruction that a rejected order should cause the process to continue; instead it invents a termination path.)
+- [N3] Within matched traces (0->1) omitted: i5:availability needs to be checked again
+
+Addition
+- [N4] Node-level addition: action(n1,"start") (reason: Generic 'start' action step has no textual support in the source; the process initiation is already covered structurally.)
+- [N5] Node-level addition: guard(b1,n4,"v1 = \"Yes\"") (reason: These elements invent a rejection workflow and immediate termination for the 'Yes' branch, which contradicts the source text that simply instructs the process to continue.)
+- [N6] Node-level addition: action(n4,"Reject Order") (reason: These elements invent a rejection workflow and immediate termination for the 'Yes' branch, which contradicts the source text that simply instructs the process to continue.)
+- [N7] Node-level addition: action(n5,"End") (reason: These elements invent a rejection workflow and immediate termination for the 'Yes' branch, which contradicts the source text that simply instructs the process to continue.)
+- [N8] Node-level addition: label(n10,n11,"12") (reason: The label content '12' is entirely fabricated and has no corresponding annotation or step number in the source text.)
+- [N9] Node-level addition: action(n12,"End") (reason: An explicit 'End' action placed after shipping lacks any supporting phrase in the source material; process completion is implicit.)
+- [N10] Added trace (model 0): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n4,"Reject Order") -> action(n5,"End") -> end(e1)
+- [N11] Added trace (model 2): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n6,"Prepare Assembling Order") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n10,"Assemble Bike") -> action(n11,"Ship Product") -> action(n12,"End") -> end(e3)
+- [N12] Added trace (model 3): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n9,"End") -> end(e2)
+- [N13] Added trace (model 4): init(i1) -> action(n1,"start") -> action(n2,"Examine Order") -> action(n3,"Is Order Rejected?") -> branch(b1,XOR) -> action(n7,"Check Availability") -> converge(c1) -> action(n8,"Is Backorder Required?") -> branch(b2,XOR) -> action(n10,"Assemble Bike") -> action(n11,"Ship Product") -> action(n12,"End") -> end(e3)
+- [N14] Within matched traces (0->1) added: init(i1)
+- [N15] Within matched traces (0->1) added: action(n1,"start")
+- [N16] Within matched traces (0->1) added: converge(c1)
+- [N17] Within matched traces (1->1) added: init(i1)
+- [N18] Within matched traces (1->1) added: action(n1,"start")
+
+Logical Sanity Check
+- [L1] LSC2 failed: Guards outgoing from an XOR branch must be mutually exclusive. | XOR branch `b1` has overlapping guards at state [v1=No].
